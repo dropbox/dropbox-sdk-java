@@ -72,6 +72,7 @@ public class TfaChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TfaConfiguration getNewValue() {
         return newValue;
     }
@@ -82,6 +83,7 @@ public class TfaChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public TfaConfiguration getPreviousValue() {
         return previousValue;
     }
@@ -92,6 +94,7 @@ public class TfaChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getUsedRescueCode() {
         return usedRescueCode;
     }

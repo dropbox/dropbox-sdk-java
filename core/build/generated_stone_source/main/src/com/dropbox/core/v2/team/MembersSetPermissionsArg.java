@@ -53,6 +53,7 @@ class MembersSetPermissionsArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -62,6 +63,7 @@ class MembersSetPermissionsArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AdminTier getNewRole() {
         return newRole;
     }

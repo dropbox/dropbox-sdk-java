@@ -51,6 +51,7 @@ public class FileMoveDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<RelocateAssetReferencesLogInfo> getRelocateActionDetails() {
         return relocateActionDetails;
     }

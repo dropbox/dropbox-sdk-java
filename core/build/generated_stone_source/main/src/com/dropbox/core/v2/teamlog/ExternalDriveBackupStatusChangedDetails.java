@@ -59,6 +59,7 @@ public class ExternalDriveBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public DesktopDeviceSessionLogInfo getDesktopDeviceSessionInfo() {
         return desktopDeviceSessionInfo;
     }
@@ -68,6 +69,7 @@ public class ExternalDriveBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ExternalDriveBackupStatus getPreviousValue() {
         return previousValue;
     }
@@ -77,6 +79,7 @@ public class ExternalDriveBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ExternalDriveBackupStatus getNewValue() {
         return newValue;
     }

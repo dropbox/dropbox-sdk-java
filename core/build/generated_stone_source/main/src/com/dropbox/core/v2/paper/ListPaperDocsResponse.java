@@ -70,6 +70,7 @@ public class ListPaperDocsResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getDocIds() {
         return docIds;
     }
@@ -82,6 +83,7 @@ public class ListPaperDocsResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Cursor getCursor() {
         return cursor;
     }

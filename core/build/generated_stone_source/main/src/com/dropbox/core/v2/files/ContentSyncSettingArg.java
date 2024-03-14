@@ -54,6 +54,7 @@ public class ContentSyncSettingArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getId() {
         return id;
     }
@@ -63,6 +64,7 @@ public class ContentSyncSettingArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SyncSettingArg getSyncSetting() {
         return syncSetting;
     }

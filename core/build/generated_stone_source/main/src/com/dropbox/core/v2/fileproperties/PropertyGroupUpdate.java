@@ -92,6 +92,7 @@ public class PropertyGroupUpdate {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTemplateId() {
         return templateId;
     }
@@ -103,6 +104,7 @@ public class PropertyGroupUpdate {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<PropertyField> getAddOrUpdateFields() {
         return addOrUpdateFields;
     }
@@ -112,6 +114,7 @@ public class PropertyGroupUpdate {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<String> getRemoveFields() {
         return removeFields;
     }

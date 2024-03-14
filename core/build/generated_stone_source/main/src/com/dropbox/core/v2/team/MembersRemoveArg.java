@@ -85,6 +85,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -106,6 +107,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public UserSelectorArg getTransferDestId() {
         return transferDestId;
     }
@@ -117,6 +119,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public UserSelectorArg getTransferAdminId() {
         return transferAdminId;
     }

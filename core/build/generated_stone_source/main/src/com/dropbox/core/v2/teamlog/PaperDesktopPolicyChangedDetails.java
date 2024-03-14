@@ -51,6 +51,7 @@ public class PaperDesktopPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PaperDesktopPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +61,7 @@ public class PaperDesktopPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PaperDesktopPolicy getPreviousValue() {
         return previousValue;
     }

@@ -52,6 +52,7 @@ public class FileLockingPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FileLockingPolicyState getNewValue() {
         return newValue;
     }
@@ -61,6 +62,7 @@ public class FileLockingPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FileLockingPolicyState getPreviousValue() {
         return previousValue;
     }

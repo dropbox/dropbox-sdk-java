@@ -97,6 +97,7 @@ public class UpdateTemplateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTemplateId() {
         return templateId;
     }
@@ -106,6 +107,7 @@ public class UpdateTemplateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getName() {
         return name;
     }
@@ -116,6 +118,7 @@ public class UpdateTemplateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDescription() {
         return description;
     }
@@ -126,6 +129,7 @@ public class UpdateTemplateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<PropertyFieldTemplate> getAddFields() {
         return addFields;
     }

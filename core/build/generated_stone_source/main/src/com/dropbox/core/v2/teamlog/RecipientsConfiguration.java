@@ -79,6 +79,7 @@ public class RecipientsConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AlertRecipientsSettingType getRecipientSettingType() {
         return recipientSettingType;
     }
@@ -88,6 +89,7 @@ public class RecipientsConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<String> getEmails() {
         return emails;
     }
@@ -97,6 +99,7 @@ public class RecipientsConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<String> getGroups() {
         return groups;
     }

@@ -58,6 +58,7 @@ public class DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -67,6 +68,7 @@ public class DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getCreated() {
         return created;
     }
@@ -76,6 +78,7 @@ public class DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getUpdated() {
         return updated;
     }

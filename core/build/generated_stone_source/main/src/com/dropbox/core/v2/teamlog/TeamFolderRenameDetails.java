@@ -51,6 +51,7 @@ public class TeamFolderRenameDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPreviousFolderName() {
         return previousFolderName;
     }
@@ -60,6 +61,7 @@ public class TeamFolderRenameDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getNewFolderName() {
         return newFolderName;
     }

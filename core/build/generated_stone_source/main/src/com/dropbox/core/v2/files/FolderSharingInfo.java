@@ -97,6 +97,7 @@ public class FolderSharingInfo extends SharingInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -107,6 +108,7 @@ public class FolderSharingInfo extends SharingInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getSharedFolderId() {
         return sharedFolderId;
     }

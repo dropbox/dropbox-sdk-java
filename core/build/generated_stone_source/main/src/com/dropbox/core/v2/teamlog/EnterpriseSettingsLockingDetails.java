@@ -64,6 +64,7 @@ public class EnterpriseSettingsLockingDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTeamName() {
         return teamName;
     }
@@ -73,6 +74,7 @@ public class EnterpriseSettingsLockingDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSettingsPageName() {
         return settingsPageName;
     }
@@ -82,6 +84,7 @@ public class EnterpriseSettingsLockingDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPreviousSettingsPageLockingState() {
         return previousSettingsPageLockingState;
     }
@@ -91,6 +94,7 @@ public class EnterpriseSettingsLockingDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getNewSettingsPageLockingState() {
         return newSettingsPageLockingState;
     }

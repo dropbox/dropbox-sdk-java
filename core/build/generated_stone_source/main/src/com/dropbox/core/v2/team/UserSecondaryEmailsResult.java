@@ -52,6 +52,7 @@ public class UserSecondaryEmailsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -60,6 +61,7 @@ public class UserSecondaryEmailsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<AddSecondaryEmailResult> getResults() {
         return results;
     }

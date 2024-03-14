@@ -82,6 +82,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -91,6 +92,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -100,6 +102,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public DurationLogInfo getPreviousValue() {
         return previousValue;
     }
@@ -109,6 +112,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public DurationLogInfo getNewValue() {
         return newValue;
     }
@@ -118,6 +122,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }

@@ -56,6 +56,7 @@ class PaperCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -65,6 +66,7 @@ class PaperCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ImportFormat getImportFormat() {
         return importFormat;
     }

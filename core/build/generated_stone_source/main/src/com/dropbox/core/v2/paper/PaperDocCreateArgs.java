@@ -61,6 +61,7 @@ class PaperDocCreateArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ImportFormat getImportFormat() {
         return importFormat;
     }
@@ -71,6 +72,7 @@ class PaperDocCreateArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getParentFolderId() {
         return parentFolderId;
     }

@@ -58,6 +58,7 @@ public class PaperDocExportResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getOwner() {
         return owner;
     }
@@ -67,6 +68,7 @@ public class PaperDocExportResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTitle() {
         return title;
     }
@@ -86,6 +88,7 @@ public class PaperDocExportResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getMimeType() {
         return mimeType;
     }

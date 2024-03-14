@@ -82,6 +82,7 @@ public class GovernancePolicyAddFoldersDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -91,6 +92,7 @@ public class GovernancePolicyAddFoldersDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -100,6 +102,7 @@ public class GovernancePolicyAddFoldersDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }
@@ -109,6 +112,7 @@ public class GovernancePolicyAddFoldersDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<String> getFolders() {
         return folders;
     }

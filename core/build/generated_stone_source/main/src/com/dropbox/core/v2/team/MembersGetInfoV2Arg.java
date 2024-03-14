@@ -47,6 +47,7 @@ class MembersGetInfoV2Arg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<UserSelectorArg> getMembers() {
         return members;
     }

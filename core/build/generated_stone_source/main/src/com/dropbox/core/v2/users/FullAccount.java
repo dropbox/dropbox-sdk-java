@@ -154,6 +154,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAccountId() {
         return accountId;
     }
@@ -163,6 +164,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Name getName() {
         return name;
     }
@@ -174,6 +176,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getEmail() {
         return email;
     }
@@ -203,6 +206,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getLocale() {
         return locale;
     }
@@ -212,6 +216,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getReferralLink() {
         return referralLink;
     }
@@ -233,6 +238,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AccountType getAccountType() {
         return accountType;
     }
@@ -242,6 +248,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public RootInfo getRootInfo() {
         return rootInfo;
     }
@@ -251,6 +258,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }
@@ -261,6 +269,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getCountry() {
         return country;
     }
@@ -270,6 +279,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public FullTeam getTeam() {
         return team;
     }
@@ -280,6 +290,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getTeamMemberId() {
         return teamMemberId;
     }

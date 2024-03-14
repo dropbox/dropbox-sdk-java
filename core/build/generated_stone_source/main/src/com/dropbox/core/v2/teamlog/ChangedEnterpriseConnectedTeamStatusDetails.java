@@ -64,6 +64,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FedHandshakeAction getAction() {
         return action;
     }
@@ -73,6 +74,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FederationStatusChangeAdditionalInfo getAdditionalInfo() {
         return additionalInfo;
     }
@@ -82,6 +84,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TrustedTeamsRequestState getPreviousValue() {
         return previousValue;
     }
@@ -91,6 +94,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TrustedTeamsRequestState getNewValue() {
         return newValue;
     }

@@ -200,6 +200,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -209,6 +210,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getId() {
         return id;
     }
@@ -222,6 +224,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getClientModified() {
         return clientModified;
     }
@@ -231,6 +234,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getServerModified() {
         return serverModified;
     }
@@ -242,6 +246,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getRev() {
         return rev;
     }
@@ -261,6 +266,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -276,6 +282,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPathDisplay() {
         return pathDisplay;
     }
@@ -286,6 +293,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -295,6 +303,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPreviewUrl() {
         return previewUrl;
     }
@@ -308,6 +317,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public MediaInfo getMediaInfo() {
         return mediaInfo;
     }
@@ -317,6 +327,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SymlinkInfo getSymlinkInfo() {
         return symlinkInfo;
     }
@@ -326,6 +337,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public FileSharingInfo getSharingInfo() {
         return sharingInfo;
     }
@@ -346,6 +358,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public ExportInfo getExportInfo() {
         return exportInfo;
     }
@@ -356,6 +369,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }
@@ -370,6 +384,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getHasExplicitSharedMembers() {
         return hasExplicitSharedMembers;
     }
@@ -382,6 +397,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getContentHash() {
         return contentHash;
     }
@@ -391,6 +407,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public FileLockMetadata getFileLockInfo() {
         return fileLockInfo;
     }

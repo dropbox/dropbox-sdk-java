@@ -91,6 +91,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getInboxName() {
         return inboxName;
     }
@@ -100,6 +101,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getAttachmentNames() {
         return attachmentNames;
     }
@@ -109,6 +111,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getSubject() {
         return subject;
     }
@@ -118,6 +121,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getFromName() {
         return fromName;
     }
@@ -127,6 +131,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getFromEmail() {
         return fromEmail;
     }

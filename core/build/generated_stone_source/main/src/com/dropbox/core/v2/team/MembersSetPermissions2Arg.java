@@ -85,6 +85,7 @@ class MembersSetPermissions2Arg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -95,6 +96,7 @@ class MembersSetPermissions2Arg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<String> getNewRoles() {
         return newRoles;
     }

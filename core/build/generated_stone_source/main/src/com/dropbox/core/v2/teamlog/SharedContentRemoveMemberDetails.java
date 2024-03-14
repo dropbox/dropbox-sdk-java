@@ -48,6 +48,7 @@ public class SharedContentRemoveMemberDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }

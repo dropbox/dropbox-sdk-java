@@ -114,6 +114,7 @@ public class MemberAddArgBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getMemberEmail() {
         return memberEmail;
     }
@@ -123,6 +124,7 @@ public class MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getMemberGivenName() {
         return memberGivenName;
     }
@@ -132,6 +134,7 @@ public class MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getMemberSurname() {
         return memberSurname;
     }
@@ -141,6 +144,7 @@ public class MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getMemberExternalId() {
         return memberExternalId;
     }
@@ -151,6 +155,7 @@ public class MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getMemberPersistentId() {
         return memberPersistentId;
     }
@@ -173,6 +178,7 @@ public class MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getIsDirectoryRestricted() {
         return isDirectoryRestricted;
     }

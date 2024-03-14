@@ -57,6 +57,7 @@ public class SfTeamJoinDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getOriginalFolderName() {
         return originalFolderName;
     }

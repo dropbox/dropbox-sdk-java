@@ -51,6 +51,7 @@ public class MemberSpaceLimitsChangeCapsTypePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SpaceCapsType getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +61,7 @@ public class MemberSpaceLimitsChangeCapsTypePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SpaceCapsType getNewValue() {
         return newValue;
     }

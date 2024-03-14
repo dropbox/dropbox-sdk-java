@@ -67,6 +67,7 @@ public class SharingChangeLinkPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SharingLinkPolicy getNewValue() {
         return newValue;
     }
@@ -77,6 +78,7 @@ public class SharingChangeLinkPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SharingLinkPolicy getPreviousValue() {
         return previousValue;
     }

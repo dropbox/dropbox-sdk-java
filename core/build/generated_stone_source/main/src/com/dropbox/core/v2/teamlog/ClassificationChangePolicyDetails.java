@@ -57,6 +57,7 @@ public class ClassificationChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ClassificationPolicyEnumWrapper getPreviousValue() {
         return previousValue;
     }
@@ -66,6 +67,7 @@ public class ClassificationChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ClassificationPolicyEnumWrapper getNewValue() {
         return newValue;
     }
@@ -75,6 +77,7 @@ public class ClassificationChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ClassificationType getClassificationType() {
         return classificationType;
     }

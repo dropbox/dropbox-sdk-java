@@ -72,6 +72,7 @@ public class SharedFolderTransferOwnershipDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getNewOwnerEmail() {
         return newOwnerEmail;
     }
@@ -81,6 +82,7 @@ public class SharedFolderTransferOwnershipDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPreviousOwnerEmail() {
         return previousOwnerEmail;
     }

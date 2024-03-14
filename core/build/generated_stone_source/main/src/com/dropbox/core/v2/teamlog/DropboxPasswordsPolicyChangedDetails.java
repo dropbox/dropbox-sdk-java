@@ -50,6 +50,7 @@ public class DropboxPasswordsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public DropboxPasswordsPolicy getNewValue() {
         return newValue;
     }
@@ -59,6 +60,7 @@ public class DropboxPasswordsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public DropboxPasswordsPolicy getPreviousValue() {
         return previousValue;
     }

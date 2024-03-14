@@ -48,6 +48,7 @@ public class ShmodelEnableDownloadsDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public UserLogInfo getSharedLinkOwner() {
         return sharedLinkOwner;
     }

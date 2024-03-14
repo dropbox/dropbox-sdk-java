@@ -50,6 +50,7 @@ public class InviteAcceptanceEmailPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public InviteAcceptanceEmailPolicy getNewValue() {
         return newValue;
     }
@@ -59,6 +60,7 @@ public class InviteAcceptanceEmailPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public InviteAcceptanceEmailPolicy getPreviousValue() {
         return previousValue;
     }

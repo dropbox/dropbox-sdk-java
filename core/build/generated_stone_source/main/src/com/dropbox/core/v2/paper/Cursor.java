@@ -72,6 +72,7 @@ public class Cursor {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getValue() {
         return value;
     }
@@ -93,6 +94,7 @@ public class Cursor {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getExpiration() {
         return expiration;
     }

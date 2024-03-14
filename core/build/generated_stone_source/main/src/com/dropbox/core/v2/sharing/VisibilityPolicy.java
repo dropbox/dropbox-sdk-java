@@ -82,6 +82,7 @@ public class VisibilityPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public RequestedVisibility getPolicy() {
         return policy;
     }
@@ -94,6 +95,7 @@ public class VisibilityPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AlphaResolvedVisibility getResolvedPolicy() {
         return resolvedPolicy;
     }
@@ -114,6 +116,7 @@ public class VisibilityPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public VisibilityPolicyDisallowedReason getDisallowedReason() {
         return disallowedReason;
     }

@@ -77,6 +77,7 @@ public class LegalHoldsActivateAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -86,6 +87,7 @@ public class LegalHoldsActivateAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -95,6 +97,7 @@ public class LegalHoldsActivateAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getStartDate() {
         return startDate;
     }
@@ -104,6 +107,7 @@ public class LegalHoldsActivateAHoldDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getEndDate() {
         return endDate;
     }

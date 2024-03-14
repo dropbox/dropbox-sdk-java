@@ -57,6 +57,7 @@ class DeleteFileRequestArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getIds() {
         return ids;
     }

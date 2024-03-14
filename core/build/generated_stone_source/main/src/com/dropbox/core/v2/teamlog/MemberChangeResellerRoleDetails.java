@@ -54,6 +54,7 @@ public class MemberChangeResellerRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ResellerRole getNewValue() {
         return newValue;
     }
@@ -64,6 +65,7 @@ public class MemberChangeResellerRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ResellerRole getPreviousValue() {
         return previousValue;
     }

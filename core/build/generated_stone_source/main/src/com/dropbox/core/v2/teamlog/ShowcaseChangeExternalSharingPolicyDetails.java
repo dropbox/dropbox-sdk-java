@@ -52,6 +52,7 @@ public class ShowcaseChangeExternalSharingPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ShowcaseExternalSharingPolicy getNewValue() {
         return newValue;
     }
@@ -61,6 +62,7 @@ public class ShowcaseChangeExternalSharingPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ShowcaseExternalSharingPolicy getPreviousValue() {
         return previousValue;
     }

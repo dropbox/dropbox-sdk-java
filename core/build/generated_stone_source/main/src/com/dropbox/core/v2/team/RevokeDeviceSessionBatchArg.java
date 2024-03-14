@@ -46,6 +46,7 @@ class RevokeDeviceSessionBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<RevokeDeviceSessionArg> getRevokeDevices() {
         return revokeDevices;
     }

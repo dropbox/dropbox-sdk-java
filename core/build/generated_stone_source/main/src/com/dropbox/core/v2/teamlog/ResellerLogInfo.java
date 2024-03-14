@@ -54,6 +54,7 @@ public class ResellerLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getResellerName() {
         return resellerName;
     }
@@ -63,6 +64,7 @@ public class ResellerLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getResellerEmail() {
         return resellerEmail;
     }

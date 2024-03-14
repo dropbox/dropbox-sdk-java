@@ -53,6 +53,7 @@ public class GroupJoinPolicyUpdatedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getIsCompanyManaged() {
         return isCompanyManaged;
     }
@@ -62,6 +63,7 @@ public class GroupJoinPolicyUpdatedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public GroupJoinPolicy getJoinPolicy() {
         return joinPolicy;
     }

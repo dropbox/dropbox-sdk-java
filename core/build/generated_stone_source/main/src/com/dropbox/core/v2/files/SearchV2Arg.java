@@ -74,6 +74,7 @@ class SearchV2Arg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getQuery() {
         return query;
     }
@@ -83,6 +84,7 @@ class SearchV2Arg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SearchOptions getOptions() {
         return options;
     }
@@ -92,6 +94,7 @@ class SearchV2Arg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SearchMatchFieldOptions getMatchFieldOptions() {
         return matchFieldOptions;
     }
@@ -101,6 +104,7 @@ class SearchV2Arg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getIncludeHighlights() {
         return includeHighlights;
     }

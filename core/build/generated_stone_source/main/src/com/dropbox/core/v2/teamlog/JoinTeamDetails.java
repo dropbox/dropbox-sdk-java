@@ -127,6 +127,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<UserLinkedAppLogInfo> getLinkedApps() {
         return linkedApps;
     }
@@ -137,6 +138,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<LinkedDeviceLogInfo> getLinkedDevices() {
         return linkedDevices;
     }
@@ -147,6 +149,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<FolderLogInfo> getLinkedSharedFolders() {
         return linkedSharedFolders;
     }
@@ -157,6 +160,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getWasLinkedAppsTruncated() {
         return wasLinkedAppsTruncated;
     }
@@ -167,6 +171,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getWasLinkedDevicesTruncated() {
         return wasLinkedDevicesTruncated;
     }
@@ -177,6 +182,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getWasLinkedSharedFoldersTruncated() {
         return wasLinkedSharedFoldersTruncated;
     }
@@ -186,6 +192,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getHasLinkedApps() {
         return hasLinkedApps;
     }
@@ -195,6 +202,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getHasLinkedDevices() {
         return hasLinkedDevices;
     }
@@ -204,6 +212,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getHasLinkedSharedFolders() {
         return hasLinkedSharedFolders;
     }

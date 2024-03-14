@@ -104,6 +104,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<LinkAudience> getAudienceOptions() {
         return audienceOptions;
     }
@@ -113,6 +114,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public LinkAudience getCurrentAudience() {
         return currentAudience;
     }
@@ -122,6 +124,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<LinkPermission> getLinkPermissions() {
         return linkPermissions;
     }
@@ -140,6 +143,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getUrl() {
         return url;
     }
@@ -149,6 +153,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -159,6 +164,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AudienceRestrictingSharedFolder getAudienceRestrictingSharedFolder() {
         return audienceRestrictingSharedFolder;
     }
@@ -169,6 +175,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getExpiry() {
         return expiry;
     }
@@ -180,6 +187,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AudienceExceptions getAudienceExceptions() {
         return audienceExceptions;
     }

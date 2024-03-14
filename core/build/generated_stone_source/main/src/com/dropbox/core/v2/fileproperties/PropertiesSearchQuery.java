@@ -72,6 +72,7 @@ public class PropertiesSearchQuery {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getQuery() {
         return query;
     }
@@ -81,6 +82,7 @@ public class PropertiesSearchQuery {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PropertiesSearchMode getMode() {
         return mode;
     }
@@ -91,6 +93,7 @@ public class PropertiesSearchQuery {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     LogicalOperator.OR_OPERATOR.
      */
+    @javax.annotation.Nonnull
     public LogicalOperator getLogicalOperator() {
         return logicalOperator;
     }

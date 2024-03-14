@@ -88,6 +88,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAccountId() {
         return accountId;
     }
@@ -97,6 +98,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Name getName() {
         return name;
     }
@@ -108,6 +110,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getEmail() {
         return email;
     }
@@ -145,6 +148,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }
@@ -156,6 +160,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getTeamMemberId() {
         return teamMemberId;
     }

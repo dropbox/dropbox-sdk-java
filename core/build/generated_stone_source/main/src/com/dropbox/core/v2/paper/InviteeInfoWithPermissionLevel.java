@@ -49,6 +49,7 @@ public class InviteeInfoWithPermissionLevel {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public InviteeInfo getInvitee() {
         return invitee;
     }
@@ -58,6 +59,7 @@ public class InviteeInfoWithPermissionLevel {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PaperDocPermissionLevel getPermissionLevel() {
         return permissionLevel;
     }

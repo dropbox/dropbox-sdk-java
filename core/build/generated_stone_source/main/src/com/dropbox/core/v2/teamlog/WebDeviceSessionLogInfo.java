@@ -90,6 +90,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getUserAgent() {
         return userAgent;
     }
@@ -99,6 +100,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getOs() {
         return os;
     }
@@ -108,6 +110,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getBrowser() {
         return browser;
     }
@@ -117,6 +120,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -126,6 +130,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getCreated() {
         return created;
     }
@@ -135,6 +140,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -144,6 +150,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public WebSessionLogInfo getSessionInfo() {
         return sessionInfo;
     }

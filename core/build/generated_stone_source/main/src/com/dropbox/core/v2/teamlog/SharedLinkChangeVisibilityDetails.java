@@ -62,6 +62,7 @@ public class SharedLinkChangeVisibilityDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SharedLinkVisibility getNewValue() {
         return newValue;
     }
@@ -72,6 +73,7 @@ public class SharedLinkChangeVisibilityDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SharedLinkVisibility getPreviousValue() {
         return previousValue;
     }

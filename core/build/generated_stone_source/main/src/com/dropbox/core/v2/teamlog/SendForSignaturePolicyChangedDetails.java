@@ -51,6 +51,7 @@ public class SendForSignaturePolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SendForSignaturePolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +61,7 @@ public class SendForSignaturePolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SendForSignaturePolicy getPreviousValue() {
         return previousValue;
     }

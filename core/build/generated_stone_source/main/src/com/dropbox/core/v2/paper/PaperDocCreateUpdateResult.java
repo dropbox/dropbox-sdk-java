@@ -50,6 +50,7 @@ public class PaperDocCreateUpdateResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDocId() {
         return docId;
     }
@@ -68,6 +69,7 @@ public class PaperDocCreateUpdateResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTitle() {
         return title;
     }

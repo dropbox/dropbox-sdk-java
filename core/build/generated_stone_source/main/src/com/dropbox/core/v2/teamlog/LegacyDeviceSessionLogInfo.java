@@ -88,6 +88,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -97,6 +98,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getCreated() {
         return created;
     }
@@ -106,6 +108,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -115,6 +118,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SessionLogInfo getSessionInfo() {
         return sessionInfo;
     }
@@ -124,6 +128,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -133,6 +138,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getIsEmmManaged() {
         return isEmmManaged;
     }
@@ -143,6 +149,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPlatform() {
         return platform;
     }
@@ -153,6 +160,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getMacAddress() {
         return macAddress;
     }
@@ -162,6 +170,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getOsVersion() {
         return osVersion;
     }
@@ -172,6 +181,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDeviceType() {
         return deviceType;
     }
@@ -181,6 +191,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getClientVersion() {
         return clientVersion;
     }
@@ -191,6 +202,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getLegacyUniqId() {
         return legacyUniqId;
     }

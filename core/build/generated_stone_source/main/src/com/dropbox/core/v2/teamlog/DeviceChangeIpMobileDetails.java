@@ -47,6 +47,7 @@ public class DeviceChangeIpMobileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public DeviceSessionLogInfo getDeviceSessionInfo() {
         return deviceSessionInfo;
     }

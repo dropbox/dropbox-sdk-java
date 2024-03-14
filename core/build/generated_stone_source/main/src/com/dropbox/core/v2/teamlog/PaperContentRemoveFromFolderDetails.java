@@ -67,6 +67,7 @@ public class PaperContentRemoveFromFolderDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -76,6 +77,7 @@ public class PaperContentRemoveFromFolderDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Long getTargetAssetIndex() {
         return targetAssetIndex;
     }
@@ -85,6 +87,7 @@ public class PaperContentRemoveFromFolderDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Long getParentAssetIndex() {
         return parentAssetIndex;
     }

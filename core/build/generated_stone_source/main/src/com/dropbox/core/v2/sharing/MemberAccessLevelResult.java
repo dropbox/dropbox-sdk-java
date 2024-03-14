@@ -75,6 +75,7 @@ public class MemberAccessLevelResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -85,6 +86,7 @@ public class MemberAccessLevelResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getWarning() {
         return warning;
     }
@@ -96,6 +98,7 @@ public class MemberAccessLevelResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<ParentFolderAccessInfo> getAccessDetails() {
         return accessDetails;
     }

@@ -52,6 +52,7 @@ public class PasswordStrengthRequirementsChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PasswordStrengthPolicy getPreviousValue() {
         return previousValue;
     }
@@ -61,6 +62,7 @@ public class PasswordStrengthRequirementsChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PasswordStrengthPolicy getNewValue() {
         return newValue;
     }

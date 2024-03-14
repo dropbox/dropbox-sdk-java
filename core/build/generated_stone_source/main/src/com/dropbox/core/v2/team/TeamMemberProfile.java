@@ -132,6 +132,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }
@@ -141,6 +142,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getEmail() {
         return email;
     }
@@ -159,6 +161,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMemberStatus getStatus() {
         return status;
     }
@@ -168,6 +171,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Name getName() {
         return name;
     }
@@ -178,6 +182,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMembershipType getMembershipType() {
         return membershipType;
     }
@@ -187,6 +192,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getGroups() {
         return groups;
     }
@@ -196,6 +202,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getMemberFolderId() {
         return memberFolderId;
     }
@@ -207,6 +214,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getExternalId() {
         return externalId;
     }
@@ -216,6 +224,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -225,6 +234,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<SecondaryEmail> getSecondaryEmails() {
         return secondaryEmails;
     }
@@ -235,6 +245,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getInvitedOn() {
         return invitedOn;
     }
@@ -244,6 +255,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getJoinedOn() {
         return joinedOn;
     }
@@ -255,6 +267,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getSuspendedOn() {
         return suspendedOn;
     }
@@ -265,6 +278,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPersistentId() {
         return persistentId;
     }
@@ -274,6 +288,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getIsDirectoryRestricted() {
         return isDirectoryRestricted;
     }
@@ -283,6 +298,7 @@ public class TeamMemberProfile extends MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }

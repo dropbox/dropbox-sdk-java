@@ -56,6 +56,7 @@ public class MemberSpaceLimitsChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Long getPreviousValue() {
         return previousValue;
     }
@@ -66,6 +67,7 @@ public class MemberSpaceLimitsChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Long getNewValue() {
         return newValue;
     }

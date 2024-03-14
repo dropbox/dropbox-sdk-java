@@ -62,6 +62,7 @@ public class AdminAlertingTriggeredAlertDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAlertName() {
         return alertName;
     }
@@ -71,6 +72,7 @@ public class AdminAlertingTriggeredAlertDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AdminAlertSeverityEnum getAlertSeverity() {
         return alertSeverity;
     }
@@ -80,6 +82,7 @@ public class AdminAlertingTriggeredAlertDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AdminAlertCategoryEnum getAlertCategory() {
         return alertCategory;
     }
@@ -89,6 +92,7 @@ public class AdminAlertingTriggeredAlertDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAlertInstanceId() {
         return alertInstanceId;
     }

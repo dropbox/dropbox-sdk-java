@@ -116,6 +116,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getId() {
         return id;
     }
@@ -125,6 +126,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -134,6 +136,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MembersInfo getMembers() {
         return members;
     }
@@ -143,6 +146,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public LegalHoldStatus getStatus() {
         return status;
     }
@@ -152,6 +156,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getStartDate() {
         return startDate;
     }
@@ -161,6 +166,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDescription() {
         return description;
     }
@@ -170,6 +176,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getActivationTime() {
         return activationTime;
     }
@@ -179,6 +186,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getEndDate() {
         return endDate;
     }

@@ -63,6 +63,7 @@ public class ListFileMembersBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getFile() {
         return file;
     }
@@ -72,6 +73,7 @@ public class ListFileMembersBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ListFileMembersIndividualResult getResult() {
         return result;
     }

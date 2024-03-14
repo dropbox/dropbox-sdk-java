@@ -65,6 +65,7 @@ public class TeamSharingWhitelistSubjectsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getAddedWhitelistSubjects() {
         return addedWhitelistSubjects;
     }
@@ -74,6 +75,7 @@ public class TeamSharingWhitelistSubjectsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getRemovedWhitelistSubjects() {
         return removedWhitelistSubjects;
     }

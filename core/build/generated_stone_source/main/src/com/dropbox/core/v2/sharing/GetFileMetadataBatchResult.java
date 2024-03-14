@@ -67,6 +67,7 @@ public class GetFileMetadataBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getFile() {
         return file;
     }
@@ -76,6 +77,7 @@ public class GetFileMetadataBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GetFileMetadataIndividualResult getResult() {
         return result;
     }

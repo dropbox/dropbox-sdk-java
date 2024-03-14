@@ -61,6 +61,7 @@ public class LinkPermission {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public LinkAction getAction() {
         return action;
     }
@@ -77,6 +78,7 @@ public class LinkPermission {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public PermissionDeniedReason getReason() {
         return reason;
     }

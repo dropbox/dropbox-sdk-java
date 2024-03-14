@@ -45,6 +45,7 @@ public class TokenGetAuthenticatedAdminResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMemberProfile getAdminProfile() {
         return adminProfile;
     }

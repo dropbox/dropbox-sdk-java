@@ -117,6 +117,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPath() {
         return path;
     }
@@ -137,6 +138,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SearchOrderBy getOrderBy() {
         return orderBy;
     }
@@ -147,6 +149,7 @@ public class SearchOptions {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     FileStatus.ACTIVE.
      */
+    @javax.annotation.Nonnull
     public FileStatus getFileStatus() {
         return fileStatus;
     }
@@ -167,6 +170,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<String> getFileExtensions() {
         return fileExtensions;
     }
@@ -177,6 +181,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<FileCategory> getFileCategories() {
         return fileCategories;
     }
@@ -186,6 +191,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getAccountId() {
         return accountId;
     }

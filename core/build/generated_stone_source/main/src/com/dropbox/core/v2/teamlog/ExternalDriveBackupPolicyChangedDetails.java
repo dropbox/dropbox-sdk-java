@@ -52,6 +52,7 @@ public class ExternalDriveBackupPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ExternalDriveBackupPolicy getNewValue() {
         return newValue;
     }
@@ -61,6 +62,7 @@ public class ExternalDriveBackupPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ExternalDriveBackupPolicy getPreviousValue() {
         return previousValue;
     }

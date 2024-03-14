@@ -86,6 +86,7 @@ public class ListRevisionsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<FileMetadata> getEntries() {
         return entries;
     }
@@ -95,6 +96,7 @@ public class ListRevisionsResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getServerDeleted() {
         return serverDeleted;
     }

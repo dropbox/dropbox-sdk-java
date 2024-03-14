@@ -52,6 +52,7 @@ public class OutdatedLinkViewCreateReportDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getStartDate() {
         return startDate;
     }
@@ -61,6 +62,7 @@ public class OutdatedLinkViewCreateReportDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getEndDate() {
         return endDate;
     }

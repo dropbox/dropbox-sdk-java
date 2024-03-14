@@ -95,6 +95,7 @@ class CreateFileRequestArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTitle() {
         return title;
     }
@@ -106,6 +107,7 @@ class CreateFileRequestArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDestination() {
         return destination;
     }
@@ -116,6 +118,7 @@ class CreateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public FileRequestDeadline getDeadline() {
         return deadline;
     }
@@ -137,6 +140,7 @@ class CreateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDescription() {
         return description;
     }

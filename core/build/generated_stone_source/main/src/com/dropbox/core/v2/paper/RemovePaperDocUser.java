@@ -44,6 +44,7 @@ class RemovePaperDocUser extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDocId() {
         return docId;
     }
@@ -54,6 +55,7 @@ class RemovePaperDocUser extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MemberSelector getMember() {
         return member;
     }

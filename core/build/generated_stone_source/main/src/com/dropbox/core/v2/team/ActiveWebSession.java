@@ -94,6 +94,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSessionId() {
         return sessionId;
     }
@@ -103,6 +104,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getUserAgent() {
         return userAgent;
     }
@@ -112,6 +114,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getOs() {
         return os;
     }
@@ -121,6 +124,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getBrowser() {
         return browser;
     }
@@ -130,6 +134,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -139,6 +144,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getCountry() {
         return country;
     }
@@ -148,6 +154,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getCreated() {
         return created;
     }
@@ -157,6 +164,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -166,6 +174,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getExpires() {
         return expires;
     }

@@ -79,6 +79,7 @@ public class ListMemberDevicesResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<ActiveWebSession> getActiveWebSessions() {
         return activeWebSessions;
     }
@@ -88,6 +89,7 @@ public class ListMemberDevicesResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<DesktopClientSession> getDesktopClientSessions() {
         return desktopClientSessions;
     }
@@ -97,6 +99,7 @@ public class ListMemberDevicesResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<MobileClientSession> getMobileClientSessions() {
         return mobileClientSessions;
     }

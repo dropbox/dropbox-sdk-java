@@ -52,6 +52,7 @@ public class MemberSendInvitePolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MemberSendInvitePolicy getNewValue() {
         return newValue;
     }
@@ -61,6 +62,7 @@ public class MemberSendInvitePolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MemberSendInvitePolicy getPreviousValue() {
         return previousValue;
     }

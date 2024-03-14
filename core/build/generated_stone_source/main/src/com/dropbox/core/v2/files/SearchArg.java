@@ -107,6 +107,7 @@ class SearchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -119,6 +120,7 @@ class SearchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getQuery() {
         return query;
     }
@@ -151,6 +153,7 @@ class SearchArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     SearchMode.FILENAME.
      */
+    @javax.annotation.Nonnull
     public SearchMode getMode() {
         return mode;
     }

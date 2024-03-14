@@ -39,6 +39,7 @@ public class TeamFolderListError {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamFolderAccessError getAccessError() {
         return accessError;
     }

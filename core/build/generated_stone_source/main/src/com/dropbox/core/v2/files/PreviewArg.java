@@ -75,6 +75,7 @@ class PreviewArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -85,6 +86,7 @@ class PreviewArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getRev() {
         return rev;
     }

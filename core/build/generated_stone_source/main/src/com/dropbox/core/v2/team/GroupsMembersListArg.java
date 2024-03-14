@@ -66,6 +66,7 @@ class GroupsMembersListArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GroupSelector getGroup() {
         return group;
     }

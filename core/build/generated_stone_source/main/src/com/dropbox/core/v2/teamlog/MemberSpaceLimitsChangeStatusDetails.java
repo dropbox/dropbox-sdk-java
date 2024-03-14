@@ -51,6 +51,7 @@ public class MemberSpaceLimitsChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SpaceLimitsStatus getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +61,7 @@ public class MemberSpaceLimitsChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SpaceLimitsStatus getNewValue() {
         return newValue;
     }

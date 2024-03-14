@@ -64,6 +64,7 @@ public class ExtendedVersionHistoryChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ExtendedVersionHistoryPolicy getNewValue() {
         return newValue;
     }
@@ -74,6 +75,7 @@ public class ExtendedVersionHistoryChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public ExtendedVersionHistoryPolicy getPreviousValue() {
         return previousValue;
     }

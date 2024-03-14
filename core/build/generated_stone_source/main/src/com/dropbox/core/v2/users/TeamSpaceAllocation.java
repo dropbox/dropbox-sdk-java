@@ -88,6 +88,7 @@ public class TeamSpaceAllocation {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MemberSpaceLimitType getUserWithinTeamSpaceLimitType() {
         return userWithinTeamSpaceLimitType;
     }

@@ -114,6 +114,7 @@ public class SharedFileMembers {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<UserFileMembershipInfo> getUsers() {
         return users;
     }
@@ -123,6 +124,7 @@ public class SharedFileMembers {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<GroupMembershipInfo> getGroups() {
         return groups;
     }
@@ -133,6 +135,7 @@ public class SharedFileMembers {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<InviteeMembershipInfo> getInvitees() {
         return invitees;
     }
@@ -145,6 +148,7 @@ public class SharedFileMembers {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getCursor() {
         return cursor;
     }

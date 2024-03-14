@@ -80,6 +80,7 @@ public class SharedContentCopyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSharedContentLink() {
         return sharedContentLink;
     }
@@ -89,6 +90,7 @@ public class SharedContentCopyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -98,6 +100,7 @@ public class SharedContentCopyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDestinationPath() {
         return destinationPath;
     }
@@ -107,6 +110,7 @@ public class SharedContentCopyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public UserLogInfo getSharedContentOwner() {
         return sharedContentOwner;
     }

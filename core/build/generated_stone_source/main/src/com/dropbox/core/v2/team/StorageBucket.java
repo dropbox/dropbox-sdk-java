@@ -51,6 +51,7 @@ public class StorageBucket {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getBucket() {
         return bucket;
     }

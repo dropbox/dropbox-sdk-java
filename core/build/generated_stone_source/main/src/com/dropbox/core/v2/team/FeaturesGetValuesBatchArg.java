@@ -49,6 +49,7 @@ class FeaturesGetValuesBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Feature> getFeatures() {
         return features;
     }

@@ -164,6 +164,7 @@ public class MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }
@@ -173,6 +174,7 @@ public class MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getEmail() {
         return email;
     }
@@ -191,6 +193,7 @@ public class MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMemberStatus getStatus() {
         return status;
     }
@@ -200,6 +203,7 @@ public class MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Name getName() {
         return name;
     }
@@ -210,6 +214,7 @@ public class MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMembershipType getMembershipType() {
         return membershipType;
     }
@@ -221,6 +226,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getExternalId() {
         return externalId;
     }
@@ -230,6 +236,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -239,6 +246,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<SecondaryEmail> getSecondaryEmails() {
         return secondaryEmails;
     }
@@ -249,6 +257,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getInvitedOn() {
         return invitedOn;
     }
@@ -258,6 +267,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getJoinedOn() {
         return joinedOn;
     }
@@ -269,6 +279,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getSuspendedOn() {
         return suspendedOn;
     }
@@ -279,6 +290,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPersistentId() {
         return persistentId;
     }
@@ -288,6 +300,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getIsDirectoryRestricted() {
         return isDirectoryRestricted;
     }
@@ -297,6 +310,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }

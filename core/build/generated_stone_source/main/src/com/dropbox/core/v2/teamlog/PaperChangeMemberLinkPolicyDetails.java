@@ -45,6 +45,7 @@ public class PaperChangeMemberLinkPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PaperMemberPolicy getNewValue() {
         return newValue;
     }

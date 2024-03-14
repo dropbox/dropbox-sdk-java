@@ -50,6 +50,7 @@ public class DeleteBatchResult extends FileOpsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<DeleteBatchResultEntry> getEntries() {
         return entries;
     }

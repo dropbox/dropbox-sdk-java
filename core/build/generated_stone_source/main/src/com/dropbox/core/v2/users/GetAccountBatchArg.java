@@ -58,6 +58,7 @@ public class GetAccountBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getAccountIds() {
         return accountIds;
     }

@@ -45,6 +45,7 @@ public class SecondaryTeamRequestReminderDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSentTo() {
         return sentTo;
     }

@@ -56,6 +56,7 @@ public class VideoMetadata extends MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Dimensions getDimensions() {
         return dimensions;
     }
@@ -65,6 +66,7 @@ public class VideoMetadata extends MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public GpsCoordinates getLocation() {
         return location;
     }
@@ -74,6 +76,7 @@ public class VideoMetadata extends MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getTimeTaken() {
         return timeTaken;
     }
@@ -83,6 +86,7 @@ public class VideoMetadata extends MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Long getDuration() {
         return duration;
     }

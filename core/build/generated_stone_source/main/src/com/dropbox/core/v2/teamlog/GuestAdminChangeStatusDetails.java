@@ -94,6 +94,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TrustedTeamsRequestState getPreviousValue() {
         return previousValue;
     }
@@ -103,6 +104,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TrustedTeamsRequestState getNewValue() {
         return newValue;
     }
@@ -112,6 +114,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TrustedTeamsRequestAction getActionDetails() {
         return actionDetails;
     }
@@ -121,6 +124,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getGuestTeamName() {
         return guestTeamName;
     }
@@ -130,6 +134,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getHostTeamName() {
         return hostTeamName;
     }

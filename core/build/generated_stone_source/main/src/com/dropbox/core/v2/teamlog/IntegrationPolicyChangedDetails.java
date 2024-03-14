@@ -58,6 +58,7 @@ public class IntegrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getIntegrationName() {
         return integrationName;
     }
@@ -67,6 +68,7 @@ public class IntegrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public IntegrationPolicy getNewValue() {
         return newValue;
     }
@@ -76,6 +78,7 @@ public class IntegrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public IntegrationPolicy getPreviousValue() {
         return previousValue;
     }

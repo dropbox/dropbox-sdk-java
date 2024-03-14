@@ -90,6 +90,7 @@ public class GroupInfo extends GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getGroupName() {
         return groupName;
     }
@@ -98,6 +99,7 @@ public class GroupInfo extends GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getGroupId() {
         return groupId;
     }
@@ -107,6 +109,7 @@ public class GroupInfo extends GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GroupManagementType getGroupManagementType() {
         return groupManagementType;
     }
@@ -116,6 +119,7 @@ public class GroupInfo extends GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GroupType getGroupType() {
         return groupType;
     }
@@ -153,6 +157,7 @@ public class GroupInfo extends GroupSummary {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getGroupExternalId() {
         return groupExternalId;
     }
@@ -162,6 +167,7 @@ public class GroupInfo extends GroupSummary {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Long getMemberCount() {
         return memberCount;
     }

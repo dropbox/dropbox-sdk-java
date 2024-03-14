@@ -53,6 +53,7 @@ public class SmarterSmartSyncPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SmarterSmartSyncPolicyState getPreviousValue() {
         return previousValue;
     }
@@ -62,6 +63,7 @@ public class SmarterSmartSyncPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SmarterSmartSyncPolicyState getNewValue() {
         return newValue;
     }

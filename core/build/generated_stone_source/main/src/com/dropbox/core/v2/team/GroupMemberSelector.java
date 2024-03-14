@@ -53,6 +53,7 @@ class GroupMemberSelector {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GroupSelector getGroup() {
         return group;
     }
@@ -64,6 +65,7 @@ class GroupMemberSelector {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserSelectorArg getUser() {
         return user;
     }

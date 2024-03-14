@@ -50,6 +50,7 @@ public class MemberChangeMembershipTypeDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMembershipType getPrevValue() {
         return prevValue;
     }
@@ -59,6 +60,7 @@ public class MemberChangeMembershipTypeDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMembershipType getNewValue() {
         return newValue;
     }

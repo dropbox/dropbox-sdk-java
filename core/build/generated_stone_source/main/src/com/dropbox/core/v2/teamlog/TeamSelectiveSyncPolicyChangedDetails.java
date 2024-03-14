@@ -52,6 +52,7 @@ public class TeamSelectiveSyncPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamSelectiveSyncPolicy getNewValue() {
         return newValue;
     }
@@ -61,6 +62,7 @@ public class TeamSelectiveSyncPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamSelectiveSyncPolicy getPreviousValue() {
         return previousValue;
     }

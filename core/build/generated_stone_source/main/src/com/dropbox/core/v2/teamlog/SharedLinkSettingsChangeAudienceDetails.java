@@ -78,6 +78,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -87,6 +88,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public LinkAudience getNewValue() {
         return newValue;
     }
@@ -96,6 +98,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getSharedContentLink() {
         return sharedContentLink;
     }
@@ -105,6 +108,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public LinkAudience getPreviousValue() {
         return previousValue;
     }

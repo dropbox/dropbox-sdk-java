@@ -77,6 +77,7 @@ public class BinderRenamePageDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -86,6 +87,7 @@ public class BinderRenamePageDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDocTitle() {
         return docTitle;
     }
@@ -95,6 +97,7 @@ public class BinderRenamePageDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getBinderItemName() {
         return binderItemName;
     }
@@ -104,6 +107,7 @@ public class BinderRenamePageDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPreviousBinderItemName() {
         return previousBinderItemName;
     }

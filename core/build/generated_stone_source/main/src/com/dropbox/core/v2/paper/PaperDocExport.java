@@ -42,6 +42,7 @@ class PaperDocExport extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDocId() {
         return docId;
     }
@@ -50,6 +51,7 @@ class PaperDocExport extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ExportFormat getExportFormat() {
         return exportFormat;
     }

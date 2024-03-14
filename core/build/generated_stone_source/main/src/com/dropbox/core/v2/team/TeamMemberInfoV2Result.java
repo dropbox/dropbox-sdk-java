@@ -47,6 +47,7 @@ public class TeamMemberInfoV2Result {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMemberInfoV2 getMemberInfo() {
         return memberInfo;
     }

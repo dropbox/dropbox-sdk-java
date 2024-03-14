@@ -82,6 +82,7 @@ public class SfTeamJoinFromOobLinkDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getOriginalFolderName() {
         return originalFolderName;
     }
@@ -91,6 +92,7 @@ public class SfTeamJoinFromOobLinkDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getTokenKey() {
         return tokenKey;
     }
@@ -100,6 +102,7 @@ public class SfTeamJoinFromOobLinkDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getSharingPermission() {
         return sharingPermission;
     }

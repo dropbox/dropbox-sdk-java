@@ -55,6 +55,7 @@ public class WebSessionsChangeFixedLengthPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public WebSessionsFixedLengthPolicy getNewValue() {
         return newValue;
     }
@@ -65,6 +66,7 @@ public class WebSessionsChangeFixedLengthPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public WebSessionsFixedLengthPolicy getPreviousValue() {
         return previousValue;
     }

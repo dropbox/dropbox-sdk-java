@@ -64,6 +64,7 @@ public class SsoChangeCertDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Certificate getNewCertificateDetails() {
         return newCertificateDetails;
     }
@@ -74,6 +75,7 @@ public class SsoChangeCertDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Certificate getPreviousCertificateDetails() {
         return previousCertificateDetails;
     }

@@ -75,6 +75,7 @@ public class ListSharedLinksResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<SharedLinkMetadata> getLinks() {
         return links;
     }
@@ -96,6 +97,7 @@ public class ListSharedLinksResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getCursor() {
         return cursor;
     }

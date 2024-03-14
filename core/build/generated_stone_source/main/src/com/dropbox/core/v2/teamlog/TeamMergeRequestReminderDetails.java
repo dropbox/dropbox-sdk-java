@@ -45,6 +45,7 @@ public class TeamMergeRequestReminderDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMergeRequestReminderExtraDetails getRequestReminderDetails() {
         return requestReminderDetails;
     }

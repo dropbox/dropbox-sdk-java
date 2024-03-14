@@ -91,6 +91,7 @@ public class FolderPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AclUpdatePolicy getAclUpdatePolicy() {
         return aclUpdatePolicy;
     }
@@ -100,6 +101,7 @@ public class FolderPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SharedLinkPolicy getSharedLinkPolicy() {
         return sharedLinkPolicy;
     }
@@ -111,6 +113,7 @@ public class FolderPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public MemberPolicy getMemberPolicy() {
         return memberPolicy;
     }
@@ -123,6 +126,7 @@ public class FolderPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public MemberPolicy getResolvedMemberPolicy() {
         return resolvedMemberPolicy;
     }
@@ -132,6 +136,7 @@ public class FolderPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public ViewerInfoPolicy getViewerInfoPolicy() {
         return viewerInfoPolicy;
     }

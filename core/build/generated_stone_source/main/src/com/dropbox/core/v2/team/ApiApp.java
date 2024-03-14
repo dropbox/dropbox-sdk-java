@@ -85,6 +85,7 @@ public class ApiApp {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAppId() {
         return appId;
     }
@@ -94,6 +95,7 @@ public class ApiApp {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAppName() {
         return appName;
     }
@@ -112,6 +114,7 @@ public class ApiApp {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPublisher() {
         return publisher;
     }
@@ -121,6 +124,7 @@ public class ApiApp {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPublisherUrl() {
         return publisherUrl;
     }
@@ -130,6 +134,7 @@ public class ApiApp {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getLinked() {
         return linked;
     }

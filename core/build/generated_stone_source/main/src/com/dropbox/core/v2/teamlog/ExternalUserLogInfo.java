@@ -51,6 +51,7 @@ public class ExternalUserLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getUserIdentifier() {
         return userIdentifier;
     }
@@ -60,6 +61,7 @@ public class ExternalUserLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public IdentifierType getIdentifierType() {
         return identifierType;
     }

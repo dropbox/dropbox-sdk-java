@@ -87,6 +87,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSessionId() {
         return sessionId;
     }
@@ -96,6 +97,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDeviceName() {
         return deviceName;
     }
@@ -105,6 +107,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MobileClientPlatform getClientType() {
         return clientType;
     }
@@ -114,6 +117,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -123,6 +127,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getCountry() {
         return country;
     }
@@ -132,6 +137,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getCreated() {
         return created;
     }
@@ -141,6 +147,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -150,6 +157,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getClientVersion() {
         return clientVersion;
     }
@@ -159,6 +167,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getOsVersion() {
         return osVersion;
     }
@@ -168,6 +177,7 @@ public class MobileClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getLastCarrier() {
         return lastCarrier;
     }

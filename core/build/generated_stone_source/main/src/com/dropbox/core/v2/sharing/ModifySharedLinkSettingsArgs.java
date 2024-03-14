@@ -69,6 +69,7 @@ class ModifySharedLinkSettingsArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getUrl() {
         return url;
     }
@@ -78,6 +79,7 @@ class ModifySharedLinkSettingsArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SharedLinkSettings getSettings() {
         return settings;
     }

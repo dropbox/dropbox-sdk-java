@@ -57,6 +57,7 @@ public class AdminAlertingChangedAlertConfigDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAlertName() {
         return alertName;
     }
@@ -66,6 +67,7 @@ public class AdminAlertingChangedAlertConfigDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AdminAlertingAlertConfiguration getPreviousAlertConfig() {
         return previousAlertConfig;
     }
@@ -75,6 +77,7 @@ public class AdminAlertingChangedAlertConfigDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AdminAlertingAlertConfiguration getNewAlertConfig() {
         return newAlertConfig;
     }

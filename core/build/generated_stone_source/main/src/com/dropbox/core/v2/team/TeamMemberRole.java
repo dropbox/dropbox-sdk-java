@@ -78,6 +78,7 @@ public class TeamMemberRole {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getRoleId() {
         return roleId;
     }
@@ -87,6 +88,7 @@ public class TeamMemberRole {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -96,6 +98,7 @@ public class TeamMemberRole {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDescription() {
         return description;
     }

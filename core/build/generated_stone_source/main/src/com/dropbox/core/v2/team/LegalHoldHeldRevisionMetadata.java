@@ -129,6 +129,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getNewFilename() {
         return newFilename;
     }
@@ -138,6 +139,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getOriginalRevisionId() {
         return originalRevisionId;
     }
@@ -147,6 +149,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getOriginalFilePath() {
         return originalFilePath;
     }
@@ -156,6 +159,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getServerModified() {
         return serverModified;
     }
@@ -165,6 +169,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAuthorMemberId() {
         return authorMemberId;
     }
@@ -174,6 +179,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMemberStatus getAuthorMemberStatus() {
         return authorMemberStatus;
     }
@@ -183,6 +189,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAuthorEmail() {
         return authorEmail;
     }
@@ -192,6 +199,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getFileType() {
         return fileType;
     }
@@ -213,6 +221,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getContentHash() {
         return contentHash;
     }

@@ -47,6 +47,7 @@ public class SharedLinkAddExpiryDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getNewValue() {
         return newValue;
     }

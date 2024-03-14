@@ -51,6 +51,7 @@ public class ShowcaseChangeEnabledPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ShowcaseEnabledPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +61,7 @@ public class ShowcaseChangeEnabledPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ShowcaseEnabledPolicy getPreviousValue() {
         return previousValue;
     }

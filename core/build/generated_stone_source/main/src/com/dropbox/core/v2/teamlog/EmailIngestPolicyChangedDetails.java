@@ -50,6 +50,7 @@ public class EmailIngestPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public EmailIngestPolicy getNewValue() {
         return newValue;
     }
@@ -59,6 +60,7 @@ public class EmailIngestPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public EmailIngestPolicy getPreviousValue() {
         return previousValue;
     }

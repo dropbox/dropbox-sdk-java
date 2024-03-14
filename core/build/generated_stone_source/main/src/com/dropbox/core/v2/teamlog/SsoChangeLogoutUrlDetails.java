@@ -55,6 +55,7 @@ public class SsoChangeLogoutUrlDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPreviousValue() {
         return previousValue;
     }
@@ -64,6 +65,7 @@ public class SsoChangeLogoutUrlDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getNewValue() {
         return newValue;
     }

@@ -68,6 +68,7 @@ class GroupCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getGroupName() {
         return groupName;
     }
@@ -88,6 +89,7 @@ class GroupCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getGroupExternalId() {
         return groupExternalId;
     }
@@ -98,6 +100,7 @@ class GroupCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public GroupManagementType getGroupManagementType() {
         return groupManagementType;
     }

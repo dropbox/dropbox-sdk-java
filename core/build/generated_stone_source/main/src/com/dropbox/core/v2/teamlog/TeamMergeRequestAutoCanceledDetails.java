@@ -47,6 +47,7 @@ public class TeamMergeRequestAutoCanceledDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDetails() {
         return details;
     }

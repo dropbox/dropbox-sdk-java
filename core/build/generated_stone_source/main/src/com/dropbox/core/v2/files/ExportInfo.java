@@ -66,6 +66,7 @@ public class ExportInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getExportAs() {
         return exportAs;
     }
@@ -76,6 +77,7 @@ public class ExportInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<String> getExportOptions() {
         return exportOptions;
     }

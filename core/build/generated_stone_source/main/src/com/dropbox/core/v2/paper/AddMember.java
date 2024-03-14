@@ -65,6 +65,7 @@ public class AddMember {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MemberSelector getMember() {
         return member;
     }
@@ -75,6 +76,7 @@ public class AddMember {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     PaperDocPermissionLevel.EDIT.
      */
+    @javax.annotation.Nonnull
     public PaperDocPermissionLevel getPermissionLevel() {
         return permissionLevel;
     }

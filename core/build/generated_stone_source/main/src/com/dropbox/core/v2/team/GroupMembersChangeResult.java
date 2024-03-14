@@ -64,6 +64,7 @@ public class GroupMembersChangeResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GroupFullInfo getGroupInfo() {
         return groupInfo;
     }
@@ -76,6 +77,7 @@ public class GroupMembersChangeResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAsyncJobId() {
         return asyncJobId;
     }

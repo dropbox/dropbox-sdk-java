@@ -80,6 +80,7 @@ public class ListUsersOnFolderResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<InviteeInfo> getInvitees() {
         return invitees;
     }
@@ -89,6 +90,7 @@ public class ListUsersOnFolderResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<UserInfo> getUsers() {
         return users;
     }
@@ -102,6 +104,7 @@ public class ListUsersOnFolderResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Cursor getCursor() {
         return cursor;
     }

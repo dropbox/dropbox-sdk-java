@@ -88,6 +88,7 @@ public class TeamFolderMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTeamFolderId() {
         return teamFolderId;
     }
@@ -97,6 +98,7 @@ public class TeamFolderMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -106,6 +108,7 @@ public class TeamFolderMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamFolderStatus getStatus() {
         return status;
     }
@@ -124,6 +127,7 @@ public class TeamFolderMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SyncSetting getSyncSetting() {
         return syncSetting;
     }
@@ -133,6 +137,7 @@ public class TeamFolderMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<ContentSyncSetting> getContentSyncSettings() {
         return contentSyncSettings;
     }

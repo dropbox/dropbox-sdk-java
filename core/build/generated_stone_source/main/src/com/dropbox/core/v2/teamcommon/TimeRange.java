@@ -55,6 +55,7 @@ public class TimeRange {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getStartTime() {
         return startTime;
     }
@@ -64,6 +65,7 @@ public class TimeRange {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getEndTime() {
         return endTime;
     }

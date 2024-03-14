@@ -58,6 +58,7 @@ public class MemberLinkedApps {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }
@@ -67,6 +68,7 @@ public class MemberLinkedApps {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<ApiApp> getLinkedApiApps() {
         return linkedApiApps;
     }

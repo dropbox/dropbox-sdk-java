@@ -51,6 +51,7 @@ public class WatermarkingPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public WatermarkingPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +61,7 @@ public class WatermarkingPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public WatermarkingPolicy getPreviousValue() {
         return previousValue;
     }

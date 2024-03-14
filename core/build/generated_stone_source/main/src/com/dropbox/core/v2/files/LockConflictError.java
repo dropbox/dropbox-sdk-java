@@ -40,6 +40,7 @@ public class LockConflictError {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FileLock getLock() {
         return lock;
     }

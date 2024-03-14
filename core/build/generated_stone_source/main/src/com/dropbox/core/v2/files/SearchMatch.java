@@ -47,6 +47,7 @@ public class SearchMatch {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SearchMatchType getMatchType() {
         return matchType;
     }
@@ -56,6 +57,7 @@ public class SearchMatch {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Metadata getMetadata() {
         return metadata;
     }

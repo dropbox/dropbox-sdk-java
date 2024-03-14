@@ -137,6 +137,7 @@ public class FileRequest {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getId() {
         return id;
     }
@@ -146,6 +147,7 @@ public class FileRequest {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getUrl() {
         return url;
     }
@@ -155,6 +157,7 @@ public class FileRequest {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTitle() {
         return title;
     }
@@ -164,6 +167,7 @@ public class FileRequest {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getCreated() {
         return created;
     }
@@ -194,6 +198,7 @@ public class FileRequest {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDestination() {
         return destination;
     }
@@ -204,6 +209,7 @@ public class FileRequest {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public FileRequestDeadline getDeadline() {
         return deadline;
     }
@@ -213,6 +219,7 @@ public class FileRequest {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDescription() {
         return description;
     }

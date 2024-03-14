@@ -46,6 +46,7 @@ public class GetThumbnailBatchResultData {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FileMetadata getMetadata() {
         return metadata;
     }
@@ -55,6 +56,7 @@ public class GetThumbnailBatchResultData {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getThumbnail() {
         return thumbnail;
     }

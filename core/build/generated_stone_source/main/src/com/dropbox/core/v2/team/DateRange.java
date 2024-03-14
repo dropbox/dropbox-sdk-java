@@ -57,6 +57,7 @@ class DateRange {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getStartDate() {
         return startDate;
     }
@@ -66,6 +67,7 @@ class DateRange {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getEndDate() {
         return endDate;
     }

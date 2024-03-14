@@ -61,6 +61,7 @@ public class LinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -70,6 +71,7 @@ public class LinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public LinkAudience getAudience() {
         return audience;
     }
@@ -79,6 +81,7 @@ public class LinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public LinkExpiry getExpiry() {
         return expiry;
     }
@@ -88,6 +91,7 @@ public class LinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public LinkPassword getPassword() {
         return password;
     }

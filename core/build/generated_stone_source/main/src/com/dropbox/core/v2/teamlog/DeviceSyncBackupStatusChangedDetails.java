@@ -59,6 +59,7 @@ public class DeviceSyncBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public DesktopDeviceSessionLogInfo getDesktopDeviceSessionInfo() {
         return desktopDeviceSessionInfo;
     }
@@ -68,6 +69,7 @@ public class DeviceSyncBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public BackupStatus getPreviousValue() {
         return previousValue;
     }
@@ -77,6 +79,7 @@ public class DeviceSyncBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public BackupStatus getNewValue() {
         return newValue;
     }

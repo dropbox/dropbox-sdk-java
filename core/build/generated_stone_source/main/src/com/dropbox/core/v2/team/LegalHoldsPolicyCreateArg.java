@@ -93,6 +93,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -102,6 +103,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getMembers() {
         return members;
     }
@@ -111,6 +113,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDescription() {
         return description;
     }
@@ -120,6 +123,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getStartDate() {
         return startDate;
     }
@@ -129,6 +133,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getEndDate() {
         return endDate;
     }

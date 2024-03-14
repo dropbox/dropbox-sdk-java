@@ -56,6 +56,7 @@ public class LegalHoldsExportRemovedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -65,6 +66,7 @@ public class LegalHoldsExportRemovedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -74,6 +76,7 @@ public class LegalHoldsExportRemovedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getExportName() {
         return exportName;
     }

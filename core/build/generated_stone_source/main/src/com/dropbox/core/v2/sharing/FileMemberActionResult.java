@@ -90,6 +90,7 @@ public class FileMemberActionResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MemberSelector getMember() {
         return member;
     }
@@ -99,6 +100,7 @@ public class FileMemberActionResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FileMemberActionIndividualResult getResult() {
         return result;
     }
@@ -108,6 +110,7 @@ public class FileMemberActionResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getSckeySha1() {
         return sckeySha1;
     }
@@ -119,6 +122,7 @@ public class FileMemberActionResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<String> getInvitationSignature() {
         return invitationSignature;
     }

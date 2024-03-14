@@ -101,6 +101,7 @@ public class Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAccountId() {
         return accountId;
     }
@@ -110,6 +111,7 @@ public class Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Name getName() {
         return name;
     }
@@ -121,6 +123,7 @@ public class Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getEmail() {
         return email;
     }
@@ -148,6 +151,7 @@ public class Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }

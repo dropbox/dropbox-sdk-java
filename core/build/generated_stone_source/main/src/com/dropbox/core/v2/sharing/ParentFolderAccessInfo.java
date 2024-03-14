@@ -75,6 +75,7 @@ public class ParentFolderAccessInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getFolderName() {
         return folderName;
     }
@@ -84,6 +85,7 @@ public class ParentFolderAccessInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -93,6 +95,7 @@ public class ParentFolderAccessInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<MemberPermission> getPermissions() {
         return permissions;
     }
@@ -103,6 +106,7 @@ public class ParentFolderAccessInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }

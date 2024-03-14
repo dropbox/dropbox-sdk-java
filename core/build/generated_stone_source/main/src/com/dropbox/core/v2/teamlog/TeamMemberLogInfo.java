@@ -71,6 +71,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -80,6 +81,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -89,6 +91,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getEmail() {
         return email;
     }
@@ -98,6 +101,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getTeamMemberId() {
         return teamMemberId;
     }
@@ -107,6 +111,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getMemberExternalId() {
         return memberExternalId;
     }
@@ -116,6 +121,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public TeamLogInfo getTeam() {
         return team;
     }

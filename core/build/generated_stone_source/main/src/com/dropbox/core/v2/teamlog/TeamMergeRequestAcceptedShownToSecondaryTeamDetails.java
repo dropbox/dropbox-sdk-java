@@ -51,6 +51,7 @@ public class TeamMergeRequestAcceptedShownToSecondaryTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPrimaryTeam() {
         return primaryTeam;
     }
@@ -60,6 +61,7 @@ public class TeamMergeRequestAcceptedShownToSecondaryTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSentBy() {
         return sentBy;
     }

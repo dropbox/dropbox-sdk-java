@@ -84,6 +84,7 @@ public class NamespaceMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -93,6 +94,7 @@ public class NamespaceMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getNamespaceId() {
         return namespaceId;
     }
@@ -102,6 +104,7 @@ public class NamespaceMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public NamespaceType getNamespaceType() {
         return namespaceType;
     }
@@ -112,6 +115,7 @@ public class NamespaceMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getTeamMemberId() {
         return teamMemberId;
     }

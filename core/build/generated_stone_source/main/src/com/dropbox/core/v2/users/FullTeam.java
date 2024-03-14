@@ -57,6 +57,7 @@ public class FullTeam extends Team {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getId() {
         return id;
     }
@@ -66,6 +67,7 @@ public class FullTeam extends Team {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -75,6 +77,7 @@ public class FullTeam extends Team {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamSharingPolicies getSharingPolicies() {
         return sharingPolicies;
     }
@@ -84,6 +87,7 @@ public class FullTeam extends Team {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public OfficeAddInPolicy getOfficeAddinPolicy() {
         return officeAddinPolicy;
     }

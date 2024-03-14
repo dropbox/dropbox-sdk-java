@@ -55,6 +55,7 @@ public class PropertyField {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -65,6 +66,7 @@ public class PropertyField {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getValue() {
         return value;
     }

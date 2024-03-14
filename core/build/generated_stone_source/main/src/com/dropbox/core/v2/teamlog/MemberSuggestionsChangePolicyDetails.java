@@ -66,6 +66,7 @@ public class MemberSuggestionsChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MemberSuggestionsPolicy getNewValue() {
         return newValue;
     }
@@ -76,6 +77,7 @@ public class MemberSuggestionsChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public MemberSuggestionsPolicy getPreviousValue() {
         return previousValue;
     }

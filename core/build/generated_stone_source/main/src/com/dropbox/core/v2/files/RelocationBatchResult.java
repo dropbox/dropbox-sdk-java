@@ -46,6 +46,7 @@ public class RelocationBatchResult extends FileOpsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<RelocationBatchResultData> getEntries() {
         return entries;
     }

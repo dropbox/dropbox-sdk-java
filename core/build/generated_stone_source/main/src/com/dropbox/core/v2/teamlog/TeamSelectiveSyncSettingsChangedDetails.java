@@ -51,6 +51,7 @@ public class TeamSelectiveSyncSettingsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SyncSetting getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +61,7 @@ public class TeamSelectiveSyncSettingsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SyncSetting getNewValue() {
         return newValue;
     }

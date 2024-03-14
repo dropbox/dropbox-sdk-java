@@ -111,6 +111,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -120,6 +121,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getId() {
         return id;
     }
@@ -130,6 +132,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -145,6 +148,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPathDisplay() {
         return pathDisplay;
     }
@@ -155,6 +159,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -164,6 +169,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPreviewUrl() {
         return previewUrl;
     }
@@ -173,6 +179,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -183,6 +190,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public FolderSharingInfo getSharingInfo() {
         return sharingInfo;
     }
@@ -195,6 +203,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }

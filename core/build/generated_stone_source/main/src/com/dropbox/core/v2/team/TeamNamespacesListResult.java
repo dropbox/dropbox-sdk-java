@@ -64,6 +64,7 @@ public class TeamNamespacesListResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<NamespaceMetadata> getNamespaces() {
         return namespaces;
     }
@@ -75,6 +76,7 @@ public class TeamNamespacesListResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getCursor() {
         return cursor;
     }

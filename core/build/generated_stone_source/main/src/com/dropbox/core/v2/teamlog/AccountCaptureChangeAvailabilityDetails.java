@@ -64,6 +64,7 @@ public class AccountCaptureChangeAvailabilityDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AccountCaptureAvailability getNewValue() {
         return newValue;
     }
@@ -74,6 +75,7 @@ public class AccountCaptureChangeAvailabilityDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AccountCaptureAvailability getPreviousValue() {
         return previousValue;
     }

@@ -93,6 +93,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<LinkAudience> getAudienceOptions() {
         return audienceOptions;
     }
@@ -102,6 +103,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public LinkAudience getCurrentAudience() {
         return currentAudience;
     }
@@ -111,6 +113,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<LinkPermission> getLinkPermissions() {
         return linkPermissions;
     }
@@ -129,6 +132,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -139,6 +143,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AudienceRestrictingSharedFolder getAudienceRestrictingSharedFolder() {
         return audienceRestrictingSharedFolder;
     }
@@ -149,6 +154,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getExpiry() {
         return expiry;
     }

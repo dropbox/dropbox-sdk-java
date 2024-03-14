@@ -63,6 +63,7 @@ public class OriginLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AccessMethodLogInfo getAccessMethod() {
         return accessMethod;
     }
@@ -72,6 +73,7 @@ public class OriginLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public GeoLocationLogInfo getGeoLocation() {
         return geoLocation;
     }

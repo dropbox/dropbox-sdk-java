@@ -102,6 +102,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -112,6 +113,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public MemberPolicy getMemberPolicy() {
         return memberPolicy;
     }
@@ -121,6 +123,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AclUpdatePolicy getAclUpdatePolicy() {
         return aclUpdatePolicy;
     }
@@ -130,6 +133,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public ViewerInfoPolicy getViewerInfoPolicy() {
         return viewerInfoPolicy;
     }
@@ -141,6 +145,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SharedLinkPolicy getSharedLinkPolicy() {
         return sharedLinkPolicy;
     }
@@ -150,6 +155,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public LinkSettings getLinkSettings() {
         return linkSettings;
     }
@@ -162,6 +168,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<FolderAction> getActions() {
         return actions;
     }

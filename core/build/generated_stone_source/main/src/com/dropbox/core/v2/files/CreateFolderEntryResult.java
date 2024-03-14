@@ -41,6 +41,7 @@ public class CreateFolderEntryResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FolderMetadata getMetadata() {
         return metadata;
     }

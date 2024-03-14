@@ -44,6 +44,7 @@ public class PaperDocRevertDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getEventUuid() {
         return eventUuid;
     }

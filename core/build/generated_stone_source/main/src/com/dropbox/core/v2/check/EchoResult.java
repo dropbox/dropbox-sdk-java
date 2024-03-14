@@ -55,6 +55,7 @@ public class EchoResult {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     "".
      */
+    @javax.annotation.Nonnull
     public String getResult() {
         return result;
     }

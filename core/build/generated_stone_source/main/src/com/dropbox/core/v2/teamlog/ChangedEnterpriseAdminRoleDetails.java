@@ -59,6 +59,7 @@ public class ChangedEnterpriseAdminRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FedAdminRole getPreviousValue() {
         return previousValue;
     }
@@ -68,6 +69,7 @@ public class ChangedEnterpriseAdminRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FedAdminRole getNewValue() {
         return newValue;
     }
@@ -77,6 +79,7 @@ public class ChangedEnterpriseAdminRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTeamName() {
         return teamName;
     }

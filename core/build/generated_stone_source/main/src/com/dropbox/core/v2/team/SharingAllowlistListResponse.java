@@ -95,6 +95,7 @@ public class SharingAllowlistListResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getDomains() {
         return domains;
     }
@@ -104,6 +105,7 @@ public class SharingAllowlistListResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getEmails() {
         return emails;
     }
@@ -115,6 +117,7 @@ public class SharingAllowlistListResponse {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     "".
      */
+    @javax.annotation.Nonnull
     public String getCursor() {
         return cursor;
     }

@@ -54,6 +54,7 @@ public class AddPaperDocUserMemberResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MemberSelector getMember() {
         return member;
     }
@@ -63,6 +64,7 @@ public class AddPaperDocUserMemberResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AddPaperDocUserResult getResult() {
         return result;
     }

@@ -75,6 +75,7 @@ class RelocationArg extends RelocationPath {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getFromPath() {
         return fromPath;
     }
@@ -84,6 +85,7 @@ class RelocationArg extends RelocationPath {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getToPath() {
         return toPath;
     }

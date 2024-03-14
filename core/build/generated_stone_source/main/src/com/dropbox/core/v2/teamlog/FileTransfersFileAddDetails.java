@@ -44,6 +44,7 @@ public class FileTransfersFileAddDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getFileTransferId() {
         return fileTransferId;
     }

@@ -45,6 +45,7 @@ public class RansomwareRestoreProcessStartedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getExtension() {
         return extension;
     }

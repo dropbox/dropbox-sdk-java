@@ -82,6 +82,7 @@ public class TeamGetInfoResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -91,6 +92,7 @@ public class TeamGetInfoResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTeamId() {
         return teamId;
     }
@@ -118,6 +120,7 @@ public class TeamGetInfoResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMemberPolicies getPolicies() {
         return policies;
     }

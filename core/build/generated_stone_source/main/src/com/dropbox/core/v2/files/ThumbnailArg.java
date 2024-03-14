@@ -87,6 +87,7 @@ public class ThumbnailArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -99,6 +100,7 @@ public class ThumbnailArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailFormat.JPEG.
      */
+    @javax.annotation.Nonnull
     public ThumbnailFormat getFormat() {
         return format;
     }
@@ -109,6 +111,7 @@ public class ThumbnailArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailSize.W64H64.
      */
+    @javax.annotation.Nonnull
     public ThumbnailSize getSize() {
         return size;
     }
@@ -119,6 +122,7 @@ public class ThumbnailArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailMode.STRICT.
      */
+    @javax.annotation.Nonnull
     public ThumbnailMode getMode() {
         return mode;
     }

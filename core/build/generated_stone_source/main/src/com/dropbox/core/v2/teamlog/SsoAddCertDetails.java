@@ -45,6 +45,7 @@ public class SsoAddCertDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Certificate getCertificateDetails() {
         return certificateDetails;
     }

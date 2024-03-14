@@ -56,6 +56,7 @@ public class SpaceUsage {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SpaceAllocation getAllocation() {
         return allocation;
     }

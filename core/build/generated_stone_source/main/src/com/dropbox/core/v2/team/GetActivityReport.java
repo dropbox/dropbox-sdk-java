@@ -225,6 +225,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getStartDate() {
         return startDate;
     }
@@ -234,6 +235,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getAdds() {
         return adds;
     }
@@ -244,6 +246,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getEdits() {
         return edits;
     }
@@ -253,6 +256,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getDeletes() {
         return deletes;
     }
@@ -262,6 +266,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getActiveUsers28Day() {
         return activeUsers28Day;
     }
@@ -271,6 +276,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getActiveUsers7Day() {
         return activeUsers7Day;
     }
@@ -280,6 +286,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getActiveUsers1Day() {
         return activeUsers1Day;
     }
@@ -290,6 +297,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getActiveSharedFolders28Day() {
         return activeSharedFolders28Day;
     }
@@ -300,6 +308,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getActiveSharedFolders7Day() {
         return activeSharedFolders7Day;
     }
@@ -309,6 +318,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getActiveSharedFolders1Day() {
         return activeSharedFolders1Day;
     }
@@ -318,6 +328,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getSharedLinksCreated() {
         return sharedLinksCreated;
     }
@@ -328,6 +339,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getSharedLinksViewedByTeam() {
         return sharedLinksViewedByTeam;
     }
@@ -338,6 +350,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getSharedLinksViewedByOutsideUser() {
         return sharedLinksViewedByOutsideUser;
     }
@@ -348,6 +361,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getSharedLinksViewedByNotLoggedIn() {
         return sharedLinksViewedByNotLoggedIn;
     }
@@ -357,6 +371,7 @@ public class GetActivityReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getSharedLinksViewedTotal() {
         return sharedLinksViewedTotal;
     }

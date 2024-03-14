@@ -123,6 +123,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -132,6 +133,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getNewEmail() {
         return newEmail;
     }
@@ -141,6 +143,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getNewExternalId() {
         return newExternalId;
     }
@@ -150,6 +153,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getNewGivenName() {
         return newGivenName;
     }
@@ -159,6 +163,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getNewSurname() {
         return newSurname;
     }
@@ -169,6 +174,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getNewPersistentId() {
         return newPersistentId;
     }
@@ -178,6 +184,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getNewIsDirectoryRestricted() {
         return newIsDirectoryRestricted;
     }

@@ -55,6 +55,7 @@ class PaperDocUpdateArgs extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDocId() {
         return docId;
     }
@@ -64,6 +65,7 @@ class PaperDocUpdateArgs extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PaperDocUpdatePolicy getDocUpdatePolicy() {
         return docUpdatePolicy;
     }
@@ -83,6 +85,7 @@ class PaperDocUpdateArgs extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ImportFormat getImportFormat() {
         return importFormat;
     }

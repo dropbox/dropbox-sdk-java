@@ -62,6 +62,7 @@ class RemoveTagArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -71,6 +72,7 @@ class RemoveTagArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTagText() {
         return tagText;
     }

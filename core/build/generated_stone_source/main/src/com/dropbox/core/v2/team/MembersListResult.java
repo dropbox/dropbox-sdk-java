@@ -60,6 +60,7 @@ public class MembersListResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<TeamMemberInfo> getMembers() {
         return members;
     }
@@ -71,6 +72,7 @@ public class MembersListResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getCursor() {
         return cursor;
     }

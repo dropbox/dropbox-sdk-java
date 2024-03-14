@@ -59,6 +59,7 @@ class RemoveFolderMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -68,6 +69,7 @@ class RemoveFolderMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MemberSelector getMember() {
         return member;
     }

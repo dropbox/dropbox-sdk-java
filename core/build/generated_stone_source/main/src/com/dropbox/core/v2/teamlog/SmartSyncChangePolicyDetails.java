@@ -54,6 +54,7 @@ public class SmartSyncChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SmartSyncPolicy getNewValue() {
         return newValue;
     }
@@ -63,6 +64,7 @@ public class SmartSyncChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SmartSyncPolicy getPreviousValue() {
         return previousValue;
     }

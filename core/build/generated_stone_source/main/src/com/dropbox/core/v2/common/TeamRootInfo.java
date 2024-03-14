@@ -58,6 +58,7 @@ public class TeamRootInfo extends RootInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getRootNamespaceId() {
         return rootNamespaceId;
     }
@@ -67,6 +68,7 @@ public class TeamRootInfo extends RootInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getHomeNamespaceId() {
         return homeNamespaceId;
     }
@@ -76,6 +78,7 @@ public class TeamRootInfo extends RootInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getHomePath() {
         return homePath;
     }

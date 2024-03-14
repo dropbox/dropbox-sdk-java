@@ -45,6 +45,7 @@ class ListUsersOnFolderContinueArgs extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDocId() {
         return docId;
     }
@@ -57,6 +58,7 @@ class ListUsersOnFolderContinueArgs extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getCursor() {
         return cursor;
     }

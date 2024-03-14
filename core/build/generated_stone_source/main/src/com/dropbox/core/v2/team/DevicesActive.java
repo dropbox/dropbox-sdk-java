@@ -131,6 +131,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getWindows() {
         return windows;
     }
@@ -140,6 +141,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getMacos() {
         return macos;
     }
@@ -149,6 +151,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getLinux() {
         return linux;
     }
@@ -158,6 +161,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getIos() {
         return ios;
     }
@@ -167,6 +171,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getAndroid() {
         return android;
     }
@@ -177,6 +182,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getOther() {
         return other;
     }
@@ -186,6 +192,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getTotal() {
         return total;
     }

@@ -106,6 +106,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getId() {
         return id;
     }
@@ -115,6 +116,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getTitle() {
         return title;
     }
@@ -126,6 +128,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDestination() {
         return destination;
     }
@@ -137,6 +140,7 @@ class UpdateFileRequestArgs {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     UpdateFileRequestDeadline.NO_UPDATE.
      */
+    @javax.annotation.Nonnull
     public UpdateFileRequestDeadline getDeadline() {
         return deadline;
     }
@@ -146,6 +150,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getOpen() {
         return open;
     }
@@ -155,6 +160,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDescription() {
         return description;
     }

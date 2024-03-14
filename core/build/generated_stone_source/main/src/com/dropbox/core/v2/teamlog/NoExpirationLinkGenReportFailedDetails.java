@@ -45,6 +45,7 @@ public class NoExpirationLinkGenReportFailedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamReportFailureReason getFailureReason() {
         return failureReason;
     }

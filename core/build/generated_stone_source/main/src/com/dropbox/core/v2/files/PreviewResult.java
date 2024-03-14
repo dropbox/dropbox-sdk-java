@@ -53,6 +53,7 @@ public class PreviewResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public FileMetadata getFileMetadata() {
         return fileMetadata;
     }
@@ -64,6 +65,7 @@ public class PreviewResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public MinimalFileLinkMetadata getLinkMetadata() {
         return linkMetadata;
     }

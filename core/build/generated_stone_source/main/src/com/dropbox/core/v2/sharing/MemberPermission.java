@@ -68,6 +68,7 @@ public class MemberPermission {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MemberAction getAction() {
         return action;
     }
@@ -87,6 +88,7 @@ public class MemberPermission {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public PermissionDeniedReason getReason() {
         return reason;
     }

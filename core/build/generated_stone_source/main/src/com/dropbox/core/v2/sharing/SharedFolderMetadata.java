@@ -158,6 +158,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -186,6 +187,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -195,6 +197,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FolderPolicy getPolicy() {
         return policy;
     }
@@ -204,6 +207,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPreviewUrl() {
         return previewUrl;
     }
@@ -213,6 +217,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -223,6 +228,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getTimeInvited() {
         return timeInvited;
     }
@@ -234,6 +240,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<String> getOwnerDisplayNames() {
         return ownerDisplayNames;
     }
@@ -244,6 +251,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Team getOwnerTeam() {
         return ownerTeam;
     }
@@ -254,6 +262,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -263,6 +272,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPathDisplay() {
         return pathDisplay;
     }
@@ -273,6 +283,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -282,6 +293,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getParentFolderName() {
         return parentFolderName;
     }
@@ -293,6 +305,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SharedContentLinkMetadata getLinkMetadata() {
         return linkMetadata;
     }
@@ -303,6 +316,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<FolderPermission> getPermissions() {
         return permissions;
     }
@@ -313,6 +327,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     AccessInheritance.INHERIT.
      */
+    @javax.annotation.Nonnull
     public AccessInheritance getAccessInheritance() {
         return accessInheritance;
     }

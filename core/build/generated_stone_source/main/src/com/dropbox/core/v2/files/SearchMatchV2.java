@@ -74,6 +74,7 @@ public class SearchMatchV2 {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MetadataV2 getMetadata() {
         return metadata;
     }
@@ -83,6 +84,7 @@ public class SearchMatchV2 {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SearchMatchTypeV2 getMatchType() {
         return matchType;
     }
@@ -93,6 +95,7 @@ public class SearchMatchV2 {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<HighlightSpan> getHighlightSpans() {
         return highlightSpans;
     }

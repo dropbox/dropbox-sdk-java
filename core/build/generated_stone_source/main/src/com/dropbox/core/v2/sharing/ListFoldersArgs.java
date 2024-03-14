@@ -83,6 +83,7 @@ class ListFoldersArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<FolderAction> getActions() {
         return actions;
     }

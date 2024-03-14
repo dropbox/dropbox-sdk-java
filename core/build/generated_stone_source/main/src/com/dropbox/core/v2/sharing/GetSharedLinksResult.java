@@ -47,6 +47,7 @@ public class GetSharedLinksResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<LinkMetadata> getLinks() {
         return links;
     }

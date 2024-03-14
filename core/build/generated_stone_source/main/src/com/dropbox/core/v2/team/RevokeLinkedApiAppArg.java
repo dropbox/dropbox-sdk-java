@@ -67,6 +67,7 @@ public class RevokeLinkedApiAppArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAppId() {
         return appId;
     }
@@ -76,6 +77,7 @@ public class RevokeLinkedApiAppArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }

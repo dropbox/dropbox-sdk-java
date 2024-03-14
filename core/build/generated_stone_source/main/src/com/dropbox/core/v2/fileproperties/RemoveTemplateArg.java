@@ -55,6 +55,7 @@ class RemoveTemplateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTemplateId() {
         return templateId;
     }

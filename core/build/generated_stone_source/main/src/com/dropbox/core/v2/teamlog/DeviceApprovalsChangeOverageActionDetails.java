@@ -56,6 +56,7 @@ public class DeviceApprovalsChangeOverageActionDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public RolloutMethod getNewValue() {
         return newValue;
     }
@@ -66,6 +67,7 @@ public class DeviceApprovalsChangeOverageActionDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public RolloutMethod getPreviousValue() {
         return previousValue;
     }

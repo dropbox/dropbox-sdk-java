@@ -84,6 +84,7 @@ public class ExportMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -106,6 +107,7 @@ public class ExportMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getExportHash() {
         return exportHash;
     }
@@ -117,6 +119,7 @@ public class ExportMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Long getPaperRevision() {
         return paperRevision;
     }

@@ -108,6 +108,7 @@ public class GetMembershipReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getStartDate() {
         return startDate;
     }
@@ -117,6 +118,7 @@ public class GetMembershipReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getTeamSize() {
         return teamSize;
     }
@@ -126,6 +128,7 @@ public class GetMembershipReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getPendingInvites() {
         return pendingInvites;
     }
@@ -135,6 +138,7 @@ public class GetMembershipReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getMembersJoined() {
         return membersJoined;
     }
@@ -144,6 +148,7 @@ public class GetMembershipReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getSuspendedMembers() {
         return suspendedMembers;
     }
@@ -153,6 +158,7 @@ public class GetMembershipReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getLicenses() {
         return licenses;
     }

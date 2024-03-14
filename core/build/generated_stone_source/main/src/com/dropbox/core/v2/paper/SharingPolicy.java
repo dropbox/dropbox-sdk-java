@@ -54,6 +54,7 @@ public class SharingPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SharingPublicPolicyType getPublicSharingPolicy() {
         return publicSharingPolicy;
     }
@@ -64,6 +65,7 @@ public class SharingPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SharingTeamPolicyType getTeamSharingPolicy() {
         return teamSharingPolicy;
     }

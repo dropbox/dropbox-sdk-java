@@ -68,6 +68,7 @@ public class FileLockMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getIsLockholder() {
         return isLockholder;
     }
@@ -77,6 +78,7 @@ public class FileLockMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getLockholderName() {
         return lockholderName;
     }
@@ -86,6 +88,7 @@ public class FileLockMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getLockholderAccountId() {
         return lockholderAccountId;
     }
@@ -95,6 +98,7 @@ public class FileLockMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getCreated() {
         return created;
     }

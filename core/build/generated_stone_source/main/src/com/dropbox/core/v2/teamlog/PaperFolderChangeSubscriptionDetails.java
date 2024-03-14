@@ -71,6 +71,7 @@ public class PaperFolderChangeSubscriptionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -80,6 +81,7 @@ public class PaperFolderChangeSubscriptionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getNewSubscriptionLevel() {
         return newSubscriptionLevel;
     }
@@ -90,6 +92,7 @@ public class PaperFolderChangeSubscriptionDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPreviousSubscriptionLevel() {
         return previousSubscriptionLevel;
     }

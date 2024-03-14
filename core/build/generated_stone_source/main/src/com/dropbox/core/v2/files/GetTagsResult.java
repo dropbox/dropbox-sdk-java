@@ -47,6 +47,7 @@ public class GetTagsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<PathToTags> getPathsToTags() {
         return pathsToTags;
     }

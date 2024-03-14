@@ -48,6 +48,7 @@ class ListFolderContinueArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getCursor() {
         return cursor;
     }

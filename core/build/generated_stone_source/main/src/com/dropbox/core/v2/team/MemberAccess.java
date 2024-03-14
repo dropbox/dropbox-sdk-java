@@ -50,6 +50,7 @@ public class MemberAccess {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -59,6 +60,7 @@ public class MemberAccess {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GroupAccessType getAccessType() {
         return accessType;
     }

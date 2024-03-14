@@ -101,6 +101,7 @@ public class UserInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAccountId() {
         return accountId;
     }
@@ -110,6 +111,7 @@ public class UserInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getEmail() {
         return email;
     }
@@ -119,6 +121,7 @@ public class UserInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDisplayName() {
         return displayName;
     }
@@ -138,6 +141,7 @@ public class UserInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getTeamMemberId() {
         return teamMemberId;
     }

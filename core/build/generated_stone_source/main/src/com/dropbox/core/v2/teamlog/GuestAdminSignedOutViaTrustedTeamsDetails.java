@@ -53,6 +53,7 @@ public class GuestAdminSignedOutViaTrustedTeamsDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getTeamName() {
         return teamName;
     }
@@ -62,6 +63,7 @@ public class GuestAdminSignedOutViaTrustedTeamsDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getTrustedTeamName() {
         return trustedTeamName;
     }

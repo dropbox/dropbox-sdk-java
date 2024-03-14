@@ -99,6 +99,7 @@ class GetTeamEventsArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -108,6 +109,7 @@ class GetTeamEventsArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public TimeRange getTime() {
         return time;
     }
@@ -118,6 +120,7 @@ class GetTeamEventsArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public EventCategory getCategory() {
         return category;
     }
@@ -128,6 +131,7 @@ class GetTeamEventsArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public EventTypeArg getEventType() {
         return eventType;
     }

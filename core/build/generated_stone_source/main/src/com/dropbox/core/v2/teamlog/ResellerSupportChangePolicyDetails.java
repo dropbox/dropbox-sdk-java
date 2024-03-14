@@ -51,6 +51,7 @@ public class ResellerSupportChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ResellerSupportPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +61,7 @@ public class ResellerSupportChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ResellerSupportPolicy getPreviousValue() {
         return previousValue;
     }

@@ -51,6 +51,7 @@ class SaveUrlArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -60,6 +61,7 @@ class SaveUrlArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getUrl() {
         return url;
     }

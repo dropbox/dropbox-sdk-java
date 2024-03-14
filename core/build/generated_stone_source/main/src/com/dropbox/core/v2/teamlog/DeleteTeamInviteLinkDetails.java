@@ -45,6 +45,7 @@ public class DeleteTeamInviteLinkDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getLinkUrl() {
         return linkUrl;
     }

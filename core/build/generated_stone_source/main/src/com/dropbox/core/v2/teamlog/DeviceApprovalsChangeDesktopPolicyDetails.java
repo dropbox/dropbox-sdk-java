@@ -59,6 +59,7 @@ public class DeviceApprovalsChangeDesktopPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public DeviceApprovalsPolicy getNewValue() {
         return newValue;
     }
@@ -69,6 +70,7 @@ public class DeviceApprovalsChangeDesktopPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public DeviceApprovalsPolicy getPreviousValue() {
         return previousValue;
     }

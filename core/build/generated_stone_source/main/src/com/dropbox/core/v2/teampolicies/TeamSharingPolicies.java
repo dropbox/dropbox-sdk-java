@@ -73,6 +73,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SharedFolderMemberPolicy getSharedFolderMemberPolicy() {
         return sharedFolderMemberPolicy;
     }
@@ -82,6 +83,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SharedFolderJoinPolicy getSharedFolderJoinPolicy() {
         return sharedFolderJoinPolicy;
     }
@@ -91,6 +93,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SharedLinkCreatePolicy getSharedLinkCreatePolicy() {
         return sharedLinkCreatePolicy;
     }
@@ -100,6 +103,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GroupCreation getGroupCreationPolicy() {
         return groupCreationPolicy;
     }
@@ -109,6 +113,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SharedFolderBlanketLinkRestrictionPolicy getSharedFolderLinkRestrictionPolicy() {
         return sharedFolderLinkRestrictionPolicy;
     }

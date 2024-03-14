@@ -75,6 +75,7 @@ class GroupMembersAddArg extends IncludeMembersArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GroupSelector getGroup() {
         return group;
     }
@@ -84,6 +85,7 @@ class GroupMembersAddArg extends IncludeMembersArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<MemberAccess> getMembers() {
         return members;
     }

@@ -70,6 +70,7 @@ public class TeamMemberPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamSharingPolicies getSharing() {
         return sharing;
     }
@@ -84,6 +85,7 @@ public class TeamMemberPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public EmmState getEmmState() {
         return emmState;
     }
@@ -93,6 +95,7 @@ public class TeamMemberPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public OfficeAddInPolicy getOfficeAddin() {
         return officeAddin;
     }
@@ -103,6 +106,7 @@ public class TeamMemberPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SuggestMembersPolicy getSuggestMembersPolicy() {
         return suggestMembersPolicy;
     }

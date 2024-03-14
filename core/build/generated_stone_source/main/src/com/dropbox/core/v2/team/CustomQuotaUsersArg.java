@@ -47,6 +47,7 @@ class CustomQuotaUsersArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<UserSelectorArg> getUsers() {
         return users;
     }

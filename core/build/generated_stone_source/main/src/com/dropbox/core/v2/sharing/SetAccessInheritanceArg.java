@@ -67,6 +67,7 @@ class SetAccessInheritanceArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -77,6 +78,7 @@ class SetAccessInheritanceArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     AccessInheritance.INHERIT.
      */
+    @javax.annotation.Nonnull
     public AccessInheritance getAccessInheritance() {
         return accessInheritance;
     }

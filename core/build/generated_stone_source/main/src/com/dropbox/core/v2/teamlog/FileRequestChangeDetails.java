@@ -78,6 +78,7 @@ public class FileRequestChangeDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FileRequestDetails getNewDetails() {
         return newDetails;
     }
@@ -87,6 +88,7 @@ public class FileRequestChangeDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getFileRequestId() {
         return fileRequestId;
     }
@@ -97,6 +99,7 @@ public class FileRequestChangeDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public FileRequestDetails getPreviousDetails() {
         return previousDetails;
     }

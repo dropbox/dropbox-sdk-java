@@ -55,6 +55,7 @@ class TransferFolderArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -64,6 +65,7 @@ class TransferFolderArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getToDropboxId() {
         return toDropboxId;
     }

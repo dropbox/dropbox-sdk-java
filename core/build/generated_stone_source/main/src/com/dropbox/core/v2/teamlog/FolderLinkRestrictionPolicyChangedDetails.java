@@ -50,6 +50,7 @@ public class FolderLinkRestrictionPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FolderLinkRestrictionPolicy getNewValue() {
         return newValue;
     }
@@ -59,6 +60,7 @@ public class FolderLinkRestrictionPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FolderLinkRestrictionPolicy getPreviousValue() {
         return previousValue;
     }

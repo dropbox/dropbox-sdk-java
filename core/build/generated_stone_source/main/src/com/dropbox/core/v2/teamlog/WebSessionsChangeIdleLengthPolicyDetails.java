@@ -55,6 +55,7 @@ public class WebSessionsChangeIdleLengthPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public WebSessionsIdleLengthPolicy getNewValue() {
         return newValue;
     }
@@ -64,6 +65,7 @@ public class WebSessionsChangeIdleLengthPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public WebSessionsIdleLengthPolicy getPreviousValue() {
         return previousValue;
     }

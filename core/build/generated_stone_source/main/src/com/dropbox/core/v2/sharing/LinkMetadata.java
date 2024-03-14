@@ -74,6 +74,7 @@ public class LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getUrl() {
         return url;
     }
@@ -83,6 +84,7 @@ public class LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Visibility getVisibility() {
         return visibility;
     }
@@ -92,6 +94,7 @@ public class LinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getExpires() {
         return expires;
     }

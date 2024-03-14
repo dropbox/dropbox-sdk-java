@@ -47,6 +47,7 @@ public class GetTemporaryLinkResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FileMetadata getMetadata() {
         return metadata;
     }
@@ -56,6 +57,7 @@ public class GetTemporaryLinkResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getLink() {
         return link;
     }

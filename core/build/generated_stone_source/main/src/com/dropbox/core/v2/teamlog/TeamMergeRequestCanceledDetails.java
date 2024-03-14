@@ -45,6 +45,7 @@ public class TeamMergeRequestCanceledDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMergeRequestCanceledExtraDetails getRequestCanceledDetails() {
         return requestCanceledDetails;
     }

@@ -69,6 +69,7 @@ class PaperFolderCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -80,6 +81,7 @@ class PaperFolderCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getParentFolderId() {
         return parentFolderId;
     }
@@ -93,6 +95,7 @@ class PaperFolderCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getIsTeamFolder() {
         return isTeamFolder;
     }

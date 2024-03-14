@@ -95,6 +95,7 @@ public class MemberDevices {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }
@@ -104,6 +105,7 @@ public class MemberDevices {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<ActiveWebSession> getWebSessions() {
         return webSessions;
     }
@@ -113,6 +115,7 @@ public class MemberDevices {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<DesktopClientSession> getDesktopClients() {
         return desktopClients;
     }
@@ -122,6 +125,7 @@ public class MemberDevices {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<MobileClientSession> getMobileClients() {
         return mobileClients;
     }

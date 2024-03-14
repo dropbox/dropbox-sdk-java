@@ -55,6 +55,7 @@ public class UploadSessionStartBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getSessionIds() {
         return sessionIds;
     }

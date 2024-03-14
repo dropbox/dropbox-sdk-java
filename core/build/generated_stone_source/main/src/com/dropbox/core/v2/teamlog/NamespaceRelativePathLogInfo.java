@@ -56,6 +56,7 @@ public class NamespaceRelativePathLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getNsId() {
         return nsId;
     }
@@ -65,6 +66,7 @@ public class NamespaceRelativePathLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getRelativePath() {
         return relativePath;
     }
@@ -74,6 +76,7 @@ public class NamespaceRelativePathLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getIsSharedNamespace() {
         return isSharedNamespace;
     }

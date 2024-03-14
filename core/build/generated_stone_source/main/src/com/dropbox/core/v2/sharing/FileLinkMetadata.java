@@ -132,6 +132,7 @@ public class FileLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getUrl() {
         return url;
     }
@@ -141,6 +142,7 @@ public class FileLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -150,6 +152,7 @@ public class FileLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public LinkPermissions getLinkPermissions() {
         return linkPermissions;
     }
@@ -163,6 +166,7 @@ public class FileLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getClientModified() {
         return clientModified;
     }
@@ -172,6 +176,7 @@ public class FileLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getServerModified() {
         return serverModified;
     }
@@ -183,6 +188,7 @@ public class FileLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getRev() {
         return rev;
     }
@@ -201,6 +207,7 @@ public class FileLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getId() {
         return id;
     }
@@ -210,6 +217,7 @@ public class FileLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getExpires() {
         return expires;
     }
@@ -221,6 +229,7 @@ public class FileLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -231,6 +240,7 @@ public class FileLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public TeamMemberInfo getTeamMemberInfo() {
         return teamMemberInfo;
     }
@@ -242,6 +252,7 @@ public class FileLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Team getContentOwnerTeamInfo() {
         return contentOwnerTeamInfo;
     }

@@ -59,6 +59,7 @@ public class UpdatePropertiesArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -68,6 +69,7 @@ public class UpdatePropertiesArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<PropertyGroupUpdate> getUpdatePropertyGroups() {
         return updatePropertyGroups;
     }

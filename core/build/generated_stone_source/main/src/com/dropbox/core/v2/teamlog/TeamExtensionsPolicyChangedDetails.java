@@ -51,6 +51,7 @@ public class TeamExtensionsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamExtensionsPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +61,7 @@ public class TeamExtensionsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamExtensionsPolicy getPreviousValue() {
         return previousValue;
     }

@@ -51,6 +51,7 @@ public class FileProviderMigrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FileProviderMigrationPolicyState getNewValue() {
         return newValue;
     }
@@ -60,6 +61,7 @@ public class FileProviderMigrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FileProviderMigrationPolicyState getPreviousValue() {
         return previousValue;
     }

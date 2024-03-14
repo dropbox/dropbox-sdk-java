@@ -81,6 +81,7 @@ public class UploadSessionFinishArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UploadSessionCursor getCursor() {
         return cursor;
     }
@@ -90,6 +91,7 @@ public class UploadSessionFinishArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public CommitInfo getCommit() {
         return commit;
     }
@@ -103,6 +105,7 @@ public class UploadSessionFinishArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getContentHash() {
         return contentHash;
     }

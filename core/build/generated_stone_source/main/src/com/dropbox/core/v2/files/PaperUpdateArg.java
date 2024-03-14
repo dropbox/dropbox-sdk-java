@@ -88,6 +88,7 @@ class PaperUpdateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -97,6 +98,7 @@ class PaperUpdateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ImportFormat getImportFormat() {
         return importFormat;
     }
@@ -106,6 +108,7 @@ class PaperUpdateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PaperDocUpdatePolicy getDocUpdatePolicy() {
         return docUpdatePolicy;
     }
@@ -117,6 +120,7 @@ class PaperUpdateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Long getPaperRevision() {
         return paperRevision;
     }

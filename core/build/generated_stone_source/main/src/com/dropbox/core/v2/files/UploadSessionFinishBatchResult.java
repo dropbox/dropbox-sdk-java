@@ -51,6 +51,7 @@ public class UploadSessionFinishBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<UploadSessionFinishBatchResultEntry> getEntries() {
         return entries;
     }

@@ -56,6 +56,7 @@ public class ExternalDriveBackupEligibilityStatusCheckedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public DesktopDeviceSessionLogInfo getDesktopDeviceSessionInfo() {
         return desktopDeviceSessionInfo;
     }
@@ -65,6 +66,7 @@ public class ExternalDriveBackupEligibilityStatusCheckedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ExternalDriveBackupEligibilityStatus getStatus() {
         return status;
     }

@@ -58,6 +58,7 @@ class RestoreArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -67,6 +68,7 @@ class RestoreArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getRev() {
         return rev;
     }

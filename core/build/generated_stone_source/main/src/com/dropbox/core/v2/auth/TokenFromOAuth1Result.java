@@ -44,6 +44,7 @@ public class TokenFromOAuth1Result {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getOauth2Token() {
         return oauth2Token;
     }

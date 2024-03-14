@@ -70,6 +70,7 @@ public class DomainVerificationAddDomainSuccessDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getDomainNames() {
         return domainNames;
     }
@@ -80,6 +81,7 @@ public class DomainVerificationAddDomainSuccessDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getVerificationMethod() {
         return verificationMethod;
     }

@@ -81,6 +81,7 @@ class ListRevisionsArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -92,6 +93,7 @@ class ListRevisionsArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ListRevisionsMode.PATH.
      */
+    @javax.annotation.Nonnull
     public ListRevisionsMode getMode() {
         return mode;
     }

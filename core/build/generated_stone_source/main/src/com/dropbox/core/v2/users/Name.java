@@ -74,6 +74,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getGivenName() {
         return givenName;
     }
@@ -83,6 +84,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSurname() {
         return surname;
     }
@@ -94,6 +96,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getFamiliarName() {
         return familiarName;
     }
@@ -104,6 +107,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDisplayName() {
         return displayName;
     }
@@ -113,6 +117,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAbbreviatedName() {
         return abbreviatedName;
     }

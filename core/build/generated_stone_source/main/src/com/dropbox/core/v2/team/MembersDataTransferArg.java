@@ -51,6 +51,7 @@ class MembersDataTransferArg extends MembersDeactivateBaseArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -60,6 +61,7 @@ class MembersDataTransferArg extends MembersDeactivateBaseArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserSelectorArg getTransferDestId() {
         return transferDestId;
     }
@@ -69,6 +71,7 @@ class MembersDataTransferArg extends MembersDeactivateBaseArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserSelectorArg getTransferAdminId() {
         return transferAdminId;
     }

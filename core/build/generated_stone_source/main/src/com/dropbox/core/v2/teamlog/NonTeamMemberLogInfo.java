@@ -54,6 +54,7 @@ public class NonTeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -63,6 +64,7 @@ public class NonTeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -72,6 +74,7 @@ public class NonTeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getEmail() {
         return email;
     }

@@ -98,6 +98,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getHostName() {
         return hostName;
     }
@@ -107,6 +108,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public DesktopPlatform getClientType() {
         return clientType;
     }
@@ -116,6 +118,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPlatform() {
         return platform;
     }
@@ -135,6 +138,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -144,6 +148,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getCreated() {
         return created;
     }
@@ -153,6 +158,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -162,6 +168,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public DesktopSessionLogInfo getSessionInfo() {
         return sessionInfo;
     }
@@ -171,6 +178,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getClientVersion() {
         return clientVersion;
     }

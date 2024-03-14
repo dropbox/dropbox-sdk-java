@@ -89,6 +89,7 @@ public class ListUsersOnPaperDocResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<InviteeInfoWithPermissionLevel> getInvitees() {
         return invitees;
     }
@@ -99,6 +100,7 @@ public class ListUsersOnPaperDocResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<UserInfoWithPermissionLevel> getUsers() {
         return users;
     }
@@ -108,6 +110,7 @@ public class ListUsersOnPaperDocResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserInfo getDocOwner() {
         return docOwner;
     }
@@ -120,6 +123,7 @@ public class ListUsersOnPaperDocResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Cursor getCursor() {
         return cursor;
     }

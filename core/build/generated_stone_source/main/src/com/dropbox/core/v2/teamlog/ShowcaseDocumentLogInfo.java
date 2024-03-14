@@ -50,6 +50,7 @@ public class ShowcaseDocumentLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getShowcaseId() {
         return showcaseId;
     }
@@ -59,6 +60,7 @@ public class ShowcaseDocumentLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getShowcaseTitle() {
         return showcaseTitle;
     }

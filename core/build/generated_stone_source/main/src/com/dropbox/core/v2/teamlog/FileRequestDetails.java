@@ -61,6 +61,7 @@ public class FileRequestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public FileRequestDeadline getDeadline() {
         return deadline;
     }

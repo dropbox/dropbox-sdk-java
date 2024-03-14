@@ -45,6 +45,7 @@ public class BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getStartDate() {
         return startDate;
     }

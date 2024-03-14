@@ -72,6 +72,7 @@ class GetTemporaryUploadLinkArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public CommitInfo getCommitInfo() {
         return commitInfo;
     }

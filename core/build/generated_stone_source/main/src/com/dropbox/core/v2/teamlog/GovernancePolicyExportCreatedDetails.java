@@ -75,6 +75,7 @@ public class GovernancePolicyExportCreatedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -84,6 +85,7 @@ public class GovernancePolicyExportCreatedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -93,6 +95,7 @@ public class GovernancePolicyExportCreatedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getExportName() {
         return exportName;
     }
@@ -102,6 +105,7 @@ public class GovernancePolicyExportCreatedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }

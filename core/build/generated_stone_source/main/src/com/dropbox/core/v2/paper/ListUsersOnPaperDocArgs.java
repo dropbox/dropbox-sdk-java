@@ -71,6 +71,7 @@ class ListUsersOnPaperDocArgs extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDocId() {
         return docId;
     }
@@ -93,6 +94,7 @@ class ListUsersOnPaperDocArgs extends RefPaperDoc {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     UserOnPaperDocFilter.SHARED.
      */
+    @javax.annotation.Nonnull
     public UserOnPaperDocFilter getFilterBy() {
         return filterBy;
     }

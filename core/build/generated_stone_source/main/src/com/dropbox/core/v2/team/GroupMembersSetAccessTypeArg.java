@@ -72,6 +72,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GroupSelector getGroup() {
         return group;
     }
@@ -83,6 +84,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -92,6 +94,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GroupAccessType getAccessType() {
         return accessType;
     }

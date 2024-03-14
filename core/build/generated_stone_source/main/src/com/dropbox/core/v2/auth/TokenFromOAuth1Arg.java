@@ -54,6 +54,7 @@ class TokenFromOAuth1Arg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getOauth1Token() {
         return oauth1Token;
     }
@@ -63,6 +64,7 @@ class TokenFromOAuth1Arg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getOauth1TokenSecret() {
         return oauth1TokenSecret;
     }

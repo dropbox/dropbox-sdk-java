@@ -48,6 +48,7 @@ public class UserInfoWithPermissionLevel {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserInfo getUser() {
         return user;
     }
@@ -57,6 +58,7 @@ public class UserInfoWithPermissionLevel {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PaperDocPermissionLevel getPermissionLevel() {
         return permissionLevel;
     }

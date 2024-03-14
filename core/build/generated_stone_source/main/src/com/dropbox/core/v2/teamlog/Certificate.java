@@ -100,6 +100,7 @@ public class Certificate {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSubject() {
         return subject;
     }
@@ -109,6 +110,7 @@ public class Certificate {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getIssuer() {
         return issuer;
     }
@@ -118,6 +120,7 @@ public class Certificate {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getIssueDate() {
         return issueDate;
     }
@@ -127,6 +130,7 @@ public class Certificate {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getExpirationDate() {
         return expirationDate;
     }
@@ -136,6 +140,7 @@ public class Certificate {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSerialNumber() {
         return serialNumber;
     }
@@ -145,6 +150,7 @@ public class Certificate {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSha1Fingerprint() {
         return sha1Fingerprint;
     }
@@ -154,6 +160,7 @@ public class Certificate {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getCommonName() {
         return commonName;
     }

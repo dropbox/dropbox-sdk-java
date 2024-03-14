@@ -62,6 +62,7 @@ public class InsufficientPlan {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getMessage() {
         return message;
     }
@@ -73,6 +74,7 @@ public class InsufficientPlan {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getUpsellUrl() {
         return upsellUrl;
     }

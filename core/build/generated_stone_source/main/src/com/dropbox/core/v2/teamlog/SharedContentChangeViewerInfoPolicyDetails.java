@@ -62,6 +62,7 @@ public class SharedContentChangeViewerInfoPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ViewerInfoPolicy getNewValue() {
         return newValue;
     }
@@ -71,6 +72,7 @@ public class SharedContentChangeViewerInfoPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public ViewerInfoPolicy getPreviousValue() {
         return previousValue;
     }

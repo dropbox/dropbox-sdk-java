@@ -47,6 +47,7 @@ public class FileUnlikeCommentDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getCommentText() {
         return commentText;
     }

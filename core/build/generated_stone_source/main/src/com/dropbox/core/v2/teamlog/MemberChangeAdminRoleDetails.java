@@ -57,6 +57,7 @@ public class MemberChangeAdminRoleDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AdminRole getNewValue() {
         return newValue;
     }
@@ -67,6 +68,7 @@ public class MemberChangeAdminRoleDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AdminRole getPreviousValue() {
         return previousValue;
     }

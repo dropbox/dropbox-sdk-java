@@ -65,6 +65,7 @@ public class ListFolderLongpollResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Long getBackoff() {
         return backoff;
     }

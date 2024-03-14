@@ -52,6 +52,7 @@ public class CreateTeamInviteLinkDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getLinkUrl() {
         return linkUrl;
     }
@@ -61,6 +62,7 @@ public class CreateTeamInviteLinkDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getExpiryDate() {
         return expiryDate;
     }

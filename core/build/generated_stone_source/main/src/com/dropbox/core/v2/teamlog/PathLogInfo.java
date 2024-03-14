@@ -63,6 +63,7 @@ public class PathLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public NamespaceRelativePathLogInfo getNamespaceRelative() {
         return namespaceRelative;
     }
@@ -72,6 +73,7 @@ public class PathLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getContextual() {
         return contextual;
     }

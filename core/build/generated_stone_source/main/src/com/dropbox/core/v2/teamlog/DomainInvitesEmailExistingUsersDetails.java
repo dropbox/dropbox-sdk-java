@@ -47,6 +47,7 @@ public class DomainInvitesEmailExistingUsersDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDomainName() {
         return domainName;
     }

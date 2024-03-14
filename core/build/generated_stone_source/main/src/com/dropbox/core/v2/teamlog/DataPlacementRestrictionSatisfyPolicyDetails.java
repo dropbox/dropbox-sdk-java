@@ -45,6 +45,7 @@ public class DataPlacementRestrictionSatisfyPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PlacementRestriction getPlacementRestriction() {
         return placementRestriction;
     }

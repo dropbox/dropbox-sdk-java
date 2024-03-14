@@ -44,6 +44,7 @@ public class AppLinkUserDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AppLogInfo getAppInfo() {
         return appInfo;
     }

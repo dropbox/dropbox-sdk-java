@@ -47,6 +47,7 @@ public class GetAccountArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getAccountId() {
         return accountId;
     }

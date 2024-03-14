@@ -68,6 +68,7 @@ public class FilePermission {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FileAction getAction() {
         return action;
     }
@@ -87,6 +88,7 @@ public class FilePermission {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public PermissionDeniedReason getReason() {
         return reason;
     }

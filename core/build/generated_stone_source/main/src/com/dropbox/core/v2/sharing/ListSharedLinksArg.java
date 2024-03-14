@@ -63,6 +63,7 @@ class ListSharedLinksArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPath() {
         return path;
     }
@@ -73,6 +74,7 @@ class ListSharedLinksArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getCursor() {
         return cursor;
     }
@@ -82,6 +84,7 @@ class ListSharedLinksArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getDirectOnly() {
         return directOnly;
     }

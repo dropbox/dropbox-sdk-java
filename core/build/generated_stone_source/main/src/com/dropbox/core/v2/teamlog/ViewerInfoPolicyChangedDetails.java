@@ -51,6 +51,7 @@ public class ViewerInfoPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PassPolicy getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +61,7 @@ public class ViewerInfoPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PassPolicy getNewValue() {
         return newValue;
     }

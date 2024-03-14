@@ -62,6 +62,7 @@ public class AdminAlertingAlertConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AdminAlertingAlertStatePolicy getAlertState() {
         return alertState;
     }
@@ -71,6 +72,7 @@ public class AdminAlertingAlertConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AdminAlertingAlertSensitivity getSensitivityLevel() {
         return sensitivityLevel;
     }
@@ -80,6 +82,7 @@ public class AdminAlertingAlertConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public RecipientsConfiguration getRecipientsSettings() {
         return recipientsSettings;
     }
@@ -89,6 +92,7 @@ public class AdminAlertingAlertConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getText() {
         return text;
     }
@@ -98,6 +102,7 @@ public class AdminAlertingAlertConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getExcludedFileExtensions() {
         return excludedFileExtensions;
     }

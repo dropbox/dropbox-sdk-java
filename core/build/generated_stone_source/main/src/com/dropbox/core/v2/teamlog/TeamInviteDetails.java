@@ -64,6 +64,7 @@ public class TeamInviteDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public InviteMethod getInviteMethod() {
         return inviteMethod;
     }
@@ -73,6 +74,7 @@ public class TeamInviteDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getAdditionalLicensePurchase() {
         return additionalLicensePurchase;
     }

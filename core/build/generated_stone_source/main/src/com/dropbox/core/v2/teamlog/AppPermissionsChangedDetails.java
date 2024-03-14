@@ -74,6 +74,7 @@ public class AppPermissionsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AdminConsoleAppPolicy getPreviousValue() {
         return previousValue;
     }
@@ -83,6 +84,7 @@ public class AppPermissionsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AdminConsoleAppPolicy getNewValue() {
         return newValue;
     }
@@ -92,6 +94,7 @@ public class AppPermissionsChangedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getAppName() {
         return appName;
     }
@@ -101,6 +104,7 @@ public class AppPermissionsChangedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AdminConsoleAppPermission getPermission() {
         return permission;
     }

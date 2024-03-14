@@ -44,6 +44,7 @@ public class TeamLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDisplayName() {
         return displayName;
     }

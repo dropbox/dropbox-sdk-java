@@ -59,6 +59,7 @@ public class RevokeDesktopClientArg extends DeviceSessionArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSessionId() {
         return sessionId;
     }
@@ -68,6 +69,7 @@ public class RevokeDesktopClientArg extends DeviceSessionArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }

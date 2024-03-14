@@ -47,6 +47,7 @@ public class LockFileResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Metadata getMetadata() {
         return metadata;
     }
@@ -56,6 +57,7 @@ public class LockFileResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FileLock getLock() {
         return lock;
     }

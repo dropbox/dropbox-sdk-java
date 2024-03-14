@@ -51,6 +51,7 @@ public class CameraUploadsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public CameraUploadsPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +61,7 @@ public class CameraUploadsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public CameraUploadsPolicy getPreviousValue() {
         return previousValue;
     }

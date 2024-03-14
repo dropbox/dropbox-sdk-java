@@ -71,6 +71,7 @@ public class DeviceUnlinkDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SessionLogInfo getSessionInfo() {
         return sessionInfo;
     }
@@ -80,6 +81,7 @@ public class DeviceUnlinkDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDisplayName() {
         return displayName;
     }

@@ -51,6 +51,7 @@ public class SecondaryMailsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SecondaryMailsPolicy getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +61,7 @@ public class SecondaryMailsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SecondaryMailsPolicy getNewValue() {
         return newValue;
     }

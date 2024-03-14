@@ -79,6 +79,7 @@ class ListPaperDocsArgs {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ListPaperDocsFilterBy.DOCS_ACCESSED.
      */
+    @javax.annotation.Nonnull
     public ListPaperDocsFilterBy getFilterBy() {
         return filterBy;
     }
@@ -89,6 +90,7 @@ class ListPaperDocsArgs {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ListPaperDocsSortBy.ACCESSED.
      */
+    @javax.annotation.Nonnull
     public ListPaperDocsSortBy getSortBy() {
         return sortBy;
     }
@@ -99,6 +101,7 @@ class ListPaperDocsArgs {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ListPaperDocsSortOrder.ASCENDING.
      */
+    @javax.annotation.Nonnull
     public ListPaperDocsSortOrder getSortOrder() {
         return sortOrder;
     }

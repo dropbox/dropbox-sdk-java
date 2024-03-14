@@ -139,6 +139,7 @@ public class TeamEvent {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getTimestamp() {
         return timestamp;
     }
@@ -148,6 +149,7 @@ public class TeamEvent {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public EventCategory getEventCategory() {
         return eventCategory;
     }
@@ -157,6 +159,7 @@ public class TeamEvent {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public EventType getEventType() {
         return eventType;
     }
@@ -167,6 +170,7 @@ public class TeamEvent {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public EventDetails getDetails() {
         return details;
     }
@@ -177,6 +181,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public ActorLogInfo getActor() {
         return actor;
     }
@@ -189,6 +194,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public OriginLogInfo getOrigin() {
         return origin;
     }
@@ -199,6 +205,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getInvolveNonTeamMember() {
         return involveNonTeamMember;
     }
@@ -209,6 +216,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public ContextLogInfo getContext() {
         return context;
     }
@@ -219,6 +227,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<ParticipantLogInfo> getParticipants() {
         return participants;
     }
@@ -230,6 +239,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<AssetLogInfo> getAssets() {
         return assets;
     }

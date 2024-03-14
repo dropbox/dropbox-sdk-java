@@ -52,6 +52,7 @@ public class ContentAdministrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getNewValue() {
         return newValue;
     }
@@ -61,6 +62,7 @@ public class ContentAdministrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPreviousValue() {
         return previousValue;
     }

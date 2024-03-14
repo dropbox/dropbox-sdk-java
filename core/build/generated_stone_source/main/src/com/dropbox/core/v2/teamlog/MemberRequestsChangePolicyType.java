@@ -39,6 +39,7 @@ public class MemberRequestsChangePolicyType {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDescription() {
         return description;
     }

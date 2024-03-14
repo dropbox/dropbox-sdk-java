@@ -51,6 +51,7 @@ public class ComputerBackupPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ComputerBackupPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +61,7 @@ public class ComputerBackupPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ComputerBackupPolicy getPreviousValue() {
         return previousValue;
     }

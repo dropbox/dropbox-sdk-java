@@ -64,6 +64,7 @@ class MembersAddV2Arg extends MembersAddArgBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<MemberAddV2Arg> getNewMembers() {
         return newMembers;
     }

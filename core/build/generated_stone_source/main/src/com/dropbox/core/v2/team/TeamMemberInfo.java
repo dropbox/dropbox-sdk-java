@@ -51,6 +51,7 @@ public class TeamMemberInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMemberProfile getProfile() {
         return profile;
     }
@@ -60,6 +61,7 @@ public class TeamMemberInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AdminTier getRole() {
         return role;
     }

@@ -72,6 +72,7 @@ class PropertiesSearchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<PropertiesSearchQuery> getQueries() {
         return queries;
     }
@@ -83,6 +84,7 @@ class PropertiesSearchArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     TemplateFilter.FILTER_NONE.
      */
+    @javax.annotation.Nonnull
     public TemplateFilter getTemplateFilter() {
         return templateFilter;
     }

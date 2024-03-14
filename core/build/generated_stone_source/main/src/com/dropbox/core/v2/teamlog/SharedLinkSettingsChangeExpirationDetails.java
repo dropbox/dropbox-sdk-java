@@ -77,6 +77,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -86,6 +87,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getSharedContentLink() {
         return sharedContentLink;
     }
@@ -96,6 +98,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getNewValue() {
         return newValue;
     }
@@ -106,6 +109,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getPreviousValue() {
         return previousValue;
     }

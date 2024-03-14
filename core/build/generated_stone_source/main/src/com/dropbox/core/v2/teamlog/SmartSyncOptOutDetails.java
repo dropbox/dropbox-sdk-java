@@ -51,6 +51,7 @@ public class SmartSyncOptOutDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SmartSyncOptOutPolicy getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +61,7 @@ public class SmartSyncOptOutDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SmartSyncOptOutPolicy getNewValue() {
         return newValue;
     }

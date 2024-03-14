@@ -92,6 +92,7 @@ class AddFolderMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -102,6 +103,7 @@ class AddFolderMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<AddMember> getMembers() {
         return members;
     }
@@ -122,6 +124,7 @@ class AddFolderMemberArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getCustomMessage() {
         return customMessage;
     }

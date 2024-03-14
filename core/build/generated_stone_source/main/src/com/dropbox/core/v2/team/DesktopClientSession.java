@@ -104,6 +104,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSessionId() {
         return sessionId;
     }
@@ -113,6 +114,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getHostName() {
         return hostName;
     }
@@ -122,6 +124,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public DesktopPlatform getClientType() {
         return clientType;
     }
@@ -131,6 +134,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getClientVersion() {
         return clientVersion;
     }
@@ -140,6 +144,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPlatform() {
         return platform;
     }
@@ -158,6 +163,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -167,6 +173,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getCountry() {
         return country;
     }
@@ -176,6 +183,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getCreated() {
         return created;
     }
@@ -185,6 +193,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getUpdated() {
         return updated;
     }

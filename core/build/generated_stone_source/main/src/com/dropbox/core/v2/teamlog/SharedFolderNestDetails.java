@@ -59,6 +59,7 @@ public class SharedFolderNestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPreviousParentNsId() {
         return previousParentNsId;
     }
@@ -68,6 +69,7 @@ public class SharedFolderNestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getNewParentNsId() {
         return newParentNsId;
     }
@@ -77,6 +79,7 @@ public class SharedFolderNestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPreviousNsPath() {
         return previousNsPath;
     }
@@ -86,6 +89,7 @@ public class SharedFolderNestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getNewNsPath() {
         return newNsPath;
     }

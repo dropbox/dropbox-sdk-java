@@ -44,6 +44,7 @@ public class ListFileMembersCountResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SharedFileMembers getMembers() {
         return members;
     }

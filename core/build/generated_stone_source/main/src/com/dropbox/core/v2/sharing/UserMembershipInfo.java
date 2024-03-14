@@ -77,6 +77,7 @@ public class UserMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -86,6 +87,7 @@ public class UserMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserInfo getUser() {
         return user;
     }
@@ -96,6 +98,7 @@ public class UserMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<MemberPermission> getPermissions() {
         return permissions;
     }
@@ -105,6 +108,7 @@ public class UserMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getInitials() {
         return initials;
     }

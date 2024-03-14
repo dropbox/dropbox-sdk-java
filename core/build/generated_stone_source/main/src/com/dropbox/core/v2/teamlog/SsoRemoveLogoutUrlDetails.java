@@ -45,6 +45,7 @@ public class SsoRemoveLogoutUrlDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPreviousValue() {
         return previousValue;
     }

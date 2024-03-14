@@ -50,6 +50,7 @@ public class AdminEmailRemindersChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AdminEmailRemindersPolicy getNewValue() {
         return newValue;
     }
@@ -59,6 +60,7 @@ public class AdminEmailRemindersChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AdminEmailRemindersPolicy getPreviousValue() {
         return previousValue;
     }

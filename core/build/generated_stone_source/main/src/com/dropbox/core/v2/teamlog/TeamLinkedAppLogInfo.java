@@ -49,6 +49,7 @@ public class TeamLinkedAppLogInfo extends AppLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getAppId() {
         return appId;
     }
@@ -58,6 +59,7 @@ public class TeamLinkedAppLogInfo extends AppLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDisplayName() {
         return displayName;
     }

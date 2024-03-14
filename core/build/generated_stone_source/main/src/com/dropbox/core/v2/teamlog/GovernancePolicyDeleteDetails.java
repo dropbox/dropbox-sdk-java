@@ -68,6 +68,7 @@ public class GovernancePolicyDeleteDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -77,6 +78,7 @@ public class GovernancePolicyDeleteDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -86,6 +88,7 @@ public class GovernancePolicyDeleteDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }

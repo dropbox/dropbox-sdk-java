@@ -45,6 +45,7 @@ public class StartedEnterpriseAdminSessionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FedExtraDetails getFederationExtraDetails() {
         return federationExtraDetails;
     }

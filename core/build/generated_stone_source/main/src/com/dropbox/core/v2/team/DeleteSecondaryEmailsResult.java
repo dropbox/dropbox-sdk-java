@@ -46,6 +46,7 @@ public class DeleteSecondaryEmailsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<UserDeleteResult> getResults() {
         return results;
     }

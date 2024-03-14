@@ -75,6 +75,7 @@ class GroupMembersRemoveArg extends IncludeMembersArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GroupSelector getGroup() {
         return group;
     }
@@ -84,6 +85,7 @@ class GroupMembersRemoveArg extends IncludeMembersArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<UserSelectorArg> getUsers() {
         return users;
     }

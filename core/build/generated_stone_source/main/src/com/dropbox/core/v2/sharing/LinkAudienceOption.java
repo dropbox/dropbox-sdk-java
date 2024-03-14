@@ -67,6 +67,7 @@ public class LinkAudienceOption {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public LinkAudience getAudience() {
         return audience;
     }
@@ -87,6 +88,7 @@ public class LinkAudienceOption {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public LinkAudienceDisallowedReason getDisallowedReason() {
         return disallowedReason;
     }

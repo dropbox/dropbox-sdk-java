@@ -66,6 +66,7 @@ public class PropertyGroupTemplate {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -76,6 +77,7 @@ public class PropertyGroupTemplate {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDescription() {
         return description;
     }
@@ -86,6 +88,7 @@ public class PropertyGroupTemplate {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<PropertyFieldTemplate> getFields() {
         return fields;
     }

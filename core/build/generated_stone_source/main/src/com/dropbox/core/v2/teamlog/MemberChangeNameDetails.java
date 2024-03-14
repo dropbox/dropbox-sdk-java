@@ -62,6 +62,7 @@ public class MemberChangeNameDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public UserNameLogInfo getNewValue() {
         return newValue;
     }
@@ -71,6 +72,7 @@ public class MemberChangeNameDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public UserNameLogInfo getPreviousValue() {
         return previousValue;
     }

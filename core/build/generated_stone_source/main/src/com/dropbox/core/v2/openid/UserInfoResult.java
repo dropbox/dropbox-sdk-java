@@ -72,6 +72,7 @@ public class UserInfoResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getFamilyName() {
         return familyName;
     }
@@ -81,6 +82,7 @@ public class UserInfoResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getGivenName() {
         return givenName;
     }
@@ -90,6 +92,7 @@ public class UserInfoResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getEmail() {
         return email;
     }
@@ -99,6 +102,7 @@ public class UserInfoResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getEmailVerified() {
         return emailVerified;
     }
@@ -109,6 +113,7 @@ public class UserInfoResult {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     "".
      */
+    @javax.annotation.Nonnull
     public String getIss() {
         return iss;
     }
@@ -120,6 +125,7 @@ public class UserInfoResult {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     "".
      */
+    @javax.annotation.Nonnull
     public String getSub() {
         return sub;
     }

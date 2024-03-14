@@ -71,6 +71,7 @@ public class AddMember {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MemberSelector getMember() {
         return member;
     }
@@ -82,6 +83,7 @@ public class AddMember {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     AccessLevel.VIEWER.
      */
+    @javax.annotation.Nonnull
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }

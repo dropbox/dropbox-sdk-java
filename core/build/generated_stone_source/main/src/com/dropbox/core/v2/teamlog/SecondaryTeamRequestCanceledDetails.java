@@ -52,6 +52,7 @@ public class SecondaryTeamRequestCanceledDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSentTo() {
         return sentTo;
     }
@@ -61,6 +62,7 @@ public class SecondaryTeamRequestCanceledDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSentBy() {
         return sentBy;
     }

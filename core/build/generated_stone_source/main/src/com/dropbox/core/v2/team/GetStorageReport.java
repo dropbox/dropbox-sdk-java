@@ -120,6 +120,7 @@ public class GetStorageReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getStartDate() {
         return startDate;
     }
@@ -129,6 +130,7 @@ public class GetStorageReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getTotalUsage() {
         return totalUsage;
     }
@@ -139,6 +141,7 @@ public class GetStorageReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getSharedUsage() {
         return sharedUsage;
     }
@@ -149,6 +152,7 @@ public class GetStorageReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getUnsharedUsage() {
         return unsharedUsage;
     }
@@ -159,6 +163,7 @@ public class GetStorageReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<Long> getSharedFolders() {
         return sharedFolders;
     }
@@ -173,6 +178,7 @@ public class GetStorageReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<List<StorageBucket>> getMemberStorageMap() {
         return memberStorageMap;
     }

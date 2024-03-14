@@ -51,6 +51,7 @@ class GetThumbnailBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<ThumbnailArg> getEntries() {
         return entries;
     }

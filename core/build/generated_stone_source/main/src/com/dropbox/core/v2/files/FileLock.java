@@ -40,6 +40,7 @@ public class FileLock {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FileLockContent getContent() {
         return content;
     }

@@ -46,6 +46,7 @@ public class RevokeLinkedAppBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<RevokeLinkedAppStatus> getRevokeLinkedAppStatus() {
         return revokeLinkedAppStatus;
     }

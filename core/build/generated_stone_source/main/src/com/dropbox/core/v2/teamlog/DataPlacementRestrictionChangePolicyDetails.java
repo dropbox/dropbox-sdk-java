@@ -51,6 +51,7 @@ public class DataPlacementRestrictionChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PlacementRestriction getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +61,7 @@ public class DataPlacementRestrictionChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PlacementRestriction getNewValue() {
         return newValue;
     }

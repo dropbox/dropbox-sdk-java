@@ -48,6 +48,7 @@ public class ExportResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ExportMetadata getExportMetadata() {
         return exportMetadata;
     }
@@ -57,6 +58,7 @@ public class ExportResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public FileMetadata getFileMetadata() {
         return fileMetadata;
     }

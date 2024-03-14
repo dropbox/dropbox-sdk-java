@@ -62,6 +62,7 @@ public class FileRequestDeadline {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getDeadline() {
         return deadline;
     }
@@ -72,6 +73,7 @@ public class FileRequestDeadline {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public GracePeriod getAllowLateUploads() {
         return allowLateUploads;
     }

@@ -64,6 +64,7 @@ public class PermanentDeleteChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ContentPermanentDeletePolicy getNewValue() {
         return newValue;
     }
@@ -74,6 +75,7 @@ public class PermanentDeleteChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public ContentPermanentDeletePolicy getPreviousValue() {
         return previousValue;
     }

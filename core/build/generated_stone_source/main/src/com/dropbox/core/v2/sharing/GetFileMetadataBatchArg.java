@@ -91,6 +91,7 @@ class GetFileMetadataBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getFiles() {
         return files;
     }
@@ -102,6 +103,7 @@ class GetFileMetadataBatchArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<FileAction> getActions() {
         return actions;
     }

@@ -51,6 +51,7 @@ public class GroupMemberInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MemberProfile getProfile() {
         return profile;
     }
@@ -60,6 +61,7 @@ public class GroupMemberInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GroupAccessType getAccessType() {
         return accessType;
     }

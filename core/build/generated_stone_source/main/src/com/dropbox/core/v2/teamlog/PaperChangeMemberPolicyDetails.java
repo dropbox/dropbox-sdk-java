@@ -67,6 +67,7 @@ public class PaperChangeMemberPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PaperMemberPolicy getNewValue() {
         return newValue;
     }
@@ -77,6 +78,7 @@ public class PaperChangeMemberPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public PaperMemberPolicy getPreviousValue() {
         return previousValue;
     }

@@ -52,6 +52,7 @@ public class ShowcaseChangeDownloadPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ShowcaseDownloadPolicy getNewValue() {
         return newValue;
     }
@@ -61,6 +62,7 @@ public class ShowcaseChangeDownloadPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ShowcaseDownloadPolicy getPreviousValue() {
         return previousValue;
     }

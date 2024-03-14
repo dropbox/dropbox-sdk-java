@@ -63,6 +63,7 @@ public class SharedContentChangeMemberRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AccessLevel getNewAccessLevel() {
         return newAccessLevel;
     }
@@ -72,6 +73,7 @@ public class SharedContentChangeMemberRoleDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AccessLevel getPreviousAccessLevel() {
         return previousAccessLevel;
     }

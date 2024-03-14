@@ -64,6 +64,7 @@ public class GoogleSsoChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public GoogleSsoPolicy getNewValue() {
         return newValue;
     }
@@ -74,6 +75,7 @@ public class GoogleSsoChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public GoogleSsoPolicy getPreviousValue() {
         return previousValue;
     }

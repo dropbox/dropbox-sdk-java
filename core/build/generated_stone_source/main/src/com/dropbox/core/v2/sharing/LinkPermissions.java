@@ -189,6 +189,7 @@ public class LinkPermissions {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<VisibilityPolicy> getVisibilityPolicies() {
         return visibilityPolicies;
     }
@@ -270,6 +271,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public ResolvedVisibility getResolvedVisibility() {
         return resolvedVisibility;
     }
@@ -284,6 +286,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public RequestedVisibility getRequestedVisibility() {
         return requestedVisibility;
     }
@@ -294,6 +297,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SharedLinkAccessFailureReason getRevokeFailureReason() {
         return revokeFailureReason;
     }
@@ -304,6 +308,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public LinkAudience getEffectiveAudience() {
         return effectiveAudience;
     }
@@ -320,6 +325,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public LinkAccessLevel getLinkAccessLevel() {
         return linkAccessLevel;
     }
@@ -330,6 +336,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<LinkAudienceOption> getAudienceOptions() {
         return audienceOptions;
     }
@@ -339,6 +346,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getCanSetPassword() {
         return canSetPassword;
     }
@@ -348,6 +356,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getCanRemovePassword() {
         return canRemovePassword;
     }
@@ -357,6 +366,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getRequirePassword() {
         return requirePassword;
     }
@@ -367,6 +377,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Boolean getCanUseExtendedSharingControls() {
         return canUseExtendedSharingControls;
     }

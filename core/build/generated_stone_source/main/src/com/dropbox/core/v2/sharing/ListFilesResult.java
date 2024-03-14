@@ -69,6 +69,7 @@ public class ListFilesResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<SharedFileMetadata> getEntries() {
         return entries;
     }
@@ -78,6 +79,7 @@ public class ListFilesResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getCursor() {
         return cursor;
     }

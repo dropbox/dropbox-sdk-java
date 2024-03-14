@@ -42,6 +42,7 @@ public class GetTemplateResult extends PropertyGroupTemplate {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -52,6 +53,7 @@ public class GetTemplateResult extends PropertyGroupTemplate {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDescription() {
         return description;
     }
@@ -62,6 +64,7 @@ public class GetTemplateResult extends PropertyGroupTemplate {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<PropertyFieldTemplate> getFields() {
         return fields;
     }

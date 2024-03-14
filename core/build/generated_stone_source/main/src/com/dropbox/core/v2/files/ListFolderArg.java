@@ -118,6 +118,7 @@ class ListFolderArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -184,6 +185,7 @@ class ListFolderArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Long getLimit() {
         return limit;
     }
@@ -196,6 +198,7 @@ class ListFolderArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SharedLink getSharedLink() {
         return sharedLink;
     }
@@ -207,6 +210,7 @@ class ListFolderArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public TemplateFilterBase getIncludePropertyGroups() {
         return includePropertyGroups;
     }

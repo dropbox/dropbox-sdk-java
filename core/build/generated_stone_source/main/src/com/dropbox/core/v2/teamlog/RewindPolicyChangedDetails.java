@@ -51,6 +51,7 @@ public class RewindPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public RewindPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +61,7 @@ public class RewindPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public RewindPolicy getPreviousValue() {
         return previousValue;
     }

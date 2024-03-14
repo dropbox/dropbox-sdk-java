@@ -51,6 +51,7 @@ public class AccountLockOrUnlockedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AccountState getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +61,7 @@ public class AccountLockOrUnlockedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AccountState getNewValue() {
         return newValue;
     }

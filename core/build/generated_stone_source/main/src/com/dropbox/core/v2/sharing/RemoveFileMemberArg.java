@@ -65,6 +65,7 @@ class RemoveFileMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getFile() {
         return file;
     }
@@ -76,6 +77,7 @@ class RemoveFileMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MemberSelector getMember() {
         return member;
     }

@@ -88,6 +88,7 @@ class ShareFolderArg extends ShareFolderArgBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -97,6 +98,7 @@ class ShareFolderArg extends ShareFolderArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public AclUpdatePolicy getAclUpdatePolicy() {
         return aclUpdatePolicy;
     }
@@ -117,6 +119,7 @@ class ShareFolderArg extends ShareFolderArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public MemberPolicy getMemberPolicy() {
         return memberPolicy;
     }
@@ -128,6 +131,7 @@ class ShareFolderArg extends ShareFolderArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public SharedLinkPolicy getSharedLinkPolicy() {
         return sharedLinkPolicy;
     }
@@ -137,6 +141,7 @@ class ShareFolderArg extends ShareFolderArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public ViewerInfoPolicy getViewerInfoPolicy() {
         return viewerInfoPolicy;
     }
@@ -147,6 +152,7 @@ class ShareFolderArg extends ShareFolderArgBase {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     AccessInheritance.INHERIT.
      */
+    @javax.annotation.Nonnull
     public AccessInheritance getAccessInheritance() {
         return accessInheritance;
     }
@@ -159,6 +165,7 @@ class ShareFolderArg extends ShareFolderArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<FolderAction> getActions() {
         return actions;
     }
@@ -168,6 +175,7 @@ class ShareFolderArg extends ShareFolderArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public LinkSettings getLinkSettings() {
         return linkSettings;
     }

@@ -58,6 +58,7 @@ public class GetCopyReferenceResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Metadata getMetadata() {
         return metadata;
     }
@@ -67,6 +68,7 @@ public class GetCopyReferenceResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getCopyReference() {
         return copyReference;
     }
@@ -78,6 +80,7 @@ public class GetCopyReferenceResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public Date getExpires() {
         return expires;
     }

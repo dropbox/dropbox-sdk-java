@@ -47,6 +47,7 @@ public class DurationLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TimeUnit getUnit() {
         return unit;
     }

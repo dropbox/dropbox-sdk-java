@@ -81,6 +81,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getUrl() {
         return url;
     }
@@ -90,6 +91,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getName() {
         return name;
     }
@@ -99,6 +101,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public LinkPermissions getLinkPermissions() {
         return linkPermissions;
     }
@@ -108,6 +111,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getId() {
         return id;
     }
@@ -117,6 +121,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getExpires() {
         return expires;
     }
@@ -128,6 +133,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -138,6 +144,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public TeamMemberInfo getTeamMemberInfo() {
         return teamMemberInfo;
     }
@@ -149,6 +156,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Team getContentOwnerTeamInfo() {
         return contentOwnerTeamInfo;
     }

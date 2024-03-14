@@ -47,6 +47,7 @@ public class GetThumbnailBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<GetThumbnailBatchResultEntry> getEntries() {
         return entries;
     }

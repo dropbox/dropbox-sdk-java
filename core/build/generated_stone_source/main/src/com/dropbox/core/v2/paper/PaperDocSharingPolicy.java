@@ -43,6 +43,7 @@ class PaperDocSharingPolicy extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDocId() {
         return docId;
     }
@@ -52,6 +53,7 @@ class PaperDocSharingPolicy extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public SharingPolicy getSharingPolicy() {
         return sharingPolicy;
     }

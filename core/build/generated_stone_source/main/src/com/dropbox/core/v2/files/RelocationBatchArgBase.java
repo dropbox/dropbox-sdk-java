@@ -77,6 +77,7 @@ class RelocationBatchArgBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<RelocationPath> getEntries() {
         return entries;
     }

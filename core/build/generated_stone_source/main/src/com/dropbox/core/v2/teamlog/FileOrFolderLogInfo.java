@@ -70,6 +70,7 @@ public class FileOrFolderLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PathLogInfo getPath() {
         return path;
     }
@@ -79,6 +80,7 @@ public class FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -88,6 +90,7 @@ public class FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getFileId() {
         return fileId;
     }
@@ -97,6 +100,7 @@ public class FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Long getFileSize() {
         return fileSize;
     }

@@ -65,6 +65,7 @@ public class PaperCreateResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getUrl() {
         return url;
     }
@@ -74,6 +75,7 @@ public class PaperCreateResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getResultPath() {
         return resultPath;
     }
@@ -83,6 +85,7 @@ public class PaperCreateResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getFileId() {
         return fileId;
     }

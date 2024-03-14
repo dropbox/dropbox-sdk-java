@@ -72,6 +72,7 @@ public class TeamMemberInfoV2 {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public TeamMemberProfile getProfile() {
         return profile;
     }
@@ -81,6 +82,7 @@ public class TeamMemberInfoV2 {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<TeamMemberRole> getRoles() {
         return roles;
     }

@@ -67,6 +67,7 @@ public class PropertiesSearchMatch {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getId() {
         return id;
     }
@@ -76,6 +77,7 @@ public class PropertiesSearchMatch {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -94,6 +96,7 @@ public class PropertiesSearchMatch {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }

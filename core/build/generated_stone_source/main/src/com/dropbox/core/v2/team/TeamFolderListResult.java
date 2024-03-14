@@ -67,6 +67,7 @@ public class TeamFolderListResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<TeamFolderMetadata> getTeamFolders() {
         return teamFolders;
     }
@@ -78,6 +79,7 @@ public class TeamFolderListResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getCursor() {
         return cursor;
     }

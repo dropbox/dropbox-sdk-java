@@ -68,6 +68,7 @@ public class ListFileRequestsV2Result {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<FileRequest> getFileRequests() {
         return fileRequests;
     }
@@ -79,6 +80,7 @@ public class ListFileRequestsV2Result {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getCursor() {
         return cursor;
     }

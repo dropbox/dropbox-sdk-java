@@ -58,6 +58,7 @@ public class SharedContentChangeLinkExpiryDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getNewValue() {
         return newValue;
     }
@@ -68,6 +69,7 @@ public class SharedContentChangeLinkExpiryDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getPreviousValue() {
         return previousValue;
     }

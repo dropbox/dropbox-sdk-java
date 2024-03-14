@@ -67,6 +67,7 @@ public class GroupLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDisplayName() {
         return displayName;
     }
@@ -76,6 +77,7 @@ public class GroupLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getGroupId() {
         return groupId;
     }
@@ -85,6 +87,7 @@ public class GroupLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getExternalId() {
         return externalId;
     }

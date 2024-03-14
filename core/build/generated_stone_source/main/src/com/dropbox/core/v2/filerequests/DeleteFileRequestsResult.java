@@ -51,6 +51,7 @@ public class DeleteFileRequestsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<FileRequest> getFileRequests() {
         return fileRequests;
     }

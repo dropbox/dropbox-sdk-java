@@ -68,6 +68,7 @@ public class GetDevicesReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getStartDate() {
         return startDate;
     }
@@ -77,6 +78,7 @@ public class GetDevicesReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public DevicesActive getActive1Day() {
         return active1Day;
     }
@@ -86,6 +88,7 @@ public class GetDevicesReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public DevicesActive getActive7Day() {
         return active7Day;
     }
@@ -95,6 +98,7 @@ public class GetDevicesReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public DevicesActive getActive28Day() {
         return active28Day;
     }

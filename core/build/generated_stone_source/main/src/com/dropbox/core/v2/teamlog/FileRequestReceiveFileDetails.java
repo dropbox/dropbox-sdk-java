@@ -98,6 +98,7 @@ public class FileRequestReceiveFileDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getSubmittedFileNames() {
         return submittedFileNames;
     }
@@ -107,6 +108,7 @@ public class FileRequestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getFileRequestId() {
         return fileRequestId;
     }
@@ -116,6 +118,7 @@ public class FileRequestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public FileRequestDetails getFileRequestDetails() {
         return fileRequestDetails;
     }
@@ -125,6 +128,7 @@ public class FileRequestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getSubmitterName() {
         return submitterName;
     }
@@ -134,6 +138,7 @@ public class FileRequestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getSubmitterEmail() {
         return submitterEmail;
     }

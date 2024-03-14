@@ -80,6 +80,7 @@ class AddPaperDocUser extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDocId() {
         return docId;
     }
@@ -90,6 +91,7 @@ class AddPaperDocUser extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<AddMember> getMembers() {
         return members;
     }
@@ -100,6 +102,7 @@ class AddPaperDocUser extends RefPaperDoc {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getCustomMessage() {
         return customMessage;
     }

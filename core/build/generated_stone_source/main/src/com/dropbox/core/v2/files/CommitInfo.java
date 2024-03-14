@@ -113,6 +113,7 @@ public class CommitInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPath() {
         return path;
     }
@@ -123,6 +124,7 @@ public class CommitInfo {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     WriteMode.ADD.
      */
+    @javax.annotation.Nonnull
     public WriteMode getMode() {
         return mode;
     }
@@ -147,6 +149,7 @@ public class CommitInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getClientModified() {
         return clientModified;
     }
@@ -169,6 +172,7 @@ public class CommitInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }

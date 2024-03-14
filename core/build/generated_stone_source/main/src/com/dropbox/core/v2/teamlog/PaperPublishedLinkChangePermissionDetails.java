@@ -58,6 +58,7 @@ public class PaperPublishedLinkChangePermissionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -67,6 +68,7 @@ public class PaperPublishedLinkChangePermissionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getNewPermissionLevel() {
         return newPermissionLevel;
     }
@@ -76,6 +78,7 @@ public class PaperPublishedLinkChangePermissionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPreviousPermissionLevel() {
         return previousPermissionLevel;
     }

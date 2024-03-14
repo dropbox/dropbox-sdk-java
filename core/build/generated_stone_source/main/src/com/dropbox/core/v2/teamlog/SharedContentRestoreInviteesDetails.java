@@ -62,6 +62,7 @@ public class SharedContentRestoreInviteesDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -71,6 +72,7 @@ public class SharedContentRestoreInviteesDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<String> getInvitees() {
         return invitees;
     }

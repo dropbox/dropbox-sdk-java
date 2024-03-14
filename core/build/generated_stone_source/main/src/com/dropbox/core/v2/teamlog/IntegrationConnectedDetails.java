@@ -45,6 +45,7 @@ public class IntegrationConnectedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getIntegrationName() {
         return integrationName;
     }

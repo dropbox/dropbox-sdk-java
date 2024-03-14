@@ -46,6 +46,7 @@ public class LegalHoldsListPoliciesResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public List<LegalHoldPolicy> getPolicies() {
         return policies;
     }

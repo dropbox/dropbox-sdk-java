@@ -51,6 +51,7 @@ public class FileLockingLockStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public LockStatus getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +61,7 @@ public class FileLockingLockStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public LockStatus getNewValue() {
         return newValue;
     }

@@ -87,6 +87,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getDeviceName() {
         return deviceName;
     }
@@ -96,6 +97,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public MobileClientPlatform getClientType() {
         return clientType;
     }
@@ -105,6 +107,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -114,6 +117,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getCreated() {
         return created;
     }
@@ -123,6 +127,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -132,6 +137,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public MobileSessionLogInfo getSessionInfo() {
         return sessionInfo;
     }
@@ -141,6 +147,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getClientVersion() {
         return clientVersion;
     }
@@ -150,6 +157,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getOsVersion() {
         return osVersion;
     }
@@ -159,6 +167,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public String getLastCarrier() {
         return lastCarrier;
     }

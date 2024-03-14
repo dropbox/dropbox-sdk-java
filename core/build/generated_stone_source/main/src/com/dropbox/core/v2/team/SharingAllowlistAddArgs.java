@@ -76,6 +76,7 @@ class SharingAllowlistAddArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<String> getDomains() {
         return domains;
     }
@@ -85,6 +86,7 @@ class SharingAllowlistAddArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<String> getEmails() {
         return emails;
     }

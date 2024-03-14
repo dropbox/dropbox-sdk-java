@@ -44,6 +44,7 @@ public class ExcludedUsersUpdateResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public ExcludedUsersUpdateStatus getStatus() {
         return status;
     }

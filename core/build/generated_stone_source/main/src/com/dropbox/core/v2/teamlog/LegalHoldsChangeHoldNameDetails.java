@@ -56,6 +56,7 @@ public class LegalHoldsChangeHoldNameDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -65,6 +66,7 @@ public class LegalHoldsChangeHoldNameDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getPreviousValue() {
         return previousValue;
     }
@@ -74,6 +76,7 @@ public class LegalHoldsChangeHoldNameDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getNewValue() {
         return newValue;
     }

@@ -52,6 +52,7 @@ public class PaperDefaultFolderPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PaperDefaultFolderPolicy getNewValue() {
         return newValue;
     }
@@ -61,6 +62,7 @@ public class PaperDefaultFolderPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public PaperDefaultFolderPolicy getPreviousValue() {
         return previousValue;
     }

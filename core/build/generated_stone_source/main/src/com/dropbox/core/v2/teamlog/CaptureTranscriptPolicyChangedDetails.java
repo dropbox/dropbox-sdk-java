@@ -50,6 +50,7 @@ public class CaptureTranscriptPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public CaptureTranscriptPolicy getNewValue() {
         return newValue;
     }
@@ -59,6 +60,7 @@ public class CaptureTranscriptPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public CaptureTranscriptPolicy getPreviousValue() {
         return previousValue;
     }

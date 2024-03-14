@@ -75,6 +75,7 @@ class GetMetadataArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @javax.annotation.Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -87,6 +88,7 @@ class GetMetadataArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<FolderAction> getActions() {
         return actions;
     }

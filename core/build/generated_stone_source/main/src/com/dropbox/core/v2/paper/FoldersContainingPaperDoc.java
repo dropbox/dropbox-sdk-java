@@ -66,6 +66,7 @@ public class FoldersContainingPaperDoc {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public FolderSharingPolicyType getFolderSharingPolicyType() {
         return folderSharingPolicyType;
     }
@@ -75,6 +76,7 @@ public class FoldersContainingPaperDoc {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @javax.annotation.Nullable
     public List<Folder> getFolders() {
         return folders;
     }
