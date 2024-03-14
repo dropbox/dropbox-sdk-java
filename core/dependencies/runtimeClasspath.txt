@@ -1,3 +1,4 @@
 ch.randelshofer:fastdoubleparser:0.8.0
 com.fasterxml.jackson.core:jackson-core:2.15.0
 com.fasterxml.jackson:jackson-bom:2.15.0
+com.google.code.findbugs:jsr305:3.0.2
