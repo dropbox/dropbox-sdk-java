@@ -6,10 +6,7 @@ import java.util.List;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxDownloader;
-import com.dropbox.core.DbxStreamReader;
-import com.dropbox.core.NoThrowInputStream;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.util.IOUtil;
 
 import java.io.IOException;
 import java.io.OutputStream;

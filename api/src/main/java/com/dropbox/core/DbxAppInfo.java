@@ -28,7 +28,7 @@ public class DbxAppInfo extends Dumpable {
      * DbxAppInfo without secret. Should only be used in PKCE flow.
      *
      * @param key Dropbox app key (see {@link #getKey})
-     * @see com.dropbox.core.DbxPKCEWebAuth
+     * see com.dropbox.core.DbxPKCEWebAuth
      */
     public DbxAppInfo(String key) {
         this(key, null);
@@ -101,7 +101,7 @@ public class DbxAppInfo extends Dumpable {
 
     /**
      * Return if this DbxAppInfo contains app secret. DbxAppInfo without secret should only be
-     * used in {@link com.dropbox.core.DbxPKCEWebAuth}.
+     * used in {@code com.dropbox.core.DbxPKCEWebAuth}.
      *
      * @return If this DbxAppInfo contains app secret.
      */

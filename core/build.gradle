@@ -28,33 +28,8 @@ ext {
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
 }
 
-tasks.register('versionWriterTask') {
-    String versionName
-    if (project.hasProperty("VERSION_NAME")) {
-        versionName = "${project.property("VERSION_NAME")}"
-    } else {
-        versionName = project.version
-    }
-    it.inputs.property("versionName", versionName)
-
-    def generatedDir = project.layout.buildDirectory.dir("generated/version")
-    it.outputs.dir(generatedDir)
-
-    it.doLast {
-        def versionFile = generatedDir.get().file("com/dropbox/core/DbxSdkVersion.java").asFile
-        versionFile.parentFile.mkdirs()
-        versionFile.text = """// Generated file. Do not edit
-package com.dropbox.core;
-
-public final class DbxSdkVersion {
-    public static final String Version = "${versionName}";
-}
-"""
-    }
-}
-sourceSets.main.java.srcDir(versionWriterTask)
-
 dependencies {
+    api(project(":api"))
     api(dropboxJavaSdkLibs.jackson.core)
 
     compileOnly dropboxJavaSdkLibs.appengine.api
@@ -314,9 +289,9 @@ tasks.named("generateStone", StoneTask) {
 
     ])
     outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/main"))
-//    sourceSets { main { java.srcDir(outputDir.file("src")) } }
+    sourceSets { main { java.srcDir(outputDir.file("src")) } }
 }
-sourceSets.main.java.srcDir(generateStone.outputs.dir("src"))
+//sourceSets.main.java.srcDir(generateStone.outputs.dir("src"))
 
 tasks.named("generateTestStone", StoneTask) {
     String packageName = 'com.dropbox.core.stone'

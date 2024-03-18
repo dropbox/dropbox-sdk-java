@@ -1,8 +1,5 @@
 package com.dropbox.core.v2;
 
-import static com.dropbox.core.DbxRequestUtil.addUserLocaleHeader;
-import static com.dropbox.core.DbxRequestUtil.addPathRootHeader;
-
 import com.dropbox.core.BadResponseException;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
@@ -25,7 +22,6 @@ import com.dropbox.core.v2.common.PathRoot;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.ByteArrayOutputStream;
@@ -128,8 +124,8 @@ public abstract class DbxRawClientV2 {
         }
         if (!this.host.getNotify().equals(host)) {
             // TODO(krieb): fix this ugliness
-            addUserLocaleHeader(headers, requestConfig);
-            addPathRootHeader(headers, this.pathRoot);
+            DbxRequestUtil.addUserLocaleHeader(headers, requestConfig);
+            DbxRequestUtil.addPathRootHeader(headers, this.pathRoot);
         }
 
         headers.add(new HttpRequestor.Header("Content-Type", "application/json; charset=utf-8"));
@@ -182,8 +178,8 @@ public abstract class DbxRawClientV2 {
         if (!noAuth) {
             refreshAccessTokenIfNeeded();
         }
-        addUserLocaleHeader(headers, requestConfig);
-        addPathRootHeader(headers, this.pathRoot);
+        DbxRequestUtil.addUserLocaleHeader(headers, requestConfig);
+        DbxRequestUtil.addPathRootHeader(headers, this.pathRoot);
         headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(argSerializer, arg)));
         headers.add(new HttpRequestor.Header("Content-Type", ""));
 
@@ -277,8 +273,8 @@ public abstract class DbxRawClientV2 {
             refreshAccessTokenIfNeeded();
             addAuthHeaders(headers);
         }
-        addUserLocaleHeader(headers, requestConfig);
-        addPathRootHeader(headers, this.pathRoot);
+        DbxRequestUtil.addUserLocaleHeader(headers, requestConfig);
+        DbxRequestUtil.addPathRootHeader(headers, this.pathRoot);
         headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
         headers = DbxRequestUtil.addUserAgentHeader(headers, requestConfig, USER_AGENT_ID);
         headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(argSerializer, arg)));

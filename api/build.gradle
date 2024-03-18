@@ -1,0 +1,118 @@
+import com.dropbox.stone.java.StoneTask
+import com.dropbox.stone.java.model.ClientSpec
+import com.dropbox.stone.java.model.StoneConfig
+
+plugins {
+    id("java-library")
+//    id "com.vanniktech.maven.publish"
+//    id "com.dropbox.dependency-guard"
+    id("com.dropbox.stone.java")
+}
+
+dependencies {
+    api(project(":entities"))
+    api(dropboxJavaSdkLibs.jackson.core)
+}
+
+tasks.register('versionWriterTask') {
+    String versionName
+    if (project.hasProperty("VERSION_NAME")) {
+        versionName = "${project.property("VERSION_NAME")}"
+    } else {
+        versionName = project.version
+    }
+    it.inputs.property("versionName", versionName)
+
+    def generatedDir = project.layout.buildDirectory.dir("generated/version")
+    it.outputs.dir(generatedDir)
+
+    it.doLast {
+        def versionFile = generatedDir.get().file("com/dropbox/core/DbxSdkVersion.java").asFile
+        versionFile.parentFile.mkdirs()
+        versionFile.text = """// Generated file. Do not edit
+package com.dropbox.core;
+
+public final class DbxSdkVersion {
+    public static final String Version = "${versionName}";
+}
+"""
+    }
+}
+sourceSets.main.java.srcDir(versionWriterTask)
+
+tasks.named("generateStone", StoneTask) {
+    String packageName = 'com.dropbox.core.v2'
+    String globalRouteFilter = 'alpha_group=null and beta_group=null'
+
+    stoneDir.set(project.rootProject.layout.projectDirectory.dir("core/stone"))
+    specDir.set(project.rootProject.layout.projectDirectory.dir("core/src/main/stone"))
+
+    pythonCommand.set("python3")
+    stoneConfigs.addAll([
+            new StoneConfig(
+                    packageName: packageName,
+                    globalRouteFilter: globalRouteFilter,
+                    client: new ClientSpec(
+                            name: 'DbxUserClient',
+                            javadoc: 'Base class for user auth clients.',
+                            requestsClassnamePrefix: "DbxUser",
+                            routeFilter: 'auth="user" or auth="noauth" or auth="app, user"',
+                    ),
+            ),
+            new StoneConfig(
+                    packageName: packageName,
+                    globalRouteFilter: globalRouteFilter,
+                    client: new ClientSpec(
+                            name: 'DbxTeamClient',
+                            javadoc: 'Base class for team auth clients.',
+                            requestsClassnamePrefix: 'DbxTeam',
+                            routeFilter: 'auth="team"',
+                    ),
+            ),
+            new StoneConfig(
+                    packageName: packageName,
+                    globalRouteFilter: globalRouteFilter,
+                    client: new ClientSpec(
+                            name: 'DbxAppClient',
+                            javadoc: 'Base class for app auth clients.',
+                            requestsClassnamePrefix: "DbxApp",
+                            routeFilter: 'auth="app" or auth="app, user"',
+                    )
+            ),
+
+    ])
+    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/main"))
+    sourceSets { main { java.srcDir(outputDir.file("src")) } }
+}
+//sourceSets.main.java.srcDir(generateStone.outputs.dir("src"))
+
+tasks.named("generateTestStone", StoneTask) {
+    String packageName = 'com.dropbox.core.stone'
+
+    pythonCommand.set("python3")
+    stoneDir.set(project.rootProject.layout.projectDirectory.dir("core/stone"))
+    specDir.set(project.rootProject.layout.projectDirectory.dir("core/src/main/stone"))
+
+    stoneConfigs.addAll([
+            new StoneConfig(
+                    packageName: packageName,
+                    dataTypesOnly: true,
+            ),
+            new StoneConfig(
+                    packageName: packageName,
+                    client: new ClientSpec(
+                            name: 'DbxUserClient',
+                            javadoc: 'TestClass.',
+                            requestsClassnamePrefix: "DbxTest",
+                    )
+            ),
+    ])
+    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/test"))
+    sourceSets { test { java.srcDir(outputDir.file("src")) } }
+}
+//sourceSets.test.java.srcDir(generateStone.outputs.dir("src"))
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}

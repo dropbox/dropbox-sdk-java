@@ -19,7 +19,7 @@ import com.dropbox.core.v2.DbxRawClientV2;
 /**
  * Does the OAuth 2 "authorization code" flow.  (This SDK does not support the "token" flow.)
  *
- * <p> Eventually yields an access token, which can be used with {@link
+ * <p> Eventually yields an access token, which can be used with {@code
  * com.dropbox.core.v2.DbxClientV2} to make Dropbox API calls.  You typically only need to do this
  * for a user when they first use your application.  Once you have an access token for that user, it
  * remains valid for years.
@@ -37,11 +37,11 @@ import com.dropbox.core.v2.DbxRawClientV2;
  * <h2> Part 1 </h2>
  * <p> Handler for "http://my-server.com/dropbox-auth-start": </p>
  * <pre>
- *     {@link jakarta.servlet.http.HttpServletRequest} request = ...
- *     {@link jakarta.servlet.http.HttpServletResponse} response = ...
+ *     {@code jakarta.servlet.http.HttpServletRequest} request = ...
+ *     {@code jakarta.servlet.http.HttpServletResponse} response = ...
  *
  *     <b>// Select a spot in the session for DbxWebAuth to store the CSRF token.</b>
- *     {@link jakarta.servlet.http.HttpSession} session = request.getSession(true);
+ *     {@code jakarta.servlet.http.HttpSession} session = request.getSession(true);
  *     String sessionKey = "dropbox-auth-csrf-token";
  *     {@link DbxSessionStore} csrfTokenStore = new DbxStandardSessionStore(session, sessionKey);
  *
@@ -62,11 +62,11 @@ import com.dropbox.core.v2.DbxRawClientV2;
  * <h2> Part 2 </h2>
  * <p> Handler for "http://my-server.com/dropbox-auth-finish": </p>
  * <pre>
- *     {@link jakarta.servlet.http.HttpServletRequest} request = ...
- *     {@link jakarta.servlet.http.HttpServletResponse} response = ...
+ *     {@code jakarta.servlet.http.HttpServletRequest} request = ...
+ *     {@code jakarta.servlet.http.HttpServletResponse} response = ...
  *
  *     <b>// Fetch the session to verify our CSRF token</b>
- *     {@link jakarta.servlet.http.HttpSession} session = request.getSession(true);
+ *     {@code jakarta.servlet.http.HttpSession} session = request.getSession(true);
  *     String sessionKey = "dropbox-auth-csrf-token";
  *     {@link DbxSessionStore} csrfTokenStore = new DbxStandardSessionStore(session, sessionKey);
  *     String redirectUri = "http://my-server.com/dropbox-auth-finish";
@@ -107,7 +107,7 @@ import com.dropbox.core.v2.DbxRawClientV2;
  *     ...
  *
  *     <b>// Now use the access token to make Dropbox API calls.</b>
- *     {@link com.dropbox.core.v2.DbxClientV2} client = new DbxClientV2(requestConfig, accessToken);
+ *     {@code com.dropbox.core.v2.DbxClientV2} client = new DbxClientV2(requestConfig, accessToken);
  *     ...
  * </pre>
  *
@@ -131,7 +131,7 @@ import com.dropbox.core.v2.DbxRawClientV2;
  *     if (code != null) {
  *         code = code.trim();
  *         {@link DbxAuthFinish} authFinish = webAuth.{@link #finishFromCode finishFromCode}(code);
- *         {@link com.dropbox.core.v2.DbxClientV2} client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
+ *         {@code com.dropbox.core.v2.DbxClientV2} client = new DbxClientV2(requestConfig, authFinish.getAccessToken());
  *     }
  * </pre>
  */

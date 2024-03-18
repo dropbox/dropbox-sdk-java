@@ -11,8 +11,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import com.dropbox.core.json.JsonDateReader;
-
 public abstract class JsonWriter<T>
 {
     private static final TimeZone UTC = TimeZone.getTimeZone("UTC");

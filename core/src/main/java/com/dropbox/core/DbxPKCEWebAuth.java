@@ -1,17 +1,7 @@
 package com.dropbox.core;
 
-import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.util.LangUtil;
-import com.dropbox.core.v2.DbxRawClientV2;
-
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.dropbox.core.util.StringUtil.urlSafeBase64Encode;
 
 /**
  *
