@@ -27,8 +27,11 @@ import javax.annotation.Nonnull;
 public class GetDevicesReport extends BaseDfbReport {
     // struct team.GetDevicesReport (team_reports.stone)
 
+    @Nonnull
     protected final DevicesActive active1Day;
+    @Nonnull
     protected final DevicesActive active7Day;
+    @Nonnull
     protected final DevicesActive active28Day;
 
     /**

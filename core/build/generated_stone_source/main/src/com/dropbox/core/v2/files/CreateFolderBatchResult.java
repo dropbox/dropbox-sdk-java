@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class CreateFolderBatchResult extends FileOpsResult {
     // struct files.CreateFolderBatchResult (files.stone)
 
+    @Nonnull
     protected final List<CreateFolderBatchResultEntry> entries;
 
     /**

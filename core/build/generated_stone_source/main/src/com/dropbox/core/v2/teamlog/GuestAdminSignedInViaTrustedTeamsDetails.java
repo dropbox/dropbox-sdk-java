@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class GuestAdminSignedInViaTrustedTeamsDetails {
     // struct team_log.GuestAdminSignedInViaTrustedTeamsDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String teamName;
+    @Nullable
     protected final String trustedTeamName;
 
     /**

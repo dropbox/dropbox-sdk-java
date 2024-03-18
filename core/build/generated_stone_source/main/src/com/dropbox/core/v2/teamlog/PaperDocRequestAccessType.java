@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperDocRequestAccessType {
     // struct team_log.PaperDocRequestAccessType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -24,8 +24,11 @@ import javax.annotation.Nonnull;
 public class ListUsersOnFolderResponse {
     // struct paper.ListUsersOnFolderResponse (paper.stone)
 
+    @Nonnull
     protected final List<InviteeInfo> invitees;
+    @Nonnull
     protected final List<UserInfo> users;
+    @Nonnull
     protected final Cursor cursor;
     protected final boolean hasMore;
 

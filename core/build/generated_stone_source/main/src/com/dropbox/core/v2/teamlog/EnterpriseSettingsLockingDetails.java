@@ -24,9 +24,13 @@ import javax.annotation.Nonnull;
 public class EnterpriseSettingsLockingDetails {
     // struct team_log.EnterpriseSettingsLockingDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String teamName;
+    @Nonnull
     protected final String settingsPageName;
+    @Nonnull
     protected final String previousSettingsPageLockingState;
+    @Nonnull
     protected final String newSettingsPageLockingState;
 
     /**

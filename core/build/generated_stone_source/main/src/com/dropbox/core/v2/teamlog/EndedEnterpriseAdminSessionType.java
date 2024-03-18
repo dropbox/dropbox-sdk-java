@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class EndedEnterpriseAdminSessionType {
     // struct team_log.EndedEnterpriseAdminSessionType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

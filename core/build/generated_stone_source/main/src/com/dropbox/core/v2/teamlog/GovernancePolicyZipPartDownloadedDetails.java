@@ -25,10 +25,15 @@ import javax.annotation.Nullable;
 public class GovernancePolicyZipPartDownloadedDetails {
     // struct team_log.GovernancePolicyZipPartDownloadedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String governancePolicyId;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final PolicyType policyType;
+    @Nonnull
     protected final String exportName;
+    @Nullable
     protected final String part;
 
     /**

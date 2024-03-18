@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 public class FolderLogInfo extends FileOrFolderLogInfo {
     // struct team_log.FolderLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final Long fileCount;
 
     /**

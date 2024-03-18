@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedContentAddLinkExpiryType {
     // struct team_log.SharedContentAddLinkExpiryType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

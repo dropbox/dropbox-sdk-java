@@ -25,10 +25,15 @@ import javax.annotation.Nullable;
 public class AdminAlertingAlertConfiguration {
     // struct team_log.AdminAlertingAlertConfiguration (team_log_generated.stone)
 
+    @Nullable
     protected final AdminAlertingAlertStatePolicy alertState;
+    @Nullable
     protected final AdminAlertingAlertSensitivity sensitivityLevel;
+    @Nullable
     protected final RecipientsConfiguration recipientsSettings;
+    @Nullable
     protected final String text;
+    @Nullable
     protected final String excludedFileExtensions;
 
     /**

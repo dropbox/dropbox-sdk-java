@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class DeviceApprovalsChangeDesktopPolicyDetails {
     // struct team_log.DeviceApprovalsChangeDesktopPolicyDetails (team_log_generated.stone)
 
+    @Nullable
     protected final DeviceApprovalsPolicy newValue;
+    @Nullable
     protected final DeviceApprovalsPolicy previousValue;
 
     /**

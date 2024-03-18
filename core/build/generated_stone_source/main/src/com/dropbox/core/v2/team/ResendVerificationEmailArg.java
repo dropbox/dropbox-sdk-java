@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class ResendVerificationEmailArg {
     // struct team.ResendVerificationEmailArg (team_secondary_mails.stone)
 
+    @Nonnull
     protected final List<UserSecondaryEmailsArg> emailsToResend;
 
     /**

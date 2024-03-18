@@ -26,6 +26,7 @@ import javax.annotation.Nonnull;
 public class MembersGetAvailableTeamMemberRolesResult {
     // struct team.MembersGetAvailableTeamMemberRolesResult (team_members.stone)
 
+    @Nonnull
     protected final List<TeamMemberRole> roles;
 
     /**

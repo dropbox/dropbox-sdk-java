@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GuestAdminChangeStatusType {
     // struct team_log.GuestAdminChangeStatusType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

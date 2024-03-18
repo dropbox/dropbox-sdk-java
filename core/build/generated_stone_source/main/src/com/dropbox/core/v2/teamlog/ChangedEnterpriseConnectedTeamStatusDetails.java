@@ -24,9 +24,13 @@ import javax.annotation.Nonnull;
 public class ChangedEnterpriseConnectedTeamStatusDetails {
     // struct team_log.ChangedEnterpriseConnectedTeamStatusDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FedHandshakeAction action;
+    @Nonnull
     protected final FederationStatusChangeAdditionalInfo additionalInfo;
+    @Nonnull
     protected final TrustedTeamsRequestState previousValue;
+    @Nonnull
     protected final TrustedTeamsRequestState newValue;
 
     /**

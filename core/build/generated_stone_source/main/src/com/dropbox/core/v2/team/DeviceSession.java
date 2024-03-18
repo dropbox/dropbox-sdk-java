@@ -24,10 +24,15 @@ import javax.annotation.Nullable;
 public class DeviceSession {
     // struct team.DeviceSession (team_devices.stone)
 
+    @Nonnull
     protected final String sessionId;
+    @Nullable
     protected final String ipAddress;
+    @Nullable
     protected final String country;
+    @Nullable
     protected final Date created;
+    @Nullable
     protected final Date updated;
 
     /**

@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class ExtendedVersionHistoryChangePolicyDetails {
     // struct team_log.ExtendedVersionHistoryChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ExtendedVersionHistoryPolicy newValue;
+    @Nullable
     protected final ExtendedVersionHistoryPolicy previousValue;
 
     /**

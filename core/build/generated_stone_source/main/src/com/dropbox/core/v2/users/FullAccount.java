@@ -27,13 +27,20 @@ import javax.annotation.Nullable;
 public class FullAccount extends Account {
     // struct users.FullAccount (users.stone)
 
+    @Nullable
     protected final String country;
+    @Nonnull
     protected final String locale;
+    @Nonnull
     protected final String referralLink;
+    @Nullable
     protected final FullTeam team;
+    @Nullable
     protected final String teamMemberId;
     protected final boolean isPaired;
+    @Nonnull
     protected final AccountType accountType;
+    @Nonnull
     protected final RootInfo rootInfo;
 
     /**

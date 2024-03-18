@@ -28,10 +28,14 @@ import javax.annotation.Nullable;
 public class UserInfo {
     // struct sharing.UserInfo (sharing_folders.stone)
 
+    @Nonnull
     protected final String accountId;
+    @Nonnull
     protected final String email;
+    @Nonnull
     protected final String displayName;
     protected final boolean sameTeam;
+    @Nullable
     protected final String teamMemberId;
 
     /**

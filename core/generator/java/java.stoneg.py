@@ -3374,6 +3374,9 @@ class JavaCodeGenerationInstance:
             #
             w.out('')
             for field in data_type.fields:
+                annotation = j.nullability_annotation(field)
+                if len(annotation) > 0:
+                    w.out(annotation)
                 # fields marked as protected since structs allow inheritance
                 w.out('protected final %s %s;', j.java_class(field), j.param_name(field))
 

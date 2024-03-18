@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class TfaChangePolicyDetails {
     // struct team_log.TfaChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TwoStepVerificationPolicy newValue;
+    @Nullable
     protected final TwoStepVerificationPolicy previousValue;
 
     /**

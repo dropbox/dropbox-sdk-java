@@ -24,10 +24,15 @@ import javax.annotation.Nonnull;
 public class Name {
     // struct users.Name (users.stone)
 
+    @Nonnull
     protected final String givenName;
+    @Nonnull
     protected final String surname;
+    @Nonnull
     protected final String familiarName;
+    @Nonnull
     protected final String displayName;
+    @Nonnull
     protected final String abbreviatedName;
 
     /**

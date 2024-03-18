@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SfTeamJoinFromOobLinkType {
     // struct team_log.SfTeamJoinFromOobLinkType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

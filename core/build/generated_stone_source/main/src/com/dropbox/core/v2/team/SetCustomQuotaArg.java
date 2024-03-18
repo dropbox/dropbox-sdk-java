@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class SetCustomQuotaArg {
     // struct team.SetCustomQuotaArg (team_member_space_limits.stone)
 
+    @Nonnull
     protected final List<UserCustomQuotaArg> usersAndQuotas;
 
     /**

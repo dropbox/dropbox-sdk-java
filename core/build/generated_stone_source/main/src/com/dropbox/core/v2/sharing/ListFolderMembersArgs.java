@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 class ListFolderMembersArgs extends ListFolderMembersCursorArg {
     // struct sharing.ListFolderMembersArgs (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
 
     /**

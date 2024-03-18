@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class WebSessionsChangeIdleLengthPolicyDetails {
     // struct team_log.WebSessionsChangeIdleLengthPolicyDetails (team_log_generated.stone)
 
+    @Nullable
     protected final WebSessionsIdleLengthPolicy newValue;
+    @Nullable
     protected final WebSessionsIdleLengthPolicy previousValue;
 
     /**

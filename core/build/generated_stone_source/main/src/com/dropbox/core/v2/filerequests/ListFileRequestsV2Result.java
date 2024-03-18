@@ -26,7 +26,9 @@ import javax.annotation.Nonnull;
 public class ListFileRequestsV2Result {
     // struct file_requests.ListFileRequestsV2Result (file_requests.stone)
 
+    @Nonnull
     protected final List<FileRequest> fileRequests;
+    @Nonnull
     protected final String cursor;
     protected final boolean hasMore;
 

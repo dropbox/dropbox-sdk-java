@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class AddSecondaryEmailsArg {
     // struct team.AddSecondaryEmailsArg (team_secondary_mails.stone)
 
+    @Nonnull
     protected final List<UserSecondaryEmailsArg> newSecondaryEmails;
 
     /**

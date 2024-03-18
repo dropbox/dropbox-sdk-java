@@ -23,7 +23,9 @@ import javax.annotation.Nullable;
 class CreateSharedLinkWithSettingsArg {
     // struct sharing.CreateSharedLinkWithSettingsArg (shared_links.stone)
 
+    @Nonnull
     protected final String path;
+    @Nullable
     protected final SharedLinkSettings settings;
 
     /**

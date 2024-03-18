@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class DeviceLinkFailDetails {
     // struct team_log.DeviceLinkFailDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String ipAddress;
+    @Nonnull
     protected final DeviceType deviceType;
 
     /**

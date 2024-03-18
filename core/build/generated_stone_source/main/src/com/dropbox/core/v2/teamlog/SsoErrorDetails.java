@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class SsoErrorDetails {
     // struct team_log.SsoErrorDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FailureDetailsLogInfo errorDetails;
 
     /**

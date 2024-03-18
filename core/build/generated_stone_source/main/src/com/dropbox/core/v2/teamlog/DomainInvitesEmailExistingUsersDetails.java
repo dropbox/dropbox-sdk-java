@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class DomainInvitesEmailExistingUsersDetails {
     // struct team_log.DomainInvitesEmailExistingUsersDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String domainName;
     protected final long numRecipients;
 

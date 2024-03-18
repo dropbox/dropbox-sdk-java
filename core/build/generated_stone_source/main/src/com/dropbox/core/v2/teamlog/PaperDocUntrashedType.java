@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperDocUntrashedType {
     // struct team_log.PaperDocUntrashedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

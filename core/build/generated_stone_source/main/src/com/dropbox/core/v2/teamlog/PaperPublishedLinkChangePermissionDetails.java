@@ -24,8 +24,11 @@ import javax.annotation.Nonnull;
 public class PaperPublishedLinkChangePermissionDetails {
     // struct team_log.PaperPublishedLinkChangePermissionDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nonnull
     protected final String newPermissionLevel;
+    @Nonnull
     protected final String previousPermissionLevel;
 
     /**

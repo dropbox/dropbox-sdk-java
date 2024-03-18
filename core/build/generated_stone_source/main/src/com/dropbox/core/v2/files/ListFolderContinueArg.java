@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class ListFolderContinueArg {
     // struct files.ListFolderContinueArg (files.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**

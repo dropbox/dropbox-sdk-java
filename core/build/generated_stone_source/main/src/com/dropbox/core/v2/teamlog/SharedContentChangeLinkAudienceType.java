@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedContentChangeLinkAudienceType {
     // struct team_log.SharedContentChangeLinkAudienceType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

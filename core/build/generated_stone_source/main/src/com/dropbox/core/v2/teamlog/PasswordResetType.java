@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PasswordResetType {
     // struct team_log.PasswordResetType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

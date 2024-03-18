@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class SsoChangeCertDetails {
     // struct team_log.SsoChangeCertDetails (team_log_generated.stone)
 
+    @Nullable
     protected final Certificate previousCertificateDetails;
+    @Nonnull
     protected final Certificate newCertificateDetails;
 
     /**

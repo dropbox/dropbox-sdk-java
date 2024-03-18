@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperDocMentionType {
     // struct team_log.PaperDocMentionType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

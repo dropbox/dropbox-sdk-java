@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ShowcaseChangeDownloadPolicyType {
     // struct team_log.ShowcaseChangeDownloadPolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

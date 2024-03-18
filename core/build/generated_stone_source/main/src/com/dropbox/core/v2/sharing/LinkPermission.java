@@ -25,8 +25,10 @@ import javax.annotation.Nullable;
 public class LinkPermission {
     // struct sharing.LinkPermission (shared_content_links.stone)
 
+    @Nonnull
     protected final LinkAction action;
     protected final boolean allow;
+    @Nullable
     protected final PermissionDeniedReason reason;
 
     /**

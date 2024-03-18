@@ -26,7 +26,9 @@ import javax.annotation.Nonnull;
 class RemoveFileMemberArg {
     // struct sharing.RemoveFileMemberArg (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
+    @Nonnull
     protected final MemberSelector member;
 
     /**

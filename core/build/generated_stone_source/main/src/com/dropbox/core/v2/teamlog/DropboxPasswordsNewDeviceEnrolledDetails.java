@@ -25,6 +25,7 @@ public class DropboxPasswordsNewDeviceEnrolledDetails {
     // struct team_log.DropboxPasswordsNewDeviceEnrolledDetails (team_log_generated.stone)
 
     protected final boolean isFirstDevice;
+    @Nonnull
     protected final String platform;
 
     /**

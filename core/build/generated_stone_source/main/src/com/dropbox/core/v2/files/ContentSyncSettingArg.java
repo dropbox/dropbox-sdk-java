@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 public class ContentSyncSettingArg {
     // struct files.ContentSyncSettingArg (files.stone)
 
+    @Nonnull
     protected final String id;
+    @Nonnull
     protected final SyncSettingArg syncSetting;
 
     /**

@@ -21,7 +21,9 @@ import javax.annotation.Nonnull;
 public class RevokeLinkedApiAppArg {
     // struct team.RevokeLinkedApiAppArg (team_linked_apps.stone)
 
+    @Nonnull
     protected final String appId;
+    @Nonnull
     protected final String teamMemberId;
     protected final boolean keepAppFolder;
 

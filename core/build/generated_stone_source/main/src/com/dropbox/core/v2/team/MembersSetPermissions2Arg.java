@@ -27,7 +27,9 @@ import javax.annotation.Nullable;
 class MembersSetPermissions2Arg {
     // struct team.MembersSetPermissions2Arg (team_members.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
+    @Nullable
     protected final List<String> newRoles;
 
     /**

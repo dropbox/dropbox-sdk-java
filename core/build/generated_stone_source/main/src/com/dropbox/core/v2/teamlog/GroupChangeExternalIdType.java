@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GroupChangeExternalIdType {
     // struct team_log.GroupChangeExternalIdType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

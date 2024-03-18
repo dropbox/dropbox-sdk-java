@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileProviderMigrationPolicyChangedType {
     // struct team_log.FileProviderMigrationPolicyChangedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

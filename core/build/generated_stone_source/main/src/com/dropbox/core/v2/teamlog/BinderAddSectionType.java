@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class BinderAddSectionType {
     // struct team_log.BinderAddSectionType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

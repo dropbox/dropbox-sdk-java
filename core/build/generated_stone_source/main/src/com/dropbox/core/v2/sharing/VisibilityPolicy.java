@@ -22,9 +22,12 @@ import javax.annotation.Nullable;
 public class VisibilityPolicy {
     // struct sharing.VisibilityPolicy (shared_links.stone)
 
+    @Nonnull
     protected final RequestedVisibility policy;
+    @Nonnull
     protected final AlphaResolvedVisibility resolvedPolicy;
     protected final boolean allowed;
+    @Nullable
     protected final VisibilityPolicyDisallowedReason disallowedReason;
 
     /**

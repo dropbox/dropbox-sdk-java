@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperDocRevertType {
     // struct team_log.PaperDocRevertType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class UserGeneratedTag {
     // struct files.UserGeneratedTag (file_tagging.stone)
 
+    @Nonnull
     protected final String tagText;
 
     /**

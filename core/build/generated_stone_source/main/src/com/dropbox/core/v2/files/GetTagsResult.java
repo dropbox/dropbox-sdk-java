@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class GetTagsResult {
     // struct files.GetTagsResult (file_tagging.stone)
 
+    @Nonnull
     protected final List<PathToTags> pathsToTags;
 
     /**

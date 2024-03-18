@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TfaChangePolicyType {
     // struct team_log.TfaChangePolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

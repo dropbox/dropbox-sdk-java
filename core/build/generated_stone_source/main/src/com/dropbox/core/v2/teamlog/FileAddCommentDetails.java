@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 public class FileAddCommentDetails {
     // struct team_log.FileAddCommentDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String commentText;
 
     /**

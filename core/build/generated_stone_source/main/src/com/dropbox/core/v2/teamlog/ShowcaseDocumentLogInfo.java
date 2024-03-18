@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class ShowcaseDocumentLogInfo {
     // struct team_log.ShowcaseDocumentLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final String showcaseId;
+    @Nonnull
     protected final String showcaseTitle;
 
     /**

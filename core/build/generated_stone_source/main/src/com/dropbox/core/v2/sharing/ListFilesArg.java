@@ -27,6 +27,7 @@ class ListFilesArg {
     // struct sharing.ListFilesArg (sharing_files.stone)
 
     protected final long limit;
+    @Nullable
     protected final List<FileAction> actions;
 
     /**

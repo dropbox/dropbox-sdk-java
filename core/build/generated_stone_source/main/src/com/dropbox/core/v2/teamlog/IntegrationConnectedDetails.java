@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class IntegrationConnectedDetails {
     // struct team_log.IntegrationConnectedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String integrationName;
 
     /**

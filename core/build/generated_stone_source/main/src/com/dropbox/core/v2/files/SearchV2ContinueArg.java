@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class SearchV2ContinueArg {
     // struct files.SearchV2ContinueArg (files.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**

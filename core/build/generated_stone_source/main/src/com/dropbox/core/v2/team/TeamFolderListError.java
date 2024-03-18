@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TeamFolderListError {
     // struct team.TeamFolderListError (team_folders.stone)
 
+    @Nonnull
     protected final TeamFolderAccessError accessError;
 
     /**

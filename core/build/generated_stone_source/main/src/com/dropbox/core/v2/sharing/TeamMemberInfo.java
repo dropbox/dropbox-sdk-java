@@ -26,8 +26,11 @@ import javax.annotation.Nullable;
 public class TeamMemberInfo {
     // struct sharing.TeamMemberInfo (shared_links.stone)
 
+    @Nonnull
     protected final Team teamInfo;
+    @Nonnull
     protected final String displayName;
+    @Nullable
     protected final String memberId;
 
     /**

@@ -25,10 +25,15 @@ import javax.annotation.Nullable;
 public class LegalHoldsExportDownloadedDetails {
     // struct team_log.LegalHoldsExportDownloadedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String legalHoldId;
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final String exportName;
+    @Nullable
     protected final String part;
+    @Nullable
     protected final String fileName;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DisabledDomainInvitesType {
     // struct team_log.DisabledDomainInvitesType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

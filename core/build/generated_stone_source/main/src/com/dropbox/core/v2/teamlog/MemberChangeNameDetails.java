@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class MemberChangeNameDetails {
     // struct team_log.MemberChangeNameDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final UserNameLogInfo newValue;
+    @Nullable
     protected final UserNameLogInfo previousValue;
 
     /**

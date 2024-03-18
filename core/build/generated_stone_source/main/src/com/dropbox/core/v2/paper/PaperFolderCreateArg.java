@@ -22,8 +22,11 @@ import javax.annotation.Nullable;
 class PaperFolderCreateArg {
     // struct paper.PaperFolderCreateArg (paper.stone)
 
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final String parentFolderId;
+    @Nullable
     protected final Boolean isTeamFolder;
 
     /**

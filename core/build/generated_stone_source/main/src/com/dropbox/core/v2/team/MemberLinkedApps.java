@@ -25,7 +25,9 @@ import javax.annotation.Nonnull;
 public class MemberLinkedApps {
     // struct team.MemberLinkedApps (team_linked_apps.stone)
 
+    @Nonnull
     protected final String teamMemberId;
+    @Nonnull
     protected final List<ApiApp> linkedApiApps;
 
     /**

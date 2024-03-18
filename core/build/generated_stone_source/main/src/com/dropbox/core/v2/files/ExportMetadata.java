@@ -22,9 +22,12 @@ import javax.annotation.Nullable;
 public class ExportMetadata {
     // struct files.ExportMetadata (files.stone)
 
+    @Nonnull
     protected final String name;
     protected final long size;
+    @Nullable
     protected final String exportHash;
+    @Nullable
     protected final Long paperRevision;
 
     /**

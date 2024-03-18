@@ -27,7 +27,9 @@ import javax.annotation.Nullable;
 class ListFileMembersArg {
     // struct sharing.ListFileMembersArg (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
+    @Nullable
     protected final List<MemberAction> actions;
     protected final boolean includeInherited;
     protected final long limit;

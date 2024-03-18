@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class HighlightSpan {
     // struct files.HighlightSpan (files.stone)
 
+    @Nonnull
     protected final String highlightStr;
     protected final boolean isHighlighted;
 

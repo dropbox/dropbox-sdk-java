@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 class MembersUnsuspendArg {
     // struct team.MembersUnsuspendArg (team_members.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
 
     /**

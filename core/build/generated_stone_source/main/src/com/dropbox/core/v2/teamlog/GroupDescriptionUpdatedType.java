@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GroupDescriptionUpdatedType {
     // struct team_log.GroupDescriptionUpdatedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

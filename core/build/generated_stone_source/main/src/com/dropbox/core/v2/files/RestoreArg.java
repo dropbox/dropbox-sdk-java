@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 class RestoreArg {
     // struct files.RestoreArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final String rev;
 
     /**

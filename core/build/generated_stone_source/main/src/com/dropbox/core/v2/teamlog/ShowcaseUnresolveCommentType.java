@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ShowcaseUnresolveCommentType {
     // struct team_log.ShowcaseUnresolveCommentType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

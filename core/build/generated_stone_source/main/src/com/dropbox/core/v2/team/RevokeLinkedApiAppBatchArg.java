@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class RevokeLinkedApiAppBatchArg {
     // struct team.RevokeLinkedApiAppBatchArg (team_linked_apps.stone)
 
+    @Nonnull
     protected final List<RevokeLinkedApiAppArg> revokeLinkedApp;
 
     /**

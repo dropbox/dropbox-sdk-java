@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class MembersGetInfoArgs {
     // struct team.MembersGetInfoArgs (team_members.stone)
 
+    @Nonnull
     protected final List<UserSelectorArg> members;
 
     /**

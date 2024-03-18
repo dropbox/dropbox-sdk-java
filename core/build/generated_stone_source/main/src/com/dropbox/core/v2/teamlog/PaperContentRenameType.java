@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperContentRenameType {
     // struct team_log.PaperContentRenameType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

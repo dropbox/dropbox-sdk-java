@@ -24,7 +24,9 @@ import javax.annotation.Nullable;
 class GetMetadataArgs {
     // struct sharing.GetMetadataArgs (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
+    @Nullable
     protected final List<FolderAction> actions;
 
     /**

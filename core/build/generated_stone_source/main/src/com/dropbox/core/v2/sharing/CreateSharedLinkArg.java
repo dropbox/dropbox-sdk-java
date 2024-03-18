@@ -22,8 +22,10 @@ import javax.annotation.Nullable;
 class CreateSharedLinkArg {
     // struct sharing.CreateSharedLinkArg (shared_links.stone)
 
+    @Nonnull
     protected final String path;
     protected final boolean shortUrl;
+    @Nullable
     protected final PendingUploadMode pendingUpload;
 
     /**

@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class DeviceChangeIpWebDetails {
     // struct team_log.DeviceChangeIpWebDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String userAgent;
 
     /**

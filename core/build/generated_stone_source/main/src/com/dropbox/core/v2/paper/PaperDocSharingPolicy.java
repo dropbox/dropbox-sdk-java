@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class PaperDocSharingPolicy extends RefPaperDoc {
     // struct paper.PaperDocSharingPolicy (paper.stone)
 
+    @Nonnull
     protected final SharingPolicy sharingPolicy;
 
     /**

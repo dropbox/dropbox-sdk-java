@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class DataPlacementRestrictionSatisfyPolicyDetails {
     // struct team_log.DataPlacementRestrictionSatisfyPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PlacementRestriction placementRestriction;
 
     /**

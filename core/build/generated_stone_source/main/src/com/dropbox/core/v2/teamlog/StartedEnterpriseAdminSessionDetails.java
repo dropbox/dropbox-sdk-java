@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class StartedEnterpriseAdminSessionDetails {
     // struct team_log.StartedEnterpriseAdminSessionDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FedExtraDetails federationExtraDetails;
 
     /**

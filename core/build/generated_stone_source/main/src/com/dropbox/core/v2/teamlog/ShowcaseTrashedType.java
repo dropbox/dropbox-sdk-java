@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ShowcaseTrashedType {
     // struct team_log.ShowcaseTrashedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class DeleteManualContactsArg {
     // struct contacts.DeleteManualContactsArg (contacts.stone)
 
+    @Nonnull
     protected final List<String> emailAddresses;
 
     /**

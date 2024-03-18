@@ -23,6 +23,7 @@ public class RevokeLinkedAppStatus {
     // struct team.RevokeLinkedAppStatus (team_linked_apps.stone)
 
     protected final boolean success;
+    @Nullable
     protected final RevokeLinkedAppError errorType;
 
     /**

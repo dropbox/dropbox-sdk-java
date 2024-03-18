@@ -26,9 +26,13 @@ import javax.annotation.Nullable;
 public class NamespaceMetadata {
     // struct team.NamespaceMetadata (team_namespaces.stone)
 
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final String namespaceId;
+    @Nonnull
     protected final NamespaceType namespaceType;
+    @Nullable
     protected final String teamMemberId;
 
     /**

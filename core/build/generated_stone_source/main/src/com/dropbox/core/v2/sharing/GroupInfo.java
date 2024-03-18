@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
 public class GroupInfo extends GroupSummary {
     // struct sharing.GroupInfo (sharing_folders.stone)
 
+    @Nonnull
     protected final GroupType groupType;
     protected final boolean isMember;
     protected final boolean isOwner;

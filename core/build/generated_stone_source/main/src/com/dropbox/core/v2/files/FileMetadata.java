@@ -27,19 +27,31 @@ import javax.annotation.Nullable;
 public class FileMetadata extends Metadata {
     // struct files.FileMetadata (files.stone)
 
+    @Nonnull
     protected final String id;
+    @Nonnull
     protected final Date clientModified;
+    @Nonnull
     protected final Date serverModified;
+    @Nonnull
     protected final String rev;
     protected final long size;
+    @Nullable
     protected final MediaInfo mediaInfo;
+    @Nullable
     protected final SymlinkInfo symlinkInfo;
+    @Nullable
     protected final FileSharingInfo sharingInfo;
     protected final boolean isDownloadable;
+    @Nullable
     protected final ExportInfo exportInfo;
+    @Nullable
     protected final List<PropertyGroup> propertyGroups;
+    @Nullable
     protected final Boolean hasExplicitSharedMembers;
+    @Nullable
     protected final String contentHash;
+    @Nullable
     protected final FileLockMetadata fileLockInfo;
 
     /**

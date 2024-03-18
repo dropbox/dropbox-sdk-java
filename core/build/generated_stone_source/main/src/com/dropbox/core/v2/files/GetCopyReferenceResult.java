@@ -23,8 +23,11 @@ import javax.annotation.Nonnull;
 public class GetCopyReferenceResult {
     // struct files.GetCopyReferenceResult (files.stone)
 
+    @Nonnull
     protected final Metadata metadata;
+    @Nonnull
     protected final String copyReference;
+    @Nonnull
     protected final Date expires;
 
     /**

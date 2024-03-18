@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class ExcludedUsersUpdateResult {
     // struct team.ExcludedUsersUpdateResult (team_member_space_limits.stone)
 
+    @Nonnull
     protected final ExcludedUsersUpdateStatus status;
 
     /**

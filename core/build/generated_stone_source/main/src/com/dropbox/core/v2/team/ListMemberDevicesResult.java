@@ -23,8 +23,11 @@ import javax.annotation.Nullable;
 public class ListMemberDevicesResult {
     // struct team.ListMemberDevicesResult (team_devices.stone)
 
+    @Nullable
     protected final List<ActiveWebSession> activeWebSessions;
+    @Nullable
     protected final List<DesktopClientSession> desktopClientSessions;
+    @Nullable
     protected final List<MobileClientSession> mobileClientSessions;
 
     /**

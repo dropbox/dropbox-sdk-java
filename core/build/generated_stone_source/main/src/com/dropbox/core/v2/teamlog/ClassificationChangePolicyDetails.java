@@ -24,8 +24,11 @@ import javax.annotation.Nonnull;
 public class ClassificationChangePolicyDetails {
     // struct team_log.ClassificationChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ClassificationPolicyEnumWrapper previousValue;
+    @Nonnull
     protected final ClassificationPolicyEnumWrapper newValue;
+    @Nonnull
     protected final ClassificationType classificationType;
 
     /**

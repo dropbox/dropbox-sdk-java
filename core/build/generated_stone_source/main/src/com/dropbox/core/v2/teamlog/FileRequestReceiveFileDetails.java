@@ -26,10 +26,15 @@ import javax.annotation.Nullable;
 public class FileRequestReceiveFileDetails {
     // struct team_log.FileRequestReceiveFileDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String fileRequestId;
+    @Nullable
     protected final FileRequestDetails fileRequestDetails;
+    @Nonnull
     protected final List<String> submittedFileNames;
+    @Nullable
     protected final String submitterName;
+    @Nullable
     protected final String submitterEmail;
 
     /**

@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class TeamLogInfo {
     // struct team_log.TeamLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final String displayName;
 
     /**

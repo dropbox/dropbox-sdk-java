@@ -26,7 +26,9 @@ import javax.annotation.Nonnull;
 public class AddPaperDocUserMemberResult {
     // struct paper.AddPaperDocUserMemberResult (paper.stone)
 
+    @Nonnull
     protected final MemberSelector member;
+    @Nonnull
     protected final AddPaperDocUserResult result;
 
     /**

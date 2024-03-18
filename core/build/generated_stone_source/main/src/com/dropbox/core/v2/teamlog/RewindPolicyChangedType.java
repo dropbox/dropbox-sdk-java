@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class RewindPolicyChangedType {
     // struct team_log.RewindPolicyChangedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

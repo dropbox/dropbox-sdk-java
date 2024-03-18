@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 class AlphaGetMetadataArg extends GetMetadataArg {
     // struct files.AlphaGetMetadataArg (files.stone)
 
+    @Nullable
     protected final List<String> includePropertyTemplates;
 
     /**

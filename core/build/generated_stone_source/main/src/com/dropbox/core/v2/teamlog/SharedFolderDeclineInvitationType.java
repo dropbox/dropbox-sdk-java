@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedFolderDeclineInvitationType {
     // struct team_log.SharedFolderDeclineInvitationType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

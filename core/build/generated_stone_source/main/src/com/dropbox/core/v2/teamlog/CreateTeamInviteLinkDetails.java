@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class CreateTeamInviteLinkDetails {
     // struct team_log.CreateTeamInviteLinkDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String linkUrl;
+    @Nonnull
     protected final String expiryDate;
 
     /**

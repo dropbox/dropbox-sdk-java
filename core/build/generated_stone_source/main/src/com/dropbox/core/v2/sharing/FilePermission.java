@@ -25,8 +25,10 @@ import javax.annotation.Nullable;
 public class FilePermission {
     // struct sharing.FilePermission (sharing_files.stone)
 
+    @Nonnull
     protected final FileAction action;
     protected final boolean allow;
+    @Nullable
     protected final PermissionDeniedReason reason;
 
     /**

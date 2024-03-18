@@ -27,12 +27,19 @@ import javax.annotation.Nonnull;
 public class DevicesActive {
     // struct team.DevicesActive (team_reports.stone)
 
+    @Nonnull
     protected final List<Long> windows;
+    @Nonnull
     protected final List<Long> macos;
+    @Nonnull
     protected final List<Long> linux;
+    @Nonnull
     protected final List<Long> ios;
+    @Nonnull
     protected final List<Long> android;
+    @Nonnull
     protected final List<Long> other;
+    @Nonnull
     protected final List<Long> total;
 
     /**

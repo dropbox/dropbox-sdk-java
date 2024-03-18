@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class SharingChangeLinkEnforcePasswordPolicyDetails {
     // struct team_log.SharingChangeLinkEnforcePasswordPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ChangeLinkExpirationPolicy newValue;
+    @Nullable
     protected final ChangeLinkExpirationPolicy previousValue;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FolderLinkRestrictionPolicyChangedType {
     // struct team_log.FolderLinkRestrictionPolicyChangedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

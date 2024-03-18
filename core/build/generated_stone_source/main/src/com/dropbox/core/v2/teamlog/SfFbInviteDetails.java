@@ -26,7 +26,9 @@ public class SfFbInviteDetails {
     // struct team_log.SfFbInviteDetails (team_log_generated.stone)
 
     protected final long targetAssetIndex;
+    @Nonnull
     protected final String originalFolderName;
+    @Nullable
     protected final String sharingPermission;
 
     /**

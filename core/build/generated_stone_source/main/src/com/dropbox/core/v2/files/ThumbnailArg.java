@@ -22,9 +22,13 @@ import javax.annotation.Nonnull;
 public class ThumbnailArg {
     // struct files.ThumbnailArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final ThumbnailFormat format;
+    @Nonnull
     protected final ThumbnailSize size;
+    @Nonnull
     protected final ThumbnailMode mode;
 
     /**

@@ -24,10 +24,15 @@ import javax.annotation.Nonnull;
 public class TeamSharingPolicies {
     // struct team_policies.TeamSharingPolicies (team_policies.stone)
 
+    @Nonnull
     protected final SharedFolderMemberPolicy sharedFolderMemberPolicy;
+    @Nonnull
     protected final SharedFolderJoinPolicy sharedFolderJoinPolicy;
+    @Nonnull
     protected final SharedLinkCreatePolicy sharedLinkCreatePolicy;
+    @Nonnull
     protected final GroupCreation groupCreationPolicy;
+    @Nonnull
     protected final SharedFolderBlanketLinkRestrictionPolicy sharedFolderLinkRestrictionPolicy;
 
     /**

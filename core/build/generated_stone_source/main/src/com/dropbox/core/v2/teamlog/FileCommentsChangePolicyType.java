@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileCommentsChangePolicyType {
     // struct team_log.FileCommentsChangePolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

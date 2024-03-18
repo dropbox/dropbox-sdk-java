@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class ExternalDriveBackupEligibilityStatusCheckedDetails {
     // struct team_log.ExternalDriveBackupEligibilityStatusCheckedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final DesktopDeviceSessionLogInfo desktopDeviceSessionInfo;
+    @Nonnull
     protected final ExternalDriveBackupEligibilityStatus status;
     protected final long numberOfExternalDriveBackup;
 

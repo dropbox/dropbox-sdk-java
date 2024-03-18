@@ -27,19 +27,33 @@ import javax.annotation.Nonnull;
 public class GetActivityReport extends BaseDfbReport {
     // struct team.GetActivityReport (team_reports.stone)
 
+    @Nonnull
     protected final List<Long> adds;
+    @Nonnull
     protected final List<Long> edits;
+    @Nonnull
     protected final List<Long> deletes;
+    @Nonnull
     protected final List<Long> activeUsers28Day;
+    @Nonnull
     protected final List<Long> activeUsers7Day;
+    @Nonnull
     protected final List<Long> activeUsers1Day;
+    @Nonnull
     protected final List<Long> activeSharedFolders28Day;
+    @Nonnull
     protected final List<Long> activeSharedFolders7Day;
+    @Nonnull
     protected final List<Long> activeSharedFolders1Day;
+    @Nonnull
     protected final List<Long> sharedLinksCreated;
+    @Nonnull
     protected final List<Long> sharedLinksViewedByTeam;
+    @Nonnull
     protected final List<Long> sharedLinksViewedByOutsideUser;
+    @Nonnull
     protected final List<Long> sharedLinksViewedByNotLoggedIn;
+    @Nonnull
     protected final List<Long> sharedLinksViewedTotal;
 
     /**

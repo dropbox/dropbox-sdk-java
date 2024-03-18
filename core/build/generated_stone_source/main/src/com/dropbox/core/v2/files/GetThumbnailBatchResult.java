@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class GetThumbnailBatchResult {
     // struct files.GetThumbnailBatchResult (files.stone)
 
+    @Nonnull
     protected final List<GetThumbnailBatchResultEntry> entries;
 
     /**

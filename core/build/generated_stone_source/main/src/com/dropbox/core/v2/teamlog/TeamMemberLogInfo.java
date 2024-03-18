@@ -25,8 +25,11 @@ import javax.annotation.Nullable;
 public class TeamMemberLogInfo extends UserLogInfo {
     // struct team_log.TeamMemberLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String teamMemberId;
+    @Nullable
     protected final String memberExternalId;
+    @Nullable
     protected final TeamLogInfo team;
 
     /**

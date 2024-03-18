@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 class UnshareFileArg {
     // struct sharing.UnshareFileArg (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
 
     /**

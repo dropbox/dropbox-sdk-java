@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 class EchoArg {
     // struct check.EchoArg (check_api_v2_types.stone)
 
+    @Nonnull
     protected final String query;
 
     /**

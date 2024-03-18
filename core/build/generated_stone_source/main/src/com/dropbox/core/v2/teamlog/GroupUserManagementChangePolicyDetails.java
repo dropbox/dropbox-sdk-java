@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class GroupUserManagementChangePolicyDetails {
     // struct team_log.GroupUserManagementChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final GroupCreation newValue;
+    @Nullable
     protected final GroupCreation previousValue;
 
     /**

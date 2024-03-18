@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GroupChangeManagementTypeType {
     // struct team_log.GroupChangeManagementTypeType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

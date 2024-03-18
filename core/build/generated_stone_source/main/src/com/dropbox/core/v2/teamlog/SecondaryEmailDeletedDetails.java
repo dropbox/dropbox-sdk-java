@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class SecondaryEmailDeletedDetails {
     // struct team_log.SecondaryEmailDeletedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String secondaryEmail;
 
     /**

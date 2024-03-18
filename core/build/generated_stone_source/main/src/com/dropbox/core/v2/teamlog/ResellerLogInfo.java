@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class ResellerLogInfo {
     // struct team_log.ResellerLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final String resellerName;
+    @Nonnull
     protected final String resellerEmail;
 
     /**

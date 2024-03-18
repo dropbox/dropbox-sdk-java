@@ -24,9 +24,13 @@ import javax.annotation.Nullable;
 public class FileLockMetadata {
     // struct files.FileLockMetadata (files.stone)
 
+    @Nullable
     protected final Boolean isLockholder;
+    @Nullable
     protected final String lockholderName;
+    @Nullable
     protected final String lockholderAccountId;
+    @Nullable
     protected final Date created;
 
     /**

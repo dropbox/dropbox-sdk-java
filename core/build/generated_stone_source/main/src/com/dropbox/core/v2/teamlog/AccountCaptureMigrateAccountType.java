@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class AccountCaptureMigrateAccountType {
     // struct team_log.AccountCaptureMigrateAccountType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

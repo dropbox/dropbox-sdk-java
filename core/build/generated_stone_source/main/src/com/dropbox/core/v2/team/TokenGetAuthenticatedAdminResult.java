@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class TokenGetAuthenticatedAdminResult {
     // struct team.TokenGetAuthenticatedAdminResult (team.stone)
 
+    @Nonnull
     protected final TeamMemberProfile adminProfile;
 
     /**

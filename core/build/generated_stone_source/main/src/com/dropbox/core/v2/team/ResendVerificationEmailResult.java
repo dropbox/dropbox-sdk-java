@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class ResendVerificationEmailResult {
     // struct team.ResendVerificationEmailResult (team_secondary_mails.stone)
 
+    @Nonnull
     protected final List<UserResendResult> results;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TfaRemoveExceptionType {
     // struct team_log.TfaRemoveExceptionType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

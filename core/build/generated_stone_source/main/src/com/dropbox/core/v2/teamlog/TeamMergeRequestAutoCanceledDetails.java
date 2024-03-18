@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 public class TeamMergeRequestAutoCanceledDetails {
     // struct team_log.TeamMergeRequestAutoCanceledDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String details;
 
     /**

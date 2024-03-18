@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SfAllowNonMembersToViewSharedLinksType {
     // struct team_log.SfAllowNonMembersToViewSharedLinksType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

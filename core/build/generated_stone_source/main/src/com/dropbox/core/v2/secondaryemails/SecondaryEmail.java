@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class SecondaryEmail {
     // struct secondary_emails.SecondaryEmail (secondary_emails.stone)
 
+    @Nonnull
     protected final String email;
     protected final boolean isVerified;
 

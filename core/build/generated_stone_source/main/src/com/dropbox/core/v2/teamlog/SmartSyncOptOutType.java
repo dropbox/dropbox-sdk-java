@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SmartSyncOptOutType {
     // struct team_log.SmartSyncOptOutType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

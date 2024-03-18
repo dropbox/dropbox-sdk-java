@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileMoveType {
     // struct team_log.FileMoveType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

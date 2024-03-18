@@ -25,7 +25,9 @@ import javax.annotation.Nonnull;
 public class TeamSelectiveSyncSettingsChangedDetails {
     // struct team_log.TeamSelectiveSyncSettingsChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SyncSetting previousValue;
+    @Nonnull
     protected final SyncSetting newValue;
 
     /**

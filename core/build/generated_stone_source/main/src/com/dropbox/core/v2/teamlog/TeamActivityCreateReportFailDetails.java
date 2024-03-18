@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class TeamActivityCreateReportFailDetails {
     // struct team_log.TeamActivityCreateReportFailDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamReportFailureReason failureReason;
 
     /**

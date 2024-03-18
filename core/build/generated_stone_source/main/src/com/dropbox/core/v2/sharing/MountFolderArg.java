@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class MountFolderArg {
     // struct sharing.MountFolderArg (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
 
     /**

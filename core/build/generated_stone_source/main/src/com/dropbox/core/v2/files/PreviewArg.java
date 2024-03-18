@@ -23,7 +23,9 @@ import javax.annotation.Nullable;
 class PreviewArg {
     // struct files.PreviewArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nullable
     protected final String rev;
 
     /**

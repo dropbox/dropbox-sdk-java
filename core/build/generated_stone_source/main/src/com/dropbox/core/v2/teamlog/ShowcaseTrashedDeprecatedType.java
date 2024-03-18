@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ShowcaseTrashedDeprecatedType {
     // struct team_log.ShowcaseTrashedDeprecatedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

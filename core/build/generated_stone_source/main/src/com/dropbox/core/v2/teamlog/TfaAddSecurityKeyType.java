@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TfaAddSecurityKeyType {
     // struct team_log.TfaAddSecurityKeyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

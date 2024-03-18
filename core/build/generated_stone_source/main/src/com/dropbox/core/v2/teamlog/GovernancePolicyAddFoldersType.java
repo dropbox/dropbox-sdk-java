@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GovernancePolicyAddFoldersType {
     // struct team_log.GovernancePolicyAddFoldersType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

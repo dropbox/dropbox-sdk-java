@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class UploadSessionStartResult {
     // struct files.UploadSessionStartResult (files.stone)
 
+    @Nonnull
     protected final String sessionId;
 
     /**

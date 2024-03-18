@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class UserCustomQuotaResult {
     // struct team.UserCustomQuotaResult (team_member_space_limits.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
+    @Nullable
     protected final Long quotaGb;
 
     /**

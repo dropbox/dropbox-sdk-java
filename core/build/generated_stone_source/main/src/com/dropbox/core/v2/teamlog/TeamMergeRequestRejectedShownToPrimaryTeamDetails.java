@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class TeamMergeRequestRejectedShownToPrimaryTeamDetails {
     // struct team_log.TeamMergeRequestRejectedShownToPrimaryTeamDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String secondaryTeam;
+    @Nonnull
     protected final String sentBy;
 
     /**

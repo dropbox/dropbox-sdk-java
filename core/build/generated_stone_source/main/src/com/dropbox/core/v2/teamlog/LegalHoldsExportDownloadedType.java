@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class LegalHoldsExportDownloadedType {
     // struct team_log.LegalHoldsExportDownloadedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

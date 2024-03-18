@@ -23,6 +23,7 @@ public class ListFolderLongpollResult {
     // struct files.ListFolderLongpollResult (files.stone)
 
     protected final boolean changes;
+    @Nullable
     protected final Long backoff;
 
     /**

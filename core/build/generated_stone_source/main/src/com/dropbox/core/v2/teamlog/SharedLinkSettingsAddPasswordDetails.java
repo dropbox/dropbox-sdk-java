@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class SharedLinkSettingsAddPasswordDetails {
     // struct team_log.SharedLinkSettingsAddPasswordDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccessLevel sharedContentAccessLevel;
+    @Nullable
     protected final String sharedContentLink;
 
     /**

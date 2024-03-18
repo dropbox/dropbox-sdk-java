@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class MemberPermanentlyDeleteAccountContentsType {
     // struct team_log.MemberPermanentlyDeleteAccountContentsType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

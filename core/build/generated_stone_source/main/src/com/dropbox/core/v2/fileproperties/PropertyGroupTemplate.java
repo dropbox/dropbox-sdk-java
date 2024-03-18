@@ -25,8 +25,11 @@ import javax.annotation.Nonnull;
 public class PropertyGroupTemplate {
     // struct file_properties.PropertyGroupTemplate (file_properties.stone)
 
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final String description;
+    @Nonnull
     protected final List<PropertyFieldTemplate> fields;
 
     /**

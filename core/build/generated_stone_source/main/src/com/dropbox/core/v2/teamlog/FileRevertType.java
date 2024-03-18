@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileRevertType {
     // struct team_log.FileRevertType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

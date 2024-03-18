@@ -27,10 +27,15 @@ import javax.annotation.Nonnull;
 public class GetStorageReport extends BaseDfbReport {
     // struct team.GetStorageReport (team_reports.stone)
 
+    @Nonnull
     protected final List<Long> totalUsage;
+    @Nonnull
     protected final List<Long> sharedUsage;
+    @Nonnull
     protected final List<Long> unsharedUsage;
+    @Nonnull
     protected final List<Long> sharedFolders;
+    @Nonnull
     protected final List<List<StorageBucket>> memberStorageMap;
 
     /**

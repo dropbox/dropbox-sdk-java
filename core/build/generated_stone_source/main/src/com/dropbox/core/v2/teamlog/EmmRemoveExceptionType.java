@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class EmmRemoveExceptionType {
     // struct team_log.EmmRemoveExceptionType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

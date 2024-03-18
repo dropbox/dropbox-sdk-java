@@ -25,9 +25,13 @@ import javax.annotation.Nullable;
 public class FileOrFolderLogInfo {
     // struct team_log.FileOrFolderLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final PathLogInfo path;
+    @Nullable
     protected final String displayName;
+    @Nullable
     protected final String fileId;
+    @Nullable
     protected final Long fileSize;
 
     /**

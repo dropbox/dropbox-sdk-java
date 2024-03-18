@@ -30,7 +30,9 @@ import javax.annotation.Nullable;
 public class UserFileMembershipInfo extends UserMembershipInfo {
     // struct sharing.UserFileMembershipInfo (sharing_files.stone)
 
+    @Nullable
     protected final Date timeLastSeen;
+    @Nullable
     protected final PlatformType platformType;
 
     /**

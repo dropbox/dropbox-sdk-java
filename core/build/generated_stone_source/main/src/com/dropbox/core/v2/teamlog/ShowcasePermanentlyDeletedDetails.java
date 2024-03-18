@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class ShowcasePermanentlyDeletedDetails {
     // struct team_log.ShowcasePermanentlyDeletedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
 
     /**

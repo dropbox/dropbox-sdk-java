@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class ShowcaseRestoredDetails {
     // struct team_log.ShowcaseRestoredDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
 
     /**

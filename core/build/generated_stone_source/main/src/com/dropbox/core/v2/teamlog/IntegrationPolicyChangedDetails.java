@@ -24,8 +24,11 @@ import javax.annotation.Nonnull;
 public class IntegrationPolicyChangedDetails {
     // struct team_log.IntegrationPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String integrationName;
+    @Nonnull
     protected final IntegrationPolicy newValue;
+    @Nonnull
     protected final IntegrationPolicy previousValue;
 
     /**

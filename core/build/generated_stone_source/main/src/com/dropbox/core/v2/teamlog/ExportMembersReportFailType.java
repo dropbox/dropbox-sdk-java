@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ExportMembersReportFailType {
     // struct team_log.ExportMembersReportFailType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TeamMergeRequestRevokedType {
     // struct team_log.TeamMergeRequestRevokedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

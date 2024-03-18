@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class TeamMergeFromDetails {
     // struct team_log.TeamMergeFromDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String teamName;
 
     /**

@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class RemoveTemplateArg {
     // struct file_properties.RemoveTemplateArg (file_properties.stone)
 
+    @Nonnull
     protected final String templateId;
 
     /**

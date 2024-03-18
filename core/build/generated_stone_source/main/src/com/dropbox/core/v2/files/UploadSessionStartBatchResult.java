@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class UploadSessionStartBatchResult {
     // struct files.UploadSessionStartBatchResult (files.stone)
 
+    @Nonnull
     protected final List<String> sessionIds;
 
     /**

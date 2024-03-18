@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DeviceLinkFailType {
     // struct team_log.DeviceLinkFailType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

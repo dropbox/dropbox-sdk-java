@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ListFileMembersCountResult {
     // struct sharing.ListFileMembersCountResult (sharing_files.stone)
 
+    @Nonnull
     protected final SharedFileMembers members;
     protected final long memberCount;
 

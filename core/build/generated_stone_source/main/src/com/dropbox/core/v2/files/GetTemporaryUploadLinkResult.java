@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GetTemporaryUploadLinkResult {
     // struct files.GetTemporaryUploadLinkResult (files.stone)
 
+    @Nonnull
     protected final String link;
 
     /**

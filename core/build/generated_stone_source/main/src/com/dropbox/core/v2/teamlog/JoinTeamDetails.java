@@ -26,14 +26,23 @@ import javax.annotation.Nullable;
 public class JoinTeamDetails {
     // struct team_log.JoinTeamDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final List<UserLinkedAppLogInfo> linkedApps;
+    @Nonnull
     protected final List<LinkedDeviceLogInfo> linkedDevices;
+    @Nonnull
     protected final List<FolderLogInfo> linkedSharedFolders;
+    @Nullable
     protected final Boolean wasLinkedAppsTruncated;
+    @Nullable
     protected final Boolean wasLinkedDevicesTruncated;
+    @Nullable
     protected final Boolean wasLinkedSharedFoldersTruncated;
+    @Nullable
     protected final Boolean hasLinkedApps;
+    @Nullable
     protected final Boolean hasLinkedDevices;
+    @Nullable
     protected final Boolean hasLinkedSharedFolders;
 
     /**

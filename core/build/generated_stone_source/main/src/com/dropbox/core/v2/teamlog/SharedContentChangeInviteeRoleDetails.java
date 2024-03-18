@@ -27,8 +27,11 @@ import javax.annotation.Nullable;
 public class SharedContentChangeInviteeRoleDetails {
     // struct team_log.SharedContentChangeInviteeRoleDetails (team_log_generated.stone)
 
+    @Nullable
     protected final AccessLevel previousAccessLevel;
+    @Nonnull
     protected final AccessLevel newAccessLevel;
+    @Nonnull
     protected final String invitee;
 
     /**

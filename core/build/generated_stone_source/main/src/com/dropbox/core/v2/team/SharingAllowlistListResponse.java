@@ -22,8 +22,11 @@ import javax.annotation.Nonnull;
 public class SharingAllowlistListResponse {
     // struct team.SharingAllowlistListResponse (team_sharing_allowlist.stone)
 
+    @Nonnull
     protected final List<String> domains;
+    @Nonnull
     protected final List<String> emails;
+    @Nonnull
     protected final String cursor;
     protected final boolean hasMore;
 

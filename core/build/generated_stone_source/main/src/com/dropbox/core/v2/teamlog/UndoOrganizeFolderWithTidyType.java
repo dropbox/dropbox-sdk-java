@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class UndoOrganizeFolderWithTidyType {
     // struct team_log.UndoOrganizeFolderWithTidyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

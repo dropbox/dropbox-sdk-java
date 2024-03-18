@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 class ListTeamAppsArg {
     // struct team.ListTeamAppsArg (team_linked_apps.stone)
 
+    @Nullable
     protected final String cursor;
 
     /**

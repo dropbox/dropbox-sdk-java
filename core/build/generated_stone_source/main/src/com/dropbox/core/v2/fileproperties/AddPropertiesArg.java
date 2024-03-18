@@ -23,7 +23,9 @@ import javax.annotation.Nonnull;
 public class AddPropertiesArg {
     // struct file_properties.AddPropertiesArg (file_properties.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final List<PropertyGroup> propertyGroups;
 
     /**

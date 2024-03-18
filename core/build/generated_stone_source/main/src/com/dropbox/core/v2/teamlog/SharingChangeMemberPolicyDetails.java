@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class SharingChangeMemberPolicyDetails {
     // struct team_log.SharingChangeMemberPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SharingMemberPolicy newValue;
+    @Nullable
     protected final SharingMemberPolicy previousValue;
 
     /**

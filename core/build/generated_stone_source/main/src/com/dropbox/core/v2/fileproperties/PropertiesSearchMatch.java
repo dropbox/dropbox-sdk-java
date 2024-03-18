@@ -22,9 +22,12 @@ import javax.annotation.Nonnull;
 public class PropertiesSearchMatch {
     // struct file_properties.PropertiesSearchMatch (file_properties.stone)
 
+    @Nonnull
     protected final String id;
+    @Nonnull
     protected final String path;
     protected final boolean isDeleted;
+    @Nonnull
     protected final List<PropertyGroup> propertyGroups;
 
     /**

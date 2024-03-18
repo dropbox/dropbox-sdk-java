@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class DeviceDeleteOnUnlinkFailDetails {
     // struct team_log.DeviceDeleteOnUnlinkFailDetails (team_log_generated.stone)
 
+    @Nullable
     protected final SessionLogInfo sessionInfo;
+    @Nullable
     protected final String displayName;
     protected final long numFailures;
 

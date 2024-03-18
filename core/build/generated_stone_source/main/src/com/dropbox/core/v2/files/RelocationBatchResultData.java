@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class RelocationBatchResultData {
     // struct files.RelocationBatchResultData (files.stone)
 
+    @Nonnull
     protected final Metadata metadata;
 
     /**

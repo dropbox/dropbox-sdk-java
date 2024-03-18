@@ -27,7 +27,9 @@ import javax.annotation.Nullable;
 class DateRange {
     // struct team.DateRange (team_reports.stone)
 
+    @Nullable
     protected final Date startDate;
+    @Nullable
     protected final Date endDate;
 
     /**

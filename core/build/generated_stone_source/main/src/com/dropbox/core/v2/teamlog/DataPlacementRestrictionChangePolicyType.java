@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DataPlacementRestrictionChangePolicyType {
     // struct team_log.DataPlacementRestrictionChangePolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

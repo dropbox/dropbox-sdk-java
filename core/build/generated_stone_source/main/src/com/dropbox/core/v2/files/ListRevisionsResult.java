@@ -26,7 +26,9 @@ public class ListRevisionsResult {
     // struct files.ListRevisionsResult (files.stone)
 
     protected final boolean isDeleted;
+    @Nullable
     protected final Date serverDeleted;
+    @Nonnull
     protected final List<FileMetadata> entries;
 
     /**

@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 class UploadArg extends CommitInfo {
     // struct files.UploadArg (files.stone)
 
+    @Nullable
     protected final String contentHash;
 
     /**

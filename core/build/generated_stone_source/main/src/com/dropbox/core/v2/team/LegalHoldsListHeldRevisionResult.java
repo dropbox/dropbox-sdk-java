@@ -23,7 +23,9 @@ import javax.annotation.Nullable;
 public class LegalHoldsListHeldRevisionResult {
     // struct team.LegalHoldsListHeldRevisionResult (team_legal_holds.stone)
 
+    @Nonnull
     protected final List<LegalHoldHeldRevisionMetadata> entries;
+    @Nullable
     protected final String cursor;
     protected final boolean hasMore;
 

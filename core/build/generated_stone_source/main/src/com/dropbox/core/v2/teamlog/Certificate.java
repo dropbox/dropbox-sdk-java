@@ -25,12 +25,19 @@ import javax.annotation.Nullable;
 public class Certificate {
     // struct team_log.Certificate (team_log_generated.stone)
 
+    @Nonnull
     protected final String subject;
+    @Nonnull
     protected final String issuer;
+    @Nonnull
     protected final String issueDate;
+    @Nonnull
     protected final String expirationDate;
+    @Nonnull
     protected final String serialNumber;
+    @Nonnull
     protected final String sha1Fingerprint;
+    @Nullable
     protected final String commonName;
 
     /**

@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class SharingChangeLinkPolicyDetails {
     // struct team_log.SharingChangeLinkPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SharingLinkPolicy newValue;
+    @Nullable
     protected final SharingLinkPolicy previousValue;
 
     /**

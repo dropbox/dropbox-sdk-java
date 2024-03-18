@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class LockFileBatchResult extends FileOpsResult {
     // struct files.LockFileBatchResult (files.stone)
 
+    @Nonnull
     protected final List<LockFileResultEntry> entries;
 
     /**

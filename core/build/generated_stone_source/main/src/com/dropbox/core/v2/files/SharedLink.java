@@ -22,7 +22,9 @@ import javax.annotation.Nullable;
 public class SharedLink {
     // struct files.SharedLink (files.stone)
 
+    @Nonnull
     protected final String url;
+    @Nullable
     protected final String password;
 
     /**

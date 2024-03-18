@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class ComputerBackupPolicyChangedDetails {
     // struct team_log.ComputerBackupPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ComputerBackupPolicy newValue;
+    @Nonnull
     protected final ComputerBackupPolicy previousValue;
 
     /**

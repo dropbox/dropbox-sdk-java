@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 class PaperCreateArg {
     // struct files.PaperCreateArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final ImportFormat importFormat;
 
     /**

@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class MembersAddV2Arg extends MembersAddArgBase {
     // struct team.MembersAddV2Arg (team_members.stone)
 
+    @Nonnull
     protected final List<MemberAddV2Arg> newMembers;
 
     /**

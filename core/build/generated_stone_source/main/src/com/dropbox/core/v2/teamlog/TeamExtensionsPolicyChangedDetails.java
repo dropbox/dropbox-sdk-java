@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class TeamExtensionsPolicyChangedDetails {
     // struct team_log.TeamExtensionsPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamExtensionsPolicy newValue;
+    @Nonnull
     protected final TeamExtensionsPolicy previousValue;
 
     /**

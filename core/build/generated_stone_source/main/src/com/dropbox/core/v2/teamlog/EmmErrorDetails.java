@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class EmmErrorDetails {
     // struct team_log.EmmErrorDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FailureDetailsLogInfo errorDetails;
 
     /**

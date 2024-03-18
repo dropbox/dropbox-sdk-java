@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class ExportInfo {
     // struct files.ExportInfo (files.stone)
 
+    @Nullable
     protected final String exportAs;
+    @Nullable
     protected final List<String> exportOptions;
 
     /**

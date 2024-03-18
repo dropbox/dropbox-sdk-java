@@ -23,9 +23,13 @@ import javax.annotation.Nullable;
 class GroupUpdateArgs extends IncludeMembersArg {
     // struct team.GroupUpdateArgs (team_groups.stone)
 
+    @Nonnull
     protected final GroupSelector group;
+    @Nullable
     protected final String newGroupName;
+    @Nullable
     protected final String newGroupExternalId;
+    @Nullable
     protected final GroupManagementType newGroupManagementType;
 
     /**

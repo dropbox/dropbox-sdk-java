@@ -25,8 +25,11 @@ import javax.annotation.Nullable;
 public class LoginFailDetails {
     // struct team_log.LoginFailDetails (team_log_generated.stone)
 
+    @Nullable
     protected final Boolean isEmmManaged;
+    @Nonnull
     protected final LoginMethod loginMethod;
+    @Nonnull
     protected final FailureDetailsLogInfo errorDetails;
 
     /**

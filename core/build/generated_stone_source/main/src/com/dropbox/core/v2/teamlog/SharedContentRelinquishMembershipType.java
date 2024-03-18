@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedContentRelinquishMembershipType {
     // struct team_log.SharedContentRelinquishMembershipType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

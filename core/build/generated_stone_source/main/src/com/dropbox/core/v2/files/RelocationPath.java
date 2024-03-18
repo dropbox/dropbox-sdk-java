@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 public class RelocationPath {
     // struct files.RelocationPath (files.stone)
 
+    @Nonnull
     protected final String fromPath;
+    @Nonnull
     protected final String toPath;
 
     /**

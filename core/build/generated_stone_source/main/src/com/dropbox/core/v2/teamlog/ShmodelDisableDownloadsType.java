@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ShmodelDisableDownloadsType {
     // struct team_log.ShmodelDisableDownloadsType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

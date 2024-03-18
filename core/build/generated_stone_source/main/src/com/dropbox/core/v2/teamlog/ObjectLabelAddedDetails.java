@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class ObjectLabelAddedDetails {
     // struct team_log.ObjectLabelAddedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final LabelType labelType;
 
     /**

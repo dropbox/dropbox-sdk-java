@@ -27,9 +27,13 @@ import javax.annotation.Nullable;
 public class ActiveWebSession extends DeviceSession {
     // struct team.ActiveWebSession (team_devices.stone)
 
+    @Nonnull
     protected final String userAgent;
+    @Nonnull
     protected final String os;
+    @Nonnull
     protected final String browser;
+    @Nullable
     protected final Date expires;
 
     /**

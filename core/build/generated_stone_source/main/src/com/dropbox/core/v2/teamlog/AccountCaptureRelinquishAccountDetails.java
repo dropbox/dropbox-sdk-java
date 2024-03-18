@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class AccountCaptureRelinquishAccountDetails {
     // struct team_log.AccountCaptureRelinquishAccountDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String domainName;
 
     /**

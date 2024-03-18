@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TeamProfileAddBackgroundType {
     // struct team_log.TeamProfileAddBackgroundType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TeamProfileChangeDefaultLanguageType {
     // struct team_log.TeamProfileChangeDefaultLanguageType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

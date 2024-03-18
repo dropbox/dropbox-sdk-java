@@ -27,7 +27,9 @@ import javax.annotation.Nullable;
 public class FileRequestDeadline {
     // struct team_log.FileRequestDeadline (team_log_generated.stone)
 
+    @Nullable
     protected final Date deadline;
+    @Nullable
     protected final String allowLateUploads;
 
     /**

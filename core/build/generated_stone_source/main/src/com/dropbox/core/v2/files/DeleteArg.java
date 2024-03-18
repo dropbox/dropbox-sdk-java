@@ -23,7 +23,9 @@ import javax.annotation.Nullable;
 public class DeleteArg {
     // struct files.DeleteArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nullable
     protected final String parentRev;
 
     /**

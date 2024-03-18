@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SetProfilePhotoResult {
     // struct account.SetProfilePhotoResult (account.stone)
 
+    @Nonnull
     protected final String profilePhotoUrl;
 
     /**

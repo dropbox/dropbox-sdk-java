@@ -25,8 +25,11 @@ import javax.annotation.Nullable;
 public class GroupLogInfo {
     // struct team_log.GroupLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String groupId;
+    @Nonnull
     protected final String displayName;
+    @Nullable
     protected final String externalId;
 
     /**

@@ -21,7 +21,9 @@ import javax.annotation.Nonnull;
 public class SearchMatch {
     // struct files.SearchMatch (files.stone)
 
+    @Nonnull
     protected final SearchMatchType matchType;
+    @Nonnull
     protected final Metadata metadata;
 
     /**

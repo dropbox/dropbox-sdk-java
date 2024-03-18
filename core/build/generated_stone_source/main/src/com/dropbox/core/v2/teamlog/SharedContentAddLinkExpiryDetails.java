@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 public class SharedContentAddLinkExpiryDetails {
     // struct team_log.SharedContentAddLinkExpiryDetails (team_log_generated.stone)
 
+    @Nullable
     protected final Date newValue;
 
     /**

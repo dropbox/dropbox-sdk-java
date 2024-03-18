@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 class PropertiesSearchArg {
     // struct file_properties.PropertiesSearchArg (file_properties.stone)
 
+    @Nonnull
     protected final List<PropertiesSearchQuery> queries;
+    @Nonnull
     protected final TemplateFilter templateFilter;
 
     /**

@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class DeviceApprovalsChangeOverageActionDetails {
     // struct team_log.DeviceApprovalsChangeOverageActionDetails (team_log_generated.stone)
 
+    @Nullable
     protected final RolloutMethod newValue;
+    @Nullable
     protected final RolloutMethod previousValue;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class BinderRenameSectionType {
     // struct team_log.BinderRenameSectionType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

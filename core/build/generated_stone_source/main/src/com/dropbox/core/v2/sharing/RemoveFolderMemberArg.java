@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 class RemoveFolderMemberArg {
     // struct sharing.RemoveFolderMemberArg (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
+    @Nonnull
     protected final MemberSelector member;
     protected final boolean leaveACopy;
 

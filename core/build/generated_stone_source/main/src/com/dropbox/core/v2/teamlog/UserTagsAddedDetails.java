@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class UserTagsAddedDetails {
     // struct team_log.UserTagsAddedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final List<String> values;
 
     /**

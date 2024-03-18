@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ShowcaseAccessGrantedType {
     // struct team_log.ShowcaseAccessGrantedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

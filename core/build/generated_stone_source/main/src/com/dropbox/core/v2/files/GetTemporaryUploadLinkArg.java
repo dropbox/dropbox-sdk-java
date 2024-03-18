@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class GetTemporaryUploadLinkArg {
     // struct files.GetTemporaryUploadLinkArg (files.stone)
 
+    @Nonnull
     protected final CommitInfo commitInfo;
     protected final double duration;
 

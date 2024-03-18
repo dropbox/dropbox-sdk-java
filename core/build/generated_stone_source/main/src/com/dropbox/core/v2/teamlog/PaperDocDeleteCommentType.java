@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperDocDeleteCommentType {
     // struct team_log.PaperDocDeleteCommentType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

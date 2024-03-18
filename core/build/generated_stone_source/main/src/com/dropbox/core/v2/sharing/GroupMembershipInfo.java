@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 public class GroupMembershipInfo extends MembershipInfo {
     // struct sharing.GroupMembershipInfo (sharing_folders.stone)
 
+    @Nonnull
     protected final GroupInfo group;
 
     /**

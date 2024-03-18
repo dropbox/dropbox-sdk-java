@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileRequestCloseType {
     // struct team_log.FileRequestCloseType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

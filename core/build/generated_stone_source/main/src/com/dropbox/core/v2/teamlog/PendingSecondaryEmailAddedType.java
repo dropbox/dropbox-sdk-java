@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PendingSecondaryEmailAddedType {
     // struct team_log.PendingSecondaryEmailAddedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

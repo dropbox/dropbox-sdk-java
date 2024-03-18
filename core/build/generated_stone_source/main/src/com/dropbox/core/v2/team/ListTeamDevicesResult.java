@@ -23,8 +23,10 @@ import javax.annotation.Nullable;
 public class ListTeamDevicesResult {
     // struct team.ListTeamDevicesResult (team_devices.stone)
 
+    @Nonnull
     protected final List<MemberDevices> devices;
     protected final boolean hasMore;
+    @Nullable
     protected final String cursor;
 
     /**

@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 class GroupMemberSelector {
     // struct team.GroupMemberSelector (team_groups.stone)
 
+    @Nonnull
     protected final GroupSelector group;
+    @Nonnull
     protected final UserSelectorArg user;
 
     /**

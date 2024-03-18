@@ -24,10 +24,12 @@ import javax.annotation.Nullable;
 class GetMetadataArg {
     // struct files.GetMetadataArg (files.stone)
 
+    @Nonnull
     protected final String path;
     protected final boolean includeMediaInfo;
     protected final boolean includeDeleted;
     protected final boolean includeHasExplicitSharedMembers;
+    @Nullable
     protected final TemplateFilterBase includePropertyGroups;
 
     /**

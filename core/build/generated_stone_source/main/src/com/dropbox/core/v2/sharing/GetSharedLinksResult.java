@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class GetSharedLinksResult {
     // struct sharing.GetSharedLinksResult (shared_links.stone)
 
+    @Nonnull
     protected final List<LinkMetadata> links;
 
     /**

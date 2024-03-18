@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class ListMemberDevicesArg {
     // struct team.ListMemberDevicesArg (team_devices.stone)
 
+    @Nonnull
     protected final String teamMemberId;
     protected final boolean includeWebSessions;
     protected final boolean includeDesktopClients;

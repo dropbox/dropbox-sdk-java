@@ -26,8 +26,11 @@ import javax.annotation.Nullable;
 public class RecipientsConfiguration {
     // struct team_log.RecipientsConfiguration (team_log_generated.stone)
 
+    @Nullable
     protected final AlertRecipientsSettingType recipientSettingType;
+    @Nullable
     protected final List<String> emails;
+    @Nullable
     protected final List<String> groups;
 
     /**

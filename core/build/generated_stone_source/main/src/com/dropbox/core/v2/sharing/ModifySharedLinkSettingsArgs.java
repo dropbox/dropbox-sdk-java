@@ -21,7 +21,9 @@ import javax.annotation.Nonnull;
 class ModifySharedLinkSettingsArgs {
     // struct sharing.ModifySharedLinkSettingsArgs (shared_links.stone)
 
+    @Nonnull
     protected final String url;
+    @Nonnull
     protected final SharedLinkSettings settings;
     protected final boolean removeExpiration;
 

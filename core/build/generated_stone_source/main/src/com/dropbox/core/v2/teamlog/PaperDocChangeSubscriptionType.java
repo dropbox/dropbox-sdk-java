@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperDocChangeSubscriptionType {
     // struct team_log.PaperDocChangeSubscriptionType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

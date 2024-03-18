@@ -26,8 +26,11 @@ public class SfAddGroupDetails {
     // struct team_log.SfAddGroupDetails (team_log_generated.stone)
 
     protected final long targetAssetIndex;
+    @Nonnull
     protected final String originalFolderName;
+    @Nullable
     protected final String sharingPermission;
+    @Nonnull
     protected final String teamName;
 
     /**

@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 public class ShmodelEnableDownloadsDetails {
     // struct team_log.ShmodelEnableDownloadsDetails (team_log_generated.stone)
 
+    @Nullable
     protected final UserLogInfo sharedLinkOwner;
 
     /**

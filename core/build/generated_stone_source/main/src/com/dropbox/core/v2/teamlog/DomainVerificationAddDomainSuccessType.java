@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DomainVerificationAddDomainSuccessType {
     // struct team_log.DomainVerificationAddDomainSuccessType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

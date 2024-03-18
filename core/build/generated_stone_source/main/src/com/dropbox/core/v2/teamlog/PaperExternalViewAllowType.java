@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperExternalViewAllowType {
     // struct team_log.PaperExternalViewAllowType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

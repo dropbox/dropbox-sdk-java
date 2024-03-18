@@ -27,9 +27,13 @@ import javax.annotation.Nullable;
 public class FileMemberActionResult {
     // struct sharing.FileMemberActionResult (sharing_files.stone)
 
+    @Nonnull
     protected final MemberSelector member;
+    @Nonnull
     protected final FileMemberActionIndividualResult result;
+    @Nullable
     protected final String sckeySha1;
+    @Nullable
     protected final List<String> invitationSignature;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PermanentDeleteChangePolicyType {
     // struct team_log.PermanentDeleteChangePolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

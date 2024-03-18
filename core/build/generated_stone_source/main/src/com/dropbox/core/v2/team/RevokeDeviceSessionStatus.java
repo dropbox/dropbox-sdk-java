@@ -23,6 +23,7 @@ public class RevokeDeviceSessionStatus {
     // struct team.RevokeDeviceSessionStatus (team_devices.stone)
 
     protected final boolean success;
+    @Nullable
     protected final RevokeDeviceSessionError errorType;
 
     /**

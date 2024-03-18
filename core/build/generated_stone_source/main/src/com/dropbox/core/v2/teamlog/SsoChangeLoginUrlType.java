@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SsoChangeLoginUrlType {
     // struct team_log.SsoChangeLoginUrlType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

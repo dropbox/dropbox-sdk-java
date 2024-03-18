@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 class ListFileMembersBatchArg {
     // struct sharing.ListFileMembersBatchArg (sharing_files.stone)
 
+    @Nonnull
     protected final List<String> files;
     protected final long limit;
 

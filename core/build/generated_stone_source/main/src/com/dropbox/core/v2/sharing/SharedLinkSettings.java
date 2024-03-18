@@ -24,12 +24,19 @@ import javax.annotation.Nullable;
 public class SharedLinkSettings {
     // struct sharing.SharedLinkSettings (shared_links.stone)
 
+    @Nullable
     protected final Boolean requirePassword;
+    @Nullable
     protected final String linkPassword;
+    @Nullable
     protected final Date expires;
+    @Nullable
     protected final LinkAudience audience;
+    @Nullable
     protected final RequestedLinkAccessLevel access;
+    @Nullable
     protected final RequestedVisibility requestedVisibility;
+    @Nullable
     protected final Boolean allowDownload;
 
     /**

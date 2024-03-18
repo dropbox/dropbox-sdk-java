@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class SendForSignaturePolicyChangedDetails {
     // struct team_log.SendForSignaturePolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SendForSignaturePolicy newValue;
+    @Nonnull
     protected final SendForSignaturePolicy previousValue;
 
     /**

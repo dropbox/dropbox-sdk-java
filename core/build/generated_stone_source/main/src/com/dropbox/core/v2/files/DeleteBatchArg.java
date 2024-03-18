@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class DeleteBatchArg {
     // struct files.DeleteBatchArg (files.stone)
 
+    @Nonnull
     protected final List<DeleteArg> entries;
 
     /**

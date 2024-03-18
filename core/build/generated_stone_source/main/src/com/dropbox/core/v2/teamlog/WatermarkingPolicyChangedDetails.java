@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class WatermarkingPolicyChangedDetails {
     // struct team_log.WatermarkingPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final WatermarkingPolicy newValue;
+    @Nonnull
     protected final WatermarkingPolicy previousValue;
 
     /**

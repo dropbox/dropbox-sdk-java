@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DeviceManagementEnabledType {
     // struct team_log.DeviceManagementEnabledType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

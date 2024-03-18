@@ -23,9 +23,13 @@ import javax.annotation.Nullable;
 class PaperUpdateArg {
     // struct files.PaperUpdateArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final ImportFormat importFormat;
+    @Nonnull
     protected final PaperDocUpdatePolicy docUpdatePolicy;
+    @Nullable
     protected final Long paperRevision;
 
     /**

@@ -25,9 +25,13 @@ import javax.annotation.Nullable;
 public class LinkSettings {
     // struct sharing.LinkSettings (shared_content_links.stone)
 
+    @Nullable
     protected final AccessLevel accessLevel;
+    @Nullable
     protected final LinkAudience audience;
+    @Nullable
     protected final LinkExpiry expiry;
+    @Nullable
     protected final LinkPassword password;
 
     /**

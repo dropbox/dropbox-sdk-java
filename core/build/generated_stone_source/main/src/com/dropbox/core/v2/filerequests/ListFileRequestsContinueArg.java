@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class ListFileRequestsContinueArg {
     // struct file_requests.ListFileRequestsContinueArg (file_requests.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**

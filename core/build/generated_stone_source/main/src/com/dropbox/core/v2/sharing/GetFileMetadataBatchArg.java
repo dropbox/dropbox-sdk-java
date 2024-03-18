@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 class GetFileMetadataBatchArg {
     // struct sharing.GetFileMetadataBatchArg (sharing_files.stone)
 
+    @Nonnull
     protected final List<String> files;
+    @Nullable
     protected final List<FileAction> actions;
 
     /**

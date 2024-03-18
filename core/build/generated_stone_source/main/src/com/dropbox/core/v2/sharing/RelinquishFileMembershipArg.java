@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class RelinquishFileMembershipArg {
     // struct sharing.RelinquishFileMembershipArg (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
 
     /**

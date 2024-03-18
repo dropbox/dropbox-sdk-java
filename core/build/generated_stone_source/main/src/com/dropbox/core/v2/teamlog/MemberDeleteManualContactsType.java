@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class MemberDeleteManualContactsType {
     // struct team_log.MemberDeleteManualContactsType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

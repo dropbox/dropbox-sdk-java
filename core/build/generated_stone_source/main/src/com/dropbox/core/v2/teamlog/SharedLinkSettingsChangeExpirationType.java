@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedLinkSettingsChangeExpirationType {
     // struct team_log.SharedLinkSettingsChangeExpirationType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

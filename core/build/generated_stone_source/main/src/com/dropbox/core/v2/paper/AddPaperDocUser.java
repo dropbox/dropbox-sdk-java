@@ -23,7 +23,9 @@ import javax.annotation.Nullable;
 class AddPaperDocUser extends RefPaperDoc {
     // struct paper.AddPaperDocUser (paper.stone)
 
+    @Nonnull
     protected final List<AddMember> members;
+    @Nullable
     protected final String customMessage;
     protected final boolean quiet;
 

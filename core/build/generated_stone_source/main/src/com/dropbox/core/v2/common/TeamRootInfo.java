@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class TeamRootInfo extends RootInfo {
     // struct common.TeamRootInfo (common.stone)
 
+    @Nonnull
     protected final String homePath;
 
     /**

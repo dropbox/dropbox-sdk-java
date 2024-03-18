@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class MembersDeleteProfilePhotoArg {
     // struct team.MembersDeleteProfilePhotoArg (team_members.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
 
     /**

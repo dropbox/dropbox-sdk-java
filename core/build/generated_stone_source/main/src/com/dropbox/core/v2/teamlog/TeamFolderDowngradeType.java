@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TeamFolderDowngradeType {
     // struct team_log.TeamFolderDowngradeType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ShowcasePostCommentType {
     // struct team_log.ShowcasePostCommentType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

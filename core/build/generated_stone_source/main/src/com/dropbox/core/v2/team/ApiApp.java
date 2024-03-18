@@ -27,10 +27,15 @@ import javax.annotation.Nullable;
 public class ApiApp {
     // struct team.ApiApp (team_linked_apps.stone)
 
+    @Nonnull
     protected final String appId;
+    @Nonnull
     protected final String appName;
+    @Nullable
     protected final String publisher;
+    @Nullable
     protected final String publisherUrl;
+    @Nullable
     protected final Date linked;
     protected final boolean isAppFolder;
 

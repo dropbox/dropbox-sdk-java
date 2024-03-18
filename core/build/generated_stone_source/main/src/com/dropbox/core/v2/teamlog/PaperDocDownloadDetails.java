@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class PaperDocDownloadDetails {
     // struct team_log.PaperDocDownloadDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nonnull
     protected final PaperDownloadFormat exportFileFormat;
 
     /**

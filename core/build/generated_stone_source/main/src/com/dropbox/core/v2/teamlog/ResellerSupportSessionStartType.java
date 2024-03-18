@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ResellerSupportSessionStartType {
     // struct team_log.ResellerSupportSessionStartType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

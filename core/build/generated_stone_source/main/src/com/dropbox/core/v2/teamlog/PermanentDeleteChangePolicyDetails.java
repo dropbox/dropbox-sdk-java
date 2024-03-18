@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class PermanentDeleteChangePolicyDetails {
     // struct team_log.PermanentDeleteChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ContentPermanentDeletePolicy newValue;
+    @Nullable
     protected final ContentPermanentDeletePolicy previousValue;
 
     /**

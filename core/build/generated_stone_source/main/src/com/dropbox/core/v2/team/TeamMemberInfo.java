@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class TeamMemberInfo {
     // struct team.TeamMemberInfo (team_members.stone)
 
+    @Nonnull
     protected final TeamMemberProfile profile;
+    @Nonnull
     protected final AdminTier role;
 
     /**

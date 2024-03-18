@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedContentAddLinkPasswordType {
     // struct team_log.SharedContentAddLinkPasswordType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

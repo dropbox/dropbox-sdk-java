@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PasswordChangeType {
     // struct team_log.PasswordChangeType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

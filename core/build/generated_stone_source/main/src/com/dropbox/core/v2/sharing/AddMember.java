@@ -25,7 +25,9 @@ import javax.annotation.Nonnull;
 public class AddMember {
     // struct sharing.AddMember (sharing_folders.stone)
 
+    @Nonnull
     protected final MemberSelector member;
+    @Nonnull
     protected final AccessLevel accessLevel;
 
     /**

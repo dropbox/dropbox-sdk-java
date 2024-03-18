@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class AccountCaptureNotificationEmailsSentType {
     // struct team_log.AccountCaptureNotificationEmailsSentType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

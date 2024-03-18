@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class ShowcaseEditCommentDetails {
     // struct team_log.ShowcaseEditCommentDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nullable
     protected final String commentText;
 
     /**

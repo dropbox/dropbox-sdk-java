@@ -24,9 +24,13 @@ import javax.annotation.Nullable;
 public class FolderMetadata extends Metadata {
     // struct files.FolderMetadata (files.stone)
 
+    @Nonnull
     protected final String id;
+    @Nullable
     protected final String sharedFolderId;
+    @Nullable
     protected final FolderSharingInfo sharingInfo;
+    @Nullable
     protected final List<PropertyGroup> propertyGroups;
 
     /**

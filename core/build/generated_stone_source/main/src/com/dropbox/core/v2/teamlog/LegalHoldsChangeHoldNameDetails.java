@@ -24,8 +24,11 @@ import javax.annotation.Nonnull;
 public class LegalHoldsChangeHoldNameDetails {
     // struct team_log.LegalHoldsChangeHoldNameDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String legalHoldId;
+    @Nonnull
     protected final String previousValue;
+    @Nonnull
     protected final String newValue;
 
     /**

@@ -23,12 +23,18 @@ import javax.annotation.Nullable;
 public class MemberAddArgBase {
     // struct team.MemberAddArgBase (team_members.stone)
 
+    @Nonnull
     protected final String memberEmail;
+    @Nullable
     protected final String memberGivenName;
+    @Nullable
     protected final String memberSurname;
+    @Nullable
     protected final String memberExternalId;
+    @Nullable
     protected final String memberPersistentId;
     protected final boolean sendWelcomeEmail;
+    @Nullable
     protected final Boolean isDirectoryRestricted;
 
     /**

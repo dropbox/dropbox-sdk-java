@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class AppLogInfo {
     // struct team_log.AppLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String appId;
+    @Nullable
     protected final String displayName;
 
     /**

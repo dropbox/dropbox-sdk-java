@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 class MembersSetProfilePhotoArg {
     // struct team.MembersSetProfilePhotoArg (team_members.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
+    @Nonnull
     protected final PhotoSourceArg photo;
 
     /**

@@ -22,7 +22,9 @@ import javax.annotation.Nullable;
 public class InsufficientPlan {
     // struct sharing.InsufficientPlan (sharing_folders.stone)
 
+    @Nonnull
     protected final String message;
+    @Nullable
     protected final String upsellUrl;
 
     /**

@@ -24,9 +24,12 @@ import javax.annotation.Nullable;
 class AddFolderMemberArg {
     // struct sharing.AddFolderMemberArg (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
+    @Nonnull
     protected final List<AddMember> members;
     protected final boolean quiet;
+    @Nullable
     protected final String customMessage;
 
     /**

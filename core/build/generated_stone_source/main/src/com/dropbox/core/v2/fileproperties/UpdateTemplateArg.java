@@ -24,9 +24,13 @@ import javax.annotation.Nullable;
 public class UpdateTemplateArg {
     // struct file_properties.UpdateTemplateArg (file_properties.stone)
 
+    @Nonnull
     protected final String templateId;
+    @Nullable
     protected final String name;
+    @Nullable
     protected final String description;
+    @Nullable
     protected final List<PropertyFieldTemplate> addFields;
 
     /**

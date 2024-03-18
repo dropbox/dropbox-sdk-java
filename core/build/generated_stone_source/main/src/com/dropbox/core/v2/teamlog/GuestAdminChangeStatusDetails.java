@@ -26,10 +26,15 @@ public class GuestAdminChangeStatusDetails {
     // struct team_log.GuestAdminChangeStatusDetails (team_log_generated.stone)
 
     protected final boolean isGuest;
+    @Nullable
     protected final String guestTeamName;
+    @Nullable
     protected final String hostTeamName;
+    @Nonnull
     protected final TrustedTeamsRequestState previousValue;
+    @Nonnull
     protected final TrustedTeamsRequestState newValue;
+    @Nonnull
     protected final TrustedTeamsRequestAction actionDetails;
 
     /**

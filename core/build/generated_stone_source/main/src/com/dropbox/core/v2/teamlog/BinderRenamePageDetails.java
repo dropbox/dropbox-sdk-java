@@ -25,9 +25,13 @@ import javax.annotation.Nullable;
 public class BinderRenamePageDetails {
     // struct team_log.BinderRenamePageDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nonnull
     protected final String docTitle;
+    @Nonnull
     protected final String binderItemName;
+    @Nullable
     protected final String previousBinderItemName;
 
     /**

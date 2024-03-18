@@ -26,8 +26,11 @@ import javax.annotation.Nullable;
 public class MembershipInfo {
     // struct sharing.MembershipInfo (sharing_folders.stone)
 
+    @Nonnull
     protected final AccessLevel accessType;
+    @Nullable
     protected final List<MemberPermission> permissions;
+    @Nullable
     protected final String initials;
     protected final boolean isInherited;
 

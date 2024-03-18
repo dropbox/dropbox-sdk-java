@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class UploadSessionFinishBatchArg {
     // struct files.UploadSessionFinishBatchArg (files.stone)
 
+    @Nonnull
     protected final List<UploadSessionFinishArg> entries;
 
     /**

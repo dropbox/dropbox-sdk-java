@@ -25,8 +25,10 @@ import javax.annotation.Nullable;
 public class FolderPermission {
     // struct sharing.FolderPermission (sharing_folders.stone)
 
+    @Nonnull
     protected final FolderAction action;
     protected final boolean allow;
+    @Nullable
     protected final PermissionDeniedReason reason;
 
     /**

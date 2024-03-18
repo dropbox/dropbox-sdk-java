@@ -26,10 +26,14 @@ import javax.annotation.Nullable;
 public class Account {
     // struct users.Account (users.stone)
 
+    @Nonnull
     protected final String accountId;
+    @Nonnull
     protected final Name name;
+    @Nonnull
     protected final String email;
     protected final boolean emailVerified;
+    @Nullable
     protected final String profilePhotoUrl;
     protected final boolean disabled;
 

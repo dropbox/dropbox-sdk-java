@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GetAccountArg {
     // struct users.GetAccountArg (users.stone)
 
+    @Nonnull
     protected final String accountId;
 
     /**

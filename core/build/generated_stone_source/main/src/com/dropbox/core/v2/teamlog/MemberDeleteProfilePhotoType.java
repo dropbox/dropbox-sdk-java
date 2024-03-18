@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class MemberDeleteProfilePhotoType {
     // struct team_log.MemberDeleteProfilePhotoType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

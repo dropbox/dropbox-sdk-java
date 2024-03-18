@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 public class InviteeInfoWithPermissionLevel {
     // struct paper.InviteeInfoWithPermissionLevel (paper.stone)
 
+    @Nonnull
     protected final InviteeInfo invitee;
+    @Nonnull
     protected final PaperDocPermissionLevel permissionLevel;
 
     /**

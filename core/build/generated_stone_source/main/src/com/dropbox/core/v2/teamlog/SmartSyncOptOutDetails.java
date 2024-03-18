@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class SmartSyncOptOutDetails {
     // struct team_log.SmartSyncOptOutDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SmartSyncOptOutPolicy previousValue;
+    @Nonnull
     protected final SmartSyncOptOutPolicy newValue;
 
     /**

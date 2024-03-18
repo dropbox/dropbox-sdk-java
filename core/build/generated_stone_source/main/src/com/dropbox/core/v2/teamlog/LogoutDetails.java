@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 public class LogoutDetails {
     // struct team_log.LogoutDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String loginId;
 
     /**

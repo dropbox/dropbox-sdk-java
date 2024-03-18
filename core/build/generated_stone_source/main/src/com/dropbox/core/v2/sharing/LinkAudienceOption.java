@@ -22,8 +22,10 @@ import javax.annotation.Nullable;
 public class LinkAudienceOption {
     // struct sharing.LinkAudienceOption (shared_links.stone)
 
+    @Nonnull
     protected final LinkAudience audience;
     protected final boolean allowed;
+    @Nullable
     protected final LinkAudienceDisallowedReason disallowedReason;
 
     /**

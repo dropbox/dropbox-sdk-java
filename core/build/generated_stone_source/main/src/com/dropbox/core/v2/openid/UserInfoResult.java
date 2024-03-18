@@ -22,11 +22,17 @@ import javax.annotation.Nullable;
 public class UserInfoResult {
     // struct openid.UserInfoResult (openid_openid_types.stone)
 
+    @Nullable
     protected final String familyName;
+    @Nullable
     protected final String givenName;
+    @Nullable
     protected final String email;
+    @Nullable
     protected final Boolean emailVerified;
+    @Nonnull
     protected final String iss;
+    @Nonnull
     protected final String sub;
 
     /**

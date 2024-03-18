@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ShowcaseViewType {
     // struct team_log.ShowcaseViewType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

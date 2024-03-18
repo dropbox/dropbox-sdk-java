@@ -23,7 +23,9 @@ import javax.annotation.Nullable;
 public class ExportArg {
     // struct files.ExportArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nullable
     protected final String exportFormat;
 
     /**

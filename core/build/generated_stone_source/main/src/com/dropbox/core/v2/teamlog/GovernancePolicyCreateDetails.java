@@ -26,10 +26,15 @@ import javax.annotation.Nullable;
 public class GovernancePolicyCreateDetails {
     // struct team_log.GovernancePolicyCreateDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String governancePolicyId;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final PolicyType policyType;
+    @Nonnull
     protected final DurationLogInfo duration;
+    @Nullable
     protected final List<String> folders;
 
     /**

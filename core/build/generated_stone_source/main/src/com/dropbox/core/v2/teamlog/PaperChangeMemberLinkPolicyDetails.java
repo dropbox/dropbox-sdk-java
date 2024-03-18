@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class PaperChangeMemberLinkPolicyDetails {
     // struct team_log.PaperChangeMemberLinkPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PaperMemberPolicy newValue;
 
     /**

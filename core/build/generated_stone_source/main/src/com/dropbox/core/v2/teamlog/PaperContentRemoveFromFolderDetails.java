@@ -25,8 +25,11 @@ import javax.annotation.Nullable;
 public class PaperContentRemoveFromFolderDetails {
     // struct team_log.PaperContentRemoveFromFolderDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nullable
     protected final Long targetAssetIndex;
+    @Nullable
     protected final Long parentAssetIndex;
 
     /**

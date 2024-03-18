@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class RansomwareAlertCreateReportFailedDetails {
     // struct team_log.RansomwareAlertCreateReportFailedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamReportFailureReason failureReason;
 
     /**

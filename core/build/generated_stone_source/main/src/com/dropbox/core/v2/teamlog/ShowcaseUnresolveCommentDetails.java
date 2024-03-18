@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class ShowcaseUnresolveCommentDetails {
     // struct team_log.ShowcaseUnresolveCommentDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nullable
     protected final String commentText;
 
     /**

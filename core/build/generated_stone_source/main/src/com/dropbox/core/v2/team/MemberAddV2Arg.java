@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 public class MemberAddV2Arg extends MemberAddArgBase {
     // struct team.MemberAddV2Arg (team_members.stone)
 
+    @Nullable
     protected final List<String> roleIds;
 
     /**

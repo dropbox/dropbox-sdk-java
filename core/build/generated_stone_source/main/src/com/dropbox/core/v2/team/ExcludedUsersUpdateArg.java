@@ -28,6 +28,7 @@ import javax.annotation.Nullable;
 class ExcludedUsersUpdateArg {
     // struct team.ExcludedUsersUpdateArg (team_member_space_limits.stone)
 
+    @Nullable
     protected final List<UserSelectorArg> users;
 
     /**

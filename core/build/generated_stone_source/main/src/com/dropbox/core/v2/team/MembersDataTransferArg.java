@@ -21,7 +21,9 @@ import javax.annotation.Nonnull;
 class MembersDataTransferArg extends MembersDeactivateBaseArg {
     // struct team.MembersDataTransferArg (team_members.stone)
 
+    @Nonnull
     protected final UserSelectorArg transferDestId;
+    @Nonnull
     protected final UserSelectorArg transferAdminId;
 
     /**

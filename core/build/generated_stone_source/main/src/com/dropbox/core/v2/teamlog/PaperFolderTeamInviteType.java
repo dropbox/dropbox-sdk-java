@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperFolderTeamInviteType {
     // struct team_log.PaperFolderTeamInviteType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -23,7 +23,9 @@ import javax.annotation.Nullable;
 class LegalHoldsListHeldRevisionsContinueArg {
     // struct team.LegalHoldsListHeldRevisionsContinueArg (team_legal_holds.stone)
 
+    @Nonnull
     protected final String id;
+    @Nullable
     protected final String cursor;
 
     /**

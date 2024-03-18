@@ -25,8 +25,11 @@ import javax.annotation.Nullable;
 public class PaperDocChangeSharingPolicyDetails {
     // struct team_log.PaperDocChangeSharingPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nullable
     protected final String publicSharingPolicy;
+    @Nullable
     protected final String teamSharingPolicy;
 
     /**

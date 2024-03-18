@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileDeleteCommentType {
     // struct team_log.FileDeleteCommentType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FolderOverviewDescriptionChangedType {
     // struct team_log.FolderOverviewDescriptionChangedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class UnlockFileArg {
     // struct files.UnlockFileArg (files.stone)
 
+    @Nonnull
     protected final String path;
 
     /**

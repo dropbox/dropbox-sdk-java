@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DeviceApprovalsChangeOverageActionType {
     // struct team_log.DeviceApprovalsChangeOverageActionType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

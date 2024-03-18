@@ -21,8 +21,10 @@ import javax.annotation.Nonnull;
 class PaperDocUpdateArgs extends RefPaperDoc {
     // struct paper.PaperDocUpdateArgs (paper.stone)
 
+    @Nonnull
     protected final PaperDocUpdatePolicy docUpdatePolicy;
     protected final long revision;
+    @Nonnull
     protected final ImportFormat importFormat;
 
     /**

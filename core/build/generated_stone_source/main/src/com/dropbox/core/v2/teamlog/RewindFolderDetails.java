@@ -26,6 +26,7 @@ import javax.annotation.Nonnull;
 public class RewindFolderDetails {
     // struct team_log.RewindFolderDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final Date rewindFolderTargetTsMs;
 
     /**

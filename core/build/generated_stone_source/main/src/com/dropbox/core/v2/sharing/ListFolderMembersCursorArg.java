@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 class ListFolderMembersCursorArg {
     // struct sharing.ListFolderMembersCursorArg (sharing_folders.stone)
 
+    @Nullable
     protected final List<MemberAction> actions;
     protected final long limit;
 

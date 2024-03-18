@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 class SaveUrlArg {
     // struct files.SaveUrlArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final String url;
 
     /**

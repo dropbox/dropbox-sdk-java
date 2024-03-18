@@ -22,8 +22,11 @@ import javax.annotation.Nullable;
 class GetSharedLinkMetadataArg {
     // struct sharing.GetSharedLinkMetadataArg (shared_links.stone)
 
+    @Nonnull
     protected final String url;
+    @Nullable
     protected final String path;
+    @Nullable
     protected final String linkPassword;
 
     /**

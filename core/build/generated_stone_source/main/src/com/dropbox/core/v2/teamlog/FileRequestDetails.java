@@ -26,6 +26,7 @@ public class FileRequestDetails {
     // struct team_log.FileRequestDetails (team_log_generated.stone)
 
     protected final long assetIndex;
+    @Nullable
     protected final FileRequestDeadline deadline;
 
     /**

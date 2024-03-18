@@ -25,10 +25,15 @@ import javax.annotation.Nullable;
 public class FolderPolicy {
     // struct sharing.FolderPolicy (sharing_folders.stone)
 
+    @Nullable
     protected final MemberPolicy memberPolicy;
+    @Nullable
     protected final MemberPolicy resolvedMemberPolicy;
+    @Nonnull
     protected final AclUpdatePolicy aclUpdatePolicy;
+    @Nonnull
     protected final SharedLinkPolicy sharedLinkPolicy;
+    @Nullable
     protected final ViewerInfoPolicy viewerInfoPolicy;
 
     /**

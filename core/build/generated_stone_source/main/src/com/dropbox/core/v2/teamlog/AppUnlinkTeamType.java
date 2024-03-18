@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class AppUnlinkTeamType {
     // struct team_log.AppUnlinkTeamType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

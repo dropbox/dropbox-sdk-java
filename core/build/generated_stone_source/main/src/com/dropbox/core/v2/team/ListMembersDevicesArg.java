@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 class ListMembersDevicesArg {
     // struct team.ListMembersDevicesArg (team_devices.stone)
 
+    @Nullable
     protected final String cursor;
     protected final boolean includeWebSessions;
     protected final boolean includeDesktopClients;

@@ -27,9 +27,13 @@ import javax.annotation.Nullable;
 public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
     // struct team_log.WebDeviceSessionLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final WebSessionLogInfo sessionInfo;
+    @Nonnull
     protected final String userAgent;
+    @Nonnull
     protected final String os;
+    @Nonnull
     protected final String browser;
 
     /**

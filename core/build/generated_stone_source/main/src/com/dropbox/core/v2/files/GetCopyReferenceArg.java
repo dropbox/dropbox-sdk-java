@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class GetCopyReferenceArg {
     // struct files.GetCopyReferenceArg (files.stone)
 
+    @Nonnull
     protected final String path;
 
     /**

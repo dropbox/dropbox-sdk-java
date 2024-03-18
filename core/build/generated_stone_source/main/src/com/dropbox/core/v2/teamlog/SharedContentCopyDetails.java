@@ -26,9 +26,13 @@ import javax.annotation.Nullable;
 public class SharedContentCopyDetails {
     // struct team_log.SharedContentCopyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String sharedContentLink;
+    @Nullable
     protected final UserLogInfo sharedContentOwner;
+    @Nonnull
     protected final AccessLevel sharedContentAccessLevel;
+    @Nonnull
     protected final String destinationPath;
 
     /**

@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 public class DeviceChangeIpMobileDetails {
     // struct team_log.DeviceChangeIpMobileDetails (team_log_generated.stone)
 
+    @Nullable
     protected final DeviceSessionLogInfo deviceSessionInfo;
 
     /**

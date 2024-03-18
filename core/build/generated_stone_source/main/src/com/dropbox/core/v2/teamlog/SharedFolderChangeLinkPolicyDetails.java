@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class SharedFolderChangeLinkPolicyDetails {
     // struct team_log.SharedFolderChangeLinkPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SharedLinkPolicy newValue;
+    @Nullable
     protected final SharedLinkPolicy previousValue;
 
     /**

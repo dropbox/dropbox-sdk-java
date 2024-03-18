@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class SsoChangeLogoutUrlDetails {
     // struct team_log.SsoChangeLogoutUrlDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String previousValue;
+    @Nullable
     protected final String newValue;
 
     /**

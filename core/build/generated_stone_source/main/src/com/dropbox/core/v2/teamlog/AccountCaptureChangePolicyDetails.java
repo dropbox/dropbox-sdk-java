@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class AccountCaptureChangePolicyDetails {
     // struct team_log.AccountCaptureChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccountCapturePolicy newValue;
+    @Nullable
     protected final AccountCapturePolicy previousValue;
 
     /**

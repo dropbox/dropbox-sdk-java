@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class SearchResult {
     // struct files.SearchResult (files.stone)
 
+    @Nonnull
     protected final List<SearchMatch> matches;
     protected final boolean more;
     protected final long start;

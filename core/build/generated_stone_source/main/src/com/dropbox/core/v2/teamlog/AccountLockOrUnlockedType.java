@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class AccountLockOrUnlockedType {
     // struct team_log.AccountLockOrUnlockedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

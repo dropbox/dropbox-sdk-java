@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class WebSessionsChangeFixedLengthPolicyType {
     // struct team_log.WebSessionsChangeFixedLengthPolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

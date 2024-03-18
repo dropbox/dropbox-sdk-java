@@ -26,11 +26,17 @@ import javax.annotation.Nullable;
 class UpdateFileRequestArgs {
     // struct file_requests.UpdateFileRequestArgs (file_requests.stone)
 
+    @Nonnull
     protected final String id;
+    @Nullable
     protected final String title;
+    @Nullable
     protected final String destination;
+    @Nonnull
     protected final UpdateFileRequestDeadline deadline;
+    @Nullable
     protected final Boolean open;
+    @Nullable
     protected final String description;
 
     /**

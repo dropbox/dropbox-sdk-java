@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedFolderMountType {
     // struct team_log.SharedFolderMountType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

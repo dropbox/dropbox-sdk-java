@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 public class MemberAddArg extends MemberAddArgBase {
     // struct team.MemberAddArg (team_members.stone)
 
+    @Nonnull
     protected final AdminTier role;
 
     /**

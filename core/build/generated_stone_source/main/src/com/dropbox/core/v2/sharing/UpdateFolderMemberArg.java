@@ -22,8 +22,11 @@ import javax.annotation.Nonnull;
 class UpdateFolderMemberArg {
     // struct sharing.UpdateFolderMemberArg (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
+    @Nonnull
     protected final MemberSelector member;
+    @Nonnull
     protected final AccessLevel accessLevel;
 
     /**

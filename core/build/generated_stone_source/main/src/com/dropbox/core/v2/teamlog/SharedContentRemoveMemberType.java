@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedContentRemoveMemberType {
     // struct team_log.SharedContentRemoveMemberType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

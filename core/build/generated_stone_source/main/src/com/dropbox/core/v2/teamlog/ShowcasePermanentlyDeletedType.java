@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ShowcasePermanentlyDeletedType {
     // struct team_log.ShowcasePermanentlyDeletedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

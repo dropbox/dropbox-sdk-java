@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class SharedLinkChangeVisibilityDetails {
     // struct team_log.SharedLinkChangeVisibilityDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SharedLinkVisibility newValue;
+    @Nullable
     protected final SharedLinkVisibility previousValue;
 
     /**

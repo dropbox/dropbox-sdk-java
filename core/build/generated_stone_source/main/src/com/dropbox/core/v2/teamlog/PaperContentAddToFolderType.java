@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperContentAddToFolderType {
     // struct team_log.PaperContentAddToFolderType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

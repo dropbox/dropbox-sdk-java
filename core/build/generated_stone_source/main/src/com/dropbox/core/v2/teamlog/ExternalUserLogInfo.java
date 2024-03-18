@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class ExternalUserLogInfo {
     // struct team_log.ExternalUserLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final String userIdentifier;
+    @Nonnull
     protected final IdentifierType identifierType;
 
     /**

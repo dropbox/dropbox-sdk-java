@@ -27,9 +27,13 @@ import javax.annotation.Nullable;
 public class DesktopClientSession extends DeviceSession {
     // struct team.DesktopClientSession (team_devices.stone)
 
+    @Nonnull
     protected final String hostName;
+    @Nonnull
     protected final DesktopPlatform clientType;
+    @Nonnull
     protected final String clientVersion;
+    @Nonnull
     protected final String platform;
     protected final boolean isDeleteOnUnlinkSupported;
 

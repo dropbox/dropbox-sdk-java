@@ -23,9 +23,13 @@ import javax.annotation.Nullable;
 public class MinimalFileLinkMetadata {
     // struct files.MinimalFileLinkMetadata (files.stone)
 
+    @Nonnull
     protected final String url;
+    @Nullable
     protected final String id;
+    @Nullable
     protected final String path;
+    @Nonnull
     protected final String rev;
 
     /**

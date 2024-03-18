@@ -24,8 +24,11 @@ import javax.annotation.Nonnull;
 public class AdminAlertingChangedAlertConfigDetails {
     // struct team_log.AdminAlertingChangedAlertConfigDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String alertName;
+    @Nonnull
     protected final AdminAlertingAlertConfiguration previousAlertConfig;
+    @Nonnull
     protected final AdminAlertingAlertConfiguration newAlertConfig;
 
     /**

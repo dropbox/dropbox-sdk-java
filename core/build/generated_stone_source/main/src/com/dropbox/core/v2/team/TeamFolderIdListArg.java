@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class TeamFolderIdListArg {
     // struct team.TeamFolderIdListArg (team_folders.stone)
 
+    @Nonnull
     protected final List<String> teamFolderIds;
 
     /**

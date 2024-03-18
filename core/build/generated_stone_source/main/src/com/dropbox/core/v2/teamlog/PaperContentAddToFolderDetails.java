@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class PaperContentAddToFolderDetails {
     // struct team_log.PaperContentAddToFolderDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
     protected final long targetAssetIndex;
     protected final long parentAssetIndex;

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ExportMembersReportType {
     // struct team_log.ExportMembersReportType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

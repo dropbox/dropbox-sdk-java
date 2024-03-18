@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class SharedContentChangeViewerInfoPolicyDetails {
     // struct team_log.SharedContentChangeViewerInfoPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ViewerInfoPolicy newValue;
+    @Nullable
     protected final ViewerInfoPolicy previousValue;
 
     /**

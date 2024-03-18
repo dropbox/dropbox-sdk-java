@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 public class DeviceLinkSuccessDetails {
     // struct team_log.DeviceLinkSuccessDetails (team_log_generated.stone)
 
+    @Nullable
     protected final DeviceSessionLogInfo deviceSessionInfo;
 
     /**

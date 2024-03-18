@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class UploadSessionCursor {
     // struct files.UploadSessionCursor (files.stone)
 
+    @Nonnull
     protected final String sessionId;
     protected final long offset;
 

@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class ExternalDriveBackupPolicyChangedDetails {
     // struct team_log.ExternalDriveBackupPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ExternalDriveBackupPolicy newValue;
+    @Nonnull
     protected final ExternalDriveBackupPolicy previousValue;
 
     /**

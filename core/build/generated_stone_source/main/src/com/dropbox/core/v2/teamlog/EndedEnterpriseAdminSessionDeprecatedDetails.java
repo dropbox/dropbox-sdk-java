@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class EndedEnterpriseAdminSessionDeprecatedDetails {
     // struct team_log.EndedEnterpriseAdminSessionDeprecatedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FedExtraDetails federationExtraDetails;
 
     /**

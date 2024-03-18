@@ -30,13 +30,21 @@ import javax.annotation.Nullable;
 public class SharedFolderMetadata extends SharedFolderMetadataBase {
     // struct sharing.SharedFolderMetadata (sharing_folders.stone)
 
+    @Nullable
     protected final SharedContentLinkMetadata linkMetadata;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final List<FolderPermission> permissions;
+    @Nonnull
     protected final FolderPolicy policy;
+    @Nonnull
     protected final String previewUrl;
+    @Nonnull
     protected final String sharedFolderId;
+    @Nonnull
     protected final Date timeInvited;
+    @Nonnull
     protected final AccessInheritance accessInheritance;
 
     /**

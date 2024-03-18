@@ -29,14 +29,21 @@ import javax.annotation.Nullable;
 public class FileRequest {
     // struct file_requests.FileRequest (file_requests.stone)
 
+    @Nonnull
     protected final String id;
+    @Nonnull
     protected final String url;
+    @Nonnull
     protected final String title;
+    @Nullable
     protected final String destination;
+    @Nonnull
     protected final Date created;
+    @Nullable
     protected final FileRequestDeadline deadline;
     protected final boolean isOpen;
     protected final long fileCount;
+    @Nullable
     protected final String description;
 
     /**

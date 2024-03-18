@@ -22,11 +22,14 @@ import javax.annotation.Nonnull;
 public class TeamGetInfoResult {
     // struct team.TeamGetInfoResult (team.stone)
 
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final String teamId;
     protected final long numLicensedUsers;
     protected final long numProvisionedUsers;
     protected final long numUsedLicenses;
+    @Nonnull
     protected final TeamMemberPolicies policies;
 
     /**

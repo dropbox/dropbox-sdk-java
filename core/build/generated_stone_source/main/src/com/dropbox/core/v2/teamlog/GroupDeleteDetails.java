@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 public class GroupDeleteDetails {
     // struct team_log.GroupDeleteDetails (team_log_generated.stone)
 
+    @Nullable
     protected final Boolean isCompanyManaged;
 
     /**

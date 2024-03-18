@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class MemberSuggestionsChangePolicyDetails {
     // struct team_log.MemberSuggestionsChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final MemberSuggestionsPolicy newValue;
+    @Nullable
     protected final MemberSuggestionsPolicy previousValue;
 
     /**

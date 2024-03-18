@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SsoErrorType {
     // struct team_log.SsoErrorType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

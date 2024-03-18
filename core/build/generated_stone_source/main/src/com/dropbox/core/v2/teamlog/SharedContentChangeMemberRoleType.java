@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedContentChangeMemberRoleType {
     // struct team_log.SharedContentChangeMemberRoleType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

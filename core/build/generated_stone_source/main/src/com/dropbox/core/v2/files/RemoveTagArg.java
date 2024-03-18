@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 class RemoveTagArg {
     // struct files.RemoveTagArg (file_tagging.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final String tagText;
 
     /**

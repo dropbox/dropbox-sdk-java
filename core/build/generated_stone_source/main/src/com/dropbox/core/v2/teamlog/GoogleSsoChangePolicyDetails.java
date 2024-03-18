@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class GoogleSsoChangePolicyDetails {
     // struct team_log.GoogleSsoChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final GoogleSsoPolicy newValue;
+    @Nullable
     protected final GoogleSsoPolicy previousValue;
 
     /**

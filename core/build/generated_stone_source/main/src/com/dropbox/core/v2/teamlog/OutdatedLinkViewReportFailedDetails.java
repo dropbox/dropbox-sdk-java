@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class OutdatedLinkViewReportFailedDetails {
     // struct team_log.OutdatedLinkViewReportFailedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamReportFailureReason failureReason;
 
     /**

@@ -28,8 +28,11 @@ import javax.annotation.Nullable;
 public class SharedLinkSettingsAddExpirationDetails {
     // struct team_log.SharedLinkSettingsAddExpirationDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccessLevel sharedContentAccessLevel;
+    @Nullable
     protected final String sharedContentLink;
+    @Nullable
     protected final Date newValue;
 
     /**

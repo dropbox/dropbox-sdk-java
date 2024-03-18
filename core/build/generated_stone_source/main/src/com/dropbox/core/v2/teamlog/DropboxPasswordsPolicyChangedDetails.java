@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class DropboxPasswordsPolicyChangedDetails {
     // struct team_log.DropboxPasswordsPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final DropboxPasswordsPolicy newValue;
+    @Nonnull
     protected final DropboxPasswordsPolicy previousValue;
 
     /**

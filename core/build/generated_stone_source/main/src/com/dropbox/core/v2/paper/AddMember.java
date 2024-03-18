@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 public class AddMember {
     // struct paper.AddMember (paper.stone)
 
+    @Nonnull
     protected final PaperDocPermissionLevel permissionLevel;
+    @Nonnull
     protected final MemberSelector member;
 
     /**

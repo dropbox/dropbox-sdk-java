@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class FolderSharingInfo extends SharingInfo {
     // struct files.FolderSharingInfo (files.stone)
 
+    @Nullable
     protected final String parentSharedFolderId;
+    @Nullable
     protected final String sharedFolderId;
     protected final boolean traverseOnly;
     protected final boolean noAccess;

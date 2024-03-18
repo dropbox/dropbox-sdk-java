@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class FileTransfersTransferSendDetails {
     // struct team_log.FileTransfersTransferSendDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String fileTransferId;
 
     /**

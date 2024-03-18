@@ -25,7 +25,9 @@ import javax.annotation.Nonnull;
 public class TeamSharingWhitelistSubjectsChangedDetails {
     // struct team_log.TeamSharingWhitelistSubjectsChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final List<String> addedWhitelistSubjects;
+    @Nonnull
     protected final List<String> removedWhitelistSubjects;
 
     /**

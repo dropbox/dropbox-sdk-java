@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class GetTemplateArg {
     // struct file_properties.GetTemplateArg (file_properties.stone)
 
+    @Nonnull
     protected final String templateId;
 
     /**

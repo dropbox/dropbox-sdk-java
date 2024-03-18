@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SecondaryEmailVerifiedType {
     // struct team_log.SecondaryEmailVerifiedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

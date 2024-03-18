@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GoogleSsoChangePolicyType {
     // struct team_log.GoogleSsoChangePolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

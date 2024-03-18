@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class RateLimitError {
     // struct auth.RateLimitError (auth.stone)
 
+    @Nonnull
     protected final RateLimitReason reason;
     protected final long retryAfter;
 

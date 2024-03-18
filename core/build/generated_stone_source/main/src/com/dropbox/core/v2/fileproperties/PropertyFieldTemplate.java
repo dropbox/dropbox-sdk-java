@@ -25,8 +25,11 @@ import javax.annotation.Nonnull;
 public class PropertyFieldTemplate {
     // struct file_properties.PropertyFieldTemplate (file_properties.stone)
 
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final String description;
+    @Nonnull
     protected final PropertyType type;
 
     /**

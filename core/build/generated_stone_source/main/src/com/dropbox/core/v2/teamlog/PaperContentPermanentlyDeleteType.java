@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperContentPermanentlyDeleteType {
     // struct team_log.PaperContentPermanentlyDeleteType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

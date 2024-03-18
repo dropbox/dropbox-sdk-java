@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class ListUsersOnFolderContinueArgs extends RefPaperDoc {
     // struct paper.ListUsersOnFolderContinueArgs (paper.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class GroupsMembersListContinueArg {
     // struct team.GroupsMembersListContinueArg (team_groups.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**

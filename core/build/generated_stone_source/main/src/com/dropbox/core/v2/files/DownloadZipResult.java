@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DownloadZipResult {
     // struct files.DownloadZipResult (files.stone)
 
+    @Nonnull
     protected final FolderMetadata metadata;
 
     /**

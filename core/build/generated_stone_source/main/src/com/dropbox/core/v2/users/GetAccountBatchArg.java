@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class GetAccountBatchArg {
     // struct users.GetAccountBatchArg (users.stone)
 
+    @Nonnull
     protected final List<String> accountIds;
 
     /**

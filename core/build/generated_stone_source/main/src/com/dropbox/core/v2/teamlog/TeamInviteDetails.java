@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class TeamInviteDetails {
     // struct team_log.TeamInviteDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final InviteMethod inviteMethod;
+    @Nullable
     protected final Boolean additionalLicensePurchase;
 
     /**

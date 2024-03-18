@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TeamProfileChangeLogoType {
     // struct team_log.TeamProfileChangeLogoType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class DeleteFileRequestsResult {
     // struct file_requests.DeleteFileRequestsResult (file_requests.stone)
 
+    @Nonnull
     protected final List<FileRequest> fileRequests;
 
     /**

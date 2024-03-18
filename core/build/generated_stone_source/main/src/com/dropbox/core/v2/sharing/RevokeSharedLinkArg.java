@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class RevokeSharedLinkArg {
     // struct sharing.RevokeSharedLinkArg (shared_links.stone)
 
+    @Nonnull
     protected final String url;
 
     /**

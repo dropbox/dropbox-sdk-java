@@ -25,7 +25,9 @@ import javax.annotation.Nonnull;
 public class PasswordStrengthRequirementsChangePolicyDetails {
     // struct team_log.PasswordStrengthRequirementsChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PasswordStrengthPolicy previousValue;
+    @Nonnull
     protected final PasswordStrengthPolicy newValue;
 
     /**

@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class DomainVerificationRemoveDomainDetails {
     // struct team_log.DomainVerificationRemoveDomainDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final List<String> domainNames;
 
     /**

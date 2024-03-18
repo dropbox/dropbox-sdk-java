@@ -23,9 +23,12 @@ import javax.annotation.Nullable;
 class GroupCreateArg {
     // struct team.GroupCreateArg (team_groups.stone)
 
+    @Nonnull
     protected final String groupName;
     protected final boolean addCreatorAsOwner;
+    @Nullable
     protected final String groupExternalId;
+    @Nullable
     protected final GroupManagementType groupManagementType;
 
     /**

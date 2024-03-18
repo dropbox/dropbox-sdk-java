@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GroupRenameType {
     // struct team_log.GroupRenameType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

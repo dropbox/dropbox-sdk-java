@@ -26,7 +26,9 @@ import javax.annotation.Nonnull;
 public class FullTeam extends Team {
     // struct users.FullTeam (users.stone)
 
+    @Nonnull
     protected final TeamSharingPolicies sharingPolicies;
+    @Nonnull
     protected final OfficeAddInPolicy officeAddinPolicy;
 
     /**

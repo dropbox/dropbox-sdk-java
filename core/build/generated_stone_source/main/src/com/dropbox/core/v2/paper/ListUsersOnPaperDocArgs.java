@@ -22,6 +22,7 @@ class ListUsersOnPaperDocArgs extends RefPaperDoc {
     // struct paper.ListUsersOnPaperDocArgs (paper.stone)
 
     protected final int limit;
+    @Nonnull
     protected final UserOnPaperDocFilter filterBy;
 
     /**

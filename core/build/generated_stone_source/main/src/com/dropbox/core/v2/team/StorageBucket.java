@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class StorageBucket {
     // struct team.StorageBucket (team_reports.stone)
 
+    @Nonnull
     protected final String bucket;
     protected final long users;
 

@@ -22,8 +22,11 @@ import javax.annotation.Nullable;
 public class UploadSessionFinishArg {
     // struct files.UploadSessionFinishArg (files.stone)
 
+    @Nonnull
     protected final UploadSessionCursor cursor;
+    @Nonnull
     protected final CommitInfo commit;
+    @Nullable
     protected final String contentHash;
 
     /**

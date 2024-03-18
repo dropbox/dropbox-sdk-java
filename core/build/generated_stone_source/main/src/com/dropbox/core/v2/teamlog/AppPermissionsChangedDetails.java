@@ -25,9 +25,13 @@ import javax.annotation.Nullable;
 public class AppPermissionsChangedDetails {
     // struct team_log.AppPermissionsChangedDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String appName;
+    @Nullable
     protected final AdminConsoleAppPermission permission;
+    @Nonnull
     protected final AdminConsoleAppPolicy previousValue;
+    @Nonnull
     protected final AdminConsoleAppPolicy newValue;
 
     /**

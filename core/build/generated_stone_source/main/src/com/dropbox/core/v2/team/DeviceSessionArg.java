@@ -21,7 +21,9 @@ import javax.annotation.Nonnull;
 public class DeviceSessionArg {
     // struct team.DeviceSessionArg (team_devices.stone)
 
+    @Nonnull
     protected final String sessionId;
+    @Nonnull
     protected final String teamMemberId;
 
     /**

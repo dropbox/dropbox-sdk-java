@@ -26,7 +26,9 @@ public class SfAllowNonMembersToViewSharedLinksDetails {
     // struct team_log.SfAllowNonMembersToViewSharedLinksDetails (team_log_generated.stone)
 
     protected final long targetAssetIndex;
+    @Nonnull
     protected final String originalFolderName;
+    @Nullable
     protected final String sharedFolderType;
 
     /**

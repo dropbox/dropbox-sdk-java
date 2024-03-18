@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TeamProfileRemoveBackgroundType {
     // struct team_log.TeamProfileRemoveBackgroundType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

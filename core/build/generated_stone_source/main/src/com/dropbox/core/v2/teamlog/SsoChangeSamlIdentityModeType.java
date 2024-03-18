@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SsoChangeSamlIdentityModeType {
     // struct team_log.SsoChangeSamlIdentityModeType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

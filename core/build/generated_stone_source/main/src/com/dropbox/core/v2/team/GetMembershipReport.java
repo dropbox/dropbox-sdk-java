@@ -27,10 +27,15 @@ import javax.annotation.Nonnull;
 public class GetMembershipReport extends BaseDfbReport {
     // struct team.GetMembershipReport (team_reports.stone)
 
+    @Nonnull
     protected final List<Long> teamSize;
+    @Nonnull
     protected final List<Long> pendingInvites;
+    @Nonnull
     protected final List<Long> membersJoined;
+    @Nonnull
     protected final List<Long> suspendedMembers;
+    @Nonnull
     protected final List<Long> licenses;
 
     /**

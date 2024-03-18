@@ -24,8 +24,11 @@ import javax.annotation.Nonnull;
 public class BinderAddSectionDetails {
     // struct team_log.BinderAddSectionDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nonnull
     protected final String docTitle;
+    @Nonnull
     protected final String binderItemName;
 
     /**

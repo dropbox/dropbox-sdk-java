@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class SmartSyncChangePolicyDetails {
     // struct team_log.SmartSyncChangePolicyDetails (team_log_generated.stone)
 
+    @Nullable
     protected final SmartSyncPolicy newValue;
+    @Nullable
     protected final SmartSyncPolicy previousValue;
 
     /**

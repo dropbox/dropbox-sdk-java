@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class ListFolderLongpollArg {
     // struct files.ListFolderLongpollArg (files.stone)
 
+    @Nonnull
     protected final String cursor;
     protected final long timeout;
 

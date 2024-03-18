@@ -25,10 +25,15 @@ import javax.annotation.Nullable;
 class LegalHoldsPolicyCreateArg {
     // struct team.LegalHoldsPolicyCreateArg (team_legal_holds.stone)
 
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final String description;
+    @Nonnull
     protected final List<String> members;
+    @Nullable
     protected final Date startDate;
+    @Nullable
     protected final Date endDate;
 
     /**

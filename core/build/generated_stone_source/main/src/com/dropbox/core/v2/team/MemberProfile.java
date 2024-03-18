@@ -30,20 +30,34 @@ import javax.annotation.Nullable;
 public class MemberProfile {
     // struct team.MemberProfile (team.stone)
 
+    @Nonnull
     protected final String teamMemberId;
+    @Nullable
     protected final String externalId;
+    @Nullable
     protected final String accountId;
+    @Nonnull
     protected final String email;
     protected final boolean emailVerified;
+    @Nullable
     protected final List<SecondaryEmail> secondaryEmails;
+    @Nonnull
     protected final TeamMemberStatus status;
+    @Nonnull
     protected final Name name;
+    @Nonnull
     protected final TeamMembershipType membershipType;
+    @Nullable
     protected final Date invitedOn;
+    @Nullable
     protected final Date joinedOn;
+    @Nullable
     protected final Date suspendedOn;
+    @Nullable
     protected final String persistentId;
+    @Nullable
     protected final Boolean isDirectoryRestricted;
+    @Nullable
     protected final String profilePhotoUrl;
 
     /**

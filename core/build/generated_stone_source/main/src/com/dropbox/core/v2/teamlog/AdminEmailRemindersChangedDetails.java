@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class AdminEmailRemindersChangedDetails {
     // struct team_log.AdminEmailRemindersChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AdminEmailRemindersPolicy newValue;
+    @Nonnull
     protected final AdminEmailRemindersPolicy previousValue;
 
     /**

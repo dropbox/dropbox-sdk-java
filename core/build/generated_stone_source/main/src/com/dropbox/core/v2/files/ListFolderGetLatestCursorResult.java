@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ListFolderGetLatestCursorResult {
     // struct files.ListFolderGetLatestCursorResult (files.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**

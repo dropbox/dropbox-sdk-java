@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DeviceDeleteOnUnlinkSuccessType {
     // struct team_log.DeviceDeleteOnUnlinkSuccessType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

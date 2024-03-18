@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class RelocationBatchArgBase {
     // struct files.RelocationBatchArgBase (files.stone)
 
+    @Nonnull
     protected final List<RelocationPath> entries;
     protected final boolean autorename;
 

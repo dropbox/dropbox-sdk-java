@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class MemberChangeEmailType {
     // struct team_log.MemberChangeEmailType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

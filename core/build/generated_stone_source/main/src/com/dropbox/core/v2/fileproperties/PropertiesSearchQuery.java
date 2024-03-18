@@ -21,8 +21,11 @@ import javax.annotation.Nonnull;
 public class PropertiesSearchQuery {
     // struct file_properties.PropertiesSearchQuery (file_properties.stone)
 
+    @Nonnull
     protected final String query;
+    @Nonnull
     protected final PropertiesSearchMode mode;
+    @Nonnull
     protected final LogicalOperator logicalOperator;
 
     /**

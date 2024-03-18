@@ -24,8 +24,11 @@ import javax.annotation.Nonnull;
 public class ChangedEnterpriseAdminRoleDetails {
     // struct team_log.ChangedEnterpriseAdminRoleDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FedAdminRole previousValue;
+    @Nonnull
     protected final FedAdminRole newValue;
+    @Nonnull
     protected final String teamName;
 
     /**

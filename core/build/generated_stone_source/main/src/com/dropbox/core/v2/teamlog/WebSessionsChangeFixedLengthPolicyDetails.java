@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class WebSessionsChangeFixedLengthPolicyDetails {
     // struct team_log.WebSessionsChangeFixedLengthPolicyDetails (team_log_generated.stone)
 
+    @Nullable
     protected final WebSessionsFixedLengthPolicy newValue;
+    @Nullable
     protected final WebSessionsFixedLengthPolicy previousValue;
 
     /**

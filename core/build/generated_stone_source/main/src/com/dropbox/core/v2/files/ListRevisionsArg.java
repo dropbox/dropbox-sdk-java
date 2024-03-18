@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 class ListRevisionsArg {
     // struct files.ListRevisionsArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final ListRevisionsMode mode;
     protected final long limit;
 

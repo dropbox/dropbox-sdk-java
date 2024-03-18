@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class AppBlockedByPermissionsType {
     // struct team_log.AppBlockedByPermissionsType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

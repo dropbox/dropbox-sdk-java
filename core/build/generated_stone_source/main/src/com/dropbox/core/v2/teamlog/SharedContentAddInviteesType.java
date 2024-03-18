@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedContentAddInviteesType {
     // struct team_log.SharedContentAddInviteesType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

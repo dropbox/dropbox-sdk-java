@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperContentRemoveMemberType {
     // struct team_log.PaperContentRemoveMemberType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

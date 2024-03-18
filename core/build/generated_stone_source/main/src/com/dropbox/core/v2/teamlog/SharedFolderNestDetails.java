@@ -25,9 +25,13 @@ import javax.annotation.Nullable;
 public class SharedFolderNestDetails {
     // struct team_log.SharedFolderNestDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String previousParentNsId;
+    @Nullable
     protected final String newParentNsId;
+    @Nullable
     protected final String previousNsPath;
+    @Nullable
     protected final String newNsPath;
 
     /**

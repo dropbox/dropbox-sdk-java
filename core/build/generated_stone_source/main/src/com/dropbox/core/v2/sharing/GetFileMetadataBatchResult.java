@@ -26,7 +26,9 @@ import javax.annotation.Nonnull;
 public class GetFileMetadataBatchResult {
     // struct sharing.GetFileMetadataBatchResult (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
+    @Nonnull
     protected final GetFileMetadataIndividualResult result;
 
     /**

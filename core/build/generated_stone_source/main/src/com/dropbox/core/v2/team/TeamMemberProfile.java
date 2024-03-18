@@ -31,7 +31,9 @@ import javax.annotation.Nullable;
 public class TeamMemberProfile extends MemberProfile {
     // struct team.TeamMemberProfile (team_members.stone)
 
+    @Nonnull
     protected final List<String> groups;
+    @Nonnull
     protected final String memberFolderId;
 
     /**

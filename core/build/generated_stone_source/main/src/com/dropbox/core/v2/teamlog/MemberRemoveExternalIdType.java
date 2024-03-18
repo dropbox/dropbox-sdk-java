@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class MemberRemoveExternalIdType {
     // struct team_log.MemberRemoveExternalIdType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -23,7 +23,9 @@ import javax.annotation.Nonnull;
 public class OverwritePropertyGroupArg {
     // struct file_properties.OverwritePropertyGroupArg (file_properties.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final List<PropertyGroup> propertyGroups;
 
     /**

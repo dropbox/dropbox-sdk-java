@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ApplyNamingConventionType {
     // struct team_log.ApplyNamingConventionType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

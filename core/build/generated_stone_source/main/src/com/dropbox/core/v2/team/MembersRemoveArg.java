@@ -22,7 +22,9 @@ import javax.annotation.Nullable;
 class MembersRemoveArg extends MembersDeactivateArg {
     // struct team.MembersRemoveArg (team_members.stone)
 
+    @Nullable
     protected final UserSelectorArg transferDestId;
+    @Nullable
     protected final UserSelectorArg transferAdminId;
     protected final boolean keepAccount;
     protected final boolean retainTeamShares;

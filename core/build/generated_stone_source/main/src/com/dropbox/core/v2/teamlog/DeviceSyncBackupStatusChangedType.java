@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DeviceSyncBackupStatusChangedType {
     // struct team_log.DeviceSyncBackupStatusChangedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

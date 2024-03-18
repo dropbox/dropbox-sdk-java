@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class RansomwareRestoreProcessCompletedType {
     // struct team_log.RansomwareRestoreProcessCompletedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

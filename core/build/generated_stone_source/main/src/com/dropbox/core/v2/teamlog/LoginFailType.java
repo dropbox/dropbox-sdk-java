@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class LoginFailType {
     // struct team_log.LoginFailType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

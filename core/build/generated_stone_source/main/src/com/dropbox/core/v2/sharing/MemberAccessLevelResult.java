@@ -27,8 +27,11 @@ import javax.annotation.Nullable;
 public class MemberAccessLevelResult {
     // struct sharing.MemberAccessLevelResult (sharing_folders.stone)
 
+    @Nullable
     protected final AccessLevel accessLevel;
+    @Nullable
     protected final String warning;
+    @Nullable
     protected final List<ParentFolderAccessInfo> accessDetails;
 
     /**

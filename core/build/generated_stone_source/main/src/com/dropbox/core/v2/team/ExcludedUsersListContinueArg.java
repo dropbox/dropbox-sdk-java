@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 class ExcludedUsersListContinueArg {
     // struct team.ExcludedUsersListContinueArg (team_member_space_limits.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**

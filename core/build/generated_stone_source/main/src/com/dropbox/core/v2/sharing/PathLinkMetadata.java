@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 public class PathLinkMetadata extends LinkMetadata {
     // struct sharing.PathLinkMetadata (shared_links.stone)
 
+    @Nonnull
     protected final String path;
 
     /**

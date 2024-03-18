@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class PathLogInfo {
     // struct team_log.PathLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String contextual;
+    @Nonnull
     protected final NamespaceRelativePathLogInfo namespaceRelative;
 
     /**

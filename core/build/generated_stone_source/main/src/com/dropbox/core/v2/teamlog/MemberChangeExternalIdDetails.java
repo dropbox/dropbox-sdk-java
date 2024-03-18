@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class MemberChangeExternalIdDetails {
     // struct team_log.MemberChangeExternalIdDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String newValue;
+    @Nonnull
     protected final String previousValue;
 
     /**

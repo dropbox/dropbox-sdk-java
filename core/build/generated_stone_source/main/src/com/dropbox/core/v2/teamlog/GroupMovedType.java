@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GroupMovedType {
     // struct team_log.GroupMovedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

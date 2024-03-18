@@ -26,8 +26,11 @@ import javax.annotation.Nonnull;
 public class AudienceRestrictingSharedFolder {
     // struct sharing.AudienceRestrictingSharedFolder (shared_content_links.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final LinkAudience audience;
 
     /**

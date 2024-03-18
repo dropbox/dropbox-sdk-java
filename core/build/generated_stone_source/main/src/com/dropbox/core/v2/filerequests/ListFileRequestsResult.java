@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class ListFileRequestsResult {
     // struct file_requests.ListFileRequestsResult (file_requests.stone)
 
+    @Nonnull
     protected final List<FileRequest> fileRequests;
 
     /**

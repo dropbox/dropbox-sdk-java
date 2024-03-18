@@ -25,6 +25,7 @@ public class TeamSpaceAllocation {
     protected final long used;
     protected final long allocated;
     protected final long userWithinTeamSpaceAllocated;
+    @Nonnull
     protected final MemberSpaceLimitType userWithinTeamSpaceLimitType;
     protected final long userWithinTeamSpaceUsedCached;
 

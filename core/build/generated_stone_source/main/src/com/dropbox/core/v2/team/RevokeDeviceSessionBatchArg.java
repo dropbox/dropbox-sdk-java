@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class RevokeDeviceSessionBatchArg {
     // struct team.RevokeDeviceSessionBatchArg (team_devices.stone)
 
+    @Nonnull
     protected final List<RevokeDeviceSessionArg> revokeDevices;
 
     /**

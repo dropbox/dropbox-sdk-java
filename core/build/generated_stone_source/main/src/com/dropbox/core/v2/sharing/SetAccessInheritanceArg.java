@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 class SetAccessInheritanceArg {
     // struct sharing.SetAccessInheritanceArg (sharing_folders.stone)
 
+    @Nonnull
     protected final AccessInheritance accessInheritance;
+    @Nonnull
     protected final String sharedFolderId;
 
     /**

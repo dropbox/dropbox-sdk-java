@@ -25,6 +25,7 @@ public class SfFbUninviteDetails {
     // struct team_log.SfFbUninviteDetails (team_log_generated.stone)
 
     protected final long targetAssetIndex;
+    @Nonnull
     protected final String originalFolderName;
 
     /**

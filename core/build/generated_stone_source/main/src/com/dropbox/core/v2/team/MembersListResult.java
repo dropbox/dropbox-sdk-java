@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 public class MembersListResult {
     // struct team.MembersListResult (team_members.stone)
 
+    @Nonnull
     protected final List<TeamMemberInfo> members;
+    @Nonnull
     protected final String cursor;
     protected final boolean hasMore;
 

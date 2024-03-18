@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ReplayFileSharedLinkCreatedType {
     // struct team_log.ReplayFileSharedLinkCreatedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

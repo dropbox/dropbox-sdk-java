@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class MemberSuggestDetails {
     // struct team_log.MemberSuggestDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final List<String> suggestedMembers;
 
     /**

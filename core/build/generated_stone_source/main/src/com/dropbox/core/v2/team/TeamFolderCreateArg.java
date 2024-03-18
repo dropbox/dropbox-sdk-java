@@ -23,7 +23,9 @@ import javax.annotation.Nullable;
 class TeamFolderCreateArg {
     // struct team.TeamFolderCreateArg (team_folders.stone)
 
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final SyncSettingArg syncSetting;
 
     /**

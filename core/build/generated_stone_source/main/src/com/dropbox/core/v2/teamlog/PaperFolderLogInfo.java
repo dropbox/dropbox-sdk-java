@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class PaperFolderLogInfo {
     // struct team_log.PaperFolderLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final String folderId;
+    @Nonnull
     protected final String folderName;
 
     /**

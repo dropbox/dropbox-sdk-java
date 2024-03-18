@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 public class VideoMetadata extends MediaMetadata {
     // struct files.VideoMetadata (files.stone)
 
+    @Nullable
     protected final Long duration;
 
     /**

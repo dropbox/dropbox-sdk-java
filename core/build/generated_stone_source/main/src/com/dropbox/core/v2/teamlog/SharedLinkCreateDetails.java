@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 public class SharedLinkCreateDetails {
     // struct team_log.SharedLinkCreateDetails (team_log_generated.stone)
 
+    @Nullable
     protected final SharedLinkAccessLevel sharedLinkAccessLevel;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class NoteAclInviteOnlyType {
     // struct team_log.NoteAclInviteOnlyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

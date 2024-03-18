@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class MemberSpaceLimitsChangePolicyDetails {
     // struct team_log.MemberSpaceLimitsChangePolicyDetails (team_log_generated.stone)
 
+    @Nullable
     protected final Long previousValue;
+    @Nullable
     protected final Long newValue;
 
     /**

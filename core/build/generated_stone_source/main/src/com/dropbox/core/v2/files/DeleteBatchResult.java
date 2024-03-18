@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class DeleteBatchResult extends FileOpsResult {
     // struct files.DeleteBatchResult (files.stone)
 
+    @Nonnull
     protected final List<DeleteBatchResultEntry> entries;
 
     /**

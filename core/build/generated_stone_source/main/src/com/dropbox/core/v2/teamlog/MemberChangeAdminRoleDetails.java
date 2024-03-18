@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class MemberChangeAdminRoleDetails {
     // struct team_log.MemberChangeAdminRoleDetails (team_log_generated.stone)
 
+    @Nullable
     protected final AdminRole newValue;
+    @Nullable
     protected final AdminRole previousValue;
 
     /**

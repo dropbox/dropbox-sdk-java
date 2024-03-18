@@ -23,9 +23,13 @@ import javax.annotation.Nonnull;
 public class ListUsersOnPaperDocResponse {
     // struct paper.ListUsersOnPaperDocResponse (paper.stone)
 
+    @Nonnull
     protected final List<InviteeInfoWithPermissionLevel> invitees;
+    @Nonnull
     protected final List<UserInfoWithPermissionLevel> users;
+    @Nonnull
     protected final UserInfo docOwner;
+    @Nonnull
     protected final Cursor cursor;
     protected final boolean hasMore;
 

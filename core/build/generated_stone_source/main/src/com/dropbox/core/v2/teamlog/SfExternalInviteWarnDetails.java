@@ -26,8 +26,11 @@ public class SfExternalInviteWarnDetails {
     // struct team_log.SfExternalInviteWarnDetails (team_log_generated.stone)
 
     protected final long targetAssetIndex;
+    @Nonnull
     protected final String originalFolderName;
+    @Nullable
     protected final String newSharingPermission;
+    @Nullable
     protected final String previousSharingPermission;
 
     /**

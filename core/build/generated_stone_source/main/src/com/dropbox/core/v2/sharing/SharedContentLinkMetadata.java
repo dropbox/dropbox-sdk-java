@@ -28,7 +28,9 @@ import javax.annotation.Nullable;
 public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
     // struct sharing.SharedContentLinkMetadata (shared_content_links.stone)
 
+    @Nullable
     protected final AudienceExceptions audienceExceptions;
+    @Nonnull
     protected final String url;
 
     /**

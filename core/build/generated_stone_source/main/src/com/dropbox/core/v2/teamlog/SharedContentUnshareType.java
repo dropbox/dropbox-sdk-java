@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedContentUnshareType {
     // struct team_log.SharedContentUnshareType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class WatermarkingPolicyChangedType {
     // struct team_log.WatermarkingPolicyChangedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class NoExpirationLinkGenReportFailedDetails {
     // struct team_log.NoExpirationLinkGenReportFailedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamReportFailureReason failureReason;
 
     /**

@@ -25,8 +25,11 @@ import javax.annotation.Nullable;
 public class NamespaceRelativePathLogInfo {
     // struct team_log.NamespaceRelativePathLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String nsId;
+    @Nullable
     protected final String relativePath;
+    @Nullable
     protected final Boolean isSharedNamespace;
 
     /**

@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class GroupRenameDetails {
     // struct team_log.GroupRenameDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String previousValue;
+    @Nonnull
     protected final String newValue;
 
     /**

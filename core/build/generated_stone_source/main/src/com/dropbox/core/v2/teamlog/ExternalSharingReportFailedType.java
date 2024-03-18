@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ExternalSharingReportFailedType {
     // struct team_log.ExternalSharingReportFailedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

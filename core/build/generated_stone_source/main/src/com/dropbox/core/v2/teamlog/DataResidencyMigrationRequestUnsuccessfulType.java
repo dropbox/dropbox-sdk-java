@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DataResidencyMigrationRequestUnsuccessfulType {
     // struct team_log.DataResidencyMigrationRequestUnsuccessfulType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileEditType {
     // struct team_log.FileEditType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

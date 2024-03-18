@@ -23,12 +23,18 @@ import javax.annotation.Nullable;
 class ShareFolderArgBase {
     // struct sharing.ShareFolderArgBase (sharing_folders.stone)
 
+    @Nullable
     protected final AclUpdatePolicy aclUpdatePolicy;
     protected final boolean forceAsync;
+    @Nullable
     protected final MemberPolicy memberPolicy;
+    @Nonnull
     protected final String path;
+    @Nullable
     protected final SharedLinkPolicy sharedLinkPolicy;
+    @Nullable
     protected final ViewerInfoPolicy viewerInfoPolicy;
+    @Nonnull
     protected final AccessInheritance accessInheritance;
 
     /**

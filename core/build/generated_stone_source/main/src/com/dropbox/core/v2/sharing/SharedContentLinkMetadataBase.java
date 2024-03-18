@@ -25,11 +25,17 @@ import javax.annotation.Nullable;
 public class SharedContentLinkMetadataBase {
     // struct sharing.SharedContentLinkMetadataBase (shared_content_links.stone)
 
+    @Nullable
     protected final AccessLevel accessLevel;
+    @Nonnull
     protected final List<LinkAudience> audienceOptions;
+    @Nullable
     protected final AudienceRestrictingSharedFolder audienceRestrictingSharedFolder;
+    @Nonnull
     protected final LinkAudience currentAudience;
+    @Nullable
     protected final Date expiry;
+    @Nonnull
     protected final List<LinkPermission> linkPermissions;
     protected final boolean passwordProtected;
 

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class AccountCaptureChangeAvailabilityType {
     // struct team_log.AccountCaptureChangeAvailabilityType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

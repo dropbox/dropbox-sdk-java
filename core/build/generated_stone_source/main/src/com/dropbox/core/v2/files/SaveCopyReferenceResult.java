@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SaveCopyReferenceResult {
     // struct files.SaveCopyReferenceResult (files.stone)
 
+    @Nonnull
     protected final Metadata metadata;
 
     /**

@@ -22,8 +22,11 @@ import javax.annotation.Nonnull;
 public class PaperCreateResult {
     // struct files.PaperCreateResult (files.stone)
 
+    @Nonnull
     protected final String url;
+    @Nonnull
     protected final String resultPath;
+    @Nonnull
     protected final String fileId;
     protected final long paperRevision;
 

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class ListFoldersContinueArg {
     // struct sharing.ListFoldersContinueArg (sharing_folders.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**

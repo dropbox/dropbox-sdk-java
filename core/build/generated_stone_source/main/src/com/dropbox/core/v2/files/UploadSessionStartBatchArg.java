@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 class UploadSessionStartBatchArg {
     // struct files.UploadSessionStartBatchArg (files.stone)
 
+    @Nullable
     protected final UploadSessionType sessionType;
     protected final long numSessions;
 

@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class RelinquishFolderMembershipArg {
     // struct sharing.RelinquishFolderMembershipArg (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
     protected final boolean leaveACopy;
 

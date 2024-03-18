@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class FileRequestCloseDetails {
     // struct team_log.FileRequestCloseDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String fileRequestId;
+    @Nullable
     protected final FileRequestDetails previousDetails;
 
     /**

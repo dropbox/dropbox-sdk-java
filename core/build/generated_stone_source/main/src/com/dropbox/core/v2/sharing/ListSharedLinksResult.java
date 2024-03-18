@@ -23,8 +23,10 @@ import javax.annotation.Nullable;
 public class ListSharedLinksResult {
     // struct sharing.ListSharedLinksResult (shared_links.stone)
 
+    @Nonnull
     protected final List<SharedLinkMetadata> links;
     protected final boolean hasMore;
+    @Nullable
     protected final String cursor;
 
     /**

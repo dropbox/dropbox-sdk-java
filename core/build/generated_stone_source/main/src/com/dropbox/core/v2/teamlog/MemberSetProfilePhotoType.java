@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class MemberSetProfilePhotoType {
     // struct team_log.MemberSetProfilePhotoType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

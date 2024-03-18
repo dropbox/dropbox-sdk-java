@@ -21,7 +21,9 @@ import javax.annotation.Nonnull;
 public class ExportResult {
     // struct files.ExportResult (files.stone)
 
+    @Nonnull
     protected final ExportMetadata exportMetadata;
+    @Nonnull
     protected final FileMetadata fileMetadata;
 
     /**

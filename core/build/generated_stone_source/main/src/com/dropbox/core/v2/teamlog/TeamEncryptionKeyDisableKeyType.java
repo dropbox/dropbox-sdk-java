@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TeamEncryptionKeyDisableKeyType {
     // struct team_log.TeamEncryptionKeyDisableKeyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

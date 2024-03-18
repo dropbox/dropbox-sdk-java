@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class EnterpriseSettingsLockingType {
     // struct team_log.EnterpriseSettingsLockingType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

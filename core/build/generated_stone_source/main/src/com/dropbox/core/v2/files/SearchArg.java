@@ -22,10 +22,13 @@ import javax.annotation.Nonnull;
 class SearchArg {
     // struct files.SearchArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final String query;
     protected final long start;
     protected final long maxResults;
+    @Nonnull
     protected final SearchMode mode;
 
     /**

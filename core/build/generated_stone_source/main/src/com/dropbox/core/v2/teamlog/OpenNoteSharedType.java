@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class OpenNoteSharedType {
     // struct team_log.OpenNoteSharedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

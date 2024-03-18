@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class BackupInvitationOpenedType {
     // struct team_log.BackupInvitationOpenedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

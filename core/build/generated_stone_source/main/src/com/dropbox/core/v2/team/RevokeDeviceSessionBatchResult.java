@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class RevokeDeviceSessionBatchResult {
     // struct team.RevokeDeviceSessionBatchResult (team_devices.stone)
 
+    @Nonnull
     protected final List<RevokeDeviceSessionStatus> revokeDevicesStatus;
 
     /**

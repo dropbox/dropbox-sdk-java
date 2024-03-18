@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
     // struct team.GroupMembersSetAccessTypeArg (team_groups.stone)
 
+    @Nonnull
     protected final GroupAccessType accessType;
     protected final boolean returnMembers;
 

@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class EmmChangePolicyDetails {
     // struct team_log.EmmChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final EmmState newValue;
+    @Nullable
     protected final EmmState previousValue;
 
     /**

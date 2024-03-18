@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ExternalDriveBackupEligibilityStatusCheckedType {
     // struct team_log.ExternalDriveBackupEligibilityStatusCheckedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

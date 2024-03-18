@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileRequestsEmailsEnabledType {
     // struct team_log.FileRequestsEmailsEnabledType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class AdminAlertingAlertStateChangedType {
     // struct team_log.AdminAlertingAlertStateChangedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

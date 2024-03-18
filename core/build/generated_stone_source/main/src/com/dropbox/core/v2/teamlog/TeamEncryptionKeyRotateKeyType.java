@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TeamEncryptionKeyRotateKeyType {
     // struct team_log.TeamEncryptionKeyRotateKeyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

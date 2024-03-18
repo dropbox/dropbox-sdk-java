@@ -26,8 +26,11 @@ public class SfTeamJoinFromOobLinkDetails {
     // struct team_log.SfTeamJoinFromOobLinkDetails (team_log_generated.stone)
 
     protected final long targetAssetIndex;
+    @Nonnull
     protected final String originalFolderName;
+    @Nullable
     protected final String tokenKey;
+    @Nullable
     protected final String sharingPermission;
 
     /**

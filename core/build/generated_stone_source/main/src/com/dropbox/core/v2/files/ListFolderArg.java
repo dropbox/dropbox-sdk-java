@@ -24,14 +24,18 @@ import javax.annotation.Nullable;
 class ListFolderArg {
     // struct files.ListFolderArg (files.stone)
 
+    @Nonnull
     protected final String path;
     protected final boolean recursive;
     protected final boolean includeMediaInfo;
     protected final boolean includeDeleted;
     protected final boolean includeHasExplicitSharedMembers;
     protected final boolean includeMountedFolders;
+    @Nullable
     protected final Long limit;
+    @Nullable
     protected final SharedLink sharedLink;
+    @Nullable
     protected final TemplateFilterBase includePropertyGroups;
     protected final boolean includeNonDownloadableFiles;
 

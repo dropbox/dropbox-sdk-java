@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class TeamMergeRequestExpiredShownToSecondaryTeamDetails {
     // struct team_log.TeamMergeRequestExpiredShownToSecondaryTeamDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String sentTo;
 
     /**

@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class PollArg {
     // struct async.PollArg (async.stone)
 
+    @Nonnull
     protected final String asyncJobId;
 
     /**

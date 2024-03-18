@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperDocDownloadType {
     // struct team_log.PaperDocDownloadType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

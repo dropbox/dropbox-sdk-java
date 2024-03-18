@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class TeamMemberInfoV2 {
     // struct team.TeamMemberInfoV2 (team_members.stone)
 
+    @Nonnull
     protected final TeamMemberProfile profile;
+    @Nullable
     protected final List<TeamMemberRole> roles;
 
     /**

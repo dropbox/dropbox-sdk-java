@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TfaRemoveBackupPhoneType {
     // struct team_log.TfaRemoveBackupPhoneType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

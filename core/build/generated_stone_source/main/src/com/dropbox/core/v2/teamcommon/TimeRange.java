@@ -27,7 +27,9 @@ import javax.annotation.Nullable;
 public class TimeRange {
     // struct team_common.TimeRange (team_common.stone)
 
+    @Nullable
     protected final Date startTime;
+    @Nullable
     protected final Date endTime;
 
     /**

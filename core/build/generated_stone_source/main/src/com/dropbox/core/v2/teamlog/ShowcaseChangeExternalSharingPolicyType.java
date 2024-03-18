@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ShowcaseChangeExternalSharingPolicyType {
     // struct team_log.ShowcaseChangeExternalSharingPolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class PaperChangePolicyDetails {
     // struct team_log.PaperChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PaperEnabledPolicy newValue;
+    @Nullable
     protected final PaperEnabledPolicy previousValue;
 
     /**

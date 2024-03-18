@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 class MembersDeactivateBaseArg {
     // struct team.MembersDeactivateBaseArg (team_members.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
 
     /**

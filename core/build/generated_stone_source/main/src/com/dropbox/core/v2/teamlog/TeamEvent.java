@@ -28,15 +28,25 @@ import javax.annotation.Nullable;
 public class TeamEvent {
     // struct team_log.TeamEvent (team_log_generated.stone)
 
+    @Nonnull
     protected final Date timestamp;
+    @Nonnull
     protected final EventCategory eventCategory;
+    @Nullable
     protected final ActorLogInfo actor;
+    @Nullable
     protected final OriginLogInfo origin;
+    @Nullable
     protected final Boolean involveNonTeamMember;
+    @Nullable
     protected final ContextLogInfo context;
+    @Nullable
     protected final List<ParticipantLogInfo> participants;
+    @Nullable
     protected final List<AssetLogInfo> assets;
+    @Nonnull
     protected final EventType eventType;
+    @Nonnull
     protected final EventDetails details;
 
     /**

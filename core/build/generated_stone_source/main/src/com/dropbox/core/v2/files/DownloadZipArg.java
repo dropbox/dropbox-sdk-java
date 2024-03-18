@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class DownloadZipArg {
     // struct files.DownloadZipArg (files.stone)
 
+    @Nonnull
     protected final String path;
 
     /**

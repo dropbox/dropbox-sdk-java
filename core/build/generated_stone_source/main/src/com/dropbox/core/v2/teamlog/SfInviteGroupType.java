@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SfInviteGroupType {
     // struct team_log.SfInviteGroupType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

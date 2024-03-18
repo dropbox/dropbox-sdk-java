@@ -25,8 +25,11 @@ import javax.annotation.Nullable;
 public class PaperDocOwnershipChangedDetails {
     // struct team_log.PaperDocOwnershipChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nullable
     protected final String oldOwnerUserId;
+    @Nonnull
     protected final String newOwnerUserId;
 
     /**

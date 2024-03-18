@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class CreateFolderEntryResult {
     // struct files.CreateFolderEntryResult (files.stone)
 
+    @Nonnull
     protected final FolderMetadata metadata;
 
     /**

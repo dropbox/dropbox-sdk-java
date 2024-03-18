@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DeleteTeamInviteLinkType {
     // struct team_log.DeleteTeamInviteLinkType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

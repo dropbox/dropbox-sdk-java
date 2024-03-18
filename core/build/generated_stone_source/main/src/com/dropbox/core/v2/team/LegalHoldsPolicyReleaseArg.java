@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class LegalHoldsPolicyReleaseArg {
     // struct team.LegalHoldsPolicyReleaseArg (team_legal_holds.stone)
 
+    @Nonnull
     protected final String id;
 
     /**

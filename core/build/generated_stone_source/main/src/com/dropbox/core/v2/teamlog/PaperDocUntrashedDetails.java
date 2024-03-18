@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class PaperDocUntrashedDetails {
     // struct team_log.PaperDocUntrashedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
 
     /**

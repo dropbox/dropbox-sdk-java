@@ -26,7 +26,9 @@ import javax.annotation.Nonnull;
 public class NoExpirationLinkGenCreateReportDetails {
     // struct team_log.NoExpirationLinkGenCreateReportDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final Date startDate;
+    @Nonnull
     protected final Date endDate;
 
     /**

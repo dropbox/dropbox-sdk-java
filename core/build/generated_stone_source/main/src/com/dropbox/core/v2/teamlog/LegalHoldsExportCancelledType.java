@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class LegalHoldsExportCancelledType {
     // struct team_log.LegalHoldsExportCancelledType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

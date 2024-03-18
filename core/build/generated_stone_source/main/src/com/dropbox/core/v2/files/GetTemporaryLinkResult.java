@@ -21,7 +21,9 @@ import javax.annotation.Nonnull;
 public class GetTemporaryLinkResult {
     // struct files.GetTemporaryLinkResult (files.stone)
 
+    @Nonnull
     protected final FileMetadata metadata;
+    @Nonnull
     protected final String link;
 
     /**

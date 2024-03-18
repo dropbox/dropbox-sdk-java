@@ -23,8 +23,11 @@ import javax.annotation.Nullable;
 public class SearchMatchV2 {
     // struct files.SearchMatchV2 (files.stone)
 
+    @Nonnull
     protected final MetadataV2 metadata;
+    @Nullable
     protected final SearchMatchTypeV2 matchType;
+    @Nullable
     protected final List<HighlightSpan> highlightSpans;
 
     /**

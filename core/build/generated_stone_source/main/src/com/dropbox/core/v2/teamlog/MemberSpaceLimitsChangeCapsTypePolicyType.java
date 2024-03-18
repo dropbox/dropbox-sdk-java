@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class MemberSpaceLimitsChangeCapsTypePolicyType {
     // struct team_log.MemberSpaceLimitsChangeCapsTypePolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

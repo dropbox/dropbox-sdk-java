@@ -29,8 +29,11 @@ import javax.annotation.Nullable;
 public class FileLinkMetadata extends SharedLinkMetadata {
     // struct sharing.FileLinkMetadata (shared_links.stone)
 
+    @Nonnull
     protected final Date clientModified;
+    @Nonnull
     protected final Date serverModified;
+    @Nonnull
     protected final String rev;
     protected final long size;
 

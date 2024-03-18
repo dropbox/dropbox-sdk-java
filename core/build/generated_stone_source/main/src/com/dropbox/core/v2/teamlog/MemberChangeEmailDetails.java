@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class MemberChangeEmailDetails {
     // struct team_log.MemberChangeEmailDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String newValue;
+    @Nullable
     protected final String previousValue;
 
     /**

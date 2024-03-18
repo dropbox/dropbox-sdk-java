@@ -24,7 +24,9 @@ import javax.annotation.Nullable;
 public class FileRequestDeadline {
     // struct file_requests.FileRequestDeadline (file_requests.stone)
 
+    @Nonnull
     protected final Date deadline;
+    @Nullable
     protected final GracePeriod allowLateUploads;
 
     /**

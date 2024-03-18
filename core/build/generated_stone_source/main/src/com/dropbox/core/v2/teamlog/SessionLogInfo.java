@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 public class SessionLogInfo {
     // struct team_log.SessionLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String sessionId;
 
     /**

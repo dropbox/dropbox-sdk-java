@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class PaperDocExport extends RefPaperDoc {
     // struct paper.PaperDocExport (paper.stone)
 
+    @Nonnull
     protected final ExportFormat exportFormat;
 
     /**

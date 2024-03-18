@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 class GetFileRequestArgs {
     // struct file_requests.GetFileRequestArgs (file_requests.stone)
 
+    @Nonnull
     protected final String id;
 
     /**

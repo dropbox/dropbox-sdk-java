@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class LockFileBatchArg {
     // struct files.LockFileBatchArg (files.stone)
 
+    @Nonnull
     protected final List<LockFileArg> entries;
 
     /**

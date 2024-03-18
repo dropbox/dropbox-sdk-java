@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class MemberSpaceLimitsAddCustomQuotaType {
     // struct team_log.MemberSpaceLimitsAddCustomQuotaType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

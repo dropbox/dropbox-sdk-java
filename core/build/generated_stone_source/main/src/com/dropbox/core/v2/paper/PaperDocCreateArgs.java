@@ -22,7 +22,9 @@ import javax.annotation.Nullable;
 class PaperDocCreateArgs {
     // struct paper.PaperDocCreateArgs (paper.stone)
 
+    @Nullable
     protected final String parentFolderId;
+    @Nonnull
     protected final ImportFormat importFormat;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class MemberSendInvitePolicyChangedType {
     // struct team_log.MemberSendInvitePolicyChangedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

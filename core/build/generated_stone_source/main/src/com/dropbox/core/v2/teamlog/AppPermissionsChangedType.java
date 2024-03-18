@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class AppPermissionsChangedType {
     // struct team_log.AppPermissionsChangedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

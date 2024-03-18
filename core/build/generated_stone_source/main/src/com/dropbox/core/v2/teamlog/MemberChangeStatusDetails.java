@@ -25,10 +25,15 @@ import javax.annotation.Nullable;
 public class MemberChangeStatusDetails {
     // struct team_log.MemberChangeStatusDetails (team_log_generated.stone)
 
+    @Nullable
     protected final MemberStatus previousValue;
+    @Nonnull
     protected final MemberStatus newValue;
+    @Nullable
     protected final ActionDetails action;
+    @Nullable
     protected final String newTeam;
+    @Nullable
     protected final String previousTeam;
 
     /**

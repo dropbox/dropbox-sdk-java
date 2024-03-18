@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SmarterSmartSyncPolicyChangedType {
     // struct team_log.SmarterSmartSyncPolicyChangedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

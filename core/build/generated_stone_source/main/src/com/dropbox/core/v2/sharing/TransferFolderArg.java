@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 class TransferFolderArg {
     // struct sharing.TransferFolderArg (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
+    @Nonnull
     protected final String toDropboxId;
 
     /**

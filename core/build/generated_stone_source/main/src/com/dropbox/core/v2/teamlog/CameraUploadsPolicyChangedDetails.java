@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class CameraUploadsPolicyChangedDetails {
     // struct team_log.CameraUploadsPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final CameraUploadsPolicy newValue;
+    @Nonnull
     protected final CameraUploadsPolicy previousValue;
 
     /**

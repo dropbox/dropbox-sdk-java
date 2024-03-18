@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class CreateFolderResult extends FileOpsResult {
     // struct files.CreateFolderResult (files.stone)
 
+    @Nonnull
     protected final FolderMetadata metadata;
 
     /**

@@ -25,7 +25,9 @@ import javax.annotation.Nonnull;
 public class TeamNamespacesListResult {
     // struct team.TeamNamespacesListResult (team_namespaces.stone)
 
+    @Nonnull
     protected final List<NamespaceMetadata> namespaces;
+    @Nonnull
     protected final String cursor;
     protected final boolean hasMore;
 

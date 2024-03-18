@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ReplayProjectTeamAddType {
     // struct team_log.ReplayProjectTeamAddType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

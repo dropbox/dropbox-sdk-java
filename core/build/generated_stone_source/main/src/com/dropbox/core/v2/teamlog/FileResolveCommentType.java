@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileResolveCommentType {
     // struct team_log.FileResolveCommentType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

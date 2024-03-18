@@ -27,10 +27,15 @@ import javax.annotation.Nullable;
 public class MobileClientSession extends DeviceSession {
     // struct team.MobileClientSession (team_devices.stone)
 
+    @Nonnull
     protected final String deviceName;
+    @Nonnull
     protected final MobileClientPlatform clientType;
+    @Nullable
     protected final String clientVersion;
+    @Nullable
     protected final String osVersion;
+    @Nullable
     protected final String lastCarrier;
 
     /**

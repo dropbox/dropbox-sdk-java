@@ -26,9 +26,13 @@ import javax.annotation.Nonnull;
 public class ParentFolderAccessInfo {
     // struct sharing.ParentFolderAccessInfo (sharing_folders.stone)
 
+    @Nonnull
     protected final String folderName;
+    @Nonnull
     protected final String sharedFolderId;
+    @Nonnull
     protected final List<MemberPermission> permissions;
+    @Nonnull
     protected final String path;
 
     /**

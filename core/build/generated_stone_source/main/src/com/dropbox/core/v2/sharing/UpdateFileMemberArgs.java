@@ -26,8 +26,11 @@ import javax.annotation.Nonnull;
 class UpdateFileMemberArgs {
     // struct sharing.UpdateFileMemberArgs (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
+    @Nonnull
     protected final MemberSelector member;
+    @Nonnull
     protected final AccessLevel accessLevel;
 
     /**

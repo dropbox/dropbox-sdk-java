@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileRequestsEmailsRestrictedToTeamOnlyType {
     // struct team_log.FileRequestsEmailsRestrictedToTeamOnlyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

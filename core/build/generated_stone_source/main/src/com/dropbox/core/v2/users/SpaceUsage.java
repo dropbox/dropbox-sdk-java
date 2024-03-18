@@ -25,6 +25,7 @@ public class SpaceUsage {
     // struct users.SpaceUsage (users.stone)
 
     protected final long used;
+    @Nonnull
     protected final SpaceAllocation allocation;
 
     /**

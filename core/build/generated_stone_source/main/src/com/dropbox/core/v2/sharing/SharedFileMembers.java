@@ -30,9 +30,13 @@ import javax.annotation.Nullable;
 public class SharedFileMembers {
     // struct sharing.SharedFileMembers (sharing_files.stone)
 
+    @Nonnull
     protected final List<UserFileMembershipInfo> users;
+    @Nonnull
     protected final List<GroupMembershipInfo> groups;
+    @Nonnull
     protected final List<InviteeMembershipInfo> invitees;
+    @Nullable
     protected final String cursor;
 
     /**

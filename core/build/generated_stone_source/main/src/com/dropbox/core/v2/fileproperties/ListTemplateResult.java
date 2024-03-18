@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class ListTemplateResult {
     // struct file_properties.ListTemplateResult (file_properties.stone)
 
+    @Nonnull
     protected final List<String> templateIds;
 
     /**

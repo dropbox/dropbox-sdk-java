@@ -27,8 +27,11 @@ import javax.annotation.Nullable;
 public class DeviceSessionLogInfo {
     // struct team_log.DeviceSessionLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String ipAddress;
+    @Nullable
     protected final Date created;
+    @Nullable
     protected final Date updated;
 
     /**

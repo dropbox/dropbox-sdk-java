@@ -25,8 +25,11 @@ import javax.annotation.Nullable;
 public class TfaChangeStatusDetails {
     // struct team_log.TfaChangeStatusDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TfaConfiguration newValue;
+    @Nullable
     protected final TfaConfiguration previousValue;
+    @Nullable
     protected final Boolean usedRescueCode;
 
     /**

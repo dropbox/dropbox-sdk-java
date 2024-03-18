@@ -27,10 +27,14 @@ import javax.annotation.Nullable;
 class AddFileMemberArgs {
     // struct sharing.AddFileMemberArgs (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
+    @Nonnull
     protected final List<MemberSelector> members;
+    @Nullable
     protected final String customMessage;
     protected final boolean quiet;
+    @Nonnull
     protected final AccessLevel accessLevel;
     protected final boolean addMessageAsComment;
 

@@ -28,6 +28,7 @@ public class AudienceExceptions {
     // struct sharing.AudienceExceptions (shared_content_links.stone)
 
     protected final long count;
+    @Nonnull
     protected final List<AudienceExceptionContentInfo> exceptions;
 
     /**

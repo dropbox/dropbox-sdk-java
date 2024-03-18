@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class OriginLogInfo {
     // struct team_log.OriginLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final GeoLocationLogInfo geoLocation;
+    @Nonnull
     protected final AccessMethodLogInfo accessMethod;
 
     /**

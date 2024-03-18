@@ -23,13 +23,19 @@ import javax.annotation.Nullable;
 public class SearchOptions {
     // struct files.SearchOptions (files.stone)
 
+    @Nullable
     protected final String path;
     protected final long maxResults;
+    @Nullable
     protected final SearchOrderBy orderBy;
+    @Nonnull
     protected final FileStatus fileStatus;
     protected final boolean filenameOnly;
+    @Nullable
     protected final List<String> fileExtensions;
+    @Nullable
     protected final List<FileCategory> fileCategories;
+    @Nullable
     protected final String accountId;
 
     /**

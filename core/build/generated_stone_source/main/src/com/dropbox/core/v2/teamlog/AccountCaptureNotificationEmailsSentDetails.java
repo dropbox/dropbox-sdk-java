@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class AccountCaptureNotificationEmailsSentDetails {
     // struct team_log.AccountCaptureNotificationEmailsSentDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String domainName;
+    @Nullable
     protected final AccountCaptureNotificationType notificationType;
 
     /**

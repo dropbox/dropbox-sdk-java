@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class CollectionShareType {
     // struct team_log.CollectionShareType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class FeaturesGetValuesBatchResult {
     // struct team.FeaturesGetValuesBatchResult (team.stone)
 
+    @Nonnull
     protected final List<FeatureValue> values;
 
     /**

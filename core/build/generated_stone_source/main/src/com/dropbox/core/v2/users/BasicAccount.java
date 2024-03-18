@@ -26,6 +26,7 @@ public class BasicAccount extends Account {
     // struct users.BasicAccount (users.stone)
 
     protected final boolean isTeammate;
+    @Nullable
     protected final String teamMemberId;
 
     /**

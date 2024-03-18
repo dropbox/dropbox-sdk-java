@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class GetTeamEventsContinueArg {
     // struct team_log.GetTeamEventsContinueArg (team_log.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**

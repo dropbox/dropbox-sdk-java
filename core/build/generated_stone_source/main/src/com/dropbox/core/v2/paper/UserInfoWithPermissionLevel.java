@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 public class UserInfoWithPermissionLevel {
     // struct paper.UserInfoWithPermissionLevel (paper.stone)
 
+    @Nonnull
     protected final UserInfo user;
+    @Nonnull
     protected final PaperDocPermissionLevel permissionLevel;
 
     /**

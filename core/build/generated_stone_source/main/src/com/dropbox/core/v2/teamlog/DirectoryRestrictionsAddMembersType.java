@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DirectoryRestrictionsAddMembersType {
     // struct team_log.DirectoryRestrictionsAddMembersType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

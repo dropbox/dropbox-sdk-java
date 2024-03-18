@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class PaperFolderDeletedDetails {
     // struct team_log.PaperFolderDeletedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
 
     /**

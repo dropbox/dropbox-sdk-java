@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class CaptureTranscriptPolicyChangedDetails {
     // struct team_log.CaptureTranscriptPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final CaptureTranscriptPolicy newValue;
+    @Nonnull
     protected final CaptureTranscriptPolicy previousValue;
 
     /**

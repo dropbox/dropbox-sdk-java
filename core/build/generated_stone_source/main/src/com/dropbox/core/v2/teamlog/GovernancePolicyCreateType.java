@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GovernancePolicyCreateType {
     // struct team_log.GovernancePolicyCreateType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

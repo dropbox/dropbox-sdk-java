@@ -29,7 +29,9 @@ import javax.annotation.Nullable;
 public class ListFoldersResult {
     // struct sharing.ListFoldersResult (sharing_folders.stone)
 
+    @Nonnull
     protected final List<SharedFolderMetadata> entries;
+    @Nullable
     protected final String cursor;
 
     /**

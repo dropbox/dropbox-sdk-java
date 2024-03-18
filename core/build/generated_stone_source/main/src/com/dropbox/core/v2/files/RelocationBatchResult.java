@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class RelocationBatchResult extends FileOpsResult {
     // struct files.RelocationBatchResult (files.stone)
 
+    @Nonnull
     protected final List<RelocationBatchResultData> entries;
 
     /**

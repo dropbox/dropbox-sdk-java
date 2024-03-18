@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class UndoNamingConventionType {
     // struct team_log.UndoNamingConventionType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

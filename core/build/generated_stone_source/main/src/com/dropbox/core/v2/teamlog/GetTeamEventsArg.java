@@ -24,9 +24,13 @@ class GetTeamEventsArg {
     // struct team_log.GetTeamEventsArg (team_log.stone)
 
     protected final long limit;
+    @Nullable
     protected final String accountId;
+    @Nullable
     protected final TimeRange time;
+    @Nullable
     protected final EventCategory category;
+    @Nullable
     protected final EventTypeArg eventType;
 
     /**

@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class PaperDocEditCommentDetails {
     // struct team_log.PaperDocEditCommentDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nullable
     protected final String commentText;
 
     /**

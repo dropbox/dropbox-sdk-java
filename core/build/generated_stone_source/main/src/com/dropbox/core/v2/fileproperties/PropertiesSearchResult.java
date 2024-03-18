@@ -23,7 +23,9 @@ import javax.annotation.Nullable;
 public class PropertiesSearchResult {
     // struct file_properties.PropertiesSearchResult (file_properties.stone)
 
+    @Nonnull
     protected final List<PropertiesSearchMatch> matches;
+    @Nullable
     protected final String cursor;
 
     /**

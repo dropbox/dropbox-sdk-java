@@ -28,10 +28,15 @@ import javax.annotation.Nullable;
 public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
     // struct team_log.DesktopDeviceSessionLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final DesktopSessionLogInfo sessionInfo;
+    @Nonnull
     protected final String hostName;
+    @Nonnull
     protected final DesktopPlatform clientType;
+    @Nullable
     protected final String clientVersion;
+    @Nonnull
     protected final String platform;
     protected final boolean isDeleteOnUnlinkSupported;
 

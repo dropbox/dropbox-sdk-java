@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class RemovePaperDocUser extends RefPaperDoc {
     // struct paper.RemovePaperDocUser (paper.stone)
 
+    @Nonnull
     protected final MemberSelector member;
 
     /**

@@ -28,11 +28,16 @@ import javax.annotation.Nonnull;
 public class TeamFolderMetadata {
     // struct team.TeamFolderMetadata (team_folders.stone)
 
+    @Nonnull
     protected final String teamFolderId;
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final TeamFolderStatus status;
     protected final boolean isTeamSharedDropbox;
+    @Nonnull
     protected final SyncSetting syncSetting;
+    @Nonnull
     protected final List<ContentSyncSetting> contentSyncSettings;
 
     /**

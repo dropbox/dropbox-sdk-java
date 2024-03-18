@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class RefPaperDoc {
     // struct paper.RefPaperDoc (paper.stone)
 
+    @Nonnull
     protected final String docId;
 
     /**

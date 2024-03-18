@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class LegalHoldsReleaseAHoldType {
     // struct team_log.LegalHoldsReleaseAHoldType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

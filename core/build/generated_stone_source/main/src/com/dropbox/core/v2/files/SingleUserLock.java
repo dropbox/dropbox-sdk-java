@@ -24,8 +24,11 @@ import javax.annotation.Nullable;
 public class SingleUserLock {
     // struct files.SingleUserLock (files.stone)
 
+    @Nonnull
     protected final Date created;
+    @Nonnull
     protected final String lockHolderAccountId;
+    @Nullable
     protected final String lockHolderTeamId;
 
     /**

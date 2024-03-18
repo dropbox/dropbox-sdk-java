@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class DomainVerificationAddDomainFailDetails {
     // struct team_log.DomainVerificationAddDomainFailDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String domainName;
+    @Nullable
     protected final String verificationMethod;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class UserTagsRemovedType {
     // struct team_log.UserTagsRemovedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

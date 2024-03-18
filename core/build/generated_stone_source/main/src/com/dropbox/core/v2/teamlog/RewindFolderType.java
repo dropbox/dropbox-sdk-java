@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class RewindFolderType {
     // struct team_log.RewindFolderType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

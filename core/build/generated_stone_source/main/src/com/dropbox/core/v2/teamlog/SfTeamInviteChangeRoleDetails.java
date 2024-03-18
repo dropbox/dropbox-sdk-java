@@ -26,8 +26,11 @@ public class SfTeamInviteChangeRoleDetails {
     // struct team_log.SfTeamInviteChangeRoleDetails (team_log_generated.stone)
 
     protected final long targetAssetIndex;
+    @Nonnull
     protected final String originalFolderName;
+    @Nullable
     protected final String newSharingPermission;
+    @Nullable
     protected final String previousSharingPermission;
 
     /**

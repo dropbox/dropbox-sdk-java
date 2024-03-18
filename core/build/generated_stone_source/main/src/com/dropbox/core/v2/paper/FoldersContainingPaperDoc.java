@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class FoldersContainingPaperDoc {
     // struct paper.FoldersContainingPaperDoc (paper.stone)
 
+    @Nullable
     protected final FolderSharingPolicyType folderSharingPolicyType;
+    @Nullable
     protected final List<Folder> folders;
 
     /**

@@ -26,7 +26,9 @@ import javax.annotation.Nonnull;
 public class ListFileMembersBatchResult {
     // struct sharing.ListFileMembersBatchResult (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
+    @Nonnull
     protected final ListFileMembersIndividualResult result;
 
     /**

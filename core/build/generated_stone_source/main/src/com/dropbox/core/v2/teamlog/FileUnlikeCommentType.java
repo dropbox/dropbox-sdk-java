@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileUnlikeCommentType {
     // struct team_log.FileUnlikeCommentType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

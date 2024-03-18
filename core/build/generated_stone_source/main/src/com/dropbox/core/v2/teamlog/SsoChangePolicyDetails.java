@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class SsoChangePolicyDetails {
     // struct team_log.SsoChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SsoPolicy newValue;
+    @Nullable
     protected final SsoPolicy previousValue;
 
     /**

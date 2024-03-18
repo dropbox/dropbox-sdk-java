@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedFolderChangeMembersManagementPolicyType {
     // struct team_log.SharedFolderChangeMembersManagementPolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

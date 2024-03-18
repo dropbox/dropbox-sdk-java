@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class ViewerInfoPolicyChangedDetails {
     // struct team_log.ViewerInfoPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PassPolicy previousValue;
+    @Nonnull
     protected final PassPolicy newValue;
 
     /**

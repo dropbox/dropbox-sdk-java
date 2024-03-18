@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class NoPasswordLinkViewReportFailedDetails {
     // struct team_log.NoPasswordLinkViewReportFailedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamReportFailureReason failureReason;
 
     /**

@@ -27,8 +27,11 @@ import javax.annotation.Nullable;
 public class MediaMetadata {
     // struct files.MediaMetadata (files.stone)
 
+    @Nullable
     protected final Dimensions dimensions;
+    @Nullable
     protected final GpsCoordinates location;
+    @Nullable
     protected final Date timeTaken;
 
     /**

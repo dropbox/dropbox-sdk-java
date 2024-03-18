@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperPublishedLinkDisabledType {
     // struct team_log.PaperPublishedLinkDisabledType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

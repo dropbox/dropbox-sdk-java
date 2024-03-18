@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class WebSessionsChangeActiveSessionLimitDetails {
     // struct team_log.WebSessionsChangeActiveSessionLimitDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String previousValue;
+    @Nonnull
     protected final String newValue;
 
     /**

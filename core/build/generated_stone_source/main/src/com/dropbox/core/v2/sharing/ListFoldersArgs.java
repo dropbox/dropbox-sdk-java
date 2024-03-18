@@ -24,6 +24,7 @@ class ListFoldersArgs {
     // struct sharing.ListFoldersArgs (sharing_folders.stone)
 
     protected final long limit;
+    @Nullable
     protected final List<FolderAction> actions;
 
     /**

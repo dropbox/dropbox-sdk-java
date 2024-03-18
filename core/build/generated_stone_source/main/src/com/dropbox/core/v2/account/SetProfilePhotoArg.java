@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class SetProfilePhotoArg {
     // struct account.SetProfilePhotoArg (account.stone)
 
+    @Nonnull
     protected final PhotoSourceArg photo;
 
     /**

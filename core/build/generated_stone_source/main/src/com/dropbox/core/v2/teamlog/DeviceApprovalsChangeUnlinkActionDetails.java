@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class DeviceApprovalsChangeUnlinkActionDetails {
     // struct team_log.DeviceApprovalsChangeUnlinkActionDetails (team_log_generated.stone)
 
+    @Nullable
     protected final DeviceUnlinkPolicy newValue;
+    @Nullable
     protected final DeviceUnlinkPolicy previousValue;
 
     /**

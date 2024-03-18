@@ -25,9 +25,13 @@ import javax.annotation.Nullable;
 public class GovernancePolicyExportRemovedDetails {
     // struct team_log.GovernancePolicyExportRemovedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String governancePolicyId;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final PolicyType policyType;
+    @Nonnull
     protected final String exportName;
 
     /**

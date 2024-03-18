@@ -25,7 +25,9 @@ import javax.annotation.Nonnull;
 class MembersSetPermissionsArg {
     // struct team.MembersSetPermissionsArg (team_members.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
+    @Nonnull
     protected final AdminTier newRole;
 
     /**

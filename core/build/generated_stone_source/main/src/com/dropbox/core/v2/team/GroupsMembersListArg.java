@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class GroupsMembersListArg {
     // struct team.GroupsMembersListArg (team_groups.stone)
 
+    @Nonnull
     protected final GroupSelector group;
     protected final long limit;
 

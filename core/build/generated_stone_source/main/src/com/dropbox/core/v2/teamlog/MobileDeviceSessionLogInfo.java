@@ -28,11 +28,17 @@ import javax.annotation.Nullable;
 public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
     // struct team_log.MobileDeviceSessionLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final MobileSessionLogInfo sessionInfo;
+    @Nonnull
     protected final String deviceName;
+    @Nonnull
     protected final MobileClientPlatform clientType;
+    @Nullable
     protected final String clientVersion;
+    @Nullable
     protected final String osVersion;
+    @Nullable
     protected final String lastCarrier;
 
     /**

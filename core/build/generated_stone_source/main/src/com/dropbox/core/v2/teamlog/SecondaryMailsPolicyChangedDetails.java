@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class SecondaryMailsPolicyChangedDetails {
     // struct team_log.SecondaryMailsPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SecondaryMailsPolicy previousValue;
+    @Nonnull
     protected final SecondaryMailsPolicy newValue;
 
     /**

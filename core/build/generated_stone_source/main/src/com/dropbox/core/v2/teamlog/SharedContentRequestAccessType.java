@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedContentRequestAccessType {
     // struct team_log.SharedContentRequestAccessType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

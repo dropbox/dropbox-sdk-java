@@ -23,7 +23,9 @@ import javax.annotation.Nonnull;
 public class RemovePropertiesArg {
     // struct file_properties.RemovePropertiesArg (file_properties.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final List<String> propertyTemplateIds;
 
     /**

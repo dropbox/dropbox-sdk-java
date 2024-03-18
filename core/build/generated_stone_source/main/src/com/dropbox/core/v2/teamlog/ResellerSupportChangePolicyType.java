@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ResellerSupportChangePolicyType {
     // struct team_log.ResellerSupportChangePolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

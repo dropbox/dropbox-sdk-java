@@ -25,7 +25,9 @@ import javax.annotation.Nonnull;
 public class RootInfo {
     // struct common.RootInfo (common.stone)
 
+    @Nonnull
     protected final String rootNamespaceId;
+    @Nonnull
     protected final String homeNamespaceId;
 
     /**

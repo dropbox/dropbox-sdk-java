@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class BaseDfbReport {
     // struct team.BaseDfbReport (team_reports.stone)
 
+    @Nonnull
     protected final String startDate;
 
     /**

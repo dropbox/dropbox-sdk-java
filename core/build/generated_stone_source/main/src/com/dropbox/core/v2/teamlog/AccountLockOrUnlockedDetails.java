@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class AccountLockOrUnlockedDetails {
     // struct team_log.AccountLockOrUnlockedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccountState previousValue;
+    @Nonnull
     protected final AccountState newValue;
 
     /**

@@ -23,12 +23,18 @@ import javax.annotation.Nullable;
 public class LinkPermissions {
     // struct sharing.LinkPermissions (shared_links.stone)
 
+    @Nullable
     protected final ResolvedVisibility resolvedVisibility;
+    @Nullable
     protected final RequestedVisibility requestedVisibility;
     protected final boolean canRevoke;
+    @Nullable
     protected final SharedLinkAccessFailureReason revokeFailureReason;
+    @Nullable
     protected final LinkAudience effectiveAudience;
+    @Nullable
     protected final LinkAccessLevel linkAccessLevel;
+    @Nonnull
     protected final List<VisibilityPolicy> visibilityPolicies;
     protected final boolean canSetExpiry;
     protected final boolean canRemoveExpiry;
@@ -37,10 +43,15 @@ public class LinkPermissions {
     protected final boolean canDisallowDownload;
     protected final boolean allowComments;
     protected final boolean teamRestrictsComments;
+    @Nullable
     protected final List<LinkAudienceOption> audienceOptions;
+    @Nullable
     protected final Boolean canSetPassword;
+    @Nullable
     protected final Boolean canRemovePassword;
+    @Nullable
     protected final Boolean requirePassword;
+    @Nullable
     protected final Boolean canUseExtendedSharingControls;
 
     /**

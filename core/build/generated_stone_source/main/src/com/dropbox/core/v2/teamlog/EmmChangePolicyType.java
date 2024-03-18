@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class EmmChangePolicyType {
     // struct team_log.EmmChangePolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

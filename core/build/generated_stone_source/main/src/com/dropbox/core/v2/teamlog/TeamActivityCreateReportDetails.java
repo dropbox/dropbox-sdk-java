@@ -26,7 +26,9 @@ import javax.annotation.Nonnull;
 public class TeamActivityCreateReportDetails {
     // struct team_log.TeamActivityCreateReportDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final Date startDate;
+    @Nonnull
     protected final Date endDate;
 
     /**

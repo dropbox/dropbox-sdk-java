@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class TokenScopeError {
     // struct auth.TokenScopeError (auth.stone)
 
+    @Nonnull
     protected final String requiredScope;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class TeamNamespacesListContinueArg {
     // struct team.TeamNamespacesListContinueArg (team_namespaces.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**

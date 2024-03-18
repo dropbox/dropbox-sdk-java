@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ComputerBackupPolicyChangedType {
     // struct team_log.ComputerBackupPolicyChangedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

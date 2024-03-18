@@ -21,8 +21,10 @@ import javax.annotation.Nonnull;
 public class PaperDocCreateUpdateResult {
     // struct paper.PaperDocCreateUpdateResult (paper.stone)
 
+    @Nonnull
     protected final String docId;
     protected final long revision;
+    @Nonnull
     protected final String title;
 
     /**

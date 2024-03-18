@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class SsoRemoveLogoutUrlDetails {
     // struct team_log.SsoRemoveLogoutUrlDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String previousValue;
 
     /**

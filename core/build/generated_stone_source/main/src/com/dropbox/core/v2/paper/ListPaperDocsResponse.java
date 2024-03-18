@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 public class ListPaperDocsResponse {
     // struct paper.ListPaperDocsResponse (paper.stone)
 
+    @Nonnull
     protected final List<String> docIds;
+    @Nonnull
     protected final Cursor cursor;
     protected final boolean hasMore;
 

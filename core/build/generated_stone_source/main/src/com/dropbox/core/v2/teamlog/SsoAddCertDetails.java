@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class SsoAddCertDetails {
     // struct team_log.SsoAddCertDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final Certificate certificateDetails;
 
     /**

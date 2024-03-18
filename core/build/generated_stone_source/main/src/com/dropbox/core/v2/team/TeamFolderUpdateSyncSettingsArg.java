@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
     // struct team.TeamFolderUpdateSyncSettingsArg (team_folders.stone)
 
+    @Nullable
     protected final SyncSettingArg syncSetting;
+    @Nullable
     protected final List<ContentSyncSettingArg> contentSyncSettings;
 
     /**

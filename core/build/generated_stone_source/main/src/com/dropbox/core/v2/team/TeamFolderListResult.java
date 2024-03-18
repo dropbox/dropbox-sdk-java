@@ -26,7 +26,9 @@ import javax.annotation.Nonnull;
 public class TeamFolderListResult {
     // struct team.TeamFolderListResult (team_folders.stone)
 
+    @Nonnull
     protected final List<TeamFolderMetadata> teamFolders;
+    @Nonnull
     protected final String cursor;
     protected final boolean hasMore;
 

@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 public class MissingDetails {
     // struct team_log.MissingDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String sourceEventFields;
 
     /**

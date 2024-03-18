@@ -24,8 +24,11 @@ import javax.annotation.Nonnull;
 public class DeviceSyncBackupStatusChangedDetails {
     // struct team_log.DeviceSyncBackupStatusChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final DesktopDeviceSessionLogInfo desktopDeviceSessionInfo;
+    @Nonnull
     protected final BackupStatus previousValue;
+    @Nonnull
     protected final BackupStatus newValue;
 
     /**

@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class PaperContentPermanentlyDeleteDetails {
     // struct team_log.PaperContentPermanentlyDeleteDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
 
     /**

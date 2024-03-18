@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class CreateFolderBatchArg {
     // struct files.CreateFolderBatchArg (files.stone)
 
+    @Nonnull
     protected final List<String> paths;
     protected final boolean autorename;
     protected final boolean forceAsync;

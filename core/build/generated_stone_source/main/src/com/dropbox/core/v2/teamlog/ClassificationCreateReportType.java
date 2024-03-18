@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ClassificationCreateReportType {
     // struct team_log.ClassificationCreateReportType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

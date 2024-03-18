@@ -27,7 +27,9 @@ import javax.annotation.Nullable;
 class SharingAllowlistAddArgs {
     // struct team.SharingAllowlistAddArgs (team_sharing_allowlist.stone)
 
+    @Nullable
     protected final List<String> domains;
+    @Nullable
     protected final List<String> emails;
 
     /**

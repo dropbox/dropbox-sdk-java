@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class FileTransfersPolicyChangedDetails {
     // struct team_log.FileTransfersPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FileTransfersPolicy newValue;
+    @Nonnull
     protected final FileTransfersPolicy previousValue;
 
     /**

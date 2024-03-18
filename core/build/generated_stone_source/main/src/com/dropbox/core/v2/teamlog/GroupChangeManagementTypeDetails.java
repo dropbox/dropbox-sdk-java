@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class GroupChangeManagementTypeDetails {
     // struct team_log.GroupChangeManagementTypeDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final GroupManagementType newValue;
+    @Nullable
     protected final GroupManagementType previousValue;
 
     /**

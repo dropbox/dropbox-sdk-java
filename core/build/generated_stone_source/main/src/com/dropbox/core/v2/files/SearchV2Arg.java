@@ -22,9 +22,13 @@ import javax.annotation.Nullable;
 class SearchV2Arg {
     // struct files.SearchV2Arg (files.stone)
 
+    @Nonnull
     protected final String query;
+    @Nullable
     protected final SearchOptions options;
+    @Nullable
     protected final SearchMatchFieldOptions matchFieldOptions;
+    @Nullable
     protected final Boolean includeHighlights;
 
     /**

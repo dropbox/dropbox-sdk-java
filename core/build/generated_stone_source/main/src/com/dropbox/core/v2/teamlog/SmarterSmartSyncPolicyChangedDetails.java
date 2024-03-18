@@ -25,7 +25,9 @@ import javax.annotation.Nonnull;
 public class SmarterSmartSyncPolicyChangedDetails {
     // struct team_log.SmarterSmartSyncPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SmarterSmartSyncPolicyState previousValue;
+    @Nonnull
     protected final SmarterSmartSyncPolicyState newValue;
 
     /**

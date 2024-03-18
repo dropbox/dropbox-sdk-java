@@ -25,7 +25,9 @@ import javax.annotation.Nonnull;
 public class FileLockingPolicyChangedDetails {
     // struct team_log.FileLockingPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FileLockingPolicyState newValue;
+    @Nonnull
     protected final FileLockingPolicyState previousValue;
 
     /**

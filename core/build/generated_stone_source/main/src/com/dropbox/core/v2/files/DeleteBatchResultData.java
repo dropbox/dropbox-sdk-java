@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DeleteBatchResultData {
     // struct files.DeleteBatchResultData (files.stone)
 
+    @Nonnull
     protected final Metadata metadata;
 
     /**

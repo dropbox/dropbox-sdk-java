@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SfExternalInviteWarnType {
     // struct team_log.SfExternalInviteWarnType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

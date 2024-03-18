@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class InviteeMembershipInfo extends MembershipInfo {
     // struct sharing.InviteeMembershipInfo (sharing_folders.stone)
 
+    @Nonnull
     protected final InviteeInfo invitee;
+    @Nullable
     protected final UserInfo user;
 
     /**

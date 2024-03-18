@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperDocOwnershipChangedType {
     // struct team_log.PaperDocOwnershipChangedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

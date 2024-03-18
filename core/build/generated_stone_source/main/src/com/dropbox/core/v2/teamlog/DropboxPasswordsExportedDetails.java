@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class DropboxPasswordsExportedDetails {
     // struct team_log.DropboxPasswordsExportedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String platform;
 
     /**

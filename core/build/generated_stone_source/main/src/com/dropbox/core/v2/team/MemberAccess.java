@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class MemberAccess {
     // struct team.MemberAccess (team_groups.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
+    @Nonnull
     protected final GroupAccessType accessType;
 
     /**

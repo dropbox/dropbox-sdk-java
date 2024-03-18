@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class FileChangeCommentSubscriptionDetails {
     // struct team_log.FileChangeCommentSubscriptionDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FileCommentNotificationPolicy newValue;
+    @Nullable
     protected final FileCommentNotificationPolicy previousValue;
 
     /**

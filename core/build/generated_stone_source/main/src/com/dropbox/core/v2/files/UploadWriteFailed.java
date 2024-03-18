@@ -21,7 +21,9 @@ import javax.annotation.Nonnull;
 public class UploadWriteFailed {
     // struct files.UploadWriteFailed (files.stone)
 
+    @Nonnull
     protected final WriteError reason;
+    @Nonnull
     protected final String uploadSessionId;
 
     /**

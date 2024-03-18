@@ -26,8 +26,11 @@ import javax.annotation.Nonnull;
 public class TeamMemberRole {
     // struct team.TeamMemberRole (team_members.stone)
 
+    @Nonnull
     protected final String roleId;
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final String description;
 
     /**

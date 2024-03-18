@@ -28,6 +28,7 @@ import javax.annotation.Nullable;
 public class GroupFullInfo extends GroupSummary {
     // struct team.GroupFullInfo (team_groups.stone)
 
+    @Nullable
     protected final List<GroupMemberInfo> members;
     protected final long created;
 

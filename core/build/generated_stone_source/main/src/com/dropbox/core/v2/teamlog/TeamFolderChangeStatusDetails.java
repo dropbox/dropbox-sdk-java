@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class TeamFolderChangeStatusDetails {
     // struct team_log.TeamFolderChangeStatusDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamFolderStatus newValue;
+    @Nullable
     protected final TeamFolderStatus previousValue;
 
     /**

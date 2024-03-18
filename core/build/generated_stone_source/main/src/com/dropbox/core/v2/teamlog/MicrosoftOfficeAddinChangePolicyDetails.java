@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class MicrosoftOfficeAddinChangePolicyDetails {
     // struct team_log.MicrosoftOfficeAddinChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final MicrosoftOfficeAddinPolicy newValue;
+    @Nullable
     protected final MicrosoftOfficeAddinPolicy previousValue;
 
     /**

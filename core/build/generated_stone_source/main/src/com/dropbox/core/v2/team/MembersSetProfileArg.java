@@ -27,12 +27,19 @@ import javax.annotation.Nullable;
 class MembersSetProfileArg {
     // struct team.MembersSetProfileArg (team_members.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
+    @Nullable
     protected final String newEmail;
+    @Nullable
     protected final String newExternalId;
+    @Nullable
     protected final String newGivenName;
+    @Nullable
     protected final String newSurname;
+    @Nullable
     protected final String newPersistentId;
+    @Nullable
     protected final Boolean newIsDirectoryRestricted;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SharedLinkSettingsAllowDownloadDisabledType {
     // struct team_log.SharedLinkSettingsAllowDownloadDisabledType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

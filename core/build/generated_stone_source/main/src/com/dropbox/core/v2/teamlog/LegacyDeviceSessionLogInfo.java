@@ -27,14 +27,23 @@ import javax.annotation.Nullable;
 public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
     // struct team_log.LegacyDeviceSessionLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final SessionLogInfo sessionInfo;
+    @Nullable
     protected final String displayName;
+    @Nullable
     protected final Boolean isEmmManaged;
+    @Nullable
     protected final String platform;
+    @Nullable
     protected final String macAddress;
+    @Nullable
     protected final String osVersion;
+    @Nullable
     protected final String deviceType;
+    @Nullable
     protected final String clientVersion;
+    @Nullable
     protected final String legacyUniqId;
 
     /**

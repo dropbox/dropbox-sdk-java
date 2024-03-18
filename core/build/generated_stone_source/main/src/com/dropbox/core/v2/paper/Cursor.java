@@ -24,7 +24,9 @@ import javax.annotation.Nullable;
 public class Cursor {
     // struct paper.Cursor (paper.stone)
 
+    @Nonnull
     protected final String value;
+    @Nullable
     protected final Date expiration;
 
     /**

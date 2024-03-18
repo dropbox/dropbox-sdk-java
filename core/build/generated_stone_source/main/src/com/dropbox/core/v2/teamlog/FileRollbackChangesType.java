@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileRollbackChangesType {
     // struct team_log.FileRollbackChangesType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 class GetSharedLinksArg {
     // struct sharing.GetSharedLinksArg (shared_links.stone)
 
+    @Nullable
     protected final String path;
 
     /**

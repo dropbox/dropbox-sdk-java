@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class CreateFolderType {
     // struct team_log.CreateFolderType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -25,6 +25,7 @@ public class SfTeamGrantAccessDetails {
     // struct team_log.SfTeamGrantAccessDetails (team_log_generated.stone)
 
     protected final long targetAssetIndex;
+    @Nonnull
     protected final String originalFolderName;
 
     /**

@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class ApiSessionLogInfo {
     // struct team_log.ApiSessionLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final String requestId;
 
     /**

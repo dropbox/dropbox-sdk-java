@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class DeleteSecondaryEmailsResult {
     // struct team.DeleteSecondaryEmailsResult (team_secondary_mails.stone)
 
+    @Nonnull
     protected final List<UserDeleteResult> results;
 
     /**

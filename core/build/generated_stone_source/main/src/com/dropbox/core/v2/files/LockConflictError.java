@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class LockConflictError {
     // struct files.LockConflictError (files.stone)
 
+    @Nonnull
     protected final FileLock lock;
 
     /**

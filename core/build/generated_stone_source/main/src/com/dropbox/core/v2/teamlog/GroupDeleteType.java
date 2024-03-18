@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GroupDeleteType {
     // struct team_log.GroupDeleteType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

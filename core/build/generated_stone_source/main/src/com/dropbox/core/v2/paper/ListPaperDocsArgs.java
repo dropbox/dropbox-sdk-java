@@ -21,8 +21,11 @@ import javax.annotation.Nonnull;
 class ListPaperDocsArgs {
     // struct paper.ListPaperDocsArgs (paper.stone)
 
+    @Nonnull
     protected final ListPaperDocsFilterBy filterBy;
+    @Nonnull
     protected final ListPaperDocsSortBy sortBy;
+    @Nonnull
     protected final ListPaperDocsSortOrder sortOrder;
     protected final int limit;
 

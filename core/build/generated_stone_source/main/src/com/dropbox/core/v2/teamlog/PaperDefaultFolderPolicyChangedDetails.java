@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class PaperDefaultFolderPolicyChangedDetails {
     // struct team_log.PaperDefaultFolderPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PaperDefaultFolderPolicy newValue;
+    @Nonnull
     protected final PaperDefaultFolderPolicy previousValue;
 
     /**

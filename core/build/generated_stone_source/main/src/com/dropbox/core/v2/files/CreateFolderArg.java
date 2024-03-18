@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class CreateFolderArg {
     // struct files.CreateFolderArg (files.stone)
 
+    @Nonnull
     protected final String path;
     protected final boolean autorename;
 

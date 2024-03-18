@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class FileSaveCopyReferenceDetails {
     // struct team_log.FileSaveCopyReferenceDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final List<RelocateAssetReferencesLogInfo> relocateActionDetails;
 
     /**

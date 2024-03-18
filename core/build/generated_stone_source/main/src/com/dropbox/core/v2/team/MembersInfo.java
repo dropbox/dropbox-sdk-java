@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 public class MembersInfo {
     // struct team.MembersInfo (team_legal_holds.stone)
 
+    @Nonnull
     protected final List<String> teamMemberIds;
     protected final long permanentlyDeletedUsers;
 

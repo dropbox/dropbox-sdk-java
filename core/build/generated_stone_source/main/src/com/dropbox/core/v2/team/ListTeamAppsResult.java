@@ -27,8 +27,10 @@ import javax.annotation.Nullable;
 public class ListTeamAppsResult {
     // struct team.ListTeamAppsResult (team_linked_apps.stone)
 
+    @Nonnull
     protected final List<MemberLinkedApps> apps;
     protected final boolean hasMore;
+    @Nullable
     protected final String cursor;
 
     /**

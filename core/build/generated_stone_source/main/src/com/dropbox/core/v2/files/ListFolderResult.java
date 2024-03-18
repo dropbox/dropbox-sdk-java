@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 public class ListFolderResult {
     // struct files.ListFolderResult (files.stone)
 
+    @Nonnull
     protected final List<Metadata> entries;
+    @Nonnull
     protected final String cursor;
     protected final boolean hasMore;
 

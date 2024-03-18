@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperFolderCreateResult {
     // struct paper.PaperFolderCreateResult (paper.stone)
 
+    @Nonnull
     protected final String folderId;
 
     /**

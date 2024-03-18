@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class PropertiesSearchContinueArg {
     // struct file_properties.PropertiesSearchContinueArg (file_properties.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**

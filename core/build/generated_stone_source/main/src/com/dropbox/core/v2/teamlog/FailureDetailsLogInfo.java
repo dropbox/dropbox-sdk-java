@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class FailureDetailsLogInfo {
     // struct team_log.FailureDetailsLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String userFriendlyMessage;
+    @Nullable
     protected final String technicalErrorMessage;
 
     /**

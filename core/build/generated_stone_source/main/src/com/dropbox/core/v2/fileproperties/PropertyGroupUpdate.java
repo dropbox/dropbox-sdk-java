@@ -24,8 +24,11 @@ import javax.annotation.Nullable;
 public class PropertyGroupUpdate {
     // struct file_properties.PropertyGroupUpdate (file_properties.stone)
 
+    @Nonnull
     protected final String templateId;
+    @Nullable
     protected final List<PropertyField> addOrUpdateFields;
+    @Nullable
     protected final List<String> removeFields;
 
     /**

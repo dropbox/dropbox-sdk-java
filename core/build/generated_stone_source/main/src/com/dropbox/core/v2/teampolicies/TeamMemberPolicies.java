@@ -24,9 +24,13 @@ import javax.annotation.Nonnull;
 public class TeamMemberPolicies {
     // struct team_policies.TeamMemberPolicies (team_policies.stone)
 
+    @Nonnull
     protected final TeamSharingPolicies sharing;
+    @Nonnull
     protected final EmmState emmState;
+    @Nonnull
     protected final OfficeAddInPolicy officeAddin;
+    @Nonnull
     protected final SuggestMembersPolicy suggestMembersPolicy;
 
     /**

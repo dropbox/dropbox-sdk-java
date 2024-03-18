@@ -27,14 +27,21 @@ import javax.annotation.Nullable;
 public class SharedFolderMetadataBase {
     // struct sharing.SharedFolderMetadataBase (sharing_folders.stone)
 
+    @Nonnull
     protected final AccessLevel accessType;
     protected final boolean isInsideTeamFolder;
     protected final boolean isTeamFolder;
+    @Nullable
     protected final List<String> ownerDisplayNames;
+    @Nullable
     protected final Team ownerTeam;
+    @Nullable
     protected final String parentSharedFolderId;
+    @Nullable
     protected final String pathDisplay;
+    @Nullable
     protected final String pathLower;
+    @Nullable
     protected final String parentFolderName;
 
     /**

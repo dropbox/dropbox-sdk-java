@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 public class UserResendEmailsResult {
     // struct team.UserResendEmailsResult (team_secondary_mails.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
+    @Nonnull
     protected final List<ResendSecondaryEmailResult> results;
 
     /**

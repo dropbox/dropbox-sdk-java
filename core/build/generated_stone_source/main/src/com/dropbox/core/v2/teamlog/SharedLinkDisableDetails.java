@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 public class SharedLinkDisableDetails {
     // struct team_log.SharedLinkDisableDetails (team_log_generated.stone)
 
+    @Nullable
     protected final UserLogInfo sharedLinkOwner;
 
     /**

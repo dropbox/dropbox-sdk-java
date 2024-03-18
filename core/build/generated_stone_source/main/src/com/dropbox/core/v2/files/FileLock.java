@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileLock {
     // struct files.FileLock (files.stone)
 
+    @Nonnull
     protected final FileLockContent content;
 
     /**

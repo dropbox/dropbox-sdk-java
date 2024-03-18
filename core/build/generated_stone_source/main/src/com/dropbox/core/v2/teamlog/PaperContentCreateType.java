@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperContentCreateType {
     // struct team_log.PaperContentCreateType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

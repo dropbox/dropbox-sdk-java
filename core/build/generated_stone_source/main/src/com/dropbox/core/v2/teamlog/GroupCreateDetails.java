@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class GroupCreateDetails {
     // struct team_log.GroupCreateDetails (team_log_generated.stone)
 
+    @Nullable
     protected final Boolean isCompanyManaged;
+    @Nullable
     protected final GroupJoinPolicy joinPolicy;
 
     /**

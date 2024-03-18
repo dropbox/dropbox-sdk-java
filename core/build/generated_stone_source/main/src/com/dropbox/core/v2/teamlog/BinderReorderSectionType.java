@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class BinderReorderSectionType {
     // struct team_log.BinderReorderSectionType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

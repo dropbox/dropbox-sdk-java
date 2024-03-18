@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 public class SharedFolderCreateDetails {
     // struct team_log.SharedFolderCreateDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String targetNsId;
 
     /**

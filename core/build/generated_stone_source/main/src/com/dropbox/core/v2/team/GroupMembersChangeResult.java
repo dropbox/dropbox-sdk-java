@@ -27,7 +27,9 @@ import javax.annotation.Nonnull;
 public class GroupMembersChangeResult {
     // struct team.GroupMembersChangeResult (team_groups.stone)
 
+    @Nonnull
     protected final GroupFullInfo groupInfo;
+    @Nonnull
     protected final String asyncJobId;
 
     /**

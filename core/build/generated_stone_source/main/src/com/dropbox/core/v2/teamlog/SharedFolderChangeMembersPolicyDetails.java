@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class SharedFolderChangeMembersPolicyDetails {
     // struct team_log.SharedFolderChangeMembersPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final MemberPolicy newValue;
+    @Nullable
     protected final MemberPolicy previousValue;
 
     /**

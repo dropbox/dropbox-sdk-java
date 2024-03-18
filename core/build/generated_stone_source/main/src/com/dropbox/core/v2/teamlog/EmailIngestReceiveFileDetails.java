@@ -26,10 +26,15 @@ import javax.annotation.Nullable;
 public class EmailIngestReceiveFileDetails {
     // struct team_log.EmailIngestReceiveFileDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String inboxName;
+    @Nonnull
     protected final List<String> attachmentNames;
+    @Nullable
     protected final String subject;
+    @Nullable
     protected final String fromName;
+    @Nullable
     protected final String fromEmail;
 
     /**

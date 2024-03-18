@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class PaperDocUnresolveCommentType {
     // struct team_log.PaperDocUnresolveCommentType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class SharedFolderTransferOwnershipDetails {
     // struct team_log.SharedFolderTransferOwnershipDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String previousOwnerEmail;
+    @Nonnull
     protected final String newOwnerEmail;
 
     /**

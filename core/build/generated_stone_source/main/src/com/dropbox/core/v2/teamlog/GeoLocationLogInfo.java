@@ -25,9 +25,13 @@ import javax.annotation.Nullable;
 public class GeoLocationLogInfo {
     // struct team_log.GeoLocationLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String city;
+    @Nullable
     protected final String region;
+    @Nullable
     protected final String country;
+    @Nonnull
     protected final String ipAddress;
 
     /**

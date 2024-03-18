@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class SharingPolicy {
     // struct paper.SharingPolicy (paper.stone)
 
+    @Nullable
     protected final SharingPublicPolicyType publicSharingPolicy;
+    @Nullable
     protected final SharingTeamPolicyType teamSharingPolicy;
 
     /**

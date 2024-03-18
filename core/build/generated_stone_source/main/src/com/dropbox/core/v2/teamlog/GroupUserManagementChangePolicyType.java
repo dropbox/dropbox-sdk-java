@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GroupUserManagementChangePolicyType {
     // struct team_log.GroupUserManagementChangePolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

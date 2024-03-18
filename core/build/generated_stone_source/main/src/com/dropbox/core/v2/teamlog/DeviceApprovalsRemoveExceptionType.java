@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DeviceApprovalsRemoveExceptionType {
     // struct team_log.DeviceApprovalsRemoveExceptionType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

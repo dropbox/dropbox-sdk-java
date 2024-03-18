@@ -25,10 +25,15 @@ import javax.annotation.Nullable;
 public class GroupSummary {
     // struct team_common.GroupSummary (team_common.stone)
 
+    @Nonnull
     protected final String groupName;
+    @Nonnull
     protected final String groupId;
+    @Nullable
     protected final String groupExternalId;
+    @Nullable
     protected final Long memberCount;
+    @Nonnull
     protected final GroupManagementType groupManagementType;
 
     /**

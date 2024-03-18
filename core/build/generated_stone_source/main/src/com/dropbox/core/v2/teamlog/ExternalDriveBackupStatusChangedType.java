@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ExternalDriveBackupStatusChangedType {
     // struct team_log.ExternalDriveBackupStatusChangedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

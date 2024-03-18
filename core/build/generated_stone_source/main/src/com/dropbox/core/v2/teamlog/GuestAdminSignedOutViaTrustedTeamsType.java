@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GuestAdminSignedOutViaTrustedTeamsType {
     // struct team_log.GuestAdminSignedOutViaTrustedTeamsType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

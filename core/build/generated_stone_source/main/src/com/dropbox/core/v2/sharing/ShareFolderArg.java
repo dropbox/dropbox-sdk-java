@@ -24,7 +24,9 @@ import javax.annotation.Nullable;
 class ShareFolderArg extends ShareFolderArgBase {
     // struct sharing.ShareFolderArg (sharing_folders.stone)
 
+    @Nullable
     protected final List<FolderAction> actions;
+    @Nullable
     protected final LinkSettings linkSettings;
 
     /**

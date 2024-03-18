@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class ExcludedUsersListResult {
     // struct team.ExcludedUsersListResult (team_member_space_limits.stone)
 
+    @Nonnull
     protected final List<MemberProfile> users;
+    @Nullable
     protected final String cursor;
     protected final boolean hasMore;
 

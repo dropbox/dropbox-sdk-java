@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class DeviceChangeIpDesktopDetails {
     // struct team_log.DeviceChangeIpDesktopDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final DeviceSessionLogInfo deviceSessionInfo;
 
     /**

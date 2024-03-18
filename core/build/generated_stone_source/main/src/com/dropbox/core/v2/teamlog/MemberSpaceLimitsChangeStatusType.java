@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class MemberSpaceLimitsChangeStatusType {
     // struct team_log.MemberSpaceLimitsChangeStatusType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class RelocationResult extends FileOpsResult {
     // struct files.RelocationResult (files.stone)
 
+    @Nonnull
     protected final Metadata metadata;
 
     /**

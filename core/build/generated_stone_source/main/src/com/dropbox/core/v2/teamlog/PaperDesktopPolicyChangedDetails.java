@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class PaperDesktopPolicyChangedDetails {
     // struct team_log.PaperDesktopPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PaperDesktopPolicy newValue;
+    @Nonnull
     protected final PaperDesktopPolicy previousValue;
 
     /**

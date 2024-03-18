@@ -22,7 +22,9 @@ import javax.annotation.Nullable;
 public class PreviewResult {
     // struct files.PreviewResult (files.stone)
 
+    @Nullable
     protected final FileMetadata fileMetadata;
+    @Nullable
     protected final MinimalFileLinkMetadata linkMetadata;
 
     /**

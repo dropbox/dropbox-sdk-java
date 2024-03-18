@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class ObjectLabelRemovedDetails {
     // struct team_log.ObjectLabelRemovedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final LabelType labelType;
 
     /**

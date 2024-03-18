@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 public class SharedContentRemoveMemberDetails {
     // struct team_log.SharedContentRemoveMemberDetails (team_log_generated.stone)
 
+    @Nullable
     protected final AccessLevel sharedContentAccessLevel;
 
     /**

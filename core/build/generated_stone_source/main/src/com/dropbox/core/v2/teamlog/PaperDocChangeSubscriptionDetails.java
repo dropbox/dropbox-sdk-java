@@ -25,8 +25,11 @@ import javax.annotation.Nullable;
 public class PaperDocChangeSubscriptionDetails {
     // struct team_log.PaperDocChangeSubscriptionDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nonnull
     protected final String newSubscriptionLevel;
+    @Nullable
     protected final String previousSubscriptionLevel;
 
     /**

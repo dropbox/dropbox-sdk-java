@@ -22,7 +22,9 @@ import javax.annotation.Nonnull;
 class GroupMembersRemoveArg extends IncludeMembersArg {
     // struct team.GroupMembersRemoveArg (team_groups.stone)
 
+    @Nonnull
     protected final GroupSelector group;
+    @Nonnull
     protected final List<UserSelectorArg> users;
 
     /**

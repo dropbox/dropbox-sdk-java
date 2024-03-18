@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class AudienceExceptionContentInfo {
     // struct sharing.AudienceExceptionContentInfo (shared_content_links.stone)
 
+    @Nonnull
     protected final String name;
 
     /**

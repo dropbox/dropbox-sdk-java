@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class BinderAddPageType {
     // struct team_log.BinderAddPageType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

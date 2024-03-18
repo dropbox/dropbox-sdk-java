@@ -28,8 +28,11 @@ import javax.annotation.Nullable;
 public class LinkMetadata {
     // struct sharing.LinkMetadata (shared_links.stone)
 
+    @Nonnull
     protected final String url;
+    @Nonnull
     protected final Visibility visibility;
+    @Nullable
     protected final Date expires;
 
     /**

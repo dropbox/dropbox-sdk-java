@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class GroupAddExternalIdDetails {
     // struct team_log.GroupAddExternalIdDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String newValue;
 
     /**

@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class MemberAddNameDetails {
     // struct team_log.MemberAddNameDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final UserNameLogInfo newValue;
 
     /**

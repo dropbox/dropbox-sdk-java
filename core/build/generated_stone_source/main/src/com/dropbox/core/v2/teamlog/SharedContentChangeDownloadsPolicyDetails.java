@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class SharedContentChangeDownloadsPolicyDetails {
     // struct team_log.SharedContentChangeDownloadsPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final DownloadPolicyType newValue;
+    @Nullable
     protected final DownloadPolicyType previousValue;
 
     /**

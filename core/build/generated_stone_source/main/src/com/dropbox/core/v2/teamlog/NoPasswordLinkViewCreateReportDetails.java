@@ -26,7 +26,9 @@ import javax.annotation.Nonnull;
 public class NoPasswordLinkViewCreateReportDetails {
     // struct team_log.NoPasswordLinkViewCreateReportDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final Date startDate;
+    @Nonnull
     protected final Date endDate;
 
     /**

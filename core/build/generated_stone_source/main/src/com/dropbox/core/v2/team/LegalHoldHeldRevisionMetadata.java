@@ -24,15 +24,24 @@ import javax.annotation.Nonnull;
 public class LegalHoldHeldRevisionMetadata {
     // struct team.LegalHoldHeldRevisionMetadata (team_legal_holds.stone)
 
+    @Nonnull
     protected final String newFilename;
+    @Nonnull
     protected final String originalRevisionId;
+    @Nonnull
     protected final String originalFilePath;
+    @Nonnull
     protected final Date serverModified;
+    @Nonnull
     protected final String authorMemberId;
+    @Nonnull
     protected final TeamMemberStatus authorMemberStatus;
+    @Nonnull
     protected final String authorEmail;
+    @Nonnull
     protected final String fileType;
     protected final long size;
+    @Nonnull
     protected final String contentHash;
 
     /**

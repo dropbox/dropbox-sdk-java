@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SsoChangeCertType {
     // struct team_log.SsoChangeCertType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

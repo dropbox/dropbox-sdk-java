@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class DurationLogInfo {
     // struct team_log.DurationLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final TimeUnit unit;
     protected final long amount;
 

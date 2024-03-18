@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 public class UserCustomQuotaArg {
     // struct team.UserCustomQuotaArg (team_member_space_limits.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
     protected final long quotaGb;
 

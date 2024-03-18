@@ -27,11 +27,15 @@ import javax.annotation.Nullable;
 public class CommitInfo {
     // struct files.CommitInfo (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final WriteMode mode;
     protected final boolean autorename;
+    @Nullable
     protected final Date clientModified;
     protected final boolean mute;
+    @Nullable
     protected final List<PropertyGroup> propertyGroups;
     protected final boolean strictConflict;
 

@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class TwoAccountChangePolicyDetails {
     // struct team_log.TwoAccountChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TwoAccountPolicy newValue;
+    @Nullable
     protected final TwoAccountPolicy previousValue;
 
     /**

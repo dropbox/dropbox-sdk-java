@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DeleteResult extends FileOpsResult {
     // struct files.DeleteResult (files.stone)
 
+    @Nonnull
     protected final Metadata metadata;
 
     /**

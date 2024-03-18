@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class SharedLinkSettingsAllowDownloadDisabledDetails {
     // struct team_log.SharedLinkSettingsAllowDownloadDisabledDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccessLevel sharedContentAccessLevel;
+    @Nullable
     protected final String sharedContentLink;
 
     /**

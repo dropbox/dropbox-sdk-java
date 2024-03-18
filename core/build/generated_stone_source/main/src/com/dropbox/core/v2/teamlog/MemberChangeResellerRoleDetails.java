@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class MemberChangeResellerRoleDetails {
     // struct team_log.MemberChangeResellerRoleDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ResellerRole newValue;
+    @Nonnull
     protected final ResellerRole previousValue;
 
     /**

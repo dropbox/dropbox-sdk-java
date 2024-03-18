@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class TeamFolderRenameDetails {
     // struct team_log.TeamFolderRenameDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String previousFolderName;
+    @Nonnull
     protected final String newFolderName;
 
     /**

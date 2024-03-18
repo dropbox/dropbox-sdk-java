@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class FileRenameDetails {
     // struct team_log.FileRenameDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final List<RelocateAssetReferencesLogInfo> relocateActionDetails;
 
     /**

@@ -24,8 +24,11 @@ import javax.annotation.Nonnull;
 public class BinderReorderSectionDetails {
     // struct team_log.BinderReorderSectionDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nonnull
     protected final String docTitle;
+    @Nonnull
     protected final String binderItemName;
 
     /**

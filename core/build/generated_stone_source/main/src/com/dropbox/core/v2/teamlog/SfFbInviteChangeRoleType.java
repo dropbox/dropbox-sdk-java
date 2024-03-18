@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SfFbInviteChangeRoleType {
     // struct team_log.SfFbInviteChangeRoleType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

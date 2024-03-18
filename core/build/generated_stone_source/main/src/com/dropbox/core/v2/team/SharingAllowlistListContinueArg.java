@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class SharingAllowlistListContinueArg {
     // struct team.SharingAllowlistListContinueArg (team_sharing_allowlist.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**

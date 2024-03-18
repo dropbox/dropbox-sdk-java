@@ -23,7 +23,9 @@ class UploadSessionStartArg {
     // struct files.UploadSessionStartArg (files.stone)
 
     protected final boolean close;
+    @Nullable
     protected final UploadSessionType sessionType;
+    @Nullable
     protected final String contentHash;
 
     /**

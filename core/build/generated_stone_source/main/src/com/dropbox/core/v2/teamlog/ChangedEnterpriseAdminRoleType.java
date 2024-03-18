@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ChangedEnterpriseAdminRoleType {
     // struct team_log.ChangedEnterpriseAdminRoleType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

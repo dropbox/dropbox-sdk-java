@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class ShowcaseFileAddedType {
     // struct team_log.ShowcaseFileAddedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

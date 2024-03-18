@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class FileRequestsChangePolicyDetails {
     // struct team_log.FileRequestsChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FileRequestsPolicy newValue;
+    @Nullable
     protected final FileRequestsPolicy previousValue;
 
     /**

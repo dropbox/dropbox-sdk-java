@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 class ListPaperDocsContinueArgs {
     // struct paper.ListPaperDocsContinueArgs (paper.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**

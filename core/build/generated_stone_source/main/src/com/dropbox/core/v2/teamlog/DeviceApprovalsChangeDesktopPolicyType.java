@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class DeviceApprovalsChangeDesktopPolicyType {
     // struct team_log.DeviceApprovalsChangeDesktopPolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -21,9 +21,12 @@ import javax.annotation.Nonnull;
 public class PaperDocExportResult {
     // struct paper.PaperDocExportResult (paper.stone)
 
+    @Nonnull
     protected final String owner;
+    @Nonnull
     protected final String title;
     protected final long revision;
+    @Nonnull
     protected final String mimeType;
 
     /**

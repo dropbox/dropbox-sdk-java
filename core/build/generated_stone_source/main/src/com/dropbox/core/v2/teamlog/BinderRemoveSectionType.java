@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class BinderRemoveSectionType {
     // struct team_log.BinderRemoveSectionType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

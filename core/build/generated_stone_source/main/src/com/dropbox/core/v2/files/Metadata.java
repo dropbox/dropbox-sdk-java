@@ -25,10 +25,15 @@ import javax.annotation.Nullable;
 public class Metadata {
     // struct files.Metadata (files.stone)
 
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final String pathLower;
+    @Nullable
     protected final String pathDisplay;
+    @Nullable
     protected final String parentSharedFolderId;
+    @Nullable
     protected final String previewUrl;
 
     /**

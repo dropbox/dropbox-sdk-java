@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 public class SharedContentClaimInvitationDetails {
     // struct team_log.SharedContentClaimInvitationDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String sharedContentLink;
 
     /**

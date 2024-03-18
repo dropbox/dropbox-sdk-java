@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 public class SharedContentAddMemberDetails {
     // struct team_log.SharedContentAddMemberDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccessLevel sharedContentAccessLevel;
 
     /**

@@ -25,8 +25,11 @@ import javax.annotation.Nullable;
 public class UserNameLogInfo {
     // struct team_log.UserNameLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final String givenName;
+    @Nonnull
     protected final String surname;
+    @Nullable
     protected final String locale;
 
     /**

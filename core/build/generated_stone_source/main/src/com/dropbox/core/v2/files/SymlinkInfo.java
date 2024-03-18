@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class SymlinkInfo {
     // struct files.SymlinkInfo (files.stone)
 
+    @Nonnull
     protected final String target;
 
     /**

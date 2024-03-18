@@ -23,8 +23,10 @@ import javax.annotation.Nullable;
 public class SearchV2Result {
     // struct files.SearchV2Result (files.stone)
 
+    @Nonnull
     protected final List<SearchMatchV2> matches;
     protected final boolean hasMore;
+    @Nullable
     protected final String cursor;
 
     /**

@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class TrustedNonTeamMemberLogInfo extends UserLogInfo {
     // struct team_log.TrustedNonTeamMemberLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final TrustedNonTeamMemberType trustedNonTeamMemberType;
+    @Nullable
     protected final TeamLogInfo team;
 
     /**

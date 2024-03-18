@@ -21,7 +21,9 @@ import javax.annotation.Nonnull;
 public class LockFileResult {
     // struct files.LockFileResult (files.stone)
 
+    @Nonnull
     protected final Metadata metadata;
+    @Nonnull
     protected final FileLock lock;
 
     /**

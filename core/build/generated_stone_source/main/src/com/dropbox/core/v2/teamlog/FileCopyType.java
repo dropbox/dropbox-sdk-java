@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class FileCopyType {
     // struct team_log.FileCopyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

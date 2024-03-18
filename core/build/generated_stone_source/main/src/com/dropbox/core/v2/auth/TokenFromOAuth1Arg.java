@@ -21,7 +21,9 @@ import javax.annotation.Nonnull;
 class TokenFromOAuth1Arg {
     // struct auth.TokenFromOAuth1Arg (auth.stone)
 
+    @Nonnull
     protected final String oauth1Token;
+    @Nonnull
     protected final String oauth1TokenSecret;
 
     /**

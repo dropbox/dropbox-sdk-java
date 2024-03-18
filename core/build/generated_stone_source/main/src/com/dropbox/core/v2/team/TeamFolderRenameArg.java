@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 class TeamFolderRenameArg extends TeamFolderIdArg {
     // struct team.TeamFolderRenameArg (team_folders.stone)
 
+    @Nonnull
     protected final String name;
 
     /**

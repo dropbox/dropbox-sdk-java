@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class GovernancePolicyExportRemovedType {
     // struct team_log.GovernancePolicyExportRemovedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -26,6 +26,7 @@ public class FolderOverviewItemPinnedDetails {
     // struct team_log.FolderOverviewItemPinnedDetails (team_log_generated.stone)
 
     protected final long folderOverviewLocationAsset;
+    @Nonnull
     protected final List<Long> pinnedItemsAssetIndices;
 
     /**

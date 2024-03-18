@@ -23,7 +23,9 @@ import javax.annotation.Nullable;
 class DownloadArg {
     // struct files.DownloadArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nullable
     protected final String rev;
 
     /**

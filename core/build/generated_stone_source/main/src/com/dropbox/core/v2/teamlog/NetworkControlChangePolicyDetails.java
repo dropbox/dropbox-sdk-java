@@ -25,7 +25,9 @@ import javax.annotation.Nullable;
 public class NetworkControlChangePolicyDetails {
     // struct team_log.NetworkControlChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final NetworkControlPolicy newValue;
+    @Nullable
     protected final NetworkControlPolicy previousValue;
 
     /**

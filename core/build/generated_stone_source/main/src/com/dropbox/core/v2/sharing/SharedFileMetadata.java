@@ -30,19 +30,33 @@ import javax.annotation.Nullable;
 public class SharedFileMetadata {
     // struct sharing.SharedFileMetadata (sharing_files.stone)
 
+    @Nullable
     protected final AccessLevel accessType;
+    @Nonnull
     protected final String id;
+    @Nullable
     protected final ExpectedSharedContentLinkMetadata expectedLinkMetadata;
+    @Nullable
     protected final SharedContentLinkMetadata linkMetadata;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final List<String> ownerDisplayNames;
+    @Nullable
     protected final Team ownerTeam;
+    @Nullable
     protected final String parentSharedFolderId;
+    @Nullable
     protected final String pathDisplay;
+    @Nullable
     protected final String pathLower;
+    @Nullable
     protected final List<FilePermission> permissions;
+    @Nonnull
     protected final FolderPolicy policy;
+    @Nonnull
     protected final String previewUrl;
+    @Nullable
     protected final Date timeInvited;
 
     /**

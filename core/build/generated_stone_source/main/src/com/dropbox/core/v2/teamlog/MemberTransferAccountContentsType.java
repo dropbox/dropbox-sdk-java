@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 public class MemberTransferAccountContentsType {
     // struct team_log.MemberTransferAccountContentsType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**

@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class GroupMemberInfo {
     // struct team.GroupMemberInfo (team_groups.stone)
 
+    @Nonnull
     protected final MemberProfile profile;
+    @Nonnull
     protected final GroupAccessType accessType;
 
     /**

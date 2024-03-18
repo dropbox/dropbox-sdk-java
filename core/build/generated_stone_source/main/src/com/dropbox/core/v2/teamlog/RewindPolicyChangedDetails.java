@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
 public class RewindPolicyChangedDetails {
     // struct team_log.RewindPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final RewindPolicy newValue;
+    @Nonnull
     protected final RewindPolicy previousValue;
 
     /**

@@ -26,7 +26,9 @@ import javax.annotation.Nullable;
 public class SharedContentChangeLinkAudienceDetails {
     // struct team_log.SharedContentChangeLinkAudienceDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final LinkAudience newValue;
+    @Nullable
     protected final LinkAudience previousValue;
 
     /**
