@@ -34,7 +34,7 @@ import static com.dropbox.core.oauth.DbxOAuthError.INVALID_REQUEST;
  * expiration time as well app key and app secret, which is used for refreshing call. The object
  * can be serialized to or deserialized from persistent storage.
  *
- * {@link com.dropbox.core.v2.DbxUserClient} and {@link com.dropbox.core.v2.DbxTeamClient} use
+ * {@code com.dropbox.core.v2.DbxUserClient} and {@code com.dropbox.core.v2.DbxTeamClient} use
  * this class to construct clients supporting short-live token and refresh token.
  */
 public class DbxCredential {
@@ -61,7 +61,7 @@ public class DbxCredential {
 
     /**
      * Create a DbxCredential object if your app uses PKCE. PKCE flow doesn't requrie app secret.
-     * @see com.dropbox.core.DbxPKCEWebAuth to learn what is PKCE.
+     * see com.dropbox.core.DbxPKCEWebAuth to learn what is PKCE.
      *
      * @param accessToken Short-lived access token from OAuth flow.
      * @param expiresAt Expiration time in millisecond from OAuth flow.

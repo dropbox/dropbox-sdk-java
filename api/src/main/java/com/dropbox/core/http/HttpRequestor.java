@@ -17,7 +17,7 @@ import com.dropbox.core.util.IOUtil;
 /**
  * An interface that the Dropbox client library uses to make HTTP requests.
  * If you're fine with the standard Java {@link java.net.HttpURLConnection}
- * implementation, then just use {@link StandardHttpRequestor#INSTANCE}.
+ * implementation, then just use {@code StandardHttpRequestor.INSTANCE}.
  */
 public abstract class HttpRequestor
 {

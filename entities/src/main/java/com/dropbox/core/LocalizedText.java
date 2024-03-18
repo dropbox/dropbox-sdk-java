@@ -1,15 +1,10 @@
 package com.dropbox.core;
 
-import java.io.IOException;
-
 import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.stone.StoneSerializers;
+import com.fasterxml.jackson.core.*;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonToken;
+import java.io.IOException;
 
 /**
  * Human-readable text localized to a specific locale.

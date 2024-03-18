@@ -3,7 +3,6 @@ package com.dropbox.core.json;
 import com.dropbox.core.util.IOUtil;
 import static com.dropbox.core.util.LangUtil.mkAssert;
 
-import com.dropbox.core.util.StringUtil;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;

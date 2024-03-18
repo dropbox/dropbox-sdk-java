@@ -154,7 +154,7 @@ public class DbxDownloader<R> implements Closeable {
     /**
      * Closes this downloader and releases its underlying resources.
      *
-     * After calling this method, calls to {@link getInputStream} will fail.
+     * After calling this method, calls to {@link #getInputStream()} will fail.
      */
     @Override
     public void close() {

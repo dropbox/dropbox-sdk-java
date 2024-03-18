@@ -4,8 +4,6 @@ import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.LangUtil;
 import com.dropbox.core.v2.DbxRawClientV2;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

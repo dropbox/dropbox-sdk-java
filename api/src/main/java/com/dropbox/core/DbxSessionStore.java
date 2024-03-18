@@ -8,7 +8,7 @@ package com.dropbox.core;
  *
  * <pre>
  * If your web app uses the standard Java Servlet API, just use
- * {@link DbxStandardSessionStore}.
+ * {@code DbxStandardSessionStore}.
  * </pre>
  */
 public interface DbxSessionStore {

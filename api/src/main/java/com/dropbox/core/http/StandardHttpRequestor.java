@@ -105,7 +105,7 @@ public class StandardHttpRequestor extends HttpRequestor {
      * taken when casting the connection (check your JRE).
      *
      * <p> If you are using Google App Engine, configure your {@link
-     * com.dropbox.core.DbxRequestConfig} to use {@link GoogleAppEngineRequestor} as its default
+     * com.dropbox.core.DbxRequestConfig} to use {@code GoogleAppEngineRequestor} as its default
      * {@code HttpRequestor}. If you use {@link StandardHttpRequestor} in Google App Engine, SSL
      * certificates may not be validated and your app will susceptible to Man-in-the-Middle attacks.
      *
@@ -244,7 +244,7 @@ public class StandardHttpRequestor extends HttpRequestor {
      * Some requests may require different connection settings than
      * others. Create multiple {@link StandardHttpRequestor} objects
      * with different configurations to handle these requests. For
-     * example, calls to {@link
+     * example, calls to {@code
      * com.dropbox.core.v2.files.DbxUserFilesRequests#listFolderLongpoll(String,long)} should
      * use a {@code StandardHttpRequestor} with its read timeout (see
      * {@link Builder#withReadTimeout}) set longer than the longpoll

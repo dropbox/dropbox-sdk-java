@@ -89,7 +89,7 @@ public final class DbxAuthFinish {
 
     /**
      * Returns an <em>access token</em> that can be used to make Dropbox API calls.  Pass this in to
-     * the {@link com.dropbox.core.v2.DbxClientV2} constructor.
+     * the {@code com.dropbox.core.v2.DbxClientV2} constructor.
      *
      * @return OAuth access token used for authorization with Dropbox servers
      */
@@ -102,7 +102,7 @@ public final class DbxAuthFinish {
      *
      *
      * Returns the time when {@link DbxAuthFinish#accessToken} expires in millisecond. If null then
-     * it won't expire. Pass this in to the {@link com.dropbox.core.v2.DbxClientV2} constructor.
+     * it won't expire. Pass this in to the {@code com.dropbox.core.v2.DbxClientV2} constructor.
      *
      * @return OAuth access token used for authorization with Dropbox servers
      */
@@ -118,7 +118,7 @@ public final class DbxAuthFinish {
      *
      * Returns an <em>refresh token</em> which can be used to obtain new
      * {@link DbxAuthFinish#accessToken} . Pass this in to the
-     * {@link com.dropbox.core.v2.DbxClientV2} constructor.
+     * {@code com.dropbox.core.v2.DbxClientV2} constructor.
      *
      * @return OAuth access token used for authorization with Dropbox servers
      */
@@ -170,7 +170,7 @@ public final class DbxAuthFinish {
 
     /**
      * Returns the state data you passed in to {@link DbxWebAuth#start}.  If you didn't pass
-     * anything in, or you used {@link DbxWebAuthNoRedirect}, this will be {@code null}.
+     * anything in, or you used {@code DbxWebAuthNoRedirect}, this will be {@code null}.
      *
      * @return state data passed into {@link DbxWebAuth#start}, or {@code null} if no state was
      * passed

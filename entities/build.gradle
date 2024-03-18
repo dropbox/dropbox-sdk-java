@@ -1,0 +1,53 @@
+import com.dropbox.stone.java.StoneTask
+import com.dropbox.stone.java.model.ClientSpec
+import com.dropbox.stone.java.model.StoneConfig
+
+plugins {
+    id("java-library")
+    id("com.dropbox.stone.java")
+}
+
+dependencies {
+    api(dropboxJavaSdkLibs.jackson.core)
+}
+
+tasks.named("generateStone", StoneTask) {
+    String unusedClassesToGenerate = 'AuthError, PathRoot, PathRootError, AccessError, RateLimitError'
+    String packageName = 'com.dropbox.core.v2'
+    String globalRouteFilter = 'alpha_group=null and beta_group=null'
+
+    pythonCommand.set("python3")
+    generatorDir.set(project.rootProject.layout.projectDirectory.dir("core/generator/java"))
+    stoneDir.set(project.rootProject.layout.projectDirectory.dir("core/stone"))
+    specDir.set(project.rootProject.layout.projectDirectory.dir("core/src/main/stone"))
+
+    routeWhitelistFilter.set(project.layout.projectDirectory.file("route_allowlist.json"))
+    stoneConfigs.add(new StoneConfig(packageName: packageName, dataTypesOnly: true))
+    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/main"))
+    sourceSets { main { java.srcDir(outputDir.file("src")) } }
+}
+//sourceSets.main.java.srcDir(generateStone.outputs.dir("src"))
+
+tasks.named("generateTestStone", StoneTask) {
+    String packageName = 'com.dropbox.core.stone'
+
+    pythonCommand.set("python3")
+    generatorDir.set(project.rootProject.layout.projectDirectory.dir("core/generator/java"))
+    stoneDir.set(project.rootProject.layout.projectDirectory.dir("core/stone"))
+    specDir.set(project.rootProject.layout.projectDirectory.dir("core/src/main/stone"))
+
+    stoneConfigs.addAll([
+            new StoneConfig(
+                    packageName: packageName,
+                    dataTypesOnly: true,
+            ),
+    ])
+    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/test"))
+    sourceSets { test { java.srcDir(outputDir.file("src")) } }
+}
+//sourceSets.test.java.srcDir(generateStone.outputs.dir("src"))
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
