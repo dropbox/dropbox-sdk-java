@@ -1,9 +1,9 @@
 package com.dropbox.core.examples.global_callbacks;
 
 import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
-import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.DbxUserClient;
+import com.dropbox.core.v2.DbxUserClientBuilder;
 import com.dropbox.core.v2.files.ListFolderErrorException;
 
 import java.io.IOException;
@@ -13,8 +13,8 @@ public class GlobalCallbacksExample {
 
     public static void main(String args[]) throws DbxException, IOException {
         // Create Dropbox client
-        DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial");
-        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+        DbxUserClient client = new DbxUserClientBuilder("dropbox/java-tutorial", ACCESS_TOKEN)
+                .build();
 
         // Instantiate factory and set shared factory
         DbxRequestUtil.sharedCallbackFactory = new DbxExampleGlobalCallbackFactory();

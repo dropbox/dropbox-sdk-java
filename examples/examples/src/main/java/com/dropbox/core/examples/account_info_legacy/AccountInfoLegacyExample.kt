@@ -5,7 +5,7 @@ import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.DbxWebAuth
 import com.dropbox.core.examples.CredentialsUtil
 import com.dropbox.core.stone.StoneDeserializerLogger
-import com.dropbox.core.v2.DbxClientV2
+import com.dropbox.core.v2.DbxUserClientBuilder
 import com.dropbox.core.v2.users.Name
 
 /**
@@ -23,7 +23,8 @@ object AccountInfoLegacyExample {
     fun runExample(authInfo: DbxAuthInfo) {
         // Create a DbxClientV2, which is what you use to make API calls.
         val requestConfig = DbxRequestConfig("examples-account-info")
-        val dbxClient = DbxClientV2(requestConfig, authInfo.accessToken, authInfo.host)
+        val dbxClient = DbxUserClientBuilder(requestConfig, authInfo.accessToken)
+            .setHost(authInfo.host).build()
         val callback = StoneDeserializerLogger.LoggerCallback { _: Any?, s: String? ->
             println("This is from StoneDeserializerLogger: ")
             println(s)

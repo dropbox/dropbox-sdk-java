@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.dropbox.core.DbxDownloader
 import com.dropbox.core.examples.android.R
 import com.dropbox.core.examples.android.internal.ui.FilesAdapter.MetadataViewHolder
-import com.dropbox.core.v2.DbxClientV2
+import com.dropbox.core.v2.DbxUserClient
 import com.dropbox.core.v2.files.FileMetadata
 import com.dropbox.core.v2.files.FolderMetadata
 import com.dropbox.core.v2.files.Metadata
@@ -31,7 +31,7 @@ import kotlinx.coroutines.withContext
  * Adapter for file list
  */
 class FilesAdapter(
-    private val dbxClientV2: DbxClientV2,
+    private val dbxClientV2: DbxUserClient,
     private val mCallback: Callback,
     private val scope: CoroutineScope,
 ) :

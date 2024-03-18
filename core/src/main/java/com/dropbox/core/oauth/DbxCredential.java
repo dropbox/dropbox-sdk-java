@@ -34,7 +34,7 @@ import static com.dropbox.core.oauth.DbxOAuthError.INVALID_REQUEST;
  * expiration time as well app key and app secret, which is used for refreshing call. The object
  * can be serialized to or deserialized from persistent storage.
  *
- * {@link com.dropbox.core.v2.DbxClientV2} and {@link com.dropbox.core.v2.DbxTeamClientV2} use
+ * {@link com.dropbox.core.v2.DbxUserClient} and {@link com.dropbox.core.v2.DbxTeamClient} use
  * this class to construct clients supporting short-live token and refresh token.
  */
 public class DbxCredential {

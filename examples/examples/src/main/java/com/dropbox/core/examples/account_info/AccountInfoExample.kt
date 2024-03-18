@@ -4,7 +4,7 @@ import com.dropbox.core.DbxException
 import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.examples.CredentialsUtil
 import com.dropbox.core.oauth.DbxCredential
-import com.dropbox.core.v2.DbxClientV2
+import com.dropbox.core.v2.DbxUserClientBuilder
 
 /**
  * An example command-line application that grab access token and refresh token from credential
@@ -23,7 +23,7 @@ object AccountInfoExample {
         // Create a DbxClientV2, which is what you use to make API calls.
         val requestConfig = DbxRequestConfig("examples-account-info")
         // Use DbxCredential to create dbx client.
-        val dbxClient = DbxClientV2(requestConfig, credential)
+        val dbxClient = DbxUserClientBuilder(requestConfig, credential).build()
 
         // Make the /account/info API call.
         try {

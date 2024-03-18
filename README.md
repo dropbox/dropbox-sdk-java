@@ -54,15 +54,14 @@ In order to make calls to the API, you'll need an instance of the Dropbox object
 ```java
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.DbxUserClient;
 
 public class Main {
     private static final String ACCESS_TOKEN = "<ACCESS TOKEN>";
 
     public static void main(String args[]) throws DbxException {
         // Create Dropbox client
-        DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
-        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+        DbxUserClient client = new DbxUserClientBuilder("dropbox/java-tutorial", ACCESS_TOKEN);
     }
 }
 ```
@@ -110,7 +109,7 @@ try (InputStream in = new FileInputStream("test.txt")) {
 ```java
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.DbxUserClient;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
@@ -125,8 +124,7 @@ public class Main {
 
     public static void main(String args[]) throws DbxException, IOException {
         // Create Dropbox client
-        DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").build();
-        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+        DbxUserClient client = new DbxUserClientBuilder("dropbox/java-tutorial", ACCESS_TOKEN);
 
         // Get current account info
         FullAccount account = client.users().getCurrentAccount();

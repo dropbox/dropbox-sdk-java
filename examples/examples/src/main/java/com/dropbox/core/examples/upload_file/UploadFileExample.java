@@ -3,8 +3,9 @@ package com.dropbox.core.examples.upload_file;
 import com.dropbox.core.*;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.util.IOUtil.ProgressListener;
-import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxPathV2;
+import com.dropbox.core.v2.DbxUserClient;
+import com.dropbox.core.v2.DbxUserClientBuilder;
 import com.dropbox.core.v2.files.*;
 
 import java.io.File;
@@ -34,7 +35,7 @@ public class UploadFileExample {
      * @param localFile   local file to upload
      * @param dropboxPath Where to upload the file to within Dropbox
      */
-    private static void uploadFile(DbxClientV2 dbxClient, File localFile, String dropboxPath) {
+    private static void uploadFile(DbxUserClient dbxClient, File localFile, String dropboxPath) {
         try (InputStream in = new FileInputStream(localFile)) {
             ProgressListener progressListener = l -> printProgress(l, localFile.length());
 
@@ -63,7 +64,7 @@ public class UploadFileExample {
      * @param localFile   local file to upload
      * @param dropboxPath Where to upload the file to within Dropbox
      */
-    private static void chunkedUploadFile(DbxClientV2 dbxClient, File localFile, String dropboxPath) {
+    private static void chunkedUploadFile(DbxUserClient dbxClient, File localFile, String dropboxPath) {
         long size = localFile.length();
 
         // assert our file is at least the chunk upload size. We make this assumption in the code
@@ -253,8 +254,9 @@ public class UploadFileExample {
 
 
         // Create a DbxClientV2, which is what you use to make API calls.
-        DbxRequestConfig requestConfig = new DbxRequestConfig("examples-upload-file");
-        DbxClientV2 dbxClient = new DbxClientV2(requestConfig, authInfo.getAccessToken(), authInfo.getHost());
+        DbxUserClient dbxClient = new DbxUserClientBuilder("examples-upload-file", authInfo.getAccessToken())
+                .setHost(authInfo.getHost())
+                .build();
 
         // upload the file with simple upload API if it is small enough, otherwise use chunked
         // upload API for better performance. Arbitrarily chose 2 times our chunk size as the
