@@ -23,6 +23,7 @@ abstract class StoneTask : DefaultTask() {
     abstract val stoneConfigs: ListProperty<StoneConfig>
 
     @get:InputFile
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val generatorFile: RegularFileProperty
 
     @get:Internal
