@@ -11,6 +11,7 @@ import org.gradle.process.ExecOperations
 import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
+import org.gradle.api.file.ConfigurableFileCollection
 
 @CacheableTask
 abstract class StoneTask : DefaultTask() {
@@ -21,22 +22,27 @@ abstract class StoneTask : DefaultTask() {
     @get:Input
     abstract val stoneConfigs: ListProperty<StoneConfig>
 
-    @get:InputDirectory
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val generatorDir: DirectoryProperty
+    @get:Internal
+    abstract val generatorFile: RegularFileProperty
 
-    @get:InputDirectory
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:Internal
     abstract val specDir: DirectoryProperty
+
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val specFiles: ConfigurableFileCollection
 
     @get:Optional
     @get:InputFile
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val routeWhitelistFilter: RegularFileProperty
 
-    @get:InputDirectory
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:Internal
     abstract val stoneDir: DirectoryProperty
+
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val stoneFiles: ConfigurableFileCollection
 
     @get:Input
     abstract val pythonCommand: Property<String>
@@ -44,20 +50,26 @@ abstract class StoneTask : DefaultTask() {
     @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
 
+    init {
+        stoneFiles.setFrom(stoneDir.asFileTree.matching {
+            include("**/*.py")
+        })
+
+        specFiles.setFrom(specDir.asFileTree.matching {
+            include("**/*.stone")
+        })
+    }
+
     @TaskAction
     fun processStone() {
         check(stoneDir.get().asFile.exists()) {
-            "Stone directory ${stoneDir} does not exist. " +
+            "Stone directory $stoneDir does not exist. " +
                     "Please run `./update-submodules` to download the stone submodule."
         }
 
         val outputDirectory = outputDir.asFile.get()
         outputDirectory.deleteRecursively()
         outputDirectory.mkdirs()
-
-        val generatorFile = generatorDir.asFileTree.matching {
-            exclude("**/*.pyc")
-        }.singleFile
 
         val specFiles = specDir.asFileTree.matching {
             include("**/*.stone")
@@ -83,7 +95,7 @@ abstract class StoneTask : DefaultTask() {
                     pythonCommand.get(), "-m", "stone.cli",
                     "--attribute", ":all",
 
-                    generatorFile.absolutePath,
+                    generatorFile.get().asFile,
                     outputDirectory.resolve("src").absolutePath,
                     *specFiles.map { it.absolutePath }.toTypedArray(),
                     "--", "--package", stoneConfig.packageName,
@@ -124,7 +136,7 @@ abstract class StoneTask : DefaultTask() {
 
     private fun buildRouteFilter(stoneConfig: StoneConfig): String {
         val client = stoneConfig.client
-        val routeFilters = listOf(stoneConfig.globalRouteFilter, client?.routeFilter).filterNotNull()
+        val routeFilters = listOfNotNull(stoneConfig.globalRouteFilter, client?.routeFilter)
         return routeFilters.joinToString(" and ") { "(${it})" }
     }
 }
