@@ -22,7 +22,7 @@ abstract class StoneTask : DefaultTask() {
     @get:Input
     abstract val stoneConfigs: ListProperty<StoneConfig>
 
-    @get:Internal
+    @get:InputFile
     abstract val generatorFile: RegularFileProperty
 
     @get:Internal
