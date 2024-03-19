@@ -19,16 +19,24 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information about linked Dropbox desktop client sessions
  */
 public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
     // struct team_log.DesktopDeviceSessionLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final DesktopSessionLogInfo sessionInfo;
+    @Nonnull
     protected final String hostName;
+    @Nonnull
     protected final DesktopPlatform clientType;
+    @Nullable
     protected final String clientVersion;
+    @Nonnull
     protected final String platform;
     protected final boolean isDeleteOnUnlinkSupported;
 
@@ -54,7 +62,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DesktopDeviceSessionLogInfo(String hostName, DesktopPlatform clientType, String platform, boolean isDeleteOnUnlinkSupported, String ipAddress, Date created, Date updated, DesktopSessionLogInfo sessionInfo, String clientVersion) {
+    public DesktopDeviceSessionLogInfo(@Nonnull String hostName, @Nonnull DesktopPlatform clientType, @Nonnull String platform, boolean isDeleteOnUnlinkSupported, @Nullable String ipAddress, @Nullable Date created, @Nullable Date updated, @Nullable DesktopSessionLogInfo sessionInfo, @Nullable String clientVersion) {
         super(ipAddress, created, updated);
         this.sessionInfo = sessionInfo;
         if (hostName == null) {
@@ -89,7 +97,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DesktopDeviceSessionLogInfo(String hostName, DesktopPlatform clientType, String platform, boolean isDeleteOnUnlinkSupported) {
+    public DesktopDeviceSessionLogInfo(@Nonnull String hostName, @Nonnull DesktopPlatform clientType, @Nonnull String platform, boolean isDeleteOnUnlinkSupported) {
         this(hostName, clientType, platform, isDeleteOnUnlinkSupported, null, null, null, null, null);
     }
 
@@ -98,6 +106,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getHostName() {
         return hostName;
     }
@@ -107,6 +116,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DesktopPlatform getClientType() {
         return clientType;
     }
@@ -116,6 +126,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPlatform() {
         return platform;
     }
@@ -135,6 +146,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -144,6 +156,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getCreated() {
         return created;
     }
@@ -153,6 +166,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -162,6 +176,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public DesktopSessionLogInfo getSessionInfo() {
         return sessionInfo;
     }
@@ -171,6 +186,7 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getClientVersion() {
         return clientVersion;
     }

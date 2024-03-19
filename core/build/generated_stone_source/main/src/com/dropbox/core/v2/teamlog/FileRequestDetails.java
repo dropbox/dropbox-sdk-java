@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * File request details
  */
@@ -23,6 +26,7 @@ public class FileRequestDetails {
     // struct team_log.FileRequestDetails (team_log_generated.stone)
 
     protected final long assetIndex;
+    @Nullable
     protected final FileRequestDeadline deadline;
 
     /**
@@ -31,7 +35,7 @@ public class FileRequestDetails {
      * @param assetIndex  Asset position in the Assets list.
      * @param deadline  File request deadline.
      */
-    public FileRequestDetails(long assetIndex, FileRequestDeadline deadline) {
+    public FileRequestDetails(long assetIndex, @Nullable FileRequestDeadline deadline) {
         this.assetIndex = assetIndex;
         this.deadline = deadline;
     }
@@ -61,6 +65,7 @@ public class FileRequestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public FileRequestDeadline getDeadline() {
         return deadline;
     }

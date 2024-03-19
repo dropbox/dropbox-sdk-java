@@ -16,12 +16,19 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class SearchV2Arg {
     // struct files.SearchV2Arg (files.stone)
 
+    @Nonnull
     protected final String query;
+    @Nullable
     protected final SearchOptions options;
+    @Nullable
     protected final SearchMatchFieldOptions matchFieldOptions;
+    @Nullable
     protected final Boolean includeHighlights;
 
     /**
@@ -39,7 +46,7 @@ class SearchV2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchV2Arg(String query, SearchOptions options, SearchMatchFieldOptions matchFieldOptions, Boolean includeHighlights) {
+    public SearchV2Arg(@Nonnull String query, @Nullable SearchOptions options, @Nullable SearchMatchFieldOptions matchFieldOptions, @Nullable Boolean includeHighlights) {
         if (query == null) {
             throw new IllegalArgumentException("Required value for 'query' is null");
         }
@@ -64,7 +71,7 @@ class SearchV2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchV2Arg(String query) {
+    public SearchV2Arg(@Nonnull String query) {
         this(query, null, null, null);
     }
 
@@ -74,6 +81,7 @@ class SearchV2Arg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getQuery() {
         return query;
     }
@@ -83,6 +91,7 @@ class SearchV2Arg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SearchOptions getOptions() {
         return options;
     }
@@ -92,6 +101,7 @@ class SearchV2Arg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SearchMatchFieldOptions getMatchFieldOptions() {
         return matchFieldOptions;
     }
@@ -101,6 +111,7 @@ class SearchV2Arg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getIncludeHighlights() {
         return includeHighlights;
     }

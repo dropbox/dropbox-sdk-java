@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class SharedFolderChangeMembersPolicyType {
     // struct team_log.SharedFolderChangeMembersPolicyType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**
@@ -28,7 +31,7 @@ public class SharedFolderChangeMembersPolicyType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeMembersPolicyType(String description) {
+    public SharedFolderChangeMembersPolicyType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,6 +42,7 @@ public class SharedFolderChangeMembersPolicyType {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDescription() {
         return description;
     }

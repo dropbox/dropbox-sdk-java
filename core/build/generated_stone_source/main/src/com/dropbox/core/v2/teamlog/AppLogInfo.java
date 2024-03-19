@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * App's logged information.
  */
 public class AppLogInfo {
     // struct team_log.AppLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String appId;
+    @Nullable
     protected final String displayName;
 
     /**
@@ -34,7 +39,7 @@ public class AppLogInfo {
      * @param appId  App unique ID.
      * @param displayName  App display name.
      */
-    public AppLogInfo(String appId, String displayName) {
+    public AppLogInfo(@Nullable String appId, @Nullable String displayName) {
         this.appId = appId;
         this.displayName = displayName;
     }
@@ -53,6 +58,7 @@ public class AppLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getAppId() {
         return appId;
     }
@@ -62,6 +68,7 @@ public class AppLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }

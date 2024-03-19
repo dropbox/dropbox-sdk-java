@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Exactly one of team_member_id, email, or external_id must be provided to
  * identify the user account.
@@ -24,7 +27,9 @@ import java.util.List;
 class MembersSetPermissions2Arg {
     // struct team.MembersSetPermissions2Arg (team_members.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
+    @Nullable
     protected final List<String> newRoles;
 
     /**
@@ -40,7 +45,7 @@ class MembersSetPermissions2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetPermissions2Arg(UserSelectorArg user, List<String> newRoles) {
+    public MembersSetPermissions2Arg(@Nonnull UserSelectorArg user, @Nullable List<String> newRoles) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -76,7 +81,7 @@ class MembersSetPermissions2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetPermissions2Arg(UserSelectorArg user) {
+    public MembersSetPermissions2Arg(@Nonnull UserSelectorArg user) {
         this(user, null);
     }
 
@@ -85,6 +90,7 @@ class MembersSetPermissions2Arg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -95,6 +101,7 @@ class MembersSetPermissions2Arg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getNewRoles() {
         return newRoles;
     }

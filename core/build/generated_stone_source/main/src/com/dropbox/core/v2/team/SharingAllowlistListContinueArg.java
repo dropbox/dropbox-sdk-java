@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class SharingAllowlistListContinueArg {
     // struct team.SharingAllowlistListContinueArg (team_sharing_allowlist.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**
@@ -31,7 +34,7 @@ class SharingAllowlistListContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingAllowlistListContinueArg(String cursor) {
+    public SharingAllowlistListContinueArg(@Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -45,6 +48,7 @@ class SharingAllowlistListContinueArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

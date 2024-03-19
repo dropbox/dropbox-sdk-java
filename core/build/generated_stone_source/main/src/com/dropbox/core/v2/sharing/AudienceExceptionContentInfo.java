@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Information about the content that has a link audience different than that of
  * this folder.
@@ -23,6 +25,7 @@ import java.util.Arrays;
 public class AudienceExceptionContentInfo {
     // struct sharing.AudienceExceptionContentInfo (shared_content_links.stone)
 
+    @Nonnull
     protected final String name;
 
     /**
@@ -35,7 +38,7 @@ public class AudienceExceptionContentInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AudienceExceptionContentInfo(String name) {
+    public AudienceExceptionContentInfo(@Nonnull String name) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -47,6 +50,7 @@ public class AudienceExceptionContentInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }

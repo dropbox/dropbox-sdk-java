@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Unlinked app for team.
  */
 public class AppUnlinkTeamDetails {
     // struct team_log.AppUnlinkTeamDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AppLogInfo appInfo;
 
     /**
@@ -32,7 +35,7 @@ public class AppUnlinkTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AppUnlinkTeamDetails(AppLogInfo appInfo) {
+    public AppUnlinkTeamDetails(@Nonnull AppLogInfo appInfo) {
         if (appInfo == null) {
             throw new IllegalArgumentException("Required value for 'appInfo' is null");
         }
@@ -44,6 +47,7 @@ public class AppUnlinkTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AppLogInfo getAppInfo() {
         return appInfo;
     }

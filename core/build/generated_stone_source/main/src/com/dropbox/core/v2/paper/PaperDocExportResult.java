@@ -16,12 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class PaperDocExportResult {
     // struct paper.PaperDocExportResult (paper.stone)
 
+    @Nonnull
     protected final String owner;
+    @Nonnull
     protected final String title;
     protected final long revision;
+    @Nonnull
     protected final String mimeType;
 
     /**
@@ -37,7 +42,7 @@ public class PaperDocExportResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocExportResult(String owner, String title, long revision, String mimeType) {
+    public PaperDocExportResult(@Nonnull String owner, @Nonnull String title, long revision, @Nonnull String mimeType) {
         if (owner == null) {
             throw new IllegalArgumentException("Required value for 'owner' is null");
         }
@@ -58,6 +63,7 @@ public class PaperDocExportResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getOwner() {
         return owner;
     }
@@ -67,6 +73,7 @@ public class PaperDocExportResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTitle() {
         return title;
     }
@@ -86,6 +93,7 @@ public class PaperDocExportResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getMimeType() {
         return mimeType;
     }

@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Added users and/or groups to Paper doc/folder.
  */
 public class PaperContentAddMemberDetails {
     // struct team_log.PaperContentAddMemberDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
 
     /**
@@ -32,7 +35,7 @@ public class PaperContentAddMemberDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentAddMemberDetails(String eventUuid) {
+    public PaperContentAddMemberDetails(@Nonnull String eventUuid) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -44,6 +47,7 @@ public class PaperContentAddMemberDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }

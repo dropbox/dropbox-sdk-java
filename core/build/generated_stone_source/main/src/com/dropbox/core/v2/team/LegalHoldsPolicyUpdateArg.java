@@ -18,12 +18,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class LegalHoldsPolicyUpdateArg {
     // struct team.LegalHoldsPolicyUpdateArg (team_legal_holds.stone)
 
+    @Nonnull
     protected final String id;
+    @Nullable
     protected final String name;
+    @Nullable
     protected final String description;
+    @Nullable
     protected final List<String> members;
 
     /**
@@ -41,7 +48,7 @@ class LegalHoldsPolicyUpdateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsPolicyUpdateArg(String id, String name, String description, List<String> members) {
+    public LegalHoldsPolicyUpdateArg(@Nonnull String id, @Nullable String name, @Nullable String description, @Nullable List<String> members) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -82,7 +89,7 @@ class LegalHoldsPolicyUpdateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsPolicyUpdateArg(String id) {
+    public LegalHoldsPolicyUpdateArg(@Nonnull String id) {
         this(id, null, null, null);
     }
 
@@ -91,6 +98,7 @@ class LegalHoldsPolicyUpdateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -100,6 +108,7 @@ class LegalHoldsPolicyUpdateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getName() {
         return name;
     }
@@ -109,6 +118,7 @@ class LegalHoldsPolicyUpdateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDescription() {
         return description;
     }
@@ -118,6 +128,7 @@ class LegalHoldsPolicyUpdateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getMembers() {
         return members;
     }

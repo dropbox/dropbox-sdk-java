@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Set/removed limit on number of mobile devices member can link to team Dropbox
  * account.
@@ -23,7 +26,9 @@ import java.util.Arrays;
 public class DeviceApprovalsChangeMobilePolicyDetails {
     // struct team_log.DeviceApprovalsChangeMobilePolicyDetails (team_log_generated.stone)
 
+    @Nullable
     protected final DeviceApprovalsPolicy newValue;
+    @Nullable
     protected final DeviceApprovalsPolicy previousValue;
 
     /**
@@ -38,7 +43,7 @@ public class DeviceApprovalsChangeMobilePolicyDetails {
      * @param previousValue  Previous mobile device approvals policy. Might be
      *     missing due to historical data gap.
      */
-    public DeviceApprovalsChangeMobilePolicyDetails(DeviceApprovalsPolicy newValue, DeviceApprovalsPolicy previousValue) {
+    public DeviceApprovalsChangeMobilePolicyDetails(@Nullable DeviceApprovalsPolicy newValue, @Nullable DeviceApprovalsPolicy previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }
@@ -59,6 +64,7 @@ public class DeviceApprovalsChangeMobilePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public DeviceApprovalsPolicy getNewValue() {
         return newValue;
     }
@@ -69,6 +75,7 @@ public class DeviceApprovalsChangeMobilePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public DeviceApprovalsPolicy getPreviousValue() {
         return previousValue;
     }

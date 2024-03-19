@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled option for members to link personal Dropbox account and team
  * account to same computer.
@@ -23,7 +26,9 @@ import java.util.Arrays;
 public class TwoAccountChangePolicyDetails {
     // struct team_log.TwoAccountChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TwoAccountPolicy newValue;
+    @Nullable
     protected final TwoAccountPolicy previousValue;
 
     /**
@@ -37,7 +42,7 @@ public class TwoAccountChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TwoAccountChangePolicyDetails(TwoAccountPolicy newValue, TwoAccountPolicy previousValue) {
+    public TwoAccountChangePolicyDetails(@Nonnull TwoAccountPolicy newValue, @Nullable TwoAccountPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -56,7 +61,7 @@ public class TwoAccountChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TwoAccountChangePolicyDetails(TwoAccountPolicy newValue) {
+    public TwoAccountChangePolicyDetails(@Nonnull TwoAccountPolicy newValue) {
         this(newValue, null);
     }
 
@@ -65,6 +70,7 @@ public class TwoAccountChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TwoAccountPolicy getNewValue() {
         return newValue;
     }
@@ -74,6 +80,7 @@ public class TwoAccountChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public TwoAccountPolicy getPreviousValue() {
         return previousValue;
     }

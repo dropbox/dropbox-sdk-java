@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Edited file comment.
  */
 public class FileEditCommentDetails {
     // struct team_log.FileEditCommentDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String commentText;
+    @Nonnull
     protected final String previousCommentText;
 
     /**
@@ -35,7 +40,7 @@ public class FileEditCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileEditCommentDetails(String previousCommentText, String commentText) {
+    public FileEditCommentDetails(@Nonnull String previousCommentText, @Nullable String commentText) {
         this.commentText = commentText;
         if (previousCommentText == null) {
             throw new IllegalArgumentException("Required value for 'previousCommentText' is null");
@@ -54,7 +59,7 @@ public class FileEditCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileEditCommentDetails(String previousCommentText) {
+    public FileEditCommentDetails(@Nonnull String previousCommentText) {
         this(previousCommentText, null);
     }
 
@@ -63,6 +68,7 @@ public class FileEditCommentDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPreviousCommentText() {
         return previousCommentText;
     }
@@ -72,6 +78,7 @@ public class FileEditCommentDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCommentText() {
         return commentText;
     }

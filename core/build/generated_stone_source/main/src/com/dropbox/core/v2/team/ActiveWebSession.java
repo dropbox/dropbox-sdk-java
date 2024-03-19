@@ -18,15 +18,22 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information on active web sessions.
  */
 public class ActiveWebSession extends DeviceSession {
     // struct team.ActiveWebSession (team_devices.stone)
 
+    @Nonnull
     protected final String userAgent;
+    @Nonnull
     protected final String os;
+    @Nonnull
     protected final String browser;
+    @Nullable
     protected final Date expires;
 
     /**
@@ -52,7 +59,7 @@ public class ActiveWebSession extends DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ActiveWebSession(String sessionId, String userAgent, String os, String browser, String ipAddress, String country, Date created, Date updated, Date expires) {
+    public ActiveWebSession(@Nonnull String sessionId, @Nonnull String userAgent, @Nonnull String os, @Nonnull String browser, @Nullable String ipAddress, @Nullable String country, @Nullable Date created, @Nullable Date updated, @Nullable Date expires) {
         super(sessionId, ipAddress, country, created, updated);
         if (userAgent == null) {
             throw new IllegalArgumentException("Required value for 'userAgent' is null");
@@ -85,7 +92,7 @@ public class ActiveWebSession extends DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ActiveWebSession(String sessionId, String userAgent, String os, String browser) {
+    public ActiveWebSession(@Nonnull String sessionId, @Nonnull String userAgent, @Nonnull String os, @Nonnull String browser) {
         this(sessionId, userAgent, os, browser, null, null, null, null, null);
     }
 
@@ -94,6 +101,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSessionId() {
         return sessionId;
     }
@@ -103,6 +111,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUserAgent() {
         return userAgent;
     }
@@ -112,6 +121,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getOs() {
         return os;
     }
@@ -121,6 +131,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getBrowser() {
         return browser;
     }
@@ -130,6 +141,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -139,6 +151,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCountry() {
         return country;
     }
@@ -148,6 +161,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getCreated() {
         return created;
     }
@@ -157,6 +171,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -166,6 +181,7 @@ public class ActiveWebSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getExpires() {
         return expires;
     }

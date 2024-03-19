@@ -19,14 +19,23 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class SharedContentLinkMetadataBase {
     // struct sharing.SharedContentLinkMetadataBase (shared_content_links.stone)
 
+    @Nullable
     protected final AccessLevel accessLevel;
+    @Nonnull
     protected final List<LinkAudience> audienceOptions;
+    @Nullable
     protected final AudienceRestrictingSharedFolder audienceRestrictingSharedFolder;
+    @Nonnull
     protected final LinkAudience currentAudience;
+    @Nullable
     protected final Date expiry;
+    @Nonnull
     protected final List<LinkPermission> linkPermissions;
     protected final boolean passwordProtected;
 
@@ -56,7 +65,7 @@ public class SharedContentLinkMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentLinkMetadataBase(List<LinkAudience> audienceOptions, LinkAudience currentAudience, List<LinkPermission> linkPermissions, boolean passwordProtected, AccessLevel accessLevel, AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, Date expiry) {
+    public SharedContentLinkMetadataBase(@Nonnull List<LinkAudience> audienceOptions, @Nonnull LinkAudience currentAudience, @Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected, @Nullable AccessLevel accessLevel, @Nullable AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, @Nullable Date expiry) {
         this.accessLevel = accessLevel;
         if (audienceOptions == null) {
             throw new IllegalArgumentException("Required value for 'audienceOptions' is null");
@@ -106,7 +115,7 @@ public class SharedContentLinkMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentLinkMetadataBase(List<LinkAudience> audienceOptions, LinkAudience currentAudience, List<LinkPermission> linkPermissions, boolean passwordProtected) {
+    public SharedContentLinkMetadataBase(@Nonnull List<LinkAudience> audienceOptions, @Nonnull LinkAudience currentAudience, @Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected) {
         this(audienceOptions, currentAudience, linkPermissions, passwordProtected, null, null, null);
     }
 
@@ -118,6 +127,7 @@ public class SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<LinkAudience> getAudienceOptions() {
         return audienceOptions;
     }
@@ -127,6 +137,7 @@ public class SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public LinkAudience getCurrentAudience() {
         return currentAudience;
     }
@@ -136,6 +147,7 @@ public class SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<LinkPermission> getLinkPermissions() {
         return linkPermissions;
     }
@@ -154,6 +166,7 @@ public class SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -164,6 +177,7 @@ public class SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AudienceRestrictingSharedFolder getAudienceRestrictingSharedFolder() {
         return audienceRestrictingSharedFolder;
     }
@@ -174,6 +188,7 @@ public class SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getExpiry() {
         return expiry;
     }

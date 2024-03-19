@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class GroupsMembersListContinueArg {
     // struct team.GroupsMembersListContinueArg (team_groups.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**
@@ -29,7 +32,7 @@ class GroupsMembersListContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupsMembersListContinueArg(String cursor) {
+    public GroupsMembersListContinueArg(@Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -41,6 +44,7 @@ class GroupsMembersListContinueArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

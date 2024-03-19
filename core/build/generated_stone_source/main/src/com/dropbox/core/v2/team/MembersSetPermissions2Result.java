@@ -17,10 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class MembersSetPermissions2Result {
     // struct team.MembersSetPermissions2Result (team_members.stone)
 
+    @Nonnull
     protected final String teamMemberId;
+    @Nullable
     protected final List<TeamMemberRole> roles;
 
     /**
@@ -33,7 +38,7 @@ public class MembersSetPermissions2Result {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetPermissions2Result(String teamMemberId, List<TeamMemberRole> roles) {
+    public MembersSetPermissions2Result(@Nonnull String teamMemberId, @Nullable List<TeamMemberRole> roles) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }
@@ -59,7 +64,7 @@ public class MembersSetPermissions2Result {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetPermissions2Result(String teamMemberId) {
+    public MembersSetPermissions2Result(@Nonnull String teamMemberId) {
         this(teamMemberId, null);
     }
 
@@ -68,6 +73,7 @@ public class MembersSetPermissions2Result {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }
@@ -77,6 +83,7 @@ public class MembersSetPermissions2Result {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<TeamMemberRole> getRoles() {
         return roles;
     }

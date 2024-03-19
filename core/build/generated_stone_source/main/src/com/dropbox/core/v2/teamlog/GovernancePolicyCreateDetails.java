@@ -17,16 +17,24 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Activated a new policy.
  */
 public class GovernancePolicyCreateDetails {
     // struct team_log.GovernancePolicyCreateDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String governancePolicyId;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final PolicyType policyType;
+    @Nonnull
     protected final DurationLogInfo duration;
+    @Nullable
     protected final List<String> folders;
 
     /**
@@ -44,7 +52,7 @@ public class GovernancePolicyCreateDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyCreateDetails(String governancePolicyId, String name, DurationLogInfo duration, PolicyType policyType, List<String> folders) {
+    public GovernancePolicyCreateDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull DurationLogInfo duration, @Nullable PolicyType policyType, @Nullable List<String> folders) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -80,7 +88,7 @@ public class GovernancePolicyCreateDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyCreateDetails(String governancePolicyId, String name, DurationLogInfo duration) {
+    public GovernancePolicyCreateDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull DurationLogInfo duration) {
         this(governancePolicyId, name, duration, null, null);
     }
 
@@ -89,6 +97,7 @@ public class GovernancePolicyCreateDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -98,6 +107,7 @@ public class GovernancePolicyCreateDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -107,6 +117,7 @@ public class GovernancePolicyCreateDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DurationLogInfo getDuration() {
         return duration;
     }
@@ -116,6 +127,7 @@ public class GovernancePolicyCreateDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }
@@ -125,6 +137,7 @@ public class GovernancePolicyCreateDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getFolders() {
         return folders;
     }

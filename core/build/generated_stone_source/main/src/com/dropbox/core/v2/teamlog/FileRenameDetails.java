@@ -17,12 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Renamed files and/or folders.
  */
 public class FileRenameDetails {
     // struct team_log.FileRenameDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final List<RelocateAssetReferencesLogInfo> relocateActionDetails;
 
     /**
@@ -34,7 +37,7 @@ public class FileRenameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRenameDetails(List<RelocateAssetReferencesLogInfo> relocateActionDetails) {
+    public FileRenameDetails(@Nonnull List<RelocateAssetReferencesLogInfo> relocateActionDetails) {
         if (relocateActionDetails == null) {
             throw new IllegalArgumentException("Required value for 'relocateActionDetails' is null");
         }
@@ -51,6 +54,7 @@ public class FileRenameDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<RelocateAssetReferencesLogInfo> getRelocateActionDetails() {
         return relocateActionDetails;
     }

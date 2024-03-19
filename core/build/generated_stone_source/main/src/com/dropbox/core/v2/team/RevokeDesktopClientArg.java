@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class RevokeDesktopClientArg extends DeviceSessionArg {
     // struct team.RevokeDesktopClientArg (team_devices.stone)
 
@@ -33,7 +35,7 @@ public class RevokeDesktopClientArg extends DeviceSessionArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeDesktopClientArg(String sessionId, String teamMemberId, boolean deleteOnUnlink) {
+    public RevokeDesktopClientArg(@Nonnull String sessionId, @Nonnull String teamMemberId, boolean deleteOnUnlink) {
         super(sessionId, teamMemberId);
         this.deleteOnUnlink = deleteOnUnlink;
     }
@@ -50,7 +52,7 @@ public class RevokeDesktopClientArg extends DeviceSessionArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeDesktopClientArg(String sessionId, String teamMemberId) {
+    public RevokeDesktopClientArg(@Nonnull String sessionId, @Nonnull String teamMemberId) {
         this(sessionId, teamMemberId, false);
     }
 
@@ -59,6 +61,7 @@ public class RevokeDesktopClientArg extends DeviceSessionArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSessionId() {
         return sessionId;
     }
@@ -68,6 +71,7 @@ public class RevokeDesktopClientArg extends DeviceSessionArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }

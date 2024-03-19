@@ -19,9 +19,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class AlphaGetMetadataArg extends GetMetadataArg {
     // struct files.AlphaGetMetadataArg (files.stone)
 
+    @Nullable
     protected final List<String> includePropertyTemplates;
 
     /**
@@ -50,7 +54,7 @@ class AlphaGetMetadataArg extends GetMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AlphaGetMetadataArg(String path, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, TemplateFilterBase includePropertyGroups, List<String> includePropertyTemplates) {
+    public AlphaGetMetadataArg(@Nonnull String path, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, @Nullable TemplateFilterBase includePropertyGroups, @Nullable List<String> includePropertyTemplates) {
         super(path, includeMediaInfo, includeDeleted, includeHasExplicitSharedMembers, includePropertyGroups);
         if (includePropertyTemplates != null) {
             for (String x : includePropertyTemplates) {
@@ -80,7 +84,7 @@ class AlphaGetMetadataArg extends GetMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AlphaGetMetadataArg(String path) {
+    public AlphaGetMetadataArg(@Nonnull String path) {
         this(path, false, false, false, null, null);
     }
 
@@ -89,6 +93,7 @@ class AlphaGetMetadataArg extends GetMetadataArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -132,6 +137,7 @@ class AlphaGetMetadataArg extends GetMetadataArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public TemplateFilterBase getIncludePropertyGroups() {
         return includePropertyGroups;
     }
@@ -142,6 +148,7 @@ class AlphaGetMetadataArg extends GetMetadataArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getIncludePropertyTemplates() {
         return includePropertyTemplates;
     }

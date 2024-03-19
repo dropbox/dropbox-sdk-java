@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Completed ransomware restore process.
  */
 public class RansomwareRestoreProcessCompletedDetails {
     // struct team_log.RansomwareRestoreProcessCompletedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String status;
     protected final long restoredFilesCount;
     protected final long restoredFilesFailedCount;
@@ -37,7 +40,7 @@ public class RansomwareRestoreProcessCompletedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RansomwareRestoreProcessCompletedDetails(String status, long restoredFilesCount, long restoredFilesFailedCount) {
+    public RansomwareRestoreProcessCompletedDetails(@Nonnull String status, long restoredFilesCount, long restoredFilesFailedCount) {
         if (status == null) {
             throw new IllegalArgumentException("Required value for 'status' is null");
         }
@@ -51,6 +54,7 @@ public class RansomwareRestoreProcessCompletedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getStatus() {
         return status;
     }

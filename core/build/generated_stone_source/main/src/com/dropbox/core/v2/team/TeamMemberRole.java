@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * A role which can be attached to a team member. This replaces AdminTier; each
  * AdminTier corresponds to a new TeamMemberRole with a matching name.
@@ -24,8 +26,11 @@ import java.util.regex.Pattern;
 public class TeamMemberRole {
     // struct team.TeamMemberRole (team_members.stone)
 
+    @Nonnull
     protected final String roleId;
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final String description;
 
     /**
@@ -45,7 +50,7 @@ public class TeamMemberRole {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberRole(String roleId, String name, String description) {
+    public TeamMemberRole(@Nonnull String roleId, @Nonnull String name, @Nonnull String description) {
         if (roleId == null) {
             throw new IllegalArgumentException("Required value for 'roleId' is null");
         }
@@ -78,6 +83,7 @@ public class TeamMemberRole {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getRoleId() {
         return roleId;
     }
@@ -87,6 +93,7 @@ public class TeamMemberRole {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -96,6 +103,7 @@ public class TeamMemberRole {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDescription() {
         return description;
     }

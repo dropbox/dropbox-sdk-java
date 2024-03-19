@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed admin reminder settings for requests to join the team.
  */
 public class AdminEmailRemindersChangedDetails {
     // struct team_log.AdminEmailRemindersChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AdminEmailRemindersPolicy newValue;
+    @Nonnull
     protected final AdminEmailRemindersPolicy previousValue;
 
     /**
@@ -34,7 +38,7 @@ public class AdminEmailRemindersChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AdminEmailRemindersChangedDetails(AdminEmailRemindersPolicy newValue, AdminEmailRemindersPolicy previousValue) {
+    public AdminEmailRemindersChangedDetails(@Nonnull AdminEmailRemindersPolicy newValue, @Nonnull AdminEmailRemindersPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -50,6 +54,7 @@ public class AdminEmailRemindersChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AdminEmailRemindersPolicy getNewValue() {
         return newValue;
     }
@@ -59,6 +64,7 @@ public class AdminEmailRemindersChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AdminEmailRemindersPolicy getPreviousValue() {
         return previousValue;
     }

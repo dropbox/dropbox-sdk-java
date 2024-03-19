@@ -16,14 +16,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * User's logged information.
  */
 public class UserLogInfo {
     // struct team_log.UserLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String accountId;
+    @Nullable
     protected final String displayName;
+    @Nullable
     protected final String email;
 
     /**
@@ -40,7 +46,7 @@ public class UserLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserLogInfo(String accountId, String displayName, String email) {
+    public UserLogInfo(@Nullable String accountId, @Nullable String displayName, @Nullable String email) {
         if (accountId != null) {
             if (accountId.length() < 40) {
                 throw new IllegalArgumentException("String 'accountId' is shorter than 40");
@@ -73,6 +79,7 @@ public class UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -82,6 +89,7 @@ public class UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -91,6 +99,7 @@ public class UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getEmail() {
         return email;
     }

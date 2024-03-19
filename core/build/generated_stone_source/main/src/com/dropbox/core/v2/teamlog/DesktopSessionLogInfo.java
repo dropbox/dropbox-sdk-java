@@ -15,6 +15,9 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Desktop session.
  */
@@ -27,7 +30,7 @@ public class DesktopSessionLogInfo extends SessionLogInfo {
      *
      * @param sessionId  Session ID.
      */
-    public DesktopSessionLogInfo(String sessionId) {
+    public DesktopSessionLogInfo(@Nullable String sessionId) {
         super(sessionId);
     }
 
@@ -45,6 +48,7 @@ public class DesktopSessionLogInfo extends SessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getSessionId() {
         return sessionId;
     }

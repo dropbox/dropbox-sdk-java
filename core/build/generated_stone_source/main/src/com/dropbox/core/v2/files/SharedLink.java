@@ -16,10 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class SharedLink {
     // struct files.SharedLink (files.stone)
 
+    @Nonnull
     protected final String url;
+    @Nullable
     protected final String password;
 
     /**
@@ -30,7 +35,7 @@ public class SharedLink {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLink(String url, String password) {
+    public SharedLink(@Nonnull String url, @Nullable String password) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }
@@ -48,7 +53,7 @@ public class SharedLink {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLink(String url) {
+    public SharedLink(@Nonnull String url) {
         this(url, null);
     }
 
@@ -57,6 +62,7 @@ public class SharedLink {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -66,6 +72,7 @@ public class SharedLink {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPassword() {
         return password;
     }

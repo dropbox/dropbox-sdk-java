@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Verified secondary email.
  */
 public class SecondaryEmailVerifiedDetails {
     // struct team_log.SecondaryEmailVerifiedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String secondaryEmail;
 
     /**
@@ -33,7 +36,7 @@ public class SecondaryEmailVerifiedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SecondaryEmailVerifiedDetails(String secondaryEmail) {
+    public SecondaryEmailVerifiedDetails(@Nonnull String secondaryEmail) {
         if (secondaryEmail == null) {
             throw new IllegalArgumentException("Required value for 'secondaryEmail' is null");
         }
@@ -48,6 +51,7 @@ public class SecondaryEmailVerifiedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSecondaryEmail() {
         return secondaryEmail;
     }

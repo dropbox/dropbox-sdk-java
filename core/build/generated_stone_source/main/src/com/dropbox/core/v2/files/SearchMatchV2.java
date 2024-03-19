@@ -17,11 +17,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class SearchMatchV2 {
     // struct files.SearchMatchV2 (files.stone)
 
+    @Nonnull
     protected final MetadataV2 metadata;
+    @Nullable
     protected final SearchMatchTypeV2 matchType;
+    @Nullable
     protected final List<HighlightSpan> highlightSpans;
 
     /**
@@ -38,7 +44,7 @@ public class SearchMatchV2 {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchMatchV2(MetadataV2 metadata, SearchMatchTypeV2 matchType, List<HighlightSpan> highlightSpans) {
+    public SearchMatchV2(@Nonnull MetadataV2 metadata, @Nullable SearchMatchTypeV2 matchType, @Nullable List<HighlightSpan> highlightSpans) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }
@@ -65,7 +71,7 @@ public class SearchMatchV2 {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchMatchV2(MetadataV2 metadata) {
+    public SearchMatchV2(@Nonnull MetadataV2 metadata) {
         this(metadata, null, null);
     }
 
@@ -74,6 +80,7 @@ public class SearchMatchV2 {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MetadataV2 getMetadata() {
         return metadata;
     }
@@ -83,6 +90,7 @@ public class SearchMatchV2 {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SearchMatchTypeV2 getMatchType() {
         return matchType;
     }
@@ -93,6 +101,7 @@ public class SearchMatchV2 {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<HighlightSpan> getHighlightSpans() {
         return highlightSpans;
     }

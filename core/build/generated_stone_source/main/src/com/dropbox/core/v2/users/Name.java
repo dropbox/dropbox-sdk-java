@@ -16,16 +16,23 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Representations for a person's name to assist with internationalization.
  */
 public class Name {
     // struct users.Name (users.stone)
 
+    @Nonnull
     protected final String givenName;
+    @Nonnull
     protected final String surname;
+    @Nonnull
     protected final String familiarName;
+    @Nonnull
     protected final String displayName;
+    @Nonnull
     protected final String abbreviatedName;
 
     /**
@@ -46,7 +53,7 @@ public class Name {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Name(String givenName, String surname, String familiarName, String displayName, String abbreviatedName) {
+    public Name(@Nonnull String givenName, @Nonnull String surname, @Nonnull String familiarName, @Nonnull String displayName, @Nonnull String abbreviatedName) {
         if (givenName == null) {
             throw new IllegalArgumentException("Required value for 'givenName' is null");
         }
@@ -74,6 +81,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGivenName() {
         return givenName;
     }
@@ -83,6 +91,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSurname() {
         return surname;
     }
@@ -94,6 +103,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFamiliarName() {
         return familiarName;
     }
@@ -104,6 +114,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDisplayName() {
         return displayName;
     }
@@ -113,6 +124,7 @@ public class Name {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAbbreviatedName() {
         return abbreviatedName;
     }

@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class GroupRemoveExternalIdType {
     // struct team_log.GroupRemoveExternalIdType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**
@@ -28,7 +31,7 @@ public class GroupRemoveExternalIdType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupRemoveExternalIdType(String description) {
+    public GroupRemoveExternalIdType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,6 +42,7 @@ public class GroupRemoveExternalIdType {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDescription() {
         return description;
     }

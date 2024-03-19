@@ -18,16 +18,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Arguments for {@link DbxUserSharingRequests#addFileMember(String,List)}.
  */
 class AddFileMemberArgs {
     // struct sharing.AddFileMemberArgs (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
+    @Nonnull
     protected final List<MemberSelector> members;
+    @Nullable
     protected final String customMessage;
     protected final boolean quiet;
+    @Nonnull
     protected final AccessLevel accessLevel;
     protected final boolean addMessageAsComment;
 
@@ -57,7 +64,7 @@ class AddFileMemberArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFileMemberArgs(String file, List<MemberSelector> members, String customMessage, boolean quiet, AccessLevel accessLevel, boolean addMessageAsComment) {
+    public AddFileMemberArgs(@Nonnull String file, @Nonnull List<MemberSelector> members, @Nullable String customMessage, boolean quiet, @Nonnull AccessLevel accessLevel, boolean addMessageAsComment) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -103,7 +110,7 @@ class AddFileMemberArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFileMemberArgs(String file, List<MemberSelector> members) {
+    public AddFileMemberArgs(@Nonnull String file, @Nonnull List<MemberSelector> members) {
         this(file, members, null, false, AccessLevel.VIEWER, false);
     }
 
@@ -112,6 +119,7 @@ class AddFileMemberArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFile() {
         return file;
     }
@@ -123,6 +131,7 @@ class AddFileMemberArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<MemberSelector> getMembers() {
         return members;
     }
@@ -132,6 +141,7 @@ class AddFileMemberArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCustomMessage() {
         return customMessage;
     }
@@ -154,6 +164,7 @@ class AddFileMemberArgs {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     AccessLevel.VIEWER.
      */
+    @Nonnull
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Result returned by {@link
  * DbxTeamTeamRequests#groupsMembersAdd(GroupSelector,java.util.List,boolean)}
@@ -25,7 +27,9 @@ import java.util.Arrays;
 public class GroupMembersChangeResult {
     // struct team.GroupMembersChangeResult (team_groups.stone)
 
+    @Nonnull
     protected final GroupFullInfo groupInfo;
+    @Nonnull
     protected final String asyncJobId;
 
     /**
@@ -45,7 +49,7 @@ public class GroupMembersChangeResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersChangeResult(GroupFullInfo groupInfo, String asyncJobId) {
+    public GroupMembersChangeResult(@Nonnull GroupFullInfo groupInfo, @Nonnull String asyncJobId) {
         if (groupInfo == null) {
             throw new IllegalArgumentException("Required value for 'groupInfo' is null");
         }
@@ -64,6 +68,7 @@ public class GroupMembersChangeResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupFullInfo getGroupInfo() {
         return groupInfo;
     }
@@ -76,6 +81,7 @@ public class GroupMembersChangeResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAsyncJobId() {
         return asyncJobId;
     }

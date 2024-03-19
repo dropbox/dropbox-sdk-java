@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Permanently deleted showcase.
  */
 public class ShowcasePermanentlyDeletedDetails {
     // struct team_log.ShowcasePermanentlyDeletedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
 
     /**
@@ -32,7 +35,7 @@ public class ShowcasePermanentlyDeletedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcasePermanentlyDeletedDetails(String eventUuid) {
+    public ShowcasePermanentlyDeletedDetails(@Nonnull String eventUuid) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -44,6 +47,7 @@ public class ShowcasePermanentlyDeletedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }

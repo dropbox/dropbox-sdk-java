@@ -16,14 +16,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Group's logged information.
  */
 public class GroupLogInfo {
     // struct team_log.GroupLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String groupId;
+    @Nonnull
     protected final String displayName;
+    @Nullable
     protected final String externalId;
 
     /**
@@ -39,7 +45,7 @@ public class GroupLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupLogInfo(String displayName, String groupId, String externalId) {
+    public GroupLogInfo(@Nonnull String displayName, @Nullable String groupId, @Nullable String externalId) {
         this.groupId = groupId;
         if (displayName == null) {
             throw new IllegalArgumentException("Required value for 'displayName' is null");
@@ -58,7 +64,7 @@ public class GroupLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupLogInfo(String displayName) {
+    public GroupLogInfo(@Nonnull String displayName) {
         this(displayName, null, null);
     }
 
@@ -67,6 +73,7 @@ public class GroupLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDisplayName() {
         return displayName;
     }
@@ -76,6 +83,7 @@ public class GroupLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getGroupId() {
         return groupId;
     }
@@ -85,6 +93,7 @@ public class GroupLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getExternalId() {
         return externalId;
     }

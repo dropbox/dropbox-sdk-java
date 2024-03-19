@@ -16,14 +16,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Exported hold.
  */
 public class LegalHoldsExportAHoldDetails {
     // struct team_log.LegalHoldsExportAHoldDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String legalHoldId;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final String exportName;
 
     /**
@@ -36,7 +42,7 @@ public class LegalHoldsExportAHoldDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsExportAHoldDetails(String legalHoldId, String name, String exportName) {
+    public LegalHoldsExportAHoldDetails(@Nonnull String legalHoldId, @Nonnull String name, @Nullable String exportName) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }
@@ -59,7 +65,7 @@ public class LegalHoldsExportAHoldDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsExportAHoldDetails(String legalHoldId, String name) {
+    public LegalHoldsExportAHoldDetails(@Nonnull String legalHoldId, @Nonnull String name) {
         this(legalHoldId, name, null);
     }
 
@@ -68,6 +74,7 @@ public class LegalHoldsExportAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -77,6 +84,7 @@ public class LegalHoldsExportAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -86,6 +94,7 @@ public class LegalHoldsExportAHoldDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getExportName() {
         return exportName;
     }

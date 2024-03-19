@@ -16,15 +16,22 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Removed a policy download.
  */
 public class GovernancePolicyExportRemovedDetails {
     // struct team_log.GovernancePolicyExportRemovedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String governancePolicyId;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final PolicyType policyType;
+    @Nonnull
     protected final String exportName;
 
     /**
@@ -38,7 +45,7 @@ public class GovernancePolicyExportRemovedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyExportRemovedDetails(String governancePolicyId, String name, String exportName, PolicyType policyType) {
+    public GovernancePolicyExportRemovedDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull String exportName, @Nullable PolicyType policyType) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -66,7 +73,7 @@ public class GovernancePolicyExportRemovedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyExportRemovedDetails(String governancePolicyId, String name, String exportName) {
+    public GovernancePolicyExportRemovedDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull String exportName) {
         this(governancePolicyId, name, exportName, null);
     }
 
@@ -75,6 +82,7 @@ public class GovernancePolicyExportRemovedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -84,6 +92,7 @@ public class GovernancePolicyExportRemovedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -93,6 +102,7 @@ public class GovernancePolicyExportRemovedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getExportName() {
         return exportName;
     }
@@ -102,6 +112,7 @@ public class GovernancePolicyExportRemovedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }

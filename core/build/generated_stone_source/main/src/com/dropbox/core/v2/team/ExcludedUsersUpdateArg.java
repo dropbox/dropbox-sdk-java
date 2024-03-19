@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Argument of excluded users update operation. Should include a list of users
  * to add/remove (according to endpoint), Maximum size of the list is 1000
@@ -25,6 +28,7 @@ import java.util.List;
 class ExcludedUsersUpdateArg {
     // struct team.ExcludedUsersUpdateArg (team_member_space_limits.stone)
 
+    @Nullable
     protected final List<UserSelectorArg> users;
 
     /**
@@ -38,7 +42,7 @@ class ExcludedUsersUpdateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExcludedUsersUpdateArg(List<UserSelectorArg> users) {
+    public ExcludedUsersUpdateArg(@Nullable List<UserSelectorArg> users) {
         if (users != null) {
             for (UserSelectorArg x : users) {
                 if (x == null) {
@@ -65,6 +69,7 @@ class ExcludedUsersUpdateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<UserSelectorArg> getUsers() {
         return users;
     }

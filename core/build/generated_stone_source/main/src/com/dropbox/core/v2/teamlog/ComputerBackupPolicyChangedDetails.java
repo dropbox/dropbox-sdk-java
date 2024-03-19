@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed computer backup policy for team.
  */
 public class ComputerBackupPolicyChangedDetails {
     // struct team_log.ComputerBackupPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ComputerBackupPolicy newValue;
+    @Nonnull
     protected final ComputerBackupPolicy previousValue;
 
     /**
@@ -35,7 +39,7 @@ public class ComputerBackupPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ComputerBackupPolicyChangedDetails(ComputerBackupPolicy newValue, ComputerBackupPolicy previousValue) {
+    public ComputerBackupPolicyChangedDetails(@Nonnull ComputerBackupPolicy newValue, @Nonnull ComputerBackupPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -51,6 +55,7 @@ public class ComputerBackupPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ComputerBackupPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +65,7 @@ public class ComputerBackupPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ComputerBackupPolicy getPreviousValue() {
         return previousValue;
     }

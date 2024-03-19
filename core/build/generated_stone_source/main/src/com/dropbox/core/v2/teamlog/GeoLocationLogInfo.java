@@ -16,15 +16,22 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Geographic location details.
  */
 public class GeoLocationLogInfo {
     // struct team_log.GeoLocationLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String city;
+    @Nullable
     protected final String region;
+    @Nullable
     protected final String country;
+    @Nonnull
     protected final String ipAddress;
 
     /**
@@ -41,7 +48,7 @@ public class GeoLocationLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GeoLocationLogInfo(String ipAddress, String city, String region, String country) {
+    public GeoLocationLogInfo(@Nonnull String ipAddress, @Nullable String city, @Nullable String region, @Nullable String country) {
         this.city = city;
         this.region = region;
         this.country = country;
@@ -61,7 +68,7 @@ public class GeoLocationLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GeoLocationLogInfo(String ipAddress) {
+    public GeoLocationLogInfo(@Nonnull String ipAddress) {
         this(ipAddress, null, null, null);
     }
 
@@ -70,6 +77,7 @@ public class GeoLocationLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getIpAddress() {
         return ipAddress;
     }
@@ -79,6 +87,7 @@ public class GeoLocationLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCity() {
         return city;
     }
@@ -88,6 +97,7 @@ public class GeoLocationLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getRegion() {
         return region;
     }
@@ -97,6 +107,7 @@ public class GeoLocationLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCountry() {
         return country;
     }

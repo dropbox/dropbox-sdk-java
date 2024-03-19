@@ -21,14 +21,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class CommitInfo {
     // struct files.CommitInfo (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final WriteMode mode;
     protected final boolean autorename;
+    @Nullable
     protected final Date clientModified;
     protected final boolean mute;
+    @Nullable
     protected final List<PropertyGroup> propertyGroups;
     protected final boolean strictConflict;
 
@@ -66,7 +73,7 @@ public class CommitInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CommitInfo(String path, WriteMode mode, boolean autorename, Date clientModified, boolean mute, List<PropertyGroup> propertyGroups, boolean strictConflict) {
+    public CommitInfo(@Nonnull String path, @Nonnull WriteMode mode, boolean autorename, @Nullable Date clientModified, boolean mute, @Nullable List<PropertyGroup> propertyGroups, boolean strictConflict) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -104,7 +111,7 @@ public class CommitInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CommitInfo(String path) {
+    public CommitInfo(@Nonnull String path) {
         this(path, WriteMode.ADD, false, null, false, null, false);
     }
 
@@ -113,6 +120,7 @@ public class CommitInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -123,6 +131,7 @@ public class CommitInfo {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     WriteMode.ADD.
      */
+    @Nonnull
     public WriteMode getMode() {
         return mode;
     }
@@ -147,6 +156,7 @@ public class CommitInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getClientModified() {
         return clientModified;
     }
@@ -169,6 +179,7 @@ public class CommitInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }

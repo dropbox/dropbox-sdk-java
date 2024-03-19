@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class GetAccountBatchArg {
     // struct users.GetAccountBatchArg (users.stone)
 
+    @Nonnull
     protected final List<String> accountIds;
 
     /**
@@ -31,7 +34,7 @@ public class GetAccountBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetAccountBatchArg(List<String> accountIds) {
+    public GetAccountBatchArg(@Nonnull List<String> accountIds) {
         if (accountIds == null) {
             throw new IllegalArgumentException("Required value for 'accountIds' is null");
         }
@@ -58,6 +61,7 @@ public class GetAccountBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<String> getAccountIds() {
         return accountIds;
     }

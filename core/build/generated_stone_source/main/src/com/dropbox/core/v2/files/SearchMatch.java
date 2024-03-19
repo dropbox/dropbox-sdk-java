@@ -16,10 +16,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class SearchMatch {
     // struct files.SearchMatch (files.stone)
 
+    @Nonnull
     protected final SearchMatchType matchType;
+    @Nonnull
     protected final Metadata metadata;
 
     /**
@@ -31,7 +35,7 @@ public class SearchMatch {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchMatch(SearchMatchType matchType, Metadata metadata) {
+    public SearchMatch(@Nonnull SearchMatchType matchType, @Nonnull Metadata metadata) {
         if (matchType == null) {
             throw new IllegalArgumentException("Required value for 'matchType' is null");
         }
@@ -47,6 +51,7 @@ public class SearchMatch {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SearchMatchType getMatchType() {
         return matchType;
     }
@@ -56,6 +61,7 @@ public class SearchMatch {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Metadata getMetadata() {
         return metadata;
     }

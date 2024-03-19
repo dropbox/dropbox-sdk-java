@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class FileLock {
     // struct files.FileLock (files.stone)
 
+    @Nonnull
     protected final FileLockContent content;
 
     /**
@@ -28,7 +31,7 @@ public class FileLock {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLock(FileLockContent content) {
+    public FileLock(@Nonnull FileLockContent content) {
         if (content == null) {
             throw new IllegalArgumentException("Required value for 'content' is null");
         }
@@ -40,6 +43,7 @@ public class FileLock {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FileLockContent getContent() {
         return content;
     }

@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Locked/unlocked editing for a file.
  */
 public class FileLockingLockStatusChangedDetails {
     // struct team_log.FileLockingLockStatusChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final LockStatus previousValue;
+    @Nonnull
     protected final LockStatus newValue;
 
     /**
@@ -35,7 +39,7 @@ public class FileLockingLockStatusChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLockingLockStatusChangedDetails(LockStatus previousValue, LockStatus newValue) {
+    public FileLockingLockStatusChangedDetails(@Nonnull LockStatus previousValue, @Nonnull LockStatus newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -51,6 +55,7 @@ public class FileLockingLockStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public LockStatus getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +65,7 @@ public class FileLockingLockStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public LockStatus getNewValue() {
         return newValue;
     }

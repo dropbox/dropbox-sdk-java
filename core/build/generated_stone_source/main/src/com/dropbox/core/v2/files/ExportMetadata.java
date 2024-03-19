@@ -16,12 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class ExportMetadata {
     // struct files.ExportMetadata (files.stone)
 
+    @Nonnull
     protected final String name;
     protected final long size;
+    @Nullable
     protected final String exportHash;
+    @Nullable
     protected final Long paperRevision;
 
     /**
@@ -44,7 +50,7 @@ public class ExportMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportMetadata(String name, long size, String exportHash, Long paperRevision) {
+    public ExportMetadata(@Nonnull String name, long size, @Nullable String exportHash, @Nullable Long paperRevision) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -74,7 +80,7 @@ public class ExportMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportMetadata(String name, long size) {
+    public ExportMetadata(@Nonnull String name, long size) {
         this(name, size, null, null);
     }
 
@@ -84,6 +90,7 @@ public class ExportMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -106,6 +113,7 @@ public class ExportMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getExportHash() {
         return exportHash;
     }
@@ -117,6 +125,7 @@ public class ExportMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getPaperRevision() {
         return paperRevision;
     }

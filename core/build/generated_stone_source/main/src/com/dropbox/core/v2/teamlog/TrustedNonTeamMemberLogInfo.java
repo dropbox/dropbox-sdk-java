@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * User that is not a member of the team but considered trusted.
  */
 public class TrustedNonTeamMemberLogInfo extends UserLogInfo {
     // struct team_log.TrustedNonTeamMemberLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final TrustedNonTeamMemberType trustedNonTeamMemberType;
+    @Nullable
     protected final TeamLogInfo team;
 
     /**
@@ -42,7 +47,7 @@ public class TrustedNonTeamMemberLogInfo extends UserLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TrustedNonTeamMemberLogInfo(TrustedNonTeamMemberType trustedNonTeamMemberType, String accountId, String displayName, String email, TeamLogInfo team) {
+    public TrustedNonTeamMemberLogInfo(@Nonnull TrustedNonTeamMemberType trustedNonTeamMemberType, @Nullable String accountId, @Nullable String displayName, @Nullable String email, @Nullable TeamLogInfo team) {
         super(accountId, displayName, email);
         if (trustedNonTeamMemberType == null) {
             throw new IllegalArgumentException("Required value for 'trustedNonTeamMemberType' is null");
@@ -62,7 +67,7 @@ public class TrustedNonTeamMemberLogInfo extends UserLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TrustedNonTeamMemberLogInfo(TrustedNonTeamMemberType trustedNonTeamMemberType) {
+    public TrustedNonTeamMemberLogInfo(@Nonnull TrustedNonTeamMemberType trustedNonTeamMemberType) {
         this(trustedNonTeamMemberType, null, null, null, null);
     }
 
@@ -71,6 +76,7 @@ public class TrustedNonTeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TrustedNonTeamMemberType getTrustedNonTeamMemberType() {
         return trustedNonTeamMemberType;
     }
@@ -80,6 +86,7 @@ public class TrustedNonTeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -89,6 +96,7 @@ public class TrustedNonTeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -98,6 +106,7 @@ public class TrustedNonTeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getEmail() {
         return email;
     }
@@ -107,6 +116,7 @@ public class TrustedNonTeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public TeamLogInfo getTeam() {
         return team;
     }

@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed team branding policy for team.
  */
 public class TeamBrandingPolicyChangedDetails {
     // struct team_log.TeamBrandingPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamBrandingPolicy newValue;
+    @Nonnull
     protected final TeamBrandingPolicy previousValue;
 
     /**
@@ -35,7 +39,7 @@ public class TeamBrandingPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamBrandingPolicyChangedDetails(TeamBrandingPolicy newValue, TeamBrandingPolicy previousValue) {
+    public TeamBrandingPolicyChangedDetails(@Nonnull TeamBrandingPolicy newValue, @Nonnull TeamBrandingPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -51,6 +55,7 @@ public class TeamBrandingPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamBrandingPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +65,7 @@ public class TeamBrandingPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamBrandingPolicy getPreviousValue() {
         return previousValue;
     }

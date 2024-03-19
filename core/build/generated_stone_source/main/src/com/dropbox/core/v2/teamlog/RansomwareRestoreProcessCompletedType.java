@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class RansomwareRestoreProcessCompletedType {
     // struct team_log.RansomwareRestoreProcessCompletedType (team_log_generated.stone)
 
+    @Nonnull
     protected final String description;
 
     /**
@@ -28,7 +31,7 @@ public class RansomwareRestoreProcessCompletedType {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RansomwareRestoreProcessCompletedType(String description) {
+    public RansomwareRestoreProcessCompletedType(@Nonnull String description) {
         if (description == null) {
             throw new IllegalArgumentException("Required value for 'description' is null");
         }
@@ -39,6 +42,7 @@ public class RansomwareRestoreProcessCompletedType {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDescription() {
         return description;
     }

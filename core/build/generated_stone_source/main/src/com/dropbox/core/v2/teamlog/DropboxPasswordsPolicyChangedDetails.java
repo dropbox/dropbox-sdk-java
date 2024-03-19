@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed Dropbox Passwords policy for team.
  */
 public class DropboxPasswordsPolicyChangedDetails {
     // struct team_log.DropboxPasswordsPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final DropboxPasswordsPolicy newValue;
+    @Nonnull
     protected final DropboxPasswordsPolicy previousValue;
 
     /**
@@ -34,7 +38,7 @@ public class DropboxPasswordsPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DropboxPasswordsPolicyChangedDetails(DropboxPasswordsPolicy newValue, DropboxPasswordsPolicy previousValue) {
+    public DropboxPasswordsPolicyChangedDetails(@Nonnull DropboxPasswordsPolicy newValue, @Nonnull DropboxPasswordsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -50,6 +54,7 @@ public class DropboxPasswordsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DropboxPasswordsPolicy getNewValue() {
         return newValue;
     }
@@ -59,6 +64,7 @@ public class DropboxPasswordsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DropboxPasswordsPolicy getPreviousValue() {
         return previousValue;
     }

@@ -17,13 +17,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Sharing info for a file which is contained by a shared folder.
  */
 public class FileSharingInfo extends SharingInfo {
     // struct files.FileSharingInfo (files.stone)
 
+    @Nonnull
     protected final String parentSharedFolderId;
+    @Nullable
     protected final String modifiedBy;
 
     /**
@@ -40,7 +45,7 @@ public class FileSharingInfo extends SharingInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileSharingInfo(boolean readOnly, String parentSharedFolderId, String modifiedBy) {
+    public FileSharingInfo(boolean readOnly, @Nonnull String parentSharedFolderId, @Nullable String modifiedBy) {
         super(readOnly);
         if (parentSharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'parentSharedFolderId' is null");
@@ -73,7 +78,7 @@ public class FileSharingInfo extends SharingInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileSharingInfo(boolean readOnly, String parentSharedFolderId) {
+    public FileSharingInfo(boolean readOnly, @Nonnull String parentSharedFolderId) {
         this(readOnly, parentSharedFolderId, null);
     }
 
@@ -91,6 +96,7 @@ public class FileSharingInfo extends SharingInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -101,6 +107,7 @@ public class FileSharingInfo extends SharingInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getModifiedBy() {
         return modifiedBy;
     }

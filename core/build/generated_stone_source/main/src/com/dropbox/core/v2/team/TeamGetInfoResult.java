@@ -17,14 +17,19 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class TeamGetInfoResult {
     // struct team.TeamGetInfoResult (team.stone)
 
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final String teamId;
     protected final long numLicensedUsers;
     protected final long numProvisionedUsers;
     protected final long numUsedLicenses;
+    @Nonnull
     protected final TeamMemberPolicies policies;
 
     /**
@@ -40,7 +45,7 @@ public class TeamGetInfoResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamGetInfoResult(String name, String teamId, long numLicensedUsers, long numProvisionedUsers, TeamMemberPolicies policies, long numUsedLicenses) {
+    public TeamGetInfoResult(@Nonnull String name, @Nonnull String teamId, long numLicensedUsers, long numProvisionedUsers, @Nonnull TeamMemberPolicies policies, long numUsedLicenses) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -73,7 +78,7 @@ public class TeamGetInfoResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamGetInfoResult(String name, String teamId, long numLicensedUsers, long numProvisionedUsers, TeamMemberPolicies policies) {
+    public TeamGetInfoResult(@Nonnull String name, @Nonnull String teamId, long numLicensedUsers, long numProvisionedUsers, @Nonnull TeamMemberPolicies policies) {
         this(name, teamId, numLicensedUsers, numProvisionedUsers, policies, 0L);
     }
 
@@ -82,6 +87,7 @@ public class TeamGetInfoResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -91,6 +97,7 @@ public class TeamGetInfoResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamId() {
         return teamId;
     }
@@ -118,6 +125,7 @@ public class TeamGetInfoResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamMemberPolicies getPolicies() {
         return policies;
     }

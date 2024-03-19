@@ -17,12 +17,16 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The information about a group member of the shared content.
  */
 public class GroupMembershipInfo extends MembershipInfo {
     // struct sharing.GroupMembershipInfo (sharing_folders.stone)
 
+    @Nonnull
     protected final GroupInfo group;
 
     /**
@@ -45,7 +49,7 @@ public class GroupMembershipInfo extends MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembershipInfo(AccessLevel accessType, GroupInfo group, List<MemberPermission> permissions, String initials, boolean isInherited) {
+    public GroupMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull GroupInfo group, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited) {
         super(accessType, permissions, initials, isInherited);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
@@ -67,7 +71,7 @@ public class GroupMembershipInfo extends MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembershipInfo(AccessLevel accessType, GroupInfo group) {
+    public GroupMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull GroupInfo group) {
         this(accessType, group, null, null, false);
     }
 
@@ -77,6 +81,7 @@ public class GroupMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -86,6 +91,7 @@ public class GroupMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupInfo getGroup() {
         return group;
     }
@@ -96,6 +102,7 @@ public class GroupMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<MemberPermission> getPermissions() {
         return permissions;
     }
@@ -105,6 +112,7 @@ public class GroupMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getInitials() {
         return initials;
     }

@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether members can download shared file/folder.
  */
 public class SharedContentChangeDownloadsPolicyDetails {
     // struct team_log.SharedContentChangeDownloadsPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final DownloadPolicyType newValue;
+    @Nullable
     protected final DownloadPolicyType previousValue;
 
     /**
@@ -35,7 +40,7 @@ public class SharedContentChangeDownloadsPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeDownloadsPolicyDetails(DownloadPolicyType newValue, DownloadPolicyType previousValue) {
+    public SharedContentChangeDownloadsPolicyDetails(@Nonnull DownloadPolicyType newValue, @Nullable DownloadPolicyType previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -53,7 +58,7 @@ public class SharedContentChangeDownloadsPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeDownloadsPolicyDetails(DownloadPolicyType newValue) {
+    public SharedContentChangeDownloadsPolicyDetails(@Nonnull DownloadPolicyType newValue) {
         this(newValue, null);
     }
 
@@ -62,6 +67,7 @@ public class SharedContentChangeDownloadsPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DownloadPolicyType getNewValue() {
         return newValue;
     }
@@ -71,6 +77,7 @@ public class SharedContentChangeDownloadsPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public DownloadPolicyType getPreviousValue() {
         return previousValue;
     }

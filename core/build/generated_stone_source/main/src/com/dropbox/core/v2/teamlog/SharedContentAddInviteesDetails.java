@@ -18,13 +18,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Invited user to Dropbox and added them to shared file/folder.
  */
 public class SharedContentAddInviteesDetails {
     // struct team_log.SharedContentAddInviteesDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccessLevel sharedContentAccessLevel;
+    @Nonnull
     protected final List<String> invitees;
 
     /**
@@ -38,7 +42,7 @@ public class SharedContentAddInviteesDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentAddInviteesDetails(AccessLevel sharedContentAccessLevel, List<String> invitees) {
+    public SharedContentAddInviteesDetails(@Nonnull AccessLevel sharedContentAccessLevel, @Nonnull List<String> invitees) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
@@ -62,6 +66,7 @@ public class SharedContentAddInviteesDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -71,6 +76,7 @@ public class SharedContentAddInviteesDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<String> getInvitees() {
         return invitees;
     }

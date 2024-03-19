@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class SetProfilePhotoArg {
     // struct account.SetProfilePhotoArg (account.stone)
 
+    @Nonnull
     protected final PhotoSourceArg photo;
 
     /**
@@ -29,7 +32,7 @@ class SetProfilePhotoArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SetProfilePhotoArg(PhotoSourceArg photo) {
+    public SetProfilePhotoArg(@Nonnull PhotoSourceArg photo) {
         if (photo == null) {
             throw new IllegalArgumentException("Required value for 'photo' is null");
         }
@@ -41,6 +44,7 @@ class SetProfilePhotoArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PhotoSourceArg getPhoto() {
         return photo;
     }

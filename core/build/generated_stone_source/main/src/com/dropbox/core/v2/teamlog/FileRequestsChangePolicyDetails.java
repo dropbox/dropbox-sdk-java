@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled file requests.
  */
 public class FileRequestsChangePolicyDetails {
     // struct team_log.FileRequestsChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FileRequestsPolicy newValue;
+    @Nullable
     protected final FileRequestsPolicy previousValue;
 
     /**
@@ -35,7 +40,7 @@ public class FileRequestsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestsChangePolicyDetails(FileRequestsPolicy newValue, FileRequestsPolicy previousValue) {
+    public FileRequestsChangePolicyDetails(@Nonnull FileRequestsPolicy newValue, @Nullable FileRequestsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -53,7 +58,7 @@ public class FileRequestsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestsChangePolicyDetails(FileRequestsPolicy newValue) {
+    public FileRequestsChangePolicyDetails(@Nonnull FileRequestsPolicy newValue) {
         this(newValue, null);
     }
 
@@ -62,6 +67,7 @@ public class FileRequestsChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FileRequestsPolicy getNewValue() {
         return newValue;
     }
@@ -72,6 +78,7 @@ public class FileRequestsChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public FileRequestsPolicy getPreviousValue() {
         return previousValue;
     }

@@ -18,13 +18,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Arguments for {@link DbxUserSharingRequests#listFileMembers(String)}.
  */
 class ListFileMembersArg {
     // struct sharing.ListFileMembersArg (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
+    @Nullable
     protected final List<MemberAction> actions;
     protected final boolean includeInherited;
     protected final long limit;
@@ -50,7 +55,7 @@ class ListFileMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersArg(String file, List<MemberAction> actions, boolean includeInherited, long limit) {
+    public ListFileMembersArg(@Nonnull String file, @Nullable List<MemberAction> actions, boolean includeInherited, long limit) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -92,7 +97,7 @@ class ListFileMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersArg(String file) {
+    public ListFileMembersArg(@Nonnull String file) {
         this(file, null, true, 100L);
     }
 
@@ -101,6 +106,7 @@ class ListFileMembersArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFile() {
         return file;
     }
@@ -110,6 +116,7 @@ class ListFileMembersArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<MemberAction> getActions() {
         return actions;
     }

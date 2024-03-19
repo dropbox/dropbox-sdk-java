@@ -20,10 +20,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
     // struct team.TeamFolderUpdateSyncSettingsArg (team_folders.stone)
 
+    @Nullable
     protected final SyncSettingArg syncSetting;
+    @Nullable
     protected final List<ContentSyncSettingArg> contentSyncSettings;
 
     /**
@@ -40,7 +45,7 @@ class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderUpdateSyncSettingsArg(String teamFolderId, SyncSettingArg syncSetting, List<ContentSyncSettingArg> contentSyncSettings) {
+    public TeamFolderUpdateSyncSettingsArg(@Nonnull String teamFolderId, @Nullable SyncSettingArg syncSetting, @Nullable List<ContentSyncSettingArg> contentSyncSettings) {
         super(teamFolderId);
         this.syncSetting = syncSetting;
         if (contentSyncSettings != null) {
@@ -64,7 +69,7 @@ class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderUpdateSyncSettingsArg(String teamFolderId) {
+    public TeamFolderUpdateSyncSettingsArg(@Nonnull String teamFolderId) {
         this(teamFolderId, null, null);
     }
 
@@ -73,6 +78,7 @@ class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamFolderId() {
         return teamFolderId;
     }
@@ -83,6 +89,7 @@ class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SyncSettingArg getSyncSetting() {
         return syncSetting;
     }
@@ -92,6 +99,7 @@ class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<ContentSyncSettingArg> getContentSyncSettings() {
         return contentSyncSettings;
     }

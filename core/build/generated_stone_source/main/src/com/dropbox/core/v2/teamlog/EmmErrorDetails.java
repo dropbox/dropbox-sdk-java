@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Failed to sign in via EMM.
  */
 public class EmmErrorDetails {
     // struct team_log.EmmErrorDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FailureDetailsLogInfo errorDetails;
 
     /**
@@ -32,7 +35,7 @@ public class EmmErrorDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmmErrorDetails(FailureDetailsLogInfo errorDetails) {
+    public EmmErrorDetails(@Nonnull FailureDetailsLogInfo errorDetails) {
         if (errorDetails == null) {
             throw new IllegalArgumentException("Required value for 'errorDetails' is null");
         }
@@ -44,6 +47,7 @@ public class EmmErrorDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FailureDetailsLogInfo getErrorDetails() {
         return errorDetails;
     }

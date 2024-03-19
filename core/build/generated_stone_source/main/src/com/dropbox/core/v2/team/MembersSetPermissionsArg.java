@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Exactly one of team_member_id, email, or external_id must be provided to
  * identify the user account.
@@ -23,7 +25,9 @@ import java.util.Arrays;
 class MembersSetPermissionsArg {
     // struct team.MembersSetPermissionsArg (team_members.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
+    @Nonnull
     protected final AdminTier newRole;
 
     /**
@@ -37,7 +41,7 @@ class MembersSetPermissionsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetPermissionsArg(UserSelectorArg user, AdminTier newRole) {
+    public MembersSetPermissionsArg(@Nonnull UserSelectorArg user, @Nonnull AdminTier newRole) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -53,6 +57,7 @@ class MembersSetPermissionsArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -62,6 +67,7 @@ class MembersSetPermissionsArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AdminTier getNewRole() {
         return newRole;
     }

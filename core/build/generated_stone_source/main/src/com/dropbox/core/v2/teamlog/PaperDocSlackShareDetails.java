@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Shared Paper doc via Slack.
  */
 public class PaperDocSlackShareDetails {
     // struct team_log.PaperDocSlackShareDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
 
     /**
@@ -32,7 +35,7 @@ public class PaperDocSlackShareDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocSlackShareDetails(String eventUuid) {
+    public PaperDocSlackShareDetails(@Nonnull String eventUuid) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -44,6 +47,7 @@ public class PaperDocSlackShareDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }

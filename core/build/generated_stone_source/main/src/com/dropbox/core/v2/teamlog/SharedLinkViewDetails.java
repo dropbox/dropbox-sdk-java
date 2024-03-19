@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Opened shared link.
  */
 public class SharedLinkViewDetails {
     // struct team_log.SharedLinkViewDetails (team_log_generated.stone)
 
+    @Nullable
     protected final UserLogInfo sharedLinkOwner;
 
     /**
@@ -30,7 +34,7 @@ public class SharedLinkViewDetails {
      * @param sharedLinkOwner  Shared link owner details. Might be missing due
      *     to historical data gap.
      */
-    public SharedLinkViewDetails(UserLogInfo sharedLinkOwner) {
+    public SharedLinkViewDetails(@Nullable UserLogInfo sharedLinkOwner) {
         this.sharedLinkOwner = sharedLinkOwner;
     }
 
@@ -48,6 +52,7 @@ public class SharedLinkViewDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public UserLogInfo getSharedLinkOwner() {
         return sharedLinkOwner;
     }

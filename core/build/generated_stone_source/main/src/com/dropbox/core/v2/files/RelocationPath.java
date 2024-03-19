@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class RelocationPath {
     // struct files.RelocationPath (files.stone)
 
+    @Nonnull
     protected final String fromPath;
+    @Nonnull
     protected final String toPath;
 
     /**
@@ -35,7 +39,7 @@ public class RelocationPath {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationPath(String fromPath, String toPath) {
+    public RelocationPath(@Nonnull String fromPath, @Nonnull String toPath) {
         if (fromPath == null) {
             throw new IllegalArgumentException("Required value for 'fromPath' is null");
         }
@@ -57,6 +61,7 @@ public class RelocationPath {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFromPath() {
         return fromPath;
     }
@@ -66,6 +71,7 @@ public class RelocationPath {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getToPath() {
         return toPath;
     }

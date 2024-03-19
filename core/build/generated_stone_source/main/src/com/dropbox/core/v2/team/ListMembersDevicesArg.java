@@ -16,9 +16,13 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class ListMembersDevicesArg {
     // struct team.ListMembersDevicesArg (team_devices.stone)
 
+    @Nullable
     protected final String cursor;
     protected final boolean includeWebSessions;
     protected final boolean includeDesktopClients;
@@ -40,7 +44,7 @@ class ListMembersDevicesArg {
      * @param includeMobileClients  Whether to list mobile clients of the team
      *     members.
      */
-    public ListMembersDevicesArg(String cursor, boolean includeWebSessions, boolean includeDesktopClients, boolean includeMobileClients) {
+    public ListMembersDevicesArg(@Nullable String cursor, boolean includeWebSessions, boolean includeDesktopClients, boolean includeMobileClients) {
         this.cursor = cursor;
         this.includeWebSessions = includeWebSessions;
         this.includeDesktopClients = includeDesktopClients;
@@ -65,6 +69,7 @@ class ListMembersDevicesArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCursor() {
         return cursor;
     }

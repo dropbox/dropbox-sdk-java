@@ -18,13 +18,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+
 /**
  * Report created: Views of links without passwords.
  */
 public class NoPasswordLinkViewCreateReportDetails {
     // struct team_log.NoPasswordLinkViewCreateReportDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final Date startDate;
+    @Nonnull
     protected final Date endDate;
 
     /**
@@ -36,7 +40,7 @@ public class NoPasswordLinkViewCreateReportDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NoPasswordLinkViewCreateReportDetails(Date startDate, Date endDate) {
+    public NoPasswordLinkViewCreateReportDetails(@Nonnull Date startDate, @Nonnull Date endDate) {
         if (startDate == null) {
             throw new IllegalArgumentException("Required value for 'startDate' is null");
         }
@@ -52,6 +56,7 @@ public class NoPasswordLinkViewCreateReportDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Date getStartDate() {
         return startDate;
     }
@@ -61,6 +66,7 @@ public class NoPasswordLinkViewCreateReportDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Date getEndDate() {
         return endDate;
     }

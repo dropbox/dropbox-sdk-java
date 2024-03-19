@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Secondary mails policy changed.
  */
 public class SecondaryMailsPolicyChangedDetails {
     // struct team_log.SecondaryMailsPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SecondaryMailsPolicy previousValue;
+    @Nonnull
     protected final SecondaryMailsPolicy newValue;
 
     /**
@@ -35,7 +39,7 @@ public class SecondaryMailsPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SecondaryMailsPolicyChangedDetails(SecondaryMailsPolicy previousValue, SecondaryMailsPolicy newValue) {
+    public SecondaryMailsPolicyChangedDetails(@Nonnull SecondaryMailsPolicy previousValue, @Nonnull SecondaryMailsPolicy newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -51,6 +55,7 @@ public class SecondaryMailsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SecondaryMailsPolicy getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +65,7 @@ public class SecondaryMailsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SecondaryMailsPolicy getNewValue() {
         return newValue;
     }

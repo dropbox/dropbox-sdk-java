@@ -16,14 +16,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled/changed two-step verification setting.
  */
 public class TfaChangeStatusDetails {
     // struct team_log.TfaChangeStatusDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TfaConfiguration newValue;
+    @Nullable
     protected final TfaConfiguration previousValue;
+    @Nullable
     protected final Boolean usedRescueCode;
 
     /**
@@ -43,7 +49,7 @@ public class TfaChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaChangeStatusDetails(TfaConfiguration newValue, TfaConfiguration previousValue, Boolean usedRescueCode) {
+    public TfaChangeStatusDetails(@Nonnull TfaConfiguration newValue, @Nullable TfaConfiguration previousValue, @Nullable Boolean usedRescueCode) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -63,7 +69,7 @@ public class TfaChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaChangeStatusDetails(TfaConfiguration newValue) {
+    public TfaChangeStatusDetails(@Nonnull TfaConfiguration newValue) {
         this(newValue, null, null);
     }
 
@@ -72,6 +78,7 @@ public class TfaChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TfaConfiguration getNewValue() {
         return newValue;
     }
@@ -82,6 +89,7 @@ public class TfaChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public TfaConfiguration getPreviousValue() {
         return previousValue;
     }
@@ -92,6 +100,7 @@ public class TfaChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getUsedRescueCode() {
         return usedRescueCode;
     }

@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Delete file request.
  */
 public class FileRequestDeleteDetails {
     // struct team_log.FileRequestDeleteDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String fileRequestId;
+    @Nullable
     protected final FileRequestDetails previousDetails;
 
     /**
@@ -40,7 +45,7 @@ public class FileRequestDeleteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestDeleteDetails(String fileRequestId, FileRequestDetails previousDetails) {
+    public FileRequestDeleteDetails(@Nullable String fileRequestId, @Nullable FileRequestDetails previousDetails) {
         if (fileRequestId != null) {
             if (fileRequestId.length() < 1) {
                 throw new IllegalArgumentException("String 'fileRequestId' is shorter than 1");
@@ -67,6 +72,7 @@ public class FileRequestDeleteDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getFileRequestId() {
         return fileRequestId;
     }
@@ -77,6 +83,7 @@ public class FileRequestDeleteDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public FileRequestDetails getPreviousDetails() {
         return previousDetails;
     }

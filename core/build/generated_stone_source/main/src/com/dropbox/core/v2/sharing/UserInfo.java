@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Basic information about a user. Use {@link
  * com.dropbox.core.v2.users.DbxUserUsersRequests#getAccount(String)} and {@link
@@ -25,10 +28,14 @@ import java.util.Arrays;
 public class UserInfo {
     // struct sharing.UserInfo (sharing_folders.stone)
 
+    @Nonnull
     protected final String accountId;
+    @Nonnull
     protected final String email;
+    @Nonnull
     protected final String displayName;
     protected final boolean sameTeam;
+    @Nullable
     protected final String teamMemberId;
 
     /**
@@ -50,7 +57,7 @@ public class UserInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserInfo(String accountId, String email, String displayName, boolean sameTeam, String teamMemberId) {
+    public UserInfo(@Nonnull String accountId, @Nonnull String email, @Nonnull String displayName, boolean sameTeam, @Nullable String teamMemberId) {
         if (accountId == null) {
             throw new IllegalArgumentException("Required value for 'accountId' is null");
         }
@@ -92,7 +99,7 @@ public class UserInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserInfo(String accountId, String email, String displayName, boolean sameTeam) {
+    public UserInfo(@Nonnull String accountId, @Nonnull String email, @Nonnull String displayName, boolean sameTeam) {
         this(accountId, email, displayName, sameTeam, null);
     }
 
@@ -101,6 +108,7 @@ public class UserInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAccountId() {
         return accountId;
     }
@@ -110,6 +118,7 @@ public class UserInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEmail() {
         return email;
     }
@@ -119,6 +128,7 @@ public class UserInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDisplayName() {
         return displayName;
     }
@@ -138,6 +148,7 @@ public class UserInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getTeamMemberId() {
         return teamMemberId;
     }

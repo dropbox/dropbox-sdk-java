@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * EchoResult contains the result returned from the Dropbox servers.
  */
 public class EchoResult {
     // struct check.EchoResult (check_api_v2_types.stone)
 
+    @Nonnull
     protected final String result;
 
     /**
@@ -33,7 +36,7 @@ public class EchoResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EchoResult(String result) {
+    public EchoResult(@Nonnull String result) {
         if (result == null) {
             throw new IllegalArgumentException("Required value for 'result' is null");
         }
@@ -55,6 +58,7 @@ public class EchoResult {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     "".
      */
+    @Nonnull
     public String getResult() {
         return result;
     }

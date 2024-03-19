@@ -18,11 +18,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class PropertyGroupUpdate {
     // struct file_properties.PropertyGroupUpdate (file_properties.stone)
 
+    @Nonnull
     protected final String templateId;
+    @Nullable
     protected final List<PropertyField> addOrUpdateFields;
+    @Nullable
     protected final List<String> removeFields;
 
     /**
@@ -42,7 +48,7 @@ public class PropertyGroupUpdate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertyGroupUpdate(String templateId, List<PropertyField> addOrUpdateFields, List<String> removeFields) {
+    public PropertyGroupUpdate(@Nonnull String templateId, @Nullable List<PropertyField> addOrUpdateFields, @Nullable List<String> removeFields) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }
@@ -83,7 +89,7 @@ public class PropertyGroupUpdate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertyGroupUpdate(String templateId) {
+    public PropertyGroupUpdate(@Nonnull String templateId) {
         this(templateId, null, null);
     }
 
@@ -92,6 +98,7 @@ public class PropertyGroupUpdate {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTemplateId() {
         return templateId;
     }
@@ -103,6 +110,7 @@ public class PropertyGroupUpdate {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<PropertyField> getAddOrUpdateFields() {
         return addOrUpdateFields;
     }
@@ -112,6 +120,7 @@ public class PropertyGroupUpdate {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getRemoveFields() {
         return removeFields;
     }

@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class RemoveFolderMemberArg {
     // struct sharing.RemoveFolderMemberArg (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
+    @Nonnull
     protected final MemberSelector member;
     protected final boolean leaveACopy;
 
@@ -39,7 +43,7 @@ class RemoveFolderMemberArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RemoveFolderMemberArg(String sharedFolderId, MemberSelector member, boolean leaveACopy) {
+    public RemoveFolderMemberArg(@Nonnull String sharedFolderId, @Nonnull MemberSelector member, boolean leaveACopy) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }
@@ -59,6 +63,7 @@ class RemoveFolderMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -68,6 +73,7 @@ class RemoveFolderMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MemberSelector getMember() {
         return member;
     }

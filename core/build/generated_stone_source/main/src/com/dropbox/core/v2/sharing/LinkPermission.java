@@ -16,14 +16,19 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Permissions for actions that can be performed on a link.
  */
 public class LinkPermission {
     // struct sharing.LinkPermission (shared_content_links.stone)
 
+    @Nonnull
     protected final LinkAction action;
     protected final boolean allow;
+    @Nullable
     protected final PermissionDeniedReason reason;
 
     /**
@@ -34,7 +39,7 @@ public class LinkPermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkPermission(LinkAction action, boolean allow, PermissionDeniedReason reason) {
+    public LinkPermission(@Nonnull LinkAction action, boolean allow, @Nullable PermissionDeniedReason reason) {
         if (action == null) {
             throw new IllegalArgumentException("Required value for 'action' is null");
         }
@@ -53,7 +58,7 @@ public class LinkPermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkPermission(LinkAction action, boolean allow) {
+    public LinkPermission(@Nonnull LinkAction action, boolean allow) {
         this(action, allow, null);
     }
 
@@ -61,6 +66,7 @@ public class LinkPermission {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public LinkAction getAction() {
         return action;
     }
@@ -77,6 +83,7 @@ public class LinkPermission {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PermissionDeniedReason getReason() {
         return reason;
     }

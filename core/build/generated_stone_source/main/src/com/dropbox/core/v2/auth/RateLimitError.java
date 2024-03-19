@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Error occurred because the app is being rate limited.
  */
 public class RateLimitError {
     // struct auth.RateLimitError (auth.stone)
 
+    @Nonnull
     protected final RateLimitReason reason;
     protected final long retryAfter;
 
@@ -36,7 +39,7 @@ public class RateLimitError {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RateLimitError(RateLimitReason reason, long retryAfter) {
+    public RateLimitError(@Nonnull RateLimitReason reason, long retryAfter) {
         if (reason == null) {
             throw new IllegalArgumentException("Required value for 'reason' is null");
         }
@@ -55,7 +58,7 @@ public class RateLimitError {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RateLimitError(RateLimitReason reason) {
+    public RateLimitError(@Nonnull RateLimitReason reason) {
         this(reason, 1L);
     }
 
@@ -64,6 +67,7 @@ public class RateLimitError {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public RateLimitReason getReason() {
         return reason;
     }

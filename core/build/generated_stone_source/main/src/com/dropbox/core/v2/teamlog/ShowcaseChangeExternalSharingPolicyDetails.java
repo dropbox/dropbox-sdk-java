@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Enabled/disabled sharing Dropbox Showcase externally for team.
  */
 public class ShowcaseChangeExternalSharingPolicyDetails {
     // struct team_log.ShowcaseChangeExternalSharingPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ShowcaseExternalSharingPolicy newValue;
+    @Nonnull
     protected final ShowcaseExternalSharingPolicy previousValue;
 
     /**
@@ -36,7 +40,7 @@ public class ShowcaseChangeExternalSharingPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseChangeExternalSharingPolicyDetails(ShowcaseExternalSharingPolicy newValue, ShowcaseExternalSharingPolicy previousValue) {
+    public ShowcaseChangeExternalSharingPolicyDetails(@Nonnull ShowcaseExternalSharingPolicy newValue, @Nonnull ShowcaseExternalSharingPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -52,6 +56,7 @@ public class ShowcaseChangeExternalSharingPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ShowcaseExternalSharingPolicy getNewValue() {
         return newValue;
     }
@@ -61,6 +66,7 @@ public class ShowcaseChangeExternalSharingPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ShowcaseExternalSharingPolicy getPreviousValue() {
         return previousValue;
     }

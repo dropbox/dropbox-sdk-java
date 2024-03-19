@@ -19,15 +19,22 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed the expiration date of the shared link.
  */
 public class SharedLinkSettingsChangeExpirationDetails {
     // struct team_log.SharedLinkSettingsChangeExpirationDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccessLevel sharedContentAccessLevel;
+    @Nullable
     protected final String sharedContentLink;
+    @Nullable
     protected final Date newValue;
+    @Nullable
     protected final Date previousValue;
 
     /**
@@ -47,7 +54,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangeExpirationDetails(AccessLevel sharedContentAccessLevel, String sharedContentLink, Date newValue, Date previousValue) {
+    public SharedLinkSettingsChangeExpirationDetails(@Nonnull AccessLevel sharedContentAccessLevel, @Nullable String sharedContentLink, @Nullable Date newValue, @Nullable Date previousValue) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
@@ -68,7 +75,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangeExpirationDetails(AccessLevel sharedContentAccessLevel) {
+    public SharedLinkSettingsChangeExpirationDetails(@Nonnull AccessLevel sharedContentAccessLevel) {
         this(sharedContentAccessLevel, null, null, null);
     }
 
@@ -77,6 +84,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -86,6 +94,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getSharedContentLink() {
         return sharedContentLink;
     }
@@ -96,6 +105,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getNewValue() {
         return newValue;
     }
@@ -106,6 +116,7 @@ public class SharedLinkSettingsChangeExpirationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getPreviousValue() {
         return previousValue;
     }

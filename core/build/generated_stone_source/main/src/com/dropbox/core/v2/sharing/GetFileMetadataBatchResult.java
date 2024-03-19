@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Per file results of {@link
  * DbxUserSharingRequests#getFileMetadataBatch(java.util.List,java.util.List)}.
@@ -24,7 +26,9 @@ import java.util.regex.Pattern;
 public class GetFileMetadataBatchResult {
     // struct sharing.GetFileMetadataBatchResult (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
+    @Nonnull
     protected final GetFileMetadataIndividualResult result;
 
     /**
@@ -43,7 +47,7 @@ public class GetFileMetadataBatchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetFileMetadataBatchResult(String file, GetFileMetadataIndividualResult result) {
+    public GetFileMetadataBatchResult(@Nonnull String file, @Nonnull GetFileMetadataIndividualResult result) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -67,6 +71,7 @@ public class GetFileMetadataBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFile() {
         return file;
     }
@@ -76,6 +81,7 @@ public class GetFileMetadataBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GetFileMetadataIndividualResult getResult() {
         return result;
     }

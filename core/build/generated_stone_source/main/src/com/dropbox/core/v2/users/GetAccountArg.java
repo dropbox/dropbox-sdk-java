@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class GetAccountArg {
     // struct users.GetAccountArg (users.stone)
 
+    @Nonnull
     protected final String accountId;
 
     /**
@@ -29,7 +32,7 @@ public class GetAccountArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetAccountArg(String accountId) {
+    public GetAccountArg(@Nonnull String accountId) {
         if (accountId == null) {
             throw new IllegalArgumentException("Required value for 'accountId' is null");
         }
@@ -47,6 +50,7 @@ public class GetAccountArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAccountId() {
         return accountId;
     }

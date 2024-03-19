@@ -18,11 +18,16 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+
 public class GetCopyReferenceResult {
     // struct files.GetCopyReferenceResult (files.stone)
 
+    @Nonnull
     protected final Metadata metadata;
+    @Nonnull
     protected final String copyReference;
+    @Nonnull
     protected final Date expires;
 
     /**
@@ -38,7 +43,7 @@ public class GetCopyReferenceResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetCopyReferenceResult(Metadata metadata, String copyReference, Date expires) {
+    public GetCopyReferenceResult(@Nonnull Metadata metadata, @Nonnull String copyReference, @Nonnull Date expires) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }
@@ -58,6 +63,7 @@ public class GetCopyReferenceResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Metadata getMetadata() {
         return metadata;
     }
@@ -67,6 +73,7 @@ public class GetCopyReferenceResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getCopyReference() {
         return copyReference;
     }
@@ -78,6 +85,7 @@ public class GetCopyReferenceResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Date getExpires() {
         return expires;
     }

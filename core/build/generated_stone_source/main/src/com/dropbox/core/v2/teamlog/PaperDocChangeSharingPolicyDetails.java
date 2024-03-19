@@ -16,14 +16,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed sharing setting for Paper doc.
  */
 public class PaperDocChangeSharingPolicyDetails {
     // struct team_log.PaperDocChangeSharingPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nullable
     protected final String publicSharingPolicy;
+    @Nullable
     protected final String teamSharingPolicy;
 
     /**
@@ -39,7 +45,7 @@ public class PaperDocChangeSharingPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocChangeSharingPolicyDetails(String eventUuid, String publicSharingPolicy, String teamSharingPolicy) {
+    public PaperDocChangeSharingPolicyDetails(@Nonnull String eventUuid, @Nullable String publicSharingPolicy, @Nullable String teamSharingPolicy) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -58,7 +64,7 @@ public class PaperDocChangeSharingPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocChangeSharingPolicyDetails(String eventUuid) {
+    public PaperDocChangeSharingPolicyDetails(@Nonnull String eventUuid) {
         this(eventUuid, null, null);
     }
 
@@ -67,6 +73,7 @@ public class PaperDocChangeSharingPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -76,6 +83,7 @@ public class PaperDocChangeSharingPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPublicSharingPolicy() {
         return publicSharingPolicy;
     }
@@ -85,6 +93,7 @@ public class PaperDocChangeSharingPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getTeamSharingPolicy() {
         return teamSharingPolicy;
     }

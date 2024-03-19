@@ -16,16 +16,24 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Metadata for a file or folder.
  */
 public class Metadata {
     // struct files.Metadata (files.stone)
 
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final String pathLower;
+    @Nullable
     protected final String pathDisplay;
+    @Nullable
     protected final String parentSharedFolderId;
+    @Nullable
     protected final String previewUrl;
 
     /**
@@ -55,7 +63,7 @@ public class Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Metadata(String name, String pathLower, String pathDisplay, String parentSharedFolderId, String previewUrl) {
+    public Metadata(@Nonnull String name, @Nullable String pathLower, @Nullable String pathDisplay, @Nullable String parentSharedFolderId, @Nullable String previewUrl) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -82,7 +90,7 @@ public class Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Metadata(String name) {
+    public Metadata(@Nonnull String name) {
         this(name, null, null, null, null);
     }
 
@@ -92,6 +100,7 @@ public class Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -102,6 +111,7 @@ public class Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -117,6 +127,7 @@ public class Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPathDisplay() {
         return pathDisplay;
     }
@@ -127,6 +138,7 @@ public class Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -136,6 +148,7 @@ public class Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPreviewUrl() {
         return previewUrl;
     }

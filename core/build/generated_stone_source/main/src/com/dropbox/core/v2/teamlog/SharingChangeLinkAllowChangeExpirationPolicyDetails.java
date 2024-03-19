@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed the allow remove or change expiration policy for the links shared
  * outside of the team.
@@ -23,7 +26,9 @@ import java.util.Arrays;
 public class SharingChangeLinkAllowChangeExpirationPolicyDetails {
     // struct team_log.SharingChangeLinkAllowChangeExpirationPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final EnforceLinkPasswordPolicy newValue;
+    @Nullable
     protected final EnforceLinkPasswordPolicy previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class SharingChangeLinkAllowChangeExpirationPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeLinkAllowChangeExpirationPolicyDetails(EnforceLinkPasswordPolicy newValue, EnforceLinkPasswordPolicy previousValue) {
+    public SharingChangeLinkAllowChangeExpirationPolicyDetails(@Nonnull EnforceLinkPasswordPolicy newValue, @Nullable EnforceLinkPasswordPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -55,7 +60,7 @@ public class SharingChangeLinkAllowChangeExpirationPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeLinkAllowChangeExpirationPolicyDetails(EnforceLinkPasswordPolicy newValue) {
+    public SharingChangeLinkAllowChangeExpirationPolicyDetails(@Nonnull EnforceLinkPasswordPolicy newValue) {
         this(newValue, null);
     }
 
@@ -64,6 +69,7 @@ public class SharingChangeLinkAllowChangeExpirationPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public EnforceLinkPasswordPolicy getNewValue() {
         return newValue;
     }
@@ -73,6 +79,7 @@ public class SharingChangeLinkAllowChangeExpirationPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public EnforceLinkPasswordPolicy getPreviousValue() {
         return previousValue;
     }

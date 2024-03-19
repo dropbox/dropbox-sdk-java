@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class UserFeaturesGetValuesBatchArg {
     // struct users.UserFeaturesGetValuesBatchArg (users.stone)
 
+    @Nonnull
     protected final List<UserFeature> features;
 
     /**
@@ -32,7 +35,7 @@ class UserFeaturesGetValuesBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserFeaturesGetValuesBatchArg(List<UserFeature> features) {
+    public UserFeaturesGetValuesBatchArg(@Nonnull List<UserFeature> features) {
         if (features == null) {
             throw new IllegalArgumentException("Required value for 'features' is null");
         }
@@ -50,6 +53,7 @@ class UserFeaturesGetValuesBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<UserFeature> getFeatures() {
         return features;
     }

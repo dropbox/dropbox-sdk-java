@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class GroupMembersAddArg extends IncludeMembersArg {
     // struct team.GroupMembersAddArg (team_groups.stone)
 
+    @Nonnull
     protected final GroupSelector group;
+    @Nonnull
     protected final List<MemberAccess> members;
 
     /**
@@ -36,7 +40,7 @@ class GroupMembersAddArg extends IncludeMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersAddArg(GroupSelector group, List<MemberAccess> members, boolean returnMembers) {
+    public GroupMembersAddArg(@Nonnull GroupSelector group, @Nonnull List<MemberAccess> members, boolean returnMembers) {
         super(returnMembers);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
@@ -66,7 +70,7 @@ class GroupMembersAddArg extends IncludeMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersAddArg(GroupSelector group, List<MemberAccess> members) {
+    public GroupMembersAddArg(@Nonnull GroupSelector group, @Nonnull List<MemberAccess> members) {
         this(group, members, true);
     }
 
@@ -75,6 +79,7 @@ class GroupMembersAddArg extends IncludeMembersArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupSelector getGroup() {
         return group;
     }
@@ -84,6 +89,7 @@ class GroupMembersAddArg extends IncludeMembersArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<MemberAccess> getMembers() {
         return members;
     }

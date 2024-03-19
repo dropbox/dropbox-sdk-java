@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Connected integration for member.
  */
 public class IntegrationConnectedDetails {
     // struct team_log.IntegrationConnectedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String integrationName;
 
     /**
@@ -33,7 +36,7 @@ public class IntegrationConnectedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public IntegrationConnectedDetails(String integrationName) {
+    public IntegrationConnectedDetails(@Nonnull String integrationName) {
         if (integrationName == null) {
             throw new IllegalArgumentException("Required value for 'integrationName' is null");
         }
@@ -45,6 +48,7 @@ public class IntegrationConnectedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getIntegrationName() {
         return integrationName;
     }

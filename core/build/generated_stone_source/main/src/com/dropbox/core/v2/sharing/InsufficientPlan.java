@@ -16,10 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class InsufficientPlan {
     // struct sharing.InsufficientPlan (sharing_folders.stone)
 
+    @Nonnull
     protected final String message;
+    @Nullable
     protected final String upsellUrl;
 
     /**
@@ -33,7 +38,7 @@ public class InsufficientPlan {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public InsufficientPlan(String message, String upsellUrl) {
+    public InsufficientPlan(@Nonnull String message, @Nullable String upsellUrl) {
         if (message == null) {
             throw new IllegalArgumentException("Required value for 'message' is null");
         }
@@ -52,7 +57,7 @@ public class InsufficientPlan {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public InsufficientPlan(String message) {
+    public InsufficientPlan(@Nonnull String message) {
         this(message, null);
     }
 
@@ -62,6 +67,7 @@ public class InsufficientPlan {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getMessage() {
         return message;
     }
@@ -73,6 +79,7 @@ public class InsufficientPlan {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getUpsellUrl() {
         return upsellUrl;
     }

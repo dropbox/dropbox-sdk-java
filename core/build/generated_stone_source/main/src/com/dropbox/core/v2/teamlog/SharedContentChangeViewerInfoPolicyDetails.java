@@ -17,13 +17,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether members can see who viewed shared file/folder.
  */
 public class SharedContentChangeViewerInfoPolicyDetails {
     // struct team_log.SharedContentChangeViewerInfoPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ViewerInfoPolicy newValue;
+    @Nullable
     protected final ViewerInfoPolicy previousValue;
 
     /**
@@ -35,7 +40,7 @@ public class SharedContentChangeViewerInfoPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeViewerInfoPolicyDetails(ViewerInfoPolicy newValue, ViewerInfoPolicy previousValue) {
+    public SharedContentChangeViewerInfoPolicyDetails(@Nonnull ViewerInfoPolicy newValue, @Nullable ViewerInfoPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -53,7 +58,7 @@ public class SharedContentChangeViewerInfoPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeViewerInfoPolicyDetails(ViewerInfoPolicy newValue) {
+    public SharedContentChangeViewerInfoPolicyDetails(@Nonnull ViewerInfoPolicy newValue) {
         this(newValue, null);
     }
 
@@ -62,6 +67,7 @@ public class SharedContentChangeViewerInfoPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ViewerInfoPolicy getNewValue() {
         return newValue;
     }
@@ -71,6 +77,7 @@ public class SharedContentChangeViewerInfoPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public ViewerInfoPolicy getPreviousValue() {
         return previousValue;
     }

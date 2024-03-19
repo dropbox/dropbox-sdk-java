@@ -17,12 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Arguments for {@link DbxUserSharingRequests#unshareFile(String)}.
  */
 class UnshareFileArg {
     // struct sharing.UnshareFileArg (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
 
     /**
@@ -35,7 +38,7 @@ class UnshareFileArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UnshareFileArg(String file) {
+    public UnshareFileArg(@Nonnull String file) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -53,6 +56,7 @@ class UnshareFileArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFile() {
         return file;
     }

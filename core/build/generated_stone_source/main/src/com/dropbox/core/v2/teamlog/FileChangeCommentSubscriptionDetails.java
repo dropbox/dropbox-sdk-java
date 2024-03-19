@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Subscribed to or unsubscribed from comment notifications for file.
  */
 public class FileChangeCommentSubscriptionDetails {
     // struct team_log.FileChangeCommentSubscriptionDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FileCommentNotificationPolicy newValue;
+    @Nullable
     protected final FileCommentNotificationPolicy previousValue;
 
     /**
@@ -35,7 +40,7 @@ public class FileChangeCommentSubscriptionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileChangeCommentSubscriptionDetails(FileCommentNotificationPolicy newValue, FileCommentNotificationPolicy previousValue) {
+    public FileChangeCommentSubscriptionDetails(@Nonnull FileCommentNotificationPolicy newValue, @Nullable FileCommentNotificationPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -53,7 +58,7 @@ public class FileChangeCommentSubscriptionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileChangeCommentSubscriptionDetails(FileCommentNotificationPolicy newValue) {
+    public FileChangeCommentSubscriptionDetails(@Nonnull FileCommentNotificationPolicy newValue) {
         this(newValue, null);
     }
 
@@ -62,6 +67,7 @@ public class FileChangeCommentSubscriptionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FileCommentNotificationPolicy getNewValue() {
         return newValue;
     }
@@ -72,6 +78,7 @@ public class FileChangeCommentSubscriptionDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public FileCommentNotificationPolicy getPreviousValue() {
         return previousValue;
     }

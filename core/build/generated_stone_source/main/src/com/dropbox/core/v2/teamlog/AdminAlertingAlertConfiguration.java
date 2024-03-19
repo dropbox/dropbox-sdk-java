@@ -16,16 +16,24 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Alert configurations
  */
 public class AdminAlertingAlertConfiguration {
     // struct team_log.AdminAlertingAlertConfiguration (team_log_generated.stone)
 
+    @Nullable
     protected final AdminAlertingAlertStatePolicy alertState;
+    @Nullable
     protected final AdminAlertingAlertSensitivity sensitivityLevel;
+    @Nullable
     protected final RecipientsConfiguration recipientsSettings;
+    @Nullable
     protected final String text;
+    @Nullable
     protected final String excludedFileExtensions;
 
     /**
@@ -40,7 +48,7 @@ public class AdminAlertingAlertConfiguration {
      * @param text  Text.
      * @param excludedFileExtensions  Excluded file extensions.
      */
-    public AdminAlertingAlertConfiguration(AdminAlertingAlertStatePolicy alertState, AdminAlertingAlertSensitivity sensitivityLevel, RecipientsConfiguration recipientsSettings, String text, String excludedFileExtensions) {
+    public AdminAlertingAlertConfiguration(@Nullable AdminAlertingAlertStatePolicy alertState, @Nullable AdminAlertingAlertSensitivity sensitivityLevel, @Nullable RecipientsConfiguration recipientsSettings, @Nullable String text, @Nullable String excludedFileExtensions) {
         this.alertState = alertState;
         this.sensitivityLevel = sensitivityLevel;
         this.recipientsSettings = recipientsSettings;
@@ -62,6 +70,7 @@ public class AdminAlertingAlertConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AdminAlertingAlertStatePolicy getAlertState() {
         return alertState;
     }
@@ -71,6 +80,7 @@ public class AdminAlertingAlertConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AdminAlertingAlertSensitivity getSensitivityLevel() {
         return sensitivityLevel;
     }
@@ -80,6 +90,7 @@ public class AdminAlertingAlertConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public RecipientsConfiguration getRecipientsSettings() {
         return recipientsSettings;
     }
@@ -89,6 +100,7 @@ public class AdminAlertingAlertConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getText() {
         return text;
     }
@@ -98,6 +110,7 @@ public class AdminAlertingAlertConfiguration {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getExcludedFileExtensions() {
         return excludedFileExtensions;
     }

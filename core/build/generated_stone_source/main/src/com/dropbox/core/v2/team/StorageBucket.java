@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Describes the number of users in a specific storage bucket.
  */
 public class StorageBucket {
     // struct team.StorageBucket (team_reports.stone)
 
+    @Nonnull
     protected final String bucket;
     protected final long users;
 
@@ -37,7 +40,7 @@ public class StorageBucket {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public StorageBucket(String bucket, long users) {
+    public StorageBucket(@Nonnull String bucket, long users) {
         if (bucket == null) {
             throw new IllegalArgumentException("Required value for 'bucket' is null");
         }
@@ -51,6 +54,7 @@ public class StorageBucket {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getBucket() {
         return bucket;
     }

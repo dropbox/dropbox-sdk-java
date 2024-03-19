@@ -18,13 +18,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class GetMetadataArg {
     // struct files.GetMetadataArg (files.stone)
 
+    @Nonnull
     protected final String path;
     protected final boolean includeMediaInfo;
     protected final boolean includeDeleted;
     protected final boolean includeHasExplicitSharedMembers;
+    @Nullable
     protected final TemplateFilterBase includePropertyGroups;
 
     /**
@@ -50,7 +55,7 @@ class GetMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetMetadataArg(String path, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, TemplateFilterBase includePropertyGroups) {
+    public GetMetadataArg(@Nonnull String path, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, @Nullable TemplateFilterBase includePropertyGroups) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -76,7 +81,7 @@ class GetMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetMetadataArg(String path) {
+    public GetMetadataArg(@Nonnull String path) {
         this(path, false, false, false, null);
     }
 
@@ -85,6 +90,7 @@ class GetMetadataArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -128,6 +134,7 @@ class GetMetadataArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public TemplateFilterBase getIncludePropertyGroups() {
         return includePropertyGroups;
     }

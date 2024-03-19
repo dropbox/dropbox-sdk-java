@@ -17,12 +17,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class GroupCreateArg {
     // struct team.GroupCreateArg (team_groups.stone)
 
+    @Nonnull
     protected final String groupName;
     protected final boolean addCreatorAsOwner;
+    @Nullable
     protected final String groupExternalId;
+    @Nullable
     protected final GroupManagementType groupManagementType;
 
     /**
@@ -39,7 +45,7 @@ class GroupCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupCreateArg(String groupName, boolean addCreatorAsOwner, String groupExternalId, GroupManagementType groupManagementType) {
+    public GroupCreateArg(@Nonnull String groupName, boolean addCreatorAsOwner, @Nullable String groupExternalId, @Nullable GroupManagementType groupManagementType) {
         if (groupName == null) {
             throw new IllegalArgumentException("Required value for 'groupName' is null");
         }
@@ -59,7 +65,7 @@ class GroupCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupCreateArg(String groupName) {
+    public GroupCreateArg(@Nonnull String groupName) {
         this(groupName, false, null, null);
     }
 
@@ -68,6 +74,7 @@ class GroupCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGroupName() {
         return groupName;
     }
@@ -88,6 +95,7 @@ class GroupCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getGroupExternalId() {
         return groupExternalId;
     }
@@ -98,6 +106,7 @@ class GroupCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public GroupManagementType getGroupManagementType() {
         return groupManagementType;
     }

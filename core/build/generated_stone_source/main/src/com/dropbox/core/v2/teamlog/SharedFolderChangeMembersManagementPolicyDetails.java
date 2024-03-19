@@ -17,13 +17,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed who can add/remove members of shared folder.
  */
 public class SharedFolderChangeMembersManagementPolicyDetails {
     // struct team_log.SharedFolderChangeMembersManagementPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AclUpdatePolicy newValue;
+    @Nullable
     protected final AclUpdatePolicy previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class SharedFolderChangeMembersManagementPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeMembersManagementPolicyDetails(AclUpdatePolicy newValue, AclUpdatePolicy previousValue) {
+    public SharedFolderChangeMembersManagementPolicyDetails(@Nonnull AclUpdatePolicy newValue, @Nullable AclUpdatePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -54,7 +59,7 @@ public class SharedFolderChangeMembersManagementPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeMembersManagementPolicyDetails(AclUpdatePolicy newValue) {
+    public SharedFolderChangeMembersManagementPolicyDetails(@Nonnull AclUpdatePolicy newValue) {
         this(newValue, null);
     }
 
@@ -63,6 +68,7 @@ public class SharedFolderChangeMembersManagementPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AclUpdatePolicy getNewValue() {
         return newValue;
     }
@@ -73,6 +79,7 @@ public class SharedFolderChangeMembersManagementPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AclUpdatePolicy getPreviousValue() {
         return previousValue;
     }

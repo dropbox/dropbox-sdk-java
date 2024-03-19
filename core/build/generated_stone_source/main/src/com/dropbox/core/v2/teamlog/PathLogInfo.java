@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Path's details.
  */
 public class PathLogInfo {
     // struct team_log.PathLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String contextual;
+    @Nonnull
     protected final NamespaceRelativePathLogInfo namespaceRelative;
 
     /**
@@ -35,7 +40,7 @@ public class PathLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PathLogInfo(NamespaceRelativePathLogInfo namespaceRelative, String contextual) {
+    public PathLogInfo(@Nonnull NamespaceRelativePathLogInfo namespaceRelative, @Nullable String contextual) {
         this.contextual = contextual;
         if (namespaceRelative == null) {
             throw new IllegalArgumentException("Required value for 'namespaceRelative' is null");
@@ -54,7 +59,7 @@ public class PathLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PathLogInfo(NamespaceRelativePathLogInfo namespaceRelative) {
+    public PathLogInfo(@Nonnull NamespaceRelativePathLogInfo namespaceRelative) {
         this(namespaceRelative, null);
     }
 
@@ -63,6 +68,7 @@ public class PathLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public NamespaceRelativePathLogInfo getNamespaceRelative() {
         return namespaceRelative;
     }
@@ -72,6 +78,7 @@ public class PathLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getContextual() {
         return contextual;
     }

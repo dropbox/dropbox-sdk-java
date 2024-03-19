@@ -17,13 +17,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed team password strength requirements.
  */
 public class PasswordStrengthRequirementsChangePolicyDetails {
     // struct team_log.PasswordStrengthRequirementsChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PasswordStrengthPolicy previousValue;
+    @Nonnull
     protected final PasswordStrengthPolicy newValue;
 
     /**
@@ -36,7 +40,7 @@ public class PasswordStrengthRequirementsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PasswordStrengthRequirementsChangePolicyDetails(PasswordStrengthPolicy previousValue, PasswordStrengthPolicy newValue) {
+    public PasswordStrengthRequirementsChangePolicyDetails(@Nonnull PasswordStrengthPolicy previousValue, @Nonnull PasswordStrengthPolicy newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -52,6 +56,7 @@ public class PasswordStrengthRequirementsChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PasswordStrengthPolicy getPreviousValue() {
         return previousValue;
     }
@@ -61,6 +66,7 @@ public class PasswordStrengthRequirementsChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PasswordStrengthPolicy getNewValue() {
         return newValue;
     }

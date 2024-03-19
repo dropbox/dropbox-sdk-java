@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether members can share links outside team, and if links are
  * accessible only by team members or anyone by default.
@@ -23,7 +26,9 @@ import java.util.Arrays;
 public class SharingChangeLinkPolicyDetails {
     // struct team_log.SharingChangeLinkPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SharingLinkPolicy newValue;
+    @Nullable
     protected final SharingLinkPolicy previousValue;
 
     /**
@@ -38,7 +43,7 @@ public class SharingChangeLinkPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeLinkPolicyDetails(SharingLinkPolicy newValue, SharingLinkPolicy previousValue) {
+    public SharingChangeLinkPolicyDetails(@Nonnull SharingLinkPolicy newValue, @Nullable SharingLinkPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -58,7 +63,7 @@ public class SharingChangeLinkPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeLinkPolicyDetails(SharingLinkPolicy newValue) {
+    public SharingChangeLinkPolicyDetails(@Nonnull SharingLinkPolicy newValue) {
         this(newValue, null);
     }
 
@@ -67,6 +72,7 @@ public class SharingChangeLinkPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SharingLinkPolicy getNewValue() {
         return newValue;
     }
@@ -77,6 +83,7 @@ public class SharingChangeLinkPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SharingLinkPolicy getPreviousValue() {
         return previousValue;
     }

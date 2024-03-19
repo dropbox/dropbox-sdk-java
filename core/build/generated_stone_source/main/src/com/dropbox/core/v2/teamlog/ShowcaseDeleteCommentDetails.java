@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Deleted showcase comment.
  */
 public class ShowcaseDeleteCommentDetails {
     // struct team_log.ShowcaseDeleteCommentDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nullable
     protected final String commentText;
 
     /**
@@ -34,7 +39,7 @@ public class ShowcaseDeleteCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseDeleteCommentDetails(String eventUuid, String commentText) {
+    public ShowcaseDeleteCommentDetails(@Nonnull String eventUuid, @Nullable String commentText) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -52,7 +57,7 @@ public class ShowcaseDeleteCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseDeleteCommentDetails(String eventUuid) {
+    public ShowcaseDeleteCommentDetails(@Nonnull String eventUuid) {
         this(eventUuid, null);
     }
 
@@ -61,6 +66,7 @@ public class ShowcaseDeleteCommentDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -70,6 +76,7 @@ public class ShowcaseDeleteCommentDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCommentText() {
         return commentText;
     }

@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Shared album.
  */
 public class CollectionShareDetails {
     // struct team_log.CollectionShareDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String albumName;
 
     /**
@@ -32,7 +35,7 @@ public class CollectionShareDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CollectionShareDetails(String albumName) {
+    public CollectionShareDetails(@Nonnull String albumName) {
         if (albumName == null) {
             throw new IllegalArgumentException("Required value for 'albumName' is null");
         }
@@ -44,6 +47,7 @@ public class CollectionShareDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAlbumName() {
         return albumName;
     }

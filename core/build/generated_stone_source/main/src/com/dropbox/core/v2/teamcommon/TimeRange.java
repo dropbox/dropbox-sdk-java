@@ -18,13 +18,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Time range.
  */
 public class TimeRange {
     // struct team_common.TimeRange (team_common.stone)
 
+    @Nullable
     protected final Date startTime;
+    @Nullable
     protected final Date endTime;
 
     /**
@@ -36,7 +41,7 @@ public class TimeRange {
      * @param startTime  Optional starting time (inclusive).
      * @param endTime  Optional ending time (exclusive).
      */
-    public TimeRange(Date startTime, Date endTime) {
+    public TimeRange(@Nullable Date startTime, @Nullable Date endTime) {
         this.startTime = LangUtil.truncateMillis(startTime);
         this.endTime = LangUtil.truncateMillis(endTime);
     }
@@ -55,6 +60,7 @@ public class TimeRange {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getStartTime() {
         return startTime;
     }
@@ -64,6 +70,7 @@ public class TimeRange {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getEndTime() {
         return endTime;
     }

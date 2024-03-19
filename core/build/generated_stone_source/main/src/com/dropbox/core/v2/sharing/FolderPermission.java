@@ -16,14 +16,19 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Whether the user is allowed to take the action on the shared folder.
  */
 public class FolderPermission {
     // struct sharing.FolderPermission (sharing_folders.stone)
 
+    @Nonnull
     protected final FolderAction action;
     protected final boolean allow;
+    @Nullable
     protected final PermissionDeniedReason reason;
 
     /**
@@ -38,7 +43,7 @@ public class FolderPermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderPermission(FolderAction action, boolean allow, PermissionDeniedReason reason) {
+    public FolderPermission(@Nonnull FolderAction action, boolean allow, @Nullable PermissionDeniedReason reason) {
         if (action == null) {
             throw new IllegalArgumentException("Required value for 'action' is null");
         }
@@ -59,7 +64,7 @@ public class FolderPermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderPermission(FolderAction action, boolean allow) {
+    public FolderPermission(@Nonnull FolderAction action, boolean allow) {
         this(action, allow, null);
     }
 
@@ -68,6 +73,7 @@ public class FolderPermission {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FolderAction getAction() {
         return action;
     }
@@ -87,6 +93,7 @@ public class FolderPermission {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PermissionDeniedReason getReason() {
         return reason;
     }

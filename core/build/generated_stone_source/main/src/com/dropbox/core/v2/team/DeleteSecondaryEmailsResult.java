@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class DeleteSecondaryEmailsResult {
     // struct team.DeleteSecondaryEmailsResult (team_secondary_mails.stone)
 
+    @Nonnull
     protected final List<UserDeleteResult> results;
 
     /**
@@ -30,7 +33,7 @@ public class DeleteSecondaryEmailsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteSecondaryEmailsResult(List<UserDeleteResult> results) {
+    public DeleteSecondaryEmailsResult(@Nonnull List<UserDeleteResult> results) {
         if (results == null) {
             throw new IllegalArgumentException("Required value for 'results' is null");
         }
@@ -46,6 +49,7 @@ public class DeleteSecondaryEmailsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<UserDeleteResult> getResults() {
         return results;
     }

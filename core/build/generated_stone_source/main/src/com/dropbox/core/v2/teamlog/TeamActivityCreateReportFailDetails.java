@@ -17,12 +17,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Couldn't generate team activity report.
  */
 public class TeamActivityCreateReportFailDetails {
     // struct team_log.TeamActivityCreateReportFailDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamReportFailureReason failureReason;
 
     /**
@@ -33,7 +36,7 @@ public class TeamActivityCreateReportFailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamActivityCreateReportFailDetails(TeamReportFailureReason failureReason) {
+    public TeamActivityCreateReportFailDetails(@Nonnull TeamReportFailureReason failureReason) {
         if (failureReason == null) {
             throw new IllegalArgumentException("Required value for 'failureReason' is null");
         }
@@ -45,6 +48,7 @@ public class TeamActivityCreateReportFailDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamReportFailureReason getFailureReason() {
         return failureReason;
     }

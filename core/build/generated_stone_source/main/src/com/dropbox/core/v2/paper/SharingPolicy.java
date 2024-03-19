@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Sharing policy of Paper doc.
  */
 public class SharingPolicy {
     // struct paper.SharingPolicy (paper.stone)
 
+    @Nullable
     protected final SharingPublicPolicyType publicSharingPolicy;
+    @Nullable
     protected final SharingTeamPolicyType teamSharingPolicy;
 
     /**
@@ -35,7 +40,7 @@ public class SharingPolicy {
      * @param teamSharingPolicy  This value applies to the team members only.
      *     The value is null for all personal accounts.
      */
-    public SharingPolicy(SharingPublicPolicyType publicSharingPolicy, SharingTeamPolicyType teamSharingPolicy) {
+    public SharingPolicy(@Nullable SharingPublicPolicyType publicSharingPolicy, @Nullable SharingTeamPolicyType teamSharingPolicy) {
         this.publicSharingPolicy = publicSharingPolicy;
         this.teamSharingPolicy = teamSharingPolicy;
     }
@@ -54,6 +59,7 @@ public class SharingPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SharingPublicPolicyType getPublicSharingPolicy() {
         return publicSharingPolicy;
     }
@@ -64,6 +70,7 @@ public class SharingPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SharingTeamPolicyType getTeamSharingPolicy() {
         return teamSharingPolicy;
     }

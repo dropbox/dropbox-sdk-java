@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Information about a team.
  */
 public class Team {
     // struct users.Team (users.stone)
 
+    @Nonnull
     protected final String id;
+    @Nonnull
     protected final String name;
 
     /**
@@ -34,7 +38,7 @@ public class Team {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Team(String id, String name) {
+    public Team(@Nonnull String id, @Nonnull String name) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -50,6 +54,7 @@ public class Team {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -59,6 +64,7 @@ public class Team {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }

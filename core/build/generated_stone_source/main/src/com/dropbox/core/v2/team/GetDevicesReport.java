@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Devices Report Result. Contains subsections for different time ranges of
  * activity. Each of the items in each subsection of the storage report is an
@@ -25,8 +27,11 @@ import java.util.Arrays;
 public class GetDevicesReport extends BaseDfbReport {
     // struct team.GetDevicesReport (team_reports.stone)
 
+    @Nonnull
     protected final DevicesActive active1Day;
+    @Nonnull
     protected final DevicesActive active7Day;
+    @Nonnull
     protected final DevicesActive active28Day;
 
     /**
@@ -47,7 +52,7 @@ public class GetDevicesReport extends BaseDfbReport {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetDevicesReport(String startDate, DevicesActive active1Day, DevicesActive active7Day, DevicesActive active28Day) {
+    public GetDevicesReport(@Nonnull String startDate, @Nonnull DevicesActive active1Day, @Nonnull DevicesActive active7Day, @Nonnull DevicesActive active28Day) {
         super(startDate);
         if (active1Day == null) {
             throw new IllegalArgumentException("Required value for 'active1Day' is null");
@@ -68,6 +73,7 @@ public class GetDevicesReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getStartDate() {
         return startDate;
     }
@@ -77,6 +83,7 @@ public class GetDevicesReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DevicesActive getActive1Day() {
         return active1Day;
     }
@@ -86,6 +93,7 @@ public class GetDevicesReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DevicesActive getActive7Day() {
         return active7Day;
     }
@@ -95,6 +103,7 @@ public class GetDevicesReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DevicesActive getActive28Day() {
         return active28Day;
     }

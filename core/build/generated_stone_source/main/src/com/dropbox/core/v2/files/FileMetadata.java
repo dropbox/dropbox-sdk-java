@@ -21,22 +21,37 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class FileMetadata extends Metadata {
     // struct files.FileMetadata (files.stone)
 
+    @Nonnull
     protected final String id;
+    @Nonnull
     protected final Date clientModified;
+    @Nonnull
     protected final Date serverModified;
+    @Nonnull
     protected final String rev;
     protected final long size;
+    @Nullable
     protected final MediaInfo mediaInfo;
+    @Nullable
     protected final SymlinkInfo symlinkInfo;
+    @Nullable
     protected final FileSharingInfo sharingInfo;
     protected final boolean isDownloadable;
+    @Nullable
     protected final ExportInfo exportInfo;
+    @Nullable
     protected final List<PropertyGroup> propertyGroups;
+    @Nullable
     protected final Boolean hasExplicitSharedMembers;
+    @Nullable
     protected final String contentHash;
+    @Nullable
     protected final FileLockMetadata fileLockInfo;
 
     /**
@@ -110,7 +125,7 @@ public class FileMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMetadata(String name, String id, Date clientModified, Date serverModified, String rev, long size, String pathLower, String pathDisplay, String parentSharedFolderId, String previewUrl, MediaInfo mediaInfo, SymlinkInfo symlinkInfo, FileSharingInfo sharingInfo, boolean isDownloadable, ExportInfo exportInfo, List<PropertyGroup> propertyGroups, Boolean hasExplicitSharedMembers, String contentHash, FileLockMetadata fileLockInfo) {
+    public FileMetadata(@Nonnull String name, @Nonnull String id, @Nonnull Date clientModified, @Nonnull Date serverModified, @Nonnull String rev, long size, @Nullable String pathLower, @Nullable String pathDisplay, @Nullable String parentSharedFolderId, @Nullable String previewUrl, @Nullable MediaInfo mediaInfo, @Nullable SymlinkInfo symlinkInfo, @Nullable FileSharingInfo sharingInfo, boolean isDownloadable, @Nullable ExportInfo exportInfo, @Nullable List<PropertyGroup> propertyGroups, @Nullable Boolean hasExplicitSharedMembers, @Nullable String contentHash, @Nullable FileLockMetadata fileLockInfo) {
         super(name, pathLower, pathDisplay, parentSharedFolderId, previewUrl);
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
@@ -190,7 +205,7 @@ public class FileMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMetadata(String name, String id, Date clientModified, Date serverModified, String rev, long size) {
+    public FileMetadata(@Nonnull String name, @Nonnull String id, @Nonnull Date clientModified, @Nonnull Date serverModified, @Nonnull String rev, long size) {
         this(name, id, clientModified, serverModified, rev, size, null, null, null, null, null, null, null, true, null, null, null, null, null);
     }
 
@@ -200,6 +215,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -209,6 +225,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -222,6 +239,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Date getClientModified() {
         return clientModified;
     }
@@ -231,6 +249,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Date getServerModified() {
         return serverModified;
     }
@@ -242,6 +261,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getRev() {
         return rev;
     }
@@ -261,6 +281,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -276,6 +297,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPathDisplay() {
         return pathDisplay;
     }
@@ -286,6 +308,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -295,6 +318,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPreviewUrl() {
         return previewUrl;
     }
@@ -308,6 +332,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public MediaInfo getMediaInfo() {
         return mediaInfo;
     }
@@ -317,6 +342,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SymlinkInfo getSymlinkInfo() {
         return symlinkInfo;
     }
@@ -326,6 +352,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public FileSharingInfo getSharingInfo() {
         return sharingInfo;
     }
@@ -346,6 +373,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public ExportInfo getExportInfo() {
         return exportInfo;
     }
@@ -356,6 +384,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }
@@ -370,6 +399,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getHasExplicitSharedMembers() {
         return hasExplicitSharedMembers;
     }
@@ -382,6 +412,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getContentHash() {
         return contentHash;
     }
@@ -391,6 +422,7 @@ public class FileMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public FileLockMetadata getFileLockInfo() {
         return fileLockInfo;
     }

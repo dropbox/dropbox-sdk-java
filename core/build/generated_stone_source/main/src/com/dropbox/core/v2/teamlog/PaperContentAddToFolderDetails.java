@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Added Paper doc/folder to folder.
  */
 public class PaperContentAddToFolderDetails {
     // struct team_log.PaperContentAddToFolderDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
     protected final long targetAssetIndex;
     protected final long parentAssetIndex;
@@ -36,7 +39,7 @@ public class PaperContentAddToFolderDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentAddToFolderDetails(String eventUuid, long targetAssetIndex, long parentAssetIndex) {
+    public PaperContentAddToFolderDetails(@Nonnull String eventUuid, long targetAssetIndex, long parentAssetIndex) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -50,6 +53,7 @@ public class PaperContentAddToFolderDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }

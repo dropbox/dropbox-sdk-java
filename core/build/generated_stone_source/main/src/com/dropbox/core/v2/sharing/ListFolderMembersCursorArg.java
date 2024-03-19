@@ -17,9 +17,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class ListFolderMembersCursorArg {
     // struct sharing.ListFolderMembersCursorArg (sharing_folders.stone)
 
+    @Nullable
     protected final List<MemberAction> actions;
     protected final long limit;
 
@@ -38,7 +42,7 @@ class ListFolderMembersCursorArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderMembersCursorArg(List<MemberAction> actions, long limit) {
+    public ListFolderMembersCursorArg(@Nullable List<MemberAction> actions, long limit) {
         if (actions != null) {
             for (MemberAction x : actions) {
                 if (x == null) {
@@ -72,6 +76,7 @@ class ListFolderMembersCursorArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<MemberAction> getActions() {
         return actions;
     }

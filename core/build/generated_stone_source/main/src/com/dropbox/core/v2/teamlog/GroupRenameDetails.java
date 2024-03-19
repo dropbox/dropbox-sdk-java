@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Renamed group.
  */
 public class GroupRenameDetails {
     // struct team_log.GroupRenameDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String previousValue;
+    @Nonnull
     protected final String newValue;
 
     /**
@@ -34,7 +38,7 @@ public class GroupRenameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupRenameDetails(String previousValue, String newValue) {
+    public GroupRenameDetails(@Nonnull String previousValue, @Nonnull String newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -50,6 +54,7 @@ public class GroupRenameDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }
@@ -59,6 +64,7 @@ public class GroupRenameDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }

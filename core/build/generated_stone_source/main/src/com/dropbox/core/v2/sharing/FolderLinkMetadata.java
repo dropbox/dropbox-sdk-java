@@ -18,6 +18,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The metadata of a folder shared link.
  */
@@ -54,7 +57,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderLinkMetadata(String url, String name, LinkPermissions linkPermissions, String id, Date expires, String pathLower, TeamMemberInfo teamMemberInfo, Team contentOwnerTeamInfo) {
+    public FolderLinkMetadata(@Nonnull String url, @Nonnull String name, @Nonnull LinkPermissions linkPermissions, @Nullable String id, @Nullable Date expires, @Nullable String pathLower, @Nullable TeamMemberInfo teamMemberInfo, @Nullable Team contentOwnerTeamInfo) {
         super(url, name, linkPermissions, id, expires, pathLower, teamMemberInfo, contentOwnerTeamInfo);
     }
 
@@ -72,7 +75,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderLinkMetadata(String url, String name, LinkPermissions linkPermissions) {
+    public FolderLinkMetadata(@Nonnull String url, @Nonnull String name, @Nonnull LinkPermissions linkPermissions) {
         this(url, name, linkPermissions, null, null, null, null, null);
     }
 
@@ -81,6 +84,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -90,6 +94,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -99,6 +104,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public LinkPermissions getLinkPermissions() {
         return linkPermissions;
     }
@@ -108,6 +114,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getId() {
         return id;
     }
@@ -117,6 +124,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getExpires() {
         return expires;
     }
@@ -128,6 +136,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -138,6 +147,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public TeamMemberInfo getTeamMemberInfo() {
         return teamMemberInfo;
     }
@@ -149,6 +159,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Team getContentOwnerTeamInfo() {
         return contentOwnerTeamInfo;
     }

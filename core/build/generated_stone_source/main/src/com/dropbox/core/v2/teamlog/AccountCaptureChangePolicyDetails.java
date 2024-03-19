@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed account capture setting on team domain.
  */
 public class AccountCaptureChangePolicyDetails {
     // struct team_log.AccountCaptureChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccountCapturePolicy newValue;
+    @Nullable
     protected final AccountCapturePolicy previousValue;
 
     /**
@@ -35,7 +40,7 @@ public class AccountCaptureChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureChangePolicyDetails(AccountCapturePolicy newValue, AccountCapturePolicy previousValue) {
+    public AccountCaptureChangePolicyDetails(@Nonnull AccountCapturePolicy newValue, @Nullable AccountCapturePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -53,7 +58,7 @@ public class AccountCaptureChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureChangePolicyDetails(AccountCapturePolicy newValue) {
+    public AccountCaptureChangePolicyDetails(@Nonnull AccountCapturePolicy newValue) {
         this(newValue, null);
     }
 
@@ -62,6 +67,7 @@ public class AccountCaptureChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccountCapturePolicy getNewValue() {
         return newValue;
     }
@@ -72,6 +78,7 @@ public class AccountCaptureChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AccountCapturePolicy getPreviousValue() {
         return previousValue;
     }

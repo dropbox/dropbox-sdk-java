@@ -18,13 +18,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Input arguments that can be provided for most reports.
  */
 class DateRange {
     // struct team.DateRange (team_reports.stone)
 
+    @Nullable
     protected final Date startDate;
+    @Nullable
     protected final Date endDate;
 
     /**
@@ -37,7 +42,7 @@ class DateRange {
      *     None or too long ago, this field will  be set to 6 months ago.
      * @param endDate  Optional ending date (exclusive).
      */
-    public DateRange(Date startDate, Date endDate) {
+    public DateRange(@Nullable Date startDate, @Nullable Date endDate) {
         this.startDate = LangUtil.truncateMillis(startDate);
         this.endDate = LangUtil.truncateMillis(endDate);
     }
@@ -57,6 +62,7 @@ class DateRange {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getStartDate() {
         return startDate;
     }
@@ -66,6 +72,7 @@ class DateRange {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getEndDate() {
         return endDate;
     }

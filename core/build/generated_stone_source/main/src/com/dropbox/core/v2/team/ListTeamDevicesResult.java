@@ -17,11 +17,16 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class ListTeamDevicesResult {
     // struct team.ListTeamDevicesResult (team_devices.stone)
 
+    @Nonnull
     protected final List<MemberDevices> devices;
     protected final boolean hasMore;
+    @Nullable
     protected final String cursor;
 
     /**
@@ -38,7 +43,7 @@ public class ListTeamDevicesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListTeamDevicesResult(List<MemberDevices> devices, boolean hasMore, String cursor) {
+    public ListTeamDevicesResult(@Nonnull List<MemberDevices> devices, boolean hasMore, @Nullable String cursor) {
         if (devices == null) {
             throw new IllegalArgumentException("Required value for 'devices' is null");
         }
@@ -66,7 +71,7 @@ public class ListTeamDevicesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListTeamDevicesResult(List<MemberDevices> devices, boolean hasMore) {
+    public ListTeamDevicesResult(@Nonnull List<MemberDevices> devices, boolean hasMore) {
         this(devices, hasMore, null);
     }
 
@@ -75,6 +80,7 @@ public class ListTeamDevicesResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<MemberDevices> getDevices() {
         return devices;
     }
@@ -95,6 +101,7 @@ public class ListTeamDevicesResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCursor() {
         return cursor;
     }

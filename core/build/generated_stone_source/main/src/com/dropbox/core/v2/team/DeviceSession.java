@@ -18,13 +18,21 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class DeviceSession {
     // struct team.DeviceSession (team_devices.stone)
 
+    @Nonnull
     protected final String sessionId;
+    @Nullable
     protected final String ipAddress;
+    @Nullable
     protected final String country;
+    @Nullable
     protected final Date created;
+    @Nullable
     protected final Date updated;
 
     /**
@@ -41,7 +49,7 @@ public class DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceSession(String sessionId, String ipAddress, String country, Date created, Date updated) {
+    public DeviceSession(@Nonnull String sessionId, @Nullable String ipAddress, @Nullable String country, @Nullable Date created, @Nullable Date updated) {
         if (sessionId == null) {
             throw new IllegalArgumentException("Required value for 'sessionId' is null");
         }
@@ -62,7 +70,7 @@ public class DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceSession(String sessionId) {
+    public DeviceSession(@Nonnull String sessionId) {
         this(sessionId, null, null, null, null);
     }
 
@@ -71,6 +79,7 @@ public class DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSessionId() {
         return sessionId;
     }
@@ -80,6 +89,7 @@ public class DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -89,6 +99,7 @@ public class DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCountry() {
         return country;
     }
@@ -98,6 +109,7 @@ public class DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getCreated() {
         return created;
     }
@@ -107,6 +119,7 @@ public class DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getUpdated() {
         return updated;
     }

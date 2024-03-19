@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled ability of team members to permanently delete content.
  */
 public class PermanentDeleteChangePolicyDetails {
     // struct team_log.PermanentDeleteChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ContentPermanentDeletePolicy newValue;
+    @Nullable
     protected final ContentPermanentDeletePolicy previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class PermanentDeleteChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PermanentDeleteChangePolicyDetails(ContentPermanentDeletePolicy newValue, ContentPermanentDeletePolicy previousValue) {
+    public PermanentDeleteChangePolicyDetails(@Nonnull ContentPermanentDeletePolicy newValue, @Nullable ContentPermanentDeletePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -55,7 +60,7 @@ public class PermanentDeleteChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PermanentDeleteChangePolicyDetails(ContentPermanentDeletePolicy newValue) {
+    public PermanentDeleteChangePolicyDetails(@Nonnull ContentPermanentDeletePolicy newValue) {
         this(newValue, null);
     }
 
@@ -64,6 +69,7 @@ public class PermanentDeleteChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ContentPermanentDeletePolicy getNewValue() {
         return newValue;
     }
@@ -74,6 +80,7 @@ public class PermanentDeleteChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public ContentPermanentDeletePolicy getPreviousValue() {
         return previousValue;
     }

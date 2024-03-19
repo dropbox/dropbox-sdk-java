@@ -18,13 +18,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Arguments of {@link DbxUserSharingRequests#getFileMetadata(String,List)}.
  */
 class GetFileMetadataArg {
     // struct sharing.GetFileMetadataArg (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
+    @Nullable
     protected final List<FileAction> actions;
 
     /**
@@ -42,7 +47,7 @@ class GetFileMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetFileMetadataArg(String file, List<FileAction> actions) {
+    public GetFileMetadataArg(@Nonnull String file, @Nullable List<FileAction> actions) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -75,7 +80,7 @@ class GetFileMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetFileMetadataArg(String file) {
+    public GetFileMetadataArg(@Nonnull String file) {
         this(file, null);
     }
 
@@ -84,6 +89,7 @@ class GetFileMetadataArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFile() {
         return file;
     }
@@ -95,6 +101,7 @@ class GetFileMetadataArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<FileAction> getActions() {
         return actions;
     }

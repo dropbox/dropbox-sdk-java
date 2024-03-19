@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class GetThumbnailBatchResult {
     // struct files.GetThumbnailBatchResult (files.stone)
 
+    @Nonnull
     protected final List<GetThumbnailBatchResultEntry> entries;
 
     /**
@@ -30,7 +33,7 @@ public class GetThumbnailBatchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetThumbnailBatchResult(List<GetThumbnailBatchResultEntry> entries) {
+    public GetThumbnailBatchResult(@Nonnull List<GetThumbnailBatchResultEntry> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -47,6 +50,7 @@ public class GetThumbnailBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<GetThumbnailBatchResultEntry> getEntries() {
         return entries;
     }

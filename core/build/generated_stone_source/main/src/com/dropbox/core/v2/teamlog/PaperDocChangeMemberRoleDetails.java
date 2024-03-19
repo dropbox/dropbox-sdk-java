@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed member permissions for Paper doc.
  */
 public class PaperDocChangeMemberRoleDetails {
     // struct team_log.PaperDocChangeMemberRoleDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nonnull
     protected final PaperAccessType accessType;
 
     /**
@@ -34,7 +38,7 @@ public class PaperDocChangeMemberRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocChangeMemberRoleDetails(String eventUuid, PaperAccessType accessType) {
+    public PaperDocChangeMemberRoleDetails(@Nonnull String eventUuid, @Nonnull PaperAccessType accessType) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -50,6 +54,7 @@ public class PaperDocChangeMemberRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -59,6 +64,7 @@ public class PaperDocChangeMemberRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PaperAccessType getAccessType() {
         return accessType;
     }

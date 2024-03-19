@@ -16,10 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class MembersRemoveArg extends MembersDeactivateArg {
     // struct team.MembersRemoveArg (team_members.stone)
 
+    @Nullable
     protected final UserSelectorArg transferDestId;
+    @Nullable
     protected final UserSelectorArg transferAdminId;
     protected final boolean keepAccount;
     protected final boolean retainTeamShares;
@@ -57,7 +62,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersRemoveArg(UserSelectorArg user, boolean wipeData, UserSelectorArg transferDestId, UserSelectorArg transferAdminId, boolean keepAccount, boolean retainTeamShares) {
+    public MembersRemoveArg(@Nonnull UserSelectorArg user, boolean wipeData, @Nullable UserSelectorArg transferDestId, @Nullable UserSelectorArg transferAdminId, boolean keepAccount, boolean retainTeamShares) {
         super(user, wipeData);
         this.transferDestId = transferDestId;
         this.transferAdminId = transferAdminId;
@@ -76,7 +81,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersRemoveArg(UserSelectorArg user) {
+    public MembersRemoveArg(@Nonnull UserSelectorArg user) {
         this(user, true, null, null, false, false);
     }
 
@@ -85,6 +90,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -106,6 +112,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public UserSelectorArg getTransferDestId() {
         return transferDestId;
     }
@@ -117,6 +124,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public UserSelectorArg getTransferAdminId() {
         return transferAdminId;
     }

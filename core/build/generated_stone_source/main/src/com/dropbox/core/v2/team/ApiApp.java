@@ -18,16 +18,24 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information on linked third party applications.
  */
 public class ApiApp {
     // struct team.ApiApp (team_linked_apps.stone)
 
+    @Nonnull
     protected final String appId;
+    @Nonnull
     protected final String appName;
+    @Nullable
     protected final String publisher;
+    @Nullable
     protected final String publisherUrl;
+    @Nullable
     protected final Date linked;
     protected final boolean isAppFolder;
 
@@ -48,7 +56,7 @@ public class ApiApp {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ApiApp(String appId, String appName, boolean isAppFolder, String publisher, String publisherUrl, Date linked) {
+    public ApiApp(@Nonnull String appId, @Nonnull String appName, boolean isAppFolder, @Nullable String publisher, @Nullable String publisherUrl, @Nullable Date linked) {
         if (appId == null) {
             throw new IllegalArgumentException("Required value for 'appId' is null");
         }
@@ -76,7 +84,7 @@ public class ApiApp {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ApiApp(String appId, String appName, boolean isAppFolder) {
+    public ApiApp(@Nonnull String appId, @Nonnull String appName, boolean isAppFolder) {
         this(appId, appName, isAppFolder, null, null, null);
     }
 
@@ -85,6 +93,7 @@ public class ApiApp {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAppId() {
         return appId;
     }
@@ -94,6 +103,7 @@ public class ApiApp {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAppName() {
         return appName;
     }
@@ -112,6 +122,7 @@ public class ApiApp {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPublisher() {
         return publisher;
     }
@@ -121,6 +132,7 @@ public class ApiApp {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPublisherUrl() {
         return publisherUrl;
     }
@@ -130,6 +142,7 @@ public class ApiApp {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getLinked() {
         return linked;
     }

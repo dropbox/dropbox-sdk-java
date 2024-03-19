@@ -17,13 +17,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information about a team member.
  */
 public class TeamMemberInfoV2 {
     // struct team.TeamMemberInfoV2 (team_members.stone)
 
+    @Nonnull
     protected final TeamMemberProfile profile;
+    @Nullable
     protected final List<TeamMemberRole> roles;
 
     /**
@@ -37,7 +42,7 @@ public class TeamMemberInfoV2 {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberInfoV2(TeamMemberProfile profile, List<TeamMemberRole> roles) {
+    public TeamMemberInfoV2(@Nonnull TeamMemberProfile profile, @Nullable List<TeamMemberRole> roles) {
         if (profile == null) {
             throw new IllegalArgumentException("Required value for 'profile' is null");
         }
@@ -63,7 +68,7 @@ public class TeamMemberInfoV2 {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberInfoV2(TeamMemberProfile profile) {
+    public TeamMemberInfoV2(@Nonnull TeamMemberProfile profile) {
         this(profile, null);
     }
 
@@ -72,6 +77,7 @@ public class TeamMemberInfoV2 {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamMemberProfile getProfile() {
         return profile;
     }
@@ -81,6 +87,7 @@ public class TeamMemberInfoV2 {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<TeamMemberRole> getRoles() {
         return roles;
     }

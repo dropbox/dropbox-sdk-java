@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Account-captured user changed account email to personal email.
  */
 public class AccountCaptureRelinquishAccountDetails {
     // struct team_log.AccountCaptureRelinquishAccountDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String domainName;
 
     /**
@@ -32,7 +35,7 @@ public class AccountCaptureRelinquishAccountDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureRelinquishAccountDetails(String domainName) {
+    public AccountCaptureRelinquishAccountDetails(@Nonnull String domainName) {
         if (domainName == null) {
             throw new IllegalArgumentException("Required value for 'domainName' is null");
         }
@@ -44,6 +47,7 @@ public class AccountCaptureRelinquishAccountDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDomainName() {
         return domainName;
     }

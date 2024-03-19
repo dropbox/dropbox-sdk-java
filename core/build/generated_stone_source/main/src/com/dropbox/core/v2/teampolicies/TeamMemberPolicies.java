@@ -16,15 +16,21 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Policies governing team members.
  */
 public class TeamMemberPolicies {
     // struct team_policies.TeamMemberPolicies (team_policies.stone)
 
+    @Nonnull
     protected final TeamSharingPolicies sharing;
+    @Nonnull
     protected final EmmState emmState;
+    @Nonnull
     protected final OfficeAddInPolicy officeAddin;
+    @Nonnull
     protected final SuggestMembersPolicy suggestMembersPolicy;
 
     /**
@@ -46,7 +52,7 @@ public class TeamMemberPolicies {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberPolicies(TeamSharingPolicies sharing, EmmState emmState, OfficeAddInPolicy officeAddin, SuggestMembersPolicy suggestMembersPolicy) {
+    public TeamMemberPolicies(@Nonnull TeamSharingPolicies sharing, @Nonnull EmmState emmState, @Nonnull OfficeAddInPolicy officeAddin, @Nonnull SuggestMembersPolicy suggestMembersPolicy) {
         if (sharing == null) {
             throw new IllegalArgumentException("Required value for 'sharing' is null");
         }
@@ -70,6 +76,7 @@ public class TeamMemberPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamSharingPolicies getSharing() {
         return sharing;
     }
@@ -84,6 +91,7 @@ public class TeamMemberPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public EmmState getEmmState() {
         return emmState;
     }
@@ -93,6 +101,7 @@ public class TeamMemberPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public OfficeAddInPolicy getOfficeAddin() {
         return officeAddin;
     }
@@ -103,6 +112,7 @@ public class TeamMemberPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SuggestMembersPolicy getSuggestMembersPolicy() {
         return suggestMembersPolicy;
     }

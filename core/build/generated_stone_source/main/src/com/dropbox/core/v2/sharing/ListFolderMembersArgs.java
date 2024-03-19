@@ -18,9 +18,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class ListFolderMembersArgs extends ListFolderMembersCursorArg {
     // struct sharing.ListFolderMembersArgs (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
 
     /**
@@ -40,7 +44,7 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderMembersArgs(String sharedFolderId, List<MemberAction> actions, long limit) {
+    public ListFolderMembersArgs(@Nonnull String sharedFolderId, @Nullable List<MemberAction> actions, long limit) {
         super(actions, limit);
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
@@ -62,7 +66,7 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderMembersArgs(String sharedFolderId) {
+    public ListFolderMembersArgs(@Nonnull String sharedFolderId) {
         this(sharedFolderId, null, 1000L);
     }
 
@@ -71,6 +75,7 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -82,6 +87,7 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<MemberAction> getActions() {
         return actions;
     }

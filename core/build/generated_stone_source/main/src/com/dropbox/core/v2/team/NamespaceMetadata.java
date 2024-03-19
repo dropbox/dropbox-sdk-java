@@ -17,15 +17,22 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Properties of a namespace.
  */
 public class NamespaceMetadata {
     // struct team.NamespaceMetadata (team_namespaces.stone)
 
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final String namespaceId;
+    @Nonnull
     protected final NamespaceType namespaceType;
+    @Nullable
     protected final String teamMemberId;
 
     /**
@@ -42,7 +49,7 @@ public class NamespaceMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NamespaceMetadata(String name, String namespaceId, NamespaceType namespaceType, String teamMemberId) {
+    public NamespaceMetadata(@Nonnull String name, @Nonnull String namespaceId, @Nonnull NamespaceType namespaceType, @Nullable String teamMemberId) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -75,7 +82,7 @@ public class NamespaceMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NamespaceMetadata(String name, String namespaceId, NamespaceType namespaceType) {
+    public NamespaceMetadata(@Nonnull String name, @Nonnull String namespaceId, @Nonnull NamespaceType namespaceType) {
         this(name, namespaceId, namespaceType, null);
     }
 
@@ -84,6 +91,7 @@ public class NamespaceMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -93,6 +101,7 @@ public class NamespaceMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getNamespaceId() {
         return namespaceId;
     }
@@ -102,6 +111,7 @@ public class NamespaceMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public NamespaceType getNamespaceType() {
         return namespaceType;
     }
@@ -112,6 +122,7 @@ public class NamespaceMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getTeamMemberId() {
         return teamMemberId;
     }

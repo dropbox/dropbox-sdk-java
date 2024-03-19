@@ -16,15 +16,21 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Triggered security alert.
  */
 public class AdminAlertingTriggeredAlertDetails {
     // struct team_log.AdminAlertingTriggeredAlertDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String alertName;
+    @Nonnull
     protected final AdminAlertSeverityEnum alertSeverity;
+    @Nonnull
     protected final AdminAlertCategoryEnum alertCategory;
+    @Nonnull
     protected final String alertInstanceId;
 
     /**
@@ -38,7 +44,7 @@ public class AdminAlertingTriggeredAlertDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AdminAlertingTriggeredAlertDetails(String alertName, AdminAlertSeverityEnum alertSeverity, AdminAlertCategoryEnum alertCategory, String alertInstanceId) {
+    public AdminAlertingTriggeredAlertDetails(@Nonnull String alertName, @Nonnull AdminAlertSeverityEnum alertSeverity, @Nonnull AdminAlertCategoryEnum alertCategory, @Nonnull String alertInstanceId) {
         if (alertName == null) {
             throw new IllegalArgumentException("Required value for 'alertName' is null");
         }
@@ -62,6 +68,7 @@ public class AdminAlertingTriggeredAlertDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAlertName() {
         return alertName;
     }
@@ -71,6 +78,7 @@ public class AdminAlertingTriggeredAlertDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AdminAlertSeverityEnum getAlertSeverity() {
         return alertSeverity;
     }
@@ -80,6 +88,7 @@ public class AdminAlertingTriggeredAlertDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AdminAlertCategoryEnum getAlertCategory() {
         return alertCategory;
     }
@@ -89,6 +98,7 @@ public class AdminAlertingTriggeredAlertDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAlertInstanceId() {
         return alertInstanceId;
     }

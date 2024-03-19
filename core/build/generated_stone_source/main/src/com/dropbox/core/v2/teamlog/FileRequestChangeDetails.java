@@ -16,14 +16,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed file request.
  */
 public class FileRequestChangeDetails {
     // struct team_log.FileRequestChangeDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String fileRequestId;
+    @Nullable
     protected final FileRequestDetails previousDetails;
+    @Nonnull
     protected final FileRequestDetails newDetails;
 
     /**
@@ -42,7 +48,7 @@ public class FileRequestChangeDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestChangeDetails(FileRequestDetails newDetails, String fileRequestId, FileRequestDetails previousDetails) {
+    public FileRequestChangeDetails(@Nonnull FileRequestDetails newDetails, @Nullable String fileRequestId, @Nullable FileRequestDetails previousDetails) {
         if (fileRequestId != null) {
             if (fileRequestId.length() < 1) {
                 throw new IllegalArgumentException("String 'fileRequestId' is shorter than 1");
@@ -69,7 +75,7 @@ public class FileRequestChangeDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestChangeDetails(FileRequestDetails newDetails) {
+    public FileRequestChangeDetails(@Nonnull FileRequestDetails newDetails) {
         this(newDetails, null, null);
     }
 
@@ -78,6 +84,7 @@ public class FileRequestChangeDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FileRequestDetails getNewDetails() {
         return newDetails;
     }
@@ -87,6 +94,7 @@ public class FileRequestChangeDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getFileRequestId() {
         return fileRequestId;
     }
@@ -97,6 +105,7 @@ public class FileRequestChangeDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public FileRequestDetails getPreviousDetails() {
         return previousDetails;
     }

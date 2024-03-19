@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether team members can join shared folders owned outside team.
  */
 public class SharingChangeFolderJoinPolicyDetails {
     // struct team_log.SharingChangeFolderJoinPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SharingFolderJoinPolicy newValue;
+    @Nullable
     protected final SharingFolderJoinPolicy previousValue;
 
     /**
@@ -35,7 +40,7 @@ public class SharingChangeFolderJoinPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeFolderJoinPolicyDetails(SharingFolderJoinPolicy newValue, SharingFolderJoinPolicy previousValue) {
+    public SharingChangeFolderJoinPolicyDetails(@Nonnull SharingFolderJoinPolicy newValue, @Nullable SharingFolderJoinPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -53,7 +58,7 @@ public class SharingChangeFolderJoinPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeFolderJoinPolicyDetails(SharingFolderJoinPolicy newValue) {
+    public SharingChangeFolderJoinPolicyDetails(@Nonnull SharingFolderJoinPolicy newValue) {
         this(newValue, null);
     }
 
@@ -62,6 +67,7 @@ public class SharingChangeFolderJoinPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SharingFolderJoinPolicy getNewValue() {
         return newValue;
     }
@@ -72,6 +78,7 @@ public class SharingChangeFolderJoinPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SharingFolderJoinPolicy getPreviousValue() {
         return previousValue;
     }

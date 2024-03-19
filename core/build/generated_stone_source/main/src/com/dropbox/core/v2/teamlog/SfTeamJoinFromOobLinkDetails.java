@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Joined team member's shared folder from link.
  */
@@ -23,8 +26,11 @@ public class SfTeamJoinFromOobLinkDetails {
     // struct team_log.SfTeamJoinFromOobLinkDetails (team_log_generated.stone)
 
     protected final long targetAssetIndex;
+    @Nonnull
     protected final String originalFolderName;
+    @Nullable
     protected final String tokenKey;
+    @Nullable
     protected final String sharingPermission;
 
     /**
@@ -42,7 +48,7 @@ public class SfTeamJoinFromOobLinkDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfTeamJoinFromOobLinkDetails(long targetAssetIndex, String originalFolderName, String tokenKey, String sharingPermission) {
+    public SfTeamJoinFromOobLinkDetails(long targetAssetIndex, @Nonnull String originalFolderName, @Nullable String tokenKey, @Nullable String sharingPermission) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");
@@ -64,7 +70,7 @@ public class SfTeamJoinFromOobLinkDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfTeamJoinFromOobLinkDetails(long targetAssetIndex, String originalFolderName) {
+    public SfTeamJoinFromOobLinkDetails(long targetAssetIndex, @Nonnull String originalFolderName) {
         this(targetAssetIndex, originalFolderName, null, null);
     }
 
@@ -82,6 +88,7 @@ public class SfTeamJoinFromOobLinkDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getOriginalFolderName() {
         return originalFolderName;
     }
@@ -91,6 +98,7 @@ public class SfTeamJoinFromOobLinkDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getTokenKey() {
         return tokenKey;
     }
@@ -100,6 +108,7 @@ public class SfTeamJoinFromOobLinkDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getSharingPermission() {
         return sharingPermission;
     }

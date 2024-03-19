@@ -29,6 +29,7 @@ jackson-databind = 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
 jetty-server = "org.eclipse.jetty:jetty-server:11.0.15"
 json = "org.json:json:20230618"
 jakarta-servlet-api = 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+jsr305 = 'com.google.code.findbugs:jsr305:3.0.2'
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

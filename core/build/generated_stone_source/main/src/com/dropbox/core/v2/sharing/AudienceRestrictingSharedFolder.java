@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Information about the shared folder that prevents the link audience for this
  * link from being more restrictive.
@@ -24,8 +26,11 @@ import java.util.regex.Pattern;
 public class AudienceRestrictingSharedFolder {
     // struct sharing.AudienceRestrictingSharedFolder (shared_content_links.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final LinkAudience audience;
 
     /**
@@ -41,7 +46,7 @@ public class AudienceRestrictingSharedFolder {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AudienceRestrictingSharedFolder(String sharedFolderId, String name, LinkAudience audience) {
+    public AudienceRestrictingSharedFolder(@Nonnull String sharedFolderId, @Nonnull String name, @Nonnull LinkAudience audience) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }
@@ -64,6 +69,7 @@ public class AudienceRestrictingSharedFolder {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -73,6 +79,7 @@ public class AudienceRestrictingSharedFolder {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -82,6 +89,7 @@ public class AudienceRestrictingSharedFolder {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public LinkAudience getAudience() {
         return audience;
     }

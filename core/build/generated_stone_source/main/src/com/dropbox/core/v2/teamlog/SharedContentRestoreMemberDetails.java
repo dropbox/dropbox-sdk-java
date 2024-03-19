@@ -17,12 +17,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Restored users and/or groups to membership of shared file/folder.
  */
 public class SharedContentRestoreMemberDetails {
     // struct team_log.SharedContentRestoreMemberDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccessLevel sharedContentAccessLevel;
 
     /**
@@ -34,7 +37,7 @@ public class SharedContentRestoreMemberDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentRestoreMemberDetails(AccessLevel sharedContentAccessLevel) {
+    public SharedContentRestoreMemberDetails(@Nonnull AccessLevel sharedContentAccessLevel) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
@@ -46,6 +49,7 @@ public class SharedContentRestoreMemberDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }

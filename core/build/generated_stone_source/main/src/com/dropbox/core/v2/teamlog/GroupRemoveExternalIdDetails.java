@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Removed external ID for group.
  */
 public class GroupRemoveExternalIdDetails {
     // struct team_log.GroupRemoveExternalIdDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String previousValue;
 
     /**
@@ -32,7 +35,7 @@ public class GroupRemoveExternalIdDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupRemoveExternalIdDetails(String previousValue) {
+    public GroupRemoveExternalIdDetails(@Nonnull String previousValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -44,6 +47,7 @@ public class GroupRemoveExternalIdDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }

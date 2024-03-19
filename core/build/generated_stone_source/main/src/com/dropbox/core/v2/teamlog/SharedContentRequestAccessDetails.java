@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Requested access to shared file/folder.
  */
 public class SharedContentRequestAccessDetails {
     // struct team_log.SharedContentRequestAccessDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String sharedContentLink;
 
     /**
@@ -29,7 +33,7 @@ public class SharedContentRequestAccessDetails {
      *
      * @param sharedContentLink  Shared content link.
      */
-    public SharedContentRequestAccessDetails(String sharedContentLink) {
+    public SharedContentRequestAccessDetails(@Nullable String sharedContentLink) {
         this.sharedContentLink = sharedContentLink;
     }
 
@@ -47,6 +51,7 @@ public class SharedContentRequestAccessDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getSharedContentLink() {
         return sharedContentLink;
     }

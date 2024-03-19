@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * User and their custom quota in GB (1 TB = 1024 GB).  No quota returns if the
  * user has no custom quota set.
@@ -23,7 +26,9 @@ import java.util.Arrays;
 public class UserCustomQuotaResult {
     // struct team.UserCustomQuotaResult (team_member_space_limits.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
+    @Nullable
     protected final Long quotaGb;
 
     /**
@@ -36,7 +41,7 @@ public class UserCustomQuotaResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserCustomQuotaResult(UserSelectorArg user, Long quotaGb) {
+    public UserCustomQuotaResult(@Nonnull UserSelectorArg user, @Nullable Long quotaGb) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -60,7 +65,7 @@ public class UserCustomQuotaResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserCustomQuotaResult(UserSelectorArg user) {
+    public UserCustomQuotaResult(@Nonnull UserSelectorArg user) {
         this(user, null);
     }
 
@@ -68,6 +73,7 @@ public class UserCustomQuotaResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -76,6 +82,7 @@ public class UserCustomQuotaResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getQuotaGb() {
         return quotaGb;
     }

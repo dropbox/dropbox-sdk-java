@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Profile of group member, and role in group.
  */
 public class GroupMemberInfo {
     // struct team.GroupMemberInfo (team_groups.stone)
 
+    @Nonnull
     protected final MemberProfile profile;
+    @Nonnull
     protected final GroupAccessType accessType;
 
     /**
@@ -35,7 +39,7 @@ public class GroupMemberInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMemberInfo(MemberProfile profile, GroupAccessType accessType) {
+    public GroupMemberInfo(@Nonnull MemberProfile profile, @Nonnull GroupAccessType accessType) {
         if (profile == null) {
             throw new IllegalArgumentException("Required value for 'profile' is null");
         }
@@ -51,6 +55,7 @@ public class GroupMemberInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MemberProfile getProfile() {
         return profile;
     }
@@ -60,6 +65,7 @@ public class GroupMemberInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupAccessType getAccessType() {
         return accessType;
     }

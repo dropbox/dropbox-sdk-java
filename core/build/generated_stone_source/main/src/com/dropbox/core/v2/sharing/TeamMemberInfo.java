@@ -17,14 +17,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information about a team member.
  */
 public class TeamMemberInfo {
     // struct sharing.TeamMemberInfo (shared_links.stone)
 
+    @Nonnull
     protected final Team teamInfo;
+    @Nonnull
     protected final String displayName;
+    @Nullable
     protected final String memberId;
 
     /**
@@ -40,7 +46,7 @@ public class TeamMemberInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberInfo(Team teamInfo, String displayName, String memberId) {
+    public TeamMemberInfo(@Nonnull Team teamInfo, @Nonnull String displayName, @Nullable String memberId) {
         if (teamInfo == null) {
             throw new IllegalArgumentException("Required value for 'teamInfo' is null");
         }
@@ -65,7 +71,7 @@ public class TeamMemberInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberInfo(Team teamInfo, String displayName) {
+    public TeamMemberInfo(@Nonnull Team teamInfo, @Nonnull String displayName) {
         this(teamInfo, displayName, null);
     }
 
@@ -74,6 +80,7 @@ public class TeamMemberInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Team getTeamInfo() {
         return teamInfo;
     }
@@ -83,6 +90,7 @@ public class TeamMemberInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDisplayName() {
         return displayName;
     }
@@ -93,6 +101,7 @@ public class TeamMemberInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getMemberId() {
         return memberId;
     }

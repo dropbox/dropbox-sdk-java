@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Arguments for {@link
  * DbxUserSharingRequests#removeFileMember2(String,MemberSelector)}.
@@ -24,7 +26,9 @@ import java.util.regex.Pattern;
 class RemoveFileMemberArg {
     // struct sharing.RemoveFileMemberArg (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
+    @Nonnull
     protected final MemberSelector member;
 
     /**
@@ -43,7 +47,7 @@ class RemoveFileMemberArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RemoveFileMemberArg(String file, MemberSelector member) {
+    public RemoveFileMemberArg(@Nonnull String file, @Nonnull MemberSelector member) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -65,6 +69,7 @@ class RemoveFileMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFile() {
         return file;
     }
@@ -76,6 +81,7 @@ class RemoveFileMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MemberSelector getMember() {
         return member;
     }

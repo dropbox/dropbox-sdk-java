@@ -18,12 +18,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class ListUsersOnPaperDocResponse {
     // struct paper.ListUsersOnPaperDocResponse (paper.stone)
 
+    @Nonnull
     protected final List<InviteeInfoWithPermissionLevel> invitees;
+    @Nonnull
     protected final List<UserInfoWithPermissionLevel> users;
+    @Nonnull
     protected final UserInfo docOwner;
+    @Nonnull
     protected final Cursor cursor;
     protected final boolean hasMore;
 
@@ -53,7 +59,7 @@ public class ListUsersOnPaperDocResponse {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnPaperDocResponse(List<InviteeInfoWithPermissionLevel> invitees, List<UserInfoWithPermissionLevel> users, UserInfo docOwner, Cursor cursor, boolean hasMore) {
+    public ListUsersOnPaperDocResponse(@Nonnull List<InviteeInfoWithPermissionLevel> invitees, @Nonnull List<UserInfoWithPermissionLevel> users, @Nonnull UserInfo docOwner, @Nonnull Cursor cursor, boolean hasMore) {
         if (invitees == null) {
             throw new IllegalArgumentException("Required value for 'invitees' is null");
         }
@@ -89,6 +95,7 @@ public class ListUsersOnPaperDocResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<InviteeInfoWithPermissionLevel> getInvitees() {
         return invitees;
     }
@@ -99,6 +106,7 @@ public class ListUsersOnPaperDocResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<UserInfoWithPermissionLevel> getUsers() {
         return users;
     }
@@ -108,6 +116,7 @@ public class ListUsersOnPaperDocResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserInfo getDocOwner() {
         return docOwner;
     }
@@ -120,6 +129,7 @@ public class ListUsersOnPaperDocResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Cursor getCursor() {
         return cursor;
     }

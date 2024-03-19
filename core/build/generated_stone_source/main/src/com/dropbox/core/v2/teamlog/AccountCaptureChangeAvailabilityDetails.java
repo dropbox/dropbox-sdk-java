@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Granted/revoked option to enable account capture on team domains.
  */
 public class AccountCaptureChangeAvailabilityDetails {
     // struct team_log.AccountCaptureChangeAvailabilityDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccountCaptureAvailability newValue;
+    @Nullable
     protected final AccountCaptureAvailability previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class AccountCaptureChangeAvailabilityDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureChangeAvailabilityDetails(AccountCaptureAvailability newValue, AccountCaptureAvailability previousValue) {
+    public AccountCaptureChangeAvailabilityDetails(@Nonnull AccountCaptureAvailability newValue, @Nullable AccountCaptureAvailability previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -55,7 +60,7 @@ public class AccountCaptureChangeAvailabilityDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureChangeAvailabilityDetails(AccountCaptureAvailability newValue) {
+    public AccountCaptureChangeAvailabilityDetails(@Nonnull AccountCaptureAvailability newValue) {
         this(newValue, null);
     }
 
@@ -64,6 +69,7 @@ public class AccountCaptureChangeAvailabilityDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccountCaptureAvailability getNewValue() {
         return newValue;
     }
@@ -74,6 +80,7 @@ public class AccountCaptureChangeAvailabilityDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AccountCaptureAvailability getPreviousValue() {
         return previousValue;
     }

@@ -17,13 +17,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Success results for {@link DbxUserSharingRequests#listReceivedFiles}.
  */
 public class ListFilesResult {
     // struct sharing.ListFilesResult (sharing_files.stone)
 
+    @Nonnull
     protected final List<SharedFileMetadata> entries;
+    @Nullable
     protected final String cursor;
 
     /**
@@ -36,7 +41,7 @@ public class ListFilesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFilesResult(List<SharedFileMetadata> entries, String cursor) {
+    public ListFilesResult(@Nonnull List<SharedFileMetadata> entries, @Nullable String cursor) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -60,7 +65,7 @@ public class ListFilesResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFilesResult(List<SharedFileMetadata> entries) {
+    public ListFilesResult(@Nonnull List<SharedFileMetadata> entries) {
         this(entries, null);
     }
 
@@ -69,6 +74,7 @@ public class ListFilesResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<SharedFileMetadata> getEntries() {
         return entries;
     }
@@ -78,6 +84,7 @@ public class ListFilesResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCursor() {
         return cursor;
     }

@@ -16,12 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class ThumbnailV2Arg {
     // struct files.ThumbnailV2Arg (files.stone)
 
+    @Nonnull
     protected final PathOrLink resource;
+    @Nonnull
     protected final ThumbnailFormat format;
+    @Nonnull
     protected final ThumbnailSize size;
+    @Nonnull
     protected final ThumbnailMode mode;
 
     /**
@@ -42,7 +48,7 @@ class ThumbnailV2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailV2Arg(PathOrLink resource, ThumbnailFormat format, ThumbnailSize size, ThumbnailMode mode) {
+    public ThumbnailV2Arg(@Nonnull PathOrLink resource, @Nonnull ThumbnailFormat format, @Nonnull ThumbnailSize size, @Nonnull ThumbnailMode mode) {
         if (resource == null) {
             throw new IllegalArgumentException("Required value for 'resource' is null");
         }
@@ -74,7 +80,7 @@ class ThumbnailV2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailV2Arg(PathOrLink resource) {
+    public ThumbnailV2Arg(@Nonnull PathOrLink resource) {
         this(resource, ThumbnailFormat.JPEG, ThumbnailSize.W64H64, ThumbnailMode.STRICT);
     }
 
@@ -85,6 +91,7 @@ class ThumbnailV2Arg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PathOrLink getResource() {
         return resource;
     }
@@ -97,6 +104,7 @@ class ThumbnailV2Arg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailFormat.JPEG.
      */
+    @Nonnull
     public ThumbnailFormat getFormat() {
         return format;
     }
@@ -107,6 +115,7 @@ class ThumbnailV2Arg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailSize.W64H64.
      */
+    @Nonnull
     public ThumbnailSize getSize() {
         return size;
     }
@@ -117,6 +126,7 @@ class ThumbnailV2Arg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailMode.STRICT.
      */
+    @Nonnull
     public ThumbnailMode getMode() {
         return mode;
     }

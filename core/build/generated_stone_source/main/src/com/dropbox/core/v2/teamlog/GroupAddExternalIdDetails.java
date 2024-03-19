@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Added external ID for group.
  */
 public class GroupAddExternalIdDetails {
     // struct team_log.GroupAddExternalIdDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String newValue;
 
     /**
@@ -32,7 +35,7 @@ public class GroupAddExternalIdDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupAddExternalIdDetails(String newValue) {
+    public GroupAddExternalIdDetails(@Nonnull String newValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -44,6 +47,7 @@ public class GroupAddExternalIdDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }

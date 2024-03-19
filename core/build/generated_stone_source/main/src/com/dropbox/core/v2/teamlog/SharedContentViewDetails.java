@@ -17,14 +17,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Previewed shared file/folder.
  */
 public class SharedContentViewDetails {
     // struct team_log.SharedContentViewDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String sharedContentLink;
+    @Nullable
     protected final UserLogInfo sharedContentOwner;
+    @Nonnull
     protected final AccessLevel sharedContentAccessLevel;
 
     /**
@@ -38,7 +44,7 @@ public class SharedContentViewDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentViewDetails(String sharedContentLink, AccessLevel sharedContentAccessLevel, UserLogInfo sharedContentOwner) {
+    public SharedContentViewDetails(@Nonnull String sharedContentLink, @Nonnull AccessLevel sharedContentAccessLevel, @Nullable UserLogInfo sharedContentOwner) {
         if (sharedContentLink == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentLink' is null");
         }
@@ -62,7 +68,7 @@ public class SharedContentViewDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentViewDetails(String sharedContentLink, AccessLevel sharedContentAccessLevel) {
+    public SharedContentViewDetails(@Nonnull String sharedContentLink, @Nonnull AccessLevel sharedContentAccessLevel) {
         this(sharedContentLink, sharedContentAccessLevel, null);
     }
 
@@ -71,6 +77,7 @@ public class SharedContentViewDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSharedContentLink() {
         return sharedContentLink;
     }
@@ -80,6 +87,7 @@ public class SharedContentViewDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -89,6 +97,7 @@ public class SharedContentViewDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public UserLogInfo getSharedContentOwner() {
         return sharedContentOwner;
     }

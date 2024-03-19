@@ -16,14 +16,19 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Whether the user is allowed to take the sharing action on the file.
  */
 public class FilePermission {
     // struct sharing.FilePermission (sharing_files.stone)
 
+    @Nonnull
     protected final FileAction action;
     protected final boolean allow;
+    @Nullable
     protected final PermissionDeniedReason reason;
 
     /**
@@ -38,7 +43,7 @@ public class FilePermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FilePermission(FileAction action, boolean allow, PermissionDeniedReason reason) {
+    public FilePermission(@Nonnull FileAction action, boolean allow, @Nullable PermissionDeniedReason reason) {
         if (action == null) {
             throw new IllegalArgumentException("Required value for 'action' is null");
         }
@@ -59,7 +64,7 @@ public class FilePermission {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FilePermission(FileAction action, boolean allow) {
+    public FilePermission(@Nonnull FileAction action, boolean allow) {
         this(action, allow, null);
     }
 
@@ -68,6 +73,7 @@ public class FilePermission {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FileAction getAction() {
         return action;
     }
@@ -87,6 +93,7 @@ public class FilePermission {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PermissionDeniedReason getReason() {
         return reason;
     }

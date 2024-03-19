@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Reseller information.
  */
 public class ResellerLogInfo {
     // struct team_log.ResellerLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final String resellerName;
+    @Nonnull
     protected final String resellerEmail;
 
     /**
@@ -35,7 +39,7 @@ public class ResellerLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ResellerLogInfo(String resellerName, String resellerEmail) {
+    public ResellerLogInfo(@Nonnull String resellerName, @Nonnull String resellerEmail) {
         if (resellerName == null) {
             throw new IllegalArgumentException("Required value for 'resellerName' is null");
         }
@@ -54,6 +58,7 @@ public class ResellerLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getResellerName() {
         return resellerName;
     }
@@ -63,6 +68,7 @@ public class ResellerLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getResellerEmail() {
         return resellerEmail;
     }

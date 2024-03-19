@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Argument for selecting a group and a single user.
  */
 class GroupMemberSelector {
     // struct team.GroupMemberSelector (team_groups.stone)
 
+    @Nonnull
     protected final GroupSelector group;
+    @Nonnull
     protected final UserSelectorArg user;
 
     /**
@@ -37,7 +41,7 @@ class GroupMemberSelector {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMemberSelector(GroupSelector group, UserSelectorArg user) {
+    public GroupMemberSelector(@Nonnull GroupSelector group, @Nonnull UserSelectorArg user) {
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
         }
@@ -53,6 +57,7 @@ class GroupMemberSelector {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupSelector getGroup() {
         return group;
     }
@@ -64,6 +69,7 @@ class GroupMemberSelector {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }

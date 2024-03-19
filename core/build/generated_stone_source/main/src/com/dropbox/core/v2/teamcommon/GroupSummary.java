@@ -16,16 +16,24 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information about a group.
  */
 public class GroupSummary {
     // struct team_common.GroupSummary (team_common.stone)
 
+    @Nonnull
     protected final String groupName;
+    @Nonnull
     protected final String groupId;
+    @Nullable
     protected final String groupExternalId;
+    @Nullable
     protected final Long memberCount;
+    @Nonnull
     protected final GroupManagementType groupManagementType;
 
     /**
@@ -45,7 +53,7 @@ public class GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupSummary(String groupName, String groupId, GroupManagementType groupManagementType, String groupExternalId, Long memberCount) {
+    public GroupSummary(@Nonnull String groupName, @Nonnull String groupId, @Nonnull GroupManagementType groupManagementType, @Nullable String groupExternalId, @Nullable Long memberCount) {
         if (groupName == null) {
             throw new IllegalArgumentException("Required value for 'groupName' is null");
         }
@@ -75,7 +83,7 @@ public class GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupSummary(String groupName, String groupId, GroupManagementType groupManagementType) {
+    public GroupSummary(@Nonnull String groupName, @Nonnull String groupId, @Nonnull GroupManagementType groupManagementType) {
         this(groupName, groupId, groupManagementType, null, null);
     }
 
@@ -83,6 +91,7 @@ public class GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGroupName() {
         return groupName;
     }
@@ -91,6 +100,7 @@ public class GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGroupId() {
         return groupId;
     }
@@ -100,6 +110,7 @@ public class GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupManagementType getGroupManagementType() {
         return groupManagementType;
     }
@@ -110,6 +121,7 @@ public class GroupSummary {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getGroupExternalId() {
         return groupExternalId;
     }
@@ -119,6 +131,7 @@ public class GroupSummary {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getMemberCount() {
         return memberCount;
     }

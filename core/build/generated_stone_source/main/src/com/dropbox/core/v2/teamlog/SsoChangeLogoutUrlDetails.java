@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed sign-out URL for SSO.
  */
 public class SsoChangeLogoutUrlDetails {
     // struct team_log.SsoChangeLogoutUrlDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String previousValue;
+    @Nullable
     protected final String newValue;
 
     /**
@@ -35,7 +40,7 @@ public class SsoChangeLogoutUrlDetails {
      *     missing due to historical data gap.
      * @param newValue  New single sign-on logout URL.
      */
-    public SsoChangeLogoutUrlDetails(String previousValue, String newValue) {
+    public SsoChangeLogoutUrlDetails(@Nullable String previousValue, @Nullable String newValue) {
         this.previousValue = previousValue;
         this.newValue = newValue;
     }
@@ -55,6 +60,7 @@ public class SsoChangeLogoutUrlDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPreviousValue() {
         return previousValue;
     }
@@ -64,6 +70,7 @@ public class SsoChangeLogoutUrlDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getNewValue() {
         return newValue;
     }

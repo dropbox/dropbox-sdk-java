@@ -18,10 +18,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class GetMetadataArgs {
     // struct sharing.GetMetadataArgs (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
+    @Nullable
     protected final List<FolderAction> actions;
 
     /**
@@ -37,7 +42,7 @@ class GetMetadataArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetMetadataArgs(String sharedFolderId, List<FolderAction> actions) {
+    public GetMetadataArgs(@Nonnull String sharedFolderId, @Nullable List<FolderAction> actions) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }
@@ -66,7 +71,7 @@ class GetMetadataArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetMetadataArgs(String sharedFolderId) {
+    public GetMetadataArgs(@Nonnull String sharedFolderId) {
         this(sharedFolderId, null);
     }
 
@@ -75,6 +80,7 @@ class GetMetadataArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -87,6 +93,7 @@ class GetMetadataArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<FolderAction> getActions() {
         return actions;
     }

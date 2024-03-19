@@ -17,10 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class PropertiesSearchResult {
     // struct file_properties.PropertiesSearchResult (file_properties.stone)
 
+    @Nonnull
     protected final List<PropertiesSearchMatch> matches;
+    @Nullable
     protected final String cursor;
 
     /**
@@ -35,7 +40,7 @@ public class PropertiesSearchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchResult(List<PropertiesSearchMatch> matches, String cursor) {
+    public PropertiesSearchResult(@Nonnull List<PropertiesSearchMatch> matches, @Nullable String cursor) {
         if (matches == null) {
             throw new IllegalArgumentException("Required value for 'matches' is null");
         }
@@ -64,7 +69,7 @@ public class PropertiesSearchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchResult(List<PropertiesSearchMatch> matches) {
+    public PropertiesSearchResult(@Nonnull List<PropertiesSearchMatch> matches) {
         this(matches, null);
     }
 
@@ -73,6 +78,7 @@ public class PropertiesSearchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<PropertiesSearchMatch> getMatches() {
         return matches;
     }
@@ -85,6 +91,7 @@ public class PropertiesSearchResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCursor() {
         return cursor;
     }

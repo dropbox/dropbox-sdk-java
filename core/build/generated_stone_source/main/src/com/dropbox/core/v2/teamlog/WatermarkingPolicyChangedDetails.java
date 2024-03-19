@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed watermarking policy for team.
  */
 public class WatermarkingPolicyChangedDetails {
     // struct team_log.WatermarkingPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final WatermarkingPolicy newValue;
+    @Nonnull
     protected final WatermarkingPolicy previousValue;
 
     /**
@@ -35,7 +39,7 @@ public class WatermarkingPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public WatermarkingPolicyChangedDetails(WatermarkingPolicy newValue, WatermarkingPolicy previousValue) {
+    public WatermarkingPolicyChangedDetails(@Nonnull WatermarkingPolicy newValue, @Nonnull WatermarkingPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -51,6 +55,7 @@ public class WatermarkingPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public WatermarkingPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +65,7 @@ public class WatermarkingPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public WatermarkingPolicy getPreviousValue() {
         return previousValue;
     }

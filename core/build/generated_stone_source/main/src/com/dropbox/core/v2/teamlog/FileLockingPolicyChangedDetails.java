@@ -17,13 +17,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed file locking policy for team.
  */
 public class FileLockingPolicyChangedDetails {
     // struct team_log.FileLockingPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FileLockingPolicyState newValue;
+    @Nonnull
     protected final FileLockingPolicyState previousValue;
 
     /**
@@ -36,7 +40,7 @@ public class FileLockingPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileLockingPolicyChangedDetails(FileLockingPolicyState newValue, FileLockingPolicyState previousValue) {
+    public FileLockingPolicyChangedDetails(@Nonnull FileLockingPolicyState newValue, @Nonnull FileLockingPolicyState previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -52,6 +56,7 @@ public class FileLockingPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FileLockingPolicyState getNewValue() {
         return newValue;
     }
@@ -61,6 +66,7 @@ public class FileLockingPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FileLockingPolicyState getPreviousValue() {
         return previousValue;
     }

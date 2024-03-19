@@ -17,13 +17,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed access type of shared file/folder member.
  */
 public class SharedContentChangeMemberRoleDetails {
     // struct team_log.SharedContentChangeMemberRoleDetails (team_log_generated.stone)
 
+    @Nullable
     protected final AccessLevel previousAccessLevel;
+    @Nonnull
     protected final AccessLevel newAccessLevel;
 
     /**
@@ -36,7 +41,7 @@ public class SharedContentChangeMemberRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeMemberRoleDetails(AccessLevel newAccessLevel, AccessLevel previousAccessLevel) {
+    public SharedContentChangeMemberRoleDetails(@Nonnull AccessLevel newAccessLevel, @Nullable AccessLevel previousAccessLevel) {
         this.previousAccessLevel = previousAccessLevel;
         if (newAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'newAccessLevel' is null");
@@ -54,7 +59,7 @@ public class SharedContentChangeMemberRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeMemberRoleDetails(AccessLevel newAccessLevel) {
+    public SharedContentChangeMemberRoleDetails(@Nonnull AccessLevel newAccessLevel) {
         this(newAccessLevel, null);
     }
 
@@ -63,6 +68,7 @@ public class SharedContentChangeMemberRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getNewAccessLevel() {
         return newAccessLevel;
     }
@@ -72,6 +78,7 @@ public class SharedContentChangeMemberRoleDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AccessLevel getPreviousAccessLevel() {
         return previousAccessLevel;
     }

@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Requested to merge your team into another Dropbox team.
  */
 public class TeamMergeRequestSentShownToSecondaryTeamDetails {
     // struct team_log.TeamMergeRequestSentShownToSecondaryTeamDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String sentTo;
 
     /**
@@ -33,7 +36,7 @@ public class TeamMergeRequestSentShownToSecondaryTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestSentShownToSecondaryTeamDetails(String sentTo) {
+    public TeamMergeRequestSentShownToSecondaryTeamDetails(@Nonnull String sentTo) {
         if (sentTo == null) {
             throw new IllegalArgumentException("Required value for 'sentTo' is null");
         }
@@ -45,6 +48,7 @@ public class TeamMergeRequestSentShownToSecondaryTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSentTo() {
         return sentTo;
     }

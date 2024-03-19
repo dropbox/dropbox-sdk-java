@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class LegalHoldsListHeldRevisionsArg {
     // struct team.LegalHoldsListHeldRevisionsArg (team_legal_holds.stone)
 
+    @Nonnull
     protected final String id;
 
     /**
@@ -30,7 +33,7 @@ class LegalHoldsListHeldRevisionsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsListHeldRevisionsArg(String id) {
+    public LegalHoldsListHeldRevisionsArg(@Nonnull String id) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -45,6 +48,7 @@ class LegalHoldsListHeldRevisionsArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getId() {
         return id;
     }

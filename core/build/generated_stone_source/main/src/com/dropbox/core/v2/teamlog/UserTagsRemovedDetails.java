@@ -17,12 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Removed tags.
  */
 public class UserTagsRemovedDetails {
     // struct team_log.UserTagsRemovedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final List<String> values;
 
     /**
@@ -34,7 +37,7 @@ public class UserTagsRemovedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserTagsRemovedDetails(List<String> values) {
+    public UserTagsRemovedDetails(@Nonnull List<String> values) {
         if (values == null) {
             throw new IllegalArgumentException("Required value for 'values' is null");
         }
@@ -51,6 +54,7 @@ public class UserTagsRemovedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<String> getValues() {
         return values;
     }

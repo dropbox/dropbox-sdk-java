@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Api session.
  */
 public class ApiSessionLogInfo {
     // struct team_log.ApiSessionLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final String requestId;
 
     /**
@@ -32,7 +35,7 @@ public class ApiSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ApiSessionLogInfo(String requestId) {
+    public ApiSessionLogInfo(@Nonnull String requestId) {
         if (requestId == null) {
             throw new IllegalArgumentException("Required value for 'requestId' is null");
         }
@@ -44,6 +47,7 @@ public class ApiSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getRequestId() {
         return requestId;
     }

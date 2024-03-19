@@ -16,11 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class UploadSessionAppendArg {
     // struct files.UploadSessionAppendArg (files.stone)
 
+    @Nonnull
     protected final UploadSessionCursor cursor;
     protected final boolean close;
+    @Nullable
     protected final String contentHash;
 
     /**
@@ -43,7 +48,7 @@ class UploadSessionAppendArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionAppendArg(UploadSessionCursor cursor, boolean close, String contentHash) {
+    public UploadSessionAppendArg(@Nonnull UploadSessionCursor cursor, boolean close, @Nullable String contentHash) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -71,7 +76,7 @@ class UploadSessionAppendArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionAppendArg(UploadSessionCursor cursor) {
+    public UploadSessionAppendArg(@Nonnull UploadSessionCursor cursor) {
         this(cursor, false, null);
     }
 
@@ -80,6 +85,7 @@ class UploadSessionAppendArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UploadSessionCursor getCursor() {
         return cursor;
     }
@@ -106,6 +112,7 @@ class UploadSessionAppendArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getContentHash() {
         return contentHash;
     }

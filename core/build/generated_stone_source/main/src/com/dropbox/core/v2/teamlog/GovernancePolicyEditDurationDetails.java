@@ -16,16 +16,24 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed policy duration.
  */
 public class GovernancePolicyEditDurationDetails {
     // struct team_log.GovernancePolicyEditDurationDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String governancePolicyId;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final PolicyType policyType;
+    @Nonnull
     protected final DurationLogInfo previousValue;
+    @Nonnull
     protected final DurationLogInfo newValue;
 
     /**
@@ -40,7 +48,7 @@ public class GovernancePolicyEditDurationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyEditDurationDetails(String governancePolicyId, String name, DurationLogInfo previousValue, DurationLogInfo newValue, PolicyType policyType) {
+    public GovernancePolicyEditDurationDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull DurationLogInfo previousValue, @Nonnull DurationLogInfo newValue, @Nullable PolicyType policyType) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -73,7 +81,7 @@ public class GovernancePolicyEditDurationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyEditDurationDetails(String governancePolicyId, String name, DurationLogInfo previousValue, DurationLogInfo newValue) {
+    public GovernancePolicyEditDurationDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull DurationLogInfo previousValue, @Nonnull DurationLogInfo newValue) {
         this(governancePolicyId, name, previousValue, newValue, null);
     }
 
@@ -82,6 +90,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -91,6 +100,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -100,6 +110,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DurationLogInfo getPreviousValue() {
         return previousValue;
     }
@@ -109,6 +120,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DurationLogInfo getNewValue() {
         return newValue;
     }
@@ -118,6 +130,7 @@ public class GovernancePolicyEditDurationDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }

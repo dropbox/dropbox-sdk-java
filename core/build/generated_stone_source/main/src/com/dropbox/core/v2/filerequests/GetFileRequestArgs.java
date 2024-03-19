@@ -17,12 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Arguments for {@link DbxUserFileRequestsRequests#get(String)}.
  */
 class GetFileRequestArgs {
     // struct file_requests.GetFileRequestArgs (file_requests.stone)
 
+    @Nonnull
     protected final String id;
 
     /**
@@ -35,7 +38,7 @@ class GetFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetFileRequestArgs(String id) {
+    public GetFileRequestArgs(@Nonnull String id) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -53,6 +56,7 @@ class GetFileRequestArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getId() {
         return id;
     }

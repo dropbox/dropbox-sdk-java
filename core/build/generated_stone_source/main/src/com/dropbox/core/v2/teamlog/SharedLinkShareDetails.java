@@ -17,13 +17,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Added members as audience of shared link.
  */
 public class SharedLinkShareDetails {
     // struct team_log.SharedLinkShareDetails (team_log_generated.stone)
 
+    @Nullable
     protected final UserLogInfo sharedLinkOwner;
+    @Nullable
     protected final List<ExternalUserLogInfo> externalUsers;
 
     /**
@@ -40,7 +45,7 @@ public class SharedLinkShareDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkShareDetails(UserLogInfo sharedLinkOwner, List<ExternalUserLogInfo> externalUsers) {
+    public SharedLinkShareDetails(@Nullable UserLogInfo sharedLinkOwner, @Nullable List<ExternalUserLogInfo> externalUsers) {
         this.sharedLinkOwner = sharedLinkOwner;
         if (externalUsers != null) {
             for (ExternalUserLogInfo x : externalUsers) {
@@ -66,6 +71,7 @@ public class SharedLinkShareDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public UserLogInfo getSharedLinkOwner() {
         return sharedLinkOwner;
     }
@@ -75,6 +81,7 @@ public class SharedLinkShareDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<ExternalUserLogInfo> getExternalUsers() {
         return externalUsers;
     }

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Allowed non-collaborators to view links to files in shared folder.
  */
@@ -23,7 +26,9 @@ public class SfAllowNonMembersToViewSharedLinksDetails {
     // struct team_log.SfAllowNonMembersToViewSharedLinksDetails (team_log_generated.stone)
 
     protected final long targetAssetIndex;
+    @Nonnull
     protected final String originalFolderName;
+    @Nullable
     protected final String sharedFolderType;
 
     /**
@@ -37,7 +42,7 @@ public class SfAllowNonMembersToViewSharedLinksDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfAllowNonMembersToViewSharedLinksDetails(long targetAssetIndex, String originalFolderName, String sharedFolderType) {
+    public SfAllowNonMembersToViewSharedLinksDetails(long targetAssetIndex, @Nonnull String originalFolderName, @Nullable String sharedFolderType) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");
@@ -58,7 +63,7 @@ public class SfAllowNonMembersToViewSharedLinksDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfAllowNonMembersToViewSharedLinksDetails(long targetAssetIndex, String originalFolderName) {
+    public SfAllowNonMembersToViewSharedLinksDetails(long targetAssetIndex, @Nonnull String originalFolderName) {
         this(targetAssetIndex, originalFolderName, null);
     }
 
@@ -76,6 +81,7 @@ public class SfAllowNonMembersToViewSharedLinksDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getOriginalFolderName() {
         return originalFolderName;
     }
@@ -85,6 +91,7 @@ public class SfAllowNonMembersToViewSharedLinksDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getSharedFolderType() {
         return sharedFolderType;
     }

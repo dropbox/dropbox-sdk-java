@@ -17,11 +17,16 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class PaperCreateResult {
     // struct files.PaperCreateResult (files.stone)
 
+    @Nonnull
     protected final String url;
+    @Nonnull
     protected final String resultPath;
+    @Nonnull
     protected final String fileId;
     protected final long paperRevision;
 
@@ -38,7 +43,7 @@ public class PaperCreateResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperCreateResult(String url, String resultPath, String fileId, long paperRevision) {
+    public PaperCreateResult(@Nonnull String url, @Nonnull String resultPath, @Nonnull String fileId, long paperRevision) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }
@@ -65,6 +70,7 @@ public class PaperCreateResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -74,6 +80,7 @@ public class PaperCreateResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getResultPath() {
         return resultPath;
     }
@@ -83,6 +90,7 @@ public class PaperCreateResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFileId() {
         return fileId;
     }

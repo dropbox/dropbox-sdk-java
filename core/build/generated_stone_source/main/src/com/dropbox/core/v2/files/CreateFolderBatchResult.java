@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class CreateFolderBatchResult extends FileOpsResult {
     // struct files.CreateFolderBatchResult (files.stone)
 
+    @Nonnull
     protected final List<CreateFolderBatchResultEntry> entries;
 
     /**
@@ -32,7 +35,7 @@ public class CreateFolderBatchResult extends FileOpsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFolderBatchResult(List<CreateFolderBatchResultEntry> entries) {
+    public CreateFolderBatchResult(@Nonnull List<CreateFolderBatchResultEntry> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -50,6 +53,7 @@ public class CreateFolderBatchResult extends FileOpsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<CreateFolderBatchResultEntry> getEntries() {
         return entries;
     }

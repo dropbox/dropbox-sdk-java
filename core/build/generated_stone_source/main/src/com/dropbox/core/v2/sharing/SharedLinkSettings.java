@@ -18,15 +18,25 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class SharedLinkSettings {
     // struct sharing.SharedLinkSettings (shared_links.stone)
 
+    @Nullable
     protected final Boolean requirePassword;
+    @Nullable
     protected final String linkPassword;
+    @Nullable
     protected final Date expires;
+    @Nullable
     protected final LinkAudience audience;
+    @Nullable
     protected final RequestedLinkAccessLevel access;
+    @Nullable
     protected final RequestedVisibility requestedVisibility;
+    @Nullable
     protected final Boolean allowDownload;
 
     /**
@@ -53,7 +63,7 @@ public class SharedLinkSettings {
      * @param allowDownload  Boolean flag to allow or not download capabilities
      *     for shared links.
      */
-    public SharedLinkSettings(Boolean requirePassword, String linkPassword, Date expires, LinkAudience audience, RequestedLinkAccessLevel access, RequestedVisibility requestedVisibility, Boolean allowDownload) {
+    public SharedLinkSettings(@Nullable Boolean requirePassword, @Nullable String linkPassword, @Nullable Date expires, @Nullable LinkAudience audience, @Nullable RequestedLinkAccessLevel access, @Nullable RequestedVisibility requestedVisibility, @Nullable Boolean allowDownload) {
         this.requirePassword = requirePassword;
         this.linkPassword = linkPassword;
         this.expires = LangUtil.truncateMillis(expires);
@@ -77,6 +87,7 @@ public class SharedLinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getRequirePassword() {
         return requirePassword;
     }
@@ -87,6 +98,7 @@ public class SharedLinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getLinkPassword() {
         return linkPassword;
     }
@@ -96,6 +108,7 @@ public class SharedLinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getExpires() {
         return expires;
     }
@@ -109,6 +122,7 @@ public class SharedLinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public LinkAudience getAudience() {
         return audience;
     }
@@ -119,6 +133,7 @@ public class SharedLinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public RequestedLinkAccessLevel getAccess() {
         return access;
     }
@@ -129,6 +144,7 @@ public class SharedLinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public RequestedVisibility getRequestedVisibility() {
         return requestedVisibility;
     }
@@ -138,6 +154,7 @@ public class SharedLinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getAllowDownload() {
         return allowDownload;
     }

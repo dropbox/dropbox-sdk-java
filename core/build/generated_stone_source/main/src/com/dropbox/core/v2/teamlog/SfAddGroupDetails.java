@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Added team to shared folder.
  */
@@ -23,8 +26,11 @@ public class SfAddGroupDetails {
     // struct team_log.SfAddGroupDetails (team_log_generated.stone)
 
     protected final long targetAssetIndex;
+    @Nonnull
     protected final String originalFolderName;
+    @Nullable
     protected final String sharingPermission;
+    @Nonnull
     protected final String teamName;
 
     /**
@@ -39,7 +45,7 @@ public class SfAddGroupDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfAddGroupDetails(long targetAssetIndex, String originalFolderName, String teamName, String sharingPermission) {
+    public SfAddGroupDetails(long targetAssetIndex, @Nonnull String originalFolderName, @Nonnull String teamName, @Nullable String sharingPermission) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");
@@ -65,7 +71,7 @@ public class SfAddGroupDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfAddGroupDetails(long targetAssetIndex, String originalFolderName, String teamName) {
+    public SfAddGroupDetails(long targetAssetIndex, @Nonnull String originalFolderName, @Nonnull String teamName) {
         this(targetAssetIndex, originalFolderName, teamName, null);
     }
 
@@ -83,6 +89,7 @@ public class SfAddGroupDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getOriginalFolderName() {
         return originalFolderName;
     }
@@ -92,6 +99,7 @@ public class SfAddGroupDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamName() {
         return teamName;
     }
@@ -101,6 +109,7 @@ public class SfAddGroupDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getSharingPermission() {
         return sharingPermission;
     }

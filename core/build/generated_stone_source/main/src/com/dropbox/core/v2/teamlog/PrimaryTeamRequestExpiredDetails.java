@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Team merge request expiration details shown to the primary team
  */
 public class PrimaryTeamRequestExpiredDetails {
     // struct team_log.PrimaryTeamRequestExpiredDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String secondaryTeam;
+    @Nonnull
     protected final String sentBy;
 
     /**
@@ -35,7 +39,7 @@ public class PrimaryTeamRequestExpiredDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PrimaryTeamRequestExpiredDetails(String secondaryTeam, String sentBy) {
+    public PrimaryTeamRequestExpiredDetails(@Nonnull String secondaryTeam, @Nonnull String sentBy) {
         if (secondaryTeam == null) {
             throw new IllegalArgumentException("Required value for 'secondaryTeam' is null");
         }
@@ -51,6 +55,7 @@ public class PrimaryTeamRequestExpiredDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSecondaryTeam() {
         return secondaryTeam;
     }
@@ -60,6 +65,7 @@ public class PrimaryTeamRequestExpiredDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSentBy() {
         return sentBy;
     }

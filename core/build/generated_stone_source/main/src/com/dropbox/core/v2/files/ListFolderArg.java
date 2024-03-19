@@ -18,17 +18,24 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class ListFolderArg {
     // struct files.ListFolderArg (files.stone)
 
+    @Nonnull
     protected final String path;
     protected final boolean recursive;
     protected final boolean includeMediaInfo;
     protected final boolean includeDeleted;
     protected final boolean includeHasExplicitSharedMembers;
     protected final boolean includeMountedFolders;
+    @Nullable
     protected final Long limit;
+    @Nullable
     protected final SharedLink sharedLink;
+    @Nullable
     protected final TemplateFilterBase includePropertyGroups;
     protected final boolean includeNonDownloadableFiles;
 
@@ -71,7 +78,7 @@ class ListFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderArg(String path, boolean recursive, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, boolean includeMountedFolders, Long limit, SharedLink sharedLink, TemplateFilterBase includePropertyGroups, boolean includeNonDownloadableFiles) {
+    public ListFolderArg(@Nonnull String path, boolean recursive, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, boolean includeMountedFolders, @Nullable Long limit, @Nullable SharedLink sharedLink, @Nullable TemplateFilterBase includePropertyGroups, boolean includeNonDownloadableFiles) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -109,7 +116,7 @@ class ListFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderArg(String path) {
+    public ListFolderArg(@Nonnull String path) {
         this(path, false, false, false, false, true, null, null, null, true);
     }
 
@@ -118,6 +125,7 @@ class ListFolderArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -184,6 +192,7 @@ class ListFolderArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getLimit() {
         return limit;
     }
@@ -196,6 +205,7 @@ class ListFolderArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SharedLink getSharedLink() {
         return sharedLink;
     }
@@ -207,6 +217,7 @@ class ListFolderArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public TemplateFilterBase getIncludePropertyGroups() {
         return includePropertyGroups;
     }

@@ -17,13 +17,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed the password of the shared link.
  */
 public class SharedLinkSettingsChangePasswordDetails {
     // struct team_log.SharedLinkSettingsChangePasswordDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccessLevel sharedContentAccessLevel;
+    @Nullable
     protected final String sharedContentLink;
 
     /**
@@ -36,7 +41,7 @@ public class SharedLinkSettingsChangePasswordDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangePasswordDetails(AccessLevel sharedContentAccessLevel, String sharedContentLink) {
+    public SharedLinkSettingsChangePasswordDetails(@Nonnull AccessLevel sharedContentAccessLevel, @Nullable String sharedContentLink) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
@@ -55,7 +60,7 @@ public class SharedLinkSettingsChangePasswordDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangePasswordDetails(AccessLevel sharedContentAccessLevel) {
+    public SharedLinkSettingsChangePasswordDetails(@Nonnull AccessLevel sharedContentAccessLevel) {
         this(sharedContentAccessLevel, null);
     }
 
@@ -64,6 +69,7 @@ public class SharedLinkSettingsChangePasswordDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -73,6 +79,7 @@ public class SharedLinkSettingsChangePasswordDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getSharedContentLink() {
         return sharedContentLink;
     }

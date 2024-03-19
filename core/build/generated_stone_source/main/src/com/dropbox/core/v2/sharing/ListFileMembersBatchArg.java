@@ -17,12 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Arguments for {@link DbxUserSharingRequests#listFileMembersBatch(List,long)}.
  */
 class ListFileMembersBatchArg {
     // struct sharing.ListFileMembersBatchArg (sharing_files.stone)
 
+    @Nonnull
     protected final List<String> files;
     protected final long limit;
 
@@ -38,7 +41,7 @@ class ListFileMembersBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersBatchArg(List<String> files, long limit) {
+    public ListFileMembersBatchArg(@Nonnull List<String> files, long limit) {
         if (files == null) {
             throw new IllegalArgumentException("Required value for 'files' is null");
         }
@@ -75,7 +78,7 @@ class ListFileMembersBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersBatchArg(List<String> files) {
+    public ListFileMembersBatchArg(@Nonnull List<String> files) {
         this(files, 10L);
     }
 
@@ -84,6 +87,7 @@ class ListFileMembersBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<String> getFiles() {
         return files;
     }

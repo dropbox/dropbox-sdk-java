@@ -16,16 +16,24 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Downloaded content from a policy.
  */
 public class GovernancePolicyZipPartDownloadedDetails {
     // struct team_log.GovernancePolicyZipPartDownloadedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String governancePolicyId;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final PolicyType policyType;
+    @Nonnull
     protected final String exportName;
+    @Nullable
     protected final String part;
 
     /**
@@ -43,7 +51,7 @@ public class GovernancePolicyZipPartDownloadedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyZipPartDownloadedDetails(String governancePolicyId, String name, String exportName, PolicyType policyType, String part) {
+    public GovernancePolicyZipPartDownloadedDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull String exportName, @Nullable PolicyType policyType, @Nullable String part) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -72,7 +80,7 @@ public class GovernancePolicyZipPartDownloadedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyZipPartDownloadedDetails(String governancePolicyId, String name, String exportName) {
+    public GovernancePolicyZipPartDownloadedDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull String exportName) {
         this(governancePolicyId, name, exportName, null, null);
     }
 
@@ -81,6 +89,7 @@ public class GovernancePolicyZipPartDownloadedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -90,6 +99,7 @@ public class GovernancePolicyZipPartDownloadedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -99,6 +109,7 @@ public class GovernancePolicyZipPartDownloadedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getExportName() {
         return exportName;
     }
@@ -108,6 +119,7 @@ public class GovernancePolicyZipPartDownloadedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }
@@ -117,6 +129,7 @@ public class GovernancePolicyZipPartDownloadedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPart() {
         return part;
     }

@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Session's logged information.
  */
 public class SessionLogInfo {
     // struct team_log.SessionLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String sessionId;
 
     /**
@@ -29,7 +33,7 @@ public class SessionLogInfo {
      *
      * @param sessionId  Session ID.
      */
-    public SessionLogInfo(String sessionId) {
+    public SessionLogInfo(@Nullable String sessionId) {
         this.sessionId = sessionId;
     }
 
@@ -47,6 +51,7 @@ public class SessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getSessionId() {
         return sessionId;
     }

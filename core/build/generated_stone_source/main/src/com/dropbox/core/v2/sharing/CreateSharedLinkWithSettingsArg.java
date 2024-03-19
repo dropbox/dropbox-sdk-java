@@ -17,10 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class CreateSharedLinkWithSettingsArg {
     // struct sharing.CreateSharedLinkWithSettingsArg (shared_links.stone)
 
+    @Nonnull
     protected final String path;
+    @Nullable
     protected final SharedLinkSettings settings;
 
     /**
@@ -34,7 +39,7 @@ class CreateSharedLinkWithSettingsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateSharedLinkWithSettingsArg(String path, SharedLinkSettings settings) {
+    public CreateSharedLinkWithSettingsArg(@Nonnull String path, @Nullable SharedLinkSettings settings) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -57,7 +62,7 @@ class CreateSharedLinkWithSettingsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateSharedLinkWithSettingsArg(String path) {
+    public CreateSharedLinkWithSettingsArg(@Nonnull String path) {
         this(path, null);
     }
 
@@ -66,6 +71,7 @@ class CreateSharedLinkWithSettingsArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -75,6 +81,7 @@ class CreateSharedLinkWithSettingsArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SharedLinkSettings getSettings() {
         return settings;
     }

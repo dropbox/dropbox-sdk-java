@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed guest team admin status.
  */
@@ -23,10 +26,15 @@ public class GuestAdminChangeStatusDetails {
     // struct team_log.GuestAdminChangeStatusDetails (team_log_generated.stone)
 
     protected final boolean isGuest;
+    @Nullable
     protected final String guestTeamName;
+    @Nullable
     protected final String hostTeamName;
+    @Nonnull
     protected final TrustedTeamsRequestState previousValue;
+    @Nonnull
     protected final TrustedTeamsRequestState newValue;
+    @Nonnull
     protected final TrustedTeamsRequestAction actionDetails;
 
     /**
@@ -45,7 +53,7 @@ public class GuestAdminChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GuestAdminChangeStatusDetails(boolean isGuest, TrustedTeamsRequestState previousValue, TrustedTeamsRequestState newValue, TrustedTeamsRequestAction actionDetails, String guestTeamName, String hostTeamName) {
+    public GuestAdminChangeStatusDetails(boolean isGuest, @Nonnull TrustedTeamsRequestState previousValue, @Nonnull TrustedTeamsRequestState newValue, @Nonnull TrustedTeamsRequestAction actionDetails, @Nullable String guestTeamName, @Nullable String hostTeamName) {
         this.isGuest = isGuest;
         this.guestTeamName = guestTeamName;
         this.hostTeamName = hostTeamName;
@@ -76,7 +84,7 @@ public class GuestAdminChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GuestAdminChangeStatusDetails(boolean isGuest, TrustedTeamsRequestState previousValue, TrustedTeamsRequestState newValue, TrustedTeamsRequestAction actionDetails) {
+    public GuestAdminChangeStatusDetails(boolean isGuest, @Nonnull TrustedTeamsRequestState previousValue, @Nonnull TrustedTeamsRequestState newValue, @Nonnull TrustedTeamsRequestAction actionDetails) {
         this(isGuest, previousValue, newValue, actionDetails, null, null);
     }
 
@@ -94,6 +102,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TrustedTeamsRequestState getPreviousValue() {
         return previousValue;
     }
@@ -103,6 +112,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TrustedTeamsRequestState getNewValue() {
         return newValue;
     }
@@ -112,6 +122,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TrustedTeamsRequestAction getActionDetails() {
         return actionDetails;
     }
@@ -121,6 +132,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getGuestTeamName() {
         return guestTeamName;
     }
@@ -130,6 +142,7 @@ public class GuestAdminChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getHostTeamName() {
         return hostTeamName;
     }

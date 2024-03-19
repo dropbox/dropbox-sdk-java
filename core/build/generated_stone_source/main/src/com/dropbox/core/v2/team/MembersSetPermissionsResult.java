@@ -16,10 +16,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class MembersSetPermissionsResult {
     // struct team.MembersSetPermissionsResult (team_members.stone)
 
+    @Nonnull
     protected final String teamMemberId;
+    @Nonnull
     protected final AdminTier role;
 
     /**
@@ -31,7 +35,7 @@ public class MembersSetPermissionsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetPermissionsResult(String teamMemberId, AdminTier role) {
+    public MembersSetPermissionsResult(@Nonnull String teamMemberId, @Nonnull AdminTier role) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }
@@ -47,6 +51,7 @@ public class MembersSetPermissionsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }
@@ -56,6 +61,7 @@ public class MembersSetPermissionsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AdminTier getRole() {
         return role;
     }

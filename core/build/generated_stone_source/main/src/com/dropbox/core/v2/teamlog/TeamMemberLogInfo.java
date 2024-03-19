@@ -16,14 +16,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Team member's logged information.
  */
 public class TeamMemberLogInfo extends UserLogInfo {
     // struct team_log.TeamMemberLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final String teamMemberId;
+    @Nullable
     protected final String memberExternalId;
+    @Nullable
     protected final TeamLogInfo team;
 
     /**
@@ -45,7 +51,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberLogInfo(String accountId, String displayName, String email, String teamMemberId, String memberExternalId, TeamLogInfo team) {
+    public TeamMemberLogInfo(@Nullable String accountId, @Nullable String displayName, @Nullable String email, @Nullable String teamMemberId, @Nullable String memberExternalId, @Nullable TeamLogInfo team) {
         super(accountId, displayName, email);
         this.teamMemberId = teamMemberId;
         if (memberExternalId != null) {
@@ -71,6 +77,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -80,6 +87,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -89,6 +97,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getEmail() {
         return email;
     }
@@ -98,6 +107,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getTeamMemberId() {
         return teamMemberId;
     }
@@ -107,6 +117,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getMemberExternalId() {
         return memberExternalId;
     }
@@ -116,6 +127,7 @@ public class TeamMemberLogInfo extends UserLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public TeamLogInfo getTeam() {
         return team;
     }

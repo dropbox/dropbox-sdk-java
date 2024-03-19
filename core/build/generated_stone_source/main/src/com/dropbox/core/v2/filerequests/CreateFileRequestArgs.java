@@ -17,16 +17,23 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Arguments for {@link DbxUserFileRequestsRequests#create(String,String)}.
  */
 class CreateFileRequestArgs {
     // struct file_requests.CreateFileRequestArgs (file_requests.stone)
 
+    @Nonnull
     protected final String title;
+    @Nonnull
     protected final String destination;
+    @Nullable
     protected final FileRequestDeadline deadline;
     protected final boolean open;
+    @Nullable
     protected final String description;
 
     /**
@@ -51,7 +58,7 @@ class CreateFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFileRequestArgs(String title, String destination, FileRequestDeadline deadline, boolean open, String description) {
+    public CreateFileRequestArgs(@Nonnull String title, @Nonnull String destination, @Nullable FileRequestDeadline deadline, boolean open, @Nullable String description) {
         if (title == null) {
             throw new IllegalArgumentException("Required value for 'title' is null");
         }
@@ -86,7 +93,7 @@ class CreateFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateFileRequestArgs(String title, String destination) {
+    public CreateFileRequestArgs(@Nonnull String title, @Nonnull String destination) {
         this(title, destination, null, true, null);
     }
 
@@ -95,6 +102,7 @@ class CreateFileRequestArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTitle() {
         return title;
     }
@@ -106,6 +114,7 @@ class CreateFileRequestArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDestination() {
         return destination;
     }
@@ -116,6 +125,7 @@ class CreateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public FileRequestDeadline getDeadline() {
         return deadline;
     }
@@ -137,6 +147,7 @@ class CreateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDescription() {
         return description;
     }

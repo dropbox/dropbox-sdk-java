@@ -16,11 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class UploadSessionStartArg {
     // struct files.UploadSessionStartArg (files.stone)
 
     protected final boolean close;
+    @Nullable
     protected final UploadSessionType sessionType;
+    @Nullable
     protected final String contentHash;
 
     /**
@@ -43,7 +48,7 @@ class UploadSessionStartArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionStartArg(boolean close, UploadSessionType sessionType, String contentHash) {
+    public UploadSessionStartArg(boolean close, @Nullable UploadSessionType sessionType, @Nullable String contentHash) {
         this.close = close;
         this.sessionType = sessionType;
         if (contentHash != null) {
@@ -85,6 +90,7 @@ class UploadSessionStartArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public UploadSessionType getSessionType() {
         return sessionType;
     }
@@ -98,6 +104,7 @@ class UploadSessionStartArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getContentHash() {
         return contentHash;
     }

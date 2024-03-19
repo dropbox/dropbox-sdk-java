@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Basic information about any account.
  */
@@ -23,6 +26,7 @@ public class BasicAccount extends Account {
     // struct users.BasicAccount (users.stone)
 
     protected final boolean isTeammate;
+    @Nullable
     protected final String teamMemberId;
 
     /**
@@ -52,7 +56,7 @@ public class BasicAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BasicAccount(String accountId, Name name, String email, boolean emailVerified, boolean disabled, boolean isTeammate, String profilePhotoUrl, String teamMemberId) {
+    public BasicAccount(@Nonnull String accountId, @Nonnull Name name, @Nonnull String email, boolean emailVerified, boolean disabled, boolean isTeammate, @Nullable String profilePhotoUrl, @Nullable String teamMemberId) {
         super(accountId, name, email, emailVerified, disabled, profilePhotoUrl);
         this.isTeammate = isTeammate;
         this.teamMemberId = teamMemberId;
@@ -79,7 +83,7 @@ public class BasicAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BasicAccount(String accountId, Name name, String email, boolean emailVerified, boolean disabled, boolean isTeammate) {
+    public BasicAccount(@Nonnull String accountId, @Nonnull Name name, @Nonnull String email, boolean emailVerified, boolean disabled, boolean isTeammate) {
         this(accountId, name, email, emailVerified, disabled, isTeammate, null, null);
     }
 
@@ -88,6 +92,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAccountId() {
         return accountId;
     }
@@ -97,6 +102,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Name getName() {
         return name;
     }
@@ -108,6 +114,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEmail() {
         return email;
     }
@@ -145,6 +152,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }
@@ -156,6 +164,7 @@ public class BasicAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getTeamMemberId() {
         return teamMemberId;
     }

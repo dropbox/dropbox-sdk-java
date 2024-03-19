@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Failed to connect app for member.
  */
 public class AppBlockedByPermissionsDetails {
     // struct team_log.AppBlockedByPermissionsDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AppLogInfo appInfo;
 
     /**
@@ -32,7 +35,7 @@ public class AppBlockedByPermissionsDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AppBlockedByPermissionsDetails(AppLogInfo appInfo) {
+    public AppBlockedByPermissionsDetails(@Nonnull AppLogInfo appInfo) {
         if (appInfo == null) {
             throw new IllegalArgumentException("Required value for 'appInfo' is null");
         }
@@ -44,6 +47,7 @@ public class AppBlockedByPermissionsDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AppLogInfo getAppInfo() {
         return appInfo;
     }

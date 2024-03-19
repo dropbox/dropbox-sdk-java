@@ -16,11 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class PropertiesSearchQuery {
     // struct file_properties.PropertiesSearchQuery (file_properties.stone)
 
+    @Nonnull
     protected final String query;
+    @Nonnull
     protected final PropertiesSearchMode mode;
+    @Nonnull
     protected final LogicalOperator logicalOperator;
 
     /**
@@ -35,7 +40,7 @@ public class PropertiesSearchQuery {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchQuery(String query, PropertiesSearchMode mode, LogicalOperator logicalOperator) {
+    public PropertiesSearchQuery(@Nonnull String query, @Nonnull PropertiesSearchMode mode, @Nonnull LogicalOperator logicalOperator) {
         if (query == null) {
             throw new IllegalArgumentException("Required value for 'query' is null");
         }
@@ -63,7 +68,7 @@ public class PropertiesSearchQuery {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchQuery(String query, PropertiesSearchMode mode) {
+    public PropertiesSearchQuery(@Nonnull String query, @Nonnull PropertiesSearchMode mode) {
         this(query, mode, LogicalOperator.OR_OPERATOR);
     }
 
@@ -72,6 +77,7 @@ public class PropertiesSearchQuery {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getQuery() {
         return query;
     }
@@ -81,6 +87,7 @@ public class PropertiesSearchQuery {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PropertiesSearchMode getMode() {
         return mode;
     }
@@ -91,6 +98,7 @@ public class PropertiesSearchQuery {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     LogicalOperator.OR_OPERATOR.
      */
+    @Nonnull
     public LogicalOperator getLogicalOperator() {
         return logicalOperator;
     }

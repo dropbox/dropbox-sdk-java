@@ -20,6 +20,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The information about a user member of the shared content with an appended
  * last seen timestamp.
@@ -27,7 +30,9 @@ import java.util.List;
 public class UserFileMembershipInfo extends UserMembershipInfo {
     // struct sharing.UserFileMembershipInfo (sharing_files.stone)
 
+    @Nullable
     protected final Date timeLastSeen;
+    @Nullable
     protected final PlatformType platformType;
 
     /**
@@ -56,7 +61,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserFileMembershipInfo(AccessLevel accessType, UserInfo user, List<MemberPermission> permissions, String initials, boolean isInherited, Date timeLastSeen, PlatformType platformType) {
+    public UserFileMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull UserInfo user, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited, @Nullable Date timeLastSeen, @Nullable PlatformType platformType) {
         super(accessType, user, permissions, initials, isInherited);
         this.timeLastSeen = LangUtil.truncateMillis(timeLastSeen);
         this.platformType = platformType;
@@ -77,7 +82,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserFileMembershipInfo(AccessLevel accessType, UserInfo user) {
+    public UserFileMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull UserInfo user) {
         this(accessType, user, null, null, false, null, null);
     }
 
@@ -87,6 +92,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -96,6 +102,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserInfo getUser() {
         return user;
     }
@@ -106,6 +113,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<MemberPermission> getPermissions() {
         return permissions;
     }
@@ -115,6 +123,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getInitials() {
         return initials;
     }
@@ -136,6 +145,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getTimeLastSeen() {
         return timeLastSeen;
     }
@@ -145,6 +155,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PlatformType getPlatformType() {
         return platformType;
     }

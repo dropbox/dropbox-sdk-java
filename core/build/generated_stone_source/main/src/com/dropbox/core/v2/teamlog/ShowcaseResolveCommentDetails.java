@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Resolved showcase comment.
  */
 public class ShowcaseResolveCommentDetails {
     // struct team_log.ShowcaseResolveCommentDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nullable
     protected final String commentText;
 
     /**
@@ -34,7 +39,7 @@ public class ShowcaseResolveCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseResolveCommentDetails(String eventUuid, String commentText) {
+    public ShowcaseResolveCommentDetails(@Nonnull String eventUuid, @Nullable String commentText) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -52,7 +57,7 @@ public class ShowcaseResolveCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseResolveCommentDetails(String eventUuid) {
+    public ShowcaseResolveCommentDetails(@Nonnull String eventUuid) {
         this(eventUuid, null);
     }
 
@@ -61,6 +66,7 @@ public class ShowcaseResolveCommentDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -70,6 +76,7 @@ public class ShowcaseResolveCommentDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCommentText() {
         return commentText;
     }

@@ -16,14 +16,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Followed/unfollowed Paper folder.
  */
 public class PaperFolderChangeSubscriptionDetails {
     // struct team_log.PaperFolderChangeSubscriptionDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nonnull
     protected final String newSubscriptionLevel;
+    @Nullable
     protected final String previousSubscriptionLevel;
 
     /**
@@ -38,7 +44,7 @@ public class PaperFolderChangeSubscriptionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderChangeSubscriptionDetails(String eventUuid, String newSubscriptionLevel, String previousSubscriptionLevel) {
+    public PaperFolderChangeSubscriptionDetails(@Nonnull String eventUuid, @Nonnull String newSubscriptionLevel, @Nullable String previousSubscriptionLevel) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -62,7 +68,7 @@ public class PaperFolderChangeSubscriptionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderChangeSubscriptionDetails(String eventUuid, String newSubscriptionLevel) {
+    public PaperFolderChangeSubscriptionDetails(@Nonnull String eventUuid, @Nonnull String newSubscriptionLevel) {
         this(eventUuid, newSubscriptionLevel, null);
     }
 
@@ -71,6 +77,7 @@ public class PaperFolderChangeSubscriptionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -80,6 +87,7 @@ public class PaperFolderChangeSubscriptionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getNewSubscriptionLevel() {
         return newSubscriptionLevel;
     }
@@ -90,6 +98,7 @@ public class PaperFolderChangeSubscriptionDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPreviousSubscriptionLevel() {
         return previousSubscriptionLevel;
     }

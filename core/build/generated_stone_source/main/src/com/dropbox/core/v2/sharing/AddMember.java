@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * The member and type of access the member should have when added to a shared
  * folder.
@@ -23,7 +25,9 @@ import java.util.Arrays;
 public class AddMember {
     // struct sharing.AddMember (sharing_folders.stone)
 
+    @Nonnull
     protected final MemberSelector member;
+    @Nonnull
     protected final AccessLevel accessLevel;
 
     /**
@@ -39,7 +43,7 @@ public class AddMember {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddMember(MemberSelector member, AccessLevel accessLevel) {
+    public AddMember(@Nonnull MemberSelector member, @Nonnull AccessLevel accessLevel) {
         if (member == null) {
             throw new IllegalArgumentException("Required value for 'member' is null");
         }
@@ -62,7 +66,7 @@ public class AddMember {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddMember(MemberSelector member) {
+    public AddMember(@Nonnull MemberSelector member) {
         this(member, AccessLevel.VIEWER);
     }
 
@@ -71,6 +75,7 @@ public class AddMember {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MemberSelector getMember() {
         return member;
     }
@@ -82,6 +87,7 @@ public class AddMember {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     AccessLevel.VIEWER.
      */
+    @Nonnull
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }

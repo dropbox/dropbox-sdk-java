@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed how long members can stay signed in to Dropbox.com.
  */
 public class WebSessionsChangeFixedLengthPolicyDetails {
     // struct team_log.WebSessionsChangeFixedLengthPolicyDetails (team_log_generated.stone)
 
+    @Nullable
     protected final WebSessionsFixedLengthPolicy newValue;
+    @Nullable
     protected final WebSessionsFixedLengthPolicy previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class WebSessionsChangeFixedLengthPolicyDetails {
      * @param previousValue  Previous session length policy. Might be missing
      *     due to historical data gap.
      */
-    public WebSessionsChangeFixedLengthPolicyDetails(WebSessionsFixedLengthPolicy newValue, WebSessionsFixedLengthPolicy previousValue) {
+    public WebSessionsChangeFixedLengthPolicyDetails(@Nullable WebSessionsFixedLengthPolicy newValue, @Nullable WebSessionsFixedLengthPolicy previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }
@@ -55,6 +60,7 @@ public class WebSessionsChangeFixedLengthPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public WebSessionsFixedLengthPolicy getNewValue() {
         return newValue;
     }
@@ -65,6 +71,7 @@ public class WebSessionsChangeFixedLengthPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public WebSessionsFixedLengthPolicy getPreviousValue() {
         return previousValue;
     }

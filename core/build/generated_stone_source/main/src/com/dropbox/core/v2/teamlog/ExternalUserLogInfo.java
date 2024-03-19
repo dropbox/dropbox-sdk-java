@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * A user without a Dropbox account.
  */
 public class ExternalUserLogInfo {
     // struct team_log.ExternalUserLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final String userIdentifier;
+    @Nonnull
     protected final IdentifierType identifierType;
 
     /**
@@ -35,7 +39,7 @@ public class ExternalUserLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExternalUserLogInfo(String userIdentifier, IdentifierType identifierType) {
+    public ExternalUserLogInfo(@Nonnull String userIdentifier, @Nonnull IdentifierType identifierType) {
         if (userIdentifier == null) {
             throw new IllegalArgumentException("Required value for 'userIdentifier' is null");
         }
@@ -51,6 +55,7 @@ public class ExternalUserLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUserIdentifier() {
         return userIdentifier;
     }
@@ -60,6 +65,7 @@ public class ExternalUserLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public IdentifierType getIdentifierType() {
         return identifierType;
     }

@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class GetTagsResult {
     // struct files.GetTagsResult (file_tagging.stone)
 
+    @Nonnull
     protected final List<PathToTags> pathsToTags;
 
     /**
@@ -30,7 +33,7 @@ public class GetTagsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTagsResult(List<PathToTags> pathsToTags) {
+    public GetTagsResult(@Nonnull List<PathToTags> pathsToTags) {
         if (pathsToTags == null) {
             throw new IllegalArgumentException("Required value for 'pathsToTags' is null");
         }
@@ -47,6 +50,7 @@ public class GetTagsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<PathToTags> getPathsToTags() {
         return pathsToTags;
     }

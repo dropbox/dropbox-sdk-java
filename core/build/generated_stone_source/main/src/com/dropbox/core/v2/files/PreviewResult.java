@@ -16,10 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class PreviewResult {
     // struct files.PreviewResult (files.stone)
 
+    @Nullable
     protected final FileMetadata fileMetadata;
+    @Nullable
     protected final MinimalFileLinkMetadata linkMetadata;
 
     /**
@@ -33,7 +38,7 @@ public class PreviewResult {
      *     as an argument. Will be populated if the endpoint is called using a
      *     shared link (SharedLinkFileInfo).
      */
-    public PreviewResult(FileMetadata fileMetadata, MinimalFileLinkMetadata linkMetadata) {
+    public PreviewResult(@Nullable FileMetadata fileMetadata, @Nullable MinimalFileLinkMetadata linkMetadata) {
         this.fileMetadata = fileMetadata;
         this.linkMetadata = linkMetadata;
     }
@@ -53,6 +58,7 @@ public class PreviewResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public FileMetadata getFileMetadata() {
         return fileMetadata;
     }
@@ -64,6 +70,7 @@ public class PreviewResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public MinimalFileLinkMetadata getLinkMetadata() {
         return linkMetadata;
     }

@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Sent domain invites to existing domain accounts.
  */
 public class DomainInvitesEmailExistingUsersDetails {
     // struct team_log.DomainInvitesEmailExistingUsersDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String domainName;
     protected final long numRecipients;
 
@@ -34,7 +37,7 @@ public class DomainInvitesEmailExistingUsersDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DomainInvitesEmailExistingUsersDetails(String domainName, long numRecipients) {
+    public DomainInvitesEmailExistingUsersDetails(@Nonnull String domainName, long numRecipients) {
         if (domainName == null) {
             throw new IllegalArgumentException("Required value for 'domainName' is null");
         }
@@ -47,6 +50,7 @@ public class DomainInvitesEmailExistingUsersDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDomainName() {
         return domainName;
     }

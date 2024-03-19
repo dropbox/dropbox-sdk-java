@@ -18,18 +18,28 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * If any of the policies are unset, then they retain their current setting.
  */
 class UpdateFolderPolicyArg {
     // struct sharing.UpdateFolderPolicyArg (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
+    @Nullable
     protected final MemberPolicy memberPolicy;
+    @Nullable
     protected final AclUpdatePolicy aclUpdatePolicy;
+    @Nullable
     protected final ViewerInfoPolicy viewerInfoPolicy;
+    @Nullable
     protected final SharedLinkPolicy sharedLinkPolicy;
+    @Nullable
     protected final LinkSettings linkSettings;
+    @Nullable
     protected final List<FolderAction> actions;
 
     /**
@@ -59,7 +69,7 @@ class UpdateFolderPolicyArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFolderPolicyArg(String sharedFolderId, MemberPolicy memberPolicy, AclUpdatePolicy aclUpdatePolicy, ViewerInfoPolicy viewerInfoPolicy, SharedLinkPolicy sharedLinkPolicy, LinkSettings linkSettings, List<FolderAction> actions) {
+    public UpdateFolderPolicyArg(@Nonnull String sharedFolderId, @Nullable MemberPolicy memberPolicy, @Nullable AclUpdatePolicy aclUpdatePolicy, @Nullable ViewerInfoPolicy viewerInfoPolicy, @Nullable SharedLinkPolicy sharedLinkPolicy, @Nullable LinkSettings linkSettings, @Nullable List<FolderAction> actions) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }
@@ -93,7 +103,7 @@ class UpdateFolderPolicyArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFolderPolicyArg(String sharedFolderId) {
+    public UpdateFolderPolicyArg(@Nonnull String sharedFolderId) {
         this(sharedFolderId, null, null, null, null, null, null);
     }
 
@@ -102,6 +112,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -112,6 +123,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public MemberPolicy getMemberPolicy() {
         return memberPolicy;
     }
@@ -121,6 +133,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AclUpdatePolicy getAclUpdatePolicy() {
         return aclUpdatePolicy;
     }
@@ -130,6 +143,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public ViewerInfoPolicy getViewerInfoPolicy() {
         return viewerInfoPolicy;
     }
@@ -141,6 +155,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SharedLinkPolicy getSharedLinkPolicy() {
         return sharedLinkPolicy;
     }
@@ -150,6 +165,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public LinkSettings getLinkSettings() {
         return linkSettings;
     }
@@ -162,6 +178,7 @@ class UpdateFolderPolicyArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<FolderAction> getActions() {
         return actions;
     }

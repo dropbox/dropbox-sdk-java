@@ -18,15 +18,22 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information about linked Dropbox desktop client sessions.
  */
 public class DesktopClientSession extends DeviceSession {
     // struct team.DesktopClientSession (team_devices.stone)
 
+    @Nonnull
     protected final String hostName;
+    @Nonnull
     protected final DesktopPlatform clientType;
+    @Nonnull
     protected final String clientVersion;
+    @Nonnull
     protected final String platform;
     protected final boolean isDeleteOnUnlinkSupported;
 
@@ -55,7 +62,7 @@ public class DesktopClientSession extends DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DesktopClientSession(String sessionId, String hostName, DesktopPlatform clientType, String clientVersion, String platform, boolean isDeleteOnUnlinkSupported, String ipAddress, String country, Date created, Date updated) {
+    public DesktopClientSession(@Nonnull String sessionId, @Nonnull String hostName, @Nonnull DesktopPlatform clientType, @Nonnull String clientVersion, @Nonnull String platform, boolean isDeleteOnUnlinkSupported, @Nullable String ipAddress, @Nullable String country, @Nullable Date created, @Nullable Date updated) {
         super(sessionId, ipAddress, country, created, updated);
         if (hostName == null) {
             throw new IllegalArgumentException("Required value for 'hostName' is null");
@@ -95,7 +102,7 @@ public class DesktopClientSession extends DeviceSession {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DesktopClientSession(String sessionId, String hostName, DesktopPlatform clientType, String clientVersion, String platform, boolean isDeleteOnUnlinkSupported) {
+    public DesktopClientSession(@Nonnull String sessionId, @Nonnull String hostName, @Nonnull DesktopPlatform clientType, @Nonnull String clientVersion, @Nonnull String platform, boolean isDeleteOnUnlinkSupported) {
         this(sessionId, hostName, clientType, clientVersion, platform, isDeleteOnUnlinkSupported, null, null, null, null);
     }
 
@@ -104,6 +111,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSessionId() {
         return sessionId;
     }
@@ -113,6 +121,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getHostName() {
         return hostName;
     }
@@ -122,6 +131,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DesktopPlatform getClientType() {
         return clientType;
     }
@@ -131,6 +141,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getClientVersion() {
         return clientVersion;
     }
@@ -140,6 +151,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPlatform() {
         return platform;
     }
@@ -158,6 +170,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -167,6 +180,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCountry() {
         return country;
     }
@@ -176,6 +190,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getCreated() {
         return created;
     }
@@ -185,6 +200,7 @@ public class DesktopClientSession extends DeviceSession {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getUpdated() {
         return updated;
     }

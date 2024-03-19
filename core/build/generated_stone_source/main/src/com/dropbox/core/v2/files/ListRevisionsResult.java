@@ -19,11 +19,16 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class ListRevisionsResult {
     // struct files.ListRevisionsResult (files.stone)
 
     protected final boolean isDeleted;
+    @Nullable
     protected final Date serverDeleted;
+    @Nonnull
     protected final List<FileMetadata> entries;
 
     /**
@@ -38,7 +43,7 @@ public class ListRevisionsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListRevisionsResult(boolean isDeleted, List<FileMetadata> entries, Date serverDeleted) {
+    public ListRevisionsResult(boolean isDeleted, @Nonnull List<FileMetadata> entries, @Nullable Date serverDeleted) {
         this.isDeleted = isDeleted;
         this.serverDeleted = LangUtil.truncateMillis(serverDeleted);
         if (entries == null) {
@@ -66,7 +71,7 @@ public class ListRevisionsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListRevisionsResult(boolean isDeleted, List<FileMetadata> entries) {
+    public ListRevisionsResult(boolean isDeleted, @Nonnull List<FileMetadata> entries) {
         this(isDeleted, entries, null);
     }
 
@@ -86,6 +91,7 @@ public class ListRevisionsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<FileMetadata> getEntries() {
         return entries;
     }
@@ -95,6 +101,7 @@ public class ListRevisionsResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getServerDeleted() {
         return serverDeleted;
     }

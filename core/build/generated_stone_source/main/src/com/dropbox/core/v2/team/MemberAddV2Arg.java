@@ -18,9 +18,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class MemberAddV2Arg extends MemberAddArgBase {
     // struct team.MemberAddV2Arg (team_members.stone)
 
+    @Nullable
     protected final List<String> roleIds;
 
     /**
@@ -50,7 +54,7 @@ public class MemberAddV2Arg extends MemberAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddV2Arg(String memberEmail, String memberGivenName, String memberSurname, String memberExternalId, String memberPersistentId, boolean sendWelcomeEmail, Boolean isDirectoryRestricted, List<String> roleIds) {
+    public MemberAddV2Arg(@Nonnull String memberEmail, @Nullable String memberGivenName, @Nullable String memberSurname, @Nullable String memberExternalId, @Nullable String memberPersistentId, boolean sendWelcomeEmail, @Nullable Boolean isDirectoryRestricted, @Nullable List<String> roleIds) {
         super(memberEmail, memberGivenName, memberSurname, memberExternalId, memberPersistentId, sendWelcomeEmail, isDirectoryRestricted);
         if (roleIds != null) {
             if (roleIds.size() > 1) {
@@ -84,7 +88,7 @@ public class MemberAddV2Arg extends MemberAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddV2Arg(String memberEmail) {
+    public MemberAddV2Arg(@Nonnull String memberEmail) {
         this(memberEmail, null, null, null, null, true, null, null);
     }
 
@@ -92,6 +96,7 @@ public class MemberAddV2Arg extends MemberAddArgBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getMemberEmail() {
         return memberEmail;
     }
@@ -101,6 +106,7 @@ public class MemberAddV2Arg extends MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getMemberGivenName() {
         return memberGivenName;
     }
@@ -110,6 +116,7 @@ public class MemberAddV2Arg extends MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getMemberSurname() {
         return memberSurname;
     }
@@ -119,6 +126,7 @@ public class MemberAddV2Arg extends MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getMemberExternalId() {
         return memberExternalId;
     }
@@ -129,6 +137,7 @@ public class MemberAddV2Arg extends MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getMemberPersistentId() {
         return memberPersistentId;
     }
@@ -151,6 +160,7 @@ public class MemberAddV2Arg extends MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getIsDirectoryRestricted() {
         return isDirectoryRestricted;
     }
@@ -159,6 +169,7 @@ public class MemberAddV2Arg extends MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getRoleIds() {
         return roleIds;
     }

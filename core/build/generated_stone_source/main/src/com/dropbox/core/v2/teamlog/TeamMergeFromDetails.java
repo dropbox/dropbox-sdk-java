@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Merged another team into this team.
  */
 public class TeamMergeFromDetails {
     // struct team_log.TeamMergeFromDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String teamName;
 
     /**
@@ -33,7 +36,7 @@ public class TeamMergeFromDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeFromDetails(String teamName) {
+    public TeamMergeFromDetails(@Nonnull String teamName) {
         if (teamName == null) {
             throw new IllegalArgumentException("Required value for 'teamName' is null");
         }
@@ -45,6 +48,7 @@ public class TeamMergeFromDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamName() {
         return teamName;
     }

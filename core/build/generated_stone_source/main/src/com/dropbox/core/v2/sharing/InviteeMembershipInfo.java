@@ -17,13 +17,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information about an invited member of a shared content.
  */
 public class InviteeMembershipInfo extends MembershipInfo {
     // struct sharing.InviteeMembershipInfo (sharing_folders.stone)
 
+    @Nonnull
     protected final InviteeInfo invitee;
+    @Nullable
     protected final UserInfo user;
 
     /**
@@ -46,7 +51,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public InviteeMembershipInfo(AccessLevel accessType, InviteeInfo invitee, List<MemberPermission> permissions, String initials, boolean isInherited, UserInfo user) {
+    public InviteeMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull InviteeInfo invitee, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited, @Nullable UserInfo user) {
         super(accessType, permissions, initials, isInherited);
         if (invitee == null) {
             throw new IllegalArgumentException("Required value for 'invitee' is null");
@@ -68,7 +73,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public InviteeMembershipInfo(AccessLevel accessType, InviteeInfo invitee) {
+    public InviteeMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull InviteeInfo invitee) {
         this(accessType, invitee, null, null, false, null);
     }
 
@@ -78,6 +83,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -87,6 +93,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public InviteeInfo getInvitee() {
         return invitee;
     }
@@ -97,6 +104,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<MemberPermission> getPermissions() {
         return permissions;
     }
@@ -106,6 +114,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getInitials() {
         return initials;
     }
@@ -125,6 +134,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public UserInfo getUser() {
         return user;
     }

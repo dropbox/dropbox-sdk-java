@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class SaveUrlArg {
     // struct files.SaveUrlArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final String url;
 
     /**
@@ -32,7 +36,7 @@ class SaveUrlArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SaveUrlArg(String path, String url) {
+    public SaveUrlArg(@Nonnull String path, @Nonnull String url) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -51,6 +55,7 @@ class SaveUrlArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -60,6 +65,7 @@ class SaveUrlArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUrl() {
         return url;
     }

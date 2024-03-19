@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Arguments for {@link DbxUserSharingRequests#listFileMembersContinue(String)}.
  */
 class ListFileMembersContinueArg {
     // struct sharing.ListFileMembersContinueArg (sharing_files.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**
@@ -37,7 +40,7 @@ class ListFileMembersContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersContinueArg(String cursor) {
+    public ListFileMembersContinueArg(@Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -52,6 +55,7 @@ class ListFileMembersContinueArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

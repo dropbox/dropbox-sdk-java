@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Granted access to shared folder.
  */
@@ -23,6 +25,7 @@ public class SfTeamGrantAccessDetails {
     // struct team_log.SfTeamGrantAccessDetails (team_log_generated.stone)
 
     protected final long targetAssetIndex;
+    @Nonnull
     protected final String originalFolderName;
 
     /**
@@ -35,7 +38,7 @@ public class SfTeamGrantAccessDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfTeamGrantAccessDetails(long targetAssetIndex, String originalFolderName) {
+    public SfTeamGrantAccessDetails(long targetAssetIndex, @Nonnull String originalFolderName) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");
@@ -57,6 +60,7 @@ public class SfTeamGrantAccessDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getOriginalFolderName() {
         return originalFolderName;
     }

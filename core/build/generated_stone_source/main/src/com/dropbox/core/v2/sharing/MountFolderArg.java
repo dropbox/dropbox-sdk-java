@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class MountFolderArg {
     // struct sharing.MountFolderArg (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
 
     /**
@@ -30,7 +33,7 @@ class MountFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MountFolderArg(String sharedFolderId) {
+    public MountFolderArg(@Nonnull String sharedFolderId) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }
@@ -45,6 +48,7 @@ class MountFolderArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }

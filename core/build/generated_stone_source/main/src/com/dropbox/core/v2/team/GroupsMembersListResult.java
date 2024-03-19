@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class GroupsMembersListResult {
     // struct team.GroupsMembersListResult (team_groups.stone)
 
+    @Nonnull
     protected final List<GroupMemberInfo> members;
+    @Nonnull
     protected final String cursor;
     protected final boolean hasMore;
 
@@ -39,7 +43,7 @@ public class GroupsMembersListResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupsMembersListResult(List<GroupMemberInfo> members, String cursor, boolean hasMore) {
+    public GroupsMembersListResult(@Nonnull List<GroupMemberInfo> members, @Nonnull String cursor, boolean hasMore) {
         if (members == null) {
             throw new IllegalArgumentException("Required value for 'members' is null");
         }
@@ -60,6 +64,7 @@ public class GroupsMembersListResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<GroupMemberInfo> getMembers() {
         return members;
     }
@@ -71,6 +76,7 @@ public class GroupsMembersListResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

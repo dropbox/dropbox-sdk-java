@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class SearchResult {
     // struct files.SearchResult (files.stone)
 
+    @Nonnull
     protected final List<SearchMatch> matches;
     protected final boolean more;
     protected final long start;
@@ -38,7 +41,7 @@ public class SearchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchResult(List<SearchMatch> matches, boolean more, long start) {
+    public SearchResult(@Nonnull List<SearchMatch> matches, boolean more, long start) {
         if (matches == null) {
             throw new IllegalArgumentException("Required value for 'matches' is null");
         }
@@ -57,6 +60,7 @@ public class SearchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<SearchMatch> getMatches() {
         return matches;
     }

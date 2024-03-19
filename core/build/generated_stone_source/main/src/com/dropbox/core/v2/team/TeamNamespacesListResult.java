@@ -17,13 +17,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Result for {@link DbxTeamTeamRequests#namespacesList(long)}.
  */
 public class TeamNamespacesListResult {
     // struct team.TeamNamespacesListResult (team_namespaces.stone)
 
+    @Nonnull
     protected final List<NamespaceMetadata> namespaces;
+    @Nonnull
     protected final String cursor;
     protected final boolean hasMore;
 
@@ -42,7 +46,7 @@ public class TeamNamespacesListResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamNamespacesListResult(List<NamespaceMetadata> namespaces, String cursor, boolean hasMore) {
+    public TeamNamespacesListResult(@Nonnull List<NamespaceMetadata> namespaces, @Nonnull String cursor, boolean hasMore) {
         if (namespaces == null) {
             throw new IllegalArgumentException("Required value for 'namespaces' is null");
         }
@@ -64,6 +68,7 @@ public class TeamNamespacesListResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<NamespaceMetadata> getNamespaces() {
         return namespaces;
     }
@@ -75,6 +80,7 @@ public class TeamNamespacesListResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

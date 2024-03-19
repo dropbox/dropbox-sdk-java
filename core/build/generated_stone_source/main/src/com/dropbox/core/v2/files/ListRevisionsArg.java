@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class ListRevisionsArg {
     // struct files.ListRevisionsArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final ListRevisionsMode mode;
     protected final long limit;
 
@@ -39,7 +43,7 @@ class ListRevisionsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListRevisionsArg(String path, ListRevisionsMode mode, long limit) {
+    public ListRevisionsArg(@Nonnull String path, @Nonnull ListRevisionsMode mode, long limit) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -72,7 +76,7 @@ class ListRevisionsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListRevisionsArg(String path) {
+    public ListRevisionsArg(@Nonnull String path) {
         this(path, ListRevisionsMode.PATH, 10L);
     }
 
@@ -81,6 +85,7 @@ class ListRevisionsArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -92,6 +97,7 @@ class ListRevisionsArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ListRevisionsMode.PATH.
      */
+    @Nonnull
     public ListRevisionsMode getMode() {
         return mode;
     }

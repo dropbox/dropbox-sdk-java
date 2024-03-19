@@ -17,15 +17,24 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class MemberAddArgBase {
     // struct team.MemberAddArgBase (team_members.stone)
 
+    @Nonnull
     protected final String memberEmail;
+    @Nullable
     protected final String memberGivenName;
+    @Nullable
     protected final String memberSurname;
+    @Nullable
     protected final String memberExternalId;
+    @Nullable
     protected final String memberPersistentId;
     protected final boolean sendWelcomeEmail;
+    @Nullable
     protected final Boolean isDirectoryRestricted;
 
     /**
@@ -53,7 +62,7 @@ public class MemberAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddArgBase(String memberEmail, String memberGivenName, String memberSurname, String memberExternalId, String memberPersistentId, boolean sendWelcomeEmail, Boolean isDirectoryRestricted) {
+    public MemberAddArgBase(@Nonnull String memberEmail, @Nullable String memberGivenName, @Nullable String memberSurname, @Nullable String memberExternalId, @Nullable String memberPersistentId, boolean sendWelcomeEmail, @Nullable Boolean isDirectoryRestricted) {
         if (memberEmail == null) {
             throw new IllegalArgumentException("Required value for 'memberEmail' is null");
         }
@@ -106,7 +115,7 @@ public class MemberAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddArgBase(String memberEmail) {
+    public MemberAddArgBase(@Nonnull String memberEmail) {
         this(memberEmail, null, null, null, null, true, null);
     }
 
@@ -114,6 +123,7 @@ public class MemberAddArgBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getMemberEmail() {
         return memberEmail;
     }
@@ -123,6 +133,7 @@ public class MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getMemberGivenName() {
         return memberGivenName;
     }
@@ -132,6 +143,7 @@ public class MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getMemberSurname() {
         return memberSurname;
     }
@@ -141,6 +153,7 @@ public class MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getMemberExternalId() {
         return memberExternalId;
     }
@@ -151,6 +164,7 @@ public class MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getMemberPersistentId() {
         return memberPersistentId;
     }
@@ -173,6 +187,7 @@ public class MemberAddArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getIsDirectoryRestricted() {
         return isDirectoryRestricted;
     }

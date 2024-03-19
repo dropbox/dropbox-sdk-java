@@ -16,11 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class GetSharedLinkMetadataArg {
     // struct sharing.GetSharedLinkMetadataArg (shared_links.stone)
 
+    @Nonnull
     protected final String url;
+    @Nullable
     protected final String path;
+    @Nullable
     protected final String linkPassword;
 
     /**
@@ -38,7 +44,7 @@ class GetSharedLinkMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetSharedLinkMetadataArg(String url, String path, String linkPassword) {
+    public GetSharedLinkMetadataArg(@Nonnull String url, @Nullable String path, @Nullable String linkPassword) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }
@@ -62,7 +68,7 @@ class GetSharedLinkMetadataArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetSharedLinkMetadataArg(String url) {
+    public GetSharedLinkMetadataArg(@Nonnull String url) {
         this(url, null, null);
     }
 
@@ -71,6 +77,7 @@ class GetSharedLinkMetadataArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -82,6 +89,7 @@ class GetSharedLinkMetadataArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPath() {
         return path;
     }
@@ -91,6 +99,7 @@ class GetSharedLinkMetadataArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getLinkPassword() {
         return linkPassword;
     }

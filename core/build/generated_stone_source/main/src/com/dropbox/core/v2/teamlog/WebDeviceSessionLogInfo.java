@@ -18,15 +18,22 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information on active web sessions
  */
 public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
     // struct team_log.WebDeviceSessionLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final WebSessionLogInfo sessionInfo;
+    @Nonnull
     protected final String userAgent;
+    @Nonnull
     protected final String os;
+    @Nonnull
     protected final String browser;
 
     /**
@@ -49,7 +56,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public WebDeviceSessionLogInfo(String userAgent, String os, String browser, String ipAddress, Date created, Date updated, WebSessionLogInfo sessionInfo) {
+    public WebDeviceSessionLogInfo(@Nonnull String userAgent, @Nonnull String os, @Nonnull String browser, @Nullable String ipAddress, @Nullable Date created, @Nullable Date updated, @Nullable WebSessionLogInfo sessionInfo) {
         super(ipAddress, created, updated);
         this.sessionInfo = sessionInfo;
         if (userAgent == null) {
@@ -81,7 +88,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public WebDeviceSessionLogInfo(String userAgent, String os, String browser) {
+    public WebDeviceSessionLogInfo(@Nonnull String userAgent, @Nonnull String os, @Nonnull String browser) {
         this(userAgent, os, browser, null, null, null, null);
     }
 
@@ -90,6 +97,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUserAgent() {
         return userAgent;
     }
@@ -99,6 +107,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getOs() {
         return os;
     }
@@ -108,6 +117,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getBrowser() {
         return browser;
     }
@@ -117,6 +127,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -126,6 +137,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getCreated() {
         return created;
     }
@@ -135,6 +147,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -144,6 +157,7 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public WebSessionLogInfo getSessionInfo() {
         return sessionInfo;
     }

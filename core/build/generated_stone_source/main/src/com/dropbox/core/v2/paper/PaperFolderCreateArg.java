@@ -16,11 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class PaperFolderCreateArg {
     // struct paper.PaperFolderCreateArg (paper.stone)
 
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final String parentFolderId;
+    @Nullable
     protected final Boolean isTeamFolder;
 
     /**
@@ -41,7 +47,7 @@ class PaperFolderCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderCreateArg(String name, String parentFolderId, Boolean isTeamFolder) {
+    public PaperFolderCreateArg(@Nonnull String name, @Nullable String parentFolderId, @Nullable Boolean isTeamFolder) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -60,7 +66,7 @@ class PaperFolderCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderCreateArg(String name) {
+    public PaperFolderCreateArg(@Nonnull String name) {
         this(name, null, null);
     }
 
@@ -69,6 +75,7 @@ class PaperFolderCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -80,6 +87,7 @@ class PaperFolderCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getParentFolderId() {
         return parentFolderId;
     }
@@ -93,6 +101,7 @@ class PaperFolderCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getIsTeamFolder() {
         return isTeamFolder;
     }

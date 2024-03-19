@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The origin from which the actor performed the action.
  */
 public class OriginLogInfo {
     // struct team_log.OriginLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final GeoLocationLogInfo geoLocation;
+    @Nonnull
     protected final AccessMethodLogInfo accessMethod;
 
     /**
@@ -35,7 +40,7 @@ public class OriginLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public OriginLogInfo(AccessMethodLogInfo accessMethod, GeoLocationLogInfo geoLocation) {
+    public OriginLogInfo(@Nonnull AccessMethodLogInfo accessMethod, @Nullable GeoLocationLogInfo geoLocation) {
         this.geoLocation = geoLocation;
         if (accessMethod == null) {
             throw new IllegalArgumentException("Required value for 'accessMethod' is null");
@@ -54,7 +59,7 @@ public class OriginLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public OriginLogInfo(AccessMethodLogInfo accessMethod) {
+    public OriginLogInfo(@Nonnull AccessMethodLogInfo accessMethod) {
         this(accessMethod, null);
     }
 
@@ -63,6 +68,7 @@ public class OriginLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessMethodLogInfo getAccessMethod() {
         return accessMethod;
     }
@@ -72,6 +78,7 @@ public class OriginLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public GeoLocationLogInfo getGeoLocation() {
         return geoLocation;
     }

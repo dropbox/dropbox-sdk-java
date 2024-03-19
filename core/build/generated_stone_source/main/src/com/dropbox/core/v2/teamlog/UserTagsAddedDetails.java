@@ -17,12 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Tagged a file.
  */
 public class UserTagsAddedDetails {
     // struct team_log.UserTagsAddedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final List<String> values;
 
     /**
@@ -34,7 +37,7 @@ public class UserTagsAddedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserTagsAddedDetails(List<String> values) {
+    public UserTagsAddedDetails(@Nonnull List<String> values) {
         if (values == null) {
             throw new IllegalArgumentException("Required value for 'values' is null");
         }
@@ -51,6 +54,7 @@ public class UserTagsAddedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<String> getValues() {
         return values;
     }

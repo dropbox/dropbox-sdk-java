@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Automatically canceled team merge request.
  */
 public class TeamMergeRequestAutoCanceledDetails {
     // struct team_log.TeamMergeRequestAutoCanceledDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String details;
 
     /**
@@ -29,7 +33,7 @@ public class TeamMergeRequestAutoCanceledDetails {
      *
      * @param details  The cancellation reason.
      */
-    public TeamMergeRequestAutoCanceledDetails(String details) {
+    public TeamMergeRequestAutoCanceledDetails(@Nullable String details) {
         this.details = details;
     }
 
@@ -47,6 +51,7 @@ public class TeamMergeRequestAutoCanceledDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDetails() {
         return details;
     }

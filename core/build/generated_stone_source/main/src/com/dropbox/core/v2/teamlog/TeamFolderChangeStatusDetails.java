@@ -17,13 +17,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed archival status of team folder.
  */
 public class TeamFolderChangeStatusDetails {
     // struct team_log.TeamFolderChangeStatusDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamFolderStatus newValue;
+    @Nullable
     protected final TeamFolderStatus previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class TeamFolderChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderChangeStatusDetails(TeamFolderStatus newValue, TeamFolderStatus previousValue) {
+    public TeamFolderChangeStatusDetails(@Nonnull TeamFolderStatus newValue, @Nullable TeamFolderStatus previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -54,7 +59,7 @@ public class TeamFolderChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderChangeStatusDetails(TeamFolderStatus newValue) {
+    public TeamFolderChangeStatusDetails(@Nonnull TeamFolderStatus newValue) {
         this(newValue, null);
     }
 
@@ -63,6 +68,7 @@ public class TeamFolderChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamFolderStatus getNewValue() {
         return newValue;
     }
@@ -72,6 +78,7 @@ public class TeamFolderChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public TeamFolderStatus getPreviousValue() {
         return previousValue;
     }

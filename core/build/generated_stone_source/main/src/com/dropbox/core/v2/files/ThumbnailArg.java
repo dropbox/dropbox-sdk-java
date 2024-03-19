@@ -17,12 +17,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class ThumbnailArg {
     // struct files.ThumbnailArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final ThumbnailFormat format;
+    @Nonnull
     protected final ThumbnailSize size;
+    @Nonnull
     protected final ThumbnailMode mode;
 
     /**
@@ -43,7 +49,7 @@ public class ThumbnailArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailArg(String path, ThumbnailFormat format, ThumbnailSize size, ThumbnailMode mode) {
+    public ThumbnailArg(@Nonnull String path, @Nonnull ThumbnailFormat format, @Nonnull ThumbnailSize size, @Nonnull ThumbnailMode mode) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -78,7 +84,7 @@ public class ThumbnailArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailArg(String path) {
+    public ThumbnailArg(@Nonnull String path) {
         this(path, ThumbnailFormat.JPEG, ThumbnailSize.W64H64, ThumbnailMode.STRICT);
     }
 
@@ -87,6 +93,7 @@ public class ThumbnailArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -99,6 +106,7 @@ public class ThumbnailArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailFormat.JPEG.
      */
+    @Nonnull
     public ThumbnailFormat getFormat() {
         return format;
     }
@@ -109,6 +117,7 @@ public class ThumbnailArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailSize.W64H64.
      */
+    @Nonnull
     public ThumbnailSize getSize() {
         return size;
     }
@@ -119,6 +128,7 @@ public class ThumbnailArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailMode.STRICT.
      */
+    @Nonnull
     public ThumbnailMode getMode() {
         return mode;
     }

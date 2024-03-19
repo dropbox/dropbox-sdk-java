@@ -19,17 +19,26 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information about linked Dropbox mobile client sessions
  */
 public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
     // struct team_log.MobileDeviceSessionLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final MobileSessionLogInfo sessionInfo;
+    @Nonnull
     protected final String deviceName;
+    @Nonnull
     protected final MobileClientPlatform clientType;
+    @Nullable
     protected final String clientVersion;
+    @Nullable
     protected final String osVersion;
+    @Nullable
     protected final String lastCarrier;
 
     /**
@@ -51,7 +60,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MobileDeviceSessionLogInfo(String deviceName, MobileClientPlatform clientType, String ipAddress, Date created, Date updated, MobileSessionLogInfo sessionInfo, String clientVersion, String osVersion, String lastCarrier) {
+    public MobileDeviceSessionLogInfo(@Nonnull String deviceName, @Nonnull MobileClientPlatform clientType, @Nullable String ipAddress, @Nullable Date created, @Nullable Date updated, @Nullable MobileSessionLogInfo sessionInfo, @Nullable String clientVersion, @Nullable String osVersion, @Nullable String lastCarrier) {
         super(ipAddress, created, updated);
         this.sessionInfo = sessionInfo;
         if (deviceName == null) {
@@ -78,7 +87,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MobileDeviceSessionLogInfo(String deviceName, MobileClientPlatform clientType) {
+    public MobileDeviceSessionLogInfo(@Nonnull String deviceName, @Nonnull MobileClientPlatform clientType) {
         this(deviceName, clientType, null, null, null, null, null, null, null);
     }
 
@@ -87,6 +96,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDeviceName() {
         return deviceName;
     }
@@ -96,6 +106,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MobileClientPlatform getClientType() {
         return clientType;
     }
@@ -105,6 +116,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -114,6 +126,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getCreated() {
         return created;
     }
@@ -123,6 +136,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -132,6 +146,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public MobileSessionLogInfo getSessionInfo() {
         return sessionInfo;
     }
@@ -141,6 +156,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getClientVersion() {
         return clientVersion;
     }
@@ -150,6 +166,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getOsVersion() {
         return osVersion;
     }
@@ -159,6 +176,7 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getLastCarrier() {
         return lastCarrier;
     }

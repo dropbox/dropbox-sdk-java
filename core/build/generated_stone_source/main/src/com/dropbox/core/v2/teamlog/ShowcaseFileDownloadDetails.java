@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Downloaded file from showcase.
  */
 public class ShowcaseFileDownloadDetails {
     // struct team_log.ShowcaseFileDownloadDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nonnull
     protected final String downloadType;
 
     /**
@@ -34,7 +38,7 @@ public class ShowcaseFileDownloadDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseFileDownloadDetails(String eventUuid, String downloadType) {
+    public ShowcaseFileDownloadDetails(@Nonnull String eventUuid, @Nonnull String downloadType) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -50,6 +54,7 @@ public class ShowcaseFileDownloadDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -59,6 +64,7 @@ public class ShowcaseFileDownloadDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDownloadType() {
         return downloadType;
     }

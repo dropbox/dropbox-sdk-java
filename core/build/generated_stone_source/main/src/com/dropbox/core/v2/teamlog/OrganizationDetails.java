@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * More details about the organization.
  */
 public class OrganizationDetails {
     // struct team_log.OrganizationDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String organization;
 
     /**
@@ -33,7 +36,7 @@ public class OrganizationDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public OrganizationDetails(String organization) {
+    public OrganizationDetails(@Nonnull String organization) {
         if (organization == null) {
             throw new IllegalArgumentException("Required value for 'organization' is null");
         }
@@ -45,6 +48,7 @@ public class OrganizationDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getOrganization() {
         return organization;
     }

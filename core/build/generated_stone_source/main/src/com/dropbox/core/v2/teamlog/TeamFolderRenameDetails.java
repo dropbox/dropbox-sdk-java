@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Renamed active/archived team folder.
  */
 public class TeamFolderRenameDetails {
     // struct team_log.TeamFolderRenameDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String previousFolderName;
+    @Nonnull
     protected final String newFolderName;
 
     /**
@@ -35,7 +39,7 @@ public class TeamFolderRenameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderRenameDetails(String previousFolderName, String newFolderName) {
+    public TeamFolderRenameDetails(@Nonnull String previousFolderName, @Nonnull String newFolderName) {
         if (previousFolderName == null) {
             throw new IllegalArgumentException("Required value for 'previousFolderName' is null");
         }
@@ -51,6 +55,7 @@ public class TeamFolderRenameDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPreviousFolderName() {
         return previousFolderName;
     }
@@ -60,6 +65,7 @@ public class TeamFolderRenameDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getNewFolderName() {
         return newFolderName;
     }

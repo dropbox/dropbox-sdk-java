@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed team member name.
  */
 public class MemberChangeNameDetails {
     // struct team_log.MemberChangeNameDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final UserNameLogInfo newValue;
+    @Nullable
     protected final UserNameLogInfo previousValue;
 
     /**
@@ -35,7 +40,7 @@ public class MemberChangeNameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeNameDetails(UserNameLogInfo newValue, UserNameLogInfo previousValue) {
+    public MemberChangeNameDetails(@Nonnull UserNameLogInfo newValue, @Nullable UserNameLogInfo previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -53,7 +58,7 @@ public class MemberChangeNameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeNameDetails(UserNameLogInfo newValue) {
+    public MemberChangeNameDetails(@Nonnull UserNameLogInfo newValue) {
         this(newValue, null);
     }
 
@@ -62,6 +67,7 @@ public class MemberChangeNameDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserNameLogInfo getNewValue() {
         return newValue;
     }
@@ -71,6 +77,7 @@ public class MemberChangeNameDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public UserNameLogInfo getPreviousValue() {
         return previousValue;
     }

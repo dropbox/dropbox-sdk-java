@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class TeamFolderListError {
     // struct team.TeamFolderListError (team_folders.stone)
 
+    @Nonnull
     protected final TeamFolderAccessError accessError;
 
     /**
@@ -28,7 +31,7 @@ public class TeamFolderListError {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderListError(TeamFolderAccessError accessError) {
+    public TeamFolderListError(@Nonnull TeamFolderAccessError accessError) {
         if (accessError == null) {
             throw new IllegalArgumentException("Required value for 'accessError' is null");
         }
@@ -39,6 +42,7 @@ public class TeamFolderListError {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamFolderAccessError getAccessError() {
         return accessError;
     }

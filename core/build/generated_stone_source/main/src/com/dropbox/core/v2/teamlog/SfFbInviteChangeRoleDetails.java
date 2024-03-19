@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed Facebook user's role in shared folder.
  */
@@ -23,8 +26,11 @@ public class SfFbInviteChangeRoleDetails {
     // struct team_log.SfFbInviteChangeRoleDetails (team_log_generated.stone)
 
     protected final long targetAssetIndex;
+    @Nonnull
     protected final String originalFolderName;
+    @Nullable
     protected final String previousSharingPermission;
+    @Nullable
     protected final String newSharingPermission;
 
     /**
@@ -42,7 +48,7 @@ public class SfFbInviteChangeRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfFbInviteChangeRoleDetails(long targetAssetIndex, String originalFolderName, String previousSharingPermission, String newSharingPermission) {
+    public SfFbInviteChangeRoleDetails(long targetAssetIndex, @Nonnull String originalFolderName, @Nullable String previousSharingPermission, @Nullable String newSharingPermission) {
         this.targetAssetIndex = targetAssetIndex;
         if (originalFolderName == null) {
             throw new IllegalArgumentException("Required value for 'originalFolderName' is null");
@@ -64,7 +70,7 @@ public class SfFbInviteChangeRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SfFbInviteChangeRoleDetails(long targetAssetIndex, String originalFolderName) {
+    public SfFbInviteChangeRoleDetails(long targetAssetIndex, @Nonnull String originalFolderName) {
         this(targetAssetIndex, originalFolderName, null, null);
     }
 
@@ -82,6 +88,7 @@ public class SfFbInviteChangeRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getOriginalFolderName() {
         return originalFolderName;
     }
@@ -91,6 +98,7 @@ public class SfFbInviteChangeRoleDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPreviousSharingPermission() {
         return previousSharingPermission;
     }
@@ -100,6 +108,7 @@ public class SfFbInviteChangeRoleDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getNewSharingPermission() {
         return newSharingPermission;
     }

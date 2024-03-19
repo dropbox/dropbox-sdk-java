@@ -17,16 +17,24 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Removed folders from policy.
  */
 public class GovernancePolicyRemoveFoldersDetails {
     // struct team_log.GovernancePolicyRemoveFoldersDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String governancePolicyId;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final PolicyType policyType;
+    @Nullable
     protected final List<String> folders;
+    @Nullable
     protected final String reason;
 
     /**
@@ -44,7 +52,7 @@ public class GovernancePolicyRemoveFoldersDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyRemoveFoldersDetails(String governancePolicyId, String name, PolicyType policyType, List<String> folders, String reason) {
+    public GovernancePolicyRemoveFoldersDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nullable PolicyType policyType, @Nullable List<String> folders, @Nullable String reason) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -76,7 +84,7 @@ public class GovernancePolicyRemoveFoldersDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyRemoveFoldersDetails(String governancePolicyId, String name) {
+    public GovernancePolicyRemoveFoldersDetails(@Nonnull String governancePolicyId, @Nonnull String name) {
         this(governancePolicyId, name, null, null, null);
     }
 
@@ -85,6 +93,7 @@ public class GovernancePolicyRemoveFoldersDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -94,6 +103,7 @@ public class GovernancePolicyRemoveFoldersDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -103,6 +113,7 @@ public class GovernancePolicyRemoveFoldersDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }
@@ -112,6 +123,7 @@ public class GovernancePolicyRemoveFoldersDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getFolders() {
         return folders;
     }
@@ -121,6 +133,7 @@ public class GovernancePolicyRemoveFoldersDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getReason() {
         return reason;
     }

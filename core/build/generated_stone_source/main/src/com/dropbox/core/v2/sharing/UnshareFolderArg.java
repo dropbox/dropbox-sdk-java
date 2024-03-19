@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class UnshareFolderArg {
     // struct sharing.UnshareFolderArg (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
     protected final boolean leaveACopy;
 
@@ -35,7 +38,7 @@ class UnshareFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UnshareFolderArg(String sharedFolderId, boolean leaveACopy) {
+    public UnshareFolderArg(@Nonnull String sharedFolderId, boolean leaveACopy) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }
@@ -57,7 +60,7 @@ class UnshareFolderArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UnshareFolderArg(String sharedFolderId) {
+    public UnshareFolderArg(@Nonnull String sharedFolderId) {
         this(sharedFolderId, false);
     }
 
@@ -66,6 +69,7 @@ class UnshareFolderArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Information about a user's space usage and quota.
  */
@@ -23,6 +25,7 @@ public class SpaceUsage {
     // struct users.SpaceUsage (users.stone)
 
     protected final long used;
+    @Nonnull
     protected final SpaceAllocation allocation;
 
     /**
@@ -34,7 +37,7 @@ public class SpaceUsage {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SpaceUsage(long used, SpaceAllocation allocation) {
+    public SpaceUsage(long used, @Nonnull SpaceAllocation allocation) {
         this.used = used;
         if (allocation == null) {
             throw new IllegalArgumentException("Required value for 'allocation' is null");
@@ -56,6 +59,7 @@ public class SpaceUsage {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SpaceAllocation getAllocation() {
         return allocation;
     }

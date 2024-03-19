@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Arguments for {@link DbxUserSharingRequests#listReceivedFiles}.
  */
@@ -24,6 +27,7 @@ class ListFilesArg {
     // struct sharing.ListFilesArg (sharing_files.stone)
 
     protected final long limit;
+    @Nullable
     protected final List<FileAction> actions;
 
     /**
@@ -44,7 +48,7 @@ class ListFilesArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFilesArg(long limit, List<FileAction> actions) {
+    public ListFilesArg(long limit, @Nullable List<FileAction> actions) {
         if (limit < 1L) {
             throw new IllegalArgumentException("Number 'limit' is smaller than 1L");
         }
@@ -89,6 +93,7 @@ class ListFilesArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<FileAction> getActions() {
         return actions;
     }

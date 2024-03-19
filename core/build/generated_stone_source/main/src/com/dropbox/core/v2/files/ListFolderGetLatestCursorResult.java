@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class ListFolderGetLatestCursorResult {
     // struct files.ListFolderGetLatestCursorResult (files.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**
@@ -31,7 +34,7 @@ public class ListFolderGetLatestCursorResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderGetLatestCursorResult(String cursor) {
+    public ListFolderGetLatestCursorResult(@Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -48,6 +51,7 @@ public class ListFolderGetLatestCursorResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Created shared link.
  */
 public class SharedLinkCreateDetails {
     // struct team_log.SharedLinkCreateDetails (team_log_generated.stone)
 
+    @Nullable
     protected final SharedLinkAccessLevel sharedLinkAccessLevel;
 
     /**
@@ -30,7 +34,7 @@ public class SharedLinkCreateDetails {
      * @param sharedLinkAccessLevel  Defines who can access the shared link.
      *     Might be missing due to historical data gap.
      */
-    public SharedLinkCreateDetails(SharedLinkAccessLevel sharedLinkAccessLevel) {
+    public SharedLinkCreateDetails(@Nullable SharedLinkAccessLevel sharedLinkAccessLevel) {
         this.sharedLinkAccessLevel = sharedLinkAccessLevel;
     }
 
@@ -49,6 +53,7 @@ public class SharedLinkCreateDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SharedLinkAccessLevel getSharedLinkAccessLevel() {
         return sharedLinkAccessLevel;
     }

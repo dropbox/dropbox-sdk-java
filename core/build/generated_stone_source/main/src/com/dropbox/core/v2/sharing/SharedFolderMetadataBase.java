@@ -18,20 +18,30 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Properties of the shared folder.
  */
 public class SharedFolderMetadataBase {
     // struct sharing.SharedFolderMetadataBase (sharing_folders.stone)
 
+    @Nonnull
     protected final AccessLevel accessType;
     protected final boolean isInsideTeamFolder;
     protected final boolean isTeamFolder;
+    @Nullable
     protected final List<String> ownerDisplayNames;
+    @Nullable
     protected final Team ownerTeam;
+    @Nullable
     protected final String parentSharedFolderId;
+    @Nullable
     protected final String pathDisplay;
+    @Nullable
     protected final String pathLower;
+    @Nullable
     protected final String parentFolderName;
 
     /**
@@ -64,7 +74,7 @@ public class SharedFolderMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadataBase(AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, List<String> ownerDisplayNames, Team ownerTeam, String parentSharedFolderId, String pathDisplay, String pathLower, String parentFolderName) {
+    public SharedFolderMetadataBase(@Nonnull AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, @Nullable List<String> ownerDisplayNames, @Nullable Team ownerTeam, @Nullable String parentSharedFolderId, @Nullable String pathDisplay, @Nullable String pathLower, @Nullable String parentFolderName) {
         if (accessType == null) {
             throw new IllegalArgumentException("Required value for 'accessType' is null");
         }
@@ -106,7 +116,7 @@ public class SharedFolderMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadataBase(AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder) {
+    public SharedFolderMetadataBase(@Nonnull AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder) {
         this(accessType, isInsideTeamFolder, isTeamFolder, null, null, null, null, null, null);
     }
 
@@ -115,6 +125,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -145,6 +156,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getOwnerDisplayNames() {
         return ownerDisplayNames;
     }
@@ -155,6 +167,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Team getOwnerTeam() {
         return ownerTeam;
     }
@@ -165,6 +178,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -174,6 +188,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPathDisplay() {
         return pathDisplay;
     }
@@ -184,6 +199,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -193,6 +209,7 @@ public class SharedFolderMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getParentFolderName() {
         return parentFolderName;
     }

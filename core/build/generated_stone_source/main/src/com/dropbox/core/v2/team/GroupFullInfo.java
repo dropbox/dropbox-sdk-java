@@ -19,12 +19,16 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Full description of a group.
  */
 public class GroupFullInfo extends GroupSummary {
     // struct team.GroupFullInfo (team_groups.stone)
 
+    @Nullable
     protected final List<GroupMemberInfo> members;
     protected final long created;
 
@@ -49,7 +53,7 @@ public class GroupFullInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupFullInfo(String groupName, String groupId, GroupManagementType groupManagementType, long created, String groupExternalId, Long memberCount, List<GroupMemberInfo> members) {
+    public GroupFullInfo(@Nonnull String groupName, @Nonnull String groupId, @Nonnull GroupManagementType groupManagementType, long created, @Nullable String groupExternalId, @Nullable Long memberCount, @Nullable List<GroupMemberInfo> members) {
         super(groupName, groupId, groupManagementType, groupExternalId, memberCount);
         if (members != null) {
             for (GroupMemberInfo x : members) {
@@ -77,7 +81,7 @@ public class GroupFullInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupFullInfo(String groupName, String groupId, GroupManagementType groupManagementType, long created) {
+    public GroupFullInfo(@Nonnull String groupName, @Nonnull String groupId, @Nonnull GroupManagementType groupManagementType, long created) {
         this(groupName, groupId, groupManagementType, created, null, null, null);
     }
 
@@ -85,6 +89,7 @@ public class GroupFullInfo extends GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGroupName() {
         return groupName;
     }
@@ -93,6 +98,7 @@ public class GroupFullInfo extends GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGroupId() {
         return groupId;
     }
@@ -102,6 +108,7 @@ public class GroupFullInfo extends GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupManagementType getGroupManagementType() {
         return groupManagementType;
     }
@@ -122,6 +129,7 @@ public class GroupFullInfo extends GroupSummary {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getGroupExternalId() {
         return groupExternalId;
     }
@@ -131,6 +139,7 @@ public class GroupFullInfo extends GroupSummary {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getMemberCount() {
         return memberCount;
     }
@@ -140,6 +149,7 @@ public class GroupFullInfo extends GroupSummary {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<GroupMemberInfo> getMembers() {
         return members;
     }

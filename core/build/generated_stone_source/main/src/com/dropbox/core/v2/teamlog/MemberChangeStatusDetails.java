@@ -16,16 +16,24 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed member status (invited, joined, suspended, etc.).
  */
 public class MemberChangeStatusDetails {
     // struct team_log.MemberChangeStatusDetails (team_log_generated.stone)
 
+    @Nullable
     protected final MemberStatus previousValue;
+    @Nonnull
     protected final MemberStatus newValue;
+    @Nullable
     protected final ActionDetails action;
+    @Nullable
     protected final String newTeam;
+    @Nullable
     protected final String previousTeam;
 
     /**
@@ -47,7 +55,7 @@ public class MemberChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeStatusDetails(MemberStatus newValue, MemberStatus previousValue, ActionDetails action, String newTeam, String previousTeam) {
+    public MemberChangeStatusDetails(@Nonnull MemberStatus newValue, @Nullable MemberStatus previousValue, @Nullable ActionDetails action, @Nullable String newTeam, @Nullable String previousTeam) {
         this.previousValue = previousValue;
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
@@ -68,7 +76,7 @@ public class MemberChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeStatusDetails(MemberStatus newValue) {
+    public MemberChangeStatusDetails(@Nonnull MemberStatus newValue) {
         this(newValue, null, null, null, null);
     }
 
@@ -77,6 +85,7 @@ public class MemberChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MemberStatus getNewValue() {
         return newValue;
     }
@@ -86,6 +95,7 @@ public class MemberChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public MemberStatus getPreviousValue() {
         return previousValue;
     }
@@ -96,6 +106,7 @@ public class MemberChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public ActionDetails getAction() {
         return action;
     }
@@ -106,6 +117,7 @@ public class MemberChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getNewTeam() {
         return newTeam;
     }
@@ -116,6 +128,7 @@ public class MemberChangeStatusDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPreviousTeam() {
         return previousTeam;
     }

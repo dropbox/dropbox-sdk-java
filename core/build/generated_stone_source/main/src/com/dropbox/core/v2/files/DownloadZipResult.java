@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class DownloadZipResult {
     // struct files.DownloadZipResult (files.stone)
 
+    @Nonnull
     protected final FolderMetadata metadata;
 
     /**
@@ -28,7 +31,7 @@ public class DownloadZipResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DownloadZipResult(FolderMetadata metadata) {
+    public DownloadZipResult(@Nonnull FolderMetadata metadata) {
         if (metadata == null) {
             throw new IllegalArgumentException("Required value for 'metadata' is null");
         }
@@ -39,6 +42,7 @@ public class DownloadZipResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FolderMetadata getMetadata() {
         return metadata;
     }

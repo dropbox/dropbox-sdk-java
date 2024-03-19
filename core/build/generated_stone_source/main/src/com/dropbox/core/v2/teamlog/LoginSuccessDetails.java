@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Signed in.
  */
 public class LoginSuccessDetails {
     // struct team_log.LoginSuccessDetails (team_log_generated.stone)
 
+    @Nullable
     protected final Boolean isEmmManaged;
+    @Nonnull
     protected final LoginMethod loginMethod;
 
     /**
@@ -35,7 +40,7 @@ public class LoginSuccessDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LoginSuccessDetails(LoginMethod loginMethod, Boolean isEmmManaged) {
+    public LoginSuccessDetails(@Nonnull LoginMethod loginMethod, @Nullable Boolean isEmmManaged) {
         this.isEmmManaged = isEmmManaged;
         if (loginMethod == null) {
             throw new IllegalArgumentException("Required value for 'loginMethod' is null");
@@ -53,7 +58,7 @@ public class LoginSuccessDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LoginSuccessDetails(LoginMethod loginMethod) {
+    public LoginSuccessDetails(@Nonnull LoginMethod loginMethod) {
         this(loginMethod, null);
     }
 
@@ -62,6 +67,7 @@ public class LoginSuccessDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public LoginMethod getLoginMethod() {
         return loginMethod;
     }
@@ -72,6 +78,7 @@ public class LoginSuccessDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getIsEmmManaged() {
         return isEmmManaged;
     }

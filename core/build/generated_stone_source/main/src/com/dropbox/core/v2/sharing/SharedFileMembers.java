@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Shared file user, group, and invitee membership. Used for the results of
  * {@link DbxUserSharingRequests#listFileMembers(String)} and {@link
@@ -27,9 +30,13 @@ import java.util.List;
 public class SharedFileMembers {
     // struct sharing.SharedFileMembers (sharing_files.stone)
 
+    @Nonnull
     protected final List<UserFileMembershipInfo> users;
+    @Nonnull
     protected final List<GroupMembershipInfo> groups;
+    @Nonnull
     protected final List<InviteeMembershipInfo> invitees;
+    @Nullable
     protected final String cursor;
 
     /**
@@ -54,7 +61,7 @@ public class SharedFileMembers {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFileMembers(List<UserFileMembershipInfo> users, List<GroupMembershipInfo> groups, List<InviteeMembershipInfo> invitees, String cursor) {
+    public SharedFileMembers(@Nonnull List<UserFileMembershipInfo> users, @Nonnull List<GroupMembershipInfo> groups, @Nonnull List<InviteeMembershipInfo> invitees, @Nullable String cursor) {
         if (users == null) {
             throw new IllegalArgumentException("Required value for 'users' is null");
         }
@@ -105,7 +112,7 @@ public class SharedFileMembers {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFileMembers(List<UserFileMembershipInfo> users, List<GroupMembershipInfo> groups, List<InviteeMembershipInfo> invitees) {
+    public SharedFileMembers(@Nonnull List<UserFileMembershipInfo> users, @Nonnull List<GroupMembershipInfo> groups, @Nonnull List<InviteeMembershipInfo> invitees) {
         this(users, groups, invitees, null);
     }
 
@@ -114,6 +121,7 @@ public class SharedFileMembers {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<UserFileMembershipInfo> getUsers() {
         return users;
     }
@@ -123,6 +131,7 @@ public class SharedFileMembers {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<GroupMembershipInfo> getGroups() {
         return groups;
     }
@@ -133,6 +142,7 @@ public class SharedFileMembers {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<InviteeMembershipInfo> getInvitees() {
         return invitees;
     }
@@ -145,6 +155,7 @@ public class SharedFileMembers {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCursor() {
         return cursor;
     }

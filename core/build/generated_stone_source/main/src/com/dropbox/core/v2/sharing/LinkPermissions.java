@@ -17,15 +17,24 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class LinkPermissions {
     // struct sharing.LinkPermissions (shared_links.stone)
 
+    @Nullable
     protected final ResolvedVisibility resolvedVisibility;
+    @Nullable
     protected final RequestedVisibility requestedVisibility;
     protected final boolean canRevoke;
+    @Nullable
     protected final SharedLinkAccessFailureReason revokeFailureReason;
+    @Nullable
     protected final LinkAudience effectiveAudience;
+    @Nullable
     protected final LinkAccessLevel linkAccessLevel;
+    @Nonnull
     protected final List<VisibilityPolicy> visibilityPolicies;
     protected final boolean canSetExpiry;
     protected final boolean canRemoveExpiry;
@@ -34,10 +43,15 @@ public class LinkPermissions {
     protected final boolean canDisallowDownload;
     protected final boolean allowComments;
     protected final boolean teamRestrictsComments;
+    @Nullable
     protected final List<LinkAudienceOption> audienceOptions;
+    @Nullable
     protected final Boolean canSetPassword;
+    @Nullable
     protected final Boolean canRemovePassword;
+    @Nullable
     protected final Boolean requirePassword;
+    @Nullable
     protected final Boolean canUseExtendedSharingControls;
 
     /**
@@ -105,7 +119,7 @@ public class LinkPermissions {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkPermissions(boolean canRevoke, List<VisibilityPolicy> visibilityPolicies, boolean canSetExpiry, boolean canRemoveExpiry, boolean allowDownload, boolean canAllowDownload, boolean canDisallowDownload, boolean allowComments, boolean teamRestrictsComments, ResolvedVisibility resolvedVisibility, RequestedVisibility requestedVisibility, SharedLinkAccessFailureReason revokeFailureReason, LinkAudience effectiveAudience, LinkAccessLevel linkAccessLevel, List<LinkAudienceOption> audienceOptions, Boolean canSetPassword, Boolean canRemovePassword, Boolean requirePassword, Boolean canUseExtendedSharingControls) {
+    public LinkPermissions(boolean canRevoke, @Nonnull List<VisibilityPolicy> visibilityPolicies, boolean canSetExpiry, boolean canRemoveExpiry, boolean allowDownload, boolean canAllowDownload, boolean canDisallowDownload, boolean allowComments, boolean teamRestrictsComments, @Nullable ResolvedVisibility resolvedVisibility, @Nullable RequestedVisibility requestedVisibility, @Nullable SharedLinkAccessFailureReason revokeFailureReason, @Nullable LinkAudience effectiveAudience, @Nullable LinkAccessLevel linkAccessLevel, @Nullable List<LinkAudienceOption> audienceOptions, @Nullable Boolean canSetPassword, @Nullable Boolean canRemovePassword, @Nullable Boolean requirePassword, @Nullable Boolean canUseExtendedSharingControls) {
         this.resolvedVisibility = resolvedVisibility;
         this.requestedVisibility = requestedVisibility;
         this.canRevoke = canRevoke;
@@ -171,7 +185,7 @@ public class LinkPermissions {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkPermissions(boolean canRevoke, List<VisibilityPolicy> visibilityPolicies, boolean canSetExpiry, boolean canRemoveExpiry, boolean allowDownload, boolean canAllowDownload, boolean canDisallowDownload, boolean allowComments, boolean teamRestrictsComments) {
+    public LinkPermissions(boolean canRevoke, @Nonnull List<VisibilityPolicy> visibilityPolicies, boolean canSetExpiry, boolean canRemoveExpiry, boolean allowDownload, boolean canAllowDownload, boolean canDisallowDownload, boolean allowComments, boolean teamRestrictsComments) {
         this(canRevoke, visibilityPolicies, canSetExpiry, canRemoveExpiry, allowDownload, canAllowDownload, canDisallowDownload, allowComments, teamRestrictsComments, null, null, null, null, null, null, null, null, null, null);
     }
 
@@ -189,6 +203,7 @@ public class LinkPermissions {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<VisibilityPolicy> getVisibilityPolicies() {
         return visibilityPolicies;
     }
@@ -270,6 +285,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public ResolvedVisibility getResolvedVisibility() {
         return resolvedVisibility;
     }
@@ -284,6 +300,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public RequestedVisibility getRequestedVisibility() {
         return requestedVisibility;
     }
@@ -294,6 +311,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SharedLinkAccessFailureReason getRevokeFailureReason() {
         return revokeFailureReason;
     }
@@ -304,6 +322,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public LinkAudience getEffectiveAudience() {
         return effectiveAudience;
     }
@@ -320,6 +339,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public LinkAccessLevel getLinkAccessLevel() {
         return linkAccessLevel;
     }
@@ -330,6 +350,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<LinkAudienceOption> getAudienceOptions() {
         return audienceOptions;
     }
@@ -339,6 +360,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getCanSetPassword() {
         return canSetPassword;
     }
@@ -348,6 +370,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getCanRemovePassword() {
         return canRemovePassword;
     }
@@ -357,6 +380,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getRequirePassword() {
         return requirePassword;
     }
@@ -367,6 +391,7 @@ public class LinkPermissions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getCanUseExtendedSharingControls() {
         return canUseExtendedSharingControls;
     }

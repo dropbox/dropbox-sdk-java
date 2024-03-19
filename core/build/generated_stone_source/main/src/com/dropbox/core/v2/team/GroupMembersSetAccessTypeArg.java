@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
     // struct team.GroupMembersSetAccessTypeArg (team_groups.stone)
 
+    @Nonnull
     protected final GroupAccessType accessType;
     protected final boolean returnMembers;
 
@@ -38,7 +41,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersSetAccessTypeArg(GroupSelector group, UserSelectorArg user, GroupAccessType accessType, boolean returnMembers) {
+    public GroupMembersSetAccessTypeArg(@Nonnull GroupSelector group, @Nonnull UserSelectorArg user, @Nonnull GroupAccessType accessType, boolean returnMembers) {
         super(group, user);
         if (accessType == null) {
             throw new IllegalArgumentException("Required value for 'accessType' is null");
@@ -63,7 +66,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembersSetAccessTypeArg(GroupSelector group, UserSelectorArg user, GroupAccessType accessType) {
+    public GroupMembersSetAccessTypeArg(@Nonnull GroupSelector group, @Nonnull UserSelectorArg user, @Nonnull GroupAccessType accessType) {
         this(group, user, accessType, true);
     }
 
@@ -72,6 +75,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupSelector getGroup() {
         return group;
     }
@@ -83,6 +87,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -92,6 +97,7 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupAccessType getAccessType() {
         return accessType;
     }

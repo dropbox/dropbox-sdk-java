@@ -18,15 +18,22 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed the audience of the shared link.
  */
 public class SharedLinkSettingsChangeAudienceDetails {
     // struct team_log.SharedLinkSettingsChangeAudienceDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccessLevel sharedContentAccessLevel;
+    @Nullable
     protected final String sharedContentLink;
+    @Nonnull
     protected final LinkAudience newValue;
+    @Nullable
     protected final LinkAudience previousValue;
 
     /**
@@ -44,7 +51,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangeAudienceDetails(AccessLevel sharedContentAccessLevel, LinkAudience newValue, String sharedContentLink, LinkAudience previousValue) {
+    public SharedLinkSettingsChangeAudienceDetails(@Nonnull AccessLevel sharedContentAccessLevel, @Nonnull LinkAudience newValue, @Nullable String sharedContentLink, @Nullable LinkAudience previousValue) {
         if (sharedContentAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentAccessLevel' is null");
         }
@@ -69,7 +76,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkSettingsChangeAudienceDetails(AccessLevel sharedContentAccessLevel, LinkAudience newValue) {
+    public SharedLinkSettingsChangeAudienceDetails(@Nonnull AccessLevel sharedContentAccessLevel, @Nonnull LinkAudience newValue) {
         this(sharedContentAccessLevel, newValue, null, null);
     }
 
@@ -78,6 +85,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -87,6 +95,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public LinkAudience getNewValue() {
         return newValue;
     }
@@ -96,6 +105,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getSharedContentLink() {
         return sharedContentLink;
     }
@@ -105,6 +115,7 @@ public class SharedLinkSettingsChangeAudienceDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public LinkAudience getPreviousValue() {
         return previousValue;
     }

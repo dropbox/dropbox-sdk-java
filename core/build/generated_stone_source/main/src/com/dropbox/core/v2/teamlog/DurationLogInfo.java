@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Represents a time duration: unit and amount
  */
 public class DurationLogInfo {
     // struct team_log.DurationLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final TimeUnit unit;
     protected final long amount;
 
@@ -34,7 +37,7 @@ public class DurationLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DurationLogInfo(TimeUnit unit, long amount) {
+    public DurationLogInfo(@Nonnull TimeUnit unit, long amount) {
         if (unit == null) {
             throw new IllegalArgumentException("Required value for 'unit' is null");
         }
@@ -47,6 +50,7 @@ public class DurationLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TimeUnit getUnit() {
         return unit;
     }

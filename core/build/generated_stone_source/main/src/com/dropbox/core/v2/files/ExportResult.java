@@ -16,10 +16,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class ExportResult {
     // struct files.ExportResult (files.stone)
 
+    @Nonnull
     protected final ExportMetadata exportMetadata;
+    @Nonnull
     protected final FileMetadata fileMetadata;
 
     /**
@@ -32,7 +36,7 @@ public class ExportResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExportResult(ExportMetadata exportMetadata, FileMetadata fileMetadata) {
+    public ExportResult(@Nonnull ExportMetadata exportMetadata, @Nonnull FileMetadata fileMetadata) {
         if (exportMetadata == null) {
             throw new IllegalArgumentException("Required value for 'exportMetadata' is null");
         }
@@ -48,6 +52,7 @@ public class ExportResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ExportMetadata getExportMetadata() {
         return exportMetadata;
     }
@@ -57,6 +62,7 @@ public class ExportResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FileMetadata getFileMetadata() {
         return fileMetadata;
     }

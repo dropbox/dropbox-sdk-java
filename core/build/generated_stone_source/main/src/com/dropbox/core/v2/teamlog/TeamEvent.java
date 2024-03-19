@@ -19,21 +19,34 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * An audit log event.
  */
 public class TeamEvent {
     // struct team_log.TeamEvent (team_log_generated.stone)
 
+    @Nonnull
     protected final Date timestamp;
+    @Nonnull
     protected final EventCategory eventCategory;
+    @Nullable
     protected final ActorLogInfo actor;
+    @Nullable
     protected final OriginLogInfo origin;
+    @Nullable
     protected final Boolean involveNonTeamMember;
+    @Nullable
     protected final ContextLogInfo context;
+    @Nullable
     protected final List<ParticipantLogInfo> participants;
+    @Nullable
     protected final List<AssetLogInfo> assets;
+    @Nonnull
     protected final EventType eventType;
+    @Nonnull
     protected final EventDetails details;
 
     /**
@@ -73,7 +86,7 @@ public class TeamEvent {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamEvent(Date timestamp, EventCategory eventCategory, EventType eventType, EventDetails details, ActorLogInfo actor, OriginLogInfo origin, Boolean involveNonTeamMember, ContextLogInfo context, List<ParticipantLogInfo> participants, List<AssetLogInfo> assets) {
+    public TeamEvent(@Nonnull Date timestamp, @Nonnull EventCategory eventCategory, @Nonnull EventType eventType, @Nonnull EventDetails details, @Nullable ActorLogInfo actor, @Nullable OriginLogInfo origin, @Nullable Boolean involveNonTeamMember, @Nullable ContextLogInfo context, @Nullable List<ParticipantLogInfo> participants, @Nullable List<AssetLogInfo> assets) {
         if (timestamp == null) {
             throw new IllegalArgumentException("Required value for 'timestamp' is null");
         }
@@ -130,7 +143,7 @@ public class TeamEvent {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamEvent(Date timestamp, EventCategory eventCategory, EventType eventType, EventDetails details) {
+    public TeamEvent(@Nonnull Date timestamp, @Nonnull EventCategory eventCategory, @Nonnull EventType eventType, @Nonnull EventDetails details) {
         this(timestamp, eventCategory, eventType, details, null, null, null, null, null, null);
     }
 
@@ -139,6 +152,7 @@ public class TeamEvent {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Date getTimestamp() {
         return timestamp;
     }
@@ -148,6 +162,7 @@ public class TeamEvent {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public EventCategory getEventCategory() {
         return eventCategory;
     }
@@ -157,6 +172,7 @@ public class TeamEvent {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public EventType getEventType() {
         return eventType;
     }
@@ -167,6 +183,7 @@ public class TeamEvent {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public EventDetails getDetails() {
         return details;
     }
@@ -177,6 +194,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public ActorLogInfo getActor() {
         return actor;
     }
@@ -189,6 +207,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public OriginLogInfo getOrigin() {
         return origin;
     }
@@ -199,6 +218,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getInvolveNonTeamMember() {
         return involveNonTeamMember;
     }
@@ -209,6 +229,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public ContextLogInfo getContext() {
         return context;
     }
@@ -219,6 +240,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<ParticipantLogInfo> getParticipants() {
         return participants;
     }
@@ -230,6 +252,7 @@ public class TeamEvent {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<AssetLogInfo> getAssets() {
         return assets;
     }

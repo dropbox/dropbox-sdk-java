@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Failed to verify team domain.
  */
 public class DomainVerificationAddDomainFailDetails {
     // struct team_log.DomainVerificationAddDomainFailDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String domainName;
+    @Nullable
     protected final String verificationMethod;
 
     /**
@@ -35,7 +40,7 @@ public class DomainVerificationAddDomainFailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DomainVerificationAddDomainFailDetails(String domainName, String verificationMethod) {
+    public DomainVerificationAddDomainFailDetails(@Nonnull String domainName, @Nullable String verificationMethod) {
         if (domainName == null) {
             throw new IllegalArgumentException("Required value for 'domainName' is null");
         }
@@ -53,7 +58,7 @@ public class DomainVerificationAddDomainFailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DomainVerificationAddDomainFailDetails(String domainName) {
+    public DomainVerificationAddDomainFailDetails(@Nonnull String domainName) {
         this(domainName, null);
     }
 
@@ -62,6 +67,7 @@ public class DomainVerificationAddDomainFailDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDomainName() {
         return domainName;
     }
@@ -72,6 +78,7 @@ public class DomainVerificationAddDomainFailDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getVerificationMethod() {
         return verificationMethod;
     }

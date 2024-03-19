@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class AddTemplateResult {
     // struct file_properties.AddTemplateResult (file_properties.stone)
 
+    @Nonnull
     protected final String templateId;
 
     /**
@@ -34,7 +37,7 @@ public class AddTemplateResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddTemplateResult(String templateId) {
+    public AddTemplateResult(@Nonnull String templateId) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }
@@ -55,6 +58,7 @@ public class AddTemplateResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTemplateId() {
         return templateId;
     }

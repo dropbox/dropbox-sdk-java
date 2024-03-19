@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class ContentSyncSetting {
     // struct files.ContentSyncSetting (files.stone)
 
+    @Nonnull
     protected final String id;
+    @Nonnull
     protected final SyncSetting syncSetting;
 
     /**
@@ -32,7 +36,7 @@ public class ContentSyncSetting {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ContentSyncSetting(String id, SyncSetting syncSetting) {
+    public ContentSyncSetting(@Nonnull String id, @Nonnull SyncSetting syncSetting) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -54,6 +58,7 @@ public class ContentSyncSetting {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -63,6 +68,7 @@ public class ContentSyncSetting {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SyncSetting getSyncSetting() {
         return syncSetting;
     }

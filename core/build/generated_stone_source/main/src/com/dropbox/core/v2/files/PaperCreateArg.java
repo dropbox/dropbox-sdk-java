@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class PaperCreateArg {
     // struct files.PaperCreateArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final ImportFormat importFormat;
 
     /**
@@ -35,7 +39,7 @@ class PaperCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperCreateArg(String path, ImportFormat importFormat) {
+    public PaperCreateArg(@Nonnull String path, @Nonnull ImportFormat importFormat) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -56,6 +60,7 @@ class PaperCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -65,6 +70,7 @@ class PaperCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ImportFormat getImportFormat() {
         return importFormat;
     }

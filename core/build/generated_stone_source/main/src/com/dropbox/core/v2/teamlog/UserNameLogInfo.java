@@ -16,14 +16,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * User's name logged information
  */
 public class UserNameLogInfo {
     // struct team_log.UserNameLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final String givenName;
+    @Nonnull
     protected final String surname;
+    @Nullable
     protected final String locale;
 
     /**
@@ -36,7 +42,7 @@ public class UserNameLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserNameLogInfo(String givenName, String surname, String locale) {
+    public UserNameLogInfo(@Nonnull String givenName, @Nonnull String surname, @Nullable String locale) {
         if (givenName == null) {
             throw new IllegalArgumentException("Required value for 'givenName' is null");
         }
@@ -59,7 +65,7 @@ public class UserNameLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserNameLogInfo(String givenName, String surname) {
+    public UserNameLogInfo(@Nonnull String givenName, @Nonnull String surname) {
         this(givenName, surname, null);
     }
 
@@ -68,6 +74,7 @@ public class UserNameLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGivenName() {
         return givenName;
     }
@@ -77,6 +84,7 @@ public class UserNameLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSurname() {
         return surname;
     }
@@ -86,6 +94,7 @@ public class UserNameLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getLocale() {
         return locale;
     }

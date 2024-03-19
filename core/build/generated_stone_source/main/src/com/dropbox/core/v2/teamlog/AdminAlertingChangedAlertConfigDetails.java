@@ -16,14 +16,19 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed an alert setting.
  */
 public class AdminAlertingChangedAlertConfigDetails {
     // struct team_log.AdminAlertingChangedAlertConfigDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String alertName;
+    @Nonnull
     protected final AdminAlertingAlertConfiguration previousAlertConfig;
+    @Nonnull
     protected final AdminAlertingAlertConfiguration newAlertConfig;
 
     /**
@@ -37,7 +42,7 @@ public class AdminAlertingChangedAlertConfigDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AdminAlertingChangedAlertConfigDetails(String alertName, AdminAlertingAlertConfiguration previousAlertConfig, AdminAlertingAlertConfiguration newAlertConfig) {
+    public AdminAlertingChangedAlertConfigDetails(@Nonnull String alertName, @Nonnull AdminAlertingAlertConfiguration previousAlertConfig, @Nonnull AdminAlertingAlertConfiguration newAlertConfig) {
         if (alertName == null) {
             throw new IllegalArgumentException("Required value for 'alertName' is null");
         }
@@ -57,6 +62,7 @@ public class AdminAlertingChangedAlertConfigDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAlertName() {
         return alertName;
     }
@@ -66,6 +72,7 @@ public class AdminAlertingChangedAlertConfigDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AdminAlertingAlertConfiguration getPreviousAlertConfig() {
         return previousAlertConfig;
     }
@@ -75,6 +82,7 @@ public class AdminAlertingChangedAlertConfigDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AdminAlertingAlertConfiguration getNewAlertConfig() {
         return newAlertConfig;
     }

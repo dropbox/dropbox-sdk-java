@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class PaperFolderCreateResult {
     // struct paper.PaperFolderCreateResult (paper.stone)
 
+    @Nonnull
     protected final String folderId;
 
     /**
@@ -29,7 +32,7 @@ public class PaperFolderCreateResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperFolderCreateResult(String folderId) {
+    public PaperFolderCreateResult(@Nonnull String folderId) {
         if (folderId == null) {
             throw new IllegalArgumentException("Required value for 'folderId' is null");
         }
@@ -41,6 +44,7 @@ public class PaperFolderCreateResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFolderId() {
         return folderId;
     }

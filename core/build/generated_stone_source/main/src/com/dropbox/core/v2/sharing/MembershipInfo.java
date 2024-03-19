@@ -17,14 +17,20 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The information about a member of the shared content.
  */
 public class MembershipInfo {
     // struct sharing.MembershipInfo (sharing_folders.stone)
 
+    @Nonnull
     protected final AccessLevel accessType;
+    @Nullable
     protected final List<MemberPermission> permissions;
+    @Nullable
     protected final String initials;
     protected final boolean isInherited;
 
@@ -46,7 +52,7 @@ public class MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembershipInfo(AccessLevel accessType, List<MemberPermission> permissions, String initials, boolean isInherited) {
+    public MembershipInfo(@Nonnull AccessLevel accessType, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited) {
         if (accessType == null) {
             throw new IllegalArgumentException("Required value for 'accessType' is null");
         }
@@ -75,7 +81,7 @@ public class MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembershipInfo(AccessLevel accessType) {
+    public MembershipInfo(@Nonnull AccessLevel accessType) {
         this(accessType, null, null, false);
     }
 
@@ -85,6 +91,7 @@ public class MembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -95,6 +102,7 @@ public class MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<MemberPermission> getPermissions() {
         return permissions;
     }
@@ -104,6 +112,7 @@ public class MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getInitials() {
         return initials;
     }

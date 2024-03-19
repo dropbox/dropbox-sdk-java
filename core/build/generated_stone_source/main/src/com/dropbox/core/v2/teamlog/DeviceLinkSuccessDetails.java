@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Linked device.
  */
 public class DeviceLinkSuccessDetails {
     // struct team_log.DeviceLinkSuccessDetails (team_log_generated.stone)
 
+    @Nullable
     protected final DeviceSessionLogInfo deviceSessionInfo;
 
     /**
@@ -29,7 +33,7 @@ public class DeviceLinkSuccessDetails {
      *
      * @param deviceSessionInfo  Device's session logged information.
      */
-    public DeviceLinkSuccessDetails(DeviceSessionLogInfo deviceSessionInfo) {
+    public DeviceLinkSuccessDetails(@Nullable DeviceSessionLogInfo deviceSessionInfo) {
         this.deviceSessionInfo = deviceSessionInfo;
     }
 
@@ -47,6 +51,7 @@ public class DeviceLinkSuccessDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public DeviceSessionLogInfo getDeviceSessionInfo() {
         return deviceSessionInfo;
     }

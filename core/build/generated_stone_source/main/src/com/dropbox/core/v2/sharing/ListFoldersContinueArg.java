@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class ListFoldersContinueArg {
     // struct sharing.ListFoldersContinueArg (sharing_folders.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**
@@ -29,7 +32,7 @@ class ListFoldersContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFoldersContinueArg(String cursor) {
+    public ListFoldersContinueArg(@Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -42,6 +45,7 @@ class ListFoldersContinueArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

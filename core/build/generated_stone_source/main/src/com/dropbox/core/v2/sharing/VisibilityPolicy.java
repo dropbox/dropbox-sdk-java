@@ -16,12 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class VisibilityPolicy {
     // struct sharing.VisibilityPolicy (shared_links.stone)
 
+    @Nonnull
     protected final RequestedVisibility policy;
+    @Nonnull
     protected final AlphaResolvedVisibility resolvedPolicy;
     protected final boolean allowed;
+    @Nullable
     protected final VisibilityPolicyDisallowedReason disallowedReason;
 
     /**
@@ -42,7 +48,7 @@ public class VisibilityPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public VisibilityPolicy(RequestedVisibility policy, AlphaResolvedVisibility resolvedPolicy, boolean allowed, VisibilityPolicyDisallowedReason disallowedReason) {
+    public VisibilityPolicy(@Nonnull RequestedVisibility policy, @Nonnull AlphaResolvedVisibility resolvedPolicy, boolean allowed, @Nullable VisibilityPolicyDisallowedReason disallowedReason) {
         if (policy == null) {
             throw new IllegalArgumentException("Required value for 'policy' is null");
         }
@@ -73,7 +79,7 @@ public class VisibilityPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public VisibilityPolicy(RequestedVisibility policy, AlphaResolvedVisibility resolvedPolicy, boolean allowed) {
+    public VisibilityPolicy(@Nonnull RequestedVisibility policy, @Nonnull AlphaResolvedVisibility resolvedPolicy, boolean allowed) {
         this(policy, resolvedPolicy, allowed, null);
     }
 
@@ -82,6 +88,7 @@ public class VisibilityPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public RequestedVisibility getPolicy() {
         return policy;
     }
@@ -94,6 +101,7 @@ public class VisibilityPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AlphaResolvedVisibility getResolvedPolicy() {
         return resolvedPolicy;
     }
@@ -114,6 +122,7 @@ public class VisibilityPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public VisibilityPolicyDisallowedReason getDisallowedReason() {
         return disallowedReason;
     }

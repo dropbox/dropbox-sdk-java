@@ -18,12 +18,16 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Metadata for a path-based shared link.
  */
 public class PathLinkMetadata extends LinkMetadata {
     // struct sharing.PathLinkMetadata (shared_links.stone)
 
+    @Nonnull
     protected final String path;
 
     /**
@@ -38,7 +42,7 @@ public class PathLinkMetadata extends LinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PathLinkMetadata(String url, Visibility visibility, String path, Date expires) {
+    public PathLinkMetadata(@Nonnull String url, @Nonnull Visibility visibility, @Nonnull String path, @Nullable Date expires) {
         super(url, visibility, expires);
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
@@ -58,7 +62,7 @@ public class PathLinkMetadata extends LinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PathLinkMetadata(String url, Visibility visibility, String path) {
+    public PathLinkMetadata(@Nonnull String url, @Nonnull Visibility visibility, @Nonnull String path) {
         this(url, visibility, path, null);
     }
 
@@ -67,6 +71,7 @@ public class PathLinkMetadata extends LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -76,6 +81,7 @@ public class PathLinkMetadata extends LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Visibility getVisibility() {
         return visibility;
     }
@@ -85,6 +91,7 @@ public class PathLinkMetadata extends LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -94,6 +101,7 @@ public class PathLinkMetadata extends LinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getExpires() {
         return expires;
     }

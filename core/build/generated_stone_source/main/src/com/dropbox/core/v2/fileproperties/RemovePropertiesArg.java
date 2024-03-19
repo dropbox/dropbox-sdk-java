@@ -18,10 +18,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class RemovePropertiesArg {
     // struct file_properties.RemovePropertiesArg (file_properties.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final List<String> propertyTemplateIds;
 
     /**
@@ -38,7 +42,7 @@ public class RemovePropertiesArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RemovePropertiesArg(String path, List<String> propertyTemplateIds) {
+    public RemovePropertiesArg(@Nonnull String path, @Nonnull List<String> propertyTemplateIds) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -68,6 +72,7 @@ public class RemovePropertiesArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -79,6 +84,7 @@ public class RemovePropertiesArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<String> getPropertyTemplateIds() {
         return propertyTemplateIds;
     }

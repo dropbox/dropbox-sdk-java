@@ -16,15 +16,21 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed who can update a setting.
  */
 public class EnterpriseSettingsLockingDetails {
     // struct team_log.EnterpriseSettingsLockingDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String teamName;
+    @Nonnull
     protected final String settingsPageName;
+    @Nonnull
     protected final String previousSettingsPageLockingState;
+    @Nonnull
     protected final String newSettingsPageLockingState;
 
     /**
@@ -40,7 +46,7 @@ public class EnterpriseSettingsLockingDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EnterpriseSettingsLockingDetails(String teamName, String settingsPageName, String previousSettingsPageLockingState, String newSettingsPageLockingState) {
+    public EnterpriseSettingsLockingDetails(@Nonnull String teamName, @Nonnull String settingsPageName, @Nonnull String previousSettingsPageLockingState, @Nonnull String newSettingsPageLockingState) {
         if (teamName == null) {
             throw new IllegalArgumentException("Required value for 'teamName' is null");
         }
@@ -64,6 +70,7 @@ public class EnterpriseSettingsLockingDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamName() {
         return teamName;
     }
@@ -73,6 +80,7 @@ public class EnterpriseSettingsLockingDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSettingsPageName() {
         return settingsPageName;
     }
@@ -82,6 +90,7 @@ public class EnterpriseSettingsLockingDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPreviousSettingsPageLockingState() {
         return previousSettingsPageLockingState;
     }
@@ -91,6 +100,7 @@ public class EnterpriseSettingsLockingDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getNewSettingsPageLockingState() {
         return newSettingsPageLockingState;
     }

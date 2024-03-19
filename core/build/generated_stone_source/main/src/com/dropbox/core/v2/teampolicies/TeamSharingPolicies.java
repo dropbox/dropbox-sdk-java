@@ -16,16 +16,23 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Policies governing sharing within and outside of the team.
  */
 public class TeamSharingPolicies {
     // struct team_policies.TeamSharingPolicies (team_policies.stone)
 
+    @Nonnull
     protected final SharedFolderMemberPolicy sharedFolderMemberPolicy;
+    @Nonnull
     protected final SharedFolderJoinPolicy sharedFolderJoinPolicy;
+    @Nonnull
     protected final SharedLinkCreatePolicy sharedLinkCreatePolicy;
+    @Nonnull
     protected final GroupCreation groupCreationPolicy;
+    @Nonnull
     protected final SharedFolderBlanketLinkRestrictionPolicy sharedFolderLinkRestrictionPolicy;
 
     /**
@@ -45,7 +52,7 @@ public class TeamSharingPolicies {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSharingPolicies(SharedFolderMemberPolicy sharedFolderMemberPolicy, SharedFolderJoinPolicy sharedFolderJoinPolicy, SharedLinkCreatePolicy sharedLinkCreatePolicy, GroupCreation groupCreationPolicy, SharedFolderBlanketLinkRestrictionPolicy sharedFolderLinkRestrictionPolicy) {
+    public TeamSharingPolicies(@Nonnull SharedFolderMemberPolicy sharedFolderMemberPolicy, @Nonnull SharedFolderJoinPolicy sharedFolderJoinPolicy, @Nonnull SharedLinkCreatePolicy sharedLinkCreatePolicy, @Nonnull GroupCreation groupCreationPolicy, @Nonnull SharedFolderBlanketLinkRestrictionPolicy sharedFolderLinkRestrictionPolicy) {
         if (sharedFolderMemberPolicy == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderMemberPolicy' is null");
         }
@@ -73,6 +80,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SharedFolderMemberPolicy getSharedFolderMemberPolicy() {
         return sharedFolderMemberPolicy;
     }
@@ -82,6 +90,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SharedFolderJoinPolicy getSharedFolderJoinPolicy() {
         return sharedFolderJoinPolicy;
     }
@@ -91,6 +100,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SharedLinkCreatePolicy getSharedLinkCreatePolicy() {
         return sharedLinkCreatePolicy;
     }
@@ -100,6 +110,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupCreation getGroupCreationPolicy() {
         return groupCreationPolicy;
     }
@@ -109,6 +120,7 @@ public class TeamSharingPolicies {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SharedFolderBlanketLinkRestrictionPolicy getSharedFolderLinkRestrictionPolicy() {
         return sharedFolderLinkRestrictionPolicy;
     }

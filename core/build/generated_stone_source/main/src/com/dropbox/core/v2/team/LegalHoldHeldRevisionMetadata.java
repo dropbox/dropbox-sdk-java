@@ -19,18 +19,29 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class LegalHoldHeldRevisionMetadata {
     // struct team.LegalHoldHeldRevisionMetadata (team_legal_holds.stone)
 
+    @Nonnull
     protected final String newFilename;
+    @Nonnull
     protected final String originalRevisionId;
+    @Nonnull
     protected final String originalFilePath;
+    @Nonnull
     protected final Date serverModified;
+    @Nonnull
     protected final String authorMemberId;
+    @Nonnull
     protected final TeamMemberStatus authorMemberStatus;
+    @Nonnull
     protected final String authorEmail;
+    @Nonnull
     protected final String fileType;
     protected final long size;
+    @Nonnull
     protected final String contentHash;
 
     /**
@@ -63,7 +74,7 @@ public class LegalHoldHeldRevisionMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldHeldRevisionMetadata(String newFilename, String originalRevisionId, String originalFilePath, Date serverModified, String authorMemberId, TeamMemberStatus authorMemberStatus, String authorEmail, String fileType, long size, String contentHash) {
+    public LegalHoldHeldRevisionMetadata(@Nonnull String newFilename, @Nonnull String originalRevisionId, @Nonnull String originalFilePath, @Nonnull Date serverModified, @Nonnull String authorMemberId, @Nonnull TeamMemberStatus authorMemberStatus, @Nonnull String authorEmail, @Nonnull String fileType, long size, @Nonnull String contentHash) {
         if (newFilename == null) {
             throw new IllegalArgumentException("Required value for 'newFilename' is null");
         }
@@ -129,6 +140,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getNewFilename() {
         return newFilename;
     }
@@ -138,6 +150,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getOriginalRevisionId() {
         return originalRevisionId;
     }
@@ -147,6 +160,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getOriginalFilePath() {
         return originalFilePath;
     }
@@ -156,6 +170,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Date getServerModified() {
         return serverModified;
     }
@@ -165,6 +180,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAuthorMemberId() {
         return authorMemberId;
     }
@@ -174,6 +190,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamMemberStatus getAuthorMemberStatus() {
         return authorMemberStatus;
     }
@@ -183,6 +200,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAuthorEmail() {
         return authorEmail;
     }
@@ -192,6 +210,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFileType() {
         return fileType;
     }
@@ -213,6 +232,7 @@ public class LegalHoldHeldRevisionMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getContentHash() {
         return contentHash;
     }

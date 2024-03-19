@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class RevokeSharedLinkArg {
     // struct sharing.RevokeSharedLinkArg (shared_links.stone)
 
+    @Nonnull
     protected final String url;
 
     /**
@@ -28,7 +31,7 @@ class RevokeSharedLinkArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeSharedLinkArg(String url) {
+    public RevokeSharedLinkArg(@Nonnull String url) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }
@@ -40,6 +43,7 @@ class RevokeSharedLinkArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUrl() {
         return url;
     }

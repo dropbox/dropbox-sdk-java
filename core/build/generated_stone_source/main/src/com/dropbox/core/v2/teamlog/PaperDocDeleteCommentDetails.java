@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Deleted Paper doc comment.
  */
 public class PaperDocDeleteCommentDetails {
     // struct team_log.PaperDocDeleteCommentDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nullable
     protected final String commentText;
 
     /**
@@ -34,7 +39,7 @@ public class PaperDocDeleteCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocDeleteCommentDetails(String eventUuid, String commentText) {
+    public PaperDocDeleteCommentDetails(@Nonnull String eventUuid, @Nullable String commentText) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -52,7 +57,7 @@ public class PaperDocDeleteCommentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocDeleteCommentDetails(String eventUuid) {
+    public PaperDocDeleteCommentDetails(@Nonnull String eventUuid) {
         this(eventUuid, null);
     }
 
@@ -61,6 +66,7 @@ public class PaperDocDeleteCommentDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -70,6 +76,7 @@ public class PaperDocDeleteCommentDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCommentText() {
         return commentText;
     }

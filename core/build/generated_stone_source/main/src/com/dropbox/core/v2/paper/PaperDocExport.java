@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class PaperDocExport extends RefPaperDoc {
     // struct paper.PaperDocExport (paper.stone)
 
+    @Nonnull
     protected final ExportFormat exportFormat;
 
     /**
@@ -29,7 +32,7 @@ class PaperDocExport extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocExport(String docId, ExportFormat exportFormat) {
+    public PaperDocExport(@Nonnull String docId, @Nonnull ExportFormat exportFormat) {
         super(docId);
         if (exportFormat == null) {
             throw new IllegalArgumentException("Required value for 'exportFormat' is null");
@@ -42,6 +45,7 @@ class PaperDocExport extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDocId() {
         return docId;
     }
@@ -50,6 +54,7 @@ class PaperDocExport extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ExportFormat getExportFormat() {
         return exportFormat;
     }

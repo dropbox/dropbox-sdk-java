@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed access type of invitee to shared file/folder before invite was
  * accepted.
@@ -24,8 +27,11 @@ import java.util.Arrays;
 public class SharedContentChangeInviteeRoleDetails {
     // struct team_log.SharedContentChangeInviteeRoleDetails (team_log_generated.stone)
 
+    @Nullable
     protected final AccessLevel previousAccessLevel;
+    @Nonnull
     protected final AccessLevel newAccessLevel;
+    @Nonnull
     protected final String invitee;
 
     /**
@@ -41,7 +47,7 @@ public class SharedContentChangeInviteeRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeInviteeRoleDetails(AccessLevel newAccessLevel, String invitee, AccessLevel previousAccessLevel) {
+    public SharedContentChangeInviteeRoleDetails(@Nonnull AccessLevel newAccessLevel, @Nonnull String invitee, @Nullable AccessLevel previousAccessLevel) {
         this.previousAccessLevel = previousAccessLevel;
         if (newAccessLevel == null) {
             throw new IllegalArgumentException("Required value for 'newAccessLevel' is null");
@@ -69,7 +75,7 @@ public class SharedContentChangeInviteeRoleDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentChangeInviteeRoleDetails(AccessLevel newAccessLevel, String invitee) {
+    public SharedContentChangeInviteeRoleDetails(@Nonnull AccessLevel newAccessLevel, @Nonnull String invitee) {
         this(newAccessLevel, invitee, null);
     }
 
@@ -78,6 +84,7 @@ public class SharedContentChangeInviteeRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getNewAccessLevel() {
         return newAccessLevel;
     }
@@ -87,6 +94,7 @@ public class SharedContentChangeInviteeRoleDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getInvitee() {
         return invitee;
     }
@@ -96,6 +104,7 @@ public class SharedContentChangeInviteeRoleDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AccessLevel getPreviousAccessLevel() {
         return previousAccessLevel;
     }

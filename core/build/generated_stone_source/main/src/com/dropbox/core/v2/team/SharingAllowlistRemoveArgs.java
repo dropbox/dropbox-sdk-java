@@ -17,10 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class SharingAllowlistRemoveArgs {
     // struct team.SharingAllowlistRemoveArgs (team_sharing_allowlist.stone)
 
+    @Nullable
     protected final List<String> domains;
+    @Nullable
     protected final List<String> emails;
 
     /**
@@ -35,7 +40,7 @@ class SharingAllowlistRemoveArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingAllowlistRemoveArgs(List<String> domains, List<String> emails) {
+    public SharingAllowlistRemoveArgs(@Nullable List<String> domains, @Nullable List<String> emails) {
         if (domains != null) {
             for (String x : domains) {
                 if (x == null) {
@@ -68,6 +73,7 @@ class SharingAllowlistRemoveArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getDomains() {
         return domains;
     }
@@ -77,6 +83,7 @@ class SharingAllowlistRemoveArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getEmails() {
         return emails;
     }

@@ -17,16 +17,24 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Received files via Email to Dropbox.
  */
 public class EmailIngestReceiveFileDetails {
     // struct team_log.EmailIngestReceiveFileDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String inboxName;
+    @Nonnull
     protected final List<String> attachmentNames;
+    @Nullable
     protected final String subject;
+    @Nullable
     protected final String fromName;
+    @Nullable
     protected final String fromEmail;
 
     /**
@@ -46,7 +54,7 @@ public class EmailIngestReceiveFileDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmailIngestReceiveFileDetails(String inboxName, List<String> attachmentNames, String subject, String fromName, String fromEmail) {
+    public EmailIngestReceiveFileDetails(@Nonnull String inboxName, @Nonnull List<String> attachmentNames, @Nullable String subject, @Nullable String fromName, @Nullable String fromEmail) {
         if (inboxName == null) {
             throw new IllegalArgumentException("Required value for 'inboxName' is null");
         }
@@ -82,7 +90,7 @@ public class EmailIngestReceiveFileDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmailIngestReceiveFileDetails(String inboxName, List<String> attachmentNames) {
+    public EmailIngestReceiveFileDetails(@Nonnull String inboxName, @Nonnull List<String> attachmentNames) {
         this(inboxName, attachmentNames, null, null, null);
     }
 
@@ -91,6 +99,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getInboxName() {
         return inboxName;
     }
@@ -100,6 +109,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<String> getAttachmentNames() {
         return attachmentNames;
     }
@@ -109,6 +119,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getSubject() {
         return subject;
     }
@@ -118,6 +129,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getFromName() {
         return fromName;
     }
@@ -127,6 +139,7 @@ public class EmailIngestReceiveFileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getFromEmail() {
         return fromEmail;
     }

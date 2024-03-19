@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class DeleteBatchArg {
     // struct files.DeleteBatchArg (files.stone)
 
+    @Nonnull
     protected final List<DeleteArg> entries;
 
     /**
@@ -30,7 +33,7 @@ class DeleteBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeleteBatchArg(List<DeleteArg> entries) {
+    public DeleteBatchArg(@Nonnull List<DeleteArg> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -49,6 +52,7 @@ class DeleteBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<DeleteArg> getEntries() {
         return entries;
     }

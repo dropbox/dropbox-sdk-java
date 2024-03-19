@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Set/removed limit on number of computers member can link to team Dropbox
  * account.
@@ -23,7 +26,9 @@ import java.util.Arrays;
 public class DeviceApprovalsChangeDesktopPolicyDetails {
     // struct team_log.DeviceApprovalsChangeDesktopPolicyDetails (team_log_generated.stone)
 
+    @Nullable
     protected final DeviceApprovalsPolicy newValue;
+    @Nullable
     protected final DeviceApprovalsPolicy previousValue;
 
     /**
@@ -38,7 +43,7 @@ public class DeviceApprovalsChangeDesktopPolicyDetails {
      * @param previousValue  Previous desktop device approvals policy. Might be
      *     missing due to historical data gap.
      */
-    public DeviceApprovalsChangeDesktopPolicyDetails(DeviceApprovalsPolicy newValue, DeviceApprovalsPolicy previousValue) {
+    public DeviceApprovalsChangeDesktopPolicyDetails(@Nullable DeviceApprovalsPolicy newValue, @Nullable DeviceApprovalsPolicy previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }
@@ -59,6 +64,7 @@ public class DeviceApprovalsChangeDesktopPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public DeviceApprovalsPolicy getNewValue() {
         return newValue;
     }
@@ -69,6 +75,7 @@ public class DeviceApprovalsChangeDesktopPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public DeviceApprovalsPolicy getPreviousValue() {
         return previousValue;
     }

@@ -16,10 +16,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class RevokeDeviceSessionStatus {
     // struct team.RevokeDeviceSessionStatus (team_devices.stone)
 
     protected final boolean success;
+    @Nullable
     protected final RevokeDeviceSessionError errorType;
 
     /**
@@ -27,7 +31,7 @@ public class RevokeDeviceSessionStatus {
      * @param success  Result of the revoking request.
      * @param errorType  The error cause in case of a failure.
      */
-    public RevokeDeviceSessionStatus(boolean success, RevokeDeviceSessionError errorType) {
+    public RevokeDeviceSessionStatus(boolean success, @Nullable RevokeDeviceSessionError errorType) {
         this.success = success;
         this.errorType = errorType;
     }
@@ -57,6 +61,7 @@ public class RevokeDeviceSessionStatus {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public RevokeDeviceSessionError getErrorType() {
         return errorType;
     }

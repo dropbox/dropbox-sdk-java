@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class DownloadZipArg {
     // struct files.DownloadZipArg (files.stone)
 
+    @Nonnull
     protected final String path;
 
     /**
@@ -31,7 +34,7 @@ class DownloadZipArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DownloadZipArg(String path) {
+    public DownloadZipArg(@Nonnull String path) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -46,6 +49,7 @@ class DownloadZipArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }

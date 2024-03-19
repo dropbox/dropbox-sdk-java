@@ -18,10 +18,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class OverwritePropertyGroupArg {
     // struct file_properties.OverwritePropertyGroupArg (file_properties.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final List<PropertyGroup> propertyGroups;
 
     /**
@@ -37,7 +41,7 @@ public class OverwritePropertyGroupArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public OverwritePropertyGroupArg(String path, List<PropertyGroup> propertyGroups) {
+    public OverwritePropertyGroupArg(@Nonnull String path, @Nonnull List<PropertyGroup> propertyGroups) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -64,6 +68,7 @@ public class OverwritePropertyGroupArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -74,6 +79,7 @@ public class OverwritePropertyGroupArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }

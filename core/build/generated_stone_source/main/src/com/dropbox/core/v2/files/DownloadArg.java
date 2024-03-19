@@ -17,10 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class DownloadArg {
     // struct files.DownloadArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nullable
     protected final String rev;
 
     /**
@@ -35,7 +40,7 @@ class DownloadArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DownloadArg(String path, String rev) {
+    public DownloadArg(@Nonnull String path, @Nullable String rev) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -66,7 +71,7 @@ class DownloadArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DownloadArg(String path) {
+    public DownloadArg(@Nonnull String path) {
         this(path, null);
     }
 
@@ -75,6 +80,7 @@ class DownloadArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -85,6 +91,7 @@ class DownloadArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getRev() {
         return rev;
     }

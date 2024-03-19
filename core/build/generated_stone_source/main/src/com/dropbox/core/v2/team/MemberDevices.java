@@ -17,15 +17,22 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information on devices of a team's member.
  */
 public class MemberDevices {
     // struct team.MemberDevices (team_devices.stone)
 
+    @Nonnull
     protected final String teamMemberId;
+    @Nullable
     protected final List<ActiveWebSession> webSessions;
+    @Nullable
     protected final List<DesktopClientSession> desktopClients;
+    @Nullable
     protected final List<MobileClientSession> mobileClients;
 
     /**
@@ -45,7 +52,7 @@ public class MemberDevices {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberDevices(String teamMemberId, List<ActiveWebSession> webSessions, List<DesktopClientSession> desktopClients, List<MobileClientSession> mobileClients) {
+    public MemberDevices(@Nonnull String teamMemberId, @Nullable List<ActiveWebSession> webSessions, @Nullable List<DesktopClientSession> desktopClients, @Nullable List<MobileClientSession> mobileClients) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }
@@ -86,7 +93,7 @@ public class MemberDevices {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberDevices(String teamMemberId) {
+    public MemberDevices(@Nonnull String teamMemberId) {
         this(teamMemberId, null, null, null);
     }
 
@@ -95,6 +102,7 @@ public class MemberDevices {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }
@@ -104,6 +112,7 @@ public class MemberDevices {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<ActiveWebSession> getWebSessions() {
         return webSessions;
     }
@@ -113,6 +122,7 @@ public class MemberDevices {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<DesktopClientSession> getDesktopClients() {
         return desktopClients;
     }
@@ -122,6 +132,7 @@ public class MemberDevices {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<MobileClientSession> getMobileClients() {
         return mobileClients;
     }

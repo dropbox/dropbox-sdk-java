@@ -19,13 +19,21 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class LegalHoldsPolicyCreateArg {
     // struct team.LegalHoldsPolicyCreateArg (team_legal_holds.stone)
 
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final String description;
+    @Nonnull
     protected final List<String> members;
+    @Nullable
     protected final Date startDate;
+    @Nullable
     protected final Date endDate;
 
     /**
@@ -44,7 +52,7 @@ class LegalHoldsPolicyCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsPolicyCreateArg(String name, List<String> members, String description, Date startDate, Date endDate) {
+    public LegalHoldsPolicyCreateArg(@Nonnull String name, @Nonnull List<String> members, @Nullable String description, @Nullable Date startDate, @Nullable Date endDate) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -84,7 +92,7 @@ class LegalHoldsPolicyCreateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsPolicyCreateArg(String name, List<String> members) {
+    public LegalHoldsPolicyCreateArg(@Nonnull String name, @Nonnull List<String> members) {
         this(name, members, null, null, null);
     }
 
@@ -93,6 +101,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -102,6 +111,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<String> getMembers() {
         return members;
     }
@@ -111,6 +121,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDescription() {
         return description;
     }
@@ -120,6 +131,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getStartDate() {
         return startDate;
     }
@@ -129,6 +141,7 @@ class LegalHoldsPolicyCreateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getEndDate() {
         return endDate;
     }

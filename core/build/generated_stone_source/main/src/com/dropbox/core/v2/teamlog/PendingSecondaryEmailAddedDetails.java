@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Added pending secondary email.
  */
 public class PendingSecondaryEmailAddedDetails {
     // struct team_log.PendingSecondaryEmailAddedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String secondaryEmail;
 
     /**
@@ -33,7 +36,7 @@ public class PendingSecondaryEmailAddedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PendingSecondaryEmailAddedDetails(String secondaryEmail) {
+    public PendingSecondaryEmailAddedDetails(@Nonnull String secondaryEmail) {
         if (secondaryEmail == null) {
             throw new IllegalArgumentException("Required value for 'secondaryEmail' is null");
         }
@@ -48,6 +51,7 @@ public class PendingSecondaryEmailAddedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSecondaryEmail() {
         return secondaryEmail;
     }

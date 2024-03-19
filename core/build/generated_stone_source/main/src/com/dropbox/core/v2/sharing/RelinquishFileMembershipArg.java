@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class RelinquishFileMembershipArg {
     // struct sharing.RelinquishFileMembershipArg (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
 
     /**
@@ -31,7 +34,7 @@ class RelinquishFileMembershipArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelinquishFileMembershipArg(String file) {
+    public RelinquishFileMembershipArg(@Nonnull String file) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -49,6 +52,7 @@ class RelinquishFileMembershipArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFile() {
         return file;
     }

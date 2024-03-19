@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed IP address associated with active desktop session.
  */
 public class DeviceChangeIpDesktopDetails {
     // struct team_log.DeviceChangeIpDesktopDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final DeviceSessionLogInfo deviceSessionInfo;
 
     /**
@@ -33,7 +36,7 @@ public class DeviceChangeIpDesktopDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceChangeIpDesktopDetails(DeviceSessionLogInfo deviceSessionInfo) {
+    public DeviceChangeIpDesktopDetails(@Nonnull DeviceSessionLogInfo deviceSessionInfo) {
         if (deviceSessionInfo == null) {
             throw new IllegalArgumentException("Required value for 'deviceSessionInfo' is null");
         }
@@ -45,6 +48,7 @@ public class DeviceChangeIpDesktopDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DeviceSessionLogInfo getDeviceSessionInfo() {
         return deviceSessionInfo;
     }

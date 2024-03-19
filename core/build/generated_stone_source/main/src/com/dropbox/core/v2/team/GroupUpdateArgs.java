@@ -17,12 +17,19 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class GroupUpdateArgs extends IncludeMembersArg {
     // struct team.GroupUpdateArgs (team_groups.stone)
 
+    @Nonnull
     protected final GroupSelector group;
+    @Nullable
     protected final String newGroupName;
+    @Nullable
     protected final String newGroupExternalId;
+    @Nullable
     protected final GroupManagementType newGroupManagementType;
 
     /**
@@ -45,7 +52,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupUpdateArgs(GroupSelector group, boolean returnMembers, String newGroupName, String newGroupExternalId, GroupManagementType newGroupManagementType) {
+    public GroupUpdateArgs(@Nonnull GroupSelector group, boolean returnMembers, @Nullable String newGroupName, @Nullable String newGroupExternalId, @Nullable GroupManagementType newGroupManagementType) {
         super(returnMembers);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
@@ -66,7 +73,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupUpdateArgs(GroupSelector group) {
+    public GroupUpdateArgs(@Nonnull GroupSelector group) {
         this(group, true, null, null, null);
     }
 
@@ -75,6 +82,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupSelector getGroup() {
         return group;
     }
@@ -96,6 +104,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getNewGroupName() {
         return newGroupName;
     }
@@ -107,6 +116,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getNewGroupExternalId() {
         return newGroupExternalId;
     }
@@ -116,6 +126,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public GroupManagementType getNewGroupManagementType() {
         return newGroupManagementType;
     }

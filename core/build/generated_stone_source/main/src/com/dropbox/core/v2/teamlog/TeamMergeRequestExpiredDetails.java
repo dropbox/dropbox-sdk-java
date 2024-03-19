@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Team merge request expired.
  */
 public class TeamMergeRequestExpiredDetails {
     // struct team_log.TeamMergeRequestExpiredDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamMergeRequestExpiredExtraDetails requestExpiredDetails;
 
     /**
@@ -33,7 +36,7 @@ public class TeamMergeRequestExpiredDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestExpiredDetails(TeamMergeRequestExpiredExtraDetails requestExpiredDetails) {
+    public TeamMergeRequestExpiredDetails(@Nonnull TeamMergeRequestExpiredExtraDetails requestExpiredDetails) {
         if (requestExpiredDetails == null) {
             throw new IllegalArgumentException("Required value for 'requestExpiredDetails' is null");
         }
@@ -45,6 +48,7 @@ public class TeamMergeRequestExpiredDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamMergeRequestExpiredExtraDetails getRequestExpiredDetails() {
         return requestExpiredDetails;
     }

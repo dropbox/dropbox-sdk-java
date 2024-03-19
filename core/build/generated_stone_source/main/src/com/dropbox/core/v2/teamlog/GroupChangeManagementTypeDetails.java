@@ -17,13 +17,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed group management type.
  */
 public class GroupChangeManagementTypeDetails {
     // struct team_log.GroupChangeManagementTypeDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final GroupManagementType newValue;
+    @Nullable
     protected final GroupManagementType previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class GroupChangeManagementTypeDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupChangeManagementTypeDetails(GroupManagementType newValue, GroupManagementType previousValue) {
+    public GroupChangeManagementTypeDetails(@Nonnull GroupManagementType newValue, @Nullable GroupManagementType previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -54,7 +59,7 @@ public class GroupChangeManagementTypeDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupChangeManagementTypeDetails(GroupManagementType newValue) {
+    public GroupChangeManagementTypeDetails(@Nonnull GroupManagementType newValue) {
         this(newValue, null);
     }
 
@@ -63,6 +68,7 @@ public class GroupChangeManagementTypeDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupManagementType getNewValue() {
         return newValue;
     }
@@ -73,6 +79,7 @@ public class GroupChangeManagementTypeDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public GroupManagementType getPreviousValue() {
         return previousValue;
     }

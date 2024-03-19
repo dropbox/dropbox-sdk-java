@@ -19,13 +19,18 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Metadata of a shared link for a file or folder.
  */
 public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
     // struct sharing.SharedContentLinkMetadata (shared_content_links.stone)
 
+    @Nullable
     protected final AudienceExceptions audienceExceptions;
+    @Nonnull
     protected final String url;
 
     /**
@@ -61,7 +66,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentLinkMetadata(List<LinkAudience> audienceOptions, LinkAudience currentAudience, List<LinkPermission> linkPermissions, boolean passwordProtected, String url, AccessLevel accessLevel, AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, Date expiry, AudienceExceptions audienceExceptions) {
+    public SharedContentLinkMetadata(@Nonnull List<LinkAudience> audienceOptions, @Nonnull LinkAudience currentAudience, @Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected, @Nonnull String url, @Nullable AccessLevel accessLevel, @Nullable AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, @Nullable Date expiry, @Nullable AudienceExceptions audienceExceptions) {
         super(audienceOptions, currentAudience, linkPermissions, passwordProtected, accessLevel, audienceRestrictingSharedFolder, expiry);
         this.audienceExceptions = audienceExceptions;
         if (url == null) {
@@ -92,7 +97,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentLinkMetadata(List<LinkAudience> audienceOptions, LinkAudience currentAudience, List<LinkPermission> linkPermissions, boolean passwordProtected, String url) {
+    public SharedContentLinkMetadata(@Nonnull List<LinkAudience> audienceOptions, @Nonnull LinkAudience currentAudience, @Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected, @Nonnull String url) {
         this(audienceOptions, currentAudience, linkPermissions, passwordProtected, url, null, null, null, null);
     }
 
@@ -104,6 +109,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<LinkAudience> getAudienceOptions() {
         return audienceOptions;
     }
@@ -113,6 +119,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public LinkAudience getCurrentAudience() {
         return currentAudience;
     }
@@ -122,6 +129,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<LinkPermission> getLinkPermissions() {
         return linkPermissions;
     }
@@ -140,6 +148,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -149,6 +158,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -159,6 +169,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AudienceRestrictingSharedFolder getAudienceRestrictingSharedFolder() {
         return audienceRestrictingSharedFolder;
     }
@@ -169,6 +180,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getExpiry() {
         return expiry;
     }
@@ -180,6 +192,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AudienceExceptions getAudienceExceptions() {
         return audienceExceptions;
     }

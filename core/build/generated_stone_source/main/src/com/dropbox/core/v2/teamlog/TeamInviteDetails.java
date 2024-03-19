@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Details about team invites
  */
 public class TeamInviteDetails {
     // struct team_log.TeamInviteDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final InviteMethod inviteMethod;
+    @Nullable
     protected final Boolean additionalLicensePurchase;
 
     /**
@@ -36,7 +41,7 @@ public class TeamInviteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamInviteDetails(InviteMethod inviteMethod, Boolean additionalLicensePurchase) {
+    public TeamInviteDetails(@Nonnull InviteMethod inviteMethod, @Nullable Boolean additionalLicensePurchase) {
         if (inviteMethod == null) {
             throw new IllegalArgumentException("Required value for 'inviteMethod' is null");
         }
@@ -55,7 +60,7 @@ public class TeamInviteDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamInviteDetails(InviteMethod inviteMethod) {
+    public TeamInviteDetails(@Nonnull InviteMethod inviteMethod) {
         this(inviteMethod, null);
     }
 
@@ -64,6 +69,7 @@ public class TeamInviteDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public InviteMethod getInviteMethod() {
         return inviteMethod;
     }
@@ -73,6 +79,7 @@ public class TeamInviteDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getAdditionalLicensePurchase() {
         return additionalLicensePurchase;
     }

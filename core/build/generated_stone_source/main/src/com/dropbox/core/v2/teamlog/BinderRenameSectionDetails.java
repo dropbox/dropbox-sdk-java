@@ -16,15 +16,22 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Renamed Binder section.
  */
 public class BinderRenameSectionDetails {
     // struct team_log.BinderRenameSectionDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nonnull
     protected final String docTitle;
+    @Nonnull
     protected final String binderItemName;
+    @Nullable
     protected final String previousBinderItemName;
 
     /**
@@ -39,7 +46,7 @@ public class BinderRenameSectionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderRenameSectionDetails(String eventUuid, String docTitle, String binderItemName, String previousBinderItemName) {
+    public BinderRenameSectionDetails(@Nonnull String eventUuid, @Nonnull String docTitle, @Nonnull String binderItemName, @Nullable String previousBinderItemName) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -68,7 +75,7 @@ public class BinderRenameSectionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderRenameSectionDetails(String eventUuid, String docTitle, String binderItemName) {
+    public BinderRenameSectionDetails(@Nonnull String eventUuid, @Nonnull String docTitle, @Nonnull String binderItemName) {
         this(eventUuid, docTitle, binderItemName, null);
     }
 
@@ -77,6 +84,7 @@ public class BinderRenameSectionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -86,6 +94,7 @@ public class BinderRenameSectionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDocTitle() {
         return docTitle;
     }
@@ -95,6 +104,7 @@ public class BinderRenameSectionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getBinderItemName() {
         return binderItemName;
     }
@@ -104,6 +114,7 @@ public class BinderRenameSectionDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPreviousBinderItemName() {
         return previousBinderItemName;
     }

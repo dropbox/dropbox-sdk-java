@@ -17,12 +17,16 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The information about a user member of the shared content.
  */
 public class UserMembershipInfo extends MembershipInfo {
     // struct sharing.UserMembershipInfo (sharing_folders.stone)
 
+    @Nonnull
     protected final UserInfo user;
 
     /**
@@ -45,7 +49,7 @@ public class UserMembershipInfo extends MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserMembershipInfo(AccessLevel accessType, UserInfo user, List<MemberPermission> permissions, String initials, boolean isInherited) {
+    public UserMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull UserInfo user, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited) {
         super(accessType, permissions, initials, isInherited);
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
@@ -67,7 +71,7 @@ public class UserMembershipInfo extends MembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserMembershipInfo(AccessLevel accessType, UserInfo user) {
+    public UserMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull UserInfo user) {
         this(accessType, user, null, null, false);
     }
 
@@ -77,6 +81,7 @@ public class UserMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -86,6 +91,7 @@ public class UserMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserInfo getUser() {
         return user;
     }
@@ -96,6 +102,7 @@ public class UserMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<MemberPermission> getPermissions() {
         return permissions;
     }
@@ -105,6 +112,7 @@ public class UserMembershipInfo extends MembershipInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getInitials() {
         return initials;
     }

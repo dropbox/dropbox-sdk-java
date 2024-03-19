@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed Paper Default Folder Policy setting for team.
  */
 public class PaperDefaultFolderPolicyChangedDetails {
     // struct team_log.PaperDefaultFolderPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PaperDefaultFolderPolicy newValue;
+    @Nonnull
     protected final PaperDefaultFolderPolicy previousValue;
 
     /**
@@ -36,7 +40,7 @@ public class PaperDefaultFolderPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDefaultFolderPolicyChangedDetails(PaperDefaultFolderPolicy newValue, PaperDefaultFolderPolicy previousValue) {
+    public PaperDefaultFolderPolicyChangedDetails(@Nonnull PaperDefaultFolderPolicy newValue, @Nonnull PaperDefaultFolderPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -52,6 +56,7 @@ public class PaperDefaultFolderPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PaperDefaultFolderPolicy getNewValue() {
         return newValue;
     }
@@ -61,6 +66,7 @@ public class PaperDefaultFolderPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PaperDefaultFolderPolicy getPreviousValue() {
         return previousValue;
     }

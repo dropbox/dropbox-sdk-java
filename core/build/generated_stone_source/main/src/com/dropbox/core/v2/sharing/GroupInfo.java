@@ -19,6 +19,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The information about a group. Groups is a way to manage a list of users  who
  * need same access permission to the shared folder.
@@ -26,6 +29,7 @@ import java.util.Arrays;
 public class GroupInfo extends GroupSummary {
     // struct sharing.GroupInfo (sharing_folders.stone)
 
+    @Nonnull
     protected final GroupType groupType;
     protected final boolean isMember;
     protected final boolean isOwner;
@@ -53,7 +57,7 @@ public class GroupInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupInfo(String groupName, String groupId, GroupManagementType groupManagementType, GroupType groupType, boolean isMember, boolean isOwner, boolean sameTeam, String groupExternalId, Long memberCount) {
+    public GroupInfo(@Nonnull String groupName, @Nonnull String groupId, @Nonnull GroupManagementType groupManagementType, @Nonnull GroupType groupType, boolean isMember, boolean isOwner, boolean sameTeam, @Nullable String groupExternalId, @Nullable Long memberCount) {
         super(groupName, groupId, groupManagementType, groupExternalId, memberCount);
         if (groupType == null) {
             throw new IllegalArgumentException("Required value for 'groupType' is null");
@@ -82,7 +86,7 @@ public class GroupInfo extends GroupSummary {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupInfo(String groupName, String groupId, GroupManagementType groupManagementType, GroupType groupType, boolean isMember, boolean isOwner, boolean sameTeam) {
+    public GroupInfo(@Nonnull String groupName, @Nonnull String groupId, @Nonnull GroupManagementType groupManagementType, @Nonnull GroupType groupType, boolean isMember, boolean isOwner, boolean sameTeam) {
         this(groupName, groupId, groupManagementType, groupType, isMember, isOwner, sameTeam, null, null);
     }
 
@@ -90,6 +94,7 @@ public class GroupInfo extends GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGroupName() {
         return groupName;
     }
@@ -98,6 +103,7 @@ public class GroupInfo extends GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGroupId() {
         return groupId;
     }
@@ -107,6 +113,7 @@ public class GroupInfo extends GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupManagementType getGroupManagementType() {
         return groupManagementType;
     }
@@ -116,6 +123,7 @@ public class GroupInfo extends GroupSummary {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupType getGroupType() {
         return groupType;
     }
@@ -153,6 +161,7 @@ public class GroupInfo extends GroupSummary {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getGroupExternalId() {
         return groupExternalId;
     }
@@ -162,6 +171,7 @@ public class GroupInfo extends GroupSummary {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getMemberCount() {
         return memberCount;
     }

@@ -17,10 +17,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class InviteeInfoWithPermissionLevel {
     // struct paper.InviteeInfoWithPermissionLevel (paper.stone)
 
+    @Nonnull
     protected final InviteeInfo invitee;
+    @Nonnull
     protected final PaperDocPermissionLevel permissionLevel;
 
     /**
@@ -33,7 +37,7 @@ public class InviteeInfoWithPermissionLevel {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public InviteeInfoWithPermissionLevel(InviteeInfo invitee, PaperDocPermissionLevel permissionLevel) {
+    public InviteeInfoWithPermissionLevel(@Nonnull InviteeInfo invitee, @Nonnull PaperDocPermissionLevel permissionLevel) {
         if (invitee == null) {
             throw new IllegalArgumentException("Required value for 'invitee' is null");
         }
@@ -49,6 +53,7 @@ public class InviteeInfoWithPermissionLevel {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public InviteeInfo getInvitee() {
         return invitee;
     }
@@ -58,6 +63,7 @@ public class InviteeInfoWithPermissionLevel {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PaperDocPermissionLevel getPermissionLevel() {
         return permissionLevel;
     }

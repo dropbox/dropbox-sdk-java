@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class ListTemplateResult {
     // struct file_properties.ListTemplateResult (file_properties.stone)
 
+    @Nonnull
     protected final List<String> templateIds;
 
     /**
@@ -34,7 +37,7 @@ public class ListTemplateResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListTemplateResult(List<String> templateIds) {
+    public ListTemplateResult(@Nonnull List<String> templateIds) {
         if (templateIds == null) {
             throw new IllegalArgumentException("Required value for 'templateIds' is null");
         }
@@ -60,6 +63,7 @@ public class ListTemplateResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<String> getTemplateIds() {
         return templateIds;
     }

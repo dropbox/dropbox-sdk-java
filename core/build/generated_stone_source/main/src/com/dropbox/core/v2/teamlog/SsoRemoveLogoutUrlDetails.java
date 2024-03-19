@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Removed sign-out URL for SSO.
  */
 public class SsoRemoveLogoutUrlDetails {
     // struct team_log.SsoRemoveLogoutUrlDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String previousValue;
 
     /**
@@ -33,7 +36,7 @@ public class SsoRemoveLogoutUrlDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoRemoveLogoutUrlDetails(String previousValue) {
+    public SsoRemoveLogoutUrlDetails(@Nonnull String previousValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -45,6 +48,7 @@ public class SsoRemoveLogoutUrlDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }

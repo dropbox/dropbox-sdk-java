@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed email to Dropbox policy for team.
  */
 public class EmailIngestPolicyChangedDetails {
     // struct team_log.EmailIngestPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final EmailIngestPolicy newValue;
+    @Nonnull
     protected final EmailIngestPolicy previousValue;
 
     /**
@@ -34,7 +38,7 @@ public class EmailIngestPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmailIngestPolicyChangedDetails(EmailIngestPolicy newValue, EmailIngestPolicy previousValue) {
+    public EmailIngestPolicyChangedDetails(@Nonnull EmailIngestPolicy newValue, @Nonnull EmailIngestPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -50,6 +54,7 @@ public class EmailIngestPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public EmailIngestPolicy getNewValue() {
         return newValue;
     }
@@ -59,6 +64,7 @@ public class EmailIngestPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public EmailIngestPolicy getPreviousValue() {
         return previousValue;
     }

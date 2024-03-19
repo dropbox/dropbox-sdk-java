@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed default language for team.
  */
 public class TeamProfileChangeDefaultLanguageDetails {
     // struct team_log.TeamProfileChangeDefaultLanguageDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String newValue;
+    @Nonnull
     protected final String previousValue;
 
     /**
@@ -36,7 +40,7 @@ public class TeamProfileChangeDefaultLanguageDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamProfileChangeDefaultLanguageDetails(String newValue, String previousValue) {
+    public TeamProfileChangeDefaultLanguageDetails(@Nonnull String newValue, @Nonnull String previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -58,6 +62,7 @@ public class TeamProfileChangeDefaultLanguageDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }
@@ -67,6 +72,7 @@ public class TeamProfileChangeDefaultLanguageDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }

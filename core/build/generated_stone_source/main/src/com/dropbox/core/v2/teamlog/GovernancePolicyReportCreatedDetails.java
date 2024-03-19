@@ -16,14 +16,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Created a summary report for a policy.
  */
 public class GovernancePolicyReportCreatedDetails {
     // struct team_log.GovernancePolicyReportCreatedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String governancePolicyId;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final PolicyType policyType;
 
     /**
@@ -36,7 +42,7 @@ public class GovernancePolicyReportCreatedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyReportCreatedDetails(String governancePolicyId, String name, PolicyType policyType) {
+    public GovernancePolicyReportCreatedDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nullable PolicyType policyType) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -59,7 +65,7 @@ public class GovernancePolicyReportCreatedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyReportCreatedDetails(String governancePolicyId, String name) {
+    public GovernancePolicyReportCreatedDetails(@Nonnull String governancePolicyId, @Nonnull String name) {
         this(governancePolicyId, name, null);
     }
 
@@ -68,6 +74,7 @@ public class GovernancePolicyReportCreatedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -77,6 +84,7 @@ public class GovernancePolicyReportCreatedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -86,6 +94,7 @@ public class GovernancePolicyReportCreatedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }

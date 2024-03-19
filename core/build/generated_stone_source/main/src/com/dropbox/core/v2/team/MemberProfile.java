@@ -21,26 +21,43 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Basic member profile.
  */
 public class MemberProfile {
     // struct team.MemberProfile (team.stone)
 
+    @Nonnull
     protected final String teamMemberId;
+    @Nullable
     protected final String externalId;
+    @Nullable
     protected final String accountId;
+    @Nonnull
     protected final String email;
     protected final boolean emailVerified;
+    @Nullable
     protected final List<SecondaryEmail> secondaryEmails;
+    @Nonnull
     protected final TeamMemberStatus status;
+    @Nonnull
     protected final Name name;
+    @Nonnull
     protected final TeamMembershipType membershipType;
+    @Nullable
     protected final Date invitedOn;
+    @Nullable
     protected final Date joinedOn;
+    @Nullable
     protected final Date suspendedOn;
+    @Nullable
     protected final String persistentId;
+    @Nullable
     protected final Boolean isDirectoryRestricted;
+    @Nullable
     protected final String profilePhotoUrl;
 
     /**
@@ -86,7 +103,7 @@ public class MemberProfile {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberProfile(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType, String externalId, String accountId, List<SecondaryEmail> secondaryEmails, Date invitedOn, Date joinedOn, Date suspendedOn, String persistentId, Boolean isDirectoryRestricted, String profilePhotoUrl) {
+    public MemberProfile(@Nonnull String teamMemberId, @Nonnull String email, boolean emailVerified, @Nonnull TeamMemberStatus status, @Nonnull Name name, @Nonnull TeamMembershipType membershipType, @Nullable String externalId, @Nullable String accountId, @Nullable List<SecondaryEmail> secondaryEmails, @Nullable Date invitedOn, @Nullable Date joinedOn, @Nullable Date suspendedOn, @Nullable String persistentId, @Nullable Boolean isDirectoryRestricted, @Nullable String profilePhotoUrl) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }
@@ -155,7 +172,7 @@ public class MemberProfile {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberProfile(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType) {
+    public MemberProfile(@Nonnull String teamMemberId, @Nonnull String email, boolean emailVerified, @Nonnull TeamMemberStatus status, @Nonnull Name name, @Nonnull TeamMembershipType membershipType) {
         this(teamMemberId, email, emailVerified, status, name, membershipType, null, null, null, null, null, null, null, null, null);
     }
 
@@ -164,6 +181,7 @@ public class MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }
@@ -173,6 +191,7 @@ public class MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEmail() {
         return email;
     }
@@ -191,6 +210,7 @@ public class MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamMemberStatus getStatus() {
         return status;
     }
@@ -200,6 +220,7 @@ public class MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Name getName() {
         return name;
     }
@@ -210,6 +231,7 @@ public class MemberProfile {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamMembershipType getMembershipType() {
         return membershipType;
     }
@@ -221,6 +243,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getExternalId() {
         return externalId;
     }
@@ -230,6 +253,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -239,6 +263,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<SecondaryEmail> getSecondaryEmails() {
         return secondaryEmails;
     }
@@ -249,6 +274,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getInvitedOn() {
         return invitedOn;
     }
@@ -258,6 +284,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getJoinedOn() {
         return joinedOn;
     }
@@ -269,6 +296,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getSuspendedOn() {
         return suspendedOn;
     }
@@ -279,6 +307,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPersistentId() {
         return persistentId;
     }
@@ -288,6 +317,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getIsDirectoryRestricted() {
         return isDirectoryRestricted;
     }
@@ -297,6 +327,7 @@ public class MemberProfile {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }

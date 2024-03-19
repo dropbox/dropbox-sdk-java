@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Checked external drive backup eligibility status.
  */
 public class ExternalDriveBackupEligibilityStatusCheckedDetails {
     // struct team_log.ExternalDriveBackupEligibilityStatusCheckedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final DesktopDeviceSessionLogInfo desktopDeviceSessionInfo;
+    @Nonnull
     protected final ExternalDriveBackupEligibilityStatus status;
     protected final long numberOfExternalDriveBackup;
 
@@ -39,7 +43,7 @@ public class ExternalDriveBackupEligibilityStatusCheckedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExternalDriveBackupEligibilityStatusCheckedDetails(DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, ExternalDriveBackupEligibilityStatus status, long numberOfExternalDriveBackup) {
+    public ExternalDriveBackupEligibilityStatusCheckedDetails(@Nonnull DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, @Nonnull ExternalDriveBackupEligibilityStatus status, long numberOfExternalDriveBackup) {
         if (desktopDeviceSessionInfo == null) {
             throw new IllegalArgumentException("Required value for 'desktopDeviceSessionInfo' is null");
         }
@@ -56,6 +60,7 @@ public class ExternalDriveBackupEligibilityStatusCheckedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DesktopDeviceSessionLogInfo getDesktopDeviceSessionInfo() {
         return desktopDeviceSessionInfo;
     }
@@ -65,6 +70,7 @@ public class ExternalDriveBackupEligibilityStatusCheckedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ExternalDriveBackupEligibilityStatus getStatus() {
         return status;
     }

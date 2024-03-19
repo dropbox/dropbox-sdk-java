@@ -17,15 +17,22 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Added folders to policy.
  */
 public class GovernancePolicyAddFoldersDetails {
     // struct team_log.GovernancePolicyAddFoldersDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String governancePolicyId;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final PolicyType policyType;
+    @Nullable
     protected final List<String> folders;
 
     /**
@@ -42,7 +49,7 @@ public class GovernancePolicyAddFoldersDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyAddFoldersDetails(String governancePolicyId, String name, PolicyType policyType, List<String> folders) {
+    public GovernancePolicyAddFoldersDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nullable PolicyType policyType, @Nullable List<String> folders) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -73,7 +80,7 @@ public class GovernancePolicyAddFoldersDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyAddFoldersDetails(String governancePolicyId, String name) {
+    public GovernancePolicyAddFoldersDetails(@Nonnull String governancePolicyId, @Nonnull String name) {
         this(governancePolicyId, name, null, null);
     }
 
@@ -82,6 +89,7 @@ public class GovernancePolicyAddFoldersDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -91,6 +99,7 @@ public class GovernancePolicyAddFoldersDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -100,6 +109,7 @@ public class GovernancePolicyAddFoldersDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }
@@ -109,6 +119,7 @@ public class GovernancePolicyAddFoldersDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getFolders() {
         return folders;
     }

@@ -16,14 +16,19 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Canceled export for a hold.
  */
 public class LegalHoldsExportCancelledDetails {
     // struct team_log.LegalHoldsExportCancelledDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String legalHoldId;
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final String exportName;
 
     /**
@@ -36,7 +41,7 @@ public class LegalHoldsExportCancelledDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsExportCancelledDetails(String legalHoldId, String name, String exportName) {
+    public LegalHoldsExportCancelledDetails(@Nonnull String legalHoldId, @Nonnull String name, @Nonnull String exportName) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }
@@ -56,6 +61,7 @@ public class LegalHoldsExportCancelledDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -65,6 +71,7 @@ public class LegalHoldsExportCancelledDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -74,6 +81,7 @@ public class LegalHoldsExportCancelledDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getExportName() {
         return exportName;
     }

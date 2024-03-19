@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed external drive backup policy for team.
  */
 public class ExternalDriveBackupPolicyChangedDetails {
     // struct team_log.ExternalDriveBackupPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ExternalDriveBackupPolicy newValue;
+    @Nonnull
     protected final ExternalDriveBackupPolicy previousValue;
 
     /**
@@ -36,7 +40,7 @@ public class ExternalDriveBackupPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExternalDriveBackupPolicyChangedDetails(ExternalDriveBackupPolicy newValue, ExternalDriveBackupPolicy previousValue) {
+    public ExternalDriveBackupPolicyChangedDetails(@Nonnull ExternalDriveBackupPolicy newValue, @Nonnull ExternalDriveBackupPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -52,6 +56,7 @@ public class ExternalDriveBackupPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ExternalDriveBackupPolicy getNewValue() {
         return newValue;
     }
@@ -61,6 +66,7 @@ public class ExternalDriveBackupPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ExternalDriveBackupPolicy getPreviousValue() {
         return previousValue;
     }

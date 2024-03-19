@@ -16,14 +16,19 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Reordered Binder section.
  */
 public class BinderReorderSectionDetails {
     // struct team_log.BinderReorderSectionDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nonnull
     protected final String docTitle;
+    @Nonnull
     protected final String binderItemName;
 
     /**
@@ -37,7 +42,7 @@ public class BinderReorderSectionDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public BinderReorderSectionDetails(String eventUuid, String docTitle, String binderItemName) {
+    public BinderReorderSectionDetails(@Nonnull String eventUuid, @Nonnull String docTitle, @Nonnull String binderItemName) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -57,6 +62,7 @@ public class BinderReorderSectionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -66,6 +72,7 @@ public class BinderReorderSectionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDocTitle() {
         return docTitle;
     }
@@ -75,6 +82,7 @@ public class BinderReorderSectionDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getBinderItemName() {
         return binderItemName;
     }

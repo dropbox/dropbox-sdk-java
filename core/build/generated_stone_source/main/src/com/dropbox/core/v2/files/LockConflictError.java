@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class LockConflictError {
     // struct files.LockConflictError (files.stone)
 
+    @Nonnull
     protected final FileLock lock;
 
     /**
@@ -28,7 +31,7 @@ public class LockConflictError {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LockConflictError(FileLock lock) {
+    public LockConflictError(@Nonnull FileLock lock) {
         if (lock == null) {
             throw new IllegalArgumentException("Required value for 'lock' is null");
         }
@@ -40,6 +43,7 @@ public class LockConflictError {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FileLock getLock() {
         return lock;
     }

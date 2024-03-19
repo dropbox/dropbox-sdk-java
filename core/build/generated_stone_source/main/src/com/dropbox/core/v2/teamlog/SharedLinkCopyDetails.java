@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Added file/folder to Dropbox from shared link.
  */
 public class SharedLinkCopyDetails {
     // struct team_log.SharedLinkCopyDetails (team_log_generated.stone)
 
+    @Nullable
     protected final UserLogInfo sharedLinkOwner;
 
     /**
@@ -30,7 +34,7 @@ public class SharedLinkCopyDetails {
      * @param sharedLinkOwner  Shared link owner details. Might be missing due
      *     to historical data gap.
      */
-    public SharedLinkCopyDetails(UserLogInfo sharedLinkOwner) {
+    public SharedLinkCopyDetails(@Nullable UserLogInfo sharedLinkOwner) {
         this.sharedLinkOwner = sharedLinkOwner;
     }
 
@@ -48,6 +52,7 @@ public class SharedLinkCopyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public UserLogInfo getSharedLinkOwner() {
         return sharedLinkOwner;
     }

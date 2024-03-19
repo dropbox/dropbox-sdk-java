@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class ListUsersOnFolderContinueArgs extends RefPaperDoc {
     // struct paper.ListUsersOnFolderContinueArgs (paper.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**
@@ -32,7 +35,7 @@ class ListUsersOnFolderContinueArgs extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListUsersOnFolderContinueArgs(String docId, String cursor) {
+    public ListUsersOnFolderContinueArgs(@Nonnull String docId, @Nonnull String cursor) {
         super(docId);
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
@@ -45,6 +48,7 @@ class ListUsersOnFolderContinueArgs extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDocId() {
         return docId;
     }
@@ -57,6 +61,7 @@ class ListUsersOnFolderContinueArgs extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

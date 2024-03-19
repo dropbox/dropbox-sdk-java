@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed sign-in URL for SSO.
  */
 public class SsoChangeLoginUrlDetails {
     // struct team_log.SsoChangeLoginUrlDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String previousValue;
+    @Nonnull
     protected final String newValue;
 
     /**
@@ -35,7 +39,7 @@ public class SsoChangeLoginUrlDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoChangeLoginUrlDetails(String previousValue, String newValue) {
+    public SsoChangeLoginUrlDetails(@Nonnull String previousValue, @Nonnull String newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -51,6 +55,7 @@ public class SsoChangeLoginUrlDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +65,7 @@ public class SsoChangeLoginUrlDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }

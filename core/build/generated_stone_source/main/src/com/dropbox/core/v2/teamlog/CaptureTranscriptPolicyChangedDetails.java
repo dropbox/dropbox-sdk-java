@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed Capture transcription policy for team.
  */
 public class CaptureTranscriptPolicyChangedDetails {
     // struct team_log.CaptureTranscriptPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final CaptureTranscriptPolicy newValue;
+    @Nonnull
     protected final CaptureTranscriptPolicy previousValue;
 
     /**
@@ -34,7 +38,7 @@ public class CaptureTranscriptPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CaptureTranscriptPolicyChangedDetails(CaptureTranscriptPolicy newValue, CaptureTranscriptPolicy previousValue) {
+    public CaptureTranscriptPolicyChangedDetails(@Nonnull CaptureTranscriptPolicy newValue, @Nonnull CaptureTranscriptPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -50,6 +54,7 @@ public class CaptureTranscriptPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public CaptureTranscriptPolicy getNewValue() {
         return newValue;
     }
@@ -59,6 +64,7 @@ public class CaptureTranscriptPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public CaptureTranscriptPolicy getPreviousValue() {
         return previousValue;
     }

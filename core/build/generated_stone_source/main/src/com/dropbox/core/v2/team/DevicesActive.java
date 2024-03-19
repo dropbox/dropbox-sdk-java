@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Each of the items is an array of values, one value per day. The value is the
  * number of devices active within a time window, ending with that day. If there
@@ -25,12 +27,19 @@ import java.util.List;
 public class DevicesActive {
     // struct team.DevicesActive (team_reports.stone)
 
+    @Nonnull
     protected final List<Long> windows;
+    @Nonnull
     protected final List<Long> macos;
+    @Nonnull
     protected final List<Long> linux;
+    @Nonnull
     protected final List<Long> ios;
+    @Nonnull
     protected final List<Long> android;
+    @Nonnull
     protected final List<Long> other;
+    @Nonnull
     protected final List<Long> total;
 
     /**
@@ -60,7 +69,7 @@ public class DevicesActive {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DevicesActive(List<Long> windows, List<Long> macos, List<Long> linux, List<Long> ios, List<Long> android, List<Long> other, List<Long> total) {
+    public DevicesActive(@Nonnull List<Long> windows, @Nonnull List<Long> macos, @Nonnull List<Long> linux, @Nonnull List<Long> ios, @Nonnull List<Long> android, @Nonnull List<Long> other, @Nonnull List<Long> total) {
         if (windows == null) {
             throw new IllegalArgumentException("Required value for 'windows' is null");
         }
@@ -131,6 +140,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Long> getWindows() {
         return windows;
     }
@@ -140,6 +150,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Long> getMacos() {
         return macos;
     }
@@ -149,6 +160,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Long> getLinux() {
         return linux;
     }
@@ -158,6 +170,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Long> getIos() {
         return ios;
     }
@@ -167,6 +180,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Long> getAndroid() {
         return android;
     }
@@ -177,6 +191,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Long> getOther() {
         return other;
     }
@@ -186,6 +201,7 @@ public class DevicesActive {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Long> getTotal() {
         return total;
     }

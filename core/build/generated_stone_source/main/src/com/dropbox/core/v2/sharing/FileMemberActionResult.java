@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Per-member result for {@link
  * DbxUserSharingRequests#addFileMember(String,List)}.
@@ -24,9 +27,13 @@ import java.util.List;
 public class FileMemberActionResult {
     // struct sharing.FileMemberActionResult (sharing_files.stone)
 
+    @Nonnull
     protected final MemberSelector member;
+    @Nonnull
     protected final FileMemberActionIndividualResult result;
+    @Nullable
     protected final String sckeySha1;
+    @Nullable
     protected final List<String> invitationSignature;
 
     /**
@@ -48,7 +55,7 @@ public class FileMemberActionResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMemberActionResult(MemberSelector member, FileMemberActionIndividualResult result, String sckeySha1, List<String> invitationSignature) {
+    public FileMemberActionResult(@Nonnull MemberSelector member, @Nonnull FileMemberActionIndividualResult result, @Nullable String sckeySha1, @Nullable List<String> invitationSignature) {
         if (member == null) {
             throw new IllegalArgumentException("Required value for 'member' is null");
         }
@@ -81,7 +88,7 @@ public class FileMemberActionResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMemberActionResult(MemberSelector member, FileMemberActionIndividualResult result) {
+    public FileMemberActionResult(@Nonnull MemberSelector member, @Nonnull FileMemberActionIndividualResult result) {
         this(member, result, null, null);
     }
 
@@ -90,6 +97,7 @@ public class FileMemberActionResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MemberSelector getMember() {
         return member;
     }
@@ -99,6 +107,7 @@ public class FileMemberActionResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FileMemberActionIndividualResult getResult() {
         return result;
     }
@@ -108,6 +117,7 @@ public class FileMemberActionResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getSckeySha1() {
         return sckeySha1;
     }
@@ -119,6 +129,7 @@ public class FileMemberActionResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getInvitationSignature() {
         return invitationSignature;
     }

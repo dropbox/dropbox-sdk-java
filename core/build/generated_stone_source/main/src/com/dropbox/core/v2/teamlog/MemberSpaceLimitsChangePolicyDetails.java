@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed team default member space limit.
  */
 public class MemberSpaceLimitsChangePolicyDetails {
     // struct team_log.MemberSpaceLimitsChangePolicyDetails (team_log_generated.stone)
 
+    @Nullable
     protected final Long previousValue;
+    @Nullable
     protected final Long newValue;
 
     /**
@@ -36,7 +41,7 @@ public class MemberSpaceLimitsChangePolicyDetails {
      * @param newValue  New team default limit value in bytes. Might be missing
      *     due to historical data gap.
      */
-    public MemberSpaceLimitsChangePolicyDetails(Long previousValue, Long newValue) {
+    public MemberSpaceLimitsChangePolicyDetails(@Nullable Long previousValue, @Nullable Long newValue) {
         this.previousValue = previousValue;
         this.newValue = newValue;
     }
@@ -56,6 +61,7 @@ public class MemberSpaceLimitsChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getPreviousValue() {
         return previousValue;
     }
@@ -66,6 +72,7 @@ public class MemberSpaceLimitsChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getNewValue() {
         return newValue;
     }

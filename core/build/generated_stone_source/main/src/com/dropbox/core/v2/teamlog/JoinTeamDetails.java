@@ -17,20 +17,32 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Additional information relevant when a new member joins the team.
  */
 public class JoinTeamDetails {
     // struct team_log.JoinTeamDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final List<UserLinkedAppLogInfo> linkedApps;
+    @Nonnull
     protected final List<LinkedDeviceLogInfo> linkedDevices;
+    @Nonnull
     protected final List<FolderLogInfo> linkedSharedFolders;
+    @Nullable
     protected final Boolean wasLinkedAppsTruncated;
+    @Nullable
     protected final Boolean wasLinkedDevicesTruncated;
+    @Nullable
     protected final Boolean wasLinkedSharedFoldersTruncated;
+    @Nullable
     protected final Boolean hasLinkedApps;
+    @Nullable
     protected final Boolean hasLinkedDevices;
+    @Nullable
     protected final Boolean hasLinkedSharedFolders;
 
     /**
@@ -63,7 +75,7 @@ public class JoinTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public JoinTeamDetails(List<UserLinkedAppLogInfo> linkedApps, List<LinkedDeviceLogInfo> linkedDevices, List<FolderLogInfo> linkedSharedFolders, Boolean wasLinkedAppsTruncated, Boolean wasLinkedDevicesTruncated, Boolean wasLinkedSharedFoldersTruncated, Boolean hasLinkedApps, Boolean hasLinkedDevices, Boolean hasLinkedSharedFolders) {
+    public JoinTeamDetails(@Nonnull List<UserLinkedAppLogInfo> linkedApps, @Nonnull List<LinkedDeviceLogInfo> linkedDevices, @Nonnull List<FolderLogInfo> linkedSharedFolders, @Nullable Boolean wasLinkedAppsTruncated, @Nullable Boolean wasLinkedDevicesTruncated, @Nullable Boolean wasLinkedSharedFoldersTruncated, @Nullable Boolean hasLinkedApps, @Nullable Boolean hasLinkedDevices, @Nullable Boolean hasLinkedSharedFolders) {
         if (linkedApps == null) {
             throw new IllegalArgumentException("Required value for 'linkedApps' is null");
         }
@@ -117,7 +129,7 @@ public class JoinTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public JoinTeamDetails(List<UserLinkedAppLogInfo> linkedApps, List<LinkedDeviceLogInfo> linkedDevices, List<FolderLogInfo> linkedSharedFolders) {
+    public JoinTeamDetails(@Nonnull List<UserLinkedAppLogInfo> linkedApps, @Nonnull List<LinkedDeviceLogInfo> linkedDevices, @Nonnull List<FolderLogInfo> linkedSharedFolders) {
         this(linkedApps, linkedDevices, linkedSharedFolders, null, null, null, null, null, null);
     }
 
@@ -127,6 +139,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<UserLinkedAppLogInfo> getLinkedApps() {
         return linkedApps;
     }
@@ -137,6 +150,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<LinkedDeviceLogInfo> getLinkedDevices() {
         return linkedDevices;
     }
@@ -147,6 +161,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<FolderLogInfo> getLinkedSharedFolders() {
         return linkedSharedFolders;
     }
@@ -157,6 +172,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getWasLinkedAppsTruncated() {
         return wasLinkedAppsTruncated;
     }
@@ -167,6 +183,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getWasLinkedDevicesTruncated() {
         return wasLinkedDevicesTruncated;
     }
@@ -177,6 +194,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getWasLinkedSharedFoldersTruncated() {
         return wasLinkedSharedFoldersTruncated;
     }
@@ -186,6 +204,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getHasLinkedApps() {
         return hasLinkedApps;
     }
@@ -195,6 +214,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getHasLinkedDevices() {
         return hasLinkedDevices;
     }
@@ -204,6 +224,7 @@ public class JoinTeamDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getHasLinkedSharedFolders() {
         return hasLinkedSharedFolders;
     }

@@ -17,13 +17,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Information about current user's root.
  */
 public class RootInfo {
     // struct common.RootInfo (common.stone)
 
+    @Nonnull
     protected final String rootNamespaceId;
+    @Nonnull
     protected final String homeNamespaceId;
 
     /**
@@ -40,7 +44,7 @@ public class RootInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RootInfo(String rootNamespaceId, String homeNamespaceId) {
+    public RootInfo(@Nonnull String rootNamespaceId, @Nonnull String homeNamespaceId) {
         if (rootNamespaceId == null) {
             throw new IllegalArgumentException("Required value for 'rootNamespaceId' is null");
         }
@@ -65,6 +69,7 @@ public class RootInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getRootNamespaceId() {
         return rootNamespaceId;
     }
@@ -74,6 +79,7 @@ public class RootInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getHomeNamespaceId() {
         return homeNamespaceId;
     }

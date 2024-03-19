@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Metadata for a shared link. This can be either a {@link PathLinkMetadata} or
  * {@link CollectionLinkMetadata}.
@@ -25,8 +28,11 @@ import java.util.Date;
 public class LinkMetadata {
     // struct sharing.LinkMetadata (shared_links.stone)
 
+    @Nonnull
     protected final String url;
+    @Nonnull
     protected final Visibility visibility;
+    @Nullable
     protected final Date expires;
 
     /**
@@ -41,7 +47,7 @@ public class LinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkMetadata(String url, Visibility visibility, Date expires) {
+    public LinkMetadata(@Nonnull String url, @Nonnull Visibility visibility, @Nullable Date expires) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }
@@ -65,7 +71,7 @@ public class LinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkMetadata(String url, Visibility visibility) {
+    public LinkMetadata(@Nonnull String url, @Nonnull Visibility visibility) {
         this(url, visibility, null);
     }
 
@@ -74,6 +80,7 @@ public class LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -83,6 +90,7 @@ public class LinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Visibility getVisibility() {
         return visibility;
     }
@@ -92,6 +100,7 @@ public class LinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getExpires() {
         return expires;
     }

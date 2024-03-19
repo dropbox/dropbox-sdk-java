@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Sent account capture email to all unmanaged members.
  */
 public class AccountCaptureNotificationEmailsSentDetails {
     // struct team_log.AccountCaptureNotificationEmailsSentDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String domainName;
+    @Nullable
     protected final AccountCaptureNotificationType notificationType;
 
     /**
@@ -34,7 +39,7 @@ public class AccountCaptureNotificationEmailsSentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureNotificationEmailsSentDetails(String domainName, AccountCaptureNotificationType notificationType) {
+    public AccountCaptureNotificationEmailsSentDetails(@Nonnull String domainName, @Nullable AccountCaptureNotificationType notificationType) {
         if (domainName == null) {
             throw new IllegalArgumentException("Required value for 'domainName' is null");
         }
@@ -52,7 +57,7 @@ public class AccountCaptureNotificationEmailsSentDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountCaptureNotificationEmailsSentDetails(String domainName) {
+    public AccountCaptureNotificationEmailsSentDetails(@Nonnull String domainName) {
         this(domainName, null);
     }
 
@@ -61,6 +66,7 @@ public class AccountCaptureNotificationEmailsSentDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDomainName() {
         return domainName;
     }
@@ -70,6 +76,7 @@ public class AccountCaptureNotificationEmailsSentDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AccountCaptureNotificationType getNotificationType() {
         return notificationType;
     }

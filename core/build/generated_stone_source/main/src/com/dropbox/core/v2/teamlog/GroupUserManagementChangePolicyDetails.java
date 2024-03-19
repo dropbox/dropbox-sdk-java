@@ -17,13 +17,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed who can create groups.
  */
 public class GroupUserManagementChangePolicyDetails {
     // struct team_log.GroupUserManagementChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final GroupCreation newValue;
+    @Nullable
     protected final GroupCreation previousValue;
 
     /**
@@ -37,7 +42,7 @@ public class GroupUserManagementChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupUserManagementChangePolicyDetails(GroupCreation newValue, GroupCreation previousValue) {
+    public GroupUserManagementChangePolicyDetails(@Nonnull GroupCreation newValue, @Nullable GroupCreation previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -56,7 +61,7 @@ public class GroupUserManagementChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupUserManagementChangePolicyDetails(GroupCreation newValue) {
+    public GroupUserManagementChangePolicyDetails(@Nonnull GroupCreation newValue) {
         this(newValue, null);
     }
 
@@ -65,6 +70,7 @@ public class GroupUserManagementChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GroupCreation getNewValue() {
         return newValue;
     }
@@ -75,6 +81,7 @@ public class GroupUserManagementChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public GroupCreation getPreviousValue() {
         return previousValue;
     }

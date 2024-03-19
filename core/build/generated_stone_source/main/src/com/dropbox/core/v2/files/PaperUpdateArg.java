@@ -17,12 +17,19 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class PaperUpdateArg {
     // struct files.PaperUpdateArg (files.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final ImportFormat importFormat;
+    @Nonnull
     protected final PaperDocUpdatePolicy docUpdatePolicy;
+    @Nullable
     protected final Long paperRevision;
 
     /**
@@ -42,7 +49,7 @@ class PaperUpdateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperUpdateArg(String path, ImportFormat importFormat, PaperDocUpdatePolicy docUpdatePolicy, Long paperRevision) {
+    public PaperUpdateArg(@Nonnull String path, @Nonnull ImportFormat importFormat, @Nonnull PaperDocUpdatePolicy docUpdatePolicy, @Nullable Long paperRevision) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -78,7 +85,7 @@ class PaperUpdateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperUpdateArg(String path, ImportFormat importFormat, PaperDocUpdatePolicy docUpdatePolicy) {
+    public PaperUpdateArg(@Nonnull String path, @Nonnull ImportFormat importFormat, @Nonnull PaperDocUpdatePolicy docUpdatePolicy) {
         this(path, importFormat, docUpdatePolicy, null);
     }
 
@@ -88,6 +95,7 @@ class PaperUpdateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -97,6 +105,7 @@ class PaperUpdateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ImportFormat getImportFormat() {
         return importFormat;
     }
@@ -106,6 +115,7 @@ class PaperUpdateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PaperDocUpdatePolicy getDocUpdatePolicy() {
         return docUpdatePolicy;
     }
@@ -117,6 +127,7 @@ class PaperUpdateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getPaperRevision() {
         return paperRevision;
     }

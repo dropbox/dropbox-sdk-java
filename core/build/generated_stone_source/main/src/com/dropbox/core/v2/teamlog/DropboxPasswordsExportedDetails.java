@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Exported passwords.
  */
 public class DropboxPasswordsExportedDetails {
     // struct team_log.DropboxPasswordsExportedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String platform;
 
     /**
@@ -33,7 +36,7 @@ public class DropboxPasswordsExportedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DropboxPasswordsExportedDetails(String platform) {
+    public DropboxPasswordsExportedDetails(@Nonnull String platform) {
         if (platform == null) {
             throw new IllegalArgumentException("Required value for 'platform' is null");
         }
@@ -45,6 +48,7 @@ public class DropboxPasswordsExportedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPlatform() {
         return platform;
     }

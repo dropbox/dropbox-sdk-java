@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class ListFolderLongpollArg {
     // struct files.ListFolderLongpollArg (files.stone)
 
+    @Nonnull
     protected final String cursor;
     protected final long timeout;
 
@@ -40,7 +43,7 @@ class ListFolderLongpollArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderLongpollArg(String cursor, long timeout) {
+    public ListFolderLongpollArg(@Nonnull String cursor, long timeout) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -72,7 +75,7 @@ class ListFolderLongpollArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderLongpollArg(String cursor) {
+    public ListFolderLongpollArg(@Nonnull String cursor) {
         this(cursor, 30L);
     }
 
@@ -84,6 +87,7 @@ class ListFolderLongpollArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

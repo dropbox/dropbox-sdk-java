@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether users can find team when not invited.
  */
 public class MemberRequestsChangePolicyDetails {
     // struct team_log.MemberRequestsChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final MemberRequestsPolicy newValue;
+    @Nullable
     protected final MemberRequestsPolicy previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class MemberRequestsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberRequestsChangePolicyDetails(MemberRequestsPolicy newValue, MemberRequestsPolicy previousValue) {
+    public MemberRequestsChangePolicyDetails(@Nonnull MemberRequestsPolicy newValue, @Nullable MemberRequestsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -55,7 +60,7 @@ public class MemberRequestsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberRequestsChangePolicyDetails(MemberRequestsPolicy newValue) {
+    public MemberRequestsChangePolicyDetails(@Nonnull MemberRequestsPolicy newValue) {
         this(newValue, null);
     }
 
@@ -64,6 +69,7 @@ public class MemberRequestsChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MemberRequestsPolicy getNewValue() {
         return newValue;
     }
@@ -74,6 +80,7 @@ public class MemberRequestsChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public MemberRequestsPolicy getPreviousValue() {
         return previousValue;
     }

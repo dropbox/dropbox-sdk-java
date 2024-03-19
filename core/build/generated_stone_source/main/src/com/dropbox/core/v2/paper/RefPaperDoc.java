@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class RefPaperDoc {
     // struct paper.RefPaperDoc (paper.stone)
 
+    @Nonnull
     protected final String docId;
 
     /**
@@ -28,7 +31,7 @@ class RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RefPaperDoc(String docId) {
+    public RefPaperDoc(@Nonnull String docId) {
         if (docId == null) {
             throw new IllegalArgumentException("Required value for 'docId' is null");
         }
@@ -40,6 +43,7 @@ class RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDocId() {
         return docId;
     }

@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Disconnected device.
  */
 public class DeviceUnlinkDetails {
     // struct team_log.DeviceUnlinkDetails (team_log_generated.stone)
 
+    @Nullable
     protected final SessionLogInfo sessionInfo;
+    @Nullable
     protected final String displayName;
     protected final boolean deleteData;
 
@@ -38,7 +43,7 @@ public class DeviceUnlinkDetails {
      * @param displayName  The device name. Might be missing due to historical
      *     data gap.
      */
-    public DeviceUnlinkDetails(boolean deleteData, SessionLogInfo sessionInfo, String displayName) {
+    public DeviceUnlinkDetails(boolean deleteData, @Nullable SessionLogInfo sessionInfo, @Nullable String displayName) {
         this.sessionInfo = sessionInfo;
         this.displayName = displayName;
         this.deleteData = deleteData;
@@ -71,6 +76,7 @@ public class DeviceUnlinkDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SessionLogInfo getSessionInfo() {
         return sessionInfo;
     }
@@ -80,6 +86,7 @@ public class DeviceUnlinkDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }

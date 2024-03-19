@@ -18,12 +18,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+
 /**
  * Rewound a folder.
  */
 public class RewindFolderDetails {
     // struct team_log.RewindFolderDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final Date rewindFolderTargetTsMs;
 
     /**
@@ -35,7 +38,7 @@ public class RewindFolderDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RewindFolderDetails(Date rewindFolderTargetTsMs) {
+    public RewindFolderDetails(@Nonnull Date rewindFolderTargetTsMs) {
         if (rewindFolderTargetTsMs == null) {
             throw new IllegalArgumentException("Required value for 'rewindFolderTargetTsMs' is null");
         }
@@ -47,6 +50,7 @@ public class RewindFolderDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Date getRewindFolderTargetTsMs() {
         return rewindFolderTargetTsMs;
     }

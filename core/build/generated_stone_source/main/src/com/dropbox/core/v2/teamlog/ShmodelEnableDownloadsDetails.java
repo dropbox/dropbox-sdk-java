@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled downloads for link.
  */
 public class ShmodelEnableDownloadsDetails {
     // struct team_log.ShmodelEnableDownloadsDetails (team_log_generated.stone)
 
+    @Nullable
     protected final UserLogInfo sharedLinkOwner;
 
     /**
@@ -30,7 +34,7 @@ public class ShmodelEnableDownloadsDetails {
      * @param sharedLinkOwner  Shared link owner details. Might be missing due
      *     to historical data gap.
      */
-    public ShmodelEnableDownloadsDetails(UserLogInfo sharedLinkOwner) {
+    public ShmodelEnableDownloadsDetails(@Nullable UserLogInfo sharedLinkOwner) {
         this.sharedLinkOwner = sharedLinkOwner;
     }
 
@@ -48,6 +52,7 @@ public class ShmodelEnableDownloadsDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public UserLogInfo getSharedLinkOwner() {
         return sharedLinkOwner;
     }

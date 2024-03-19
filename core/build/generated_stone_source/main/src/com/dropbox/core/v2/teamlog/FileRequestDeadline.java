@@ -18,13 +18,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * File request deadline
  */
 public class FileRequestDeadline {
     // struct team_log.FileRequestDeadline (team_log_generated.stone)
 
+    @Nullable
     protected final Date deadline;
+    @Nullable
     protected final String allowLateUploads;
 
     /**
@@ -38,7 +43,7 @@ public class FileRequestDeadline {
      * @param allowLateUploads  If set, allow uploads after the deadline has
      *     passed.
      */
-    public FileRequestDeadline(Date deadline, String allowLateUploads) {
+    public FileRequestDeadline(@Nullable Date deadline, @Nullable String allowLateUploads) {
         this.deadline = LangUtil.truncateMillis(deadline);
         this.allowLateUploads = allowLateUploads;
     }
@@ -58,6 +63,7 @@ public class FileRequestDeadline {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getDeadline() {
         return deadline;
     }
@@ -67,6 +73,7 @@ public class FileRequestDeadline {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getAllowLateUploads() {
         return allowLateUploads;
     }

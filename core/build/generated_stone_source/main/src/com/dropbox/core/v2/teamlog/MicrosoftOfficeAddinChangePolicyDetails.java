@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled Microsoft Office add-in.
  */
 public class MicrosoftOfficeAddinChangePolicyDetails {
     // struct team_log.MicrosoftOfficeAddinChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final MicrosoftOfficeAddinPolicy newValue;
+    @Nullable
     protected final MicrosoftOfficeAddinPolicy previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class MicrosoftOfficeAddinChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MicrosoftOfficeAddinChangePolicyDetails(MicrosoftOfficeAddinPolicy newValue, MicrosoftOfficeAddinPolicy previousValue) {
+    public MicrosoftOfficeAddinChangePolicyDetails(@Nonnull MicrosoftOfficeAddinPolicy newValue, @Nullable MicrosoftOfficeAddinPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -55,7 +60,7 @@ public class MicrosoftOfficeAddinChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MicrosoftOfficeAddinChangePolicyDetails(MicrosoftOfficeAddinPolicy newValue) {
+    public MicrosoftOfficeAddinChangePolicyDetails(@Nonnull MicrosoftOfficeAddinPolicy newValue) {
         this(newValue, null);
     }
 
@@ -64,6 +69,7 @@ public class MicrosoftOfficeAddinChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MicrosoftOfficeAddinPolicy getNewValue() {
         return newValue;
     }
@@ -74,6 +80,7 @@ public class MicrosoftOfficeAddinChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public MicrosoftOfficeAddinPolicy getPreviousValue() {
         return previousValue;
     }

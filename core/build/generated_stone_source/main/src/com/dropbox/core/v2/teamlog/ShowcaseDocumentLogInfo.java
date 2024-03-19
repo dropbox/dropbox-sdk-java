@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Showcase document's logged information.
  */
 public class ShowcaseDocumentLogInfo {
     // struct team_log.ShowcaseDocumentLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final String showcaseId;
+    @Nonnull
     protected final String showcaseTitle;
 
     /**
@@ -34,7 +38,7 @@ public class ShowcaseDocumentLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseDocumentLogInfo(String showcaseId, String showcaseTitle) {
+    public ShowcaseDocumentLogInfo(@Nonnull String showcaseId, @Nonnull String showcaseTitle) {
         if (showcaseId == null) {
             throw new IllegalArgumentException("Required value for 'showcaseId' is null");
         }
@@ -50,6 +54,7 @@ public class ShowcaseDocumentLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getShowcaseId() {
         return showcaseId;
     }
@@ -59,6 +64,7 @@ public class ShowcaseDocumentLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getShowcaseTitle() {
         return showcaseTitle;
     }

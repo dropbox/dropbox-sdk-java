@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed folder link restrictions policy for team.
  */
 public class FolderLinkRestrictionPolicyChangedDetails {
     // struct team_log.FolderLinkRestrictionPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FolderLinkRestrictionPolicy newValue;
+    @Nonnull
     protected final FolderLinkRestrictionPolicy previousValue;
 
     /**
@@ -34,7 +38,7 @@ public class FolderLinkRestrictionPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderLinkRestrictionPolicyChangedDetails(FolderLinkRestrictionPolicy newValue, FolderLinkRestrictionPolicy previousValue) {
+    public FolderLinkRestrictionPolicyChangedDetails(@Nonnull FolderLinkRestrictionPolicy newValue, @Nonnull FolderLinkRestrictionPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -50,6 +54,7 @@ public class FolderLinkRestrictionPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FolderLinkRestrictionPolicy getNewValue() {
         return newValue;
     }
@@ -59,6 +64,7 @@ public class FolderLinkRestrictionPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FolderLinkRestrictionPolicy getPreviousValue() {
         return previousValue;
     }

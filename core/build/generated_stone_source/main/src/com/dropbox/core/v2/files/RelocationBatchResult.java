@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class RelocationBatchResult extends FileOpsResult {
     // struct files.RelocationBatchResult (files.stone)
 
+    @Nonnull
     protected final List<RelocationBatchResultData> entries;
 
     /**
@@ -30,7 +33,7 @@ public class RelocationBatchResult extends FileOpsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationBatchResult(List<RelocationBatchResultData> entries) {
+    public RelocationBatchResult(@Nonnull List<RelocationBatchResultData> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -46,6 +49,7 @@ public class RelocationBatchResult extends FileOpsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<RelocationBatchResultData> getEntries() {
         return entries;
     }

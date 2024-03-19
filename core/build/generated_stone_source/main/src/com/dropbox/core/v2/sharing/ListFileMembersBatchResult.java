@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Per-file result for {@link
  * DbxUserSharingRequests#listFileMembersBatch(java.util.List,long)}.
@@ -24,7 +26,9 @@ import java.util.regex.Pattern;
 public class ListFileMembersBatchResult {
     // struct sharing.ListFileMembersBatchResult (sharing_files.stone)
 
+    @Nonnull
     protected final String file;
+    @Nonnull
     protected final ListFileMembersIndividualResult result;
 
     /**
@@ -41,7 +45,7 @@ public class ListFileMembersBatchResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileMembersBatchResult(String file, ListFileMembersIndividualResult result) {
+    public ListFileMembersBatchResult(@Nonnull String file, @Nonnull ListFileMembersIndividualResult result) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -63,6 +67,7 @@ public class ListFileMembersBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFile() {
         return file;
     }
@@ -72,6 +77,7 @@ public class ListFileMembersBatchResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ListFileMembersIndividualResult getResult() {
         return result;
     }

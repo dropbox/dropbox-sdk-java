@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class RevokeDeviceSessionBatchArg {
     // struct team.RevokeDeviceSessionBatchArg (team_devices.stone)
 
+    @Nonnull
     protected final List<RevokeDeviceSessionArg> revokeDevices;
 
     /**
@@ -30,7 +33,7 @@ class RevokeDeviceSessionBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeDeviceSessionBatchArg(List<RevokeDeviceSessionArg> revokeDevices) {
+    public RevokeDeviceSessionBatchArg(@Nonnull List<RevokeDeviceSessionArg> revokeDevices) {
         if (revokeDevices == null) {
             throw new IllegalArgumentException("Required value for 'revokeDevices' is null");
         }
@@ -46,6 +49,7 @@ class RevokeDeviceSessionBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<RevokeDeviceSessionArg> getRevokeDevices() {
         return revokeDevices;
     }

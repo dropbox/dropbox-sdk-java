@@ -18,6 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * A subset of the property fields described by the corresponding {@link
  * PropertyGroupTemplate}. Properties are always added to a Dropbox file as a
@@ -27,7 +29,9 @@ import java.util.regex.Pattern;
 public class PropertyGroup {
     // struct file_properties.PropertyGroup (file_properties.stone)
 
+    @Nonnull
     protected final String templateId;
+    @Nonnull
     protected final List<PropertyField> fields;
 
     /**
@@ -46,7 +50,7 @@ public class PropertyGroup {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertyGroup(String templateId, List<PropertyField> fields) {
+    public PropertyGroup(@Nonnull String templateId, @Nonnull List<PropertyField> fields) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }
@@ -73,6 +77,7 @@ public class PropertyGroup {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTemplateId() {
         return templateId;
     }
@@ -83,6 +88,7 @@ public class PropertyGroup {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<PropertyField> getFields() {
         return fields;
     }

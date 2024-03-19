@@ -15,6 +15,9 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Team linked app
  */
@@ -31,7 +34,7 @@ public class TeamLinkedAppLogInfo extends AppLogInfo {
      * @param appId  App unique ID.
      * @param displayName  App display name.
      */
-    public TeamLinkedAppLogInfo(String appId, String displayName) {
+    public TeamLinkedAppLogInfo(@Nullable String appId, @Nullable String displayName) {
         super(appId, displayName);
     }
 
@@ -49,6 +52,7 @@ public class TeamLinkedAppLogInfo extends AppLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getAppId() {
         return appId;
     }
@@ -58,6 +62,7 @@ public class TeamLinkedAppLogInfo extends AppLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }

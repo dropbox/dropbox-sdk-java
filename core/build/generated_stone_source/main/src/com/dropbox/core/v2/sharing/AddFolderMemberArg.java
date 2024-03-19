@@ -18,12 +18,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class AddFolderMemberArg {
     // struct sharing.AddFolderMemberArg (sharing_folders.stone)
 
+    @Nonnull
     protected final String sharedFolderId;
+    @Nonnull
     protected final List<AddMember> members;
     protected final boolean quiet;
+    @Nullable
     protected final String customMessage;
 
     /**
@@ -43,7 +49,7 @@ class AddFolderMemberArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFolderMemberArg(String sharedFolderId, List<AddMember> members, boolean quiet, String customMessage) {
+    public AddFolderMemberArg(@Nonnull String sharedFolderId, @Nonnull List<AddMember> members, boolean quiet, @Nullable String customMessage) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }
@@ -83,7 +89,7 @@ class AddFolderMemberArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFolderMemberArg(String sharedFolderId, List<AddMember> members) {
+    public AddFolderMemberArg(@Nonnull String sharedFolderId, @Nonnull List<AddMember> members) {
         this(sharedFolderId, members, false, null);
     }
 
@@ -92,6 +98,7 @@ class AddFolderMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -102,6 +109,7 @@ class AddFolderMemberArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<AddMember> getMembers() {
         return members;
     }
@@ -122,6 +130,7 @@ class AddFolderMemberArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCustomMessage() {
         return customMessage;
     }

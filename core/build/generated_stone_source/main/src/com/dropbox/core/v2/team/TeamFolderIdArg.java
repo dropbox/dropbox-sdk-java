@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class TeamFolderIdArg {
     // struct team.TeamFolderIdArg (team_folders.stone)
 
+    @Nonnull
     protected final String teamFolderId;
 
     /**
@@ -30,7 +33,7 @@ class TeamFolderIdArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderIdArg(String teamFolderId) {
+    public TeamFolderIdArg(@Nonnull String teamFolderId) {
         if (teamFolderId == null) {
             throw new IllegalArgumentException("Required value for 'teamFolderId' is null");
         }
@@ -45,6 +48,7 @@ class TeamFolderIdArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamFolderId() {
         return teamFolderId;
     }

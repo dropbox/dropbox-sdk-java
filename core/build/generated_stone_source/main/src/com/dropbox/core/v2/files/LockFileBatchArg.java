@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class LockFileBatchArg {
     // struct files.LockFileBatchArg (files.stone)
 
+    @Nonnull
     protected final List<LockFileArg> entries;
 
     /**
@@ -32,7 +35,7 @@ class LockFileBatchArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LockFileBatchArg(List<LockFileArg> entries) {
+    public LockFileBatchArg(@Nonnull List<LockFileArg> entries) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -51,6 +54,7 @@ class LockFileBatchArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<LockFileArg> getEntries() {
         return entries;
     }

@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * The name of the team
  */
 public class ConnectedTeamName {
     // struct team_log.ConnectedTeamName (team_log_generated.stone)
 
+    @Nonnull
     protected final String team;
 
     /**
@@ -32,7 +35,7 @@ public class ConnectedTeamName {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ConnectedTeamName(String team) {
+    public ConnectedTeamName(@Nonnull String team) {
         if (team == null) {
             throw new IllegalArgumentException("Required value for 'team' is null");
         }
@@ -44,6 +47,7 @@ public class ConnectedTeamName {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeam() {
         return team;
     }

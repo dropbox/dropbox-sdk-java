@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed space limit status.
  */
 public class MemberSpaceLimitsChangeStatusDetails {
     // struct team_log.MemberSpaceLimitsChangeStatusDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SpaceLimitsStatus previousValue;
+    @Nonnull
     protected final SpaceLimitsStatus newValue;
 
     /**
@@ -35,7 +39,7 @@ public class MemberSpaceLimitsChangeStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSpaceLimitsChangeStatusDetails(SpaceLimitsStatus previousValue, SpaceLimitsStatus newValue) {
+    public MemberSpaceLimitsChangeStatusDetails(@Nonnull SpaceLimitsStatus previousValue, @Nonnull SpaceLimitsStatus newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -51,6 +55,7 @@ public class MemberSpaceLimitsChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SpaceLimitsStatus getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +65,7 @@ public class MemberSpaceLimitsChangeStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SpaceLimitsStatus getNewValue() {
         return newValue;
     }

@@ -16,15 +16,21 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed enterprise-connected team status.
  */
 public class ChangedEnterpriseConnectedTeamStatusDetails {
     // struct team_log.ChangedEnterpriseConnectedTeamStatusDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FedHandshakeAction action;
+    @Nonnull
     protected final FederationStatusChangeAdditionalInfo additionalInfo;
+    @Nonnull
     protected final TrustedTeamsRequestState previousValue;
+    @Nonnull
     protected final TrustedTeamsRequestState newValue;
 
     /**
@@ -40,7 +46,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ChangedEnterpriseConnectedTeamStatusDetails(FedHandshakeAction action, FederationStatusChangeAdditionalInfo additionalInfo, TrustedTeamsRequestState previousValue, TrustedTeamsRequestState newValue) {
+    public ChangedEnterpriseConnectedTeamStatusDetails(@Nonnull FedHandshakeAction action, @Nonnull FederationStatusChangeAdditionalInfo additionalInfo, @Nonnull TrustedTeamsRequestState previousValue, @Nonnull TrustedTeamsRequestState newValue) {
         if (action == null) {
             throw new IllegalArgumentException("Required value for 'action' is null");
         }
@@ -64,6 +70,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FedHandshakeAction getAction() {
         return action;
     }
@@ -73,6 +80,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FederationStatusChangeAdditionalInfo getAdditionalInfo() {
         return additionalInfo;
     }
@@ -82,6 +90,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TrustedTeamsRequestState getPreviousValue() {
         return previousValue;
     }
@@ -91,6 +100,7 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TrustedTeamsRequestState getNewValue() {
         return newValue;
     }

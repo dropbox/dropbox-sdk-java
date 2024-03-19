@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Created team invite link.
  */
 public class CreateTeamInviteLinkDetails {
     // struct team_log.CreateTeamInviteLinkDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String linkUrl;
+    @Nonnull
     protected final String expiryDate;
 
     /**
@@ -36,7 +40,7 @@ public class CreateTeamInviteLinkDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CreateTeamInviteLinkDetails(String linkUrl, String expiryDate) {
+    public CreateTeamInviteLinkDetails(@Nonnull String linkUrl, @Nonnull String expiryDate) {
         if (linkUrl == null) {
             throw new IllegalArgumentException("Required value for 'linkUrl' is null");
         }
@@ -52,6 +56,7 @@ public class CreateTeamInviteLinkDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getLinkUrl() {
         return linkUrl;
     }
@@ -61,6 +66,7 @@ public class CreateTeamInviteLinkDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getExpiryDate() {
         return expiryDate;
     }

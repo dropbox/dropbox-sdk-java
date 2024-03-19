@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed the password requirement for the links shared outside of the team.
  */
 public class SharingChangeLinkEnforcePasswordPolicyDetails {
     // struct team_log.SharingChangeLinkEnforcePasswordPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ChangeLinkExpirationPolicy newValue;
+    @Nullable
     protected final ChangeLinkExpirationPolicy previousValue;
 
     /**
@@ -35,7 +40,7 @@ public class SharingChangeLinkEnforcePasswordPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeLinkEnforcePasswordPolicyDetails(ChangeLinkExpirationPolicy newValue, ChangeLinkExpirationPolicy previousValue) {
+    public SharingChangeLinkEnforcePasswordPolicyDetails(@Nonnull ChangeLinkExpirationPolicy newValue, @Nullable ChangeLinkExpirationPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -54,7 +59,7 @@ public class SharingChangeLinkEnforcePasswordPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingChangeLinkEnforcePasswordPolicyDetails(ChangeLinkExpirationPolicy newValue) {
+    public SharingChangeLinkEnforcePasswordPolicyDetails(@Nonnull ChangeLinkExpirationPolicy newValue) {
         this(newValue, null);
     }
 
@@ -63,6 +68,7 @@ public class SharingChangeLinkEnforcePasswordPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ChangeLinkExpirationPolicy getNewValue() {
         return newValue;
     }
@@ -72,6 +78,7 @@ public class SharingChangeLinkEnforcePasswordPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public ChangeLinkExpirationPolicy getPreviousValue() {
         return previousValue;
     }

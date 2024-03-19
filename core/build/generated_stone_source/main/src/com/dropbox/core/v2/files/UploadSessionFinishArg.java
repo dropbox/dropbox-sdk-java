@@ -16,11 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class UploadSessionFinishArg {
     // struct files.UploadSessionFinishArg (files.stone)
 
+    @Nonnull
     protected final UploadSessionCursor cursor;
+    @Nonnull
     protected final CommitInfo commit;
+    @Nullable
     protected final String contentHash;
 
     /**
@@ -39,7 +45,7 @@ public class UploadSessionFinishArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionFinishArg(UploadSessionCursor cursor, CommitInfo commit, String contentHash) {
+    public UploadSessionFinishArg(@Nonnull UploadSessionCursor cursor, @Nonnull CommitInfo commit, @Nullable String contentHash) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -72,7 +78,7 @@ public class UploadSessionFinishArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadSessionFinishArg(UploadSessionCursor cursor, CommitInfo commit) {
+    public UploadSessionFinishArg(@Nonnull UploadSessionCursor cursor, @Nonnull CommitInfo commit) {
         this(cursor, commit, null);
     }
 
@@ -81,6 +87,7 @@ public class UploadSessionFinishArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UploadSessionCursor getCursor() {
         return cursor;
     }
@@ -90,6 +97,7 @@ public class UploadSessionFinishArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public CommitInfo getCommit() {
         return commit;
     }
@@ -103,6 +111,7 @@ public class UploadSessionFinishArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getContentHash() {
         return contentHash;
     }

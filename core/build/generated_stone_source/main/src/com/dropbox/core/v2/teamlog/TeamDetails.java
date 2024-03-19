@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * More details about the team.
  */
 public class TeamDetails {
     // struct team_log.TeamDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String team;
 
     /**
@@ -32,7 +35,7 @@ public class TeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamDetails(String team) {
+    public TeamDetails(@Nonnull String team) {
         if (team == null) {
             throw new IllegalArgumentException("Required value for 'team' is null");
         }
@@ -44,6 +47,7 @@ public class TeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeam() {
         return team;
     }

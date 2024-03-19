@@ -17,15 +17,24 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class ShareFolderArgBase {
     // struct sharing.ShareFolderArgBase (sharing_folders.stone)
 
+    @Nullable
     protected final AclUpdatePolicy aclUpdatePolicy;
     protected final boolean forceAsync;
+    @Nullable
     protected final MemberPolicy memberPolicy;
+    @Nonnull
     protected final String path;
+    @Nullable
     protected final SharedLinkPolicy sharedLinkPolicy;
+    @Nullable
     protected final ViewerInfoPolicy viewerInfoPolicy;
+    @Nonnull
     protected final AccessInheritance accessInheritance;
 
     /**
@@ -51,7 +60,7 @@ class ShareFolderArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShareFolderArgBase(String path, AclUpdatePolicy aclUpdatePolicy, boolean forceAsync, MemberPolicy memberPolicy, SharedLinkPolicy sharedLinkPolicy, ViewerInfoPolicy viewerInfoPolicy, AccessInheritance accessInheritance) {
+    public ShareFolderArgBase(@Nonnull String path, @Nullable AclUpdatePolicy aclUpdatePolicy, boolean forceAsync, @Nullable MemberPolicy memberPolicy, @Nullable SharedLinkPolicy sharedLinkPolicy, @Nullable ViewerInfoPolicy viewerInfoPolicy, @Nonnull AccessInheritance accessInheritance) {
         this.aclUpdatePolicy = aclUpdatePolicy;
         this.forceAsync = forceAsync;
         this.memberPolicy = memberPolicy;
@@ -82,7 +91,7 @@ class ShareFolderArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShareFolderArgBase(String path) {
+    public ShareFolderArgBase(@Nonnull String path) {
         this(path, null, false, null, null, null, AccessInheritance.INHERIT);
     }
 
@@ -92,6 +101,7 @@ class ShareFolderArgBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -101,6 +111,7 @@ class ShareFolderArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AclUpdatePolicy getAclUpdatePolicy() {
         return aclUpdatePolicy;
     }
@@ -121,6 +132,7 @@ class ShareFolderArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public MemberPolicy getMemberPolicy() {
         return memberPolicy;
     }
@@ -132,6 +144,7 @@ class ShareFolderArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SharedLinkPolicy getSharedLinkPolicy() {
         return sharedLinkPolicy;
     }
@@ -141,6 +154,7 @@ class ShareFolderArgBase {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public ViewerInfoPolicy getViewerInfoPolicy() {
         return viewerInfoPolicy;
     }
@@ -151,6 +165,7 @@ class ShareFolderArgBase {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     AccessInheritance.INHERIT.
      */
+    @Nonnull
     public AccessInheritance getAccessInheritance() {
         return accessInheritance;
     }

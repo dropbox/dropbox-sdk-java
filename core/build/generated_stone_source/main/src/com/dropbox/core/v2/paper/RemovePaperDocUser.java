@@ -17,9 +17,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class RemovePaperDocUser extends RefPaperDoc {
     // struct paper.RemovePaperDocUser (paper.stone)
 
+    @Nonnull
     protected final MemberSelector member;
 
     /**
@@ -31,7 +34,7 @@ class RemovePaperDocUser extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RemovePaperDocUser(String docId, MemberSelector member) {
+    public RemovePaperDocUser(@Nonnull String docId, @Nonnull MemberSelector member) {
         super(docId);
         if (member == null) {
             throw new IllegalArgumentException("Required value for 'member' is null");
@@ -44,6 +47,7 @@ class RemovePaperDocUser extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDocId() {
         return docId;
     }
@@ -54,6 +58,7 @@ class RemovePaperDocUser extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MemberSelector getMember() {
         return member;
     }

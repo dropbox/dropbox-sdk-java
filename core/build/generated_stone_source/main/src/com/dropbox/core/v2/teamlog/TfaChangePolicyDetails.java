@@ -17,13 +17,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed two-step verification setting for team.
  */
 public class TfaChangePolicyDetails {
     // struct team_log.TfaChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TwoStepVerificationPolicy newValue;
+    @Nullable
     protected final TwoStepVerificationPolicy previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class TfaChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaChangePolicyDetails(TwoStepVerificationPolicy newValue, TwoStepVerificationPolicy previousValue) {
+    public TfaChangePolicyDetails(@Nonnull TwoStepVerificationPolicy newValue, @Nullable TwoStepVerificationPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -54,7 +59,7 @@ public class TfaChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TfaChangePolicyDetails(TwoStepVerificationPolicy newValue) {
+    public TfaChangePolicyDetails(@Nonnull TwoStepVerificationPolicy newValue) {
         this(newValue, null);
     }
 
@@ -63,6 +68,7 @@ public class TfaChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TwoStepVerificationPolicy getNewValue() {
         return newValue;
     }
@@ -72,6 +78,7 @@ public class TfaChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public TwoStepVerificationPolicy getPreviousValue() {
         return previousValue;
     }

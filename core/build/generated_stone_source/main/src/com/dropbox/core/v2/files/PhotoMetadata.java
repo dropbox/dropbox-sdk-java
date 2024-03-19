@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Metadata for a photo.
  */
@@ -34,7 +37,7 @@ public class PhotoMetadata extends MediaMetadata {
      * @param location  The GPS coordinate of the photo/video.
      * @param timeTaken  The timestamp when the photo/video is taken.
      */
-    public PhotoMetadata(Dimensions dimensions, GpsCoordinates location, Date timeTaken) {
+    public PhotoMetadata(@Nullable Dimensions dimensions, @Nullable GpsCoordinates location, @Nullable Date timeTaken) {
         super(dimensions, location, timeTaken);
     }
 
@@ -52,6 +55,7 @@ public class PhotoMetadata extends MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Dimensions getDimensions() {
         return dimensions;
     }
@@ -61,6 +65,7 @@ public class PhotoMetadata extends MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public GpsCoordinates getLocation() {
         return location;
     }
@@ -70,6 +75,7 @@ public class PhotoMetadata extends MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getTimeTaken() {
         return timeTaken;
     }

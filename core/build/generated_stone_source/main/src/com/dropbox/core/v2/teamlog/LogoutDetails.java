@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Signed out.
  */
 public class LogoutDetails {
     // struct team_log.LogoutDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String loginId;
 
     /**
@@ -29,7 +33,7 @@ public class LogoutDetails {
      *
      * @param loginId  Login session id.
      */
-    public LogoutDetails(String loginId) {
+    public LogoutDetails(@Nullable String loginId) {
         this.loginId = loginId;
     }
 
@@ -47,6 +51,7 @@ public class LogoutDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getLoginId() {
         return loginId;
     }

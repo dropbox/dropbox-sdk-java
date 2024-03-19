@@ -18,19 +18,29 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Detailed information about the current user's account.
  */
 public class FullAccount extends Account {
     // struct users.FullAccount (users.stone)
 
+    @Nullable
     protected final String country;
+    @Nonnull
     protected final String locale;
+    @Nonnull
     protected final String referralLink;
+    @Nullable
     protected final FullTeam team;
+    @Nullable
     protected final String teamMemberId;
     protected final boolean isPaired;
+    @Nonnull
     protected final AccountType accountType;
+    @Nonnull
     protected final RootInfo rootInfo;
 
     /**
@@ -77,7 +87,7 @@ public class FullAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FullAccount(String accountId, Name name, String email, boolean emailVerified, boolean disabled, String locale, String referralLink, boolean isPaired, AccountType accountType, RootInfo rootInfo, String profilePhotoUrl, String country, FullTeam team, String teamMemberId) {
+    public FullAccount(@Nonnull String accountId, @Nonnull Name name, @Nonnull String email, boolean emailVerified, boolean disabled, @Nonnull String locale, @Nonnull String referralLink, boolean isPaired, @Nonnull AccountType accountType, @Nonnull RootInfo rootInfo, @Nullable String profilePhotoUrl, @Nullable String country, @Nullable FullTeam team, @Nullable String teamMemberId) {
         super(accountId, name, email, emailVerified, disabled, profilePhotoUrl);
         if (country != null) {
             if (country.length() < 2) {
@@ -145,7 +155,7 @@ public class FullAccount extends Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FullAccount(String accountId, Name name, String email, boolean emailVerified, boolean disabled, String locale, String referralLink, boolean isPaired, AccountType accountType, RootInfo rootInfo) {
+    public FullAccount(@Nonnull String accountId, @Nonnull Name name, @Nonnull String email, boolean emailVerified, boolean disabled, @Nonnull String locale, @Nonnull String referralLink, boolean isPaired, @Nonnull AccountType accountType, @Nonnull RootInfo rootInfo) {
         this(accountId, name, email, emailVerified, disabled, locale, referralLink, isPaired, accountType, rootInfo, null, null, null, null);
     }
 
@@ -154,6 +164,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAccountId() {
         return accountId;
     }
@@ -163,6 +174,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Name getName() {
         return name;
     }
@@ -174,6 +186,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEmail() {
         return email;
     }
@@ -203,6 +216,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getLocale() {
         return locale;
     }
@@ -212,6 +226,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getReferralLink() {
         return referralLink;
     }
@@ -233,6 +248,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccountType getAccountType() {
         return accountType;
     }
@@ -242,6 +258,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public RootInfo getRootInfo() {
         return rootInfo;
     }
@@ -251,6 +268,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }
@@ -261,6 +279,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCountry() {
         return country;
     }
@@ -270,6 +289,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public FullTeam getTeam() {
         return team;
     }
@@ -280,6 +300,7 @@ public class FullAccount extends Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getTeamMemberId() {
         return teamMemberId;
     }

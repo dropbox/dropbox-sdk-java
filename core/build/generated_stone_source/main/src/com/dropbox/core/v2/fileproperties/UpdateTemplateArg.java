@@ -18,12 +18,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class UpdateTemplateArg {
     // struct file_properties.UpdateTemplateArg (file_properties.stone)
 
+    @Nonnull
     protected final String templateId;
+    @Nullable
     protected final String name;
+    @Nullable
     protected final String description;
+    @Nullable
     protected final List<PropertyFieldTemplate> addFields;
 
     /**
@@ -47,7 +54,7 @@ public class UpdateTemplateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateTemplateArg(String templateId, String name, String description, List<PropertyFieldTemplate> addFields) {
+    public UpdateTemplateArg(@Nonnull String templateId, @Nullable String name, @Nullable String description, @Nullable List<PropertyFieldTemplate> addFields) {
         if (templateId == null) {
             throw new IllegalArgumentException("Required value for 'templateId' is null");
         }
@@ -85,7 +92,7 @@ public class UpdateTemplateArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateTemplateArg(String templateId) {
+    public UpdateTemplateArg(@Nonnull String templateId) {
         this(templateId, null, null, null);
     }
 
@@ -97,6 +104,7 @@ public class UpdateTemplateArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTemplateId() {
         return templateId;
     }
@@ -106,6 +114,7 @@ public class UpdateTemplateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getName() {
         return name;
     }
@@ -116,6 +125,7 @@ public class UpdateTemplateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDescription() {
         return description;
     }
@@ -126,6 +136,7 @@ public class UpdateTemplateArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<PropertyFieldTemplate> getAddFields() {
         return addFields;
     }

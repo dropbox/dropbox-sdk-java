@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed camera uploads setting for team.
  */
 public class CameraUploadsPolicyChangedDetails {
     // struct team_log.CameraUploadsPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final CameraUploadsPolicy newValue;
+    @Nonnull
     protected final CameraUploadsPolicy previousValue;
 
     /**
@@ -35,7 +39,7 @@ public class CameraUploadsPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public CameraUploadsPolicyChangedDetails(CameraUploadsPolicy newValue, CameraUploadsPolicy previousValue) {
+    public CameraUploadsPolicyChangedDetails(@Nonnull CameraUploadsPolicy newValue, @Nonnull CameraUploadsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -51,6 +55,7 @@ public class CameraUploadsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public CameraUploadsPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +65,7 @@ public class CameraUploadsPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public CameraUploadsPolicy getPreviousValue() {
         return previousValue;
     }

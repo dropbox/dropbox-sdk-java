@@ -19,16 +19,27 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class LegalHoldPolicy {
     // struct team.LegalHoldPolicy (team_legal_holds.stone)
 
+    @Nonnull
     protected final String id;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final String description;
+    @Nullable
     protected final Date activationTime;
+    @Nonnull
     protected final MembersInfo members;
+    @Nonnull
     protected final LegalHoldStatus status;
+    @Nonnull
     protected final Date startDate;
+    @Nullable
     protected final Date endDate;
 
     /**
@@ -52,7 +63,7 @@ public class LegalHoldPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldPolicy(String id, String name, MembersInfo members, LegalHoldStatus status, Date startDate, String description, Date activationTime, Date endDate) {
+    public LegalHoldPolicy(@Nonnull String id, @Nonnull String name, @Nonnull MembersInfo members, @Nonnull LegalHoldStatus status, @Nonnull Date startDate, @Nullable String description, @Nullable Date activationTime, @Nullable Date endDate) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -107,7 +118,7 @@ public class LegalHoldPolicy {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldPolicy(String id, String name, MembersInfo members, LegalHoldStatus status, Date startDate) {
+    public LegalHoldPolicy(@Nonnull String id, @Nonnull String name, @Nonnull MembersInfo members, @Nonnull LegalHoldStatus status, @Nonnull Date startDate) {
         this(id, name, members, status, startDate, null, null, null);
     }
 
@@ -116,6 +127,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -125,6 +137,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -134,6 +147,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MembersInfo getMembers() {
         return members;
     }
@@ -143,6 +157,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public LegalHoldStatus getStatus() {
         return status;
     }
@@ -152,6 +167,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Date getStartDate() {
         return startDate;
     }
@@ -161,6 +177,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDescription() {
         return description;
     }
@@ -170,6 +187,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getActivationTime() {
         return activationTime;
     }
@@ -179,6 +197,7 @@ public class LegalHoldPolicy {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getEndDate() {
         return endDate;
     }

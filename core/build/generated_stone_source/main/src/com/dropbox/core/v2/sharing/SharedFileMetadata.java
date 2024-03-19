@@ -21,25 +21,42 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Properties of the shared file.
  */
 public class SharedFileMetadata {
     // struct sharing.SharedFileMetadata (sharing_files.stone)
 
+    @Nullable
     protected final AccessLevel accessType;
+    @Nonnull
     protected final String id;
+    @Nullable
     protected final ExpectedSharedContentLinkMetadata expectedLinkMetadata;
+    @Nullable
     protected final SharedContentLinkMetadata linkMetadata;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final List<String> ownerDisplayNames;
+    @Nullable
     protected final Team ownerTeam;
+    @Nullable
     protected final String parentSharedFolderId;
+    @Nullable
     protected final String pathDisplay;
+    @Nullable
     protected final String pathLower;
+    @Nullable
     protected final List<FilePermission> permissions;
+    @Nonnull
     protected final FolderPolicy policy;
+    @Nonnull
     protected final String previewUrl;
+    @Nullable
     protected final Date timeInvited;
 
     /**
@@ -92,7 +109,7 @@ public class SharedFileMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFileMetadata(String id, String name, FolderPolicy policy, String previewUrl, AccessLevel accessType, ExpectedSharedContentLinkMetadata expectedLinkMetadata, SharedContentLinkMetadata linkMetadata, List<String> ownerDisplayNames, Team ownerTeam, String parentSharedFolderId, String pathDisplay, String pathLower, List<FilePermission> permissions, Date timeInvited) {
+    public SharedFileMetadata(@Nonnull String id, @Nonnull String name, @Nonnull FolderPolicy policy, @Nonnull String previewUrl, @Nullable AccessLevel accessType, @Nullable ExpectedSharedContentLinkMetadata expectedLinkMetadata, @Nullable SharedContentLinkMetadata linkMetadata, @Nullable List<String> ownerDisplayNames, @Nullable Team ownerTeam, @Nullable String parentSharedFolderId, @Nullable String pathDisplay, @Nullable String pathLower, @Nullable List<FilePermission> permissions, @Nullable Date timeInvited) {
         this.accessType = accessType;
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
@@ -162,7 +179,7 @@ public class SharedFileMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFileMetadata(String id, String name, FolderPolicy policy, String previewUrl) {
+    public SharedFileMetadata(@Nonnull String id, @Nonnull String name, @Nonnull FolderPolicy policy, @Nonnull String previewUrl) {
         this(id, name, policy, previewUrl, null, null, null, null, null, null, null, null, null, null);
     }
 
@@ -171,6 +188,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -180,6 +198,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -189,6 +208,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FolderPolicy getPolicy() {
         return policy;
     }
@@ -198,6 +218,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPreviewUrl() {
         return previewUrl;
     }
@@ -207,6 +228,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AccessLevel getAccessType() {
         return accessType;
     }
@@ -218,6 +240,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public ExpectedSharedContentLinkMetadata getExpectedLinkMetadata() {
         return expectedLinkMetadata;
     }
@@ -228,6 +251,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SharedContentLinkMetadata getLinkMetadata() {
         return linkMetadata;
     }
@@ -239,6 +263,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getOwnerDisplayNames() {
         return ownerDisplayNames;
     }
@@ -249,6 +274,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Team getOwnerTeam() {
         return ownerTeam;
     }
@@ -259,6 +285,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -271,6 +298,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPathDisplay() {
         return pathDisplay;
     }
@@ -280,6 +308,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -293,6 +322,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<FilePermission> getPermissions() {
         return permissions;
     }
@@ -305,6 +335,7 @@ public class SharedFileMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getTimeInvited() {
         return timeInvited;
     }

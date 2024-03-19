@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed how long team members can be idle while signed in to Dropbox.com.
  */
 public class WebSessionsChangeIdleLengthPolicyDetails {
     // struct team_log.WebSessionsChangeIdleLengthPolicyDetails (team_log_generated.stone)
 
+    @Nullable
     protected final WebSessionsIdleLengthPolicy newValue;
+    @Nullable
     protected final WebSessionsIdleLengthPolicy previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class WebSessionsChangeIdleLengthPolicyDetails {
      * @param previousValue  Previous idle length policy. Might be missing due
      *     to historical data gap.
      */
-    public WebSessionsChangeIdleLengthPolicyDetails(WebSessionsIdleLengthPolicy newValue, WebSessionsIdleLengthPolicy previousValue) {
+    public WebSessionsChangeIdleLengthPolicyDetails(@Nullable WebSessionsIdleLengthPolicy newValue, @Nullable WebSessionsIdleLengthPolicy previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }
@@ -55,6 +60,7 @@ public class WebSessionsChangeIdleLengthPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public WebSessionsIdleLengthPolicy getNewValue() {
         return newValue;
     }
@@ -64,6 +70,7 @@ public class WebSessionsChangeIdleLengthPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public WebSessionsIdleLengthPolicy getPreviousValue() {
         return previousValue;
     }

@@ -18,14 +18,20 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Metadata for a photo or video.
  */
 public class MediaMetadata {
     // struct files.MediaMetadata (files.stone)
 
+    @Nullable
     protected final Dimensions dimensions;
+    @Nullable
     protected final GpsCoordinates location;
+    @Nullable
     protected final Date timeTaken;
 
     /**
@@ -38,7 +44,7 @@ public class MediaMetadata {
      * @param location  The GPS coordinate of the photo/video.
      * @param timeTaken  The timestamp when the photo/video is taken.
      */
-    public MediaMetadata(Dimensions dimensions, GpsCoordinates location, Date timeTaken) {
+    public MediaMetadata(@Nullable Dimensions dimensions, @Nullable GpsCoordinates location, @Nullable Date timeTaken) {
         this.dimensions = dimensions;
         this.location = location;
         this.timeTaken = LangUtil.truncateMillis(timeTaken);
@@ -58,6 +64,7 @@ public class MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Dimensions getDimensions() {
         return dimensions;
     }
@@ -67,6 +74,7 @@ public class MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public GpsCoordinates getLocation() {
         return location;
     }
@@ -76,6 +84,7 @@ public class MediaMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getTimeTaken() {
         return timeTaken;
     }

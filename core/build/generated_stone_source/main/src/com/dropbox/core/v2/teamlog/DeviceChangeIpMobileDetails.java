@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed IP address associated with active mobile session.
  */
 public class DeviceChangeIpMobileDetails {
     // struct team_log.DeviceChangeIpMobileDetails (team_log_generated.stone)
 
+    @Nullable
     protected final DeviceSessionLogInfo deviceSessionInfo;
 
     /**
@@ -29,7 +33,7 @@ public class DeviceChangeIpMobileDetails {
      *
      * @param deviceSessionInfo  Device's session logged information.
      */
-    public DeviceChangeIpMobileDetails(DeviceSessionLogInfo deviceSessionInfo) {
+    public DeviceChangeIpMobileDetails(@Nullable DeviceSessionLogInfo deviceSessionInfo) {
         this.deviceSessionInfo = deviceSessionInfo;
     }
 
@@ -47,6 +51,7 @@ public class DeviceChangeIpMobileDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public DeviceSessionLogInfo getDeviceSessionInfo() {
         return deviceSessionInfo;
     }

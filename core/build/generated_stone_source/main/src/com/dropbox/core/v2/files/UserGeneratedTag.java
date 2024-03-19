@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 public class UserGeneratedTag {
     // struct files.UserGeneratedTag (file_tagging.stone)
 
+    @Nonnull
     protected final String tagText;
 
     /**
@@ -30,7 +33,7 @@ public class UserGeneratedTag {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserGeneratedTag(String tagText) {
+    public UserGeneratedTag(@Nonnull String tagText) {
         if (tagText == null) {
             throw new IllegalArgumentException("Required value for 'tagText' is null");
         }
@@ -50,6 +53,7 @@ public class UserGeneratedTag {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTagText() {
         return tagText;
     }

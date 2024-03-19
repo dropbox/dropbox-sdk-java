@@ -16,14 +16,19 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Enabled/disabled backup for computer.
  */
 public class DeviceSyncBackupStatusChangedDetails {
     // struct team_log.DeviceSyncBackupStatusChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final DesktopDeviceSessionLogInfo desktopDeviceSessionInfo;
+    @Nonnull
     protected final BackupStatus previousValue;
+    @Nonnull
     protected final BackupStatus newValue;
 
     /**
@@ -39,7 +44,7 @@ public class DeviceSyncBackupStatusChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeviceSyncBackupStatusChangedDetails(DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, BackupStatus previousValue, BackupStatus newValue) {
+    public DeviceSyncBackupStatusChangedDetails(@Nonnull DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, @Nonnull BackupStatus previousValue, @Nonnull BackupStatus newValue) {
         if (desktopDeviceSessionInfo == null) {
             throw new IllegalArgumentException("Required value for 'desktopDeviceSessionInfo' is null");
         }
@@ -59,6 +64,7 @@ public class DeviceSyncBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DesktopDeviceSessionLogInfo getDesktopDeviceSessionInfo() {
         return desktopDeviceSessionInfo;
     }
@@ -68,6 +74,7 @@ public class DeviceSyncBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public BackupStatus getPreviousValue() {
         return previousValue;
     }
@@ -77,6 +84,7 @@ public class DeviceSyncBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public BackupStatus getNewValue() {
         return newValue;
     }

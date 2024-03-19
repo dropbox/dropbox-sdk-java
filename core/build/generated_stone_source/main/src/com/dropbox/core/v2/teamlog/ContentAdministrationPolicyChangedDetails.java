@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed content management setting.
  */
 public class ContentAdministrationPolicyChangedDetails {
     // struct team_log.ContentAdministrationPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String newValue;
+    @Nonnull
     protected final String previousValue;
 
     /**
@@ -36,7 +40,7 @@ public class ContentAdministrationPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ContentAdministrationPolicyChangedDetails(String newValue, String previousValue) {
+    public ContentAdministrationPolicyChangedDetails(@Nonnull String newValue, @Nonnull String previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -52,6 +56,7 @@ public class ContentAdministrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }
@@ -61,6 +66,7 @@ public class ContentAdministrationPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }

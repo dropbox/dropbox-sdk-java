@@ -16,14 +16,19 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Removed export for a hold.
  */
 public class LegalHoldsExportRemovedDetails {
     // struct team_log.LegalHoldsExportRemovedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String legalHoldId;
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final String exportName;
 
     /**
@@ -36,7 +41,7 @@ public class LegalHoldsExportRemovedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsExportRemovedDetails(String legalHoldId, String name, String exportName) {
+    public LegalHoldsExportRemovedDetails(@Nonnull String legalHoldId, @Nonnull String name, @Nonnull String exportName) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }
@@ -56,6 +61,7 @@ public class LegalHoldsExportRemovedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -65,6 +71,7 @@ public class LegalHoldsExportRemovedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -74,6 +81,7 @@ public class LegalHoldsExportRemovedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getExportName() {
         return exportName;
     }

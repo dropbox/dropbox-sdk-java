@@ -17,10 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class AddPaperDocUser extends RefPaperDoc {
     // struct paper.AddPaperDocUser (paper.stone)
 
+    @Nonnull
     protected final List<AddMember> members;
+    @Nullable
     protected final String customMessage;
     protected final boolean quiet;
 
@@ -40,7 +45,7 @@ class AddPaperDocUser extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddPaperDocUser(String docId, List<AddMember> members, String customMessage, boolean quiet) {
+    public AddPaperDocUser(@Nonnull String docId, @Nonnull List<AddMember> members, @Nullable String customMessage, boolean quiet) {
         super(docId);
         if (members == null) {
             throw new IllegalArgumentException("Required value for 'members' is null");
@@ -71,7 +76,7 @@ class AddPaperDocUser extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddPaperDocUser(String docId, List<AddMember> members) {
+    public AddPaperDocUser(@Nonnull String docId, @Nonnull List<AddMember> members) {
         this(docId, members, null, false);
     }
 
@@ -80,6 +85,7 @@ class AddPaperDocUser extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDocId() {
         return docId;
     }
@@ -90,6 +96,7 @@ class AddPaperDocUser extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<AddMember> getMembers() {
         return members;
     }
@@ -100,6 +107,7 @@ class AddPaperDocUser extends RefPaperDoc {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCustomMessage() {
         return customMessage;
     }

@@ -16,15 +16,22 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed app permissions.
  */
 public class AppPermissionsChangedDetails {
     // struct team_log.AppPermissionsChangedDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String appName;
+    @Nullable
     protected final AdminConsoleAppPermission permission;
+    @Nonnull
     protected final AdminConsoleAppPolicy previousValue;
+    @Nonnull
     protected final AdminConsoleAppPolicy newValue;
 
     /**
@@ -41,7 +48,7 @@ public class AppPermissionsChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AppPermissionsChangedDetails(AdminConsoleAppPolicy previousValue, AdminConsoleAppPolicy newValue, String appName, AdminConsoleAppPermission permission) {
+    public AppPermissionsChangedDetails(@Nonnull AdminConsoleAppPolicy previousValue, @Nonnull AdminConsoleAppPolicy newValue, @Nullable String appName, @Nullable AdminConsoleAppPermission permission) {
         this.appName = appName;
         this.permission = permission;
         if (previousValue == null) {
@@ -65,7 +72,7 @@ public class AppPermissionsChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AppPermissionsChangedDetails(AdminConsoleAppPolicy previousValue, AdminConsoleAppPolicy newValue) {
+    public AppPermissionsChangedDetails(@Nonnull AdminConsoleAppPolicy previousValue, @Nonnull AdminConsoleAppPolicy newValue) {
         this(previousValue, newValue, null, null);
     }
 
@@ -74,6 +81,7 @@ public class AppPermissionsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AdminConsoleAppPolicy getPreviousValue() {
         return previousValue;
     }
@@ -83,6 +91,7 @@ public class AppPermissionsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AdminConsoleAppPolicy getNewValue() {
         return newValue;
     }
@@ -92,6 +101,7 @@ public class AppPermissionsChangedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getAppName() {
         return appName;
     }
@@ -101,6 +111,7 @@ public class AppPermissionsChangedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AdminConsoleAppPermission getPermission() {
         return permission;
     }

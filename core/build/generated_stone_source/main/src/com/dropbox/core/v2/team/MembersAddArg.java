@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class MembersAddArg extends MembersAddArgBase {
     // struct team.MembersAddArg (team_members.stone)
 
+    @Nonnull
     protected final List<MemberAddArg> newMembers;
 
     /**
@@ -31,7 +34,7 @@ class MembersAddArg extends MembersAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersAddArg(List<MemberAddArg> newMembers, boolean forceAsync) {
+    public MembersAddArg(@Nonnull List<MemberAddArg> newMembers, boolean forceAsync) {
         super(forceAsync);
         if (newMembers == null) {
             throw new IllegalArgumentException("Required value for 'newMembers' is null");
@@ -55,7 +58,7 @@ class MembersAddArg extends MembersAddArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersAddArg(List<MemberAddArg> newMembers) {
+    public MembersAddArg(@Nonnull List<MemberAddArg> newMembers) {
         this(newMembers, false);
     }
 
@@ -64,6 +67,7 @@ class MembersAddArg extends MembersAddArgBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<MemberAddArg> getNewMembers() {
         return newMembers;
     }

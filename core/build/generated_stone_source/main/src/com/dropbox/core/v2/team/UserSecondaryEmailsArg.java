@@ -17,13 +17,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * User and a list of secondary emails.
  */
 public class UserSecondaryEmailsArg {
     // struct team.UserSecondaryEmailsArg (team_secondary_mails.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
+    @Nonnull
     protected final List<String> secondaryEmails;
 
     /**
@@ -36,7 +40,7 @@ public class UserSecondaryEmailsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserSecondaryEmailsArg(UserSelectorArg user, List<String> secondaryEmails) {
+    public UserSecondaryEmailsArg(@Nonnull UserSelectorArg user, @Nonnull List<String> secondaryEmails) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -62,6 +66,7 @@ public class UserSecondaryEmailsArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -70,6 +75,7 @@ public class UserSecondaryEmailsArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<String> getSecondaryEmails() {
         return secondaryEmails;
     }

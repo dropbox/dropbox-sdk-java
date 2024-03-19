@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The expected metadata of a shared link for a file or folder when a link is
  * first created for the content. Absent if the link already exists.
@@ -55,7 +58,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExpectedSharedContentLinkMetadata(List<LinkAudience> audienceOptions, LinkAudience currentAudience, List<LinkPermission> linkPermissions, boolean passwordProtected, AccessLevel accessLevel, AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, Date expiry) {
+    public ExpectedSharedContentLinkMetadata(@Nonnull List<LinkAudience> audienceOptions, @Nonnull LinkAudience currentAudience, @Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected, @Nullable AccessLevel accessLevel, @Nullable AudienceRestrictingSharedFolder audienceRestrictingSharedFolder, @Nullable Date expiry) {
         super(audienceOptions, currentAudience, linkPermissions, passwordProtected, accessLevel, audienceRestrictingSharedFolder, expiry);
     }
 
@@ -81,7 +84,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExpectedSharedContentLinkMetadata(List<LinkAudience> audienceOptions, LinkAudience currentAudience, List<LinkPermission> linkPermissions, boolean passwordProtected) {
+    public ExpectedSharedContentLinkMetadata(@Nonnull List<LinkAudience> audienceOptions, @Nonnull LinkAudience currentAudience, @Nonnull List<LinkPermission> linkPermissions, boolean passwordProtected) {
         this(audienceOptions, currentAudience, linkPermissions, passwordProtected, null, null, null);
     }
 
@@ -93,6 +96,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<LinkAudience> getAudienceOptions() {
         return audienceOptions;
     }
@@ -102,6 +106,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public LinkAudience getCurrentAudience() {
         return currentAudience;
     }
@@ -111,6 +116,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<LinkPermission> getLinkPermissions() {
         return linkPermissions;
     }
@@ -129,6 +135,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -139,6 +146,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AudienceRestrictingSharedFolder getAudienceRestrictingSharedFolder() {
         return audienceRestrictingSharedFolder;
     }
@@ -149,6 +157,7 @@ public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadata
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getExpiry() {
         return expiry;
     }

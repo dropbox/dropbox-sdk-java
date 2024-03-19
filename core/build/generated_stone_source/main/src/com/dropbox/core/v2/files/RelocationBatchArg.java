@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 class RelocationBatchArg extends RelocationBatchArgBase {
     // struct files.RelocationBatchArg (files.stone)
 
@@ -41,7 +43,7 @@ class RelocationBatchArg extends RelocationBatchArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationBatchArg(List<RelocationPath> entries, boolean autorename, boolean allowSharedFolder, boolean allowOwnershipTransfer) {
+    public RelocationBatchArg(@Nonnull List<RelocationPath> entries, boolean autorename, boolean allowSharedFolder, boolean allowOwnershipTransfer) {
         super(entries, autorename);
         this.allowSharedFolder = allowSharedFolder;
         this.allowOwnershipTransfer = allowOwnershipTransfer;
@@ -60,7 +62,7 @@ class RelocationBatchArg extends RelocationBatchArgBase {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RelocationBatchArg(List<RelocationPath> entries) {
+    public RelocationBatchArg(@Nonnull List<RelocationPath> entries) {
         this(entries, false, false, false);
     }
 
@@ -70,6 +72,7 @@ class RelocationBatchArg extends RelocationBatchArgBase {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<RelocationPath> getEntries() {
         return entries;
     }

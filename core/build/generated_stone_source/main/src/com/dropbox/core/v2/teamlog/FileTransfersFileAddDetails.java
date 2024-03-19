@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Transfer files added.
  */
 public class FileTransfersFileAddDetails {
     // struct team_log.FileTransfersFileAddDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String fileTransferId;
 
     /**
@@ -32,7 +35,7 @@ public class FileTransfersFileAddDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileTransfersFileAddDetails(String fileTransferId) {
+    public FileTransfersFileAddDetails(@Nonnull String fileTransferId) {
         if (fileTransferId == null) {
             throw new IllegalArgumentException("Required value for 'fileTransferId' is null");
         }
@@ -44,6 +47,7 @@ public class FileTransfersFileAddDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFileTransferId() {
         return fileTransferId;
     }

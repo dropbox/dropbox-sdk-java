@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Enabled/disabled Dropbox Showcase for team.
  */
 public class ShowcaseChangeEnabledPolicyDetails {
     // struct team_log.ShowcaseChangeEnabledPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ShowcaseEnabledPolicy newValue;
+    @Nonnull
     protected final ShowcaseEnabledPolicy previousValue;
 
     /**
@@ -35,7 +39,7 @@ public class ShowcaseChangeEnabledPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ShowcaseChangeEnabledPolicyDetails(ShowcaseEnabledPolicy newValue, ShowcaseEnabledPolicy previousValue) {
+    public ShowcaseChangeEnabledPolicyDetails(@Nonnull ShowcaseEnabledPolicy newValue, @Nonnull ShowcaseEnabledPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -51,6 +55,7 @@ public class ShowcaseChangeEnabledPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ShowcaseEnabledPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +65,7 @@ public class ShowcaseChangeEnabledPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ShowcaseEnabledPolicy getPreviousValue() {
         return previousValue;
     }

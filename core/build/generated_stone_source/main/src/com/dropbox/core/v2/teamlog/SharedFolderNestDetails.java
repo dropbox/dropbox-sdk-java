@@ -16,15 +16,22 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed parent of shared folder.
  */
 public class SharedFolderNestDetails {
     // struct team_log.SharedFolderNestDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String previousParentNsId;
+    @Nullable
     protected final String newParentNsId;
+    @Nullable
     protected final String previousNsPath;
+    @Nullable
     protected final String newNsPath;
 
     /**
@@ -38,7 +45,7 @@ public class SharedFolderNestDetails {
      * @param previousNsPath  Previous namespace path.
      * @param newNsPath  New namespace path.
      */
-    public SharedFolderNestDetails(String previousParentNsId, String newParentNsId, String previousNsPath, String newNsPath) {
+    public SharedFolderNestDetails(@Nullable String previousParentNsId, @Nullable String newParentNsId, @Nullable String previousNsPath, @Nullable String newNsPath) {
         this.previousParentNsId = previousParentNsId;
         this.newParentNsId = newParentNsId;
         this.previousNsPath = previousNsPath;
@@ -59,6 +66,7 @@ public class SharedFolderNestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPreviousParentNsId() {
         return previousParentNsId;
     }
@@ -68,6 +76,7 @@ public class SharedFolderNestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getNewParentNsId() {
         return newParentNsId;
     }
@@ -77,6 +86,7 @@ public class SharedFolderNestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPreviousNsPath() {
         return previousNsPath;
     }
@@ -86,6 +96,7 @@ public class SharedFolderNestDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getNewNsPath() {
         return newNsPath;
     }

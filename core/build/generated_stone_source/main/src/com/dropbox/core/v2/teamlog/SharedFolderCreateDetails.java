@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Created shared folder.
  */
 public class SharedFolderCreateDetails {
     // struct team_log.SharedFolderCreateDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String targetNsId;
 
     /**
@@ -29,7 +33,7 @@ public class SharedFolderCreateDetails {
      *
      * @param targetNsId  Target namespace ID.
      */
-    public SharedFolderCreateDetails(String targetNsId) {
+    public SharedFolderCreateDetails(@Nullable String targetNsId) {
         this.targetNsId = targetNsId;
     }
 
@@ -47,6 +51,7 @@ public class SharedFolderCreateDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getTargetNsId() {
         return targetNsId;
     }

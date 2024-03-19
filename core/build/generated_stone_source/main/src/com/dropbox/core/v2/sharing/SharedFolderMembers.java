@@ -17,15 +17,22 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Shared folder user and group membership.
  */
 public class SharedFolderMembers {
     // struct sharing.SharedFolderMembers (sharing_folders.stone)
 
+    @Nonnull
     protected final List<UserMembershipInfo> users;
+    @Nonnull
     protected final List<GroupMembershipInfo> groups;
+    @Nonnull
     protected final List<InviteeMembershipInfo> invitees;
+    @Nullable
     protected final String cursor;
 
     /**
@@ -45,7 +52,7 @@ public class SharedFolderMembers {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMembers(List<UserMembershipInfo> users, List<GroupMembershipInfo> groups, List<InviteeMembershipInfo> invitees, String cursor) {
+    public SharedFolderMembers(@Nonnull List<UserMembershipInfo> users, @Nonnull List<GroupMembershipInfo> groups, @Nonnull List<InviteeMembershipInfo> invitees, @Nullable String cursor) {
         if (users == null) {
             throw new IllegalArgumentException("Required value for 'users' is null");
         }
@@ -91,7 +98,7 @@ public class SharedFolderMembers {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMembers(List<UserMembershipInfo> users, List<GroupMembershipInfo> groups, List<InviteeMembershipInfo> invitees) {
+    public SharedFolderMembers(@Nonnull List<UserMembershipInfo> users, @Nonnull List<GroupMembershipInfo> groups, @Nonnull List<InviteeMembershipInfo> invitees) {
         this(users, groups, invitees, null);
     }
 
@@ -100,6 +107,7 @@ public class SharedFolderMembers {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<UserMembershipInfo> getUsers() {
         return users;
     }
@@ -109,6 +117,7 @@ public class SharedFolderMembers {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<GroupMembershipInfo> getGroups() {
         return groups;
     }
@@ -118,6 +127,7 @@ public class SharedFolderMembers {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<InviteeMembershipInfo> getInvitees() {
         return invitees;
     }
@@ -130,6 +140,7 @@ public class SharedFolderMembers {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCursor() {
         return cursor;
     }

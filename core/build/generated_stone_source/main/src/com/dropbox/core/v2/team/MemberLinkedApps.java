@@ -17,13 +17,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Information on linked applications of a team member.
  */
 public class MemberLinkedApps {
     // struct team.MemberLinkedApps (team_linked_apps.stone)
 
+    @Nonnull
     protected final String teamMemberId;
+    @Nonnull
     protected final List<ApiApp> linkedApiApps;
 
     /**
@@ -37,7 +41,7 @@ public class MemberLinkedApps {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberLinkedApps(String teamMemberId, List<ApiApp> linkedApiApps) {
+    public MemberLinkedApps(@Nonnull String teamMemberId, @Nonnull List<ApiApp> linkedApiApps) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }
@@ -58,6 +62,7 @@ public class MemberLinkedApps {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }
@@ -67,6 +72,7 @@ public class MemberLinkedApps {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<ApiApp> getLinkedApiApps() {
         return linkedApiApps;
     }

@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Unliked file comment.
  */
 public class FileUnlikeCommentDetails {
     // struct team_log.FileUnlikeCommentDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String commentText;
 
     /**
@@ -29,7 +33,7 @@ public class FileUnlikeCommentDetails {
      *
      * @param commentText  Comment text.
      */
-    public FileUnlikeCommentDetails(String commentText) {
+    public FileUnlikeCommentDetails(@Nullable String commentText) {
         this.commentText = commentText;
     }
 
@@ -47,6 +51,7 @@ public class FileUnlikeCommentDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCommentText() {
         return commentText;
     }

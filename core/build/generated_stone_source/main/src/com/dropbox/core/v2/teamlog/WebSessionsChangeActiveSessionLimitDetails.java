@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed limit on active sessions per member.
  */
 public class WebSessionsChangeActiveSessionLimitDetails {
     // struct team_log.WebSessionsChangeActiveSessionLimitDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String previousValue;
+    @Nonnull
     protected final String newValue;
 
     /**
@@ -36,7 +40,7 @@ public class WebSessionsChangeActiveSessionLimitDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public WebSessionsChangeActiveSessionLimitDetails(String previousValue, String newValue) {
+    public WebSessionsChangeActiveSessionLimitDetails(@Nonnull String previousValue, @Nonnull String newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -52,6 +56,7 @@ public class WebSessionsChangeActiveSessionLimitDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPreviousValue() {
         return previousValue;
     }
@@ -61,6 +66,7 @@ public class WebSessionsChangeActiveSessionLimitDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }

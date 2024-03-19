@@ -17,13 +17,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Metadata about Paper folders containing the specififed Paper doc.
  */
 public class FoldersContainingPaperDoc {
     // struct paper.FoldersContainingPaperDoc (paper.stone)
 
+    @Nullable
     protected final FolderSharingPolicyType folderSharingPolicyType;
+    @Nullable
     protected final List<Folder> folders;
 
     /**
@@ -40,7 +45,7 @@ public class FoldersContainingPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FoldersContainingPaperDoc(FolderSharingPolicyType folderSharingPolicyType, List<Folder> folders) {
+    public FoldersContainingPaperDoc(@Nullable FolderSharingPolicyType folderSharingPolicyType, @Nullable List<Folder> folders) {
         this.folderSharingPolicyType = folderSharingPolicyType;
         if (folders != null) {
             for (Folder x : folders) {
@@ -66,6 +71,7 @@ public class FoldersContainingPaperDoc {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public FolderSharingPolicyType getFolderSharingPolicyType() {
         return folderSharingPolicyType;
     }
@@ -75,6 +81,7 @@ public class FoldersContainingPaperDoc {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<Folder> getFolders() {
         return folders;
     }

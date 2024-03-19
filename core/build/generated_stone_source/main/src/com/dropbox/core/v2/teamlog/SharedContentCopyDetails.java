@@ -17,15 +17,22 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Copied shared file/folder to own Dropbox.
  */
 public class SharedContentCopyDetails {
     // struct team_log.SharedContentCopyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String sharedContentLink;
+    @Nullable
     protected final UserLogInfo sharedContentOwner;
+    @Nonnull
     protected final AccessLevel sharedContentAccessLevel;
+    @Nonnull
     protected final String destinationPath;
 
     /**
@@ -41,7 +48,7 @@ public class SharedContentCopyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentCopyDetails(String sharedContentLink, AccessLevel sharedContentAccessLevel, String destinationPath, UserLogInfo sharedContentOwner) {
+    public SharedContentCopyDetails(@Nonnull String sharedContentLink, @Nonnull AccessLevel sharedContentAccessLevel, @Nonnull String destinationPath, @Nullable UserLogInfo sharedContentOwner) {
         if (sharedContentLink == null) {
             throw new IllegalArgumentException("Required value for 'sharedContentLink' is null");
         }
@@ -71,7 +78,7 @@ public class SharedContentCopyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedContentCopyDetails(String sharedContentLink, AccessLevel sharedContentAccessLevel, String destinationPath) {
+    public SharedContentCopyDetails(@Nonnull String sharedContentLink, @Nonnull AccessLevel sharedContentAccessLevel, @Nonnull String destinationPath) {
         this(sharedContentLink, sharedContentAccessLevel, destinationPath, null);
     }
 
@@ -80,6 +87,7 @@ public class SharedContentCopyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSharedContentLink() {
         return sharedContentLink;
     }
@@ -89,6 +97,7 @@ public class SharedContentCopyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccessLevel getSharedContentAccessLevel() {
         return sharedContentAccessLevel;
     }
@@ -98,6 +107,7 @@ public class SharedContentCopyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDestinationPath() {
         return destinationPath;
     }
@@ -107,6 +117,7 @@ public class SharedContentCopyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public UserLogInfo getSharedContentOwner() {
         return sharedContentOwner;
     }

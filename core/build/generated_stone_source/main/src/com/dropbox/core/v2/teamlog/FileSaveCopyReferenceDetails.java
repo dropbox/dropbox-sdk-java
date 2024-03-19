@@ -17,12 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Saved file/folder using copy reference.
  */
 public class FileSaveCopyReferenceDetails {
     // struct team_log.FileSaveCopyReferenceDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final List<RelocateAssetReferencesLogInfo> relocateActionDetails;
 
     /**
@@ -34,7 +37,7 @@ public class FileSaveCopyReferenceDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileSaveCopyReferenceDetails(List<RelocateAssetReferencesLogInfo> relocateActionDetails) {
+    public FileSaveCopyReferenceDetails(@Nonnull List<RelocateAssetReferencesLogInfo> relocateActionDetails) {
         if (relocateActionDetails == null) {
             throw new IllegalArgumentException("Required value for 'relocateActionDetails' is null");
         }
@@ -51,6 +54,7 @@ public class FileSaveCopyReferenceDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<RelocateAssetReferencesLogInfo> getRelocateActionDetails() {
         return relocateActionDetails;
     }

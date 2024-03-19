@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled option for team members to suggest people to add to team.
  */
 public class MemberSuggestionsChangePolicyDetails {
     // struct team_log.MemberSuggestionsChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final MemberSuggestionsPolicy newValue;
+    @Nullable
     protected final MemberSuggestionsPolicy previousValue;
 
     /**
@@ -37,7 +42,7 @@ public class MemberSuggestionsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSuggestionsChangePolicyDetails(MemberSuggestionsPolicy newValue, MemberSuggestionsPolicy previousValue) {
+    public MemberSuggestionsChangePolicyDetails(@Nonnull MemberSuggestionsPolicy newValue, @Nullable MemberSuggestionsPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -57,7 +62,7 @@ public class MemberSuggestionsChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSuggestionsChangePolicyDetails(MemberSuggestionsPolicy newValue) {
+    public MemberSuggestionsChangePolicyDetails(@Nonnull MemberSuggestionsPolicy newValue) {
         this(newValue, null);
     }
 
@@ -66,6 +71,7 @@ public class MemberSuggestionsChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MemberSuggestionsPolicy getNewValue() {
         return newValue;
     }
@@ -76,6 +82,7 @@ public class MemberSuggestionsChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public MemberSuggestionsPolicy getPreviousValue() {
         return previousValue;
     }

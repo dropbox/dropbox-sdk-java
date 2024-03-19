@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Pinned item to folder overview.
  */
@@ -24,6 +26,7 @@ public class FolderOverviewItemPinnedDetails {
     // struct team_log.FolderOverviewItemPinnedDetails (team_log_generated.stone)
 
     protected final long folderOverviewLocationAsset;
+    @Nonnull
     protected final List<Long> pinnedItemsAssetIndices;
 
     /**
@@ -37,7 +40,7 @@ public class FolderOverviewItemPinnedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderOverviewItemPinnedDetails(long folderOverviewLocationAsset, List<Long> pinnedItemsAssetIndices) {
+    public FolderOverviewItemPinnedDetails(long folderOverviewLocationAsset, @Nonnull List<Long> pinnedItemsAssetIndices) {
         this.folderOverviewLocationAsset = folderOverviewLocationAsset;
         if (pinnedItemsAssetIndices == null) {
             throw new IllegalArgumentException("Required value for 'pinnedItemsAssetIndices' is null");
@@ -64,6 +67,7 @@ public class FolderOverviewItemPinnedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Long> getPinnedItemsAssetIndices() {
         return pinnedItemsAssetIndices;
     }

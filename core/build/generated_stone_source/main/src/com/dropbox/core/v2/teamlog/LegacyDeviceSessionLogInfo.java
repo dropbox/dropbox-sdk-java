@@ -18,20 +18,32 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information on sessions, in legacy format
  */
 public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
     // struct team_log.LegacyDeviceSessionLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final SessionLogInfo sessionInfo;
+    @Nullable
     protected final String displayName;
+    @Nullable
     protected final Boolean isEmmManaged;
+    @Nullable
     protected final String platform;
+    @Nullable
     protected final String macAddress;
+    @Nullable
     protected final String osVersion;
+    @Nullable
     protected final String deviceType;
+    @Nullable
     protected final String clientVersion;
+    @Nullable
     protected final String legacyUniqId;
 
     /**
@@ -61,7 +73,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      * @param legacyUniqId  Alternative unique device session id, instead of
      *     session id field. Might be missing due to historical data gap.
      */
-    public LegacyDeviceSessionLogInfo(String ipAddress, Date created, Date updated, SessionLogInfo sessionInfo, String displayName, Boolean isEmmManaged, String platform, String macAddress, String osVersion, String deviceType, String clientVersion, String legacyUniqId) {
+    public LegacyDeviceSessionLogInfo(@Nullable String ipAddress, @Nullable Date created, @Nullable Date updated, @Nullable SessionLogInfo sessionInfo, @Nullable String displayName, @Nullable Boolean isEmmManaged, @Nullable String platform, @Nullable String macAddress, @Nullable String osVersion, @Nullable String deviceType, @Nullable String clientVersion, @Nullable String legacyUniqId) {
         super(ipAddress, created, updated);
         this.sessionInfo = sessionInfo;
         this.displayName = displayName;
@@ -88,6 +100,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getIpAddress() {
         return ipAddress;
     }
@@ -97,6 +110,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getCreated() {
         return created;
     }
@@ -106,6 +120,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getUpdated() {
         return updated;
     }
@@ -115,6 +130,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SessionLogInfo getSessionInfo() {
         return sessionInfo;
     }
@@ -124,6 +140,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -133,6 +150,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getIsEmmManaged() {
         return isEmmManaged;
     }
@@ -143,6 +161,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPlatform() {
         return platform;
     }
@@ -153,6 +172,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getMacAddress() {
         return macAddress;
     }
@@ -162,6 +182,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getOsVersion() {
         return osVersion;
     }
@@ -172,6 +193,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDeviceType() {
         return deviceType;
     }
@@ -181,6 +203,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getClientVersion() {
         return clientVersion;
     }
@@ -191,6 +214,7 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getLegacyUniqId() {
         return legacyUniqId;
     }

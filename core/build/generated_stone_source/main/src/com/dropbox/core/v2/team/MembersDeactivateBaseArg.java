@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Exactly one of team_member_id, email, or external_id must be provided to
  * identify the user account.
@@ -23,6 +25,7 @@ import java.util.Arrays;
 class MembersDeactivateBaseArg {
     // struct team.MembersDeactivateBaseArg (team_members.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
 
     /**
@@ -35,7 +38,7 @@ class MembersDeactivateBaseArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersDeactivateBaseArg(UserSelectorArg user) {
+    public MembersDeactivateBaseArg(@Nonnull UserSelectorArg user) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -47,6 +50,7 @@ class MembersDeactivateBaseArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }

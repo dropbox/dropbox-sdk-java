@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Created a summary report for a hold.
  */
 public class LegalHoldsReportAHoldDetails {
     // struct team_log.LegalHoldsReportAHoldDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String legalHoldId;
+    @Nonnull
     protected final String name;
 
     /**
@@ -34,7 +38,7 @@ public class LegalHoldsReportAHoldDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsReportAHoldDetails(String legalHoldId, String name) {
+    public LegalHoldsReportAHoldDetails(@Nonnull String legalHoldId, @Nonnull String name) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }
@@ -50,6 +54,7 @@ public class LegalHoldsReportAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -59,6 +64,7 @@ public class LegalHoldsReportAHoldDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }

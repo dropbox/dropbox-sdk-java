@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether Dropbox Paper, when enabled, is deployed to all members or to
  * specific members.
@@ -24,7 +27,9 @@ import java.util.Arrays;
 public class PaperChangeDeploymentPolicyDetails {
     // struct team_log.PaperChangeDeploymentPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PaperDeploymentPolicy newValue;
+    @Nullable
     protected final PaperDeploymentPolicy previousValue;
 
     /**
@@ -39,7 +44,7 @@ public class PaperChangeDeploymentPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangeDeploymentPolicyDetails(PaperDeploymentPolicy newValue, PaperDeploymentPolicy previousValue) {
+    public PaperChangeDeploymentPolicyDetails(@Nonnull PaperDeploymentPolicy newValue, @Nullable PaperDeploymentPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -59,7 +64,7 @@ public class PaperChangeDeploymentPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangeDeploymentPolicyDetails(PaperDeploymentPolicy newValue) {
+    public PaperChangeDeploymentPolicyDetails(@Nonnull PaperDeploymentPolicy newValue) {
         this(newValue, null);
     }
 
@@ -68,6 +73,7 @@ public class PaperChangeDeploymentPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PaperDeploymentPolicy getNewValue() {
         return newValue;
     }
@@ -78,6 +84,7 @@ public class PaperChangeDeploymentPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PaperDeploymentPolicy getPreviousValue() {
         return previousValue;
     }

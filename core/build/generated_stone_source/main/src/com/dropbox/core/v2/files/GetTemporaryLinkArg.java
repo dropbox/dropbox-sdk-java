@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class GetTemporaryLinkArg {
     // struct files.GetTemporaryLinkArg (files.stone)
 
+    @Nonnull
     protected final String path;
 
     /**
@@ -32,7 +35,7 @@ class GetTemporaryLinkArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTemporaryLinkArg(String path) {
+    public GetTemporaryLinkArg(@Nonnull String path) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -47,6 +50,7 @@ class GetTemporaryLinkArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }

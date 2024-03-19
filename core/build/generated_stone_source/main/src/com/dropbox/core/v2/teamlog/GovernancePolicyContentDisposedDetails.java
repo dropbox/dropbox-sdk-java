@@ -16,15 +16,22 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Content disposed.
  */
 public class GovernancePolicyContentDisposedDetails {
     // struct team_log.GovernancePolicyContentDisposedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String governancePolicyId;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final PolicyType policyType;
+    @Nonnull
     protected final DispositionActionType dispositionType;
 
     /**
@@ -38,7 +45,7 @@ public class GovernancePolicyContentDisposedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyContentDisposedDetails(String governancePolicyId, String name, DispositionActionType dispositionType, PolicyType policyType) {
+    public GovernancePolicyContentDisposedDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull DispositionActionType dispositionType, @Nullable PolicyType policyType) {
         if (governancePolicyId == null) {
             throw new IllegalArgumentException("Required value for 'governancePolicyId' is null");
         }
@@ -66,7 +73,7 @@ public class GovernancePolicyContentDisposedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GovernancePolicyContentDisposedDetails(String governancePolicyId, String name, DispositionActionType dispositionType) {
+    public GovernancePolicyContentDisposedDetails(@Nonnull String governancePolicyId, @Nonnull String name, @Nonnull DispositionActionType dispositionType) {
         this(governancePolicyId, name, dispositionType, null);
     }
 
@@ -75,6 +82,7 @@ public class GovernancePolicyContentDisposedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getGovernancePolicyId() {
         return governancePolicyId;
     }
@@ -84,6 +92,7 @@ public class GovernancePolicyContentDisposedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -93,6 +102,7 @@ public class GovernancePolicyContentDisposedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DispositionActionType getDispositionType() {
         return dispositionType;
     }
@@ -102,6 +112,7 @@ public class GovernancePolicyContentDisposedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PolicyType getPolicyType() {
         return policyType;
     }

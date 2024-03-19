@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Membership Report Result. Each of the items in the storage report is an array
  * of values, one value per day. If there is no data for a day, then the value
@@ -25,10 +27,15 @@ import java.util.List;
 public class GetMembershipReport extends BaseDfbReport {
     // struct team.GetMembershipReport (team_reports.stone)
 
+    @Nonnull
     protected final List<Long> teamSize;
+    @Nonnull
     protected final List<Long> pendingInvites;
+    @Nonnull
     protected final List<Long> membersJoined;
+    @Nonnull
     protected final List<Long> suspendedMembers;
+    @Nonnull
     protected final List<Long> licenses;
 
     /**
@@ -54,7 +61,7 @@ public class GetMembershipReport extends BaseDfbReport {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetMembershipReport(String startDate, List<Long> teamSize, List<Long> pendingInvites, List<Long> membersJoined, List<Long> suspendedMembers, List<Long> licenses) {
+    public GetMembershipReport(@Nonnull String startDate, @Nonnull List<Long> teamSize, @Nonnull List<Long> pendingInvites, @Nonnull List<Long> membersJoined, @Nonnull List<Long> suspendedMembers, @Nonnull List<Long> licenses) {
         super(startDate);
         if (teamSize == null) {
             throw new IllegalArgumentException("Required value for 'teamSize' is null");
@@ -108,6 +115,7 @@ public class GetMembershipReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getStartDate() {
         return startDate;
     }
@@ -117,6 +125,7 @@ public class GetMembershipReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Long> getTeamSize() {
         return teamSize;
     }
@@ -126,6 +135,7 @@ public class GetMembershipReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Long> getPendingInvites() {
         return pendingInvites;
     }
@@ -135,6 +145,7 @@ public class GetMembershipReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Long> getMembersJoined() {
         return membersJoined;
     }
@@ -144,6 +155,7 @@ public class GetMembershipReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Long> getSuspendedMembers() {
         return suspendedMembers;
     }
@@ -153,6 +165,7 @@ public class GetMembershipReport extends BaseDfbReport {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Long> getLicenses() {
         return licenses;
     }

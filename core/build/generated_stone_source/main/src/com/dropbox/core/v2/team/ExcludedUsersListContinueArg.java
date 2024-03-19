@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Excluded users list continue argument.
  */
 class ExcludedUsersListContinueArg {
     // struct team.ExcludedUsersListContinueArg (team_member_space_limits.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**
@@ -33,7 +36,7 @@ class ExcludedUsersListContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExcludedUsersListContinueArg(String cursor) {
+    public ExcludedUsersListContinueArg(@Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -45,6 +48,7 @@ class ExcludedUsersListContinueArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

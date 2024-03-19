@@ -17,13 +17,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed sync default.
  */
 public class TeamSelectiveSyncSettingsChangedDetails {
     // struct team_log.TeamSelectiveSyncSettingsChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SyncSetting previousValue;
+    @Nonnull
     protected final SyncSetting newValue;
 
     /**
@@ -35,7 +39,7 @@ public class TeamSelectiveSyncSettingsChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSelectiveSyncSettingsChangedDetails(SyncSetting previousValue, SyncSetting newValue) {
+    public TeamSelectiveSyncSettingsChangedDetails(@Nonnull SyncSetting previousValue, @Nonnull SyncSetting newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -51,6 +55,7 @@ public class TeamSelectiveSyncSettingsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SyncSetting getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +65,7 @@ public class TeamSelectiveSyncSettingsChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SyncSetting getNewValue() {
         return newValue;
     }

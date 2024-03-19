@@ -16,10 +16,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class TokenFromOAuth1Arg {
     // struct auth.TokenFromOAuth1Arg (auth.stone)
 
+    @Nonnull
     protected final String oauth1Token;
+    @Nonnull
     protected final String oauth1TokenSecret;
 
     /**
@@ -32,7 +36,7 @@ class TokenFromOAuth1Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TokenFromOAuth1Arg(String oauth1Token, String oauth1TokenSecret) {
+    public TokenFromOAuth1Arg(@Nonnull String oauth1Token, @Nonnull String oauth1TokenSecret) {
         if (oauth1Token == null) {
             throw new IllegalArgumentException("Required value for 'oauth1Token' is null");
         }
@@ -54,6 +58,7 @@ class TokenFromOAuth1Arg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getOauth1Token() {
         return oauth1Token;
     }
@@ -63,6 +68,7 @@ class TokenFromOAuth1Arg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getOauth1TokenSecret() {
         return oauth1TokenSecret;
     }

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether members can share Paper docs outside team, and if docs are
  * accessible only by team members or anyone by default.
@@ -23,7 +26,9 @@ import java.util.Arrays;
 public class PaperChangeMemberPolicyDetails {
     // struct team_log.PaperChangeMemberPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PaperMemberPolicy newValue;
+    @Nullable
     protected final PaperMemberPolicy previousValue;
 
     /**
@@ -38,7 +43,7 @@ public class PaperChangeMemberPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangeMemberPolicyDetails(PaperMemberPolicy newValue, PaperMemberPolicy previousValue) {
+    public PaperChangeMemberPolicyDetails(@Nonnull PaperMemberPolicy newValue, @Nullable PaperMemberPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -58,7 +63,7 @@ public class PaperChangeMemberPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangeMemberPolicyDetails(PaperMemberPolicy newValue) {
+    public PaperChangeMemberPolicyDetails(@Nonnull PaperMemberPolicy newValue) {
         this(newValue, null);
     }
 
@@ -67,6 +72,7 @@ public class PaperChangeMemberPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PaperMemberPolicy getNewValue() {
         return newValue;
     }
@@ -77,6 +83,7 @@ public class PaperChangeMemberPolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PaperMemberPolicy getPreviousValue() {
         return previousValue;
     }

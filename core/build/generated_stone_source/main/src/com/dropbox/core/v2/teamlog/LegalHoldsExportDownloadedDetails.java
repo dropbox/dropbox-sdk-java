@@ -16,16 +16,24 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Downloaded export for a hold.
  */
 public class LegalHoldsExportDownloadedDetails {
     // struct team_log.LegalHoldsExportDownloadedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String legalHoldId;
+    @Nonnull
     protected final String name;
+    @Nonnull
     protected final String exportName;
+    @Nullable
     protected final String part;
+    @Nullable
     protected final String fileName;
 
     /**
@@ -43,7 +51,7 @@ public class LegalHoldsExportDownloadedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsExportDownloadedDetails(String legalHoldId, String name, String exportName, String part, String fileName) {
+    public LegalHoldsExportDownloadedDetails(@Nonnull String legalHoldId, @Nonnull String name, @Nonnull String exportName, @Nullable String part, @Nullable String fileName) {
         if (legalHoldId == null) {
             throw new IllegalArgumentException("Required value for 'legalHoldId' is null");
         }
@@ -72,7 +80,7 @@ public class LegalHoldsExportDownloadedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsExportDownloadedDetails(String legalHoldId, String name, String exportName) {
+    public LegalHoldsExportDownloadedDetails(@Nonnull String legalHoldId, @Nonnull String name, @Nonnull String exportName) {
         this(legalHoldId, name, exportName, null, null);
     }
 
@@ -81,6 +89,7 @@ public class LegalHoldsExportDownloadedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getLegalHoldId() {
         return legalHoldId;
     }
@@ -90,6 +99,7 @@ public class LegalHoldsExportDownloadedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -99,6 +109,7 @@ public class LegalHoldsExportDownloadedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getExportName() {
         return exportName;
     }
@@ -108,6 +119,7 @@ public class LegalHoldsExportDownloadedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPart() {
         return part;
     }
@@ -117,6 +129,7 @@ public class LegalHoldsExportDownloadedDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getFileName() {
         return fileName;
     }

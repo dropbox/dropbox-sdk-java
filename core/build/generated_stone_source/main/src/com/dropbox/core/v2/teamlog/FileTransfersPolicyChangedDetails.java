@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed file transfers policy for team.
  */
 public class FileTransfersPolicyChangedDetails {
     // struct team_log.FileTransfersPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FileTransfersPolicy newValue;
+    @Nonnull
     protected final FileTransfersPolicy previousValue;
 
     /**
@@ -35,7 +39,7 @@ public class FileTransfersPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileTransfersPolicyChangedDetails(FileTransfersPolicy newValue, FileTransfersPolicy previousValue) {
+    public FileTransfersPolicyChangedDetails(@Nonnull FileTransfersPolicy newValue, @Nonnull FileTransfersPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -51,6 +55,7 @@ public class FileTransfersPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FileTransfersPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +65,7 @@ public class FileTransfersPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FileTransfersPolicy getPreviousValue() {
         return previousValue;
     }

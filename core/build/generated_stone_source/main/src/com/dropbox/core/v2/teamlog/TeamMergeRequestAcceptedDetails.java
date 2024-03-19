@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Accepted a team merge request.
  */
 public class TeamMergeRequestAcceptedDetails {
     // struct team_log.TeamMergeRequestAcceptedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamMergeRequestAcceptedExtraDetails requestAcceptedDetails;
 
     /**
@@ -33,7 +36,7 @@ public class TeamMergeRequestAcceptedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestAcceptedDetails(TeamMergeRequestAcceptedExtraDetails requestAcceptedDetails) {
+    public TeamMergeRequestAcceptedDetails(@Nonnull TeamMergeRequestAcceptedExtraDetails requestAcceptedDetails) {
         if (requestAcceptedDetails == null) {
             throw new IllegalArgumentException("Required value for 'requestAcceptedDetails' is null");
         }
@@ -45,6 +48,7 @@ public class TeamMergeRequestAcceptedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamMergeRequestAcceptedExtraDetails getRequestAcceptedDetails() {
         return requestAcceptedDetails;
     }

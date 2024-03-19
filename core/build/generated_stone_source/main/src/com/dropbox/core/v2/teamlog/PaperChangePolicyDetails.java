@@ -17,13 +17,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled Dropbox Paper for team.
  */
 public class PaperChangePolicyDetails {
     // struct team_log.PaperChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PaperEnabledPolicy newValue;
+    @Nullable
     protected final PaperEnabledPolicy previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class PaperChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangePolicyDetails(PaperEnabledPolicy newValue, PaperEnabledPolicy previousValue) {
+    public PaperChangePolicyDetails(@Nonnull PaperEnabledPolicy newValue, @Nullable PaperEnabledPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -54,7 +59,7 @@ public class PaperChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperChangePolicyDetails(PaperEnabledPolicy newValue) {
+    public PaperChangePolicyDetails(@Nonnull PaperEnabledPolicy newValue) {
         this(newValue, null);
     }
 
@@ -63,6 +68,7 @@ public class PaperChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PaperEnabledPolicy getNewValue() {
         return newValue;
     }
@@ -73,6 +79,7 @@ public class PaperChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public PaperEnabledPolicy getPreviousValue() {
         return previousValue;
     }

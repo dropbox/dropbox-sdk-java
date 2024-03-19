@@ -18,12 +18,19 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class FolderMetadata extends Metadata {
     // struct files.FolderMetadata (files.stone)
 
+    @Nonnull
     protected final String id;
+    @Nullable
     protected final String sharedFolderId;
+    @Nullable
     protected final FolderSharingInfo sharingInfo;
+    @Nullable
     protected final List<PropertyGroup> propertyGroups;
 
     /**
@@ -62,7 +69,7 @@ public class FolderMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderMetadata(String name, String id, String pathLower, String pathDisplay, String parentSharedFolderId, String previewUrl, String sharedFolderId, FolderSharingInfo sharingInfo, List<PropertyGroup> propertyGroups) {
+    public FolderMetadata(@Nonnull String name, @Nonnull String id, @Nullable String pathLower, @Nullable String pathDisplay, @Nullable String parentSharedFolderId, @Nullable String previewUrl, @Nullable String sharedFolderId, @Nullable FolderSharingInfo sharingInfo, @Nullable List<PropertyGroup> propertyGroups) {
         super(name, pathLower, pathDisplay, parentSharedFolderId, previewUrl);
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
@@ -101,7 +108,7 @@ public class FolderMetadata extends Metadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderMetadata(String name, String id) {
+    public FolderMetadata(@Nonnull String name, @Nonnull String id) {
         this(name, id, null, null, null, null, null, null, null);
     }
 
@@ -111,6 +118,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -120,6 +128,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -130,6 +139,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -145,6 +155,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPathDisplay() {
         return pathDisplay;
     }
@@ -155,6 +166,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
     }
@@ -164,6 +176,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPreviewUrl() {
         return previewUrl;
     }
@@ -173,6 +186,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -183,6 +197,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public FolderSharingInfo getSharingInfo() {
         return sharingInfo;
     }
@@ -195,6 +210,7 @@ public class FolderMetadata extends Metadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }

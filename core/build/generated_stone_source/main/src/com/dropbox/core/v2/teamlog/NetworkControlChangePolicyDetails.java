@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled network control.
  */
 public class NetworkControlChangePolicyDetails {
     // struct team_log.NetworkControlChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final NetworkControlPolicy newValue;
+    @Nullable
     protected final NetworkControlPolicy previousValue;
 
     /**
@@ -35,7 +40,7 @@ public class NetworkControlChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NetworkControlChangePolicyDetails(NetworkControlPolicy newValue, NetworkControlPolicy previousValue) {
+    public NetworkControlChangePolicyDetails(@Nonnull NetworkControlPolicy newValue, @Nullable NetworkControlPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -53,7 +58,7 @@ public class NetworkControlChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NetworkControlChangePolicyDetails(NetworkControlPolicy newValue) {
+    public NetworkControlChangePolicyDetails(@Nonnull NetworkControlPolicy newValue) {
         this(newValue, null);
     }
 
@@ -62,6 +67,7 @@ public class NetworkControlChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public NetworkControlPolicy getNewValue() {
         return newValue;
     }
@@ -72,6 +78,7 @@ public class NetworkControlChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public NetworkControlPolicy getPreviousValue() {
         return previousValue;
     }

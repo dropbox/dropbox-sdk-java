@@ -17,13 +17,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled enterprise mobility management for members.
  */
 public class EmmChangePolicyDetails {
     // struct team_log.EmmChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final EmmState newValue;
+    @Nullable
     protected final EmmState previousValue;
 
     /**
@@ -37,7 +42,7 @@ public class EmmChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmmChangePolicyDetails(EmmState newValue, EmmState previousValue) {
+    public EmmChangePolicyDetails(@Nonnull EmmState newValue, @Nullable EmmState previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -56,7 +61,7 @@ public class EmmChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EmmChangePolicyDetails(EmmState newValue) {
+    public EmmChangePolicyDetails(@Nonnull EmmState newValue) {
         this(newValue, null);
     }
 
@@ -65,6 +70,7 @@ public class EmmChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public EmmState getNewValue() {
         return newValue;
     }
@@ -75,6 +81,7 @@ public class EmmChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public EmmState getPreviousValue() {
         return previousValue;
     }

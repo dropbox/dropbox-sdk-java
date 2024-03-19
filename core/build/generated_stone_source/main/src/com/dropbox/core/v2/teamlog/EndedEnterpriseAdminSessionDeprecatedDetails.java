@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Ended enterprise admin session.
  */
 public class EndedEnterpriseAdminSessionDeprecatedDetails {
     // struct team_log.EndedEnterpriseAdminSessionDeprecatedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final FedExtraDetails federationExtraDetails;
 
     /**
@@ -33,7 +36,7 @@ public class EndedEnterpriseAdminSessionDeprecatedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EndedEnterpriseAdminSessionDeprecatedDetails(FedExtraDetails federationExtraDetails) {
+    public EndedEnterpriseAdminSessionDeprecatedDetails(@Nonnull FedExtraDetails federationExtraDetails) {
         if (federationExtraDetails == null) {
             throw new IllegalArgumentException("Required value for 'federationExtraDetails' is null");
         }
@@ -45,6 +48,7 @@ public class EndedEnterpriseAdminSessionDeprecatedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public FedExtraDetails getFederationExtraDetails() {
         return federationExtraDetails;
     }

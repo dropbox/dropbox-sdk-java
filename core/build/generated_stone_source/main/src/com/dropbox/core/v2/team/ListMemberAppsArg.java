@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class ListMemberAppsArg {
     // struct team.ListMemberAppsArg (team_linked_apps.stone)
 
+    @Nonnull
     protected final String teamMemberId;
 
     /**
@@ -28,7 +31,7 @@ class ListMemberAppsArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListMemberAppsArg(String teamMemberId) {
+    public ListMemberAppsArg(@Nonnull String teamMemberId) {
         if (teamMemberId == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberId' is null");
         }
@@ -40,6 +43,7 @@ class ListMemberAppsArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }

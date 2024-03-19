@@ -17,13 +17,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Excluded users list result.
  */
 public class ExcludedUsersListResult {
     // struct team.ExcludedUsersListResult (team_member_space_limits.stone)
 
+    @Nonnull
     protected final List<MemberProfile> users;
+    @Nullable
     protected final String cursor;
     protected final boolean hasMore;
 
@@ -43,7 +48,7 @@ public class ExcludedUsersListResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExcludedUsersListResult(List<MemberProfile> users, boolean hasMore, String cursor) {
+    public ExcludedUsersListResult(@Nonnull List<MemberProfile> users, boolean hasMore, @Nullable String cursor) {
         if (users == null) {
             throw new IllegalArgumentException("Required value for 'users' is null");
         }
@@ -72,7 +77,7 @@ public class ExcludedUsersListResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExcludedUsersListResult(List<MemberProfile> users, boolean hasMore) {
+    public ExcludedUsersListResult(@Nonnull List<MemberProfile> users, boolean hasMore) {
         this(users, hasMore, null);
     }
 
@@ -80,6 +85,7 @@ public class ExcludedUsersListResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<MemberProfile> getUsers() {
         return users;
     }
@@ -103,6 +109,7 @@ public class ExcludedUsersListResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCursor() {
         return cursor;
     }

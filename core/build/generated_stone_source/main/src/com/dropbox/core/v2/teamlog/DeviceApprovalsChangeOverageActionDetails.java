@@ -17,13 +17,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed device approvals setting when member is over limit.
  */
 public class DeviceApprovalsChangeOverageActionDetails {
     // struct team_log.DeviceApprovalsChangeOverageActionDetails (team_log_generated.stone)
 
+    @Nullable
     protected final RolloutMethod newValue;
+    @Nullable
     protected final RolloutMethod previousValue;
 
     /**
@@ -37,7 +42,7 @@ public class DeviceApprovalsChangeOverageActionDetails {
      * @param previousValue  Previous over the limit policy. Might be missing
      *     due to historical data gap.
      */
-    public DeviceApprovalsChangeOverageActionDetails(RolloutMethod newValue, RolloutMethod previousValue) {
+    public DeviceApprovalsChangeOverageActionDetails(@Nullable RolloutMethod newValue, @Nullable RolloutMethod previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }
@@ -56,6 +61,7 @@ public class DeviceApprovalsChangeOverageActionDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public RolloutMethod getNewValue() {
         return newValue;
     }
@@ -66,6 +72,7 @@ public class DeviceApprovalsChangeOverageActionDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public RolloutMethod getPreviousValue() {
         return previousValue;
     }

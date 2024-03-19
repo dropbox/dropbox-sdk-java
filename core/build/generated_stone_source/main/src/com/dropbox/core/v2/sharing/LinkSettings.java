@@ -16,15 +16,22 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Settings that apply to a link.
  */
 public class LinkSettings {
     // struct sharing.LinkSettings (shared_content_links.stone)
 
+    @Nullable
     protected final AccessLevel accessLevel;
+    @Nullable
     protected final LinkAudience audience;
+    @Nullable
     protected final LinkExpiry expiry;
+    @Nullable
     protected final LinkPassword password;
 
     /**
@@ -39,7 +46,7 @@ public class LinkSettings {
      * @param expiry  An expiry timestamp to set on a link.
      * @param password  The password for the link.
      */
-    public LinkSettings(AccessLevel accessLevel, LinkAudience audience, LinkExpiry expiry, LinkPassword password) {
+    public LinkSettings(@Nullable AccessLevel accessLevel, @Nullable LinkAudience audience, @Nullable LinkExpiry expiry, @Nullable LinkPassword password) {
         this.accessLevel = accessLevel;
         this.audience = audience;
         this.expiry = expiry;
@@ -61,6 +68,7 @@ public class LinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -70,6 +78,7 @@ public class LinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public LinkAudience getAudience() {
         return audience;
     }
@@ -79,6 +88,7 @@ public class LinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public LinkExpiry getExpiry() {
         return expiry;
     }
@@ -88,6 +98,7 @@ public class LinkSettings {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public LinkPassword getPassword() {
         return password;
     }

@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed membership type (limited/full) of member.
  */
 public class MemberChangeMembershipTypeDetails {
     // struct team_log.MemberChangeMembershipTypeDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamMembershipType prevValue;
+    @Nonnull
     protected final TeamMembershipType newValue;
 
     /**
@@ -34,7 +38,7 @@ public class MemberChangeMembershipTypeDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeMembershipTypeDetails(TeamMembershipType prevValue, TeamMembershipType newValue) {
+    public MemberChangeMembershipTypeDetails(@Nonnull TeamMembershipType prevValue, @Nonnull TeamMembershipType newValue) {
         if (prevValue == null) {
             throw new IllegalArgumentException("Required value for 'prevValue' is null");
         }
@@ -50,6 +54,7 @@ public class MemberChangeMembershipTypeDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamMembershipType getPrevValue() {
         return prevValue;
     }
@@ -59,6 +64,7 @@ public class MemberChangeMembershipTypeDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamMembershipType getNewValue() {
         return newValue;
     }

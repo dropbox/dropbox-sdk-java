@@ -17,11 +17,16 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class SharingAllowlistListResponse {
     // struct team.SharingAllowlistListResponse (team_sharing_allowlist.stone)
 
+    @Nonnull
     protected final List<String> domains;
+    @Nonnull
     protected final List<String> emails;
+    @Nonnull
     protected final String cursor;
     protected final boolean hasMore;
 
@@ -45,7 +50,7 @@ public class SharingAllowlistListResponse {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingAllowlistListResponse(List<String> domains, List<String> emails, String cursor, boolean hasMore) {
+    public SharingAllowlistListResponse(@Nonnull List<String> domains, @Nonnull List<String> emails, @Nonnull String cursor, boolean hasMore) {
         if (domains == null) {
             throw new IllegalArgumentException("Required value for 'domains' is null");
         }
@@ -86,7 +91,7 @@ public class SharingAllowlistListResponse {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharingAllowlistListResponse(List<String> domains, List<String> emails) {
+    public SharingAllowlistListResponse(@Nonnull List<String> domains, @Nonnull List<String> emails) {
         this(domains, emails, "", false);
     }
 
@@ -95,6 +100,7 @@ public class SharingAllowlistListResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<String> getDomains() {
         return domains;
     }
@@ -104,6 +110,7 @@ public class SharingAllowlistListResponse {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<String> getEmails() {
         return emails;
     }
@@ -115,6 +122,7 @@ public class SharingAllowlistListResponse {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     "".
      */
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

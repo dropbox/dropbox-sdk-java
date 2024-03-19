@@ -18,15 +18,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 /**
  * Contains information about a parent folder that a member has access to.
  */
 public class ParentFolderAccessInfo {
     // struct sharing.ParentFolderAccessInfo (sharing_folders.stone)
 
+    @Nonnull
     protected final String folderName;
+    @Nonnull
     protected final String sharedFolderId;
+    @Nonnull
     protected final List<MemberPermission> permissions;
+    @Nonnull
     protected final String path;
 
     /**
@@ -43,7 +49,7 @@ public class ParentFolderAccessInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ParentFolderAccessInfo(String folderName, String sharedFolderId, List<MemberPermission> permissions, String path) {
+    public ParentFolderAccessInfo(@Nonnull String folderName, @Nonnull String sharedFolderId, @Nonnull List<MemberPermission> permissions, @Nonnull String path) {
         if (folderName == null) {
             throw new IllegalArgumentException("Required value for 'folderName' is null");
         }
@@ -75,6 +81,7 @@ public class ParentFolderAccessInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getFolderName() {
         return folderName;
     }
@@ -84,6 +91,7 @@ public class ParentFolderAccessInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -93,6 +101,7 @@ public class ParentFolderAccessInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<MemberPermission> getPermissions() {
         return permissions;
     }
@@ -103,6 +112,7 @@ public class ParentFolderAccessInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }

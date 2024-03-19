@@ -21,9 +21,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 class UploadArg extends CommitInfo {
     // struct files.UploadArg (files.stone)
 
+    @Nullable
     protected final String contentHash;
 
     /**
@@ -66,7 +70,7 @@ class UploadArg extends CommitInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadArg(String path, WriteMode mode, boolean autorename, Date clientModified, boolean mute, List<PropertyGroup> propertyGroups, boolean strictConflict, String contentHash) {
+    public UploadArg(@Nonnull String path, @Nonnull WriteMode mode, boolean autorename, @Nullable Date clientModified, boolean mute, @Nullable List<PropertyGroup> propertyGroups, boolean strictConflict, @Nullable String contentHash) {
         super(path, mode, autorename, clientModified, mute, propertyGroups, strictConflict);
         if (contentHash != null) {
             if (contentHash.length() < 64) {
@@ -91,7 +95,7 @@ class UploadArg extends CommitInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UploadArg(String path) {
+    public UploadArg(@Nonnull String path) {
         this(path, WriteMode.ADD, false, null, false, null, false, null);
     }
 
@@ -100,6 +104,7 @@ class UploadArg extends CommitInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -110,6 +115,7 @@ class UploadArg extends CommitInfo {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     WriteMode.ADD.
      */
+    @Nonnull
     public WriteMode getMode() {
         return mode;
     }
@@ -134,6 +140,7 @@ class UploadArg extends CommitInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getClientModified() {
         return clientModified;
     }
@@ -156,6 +163,7 @@ class UploadArg extends CommitInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<PropertyGroup> getPropertyGroups() {
         return propertyGroups;
     }
@@ -184,6 +192,7 @@ class UploadArg extends CommitInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getContentHash() {
         return contentHash;
     }

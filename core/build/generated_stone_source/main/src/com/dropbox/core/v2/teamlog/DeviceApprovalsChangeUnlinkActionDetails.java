@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed device approvals setting when member unlinks approved device.
  */
 public class DeviceApprovalsChangeUnlinkActionDetails {
     // struct team_log.DeviceApprovalsChangeUnlinkActionDetails (team_log_generated.stone)
 
+    @Nullable
     protected final DeviceUnlinkPolicy newValue;
+    @Nullable
     protected final DeviceUnlinkPolicy previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class DeviceApprovalsChangeUnlinkActionDetails {
      * @param previousValue  Previous device unlink policy. Might be missing due
      *     to historical data gap.
      */
-    public DeviceApprovalsChangeUnlinkActionDetails(DeviceUnlinkPolicy newValue, DeviceUnlinkPolicy previousValue) {
+    public DeviceApprovalsChangeUnlinkActionDetails(@Nullable DeviceUnlinkPolicy newValue, @Nullable DeviceUnlinkPolicy previousValue) {
         this.newValue = newValue;
         this.previousValue = previousValue;
     }
@@ -55,6 +60,7 @@ public class DeviceApprovalsChangeUnlinkActionDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public DeviceUnlinkPolicy getNewValue() {
         return newValue;
     }
@@ -65,6 +71,7 @@ public class DeviceApprovalsChangeUnlinkActionDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public DeviceUnlinkPolicy getPreviousValue() {
         return previousValue;
     }

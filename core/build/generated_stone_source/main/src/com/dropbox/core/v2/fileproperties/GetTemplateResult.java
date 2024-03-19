@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class GetTemplateResult extends PropertyGroupTemplate {
     // struct file_properties.GetTemplateResult (file_properties.stone)
 
@@ -33,7 +35,7 @@ public class GetTemplateResult extends PropertyGroupTemplate {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetTemplateResult(String name, String description, List<PropertyFieldTemplate> fields) {
+    public GetTemplateResult(@Nonnull String name, @Nonnull String description, @Nonnull List<PropertyFieldTemplate> fields) {
         super(name, description, fields);
     }
 
@@ -42,6 +44,7 @@ public class GetTemplateResult extends PropertyGroupTemplate {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -52,6 +55,7 @@ public class GetTemplateResult extends PropertyGroupTemplate {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDescription() {
         return description;
     }
@@ -62,6 +66,7 @@ public class GetTemplateResult extends PropertyGroupTemplate {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<PropertyFieldTemplate> getFields() {
         return fields;
     }

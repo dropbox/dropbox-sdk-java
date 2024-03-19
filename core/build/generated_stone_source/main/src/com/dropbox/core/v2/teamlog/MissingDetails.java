@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * An indication that an error occurred while retrieving the event. Some
  * attributes of the event may be omitted as a result.
@@ -23,6 +26,7 @@ import java.util.Arrays;
 public class MissingDetails {
     // struct team_log.MissingDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String sourceEventFields;
 
     /**
@@ -32,7 +36,7 @@ public class MissingDetails {
      * @param sourceEventFields  All the data that could be retrieved and
      *     converted from the source event.
      */
-    public MissingDetails(String sourceEventFields) {
+    public MissingDetails(@Nullable String sourceEventFields) {
         this.sourceEventFields = sourceEventFields;
     }
 
@@ -51,6 +55,7 @@ public class MissingDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getSourceEventFields() {
         return sourceEventFields;
     }

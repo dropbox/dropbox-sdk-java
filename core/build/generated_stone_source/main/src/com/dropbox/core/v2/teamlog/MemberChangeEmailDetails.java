@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed team member email.
  */
 public class MemberChangeEmailDetails {
     // struct team_log.MemberChangeEmailDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String newValue;
+    @Nullable
     protected final String previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class MemberChangeEmailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeEmailDetails(String newValue, String previousValue) {
+    public MemberChangeEmailDetails(@Nonnull String newValue, @Nullable String previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -63,7 +68,7 @@ public class MemberChangeEmailDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberChangeEmailDetails(String newValue) {
+    public MemberChangeEmailDetails(@Nonnull String newValue) {
         this(newValue, null);
     }
 
@@ -72,6 +77,7 @@ public class MemberChangeEmailDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getNewValue() {
         return newValue;
     }
@@ -81,6 +87,7 @@ public class MemberChangeEmailDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPreviousValue() {
         return previousValue;
     }

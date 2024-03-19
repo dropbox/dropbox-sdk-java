@@ -16,14 +16,19 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Modified external drive backup.
  */
 public class ExternalDriveBackupStatusChangedDetails {
     // struct team_log.ExternalDriveBackupStatusChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final DesktopDeviceSessionLogInfo desktopDeviceSessionInfo;
+    @Nonnull
     protected final ExternalDriveBackupStatus previousValue;
+    @Nonnull
     protected final ExternalDriveBackupStatus newValue;
 
     /**
@@ -39,7 +44,7 @@ public class ExternalDriveBackupStatusChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExternalDriveBackupStatusChangedDetails(DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, ExternalDriveBackupStatus previousValue, ExternalDriveBackupStatus newValue) {
+    public ExternalDriveBackupStatusChangedDetails(@Nonnull DesktopDeviceSessionLogInfo desktopDeviceSessionInfo, @Nonnull ExternalDriveBackupStatus previousValue, @Nonnull ExternalDriveBackupStatus newValue) {
         if (desktopDeviceSessionInfo == null) {
             throw new IllegalArgumentException("Required value for 'desktopDeviceSessionInfo' is null");
         }
@@ -59,6 +64,7 @@ public class ExternalDriveBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public DesktopDeviceSessionLogInfo getDesktopDeviceSessionInfo() {
         return desktopDeviceSessionInfo;
     }
@@ -68,6 +74,7 @@ public class ExternalDriveBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ExternalDriveBackupStatus getPreviousValue() {
         return previousValue;
     }
@@ -77,6 +84,7 @@ public class ExternalDriveBackupStatusChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ExternalDriveBackupStatus getNewValue() {
         return newValue;
     }

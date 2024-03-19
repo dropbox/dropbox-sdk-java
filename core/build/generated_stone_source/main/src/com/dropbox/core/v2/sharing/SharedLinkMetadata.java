@@ -19,19 +19,30 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The metadata of a shared link.
  */
 public class SharedLinkMetadata {
     // struct sharing.SharedLinkMetadata (shared_links.stone)
 
+    @Nonnull
     protected final String url;
+    @Nullable
     protected final String id;
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final Date expires;
+    @Nullable
     protected final String pathLower;
+    @Nonnull
     protected final LinkPermissions linkPermissions;
+    @Nullable
     protected final TeamMemberInfo teamMemberInfo;
+    @Nullable
     protected final Team contentOwnerTeamInfo;
 
     /**
@@ -63,7 +74,7 @@ public class SharedLinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkMetadata(String url, String name, LinkPermissions linkPermissions, String id, Date expires, String pathLower, TeamMemberInfo teamMemberInfo, Team contentOwnerTeamInfo) {
+    public SharedLinkMetadata(@Nonnull String url, @Nonnull String name, @Nonnull LinkPermissions linkPermissions, @Nullable String id, @Nullable Date expires, @Nullable String pathLower, @Nullable TeamMemberInfo teamMemberInfo, @Nullable Team contentOwnerTeamInfo) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }
@@ -102,7 +113,7 @@ public class SharedLinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkMetadata(String url, String name, LinkPermissions linkPermissions) {
+    public SharedLinkMetadata(@Nonnull String url, @Nonnull String name, @Nonnull LinkPermissions linkPermissions) {
         this(url, name, linkPermissions, null, null, null, null, null);
     }
 
@@ -111,6 +122,7 @@ public class SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -120,6 +132,7 @@ public class SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -129,6 +142,7 @@ public class SharedLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public LinkPermissions getLinkPermissions() {
         return linkPermissions;
     }
@@ -138,6 +152,7 @@ public class SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getId() {
         return id;
     }
@@ -147,6 +162,7 @@ public class SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getExpires() {
         return expires;
     }
@@ -158,6 +174,7 @@ public class SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPathLower() {
         return pathLower;
     }
@@ -168,6 +185,7 @@ public class SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public TeamMemberInfo getTeamMemberInfo() {
         return teamMemberInfo;
     }
@@ -179,6 +197,7 @@ public class SharedLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Team getContentOwnerTeamInfo() {
         return contentOwnerTeamInfo;
     }

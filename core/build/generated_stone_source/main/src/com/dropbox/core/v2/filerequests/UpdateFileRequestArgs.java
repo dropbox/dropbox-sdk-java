@@ -17,17 +17,26 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Arguments for {@link DbxUserFileRequestsRequests#update(String)}.
  */
 class UpdateFileRequestArgs {
     // struct file_requests.UpdateFileRequestArgs (file_requests.stone)
 
+    @Nonnull
     protected final String id;
+    @Nullable
     protected final String title;
+    @Nullable
     protected final String destination;
+    @Nonnull
     protected final UpdateFileRequestDeadline deadline;
+    @Nullable
     protected final Boolean open;
+    @Nullable
     protected final String description;
 
     /**
@@ -54,7 +63,7 @@ class UpdateFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFileRequestArgs(String id, String title, String destination, UpdateFileRequestDeadline deadline, Boolean open, String description) {
+    public UpdateFileRequestArgs(@Nonnull String id, @Nullable String title, @Nullable String destination, @Nonnull UpdateFileRequestDeadline deadline, @Nullable Boolean open, @Nullable String description) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -97,7 +106,7 @@ class UpdateFileRequestArgs {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UpdateFileRequestArgs(String id) {
+    public UpdateFileRequestArgs(@Nonnull String id) {
         this(id, null, null, UpdateFileRequestDeadline.NO_UPDATE, null, null);
     }
 
@@ -106,6 +115,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -115,6 +125,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getTitle() {
         return title;
     }
@@ -126,6 +137,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDestination() {
         return destination;
     }
@@ -137,6 +149,7 @@ class UpdateFileRequestArgs {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     UpdateFileRequestDeadline.NO_UPDATE.
      */
+    @Nonnull
     public UpdateFileRequestDeadline getDeadline() {
         return deadline;
     }
@@ -146,6 +159,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getOpen() {
         return open;
     }
@@ -155,6 +169,7 @@ class UpdateFileRequestArgs {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDescription() {
         return description;
     }

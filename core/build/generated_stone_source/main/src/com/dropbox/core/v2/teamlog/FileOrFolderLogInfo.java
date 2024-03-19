@@ -16,15 +16,22 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Generic information relevant both for files and folders
  */
 public class FileOrFolderLogInfo {
     // struct team_log.FileOrFolderLogInfo (team_log_generated.stone)
 
+    @Nonnull
     protected final PathLogInfo path;
+    @Nullable
     protected final String displayName;
+    @Nullable
     protected final String fileId;
+    @Nullable
     protected final Long fileSize;
 
     /**
@@ -41,7 +48,7 @@ public class FileOrFolderLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileOrFolderLogInfo(PathLogInfo path, String displayName, String fileId, Long fileSize) {
+    public FileOrFolderLogInfo(@Nonnull PathLogInfo path, @Nullable String displayName, @Nullable String fileId, @Nullable Long fileSize) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -61,7 +68,7 @@ public class FileOrFolderLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileOrFolderLogInfo(PathLogInfo path) {
+    public FileOrFolderLogInfo(@Nonnull PathLogInfo path) {
         this(path, null, null, null);
     }
 
@@ -70,6 +77,7 @@ public class FileOrFolderLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PathLogInfo getPath() {
         return path;
     }
@@ -79,6 +87,7 @@ public class FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -88,6 +97,7 @@ public class FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getFileId() {
         return fileId;
     }
@@ -97,6 +107,7 @@ public class FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getFileSize() {
         return fileSize;
     }

@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Canceled a team merge request.
  */
 public class TeamMergeRequestCanceledDetails {
     // struct team_log.TeamMergeRequestCanceledDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamMergeRequestCanceledExtraDetails requestCanceledDetails;
 
     /**
@@ -33,7 +36,7 @@ public class TeamMergeRequestCanceledDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMergeRequestCanceledDetails(TeamMergeRequestCanceledExtraDetails requestCanceledDetails) {
+    public TeamMergeRequestCanceledDetails(@Nonnull TeamMergeRequestCanceledExtraDetails requestCanceledDetails) {
         if (requestCanceledDetails == null) {
             throw new IllegalArgumentException("Required value for 'requestCanceledDetails' is null");
         }
@@ -45,6 +48,7 @@ public class TeamMergeRequestCanceledDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamMergeRequestCanceledExtraDetails getRequestCanceledDetails() {
         return requestCanceledDetails;
     }

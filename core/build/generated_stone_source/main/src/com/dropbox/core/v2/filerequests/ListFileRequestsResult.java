@@ -17,12 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 /**
  * Result for {@link DbxUserFileRequestsRequests#list}.
  */
 public class ListFileRequestsResult {
     // struct file_requests.ListFileRequestsResult (file_requests.stone)
 
+    @Nonnull
     protected final List<FileRequest> fileRequests;
 
     /**
@@ -35,7 +38,7 @@ public class ListFileRequestsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFileRequestsResult(List<FileRequest> fileRequests) {
+    public ListFileRequestsResult(@Nonnull List<FileRequest> fileRequests) {
         if (fileRequests == null) {
             throw new IllegalArgumentException("Required value for 'fileRequests' is null");
         }
@@ -53,6 +56,7 @@ public class ListFileRequestsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<FileRequest> getFileRequests() {
         return fileRequests;
     }

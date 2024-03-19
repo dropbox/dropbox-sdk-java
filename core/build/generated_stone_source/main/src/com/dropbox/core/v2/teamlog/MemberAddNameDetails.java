@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Added team member name.
  */
 public class MemberAddNameDetails {
     // struct team_log.MemberAddNameDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final UserNameLogInfo newValue;
 
     /**
@@ -32,7 +35,7 @@ public class MemberAddNameDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAddNameDetails(UserNameLogInfo newValue) {
+    public MemberAddNameDetails(@Nonnull UserNameLogInfo newValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -44,6 +47,7 @@ public class MemberAddNameDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserNameLogInfo getNewValue() {
         return newValue;
     }

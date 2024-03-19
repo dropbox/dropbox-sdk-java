@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * The email to which the request was sent
  */
 public class NonTrustedTeamDetails {
     // struct team_log.NonTrustedTeamDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String team;
 
     /**
@@ -33,7 +36,7 @@ public class NonTrustedTeamDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public NonTrustedTeamDetails(String team) {
+    public NonTrustedTeamDetails(@Nonnull String team) {
         if (team == null) {
             throw new IllegalArgumentException("Required value for 'team' is null");
         }
@@ -45,6 +48,7 @@ public class NonTrustedTeamDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeam() {
         return team;
     }

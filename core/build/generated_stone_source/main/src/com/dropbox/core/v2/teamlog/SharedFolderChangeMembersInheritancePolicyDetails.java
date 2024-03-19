@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed whether shared folder inherits members from parent folder.
  */
 public class SharedFolderChangeMembersInheritancePolicyDetails {
     // struct team_log.SharedFolderChangeMembersInheritancePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SharedFolderMembersInheritancePolicy newValue;
+    @Nullable
     protected final SharedFolderMembersInheritancePolicy previousValue;
 
     /**
@@ -35,7 +40,7 @@ public class SharedFolderChangeMembersInheritancePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeMembersInheritancePolicyDetails(SharedFolderMembersInheritancePolicy newValue, SharedFolderMembersInheritancePolicy previousValue) {
+    public SharedFolderChangeMembersInheritancePolicyDetails(@Nonnull SharedFolderMembersInheritancePolicy newValue, @Nullable SharedFolderMembersInheritancePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -53,7 +58,7 @@ public class SharedFolderChangeMembersInheritancePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderChangeMembersInheritancePolicyDetails(SharedFolderMembersInheritancePolicy newValue) {
+    public SharedFolderChangeMembersInheritancePolicyDetails(@Nonnull SharedFolderMembersInheritancePolicy newValue) {
         this(newValue, null);
     }
 
@@ -62,6 +67,7 @@ public class SharedFolderChangeMembersInheritancePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SharedFolderMembersInheritancePolicy getNewValue() {
         return newValue;
     }
@@ -72,6 +78,7 @@ public class SharedFolderChangeMembersInheritancePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SharedFolderMembersInheritancePolicy getPreviousValue() {
         return previousValue;
     }

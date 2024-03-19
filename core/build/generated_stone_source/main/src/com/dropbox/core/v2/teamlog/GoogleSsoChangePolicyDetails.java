@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Enabled/disabled Google single sign-on for team.
  */
 public class GoogleSsoChangePolicyDetails {
     // struct team_log.GoogleSsoChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final GoogleSsoPolicy newValue;
+    @Nullable
     protected final GoogleSsoPolicy previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class GoogleSsoChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GoogleSsoChangePolicyDetails(GoogleSsoPolicy newValue, GoogleSsoPolicy previousValue) {
+    public GoogleSsoChangePolicyDetails(@Nonnull GoogleSsoPolicy newValue, @Nullable GoogleSsoPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -55,7 +60,7 @@ public class GoogleSsoChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GoogleSsoChangePolicyDetails(GoogleSsoPolicy newValue) {
+    public GoogleSsoChangePolicyDetails(@Nonnull GoogleSsoPolicy newValue) {
         this(newValue, null);
     }
 
@@ -64,6 +69,7 @@ public class GoogleSsoChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public GoogleSsoPolicy getNewValue() {
         return newValue;
     }
@@ -74,6 +80,7 @@ public class GoogleSsoChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public GoogleSsoPolicy getPreviousValue() {
         return previousValue;
     }

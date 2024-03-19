@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Information returned by {@link
  * DbxTeamTeamRequests#linkedAppsListTeamLinkedApps(String)}.
@@ -24,8 +27,10 @@ import java.util.List;
 public class ListTeamAppsResult {
     // struct team.ListTeamAppsResult (team_linked_apps.stone)
 
+    @Nonnull
     protected final List<MemberLinkedApps> apps;
     protected final boolean hasMore;
+    @Nullable
     protected final String cursor;
 
     /**
@@ -45,7 +50,7 @@ public class ListTeamAppsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListTeamAppsResult(List<MemberLinkedApps> apps, boolean hasMore, String cursor) {
+    public ListTeamAppsResult(@Nonnull List<MemberLinkedApps> apps, boolean hasMore, @Nullable String cursor) {
         if (apps == null) {
             throw new IllegalArgumentException("Required value for 'apps' is null");
         }
@@ -75,7 +80,7 @@ public class ListTeamAppsResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListTeamAppsResult(List<MemberLinkedApps> apps, boolean hasMore) {
+    public ListTeamAppsResult(@Nonnull List<MemberLinkedApps> apps, boolean hasMore) {
         this(apps, hasMore, null);
     }
 
@@ -84,6 +89,7 @@ public class ListTeamAppsResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<MemberLinkedApps> getApps() {
         return apps;
     }
@@ -106,6 +112,7 @@ public class ListTeamAppsResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCursor() {
         return cursor;
     }

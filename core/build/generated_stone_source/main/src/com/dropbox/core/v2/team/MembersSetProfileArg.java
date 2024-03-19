@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Exactly one of team_member_id, email, or external_id must be provided to
  * identify the user account. At least one of new_email, new_external_id,
@@ -24,12 +27,19 @@ import java.util.Arrays;
 class MembersSetProfileArg {
     // struct team.MembersSetProfileArg (team_members.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
+    @Nullable
     protected final String newEmail;
+    @Nullable
     protected final String newExternalId;
+    @Nullable
     protected final String newGivenName;
+    @Nullable
     protected final String newSurname;
+    @Nullable
     protected final String newPersistentId;
+    @Nullable
     protected final Boolean newIsDirectoryRestricted;
 
     /**
@@ -59,7 +69,7 @@ class MembersSetProfileArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetProfileArg(UserSelectorArg user, String newEmail, String newExternalId, String newGivenName, String newSurname, String newPersistentId, Boolean newIsDirectoryRestricted) {
+    public MembersSetProfileArg(@Nonnull UserSelectorArg user, @Nullable String newEmail, @Nullable String newExternalId, @Nullable String newGivenName, @Nullable String newSurname, @Nullable String newPersistentId, @Nullable Boolean newIsDirectoryRestricted) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -114,7 +124,7 @@ class MembersSetProfileArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetProfileArg(UserSelectorArg user) {
+    public MembersSetProfileArg(@Nonnull UserSelectorArg user) {
         this(user, null, null, null, null, null, null);
     }
 
@@ -123,6 +133,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }
@@ -132,6 +143,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getNewEmail() {
         return newEmail;
     }
@@ -141,6 +153,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getNewExternalId() {
         return newExternalId;
     }
@@ -150,6 +163,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getNewGivenName() {
         return newGivenName;
     }
@@ -159,6 +173,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getNewSurname() {
         return newSurname;
     }
@@ -169,6 +184,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getNewPersistentId() {
         return newPersistentId;
     }
@@ -178,6 +194,7 @@ class MembersSetProfileArg {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Boolean getNewIsDirectoryRestricted() {
         return newIsDirectoryRestricted;
     }

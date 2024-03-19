@@ -19,6 +19,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * A <a href="https://www.dropbox.com/help/9090">file request</a> for receiving
  * files into the user's Dropbox account.
@@ -26,14 +29,21 @@ import java.util.regex.Pattern;
 public class FileRequest {
     // struct file_requests.FileRequest (file_requests.stone)
 
+    @Nonnull
     protected final String id;
+    @Nonnull
     protected final String url;
+    @Nonnull
     protected final String title;
+    @Nullable
     protected final String destination;
+    @Nonnull
     protected final Date created;
+    @Nullable
     protected final FileRequestDeadline deadline;
     protected final boolean isOpen;
     protected final long fileCount;
+    @Nullable
     protected final String description;
 
     /**
@@ -66,7 +76,7 @@ public class FileRequest {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequest(String id, String url, String title, Date created, boolean isOpen, long fileCount, String destination, FileRequestDeadline deadline, String description) {
+    public FileRequest(@Nonnull String id, @Nonnull String url, @Nonnull String title, @Nonnull Date created, boolean isOpen, long fileCount, @Nullable String destination, @Nullable FileRequestDeadline deadline, @Nullable String description) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -128,7 +138,7 @@ public class FileRequest {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequest(String id, String url, String title, Date created, boolean isOpen, long fileCount) {
+    public FileRequest(@Nonnull String id, @Nonnull String url, @Nonnull String title, @Nonnull Date created, boolean isOpen, long fileCount) {
         this(id, url, title, created, isOpen, fileCount, null, null, null);
     }
 
@@ -137,6 +147,7 @@ public class FileRequest {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getId() {
         return id;
     }
@@ -146,6 +157,7 @@ public class FileRequest {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -155,6 +167,7 @@ public class FileRequest {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTitle() {
         return title;
     }
@@ -164,6 +177,7 @@ public class FileRequest {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Date getCreated() {
         return created;
     }
@@ -194,6 +208,7 @@ public class FileRequest {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDestination() {
         return destination;
     }
@@ -204,6 +219,7 @@ public class FileRequest {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public FileRequestDeadline getDeadline() {
         return deadline;
     }
@@ -213,6 +229,7 @@ public class FileRequest {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDescription() {
         return description;
     }

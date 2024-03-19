@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed send for signature policy for team.
  */
 public class SendForSignaturePolicyChangedDetails {
     // struct team_log.SendForSignaturePolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final SendForSignaturePolicy newValue;
+    @Nonnull
     protected final SendForSignaturePolicy previousValue;
 
     /**
@@ -35,7 +39,7 @@ public class SendForSignaturePolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SendForSignaturePolicyChangedDetails(SendForSignaturePolicy newValue, SendForSignaturePolicy previousValue) {
+    public SendForSignaturePolicyChangedDetails(@Nonnull SendForSignaturePolicy newValue, @Nonnull SendForSignaturePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -51,6 +55,7 @@ public class SendForSignaturePolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SendForSignaturePolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +65,7 @@ public class SendForSignaturePolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SendForSignaturePolicy getPreviousValue() {
         return previousValue;
     }

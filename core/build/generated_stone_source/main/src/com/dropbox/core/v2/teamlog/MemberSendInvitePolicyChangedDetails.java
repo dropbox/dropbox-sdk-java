@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed member send invite policy for team.
  */
 public class MemberSendInvitePolicyChangedDetails {
     // struct team_log.MemberSendInvitePolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final MemberSendInvitePolicy newValue;
+    @Nonnull
     protected final MemberSendInvitePolicy previousValue;
 
     /**
@@ -36,7 +40,7 @@ public class MemberSendInvitePolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberSendInvitePolicyChangedDetails(MemberSendInvitePolicy newValue, MemberSendInvitePolicy previousValue) {
+    public MemberSendInvitePolicyChangedDetails(@Nonnull MemberSendInvitePolicy newValue, @Nonnull MemberSendInvitePolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -52,6 +56,7 @@ public class MemberSendInvitePolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MemberSendInvitePolicy getNewValue() {
         return newValue;
     }
@@ -61,6 +66,7 @@ public class MemberSendInvitePolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public MemberSendInvitePolicy getPreviousValue() {
         return previousValue;
     }

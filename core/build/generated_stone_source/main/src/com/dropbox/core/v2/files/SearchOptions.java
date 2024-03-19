@@ -17,16 +17,25 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class SearchOptions {
     // struct files.SearchOptions (files.stone)
 
+    @Nullable
     protected final String path;
     protected final long maxResults;
+    @Nullable
     protected final SearchOrderBy orderBy;
+    @Nonnull
     protected final FileStatus fileStatus;
     protected final boolean filenameOnly;
+    @Nullable
     protected final List<String> fileExtensions;
+    @Nullable
     protected final List<FileCategory> fileCategories;
+    @Nullable
     protected final String accountId;
 
     /**
@@ -55,7 +64,7 @@ public class SearchOptions {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchOptions(String path, long maxResults, SearchOrderBy orderBy, FileStatus fileStatus, boolean filenameOnly, List<String> fileExtensions, List<FileCategory> fileCategories, String accountId) {
+    public SearchOptions(@Nullable String path, long maxResults, @Nullable SearchOrderBy orderBy, @Nonnull FileStatus fileStatus, boolean filenameOnly, @Nullable List<String> fileExtensions, @Nullable List<FileCategory> fileCategories, @Nullable String accountId) {
         if (path != null) {
             if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
@@ -117,6 +126,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPath() {
         return path;
     }
@@ -137,6 +147,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public SearchOrderBy getOrderBy() {
         return orderBy;
     }
@@ -147,6 +158,7 @@ public class SearchOptions {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     FileStatus.ACTIVE.
      */
+    @Nonnull
     public FileStatus getFileStatus() {
         return fileStatus;
     }
@@ -167,6 +179,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<String> getFileExtensions() {
         return fileExtensions;
     }
@@ -177,6 +190,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<FileCategory> getFileCategories() {
         return fileCategories;
     }
@@ -186,6 +200,7 @@ public class SearchOptions {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getAccountId() {
         return accountId;
     }

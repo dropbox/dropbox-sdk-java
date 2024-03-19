@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class ListFolderResult {
     // struct files.ListFolderResult (files.stone)
 
+    @Nonnull
     protected final List<Metadata> entries;
+    @Nonnull
     protected final String cursor;
     protected final boolean hasMore;
 
@@ -39,7 +43,7 @@ public class ListFolderResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderResult(List<Metadata> entries, String cursor, boolean hasMore) {
+    public ListFolderResult(@Nonnull List<Metadata> entries, @Nonnull String cursor, boolean hasMore) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -64,6 +68,7 @@ public class ListFolderResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<Metadata> getEntries() {
         return entries;
     }
@@ -75,6 +80,7 @@ public class ListFolderResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

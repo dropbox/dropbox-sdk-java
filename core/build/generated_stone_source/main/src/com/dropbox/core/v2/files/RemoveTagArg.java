@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class RemoveTagArg {
     // struct files.RemoveTagArg (file_tagging.stone)
 
+    @Nonnull
     protected final String path;
+    @Nonnull
     protected final String tagText;
 
     /**
@@ -34,7 +38,7 @@ class RemoveTagArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RemoveTagArg(String path, String tagText) {
+    public RemoveTagArg(@Nonnull String path, @Nonnull String tagText) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -62,6 +66,7 @@ class RemoveTagArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getPath() {
         return path;
     }
@@ -71,6 +76,7 @@ class RemoveTagArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTagText() {
         return tagText;
     }

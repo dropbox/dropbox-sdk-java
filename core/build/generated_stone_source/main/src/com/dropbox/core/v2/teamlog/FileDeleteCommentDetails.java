@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Deleted file comment.
  */
 public class FileDeleteCommentDetails {
     // struct team_log.FileDeleteCommentDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String commentText;
 
     /**
@@ -29,7 +33,7 @@ public class FileDeleteCommentDetails {
      *
      * @param commentText  Comment text.
      */
-    public FileDeleteCommentDetails(String commentText) {
+    public FileDeleteCommentDetails(@Nullable String commentText) {
         this.commentText = commentText;
     }
 
@@ -47,6 +51,7 @@ public class FileDeleteCommentDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCommentText() {
         return commentText;
     }

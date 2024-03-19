@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed team policy for viewer info.
  */
 public class ViewerInfoPolicyChangedDetails {
     // struct team_log.ViewerInfoPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PassPolicy previousValue;
+    @Nonnull
     protected final PassPolicy newValue;
 
     /**
@@ -35,7 +39,7 @@ public class ViewerInfoPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ViewerInfoPolicyChangedDetails(PassPolicy previousValue, PassPolicy newValue) {
+    public ViewerInfoPolicyChangedDetails(@Nonnull PassPolicy previousValue, @Nonnull PassPolicy newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -51,6 +55,7 @@ public class ViewerInfoPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PassPolicy getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +65,7 @@ public class ViewerInfoPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PassPolicy getNewValue() {
         return newValue;
     }

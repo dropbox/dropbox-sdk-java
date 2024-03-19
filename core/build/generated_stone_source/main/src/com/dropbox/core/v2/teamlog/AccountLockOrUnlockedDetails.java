@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Unlocked/locked account after failed sign in attempts.
  */
 public class AccountLockOrUnlockedDetails {
     // struct team_log.AccountLockOrUnlockedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final AccountState previousValue;
+    @Nonnull
     protected final AccountState newValue;
 
     /**
@@ -35,7 +39,7 @@ public class AccountLockOrUnlockedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AccountLockOrUnlockedDetails(AccountState previousValue, AccountState newValue) {
+    public AccountLockOrUnlockedDetails(@Nonnull AccountState previousValue, @Nonnull AccountState newValue) {
         if (previousValue == null) {
             throw new IllegalArgumentException("Required value for 'previousValue' is null");
         }
@@ -51,6 +55,7 @@ public class AccountLockOrUnlockedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccountState getPreviousValue() {
         return previousValue;
     }
@@ -60,6 +65,7 @@ public class AccountLockOrUnlockedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AccountState getNewValue() {
         return newValue;
     }

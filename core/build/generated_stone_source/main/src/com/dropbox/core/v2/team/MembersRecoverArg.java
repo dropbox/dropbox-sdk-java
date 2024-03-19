@@ -16,6 +16,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Exactly one of team_member_id, email, or external_id must be provided to
  * identify the user account.
@@ -23,6 +25,7 @@ import java.util.Arrays;
 class MembersRecoverArg {
     // struct team.MembersRecoverArg (team_members.stone)
 
+    @Nonnull
     protected final UserSelectorArg user;
 
     /**
@@ -34,7 +37,7 @@ class MembersRecoverArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersRecoverArg(UserSelectorArg user) {
+    public MembersRecoverArg(@Nonnull UserSelectorArg user) {
         if (user == null) {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
@@ -46,6 +49,7 @@ class MembersRecoverArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public UserSelectorArg getUser() {
         return user;
     }

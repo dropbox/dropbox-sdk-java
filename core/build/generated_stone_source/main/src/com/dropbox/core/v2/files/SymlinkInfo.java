@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class SymlinkInfo {
     // struct files.SymlinkInfo (files.stone)
 
+    @Nonnull
     protected final String target;
 
     /**
@@ -29,7 +32,7 @@ public class SymlinkInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SymlinkInfo(String target) {
+    public SymlinkInfo(@Nonnull String target) {
         if (target == null) {
             throw new IllegalArgumentException("Required value for 'target' is null");
         }
@@ -41,6 +44,7 @@ public class SymlinkInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTarget() {
         return target;
     }

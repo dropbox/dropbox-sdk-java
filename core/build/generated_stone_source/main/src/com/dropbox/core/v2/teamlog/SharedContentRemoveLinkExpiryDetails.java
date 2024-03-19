@@ -18,12 +18,16 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Removed link expiration date of shared file/folder.
  */
 public class SharedContentRemoveLinkExpiryDetails {
     // struct team_log.SharedContentRemoveLinkExpiryDetails (team_log_generated.stone)
 
+    @Nullable
     protected final Date previousValue;
 
     /**
@@ -32,7 +36,7 @@ public class SharedContentRemoveLinkExpiryDetails {
      * @param previousValue  Previous shared content link expiration date. Might
      *     be missing due to historical data gap.
      */
-    public SharedContentRemoveLinkExpiryDetails(Date previousValue) {
+    public SharedContentRemoveLinkExpiryDetails(@Nullable Date previousValue) {
         this.previousValue = LangUtil.truncateMillis(previousValue);
     }
 
@@ -51,6 +55,7 @@ public class SharedContentRemoveLinkExpiryDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Date getPreviousValue() {
         return previousValue;
     }

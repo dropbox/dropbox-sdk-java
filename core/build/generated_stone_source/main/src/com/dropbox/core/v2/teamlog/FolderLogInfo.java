@@ -16,12 +16,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Folder's logged information.
  */
 public class FolderLogInfo extends FileOrFolderLogInfo {
     // struct team_log.FolderLogInfo (team_log_generated.stone)
 
+    @Nullable
     protected final Long fileCount;
 
     /**
@@ -39,7 +43,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderLogInfo(PathLogInfo path, String displayName, String fileId, Long fileSize, Long fileCount) {
+    public FolderLogInfo(@Nonnull PathLogInfo path, @Nullable String displayName, @Nullable String fileId, @Nullable Long fileSize, @Nullable Long fileCount) {
         super(path, displayName, fileId, fileSize);
         this.fileCount = fileCount;
     }
@@ -54,7 +58,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FolderLogInfo(PathLogInfo path) {
+    public FolderLogInfo(@Nonnull PathLogInfo path) {
         this(path, null, null, null, null);
     }
 
@@ -63,6 +67,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PathLogInfo getPath() {
         return path;
     }
@@ -72,6 +77,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -81,6 +87,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getFileId() {
         return fileId;
     }
@@ -90,6 +97,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getFileSize() {
         return fileSize;
     }
@@ -99,6 +107,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getFileCount() {
         return fileCount;
     }

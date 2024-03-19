@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Result for {@link DbxUserSharingRequests#listFolders} or {@link
  * DbxUserSharingRequests#listMountableFolders}, depending on which endpoint was
@@ -26,7 +29,9 @@ import java.util.List;
 public class ListFoldersResult {
     // struct sharing.ListFoldersResult (sharing_folders.stone)
 
+    @Nonnull
     protected final List<SharedFolderMetadata> entries;
+    @Nullable
     protected final String cursor;
 
     /**
@@ -48,7 +53,7 @@ public class ListFoldersResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFoldersResult(List<SharedFolderMetadata> entries, String cursor) {
+    public ListFoldersResult(@Nonnull List<SharedFolderMetadata> entries, @Nullable String cursor) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -76,7 +81,7 @@ public class ListFoldersResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFoldersResult(List<SharedFolderMetadata> entries) {
+    public ListFoldersResult(@Nonnull List<SharedFolderMetadata> entries) {
         this(entries, null);
     }
 
@@ -85,6 +90,7 @@ public class ListFoldersResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<SharedFolderMetadata> getEntries() {
         return entries;
     }
@@ -98,6 +104,7 @@ public class ListFoldersResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCursor() {
         return cursor;
     }

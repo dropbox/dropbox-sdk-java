@@ -17,12 +17,19 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class MinimalFileLinkMetadata {
     // struct files.MinimalFileLinkMetadata (files.stone)
 
+    @Nonnull
     protected final String url;
+    @Nullable
     protected final String id;
+    @Nullable
     protected final String path;
+    @Nonnull
     protected final String rev;
 
     /**
@@ -43,7 +50,7 @@ public class MinimalFileLinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MinimalFileLinkMetadata(String url, String rev, String id, String path) {
+    public MinimalFileLinkMetadata(@Nonnull String url, @Nonnull String rev, @Nullable String id, @Nullable String path) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }
@@ -81,7 +88,7 @@ public class MinimalFileLinkMetadata {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MinimalFileLinkMetadata(String url, String rev) {
+    public MinimalFileLinkMetadata(@Nonnull String url, @Nonnull String rev) {
         this(url, rev, null, null);
     }
 
@@ -90,6 +97,7 @@ public class MinimalFileLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getUrl() {
         return url;
     }
@@ -101,6 +109,7 @@ public class MinimalFileLinkMetadata {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getRev() {
         return rev;
     }
@@ -110,6 +119,7 @@ public class MinimalFileLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getId() {
         return id;
     }
@@ -121,6 +131,7 @@ public class MinimalFileLinkMetadata {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getPath() {
         return path;
     }

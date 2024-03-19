@@ -18,10 +18,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class FileRequestDeadline {
     // struct file_requests.FileRequestDeadline (file_requests.stone)
 
+    @Nonnull
     protected final Date deadline;
+    @Nullable
     protected final GracePeriod allowLateUploads;
 
     /**
@@ -34,7 +39,7 @@ public class FileRequestDeadline {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestDeadline(Date deadline, GracePeriod allowLateUploads) {
+    public FileRequestDeadline(@Nonnull Date deadline, @Nullable GracePeriod allowLateUploads) {
         if (deadline == null) {
             throw new IllegalArgumentException("Required value for 'deadline' is null");
         }
@@ -53,7 +58,7 @@ public class FileRequestDeadline {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequestDeadline(Date deadline) {
+    public FileRequestDeadline(@Nonnull Date deadline) {
         this(deadline, null);
     }
 
@@ -62,6 +67,7 @@ public class FileRequestDeadline {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Date getDeadline() {
         return deadline;
     }
@@ -72,6 +78,7 @@ public class FileRequestDeadline {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public GracePeriod getAllowLateUploads() {
         return allowLateUploads;
     }

@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Contains information about a member's access level to content after an
  * operation.
@@ -24,8 +27,11 @@ import java.util.List;
 public class MemberAccessLevelResult {
     // struct sharing.MemberAccessLevelResult (sharing_folders.stone)
 
+    @Nullable
     protected final AccessLevel accessLevel;
+    @Nullable
     protected final String warning;
+    @Nullable
     protected final List<ParentFolderAccessInfo> accessDetails;
 
     /**
@@ -46,7 +52,7 @@ public class MemberAccessLevelResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MemberAccessLevelResult(AccessLevel accessLevel, String warning, List<ParentFolderAccessInfo> accessDetails) {
+    public MemberAccessLevelResult(@Nullable AccessLevel accessLevel, @Nullable String warning, @Nullable List<ParentFolderAccessInfo> accessDetails) {
         this.accessLevel = accessLevel;
         this.warning = warning;
         if (accessDetails != null) {
@@ -75,6 +81,7 @@ public class MemberAccessLevelResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -85,6 +92,7 @@ public class MemberAccessLevelResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getWarning() {
         return warning;
     }
@@ -96,6 +104,7 @@ public class MemberAccessLevelResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public List<ParentFolderAccessInfo> getAccessDetails() {
         return accessDetails;
     }

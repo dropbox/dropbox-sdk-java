@@ -16,12 +16,15 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Completed restrictions on data center locations where team data resides.
  */
 public class DataPlacementRestrictionSatisfyPolicyDetails {
     // struct team_log.DataPlacementRestrictionSatisfyPolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final PlacementRestriction placementRestriction;
 
     /**
@@ -33,7 +36,7 @@ public class DataPlacementRestrictionSatisfyPolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DataPlacementRestrictionSatisfyPolicyDetails(PlacementRestriction placementRestriction) {
+    public DataPlacementRestrictionSatisfyPolicyDetails(@Nonnull PlacementRestriction placementRestriction) {
         if (placementRestriction == null) {
             throw new IllegalArgumentException("Required value for 'placementRestriction' is null");
         }
@@ -45,6 +48,7 @@ public class DataPlacementRestrictionSatisfyPolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public PlacementRestriction getPlacementRestriction() {
         return placementRestriction;
     }

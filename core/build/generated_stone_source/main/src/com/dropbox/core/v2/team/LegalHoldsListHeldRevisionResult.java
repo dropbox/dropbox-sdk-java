@@ -17,10 +17,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class LegalHoldsListHeldRevisionResult {
     // struct team.LegalHoldsListHeldRevisionResult (team_legal_holds.stone)
 
+    @Nonnull
     protected final List<LegalHoldHeldRevisionMetadata> entries;
+    @Nullable
     protected final String cursor;
     protected final boolean hasMore;
 
@@ -40,7 +45,7 @@ public class LegalHoldsListHeldRevisionResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsListHeldRevisionResult(List<LegalHoldHeldRevisionMetadata> entries, boolean hasMore, String cursor) {
+    public LegalHoldsListHeldRevisionResult(@Nonnull List<LegalHoldHeldRevisionMetadata> entries, boolean hasMore, @Nullable String cursor) {
         if (entries == null) {
             throw new IllegalArgumentException("Required value for 'entries' is null");
         }
@@ -73,7 +78,7 @@ public class LegalHoldsListHeldRevisionResult {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LegalHoldsListHeldRevisionResult(List<LegalHoldHeldRevisionMetadata> entries, boolean hasMore) {
+    public LegalHoldsListHeldRevisionResult(@Nonnull List<LegalHoldHeldRevisionMetadata> entries, boolean hasMore) {
         this(entries, hasMore, null);
     }
 
@@ -82,6 +87,7 @@ public class LegalHoldsListHeldRevisionResult {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<LegalHoldHeldRevisionMetadata> getEntries() {
         return entries;
     }
@@ -104,6 +110,7 @@ public class LegalHoldsListHeldRevisionResult {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getCursor() {
         return cursor;
     }

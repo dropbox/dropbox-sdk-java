@@ -16,14 +16,20 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Removed Paper doc/folder from folder.
  */
 public class PaperContentRemoveFromFolderDetails {
     // struct team_log.PaperContentRemoveFromFolderDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final String eventUuid;
+    @Nullable
     protected final Long targetAssetIndex;
+    @Nullable
     protected final Long parentAssetIndex;
 
     /**
@@ -39,7 +45,7 @@ public class PaperContentRemoveFromFolderDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentRemoveFromFolderDetails(String eventUuid, Long targetAssetIndex, Long parentAssetIndex) {
+    public PaperContentRemoveFromFolderDetails(@Nonnull String eventUuid, @Nullable Long targetAssetIndex, @Nullable Long parentAssetIndex) {
         if (eventUuid == null) {
             throw new IllegalArgumentException("Required value for 'eventUuid' is null");
         }
@@ -58,7 +64,7 @@ public class PaperContentRemoveFromFolderDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperContentRemoveFromFolderDetails(String eventUuid) {
+    public PaperContentRemoveFromFolderDetails(@Nonnull String eventUuid) {
         this(eventUuid, null, null);
     }
 
@@ -67,6 +73,7 @@ public class PaperContentRemoveFromFolderDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEventUuid() {
         return eventUuid;
     }
@@ -76,6 +83,7 @@ public class PaperContentRemoveFromFolderDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getTargetAssetIndex() {
         return targetAssetIndex;
     }
@@ -85,6 +93,7 @@ public class PaperContentRemoveFromFolderDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Long getParentAssetIndex() {
         return parentAssetIndex;
     }

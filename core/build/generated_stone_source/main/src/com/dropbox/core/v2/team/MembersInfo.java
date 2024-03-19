@@ -17,9 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class MembersInfo {
     // struct team.MembersInfo (team_legal_holds.stone)
 
+    @Nonnull
     protected final List<String> teamMemberIds;
     protected final long permanentlyDeletedUsers;
 
@@ -33,7 +36,7 @@ public class MembersInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersInfo(List<String> teamMemberIds, long permanentlyDeletedUsers) {
+    public MembersInfo(@Nonnull List<String> teamMemberIds, long permanentlyDeletedUsers) {
         if (teamMemberIds == null) {
             throw new IllegalArgumentException("Required value for 'teamMemberIds' is null");
         }
@@ -51,6 +54,7 @@ public class MembersInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public List<String> getTeamMemberIds() {
         return teamMemberIds;
     }

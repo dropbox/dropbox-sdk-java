@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The amount of detail revealed about an account depends on the user being
  * queried and the user making the query.
@@ -23,10 +26,14 @@ import java.util.Arrays;
 public class Account {
     // struct users.Account (users.stone)
 
+    @Nonnull
     protected final String accountId;
+    @Nonnull
     protected final Name name;
+    @Nonnull
     protected final String email;
     protected final boolean emailVerified;
+    @Nullable
     protected final String profilePhotoUrl;
     protected final boolean disabled;
 
@@ -49,7 +56,7 @@ public class Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Account(String accountId, Name name, String email, boolean emailVerified, boolean disabled, String profilePhotoUrl) {
+    public Account(@Nonnull String accountId, @Nonnull Name name, @Nonnull String email, boolean emailVerified, boolean disabled, @Nullable String profilePhotoUrl) {
         if (accountId == null) {
             throw new IllegalArgumentException("Required value for 'accountId' is null");
         }
@@ -92,7 +99,7 @@ public class Account {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Account(String accountId, Name name, String email, boolean emailVerified, boolean disabled) {
+    public Account(@Nonnull String accountId, @Nonnull Name name, @Nonnull String email, boolean emailVerified, boolean disabled) {
         this(accountId, name, email, emailVerified, disabled, null);
     }
 
@@ -101,6 +108,7 @@ public class Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAccountId() {
         return accountId;
     }
@@ -110,6 +118,7 @@ public class Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Name getName() {
         return name;
     }
@@ -121,6 +130,7 @@ public class Account {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getEmail() {
         return email;
     }
@@ -148,6 +158,7 @@ public class Account {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }

@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Enabled/disabled reseller support.
  */
 public class ResellerSupportChangePolicyDetails {
     // struct team_log.ResellerSupportChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ResellerSupportPolicy newValue;
+    @Nonnull
     protected final ResellerSupportPolicy previousValue;
 
     /**
@@ -35,7 +39,7 @@ public class ResellerSupportChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ResellerSupportChangePolicyDetails(ResellerSupportPolicy newValue, ResellerSupportPolicy previousValue) {
+    public ResellerSupportChangePolicyDetails(@Nonnull ResellerSupportPolicy newValue, @Nonnull ResellerSupportPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -51,6 +55,7 @@ public class ResellerSupportChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ResellerSupportPolicy getNewValue() {
         return newValue;
     }
@@ -60,6 +65,7 @@ public class ResellerSupportChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ResellerSupportPolicy getPreviousValue() {
         return previousValue;
     }

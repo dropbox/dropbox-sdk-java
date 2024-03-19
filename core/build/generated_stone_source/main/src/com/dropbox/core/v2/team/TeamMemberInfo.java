@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Information about a team member.
  */
 public class TeamMemberInfo {
     // struct team.TeamMemberInfo (team_members.stone)
 
+    @Nonnull
     protected final TeamMemberProfile profile;
+    @Nonnull
     protected final AdminTier role;
 
     /**
@@ -35,7 +39,7 @@ public class TeamMemberInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberInfo(TeamMemberProfile profile, AdminTier role) {
+    public TeamMemberInfo(@Nonnull TeamMemberProfile profile, @Nonnull AdminTier role) {
         if (profile == null) {
             throw new IllegalArgumentException("Required value for 'profile' is null");
         }
@@ -51,6 +55,7 @@ public class TeamMemberInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamMemberProfile getProfile() {
         return profile;
     }
@@ -60,6 +65,7 @@ public class TeamMemberInfo {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public AdminTier getRole() {
         return role;
     }

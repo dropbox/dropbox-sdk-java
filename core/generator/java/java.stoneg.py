@@ -825,6 +825,14 @@ class JavaImporter:
             if is_string_type(field.data_type) and field.data_type.pattern is not None:
                 self.add_imports('java.util.regex.Pattern')
 
+            if is_struct_type(data_type):
+                # for nullable fields
+                if not field.has_default and field in data_type.all_optional_fields:
+                    self.add_imports('javax.annotation.Nullable')
+                # for nonnull fields
+                if not j.is_java_primitive(field.data_type):
+                    self.add_imports('javax.annotation.Nonnull')
+
         # check if we need to import parent type
         if is_struct_type(data_type) and data_type.parent_type:
             self._add_imports_for_data_type(data_type.parent_type)
@@ -1889,6 +1897,15 @@ class JavaApi:
         if field in containing_data_type.all_optional_fields:
             return camelcase('with_' + field.name)
         return None
+
+    def nullability_annotation(self, field):
+        containing_data_type = self._containing_data_types[field]
+        if not field.has_default and field in containing_data_type.all_optional_fields:
+            return '@Nullable'
+        elif not self.is_java_primitive(field.data_type):
+            return '@Nonnull'
+        else:
+            return ''
 
     def is_java_primitive(self, data_type):
         return self.java_class(data_type, generics=False).name[0].islower()
@@ -3357,6 +3374,9 @@ class JavaCodeGenerationInstance:
             #
             w.out('')
             for field in data_type.fields:
+                annotation = j.nullability_annotation(field)
+                if len(annotation) > 0:
+                    w.out(annotation)
                 # fields marked as protected since structs allow inheritance
                 w.out('protected final %s %s;', j.java_class(field), j.param_name(field))
 
@@ -3366,7 +3386,7 @@ class JavaCodeGenerationInstance:
 
             # use builder or required-only constructor for default values
             args = ', '.join(
-                w.fmt('%s %s', j.java_class(f), j.param_name(f))
+                w.fmt('%s %s %s', j.nullability_annotation(f), j.java_class(f), j.param_name(f)).lstrip()
                 for f in data_type.all_fields
             )
             doc = data_type.doc or ''
@@ -3393,7 +3413,7 @@ class JavaCodeGenerationInstance:
                 # create a constructor with just required fields (for convenience)
                 required_fields = data_type.all_required_fields
                 required_args = ', '.join(
-                    w.fmt('%s %s', j.java_class(f), j.param_name(f))
+                    w.fmt('%s %s %s', j.nullability_annotation(f), j.java_class(f), j.param_name(f)).lstrip()
                     for f in required_fields
                 )
                 w.out('')
@@ -3433,6 +3453,9 @@ class JavaCodeGenerationInstance:
                     returns += ' Defaults to %s.' % w.java_default_value(field)
 
                 w.javadoc(field.doc or '', stone_elem=field, returns=returns)
+                annotation = j.nullability_annotation(field)
+                if len(annotation) > 0:
+                    w.out(annotation)
                 with w.block('public %s %s()', j.java_class(field), j.field_getter_method(field)):
                     w.out('return %s;' % j.param_name(field))
 

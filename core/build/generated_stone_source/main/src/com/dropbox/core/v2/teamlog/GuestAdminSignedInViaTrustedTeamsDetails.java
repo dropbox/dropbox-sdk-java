@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Started trusted team admin session.
  */
 public class GuestAdminSignedInViaTrustedTeamsDetails {
     // struct team_log.GuestAdminSignedInViaTrustedTeamsDetails (team_log_generated.stone)
 
+    @Nullable
     protected final String teamName;
+    @Nullable
     protected final String trustedTeamName;
 
     /**
@@ -34,7 +39,7 @@ public class GuestAdminSignedInViaTrustedTeamsDetails {
      * @param teamName  Host team name.
      * @param trustedTeamName  Trusted team name.
      */
-    public GuestAdminSignedInViaTrustedTeamsDetails(String teamName, String trustedTeamName) {
+    public GuestAdminSignedInViaTrustedTeamsDetails(@Nullable String teamName, @Nullable String trustedTeamName) {
         this.teamName = teamName;
         this.trustedTeamName = trustedTeamName;
     }
@@ -53,6 +58,7 @@ public class GuestAdminSignedInViaTrustedTeamsDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getTeamName() {
         return teamName;
     }
@@ -62,6 +68,7 @@ public class GuestAdminSignedInViaTrustedTeamsDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public String getTrustedTeamName() {
         return trustedTeamName;
     }

@@ -16,10 +16,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 public class RevokeLinkedApiAppArg {
     // struct team.RevokeLinkedApiAppArg (team_linked_apps.stone)
 
+    @Nonnull
     protected final String appId;
+    @Nonnull
     protected final String teamMemberId;
     protected final boolean keepAppFolder;
 
@@ -34,7 +38,7 @@ public class RevokeLinkedApiAppArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeLinkedApiAppArg(String appId, String teamMemberId, boolean keepAppFolder) {
+    public RevokeLinkedApiAppArg(@Nonnull String appId, @Nonnull String teamMemberId, boolean keepAppFolder) {
         if (appId == null) {
             throw new IllegalArgumentException("Required value for 'appId' is null");
         }
@@ -58,7 +62,7 @@ public class RevokeLinkedApiAppArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public RevokeLinkedApiAppArg(String appId, String teamMemberId) {
+    public RevokeLinkedApiAppArg(@Nonnull String appId, @Nonnull String teamMemberId) {
         this(appId, teamMemberId, true);
     }
 
@@ -67,6 +71,7 @@ public class RevokeLinkedApiAppArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getAppId() {
         return appId;
     }
@@ -76,6 +81,7 @@ public class RevokeLinkedApiAppArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getTeamMemberId() {
         return teamMemberId;
     }

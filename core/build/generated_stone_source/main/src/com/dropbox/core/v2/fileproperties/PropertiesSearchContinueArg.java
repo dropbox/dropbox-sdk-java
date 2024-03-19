@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class PropertiesSearchContinueArg {
     // struct file_properties.PropertiesSearchContinueArg (file_properties.stone)
 
+    @Nonnull
     protected final String cursor;
 
     /**
@@ -32,7 +35,7 @@ class PropertiesSearchContinueArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PropertiesSearchContinueArg(String cursor) {
+    public PropertiesSearchContinueArg(@Nonnull String cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("Required value for 'cursor' is null");
         }
@@ -50,6 +53,7 @@ class PropertiesSearchContinueArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getCursor() {
         return cursor;
     }

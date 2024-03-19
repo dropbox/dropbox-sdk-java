@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Enabled/disabled Team Selective Sync for team.
  */
 public class TeamSelectiveSyncPolicyChangedDetails {
     // struct team_log.TeamSelectiveSyncPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final TeamSelectiveSyncPolicy newValue;
+    @Nonnull
     protected final TeamSelectiveSyncPolicy previousValue;
 
     /**
@@ -36,7 +40,7 @@ public class TeamSelectiveSyncPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSelectiveSyncPolicyChangedDetails(TeamSelectiveSyncPolicy newValue, TeamSelectiveSyncPolicy previousValue) {
+    public TeamSelectiveSyncPolicyChangedDetails(@Nonnull TeamSelectiveSyncPolicy newValue, @Nonnull TeamSelectiveSyncPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -52,6 +56,7 @@ public class TeamSelectiveSyncPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamSelectiveSyncPolicy getNewValue() {
         return newValue;
     }
@@ -61,6 +66,7 @@ public class TeamSelectiveSyncPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public TeamSelectiveSyncPolicy getPreviousValue() {
         return previousValue;
     }

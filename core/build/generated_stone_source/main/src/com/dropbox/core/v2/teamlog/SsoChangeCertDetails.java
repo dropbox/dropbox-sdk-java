@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Changed X.509 certificate for SSO.
  */
 public class SsoChangeCertDetails {
     // struct team_log.SsoChangeCertDetails (team_log_generated.stone)
 
+    @Nullable
     protected final Certificate previousCertificateDetails;
+    @Nonnull
     protected final Certificate newCertificateDetails;
 
     /**
@@ -36,7 +41,7 @@ public class SsoChangeCertDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoChangeCertDetails(Certificate newCertificateDetails, Certificate previousCertificateDetails) {
+    public SsoChangeCertDetails(@Nonnull Certificate newCertificateDetails, @Nullable Certificate previousCertificateDetails) {
         this.previousCertificateDetails = previousCertificateDetails;
         if (newCertificateDetails == null) {
             throw new IllegalArgumentException("Required value for 'newCertificateDetails' is null");
@@ -55,7 +60,7 @@ public class SsoChangeCertDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SsoChangeCertDetails(Certificate newCertificateDetails) {
+    public SsoChangeCertDetails(@Nonnull Certificate newCertificateDetails) {
         this(newCertificateDetails, null);
     }
 
@@ -64,6 +69,7 @@ public class SsoChangeCertDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public Certificate getNewCertificateDetails() {
         return newCertificateDetails;
     }
@@ -74,6 +80,7 @@ public class SsoChangeCertDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public Certificate getPreviousCertificateDetails() {
         return previousCertificateDetails;
     }

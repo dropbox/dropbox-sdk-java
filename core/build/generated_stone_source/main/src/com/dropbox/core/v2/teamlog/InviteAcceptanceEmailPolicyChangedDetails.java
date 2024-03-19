@@ -16,13 +16,17 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 /**
  * Changed invite accept email policy for team.
  */
 public class InviteAcceptanceEmailPolicyChangedDetails {
     // struct team_log.InviteAcceptanceEmailPolicyChangedDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final InviteAcceptanceEmailPolicy newValue;
+    @Nonnull
     protected final InviteAcceptanceEmailPolicy previousValue;
 
     /**
@@ -34,7 +38,7 @@ public class InviteAcceptanceEmailPolicyChangedDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public InviteAcceptanceEmailPolicyChangedDetails(InviteAcceptanceEmailPolicy newValue, InviteAcceptanceEmailPolicy previousValue) {
+    public InviteAcceptanceEmailPolicyChangedDetails(@Nonnull InviteAcceptanceEmailPolicy newValue, @Nonnull InviteAcceptanceEmailPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -50,6 +54,7 @@ public class InviteAcceptanceEmailPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public InviteAcceptanceEmailPolicy getNewValue() {
         return newValue;
     }
@@ -59,6 +64,7 @@ public class InviteAcceptanceEmailPolicyChangedDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public InviteAcceptanceEmailPolicy getPreviousValue() {
         return previousValue;
     }

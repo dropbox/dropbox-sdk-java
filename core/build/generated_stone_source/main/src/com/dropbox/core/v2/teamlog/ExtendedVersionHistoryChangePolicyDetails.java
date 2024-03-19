@@ -16,13 +16,18 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Accepted/opted out of extended version history.
  */
 public class ExtendedVersionHistoryChangePolicyDetails {
     // struct team_log.ExtendedVersionHistoryChangePolicyDetails (team_log_generated.stone)
 
+    @Nonnull
     protected final ExtendedVersionHistoryPolicy newValue;
+    @Nullable
     protected final ExtendedVersionHistoryPolicy previousValue;
 
     /**
@@ -36,7 +41,7 @@ public class ExtendedVersionHistoryChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExtendedVersionHistoryChangePolicyDetails(ExtendedVersionHistoryPolicy newValue, ExtendedVersionHistoryPolicy previousValue) {
+    public ExtendedVersionHistoryChangePolicyDetails(@Nonnull ExtendedVersionHistoryPolicy newValue, @Nullable ExtendedVersionHistoryPolicy previousValue) {
         if (newValue == null) {
             throw new IllegalArgumentException("Required value for 'newValue' is null");
         }
@@ -55,7 +60,7 @@ public class ExtendedVersionHistoryChangePolicyDetails {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ExtendedVersionHistoryChangePolicyDetails(ExtendedVersionHistoryPolicy newValue) {
+    public ExtendedVersionHistoryChangePolicyDetails(@Nonnull ExtendedVersionHistoryPolicy newValue) {
         this(newValue, null);
     }
 
@@ -64,6 +69,7 @@ public class ExtendedVersionHistoryChangePolicyDetails {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public ExtendedVersionHistoryPolicy getNewValue() {
         return newValue;
     }
@@ -74,6 +80,7 @@ public class ExtendedVersionHistoryChangePolicyDetails {
      *
      * @return value for this field, or {@code null} if not present.
      */
+    @Nullable
     public ExtendedVersionHistoryPolicy getPreviousValue() {
         return previousValue;
     }

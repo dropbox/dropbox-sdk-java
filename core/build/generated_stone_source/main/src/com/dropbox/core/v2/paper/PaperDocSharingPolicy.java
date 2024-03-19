@@ -16,9 +16,12 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class PaperDocSharingPolicy extends RefPaperDoc {
     // struct paper.PaperDocSharingPolicy (paper.stone)
 
+    @Nonnull
     protected final SharingPolicy sharingPolicy;
 
     /**
@@ -30,7 +33,7 @@ class PaperDocSharingPolicy extends RefPaperDoc {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public PaperDocSharingPolicy(String docId, SharingPolicy sharingPolicy) {
+    public PaperDocSharingPolicy(@Nonnull String docId, @Nonnull SharingPolicy sharingPolicy) {
         super(docId);
         if (sharingPolicy == null) {
             throw new IllegalArgumentException("Required value for 'sharingPolicy' is null");
@@ -43,6 +46,7 @@ class PaperDocSharingPolicy extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getDocId() {
         return docId;
     }
@@ -52,6 +56,7 @@ class PaperDocSharingPolicy extends RefPaperDoc {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public SharingPolicy getSharingPolicy() {
         return sharingPolicy;
     }

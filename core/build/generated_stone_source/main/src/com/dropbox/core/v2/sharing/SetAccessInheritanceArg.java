@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 class SetAccessInheritanceArg {
     // struct sharing.SetAccessInheritanceArg (sharing_folders.stone)
 
+    @Nonnull
     protected final AccessInheritance accessInheritance;
+    @Nonnull
     protected final String sharedFolderId;
 
     /**
@@ -33,7 +37,7 @@ class SetAccessInheritanceArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SetAccessInheritanceArg(String sharedFolderId, AccessInheritance accessInheritance) {
+    public SetAccessInheritanceArg(@Nonnull String sharedFolderId, @Nonnull AccessInheritance accessInheritance) {
         if (accessInheritance == null) {
             throw new IllegalArgumentException("Required value for 'accessInheritance' is null");
         }
@@ -58,7 +62,7 @@ class SetAccessInheritanceArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SetAccessInheritanceArg(String sharedFolderId) {
+    public SetAccessInheritanceArg(@Nonnull String sharedFolderId) {
         this(sharedFolderId, AccessInheritance.INHERIT);
     }
 
@@ -67,6 +71,7 @@ class SetAccessInheritanceArg {
      *
      * @return value for this field, never {@code null}.
      */
+    @Nonnull
     public String getSharedFolderId() {
         return sharedFolderId;
     }
@@ -77,6 +82,7 @@ class SetAccessInheritanceArg {
      * @return value for this field, or {@code null} if not present. Defaults to
      *     AccessInheritance.INHERIT.
      */
+    @Nonnull
     public AccessInheritance getAccessInheritance() {
         return accessInheritance;
     }
