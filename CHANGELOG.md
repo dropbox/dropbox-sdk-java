@@ -1,6 +1,7 @@
-6.1.0 (202X-XX-XX)
+6.1.0 (2024-03-19)
 ---------------------------------------------
 - [#527](https://github.com/dropbox/dropbox-sdk-java/pull/527) Adds nullability annotations to data models for improved interop with Kotlin
+- [#530](https://github.com/dropbox/dropbox-sdk-java/pull/530) Fix StoneTask cache misses
 
 6.0.0 (2023-11-30)
 ---------------------------------------------
@@ -9,7 +10,7 @@ To migrate, add the following to your dependencies block:
 
 ```@groovy
 dependencies {
-  implementation 'com.dropbox.core:dropbox-android-sdk:6.0.0'
+  implementation 'com.dropbox.core:dropbox-android-sdk:6.1.0'
 }
 ```
 
