@@ -3,7 +3,6 @@ package com.dropbox.stone.java
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.withType
@@ -58,7 +57,7 @@ class StonePlugin : Plugin<Project> {
             val mySpecDir: String = specDirPropNameValue ?: "src/${sourceSet.name}/stone"
             specDir.set(File(mySpecDir))
 
-            generatorDir.set(File("${project.projectDir.absoluteFile}/generator/java"))
+            generatorFile.set(File("${project.projectDir}/generator/java/java.stoneg.py"))
             stoneDir.set(File("stone"))
             pythonCommand.set("python")
             outputDir.set(File("${project.buildDir}/generated/source/stone/${sourceSet.name}"))
