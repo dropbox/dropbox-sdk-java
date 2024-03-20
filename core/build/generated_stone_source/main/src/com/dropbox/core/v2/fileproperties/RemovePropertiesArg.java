@@ -36,8 +36,9 @@ public class RemovePropertiesArg {
      * @param propertyTemplateIds  A list of identifiers for a template created
      *     by {@link
      *     DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)}
-     *     or {@code templatesAddForTeam}. Must not contain a {@code null} item
-     *     and not be {@code null}.
+     *     or {@link
+     *     DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)}.
+     *     Must not contain a {@code null} item and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -80,7 +81,8 @@ public class RemovePropertiesArg {
     /**
      * A list of identifiers for a template created by {@link
      * DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)} or
-     * {@code templatesAddForTeam}.
+     * {@link
+     * DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)}.
      *
      * @return value for this field, never {@code null}.
      */

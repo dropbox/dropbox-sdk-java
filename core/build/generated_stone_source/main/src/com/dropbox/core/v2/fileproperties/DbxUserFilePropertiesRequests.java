@@ -31,7 +31,9 @@ public class DbxUserFilePropertiesRequests {
     /**
      * Add property groups to a Dropbox file. See {@link
      * DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)} or
-     * {@code templatesAddForTeam} to create new templates.
+     * {@link
+     * DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)} to
+     * create new templates.
      *
      */
     void propertiesAdd(AddPropertiesArg arg) throws AddPropertiesErrorException, DbxException {
@@ -52,7 +54,9 @@ public class DbxUserFilePropertiesRequests {
     /**
      * Add property groups to a Dropbox file. See {@link
      * DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)} or
-     * {@code templatesAddForTeam} to create new templates.
+     * {@link
+     * DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)} to
+     * create new templates.
      *
      * @param path  A unique identifier for the file or folder. Must match
      *     pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and not be
@@ -135,10 +139,11 @@ public class DbxUserFilePropertiesRequests {
      * specific property field key value pairs, see {@link
      * DbxUserFilePropertiesRequests#propertiesUpdate(String,List)}. To update a
      * template, see {@link
-     * DbxUserFilePropertiesRequests#templatesUpdateForUser(String)} or {@code
-     * templatesUpdateForTeam}. To remove a template, see {@link
-     * DbxUserFilePropertiesRequests#templatesRemoveForUser(String)} or {@code
-     * templatesRemoveForTeam}.
+     * DbxUserFilePropertiesRequests#templatesUpdateForUser(String)} or {@link
+     * DbxTeamFilePropertiesRequests#templatesUpdateForTeam(String)}. To remove
+     * a template, see {@link
+     * DbxUserFilePropertiesRequests#templatesRemoveForUser(String)} or {@link
+     * DbxTeamFilePropertiesRequests#templatesRemoveForTeam(String)}.
      *
      */
     void propertiesRemove(RemovePropertiesArg arg) throws RemovePropertiesErrorException, DbxException {
@@ -161,10 +166,11 @@ public class DbxUserFilePropertiesRequests {
      * specific property field key value pairs, see {@link
      * DbxUserFilePropertiesRequests#propertiesUpdate(String,List)}. To update a
      * template, see {@link
-     * DbxUserFilePropertiesRequests#templatesUpdateForUser(String)} or {@code
-     * templatesUpdateForTeam}. To remove a template, see {@link
-     * DbxUserFilePropertiesRequests#templatesRemoveForUser(String)} or {@code
-     * templatesRemoveForTeam}.
+     * DbxUserFilePropertiesRequests#templatesUpdateForUser(String)} or {@link
+     * DbxTeamFilePropertiesRequests#templatesUpdateForTeam(String)}. To remove
+     * a template, see {@link
+     * DbxUserFilePropertiesRequests#templatesRemoveForUser(String)} or {@link
+     * DbxTeamFilePropertiesRequests#templatesRemoveForTeam(String)}.
      *
      * @param path  A unique identifier for the file or folder. Must match
      *     pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and not be
@@ -172,8 +178,9 @@ public class DbxUserFilePropertiesRequests {
      * @param propertyTemplateIds  A list of identifiers for a template created
      *     by {@link
      *     DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)}
-     *     or {@code templatesAddForTeam}. Must not contain a {@code null} item
-     *     and not be {@code null}.
+     *     or {@link
+     *     DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)}.
+     *     Must not contain a {@code null} item and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -419,8 +426,10 @@ public class DbxUserFilePropertiesRequests {
      *
      * @param templateId  An identifier for template added by route  See {@link
      *     DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)}
-     *     or {@code templatesAddForTeam}. Must have length of at least 1, match
-     *     pattern "{@code (/|ptid:).*}", and not be {@code null}.
+     *     or {@link
+     *     DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)}.
+     *     Must have length of at least 1, match pattern "{@code (/|ptid:).*}",
+     *     and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -489,8 +498,10 @@ public class DbxUserFilePropertiesRequests {
      *
      * @param templateId  An identifier for a template created by {@link
      *     DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)}
-     *     or {@code templatesAddForTeam}. Must have length of at least 1, match
-     *     pattern "{@code (/|ptid:).*}", and not be {@code null}.
+     *     or {@link
+     *     DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)}.
+     *     Must have length of at least 1, match pattern "{@code (/|ptid:).*}",
+     *     and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -534,8 +545,10 @@ public class DbxUserFilePropertiesRequests {
      *
      * @param templateId  An identifier for template added by  See {@link
      *     DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)}
-     *     or {@code templatesAddForTeam}. Must have length of at least 1, match
-     *     pattern "{@code (/|ptid:).*}", and not be {@code null}.
+     *     or {@link
+     *     DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)}.
+     *     Must have length of at least 1, match pattern "{@code (/|ptid:).*}",
+     *     and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -553,8 +566,10 @@ public class DbxUserFilePropertiesRequests {
      *
      * @param templateId  An identifier for template added by  See {@link
      *     DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)}
-     *     or {@code templatesAddForTeam}. Must have length of at least 1, match
-     *     pattern "{@code (/|ptid:).*}", and not be {@code null}.
+     *     or {@link
+     *     DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)}.
+     *     Must have length of at least 1, match pattern "{@code (/|ptid:).*}",
+     *     and not be {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.

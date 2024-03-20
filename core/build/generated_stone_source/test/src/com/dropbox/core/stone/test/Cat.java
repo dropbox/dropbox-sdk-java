@@ -18,10 +18,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class Cat extends Pet {
     // struct test.Cat (test.stone)
 
+    @Nullable
     protected final String breed;
+    @Nullable
     protected final Boolean indoor;
 
     /**
@@ -35,7 +40,7 @@ public class Cat extends Pet {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Cat(String name, Date born, String breed, Boolean indoor) {
+    public Cat(@Nonnull String name, @Nullable Date born, @Nullable String breed, @Nullable Boolean indoor) {
         super(name, born);
         this.breed = breed;
         this.indoor = indoor;
@@ -53,7 +58,7 @@ public class Cat extends Pet {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Cat(String name) {
+    public Cat(@Nonnull String name) {
         this(name, null, null, null);
     }
 
@@ -62,7 +67,7 @@ public class Cat extends Pet {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -71,7 +76,7 @@ public class Cat extends Pet {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getBorn() {
         return born;
     }
@@ -80,7 +85,7 @@ public class Cat extends Pet {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public String getBreed() {
         return breed;
     }
@@ -89,7 +94,7 @@ public class Cat extends Pet {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Boolean getIndoor() {
         return indoor;
     }

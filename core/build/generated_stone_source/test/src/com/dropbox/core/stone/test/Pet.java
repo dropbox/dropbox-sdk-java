@@ -18,10 +18,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class Pet {
     // struct test.Pet (test.stone)
 
+    @Nonnull
     protected final String name;
+    @Nullable
     protected final Date born;
 
     /**
@@ -33,7 +38,7 @@ public class Pet {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Pet(String name, Date born) {
+    public Pet(@Nonnull String name, @Nullable Date born) {
         if (name == null) {
             throw new IllegalArgumentException("Required value for 'name' is null");
         }
@@ -53,7 +58,7 @@ public class Pet {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Pet(String name) {
+    public Pet(@Nonnull String name) {
         this(name, null);
     }
 
@@ -62,7 +67,7 @@ public class Pet {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -71,7 +76,7 @@ public class Pet {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getBorn() {
         return born;
     }

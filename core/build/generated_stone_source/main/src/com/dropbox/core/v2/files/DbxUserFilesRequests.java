@@ -3416,8 +3416,9 @@ public class DbxUserFilesRequests {
      * @param propertyTemplateIds  A list of identifiers for a template created
      *     by {@link
      *     com.dropbox.core.v2.fileproperties.DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)}
-     *     or {@code templatesAddForTeam}. Must not contain a {@code null} item
-     *     and not be {@code null}.
+     *     or {@link
+     *     com.dropbox.core.v2.fileproperties.DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)}.
+     *     Must not contain a {@code null} item and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -3456,8 +3457,10 @@ public class DbxUserFilesRequests {
      *
      * @param templateId  An identifier for template added by route  See {@link
      *     com.dropbox.core.v2.fileproperties.DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)}
-     *     or {@code templatesAddForTeam}. Must have length of at least 1, match
-     *     pattern "{@code (/|ptid:).*}", and not be {@code null}.
+     *     or {@link
+     *     com.dropbox.core.v2.fileproperties.DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)}.
+     *     Must have length of at least 1, match pattern "{@code (/|ptid:).*}",
+     *     and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
