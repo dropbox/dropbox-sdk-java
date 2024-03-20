@@ -76,10 +76,10 @@ abstract class StoneTask : DefaultTask() {
             include("**/*.stone")
         }.files
 
-        val refsFile = File(outputDirectory, "refs/javadoc-refs.json")
+        val refsFile = File(outputDirectory.parentFile, "refs/javadoc-refs.json")
         refsFile.parentFile.mkdirs()
 
-        val logFile = File(outputDir.asFile.get(), "log/stone.log")
+        val logFile = File(outputDirectory.parentFile, "log/stone.log")
         logFile.parentFile.mkdirs()
 
         if (routeWhitelistFilter.isPresent) {
@@ -97,7 +97,7 @@ abstract class StoneTask : DefaultTask() {
                     "--attribute", ":all",
 
                     generatorFile.get().asFile,
-                    outputDirectory.resolve("src").absolutePath,
+                    outputDirectory.absolutePath,
                     *specFiles.map { it.absolutePath }.toTypedArray(),
                     "--", "--package", stoneConfig.packageName,
             )
