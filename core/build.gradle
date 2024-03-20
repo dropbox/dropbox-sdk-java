@@ -313,8 +313,8 @@ tasks.named("generateStone", StoneTask) {
             ),
 
     ])
-    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/main"))
-    sourceSets { main { java.srcDir(outputDir.file("src")) } }
+    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/main/src"))
+    sourceSets { main { java.srcDir(outputDir) } }
 }
 
 tasks.named("generateTestStone", StoneTask) {
@@ -333,8 +333,8 @@ tasks.named("generateTestStone", StoneTask) {
                     )
             ),
     ])
-    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/test"))
-    sourceSets { test { java.srcDir(outputDir.file("src")) } }
+    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/test/src"))
+    sourceSets { test { java.srcDir(outputDir) } }
 }
 
 mavenPublishing {
