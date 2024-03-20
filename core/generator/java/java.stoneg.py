@@ -918,15 +918,15 @@ class JavaClassWriter:
         if package_doc:
             assert java_class.name == 'package-info', "Only package-info.java files can contain package Javadoc"
 
-    def _mkdirs(self, path):
-        if not os.path.isdir(path):
-            self._g.logger.info('Creating directory %s', path)
-            os.makedirs(path)
+    # def _mkdirs(self, path):
+    #     if not os.path.isdir(path):
+    #         self._g.logger.info('Creating directory %s', path)
+    #         os.makedirs(path)
 
     def __enter__(self):
         components = self._class.import_class.fq.split('.')
         path = os.path.join(*components)
-        self._mkdirs(os.path.dirname(path))
+        # self._mkdirs(os.path.dirname(path))
 
         self._enter_ctx = self._g.output_to_relative_path(path + '.java')
         self._enter_ctx.__enter__()
@@ -1604,7 +1604,7 @@ class JavaApi:
 
     @staticmethod
     def _resolve_data_type_visibility(api):
-        visibility = defaultdict(lambda: Visibility.NONE)
+        visibility = defaultdict(lambda: Visibility.PUBLIC )
 
         def update(data_type, new_visibility):
             visibility[data_type] = max(visibility[data_type], new_visibility)
@@ -1705,7 +1705,7 @@ class JavaApi:
 
     @staticmethod
     def _resolve_serializer_visibility(api):
-        visibility = defaultdict(lambda: Visibility.NONE)
+        visibility = defaultdict(lambda: Visibility.PUBLIC)
 
         def update(data_type, new_visibility):
             visibility[data_type] = max(visibility[data_type], new_visibility)

@@ -17,21 +17,29 @@ import java.io.File
 class StonePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
-        val javaPluginExtension = target.extensions.getByType(JavaPluginExtension::class.java)
-
-        // add generateStone task for all source sets (e.g. generateTestStone, etc)
-        javaPluginExtension.sourceSets.forEach { sourceSet: SourceSet ->
-            createTaskForSourceSet(target, sourceSet)
+        target.pluginManager.withPlugin("java") {
+            val extension = target.extensions.getByType(JavaPluginExtension::class.java)
+//            extension.sourceSets.forEach { createTaskForSourceSet(target, it) }
+            extension.sourceSets.configureEach {
+                createTaskForSourceSet(target, this)
+            }
         }
+//
+//        val javaPluginExtension = target.extensions.getByType(JavaPluginExtension::class.java)
+//
+//        // add generateStone task for all source sets (e.g. generateTestStone, etc)
+//        javaPluginExtension.sourceSets.forEach { sourceSet: SourceSet ->
+//            createTaskForSourceSet(target, sourceSet)
+//        }
 
         // Declare dependency of compile tasks on stone tasks.
         // We need the generated code first or the project won't compile.
-        target.tasks.withType<JavaCompile>().configureEach {
-            dependsOn(target.tasks.withType<StoneTask>())
-        }
-        target.tasks.withType<KotlinCompile>().configureEach {
-            dependsOn(target.tasks.withType<StoneTask>())
-        }
+//        target.tasks.withType<JavaCompile>().configureEach {
+//            dependsOn(target.tasks.withType<StoneTask>())
+//        }
+//        target.tasks.withType<KotlinCompile>().configureEach {
+//            dependsOn(target.tasks.withType<StoneTask>())
+//        }
     }
 
     private fun createTaskForSourceSet(
@@ -45,7 +53,8 @@ class StonePlugin : Plugin<Project> {
             "generate${sourceSet.name.capitalize()}Stone"
         }
 
-        project.tasks.register(taskName, StoneTask::class.java) {
+        val outputProp = project.layout.buildDirectory.dir("generated/sources/stone/java/${sourceSet.name}")
+        val stoneTask = project.tasks.register(taskName, StoneTask::class.java) {
             description = "Generate Stone Java source files for ${sourceSet.name}."
 
             val routeWhitelistFilterPropName = "com.dropbox.api.${sourceSet.name}.routeWhitelistFilter"
@@ -57,12 +66,12 @@ class StonePlugin : Plugin<Project> {
             val mySpecDir: String = specDirPropNameValue ?: "src/${sourceSet.name}/stone"
             specDir.set(File(mySpecDir))
 
-            generatorFile.set(File("${project.projectDir}/generator/java/java.stoneg.py"))
-            stoneDir.set(File("stone"))
-            pythonCommand.set("python")
-            outputDir.set(File("${project.buildDir}/generated/source/stone/${sourceSet.name}"))
-
-            sourceSet.java.srcDir("${outputDir}/src")
+            pythonCommand.set("python3")
+            generatorFile.set(project.layout.projectDirectory.file("generator/java/java.stoneg.py"))
+            stoneDir.set(project.layout.projectDirectory.dir("stone"))
+            outputDir.set(outputProp)
         }
+//        sourceSet.java.srcDir(outputProp)
+        sourceSet.java.srcDir(stoneTask)
     }
 }

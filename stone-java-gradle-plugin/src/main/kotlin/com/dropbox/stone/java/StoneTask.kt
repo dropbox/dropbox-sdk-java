@@ -69,18 +69,14 @@ abstract class StoneTask : DefaultTask() {
         }
 
         val outputDirectory = outputDir.asFile.get()
-        outputDirectory.deleteRecursively()
         outputDirectory.mkdirs()
 
         val specFiles = specDir.asFileTree.matching {
             include("**/*.stone")
         }.files
 
-        val refsFile = File(outputDirectory, "refs/javadoc-refs.json")
-        refsFile.parentFile.mkdirs()
-
-        val logFile = File(outputDir.asFile.get(), "log/stone.log")
-        logFile.parentFile.mkdirs()
+//        val refsFile = File(outputDirectory, "refs/javadoc-refs.json")
+//        refsFile.parentFile.mkdirs()
 
         if (routeWhitelistFilter.isPresent) {
             for (config: StoneConfig in stoneConfigs.get()) {
@@ -97,7 +93,7 @@ abstract class StoneTask : DefaultTask() {
                     "--attribute", ":all",
 
                     generatorFile.get().asFile,
-                    outputDirectory.resolve("src").absolutePath,
+                    outputDirectory.absolutePath,
                     *specFiles.map { it.absolutePath }.toTypedArray(),
                     "--", "--package", stoneConfig.packageName,
             )
@@ -115,7 +111,7 @@ abstract class StoneTask : DefaultTask() {
             if (stoneConfig.dataTypesOnly) {
                 generatorArgs += "--data-types-only"
             } else {
-                generatorArgs.addAll(listOf("--javadoc-refs", refsFile.absolutePath))
+//                generatorArgs.addAll(listOf("--javadoc-refs", refsFile.absolutePath))
                 stoneConfig.client?.let { client ->
                     generatorArgs += listOfNotNull(
                             client.name?.let { "--client-class" to it },
@@ -127,7 +123,6 @@ abstract class StoneTask : DefaultTask() {
             }
 
             exec.exec {
-                standardOutput = FileOutputStream(logFile, append)
                 environment["PYTHONPATH"] = stoneDir.get()
                 logger.info("Calling stone generator: {${generatorArgs.joinToString(" ")}}")
                 commandLine(generatorArgs)

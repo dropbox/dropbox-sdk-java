@@ -10,7 +10,6 @@ plugins {
     id "com.vanniktech.maven.publish"
     id "com.github.ben-manes.versions"
     id "com.dropbox.dependency-guard"
-    id "com.dropbox.stone.java"
     id "org.jetbrains.kotlinx.binary-compatibility-validator"
 }
 
@@ -23,8 +22,6 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 ext {
     mavenName = 'Official Dropbox Java SDK'
-    generatedSources = file("$buildDir/generated-sources")
-    generatedResources = file("$buildDir/generated-resources")
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
 }
 
@@ -248,71 +245,6 @@ tasks.named("dependencyUpdates") {
             }
         }
     }
-}
-
-tasks.named("generateStone", StoneTask) {
-    String unusedClassesToGenerate = 'AuthError, PathRoot, PathRootError, AccessError, RateLimitError'
-    String packageName = 'com.dropbox.core.v2'
-    String globalRouteFilter = 'alpha_group=null and beta_group=null'
-    pythonCommand.set("python3")
-    stoneConfigs.addAll([
-            new StoneConfig(
-                    packageName: packageName,
-                    globalRouteFilter: globalRouteFilter,
-                    client: new ClientSpec(
-                            name: 'DbxUserClient',
-                            javadoc: 'Base class for user auth clients.',
-                            requestsClassnamePrefix: "DbxUser",
-                            routeFilter: 'auth="user" or auth="noauth" or auth="app, user"',
-                            unusedClassesToGenerate: unusedClassesToGenerate,
-                    ),
-            ),
-            new StoneConfig(
-                    packageName: packageName,
-                    globalRouteFilter: globalRouteFilter,
-                    client: new ClientSpec(
-                            name: 'DbxTeamClient',
-                            javadoc: 'Base class for team auth clients.',
-                            requestsClassnamePrefix: 'DbxTeam',
-                            routeFilter: 'auth="team"',
-                    ),
-            ),
-            new StoneConfig(
-                    packageName: packageName,
-                    globalRouteFilter: globalRouteFilter,
-                    client: new ClientSpec(
-                            name: 'DbxAppClient',
-                            javadoc: 'Base class for app auth clients.',
-                            requestsClassnamePrefix: "DbxApp",
-                            routeFilter: 'auth="app" or auth="app, user"',
-                    )
-            ),
-
-    ])
-    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/main"))
-    sourceSets { main { java.srcDir(outputDir.file("src")) } }
-}
-//sourceSets.main.java.srcDir(generateStone.outputs.dir("src"))
-
-tasks.named("generateTestStone", StoneTask) {
-    String packageName = 'com.dropbox.core.stone'
-    pythonCommand.set("python3")
-    stoneConfigs.addAll([
-            new StoneConfig(
-                    packageName: packageName,
-                    dataTypesOnly: true,
-            ),
-            new StoneConfig(
-                    packageName: packageName,
-                    client: new ClientSpec(
-                            name: 'DbxUserClient',
-                            javadoc: 'TestClass.',
-                            requestsClassnamePrefix: "DbxTest",
-                    )
-            ),
-    ])
-    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/test"))
-    sourceSets { test { java.srcDir(outputDir.file("src")) } }
 }
 
 mavenPublishing {

@@ -65,7 +65,7 @@ public final class DbxClientV1
         if (accessToken == null) throw new IllegalArgumentException("'accessToken' is null");
         if (host == null) throw new IllegalArgumentException("'host' is null");
 
-        this.requestConfig = requestConfig;
+        this.requestConfig = requestConfig.copy().withSdkVersion(DbxSdkVersion.Version).build();
         this.accessToken = accessToken;
         this.host = host;
     }

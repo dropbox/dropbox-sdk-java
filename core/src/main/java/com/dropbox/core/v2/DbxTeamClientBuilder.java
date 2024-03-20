@@ -1,9 +1,6 @@
 package com.dropbox.core.v2;
 
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxHost;
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.DbxRequestUtil;
+import com.dropbox.core.*;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.http.StandardHttpRequestor;
 import com.dropbox.core.oauth.DbxCredential;
@@ -110,6 +107,7 @@ public class DbxTeamClientBuilder {
 
     public DbxTeamClient build() {
         DbxRequestConfig.Builder requestConfigBuilder = DbxRequestConfig.newBuilder(clientIdentifier)
+                .withSdkVersion(DbxSdkVersion.Version)
                 .withHttpRequestor(httpRequestor)
                 .withUserLocale(userLocale);
         if (maxRetries == 0) {

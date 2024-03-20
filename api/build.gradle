@@ -12,6 +12,7 @@ plugins {
 dependencies {
     api(project(":entities"))
     api(dropboxJavaSdkLibs.jackson.core)
+    api(dropboxJavaSdkLibs.jsr305)
 }
 
 tasks.register('versionWriterTask') {
@@ -44,10 +45,10 @@ tasks.named("generateStone", StoneTask) {
     String packageName = 'com.dropbox.core.v2'
     String globalRouteFilter = 'alpha_group=null and beta_group=null'
 
+    generatorFile.set(project.rootProject.layout.projectDirectory.file("core/generator/java/java.stoneg.py"))
     stoneDir.set(project.rootProject.layout.projectDirectory.dir("core/stone"))
     specDir.set(project.rootProject.layout.projectDirectory.dir("core/src/main/stone"))
 
-    pythonCommand.set("python3")
     stoneConfigs.addAll([
             new StoneConfig(
                     packageName: packageName,
@@ -81,15 +82,12 @@ tasks.named("generateStone", StoneTask) {
             ),
 
     ])
-    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/main"))
-    sourceSets { main { java.srcDir(outputDir.file("src")) } }
 }
-//sourceSets.main.java.srcDir(generateStone.outputs.dir("src"))
 
 tasks.named("generateTestStone", StoneTask) {
     String packageName = 'com.dropbox.core.stone'
 
-    pythonCommand.set("python3")
+    generatorFile.set(project.rootProject.layout.projectDirectory.file("core/generator/java/java.stoneg.py"))
     stoneDir.set(project.rootProject.layout.projectDirectory.dir("core/stone"))
     specDir.set(project.rootProject.layout.projectDirectory.dir("core/src/main/stone"))
 
@@ -107,10 +105,7 @@ tasks.named("generateTestStone", StoneTask) {
                     )
             ),
     ])
-    outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/test"))
-    sourceSets { test { java.srcDir(outputDir.file("src")) } }
 }
-//sourceSets.test.java.srcDir(generateStone.outputs.dir("src"))
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8

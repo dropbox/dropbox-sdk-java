@@ -3,6 +3,7 @@ package com.dropbox.core.v2;
 import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
+import com.dropbox.core.DbxSdkVersion;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.http.StandardHttpRequestor;
 import com.dropbox.core.oauth.DbxRefreshResult;
@@ -59,6 +60,7 @@ public class DbxAppClientBuilder {
     public DbxAppClient build() {
         DbxRequestConfig.Builder requestConfigBuilder = DbxRequestConfig
                 .newBuilder(clientIdentifier)
+                .withSdkVersion(DbxSdkVersion.Version)
                 .withHttpRequestor(httpRequestor)
                 .withUserLocale(userLocale);
         if (maxRetries == 0) {
