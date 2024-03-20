@@ -2,8 +2,8 @@ package com.dropbox.core.examples.tutorial;
 
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.DbxUserClient;
+import com.dropbox.core.v2.DbxUserClientBuilder;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
@@ -11,16 +11,16 @@ import com.dropbox.core.v2.users.FullAccount;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class TutorialExample {
     private static final String ACCESS_TOKEN = "<ACCESS TOKEN>";
 
     public static void main(String args[]) throws DbxException, IOException {
         // Create Dropbox client
-        DbxRequestConfig config = new DbxRequestConfig("dropbox/java-tutorial");
-        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+        DbxUserClient client = new DbxUserClientBuilder("dropbox/java-tutorial", ACCESS_TOKEN)
+                .build();
 
         // Get current account info
         FullAccount account = client.users().getCurrentAccount();

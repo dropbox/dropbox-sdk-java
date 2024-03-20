@@ -5,9 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import com.dropbox.core.DbxException
-import com.dropbox.core.DbxRequestConfig
 import com.dropbox.core.oauth.DbxCredential
-import com.dropbox.core.v2.DbxClientV2
+import com.dropbox.core.v2.DbxUserClientBuilder
+import com.dropbox.core.v2.DbxUserClient
 import com.dropbox.core.v2.files.FileMetadata
 import com.dropbox.core.v2.files.Metadata
 import com.dropbox.core.v2.files.WriteMode
@@ -28,10 +28,10 @@ class DropboxApiWrapper(
     private val ioDispatcher: CoroutineContext = Dispatchers.IO
 ) {
 
-    val dropboxClient: DbxClientV2 = DbxClientV2(
-        DbxRequestConfig(clientIdentifier),
+    val dropboxClient: DbxUserClient = DbxUserClientBuilder(
+        clientIdentifier,
         dbxCredential
-    )
+    ).build()
 
     suspend fun getCurrentAccount(): GetCurrentAccountResult = withContext(ioDispatcher) {
         try {

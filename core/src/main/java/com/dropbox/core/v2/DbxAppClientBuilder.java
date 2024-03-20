@@ -5,7 +5,6 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.http.StandardHttpRequestor;
-import com.dropbox.core.oauth.DbxCredential;
 import com.dropbox.core.oauth.DbxRefreshResult;
 import com.dropbox.core.v2.common.PathRoot;
 import org.jetbrains.annotations.NotNull;
@@ -14,51 +13,50 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Build a new {@link DbxAppClientV2Base}.
+ * Build a new {@link DbxAppClient}.
  */
-public class DbxAppClientV2Builder {
+public class DbxAppClientBuilder {
     @NotNull private final String clientIdentifier;
     @NotNull private final String key;
     @NotNull private final String secret;
     @NotNull private DbxHost host = DbxHost.DEFAULT;
     @NotNull private HttpRequestor httpRequestor = StandardHttpRequestor.INSTANCE;
-    @Nullable
-    private String userLocale = null;
+    @Nullable private String userLocale = null;
     @Nullable private String userId = null;
     private int maxRetries = 0;
 
-    public DbxAppClientV2Builder(@NotNull String clientIdentifier, @NotNull String key, @NotNull String secret) {
+    public DbxAppClientBuilder(@NotNull String clientIdentifier, @NotNull String key, @NotNull String secret) {
         this.clientIdentifier = clientIdentifier;
         this.key = key;
         this.secret = secret;
     }
 
-    public DbxAppClientV2Builder setHost(@NotNull DbxHost host) {
+    public DbxAppClientBuilder setHost(@NotNull DbxHost host) {
         this.host = host;
         return this;
     }
 
-    public DbxAppClientV2Builder setHttpRequestor(@NotNull HttpRequestor httpRequestor) {
+    public DbxAppClientBuilder setHttpRequestor(@NotNull HttpRequestor httpRequestor) {
         this.httpRequestor = httpRequestor;
         return this;
     }
 
-    public DbxAppClientV2Builder setUserLocale(@Nullable String userLocale) {
+    public DbxAppClientBuilder setUserLocale(@Nullable String userLocale) {
         this.userLocale = userLocale;
         return this;
     }
 
-    public DbxAppClientV2Builder setUserId(@Nullable String userId) {
+    public DbxAppClientBuilder setUserId(@Nullable String userId) {
         this.userId = userId;
         return this;
     }
 
-    public DbxAppClientV2Builder setMaxRetries(int maxRetries) {
+    public DbxAppClientBuilder setMaxRetries(int maxRetries) {
         this.maxRetries = maxRetries;
         return this;
     }
 
-    public DbxAppClientV2Base build() {
+    public DbxAppClient build() {
         DbxRequestConfig.Builder requestConfigBuilder = DbxRequestConfig
                 .newBuilder(clientIdentifier)
                 .withHttpRequestor(httpRequestor)
@@ -68,7 +66,7 @@ public class DbxAppClientV2Builder {
         } else {
             requestConfigBuilder.withAutoRetryEnabled(maxRetries);
         }
-        return new DbxAppClientV2Base(
+        return new DbxAppClient(
                 new DbxAppRawClientV2(
                         requestConfigBuilder.build(),
                         key,

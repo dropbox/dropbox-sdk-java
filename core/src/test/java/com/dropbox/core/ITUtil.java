@@ -13,6 +13,8 @@ import java.util.Random;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import com.dropbox.core.v2.DbxUserClient;
+import com.dropbox.core.v2.DbxUserClientBuilder;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalURLFetchServiceTestConfig;
 
@@ -30,7 +32,6 @@ import com.dropbox.core.http.OkHttp3Requestor;
 import com.dropbox.core.http.StandardHttpRequestor;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.v1.DbxClientV1;
-import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.DeleteErrorException;
 
 // integration test utility class
@@ -179,21 +180,21 @@ public final class ITUtil {
         );
     }
 
-    public static DbxClientV2 newClientV2() {
+    public static DbxUserClient newClientV2() {
         return newClientV2(newRequestConfig());
     }
 
-    public static DbxClientV2 newClientV2(DbxRequestConfig.Builder config) {
+    public static DbxUserClient newClientV2(DbxRequestConfig.Builder config) {
         return newClientV2(config.build());
     }
 
-    public static DbxClientV2 newClientV2(DbxRequestConfig config) {
+    public static DbxUserClient newClientV2(DbxRequestConfig config) {
         DbxAuthInfo auth = getAuth();
-        return new DbxClientV2(
-            config,
-            auth.getAccessToken(),
-            auth.getHost()
-        );
+        return new DbxUserClientBuilder(config.getClientIdentifier(), auth.getAccessToken())
+                .setHttpRequestor(config.getHttpRequestor())
+                .setUserLocale(config.getUserLocale())
+                .setHost(auth.getHost())
+                .build();
     }
 
     private static final class RootContainer {
@@ -245,7 +246,7 @@ public final class ITUtil {
     @AfterSuite(alwaysRun=true)
     public static void deleteRoot() throws Exception {
         // always use standard HTTP requestor for delete root
-        DbxClientV2 client = newClientV2(
+        DbxUserClient client = newClientV2(
             newRequestConfig()
                 .withHttpRequestor(newStandardHttpRequestor())
         );

@@ -15,9 +15,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Build a new {@link DbxClientV2Base}.
+ * Build a new {@link DbxUserClient}.
  */
-public class DbxClientV2Builder {
+public class DbxUserClientBuilder {
     @NotNull private final DbxCredential credential;
     @NotNull private final String clientIdentifier;
     @NotNull private DbxHost host = DbxHost.DEFAULT;
@@ -27,46 +27,66 @@ public class DbxClientV2Builder {
     @Nullable private PathRoot pathRoot = null;
     private int maxRetries = 0;
 
-    public DbxClientV2Builder(@NotNull String clientIdentifier, @NotNull String accessToken) {
+    public DbxUserClientBuilder(@NotNull String clientIdentifier, @NotNull String accessToken) {
         this(clientIdentifier, new DbxCredential(accessToken));
     }
 
-    public DbxClientV2Builder(@NotNull String clientIdentifier, @NotNull DbxCredential credential) {
+    public DbxUserClientBuilder(@NotNull String clientIdentifier, @NotNull DbxCredential credential) {
         this.clientIdentifier = clientIdentifier;
         this.credential = credential;
     }
 
-    public DbxClientV2Builder setHost(@NotNull DbxHost host) {
+    public DbxUserClientBuilder(@NotNull DbxUserClient client, @NotNull String accessToken) {
+        this(client, new DbxCredential(accessToken));
+    }
+
+    public DbxUserClientBuilder(@NotNull DbxUserClient client, @NotNull DbxCredential credential) {
+        this(client._client.getRequestConfig(), credential);
+    }
+
+    public DbxUserClientBuilder(@NotNull DbxRequestConfig requestConfig, @NotNull String accessToken) {
+        this(requestConfig, new DbxCredential(accessToken));
+    }
+
+    public DbxUserClientBuilder(@NotNull DbxRequestConfig requestConfig, @NotNull DbxCredential credential) {
+        this.clientIdentifier = requestConfig.getClientIdentifier();
+        this.userLocale = requestConfig.getUserLocale();
+        this.httpRequestor = requestConfig.getHttpRequestor();
+        this.maxRetries = requestConfig.getMaxRetries();
+        this.credential = credential;
+    }
+
+    public DbxUserClientBuilder setHost(@NotNull DbxHost host) {
         this.host = host;
         return this;
     }
 
-    public DbxClientV2Builder setUserId(@Nullable String userId) {
+    public DbxUserClientBuilder setUserId(@Nullable String userId) {
         this.userId = userId;
         return this;
     }
 
-    public DbxClientV2Builder setPathRoot(@Nullable PathRoot pathRoot) {
+    public DbxUserClientBuilder setPathRoot(@Nullable PathRoot pathRoot) {
         this.pathRoot = pathRoot;
         return this;
     }
 
-    public DbxClientV2Builder setUserLocale(@Nullable String userLocale) {
+    public DbxUserClientBuilder setUserLocale(@Nullable String userLocale) {
         this.userLocale = userLocale;
         return this;
     }
 
-    public DbxClientV2Builder setHttpRequestor(@NotNull HttpRequestor httpRequestor) {
+    public DbxUserClientBuilder setHttpRequestor(@NotNull HttpRequestor httpRequestor) {
         this.httpRequestor = httpRequestor;
         return this;
     }
 
-    public DbxClientV2Builder setMaxRetries(int maxRetries) {
+    public DbxUserClientBuilder setMaxRetries(int maxRetries) {
         this.maxRetries = maxRetries;
         return this;
     }
 
-    public DbxClientV2Base build() {
+    public DbxUserClient build() {
         DbxRequestConfig.Builder requestConfigBuilder = DbxRequestConfig.newBuilder(clientIdentifier)
                 .withHttpRequestor(httpRequestor)
                 .withUserLocale(userLocale);
@@ -75,7 +95,7 @@ public class DbxClientV2Builder {
         } else {
             requestConfigBuilder.withAutoRetryEnabled(maxRetries);
         }
-        return new DbxClientV2Base(
+        return new DbxUserClient(
                 new DbxUserRawClientV2(
                         requestConfigBuilder.build(),
                         credential,

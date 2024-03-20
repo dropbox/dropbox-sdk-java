@@ -12,10 +12,10 @@ import static org.testng.Assert.*;
 
 import com.dropbox.core.DbxAuthInfo;
 import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.DbxUserClient;
+import com.dropbox.core.v2.DbxUserClientBuilder;
 import com.dropbox.core.v2.files.CreateFolderErrorException;
 import com.dropbox.core.v2.files.DeleteErrorException;
 import com.dropbox.core.v2.files.DeletedMetadata;
@@ -35,7 +35,7 @@ import com.dropbox.core.v2.users.FullAccount;
 public class Main {
     private static final Random RAND = new Random(0L);
 
-    private static void testBasicSerialization(DbxClientV2 client) throws DbxException, IOException {
+    private static void testBasicSerialization(DbxUserClient client) throws DbxException, IOException {
         // Make the /account/info API call.
         FullAccount expected = client.users().getCurrentAccount();
         assertNotNull(expected);
@@ -50,7 +50,7 @@ public class Main {
         assertEquals(actual.getEmail(), expected.getEmail());
     }
 
-    private static void testEnumeratedSubtypeSerialization(DbxClientV2 client) throws DbxException, IOException {
+    private static void testEnumeratedSubtypeSerialization(DbxUserClient client) throws DbxException, IOException {
         String rootPath = "/test/proguard-tests";
 
         try {
@@ -112,7 +112,7 @@ public class Main {
         }
     }
 
-    private static void testErrorSerialization(DbxClientV2 client) throws IOException, DbxException {
+    private static void testErrorSerialization(DbxUserClient client) throws IOException, DbxException {
         // either getting the metadata or deleting will always fail.
         String fakePath = "/tests/_fake_path.txt";
         try {
@@ -153,14 +153,14 @@ public class Main {
             return;
         }
 
-        DbxClientV2 client = createClient(args[0]);
+        DbxUserClient client = createClient(args[0]);
 
         runTest(client, Main::testBasicSerialization, "testBasicSerialization");
         runTest(client, Main::testEnumeratedSubtypeSerialization, "testEnumeratedSubtypeSerialization");
         runTest(client, Main::testErrorSerialization, "testErrorSerialization");
     }
 
-    private static void runTest(DbxClientV2 client, ClientTest test, String name) {
+    private static void runTest(DbxUserClient client, ClientTest test, String name) {
         System.out.print(String.format("TEST %45s: ", name));
         try {
             test.run(client);
@@ -178,7 +178,7 @@ public class Main {
         }
     }
 
-    private static DbxClientV2 createClient(String authFile) {
+    private static DbxUserClient createClient(String authFile) {
         DbxAuthInfo authInfo;
         try {
             authInfo = DbxAuthInfo.Reader.readFromFile(authFile);
@@ -188,8 +188,9 @@ public class Main {
             return null;
         }
 
-        DbxRequestConfig requestConfig = new DbxRequestConfig("examples-proguard");
-        return new DbxClientV2(requestConfig, authInfo.getAccessToken(), authInfo.getHost());
+        return new DbxUserClientBuilder("examples-proguard", authInfo.getAccessToken())
+                .setHost(authInfo.getHost())
+                .build();
     }
 
     private static byte [] bytes(int num) {
@@ -200,6 +201,6 @@ public class Main {
 
     @FunctionalInterface
     private interface ClientTest {
-        void run(DbxClientV2 client) throws DbxException, IOException;
+        void run(DbxUserClient client) throws DbxException, IOException;
     }
 }

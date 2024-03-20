@@ -6,8 +6,9 @@ import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestUtil;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.StringUtil;
-import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.DbxPathV2;
+import com.dropbox.core.v2.DbxUserClient;
+import com.dropbox.core.v2.DbxUserClientBuilder;
 import com.dropbox.core.v2.files.DeletedMetadata;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.FolderMetadata;
@@ -43,7 +44,7 @@ public class DropboxBrowse
         this.common = common;
     }
 
-    private DbxClientV2 requireDbxClient(HttpServletRequest request, HttpServletResponse response, User user)
+    private DbxUserClient requireDbxClient(HttpServletRequest request, HttpServletResponse response, User user)
             throws IOException, ServletException
     {
         if (user.dropboxAccessToken == null) {
@@ -51,9 +52,10 @@ public class DropboxBrowse
             return null;
         }
 
-        return new DbxClientV2(common.getRequestConfig(request),
-                               user.dropboxAccessToken,
-                               common.dbxAppInfo.getHost());
+        return new DbxUserClientBuilder("example-web-file-browser", user.dropboxAccessToken)
+                .setUserLocale(request.getLocale().toLanguageTag())
+                .setHost(common.dbxAppInfo.getHost())
+                .build();
     }
 
     private boolean checkPathError(HttpServletResponse response, String path, LookupError le)
@@ -68,7 +70,7 @@ public class DropboxBrowse
         return false;
     }
 
-    private void renderFolder(HttpServletResponse response, User user, DbxClientV2 dbxClient, String path)
+    private void renderFolder(HttpServletResponse response, User user, DbxUserClient dbxClient, String path)
         throws IOException
     {
         // Get the folder listing from Dropbox.
@@ -191,7 +193,7 @@ public class DropboxBrowse
             return;
         }
 
-        DbxClientV2 dbxClient = requireDbxClient(request, response, user);
+        DbxUserClient dbxClient = requireDbxClient(request, response, user);
         if (dbxClient == null) return;
 
         String path = request.getParameter("path");
@@ -247,7 +249,7 @@ public class DropboxBrowse
         User user = common.requireLoggedInUser(request, response);
         if (user == null) return;
 
-        DbxClientV2 dbxClient = requireDbxClient(request, response, user);
+        DbxUserClient dbxClient = requireDbxClient(request, response, user);
         if (dbxClient == null) return;
 
         try {

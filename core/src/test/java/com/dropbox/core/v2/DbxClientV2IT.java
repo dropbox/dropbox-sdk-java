@@ -27,7 +27,7 @@ import com.dropbox.core.v2.users.FullAccount;
 public class DbxClientV2IT {
     @Test
     public void testAccountInfo() throws Exception {
-        DbxClientV2 client = ITUtil.newClientV2();
+        DbxUserClient client = ITUtil.newClientV2();
 
         FullAccount full = client.users().getCurrentAccount();
         assertThat(full).isNotNull();
@@ -53,7 +53,7 @@ public class DbxClientV2IT {
 
     @Test
     public void testOkHttpClientStreamingUpload() throws Exception {
-        DbxClientV2 client = ITUtil.newClientV2(ITUtil.newRequestConfig()
+        DbxUserClient client = ITUtil.newClientV2(ITUtil.newRequestConfig()
             .withHttpRequestor(ITUtil.newOkHttpRequestor())
             .build()
         );
@@ -62,7 +62,7 @@ public class DbxClientV2IT {
 
     @Test
     public void testOkHttp3ClientStreamingUpload() throws Exception {
-        DbxClientV2 client = ITUtil.newClientV2(ITUtil.newRequestConfig()
+        DbxUserClient client = ITUtil.newClientV2(ITUtil.newRequestConfig()
             .withHttpRequestor(ITUtil.newOkHttp3Requestor())
             .build()
         );
@@ -71,14 +71,14 @@ public class DbxClientV2IT {
 
     @Test
     public void testOkHttp3ClientStreamingUploadWithProgress() throws Exception {
-        DbxClientV2 client = ITUtil.newClientV2(ITUtil.newRequestConfig()
+        DbxUserClient client = ITUtil.newClientV2(ITUtil.newRequestConfig()
                 .withHttpRequestor(ITUtil.newOkHttp3Requestor())
                 .build()
         );
         testUploadAndDownload(client, true);
     }
 
-    private void testUploadAndDownload(DbxClientV2 client, boolean trackProgress) throws Exception {
+    private void testUploadAndDownload(DbxUserClient client, boolean trackProgress) throws Exception {
         final byte [] contents = ITUtil.randomBytes(1024 << 8);
         String filename = "testUploadAndDownload.dat";
         String path = ITUtil.path(getClass(), "/" + filename);
@@ -130,7 +130,7 @@ public class DbxClientV2IT {
 
     @Test
     public void testRangeDownload() throws Exception {
-        DbxClientV2 client = ITUtil.newClientV2();
+        DbxUserClient client = ITUtil.newClientV2();
 
         byte [] contents = ITUtil.randomBytes(500);
         String path = ITUtil.path(getClass(), "/testRangeDownload.dat");
@@ -153,7 +153,7 @@ public class DbxClientV2IT {
 
     @Test
     public void testDownloadBuilder() throws Exception {
-        DbxClientV2 client = ITUtil.newClientV2();
+        DbxUserClient client = ITUtil.newClientV2();
         String now = ITUtil.format(new Date());
 
         byte [] rtfV1 = ITUtil.toBytes("{\rtf1 sample {\b v1} (" + now + ")}");
@@ -211,7 +211,7 @@ public class DbxClientV2IT {
 
     @Test(expectedExceptions={GetMetadataErrorException.class})
     public void testError409() throws Exception {
-        DbxClientV2 client = ITUtil.newClientV2();
+        DbxUserClient client = ITUtil.newClientV2();
 
         String path = ITUtil.path(getClass(), "/testError409/" + ITUtil.format(new Date()));
 
@@ -245,7 +245,7 @@ public class DbxClientV2IT {
 
     @Test(expectedExceptions={BadRequestException.class})
     public void testError400() throws Exception {
-        DbxClientV2 client = ITUtil.newClientV2();
+        DbxUserClient client = ITUtil.newClientV2();
 
         // NOTE: if we become more lenient on the server, this test will have to change.
         String badCursor = "thisisabadcursor_dropbox-sdk-java_test";
@@ -266,7 +266,7 @@ public class DbxClientV2IT {
         assertUserMessageLocale(Locale.FRANCE); // fr-FR
 
         // Use user's Dropbox locale preference
-        DbxClientV2 client = ITUtil.newClientV2(ITUtil.newRequestConfig().withUserLocaleFromPreferences());
+        DbxUserClient client = ITUtil.newClientV2(ITUtil.newRequestConfig().withUserLocaleFromPreferences());
         try {
             client.sharing().getFolderMetadata("-1");
         } catch (DbxApiException ex) {
@@ -276,7 +276,7 @@ public class DbxClientV2IT {
         }
     }
 
-    private static void assertRangeDownload(DbxClientV2 client, String path, byte [] contents, int start, Integer length) throws Exception {
+    private static void assertRangeDownload(DbxUserClient client, String path, byte [] contents, int start, Integer length) throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream(contents.length);
         byte [] expected;
         if (length != null) {
@@ -298,7 +298,7 @@ public class DbxClientV2IT {
     }
 
     private static void assertUserMessageLocale(Locale locale) throws Exception {
-        DbxClientV2 client = ITUtil.newClientV2(ITUtil.newRequestConfig().withUserLocaleFrom(locale));
+        DbxUserClient client = ITUtil.newClientV2(ITUtil.newRequestConfig().withUserLocaleFrom(locale));
         try {
             client.sharing().getFolderMetadata("-1");
         } catch (DbxApiException ex) {

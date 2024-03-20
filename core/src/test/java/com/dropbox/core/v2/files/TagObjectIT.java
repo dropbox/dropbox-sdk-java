@@ -2,12 +2,12 @@ package com.dropbox.core.v2.files;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.ITUtil;
-import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.DbxUserClient;
 import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -17,8 +17,8 @@ import static org.testng.AssertJUnit.assertEquals;
  */
 public class TagObjectIT {
 
-    private List<TagObject> getTagsForPath(DbxClientV2 client, String dropboxPath) throws DbxException {
-        List<PathToTags> pathToTags = client.files().tagsGet(List.of(dropboxPath)).getPathsToTags();
+    private List<TagObject> getTagsForPath(DbxUserClient client, String dropboxPath) throws DbxException {
+        List<PathToTags> pathToTags = client.files().tagsGet(Collections.singletonList(dropboxPath)).getPathsToTags();
         assertEquals(1, pathToTags.size()); // There is only one path (the one we asked for)
         PathToTags pathToTag = pathToTags.get(0);
         assertEquals(dropboxPath, pathToTag.getPath()); // This is the path we are looking for
@@ -27,7 +27,7 @@ public class TagObjectIT {
 
     @Test
     public void testTagging() throws Exception {
-        DbxClientV2 client = ITUtil.newClientV2();
+        DbxUserClient client = ITUtil.newClientV2();
 
         byte[] contents = ("Tagging Test").getBytes();
         String dropboxPath = ITUtil.path(getClass(), "/tagging-test.txt");

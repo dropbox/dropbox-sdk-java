@@ -5,8 +5,7 @@ import com.dropbox.core.DbxOAuthTestBase;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.InvalidAccessTokenException;
 import com.dropbox.core.http.HttpRequestor;
-import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.DbxTeamClientV2;
+import com.dropbox.core.v2.*;
 import org.mockito.ArgumentCaptor;
 import org.testng.annotations.Test;
 
@@ -55,7 +54,7 @@ public class DbxRefreshTest extends DbxOAuthTestBase {
         actual.setIssueTime(0);
 
         assertThat(actual.getAccessToken()).isEqualTo(NEW_TOKEN);
-        assertThat(actual.getExpiresAt()).isEqualTo(new Long(EXPIRES_IN_SECONDS * 1000));
+        assertThat(actual.getExpiresAt()).isEqualTo(EXPIRES_IN_SECONDS * 1000);
     }
 
     @Test
@@ -110,7 +109,8 @@ public class DbxRefreshTest extends DbxOAuthTestBase {
         long expiresAtMs = currentMillis + EXPIRES_IN_SECONDS * 1000;
         DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, expiresAtMs, REFRESH_TOKEN,
             APP.getKey(), APP.getSecret());
-        DbxClientV2 client = new DbxClientV2(mockConfig, credential);
+        DbxUserClient client = new DbxUserClientBuilder(mockConfig.getClientIdentifier(), credential)
+                .build();
         DbxRefreshResult token = client.refreshAccessToken();
 
         // Get URL Param
@@ -150,7 +150,7 @@ public class DbxRefreshTest extends DbxOAuthTestBase {
         long expiresAtMs = currentMillis + EXPIRES_IN_SECONDS * 1000;
         DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, expiresAtMs, REFRESH_TOKEN,
             APP.getKey(), APP.getSecret());
-        DbxTeamClientV2 client = new DbxTeamClientV2(mockConfig, credential);
+        DbxTeamClient client = new DbxTeamClientBuilder(mockConfig, credential);
         DbxRefreshResult token = client.refreshAccessToken();
 
         // Get URL Param
@@ -265,7 +265,7 @@ public class DbxRefreshTest extends DbxOAuthTestBase {
         // Execute Refresh
         DbxCredential credential = new DbxCredential(EXPIRED_TOKEN, 100L, REFRESH_TOKEN,
             APP.getKey(), APP.getSecret());
-        DbxClientV2 client = new DbxClientV2(mockConfig, credential);
+        DbxUserClient client = new DbxUserClientBuilder(mockConfig.getClientIdentifier(), credential).build();
 
         try {
             client.refreshAccessToken();
@@ -297,7 +297,8 @@ public class DbxRefreshTest extends DbxOAuthTestBase {
         DbxCredential credential = new DbxCredential(NEW_TOKEN, now +2 * DbxCredential.EXPIRE_MARGIN,
             REFRESH_TOKEN,
             APP.getKey(), APP.getSecret());
-        DbxClientV2 client = new DbxClientV2(mockConfig, credential);
+        DbxUserClient client = new DbxUserClientBuilder(mockConfig.getClientIdentifier(), credential)
+                .build();
 
         try {
             client.users().getCurrentAccount();

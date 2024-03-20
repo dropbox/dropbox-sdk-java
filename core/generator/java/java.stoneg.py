@@ -2549,6 +2549,8 @@ class JavaCodeGenerationInstance:
                 j.java_class(namespace) for namespace in namespaces
             ])
             w.importer.add_imports('com.dropbox.core.v2.DbxRawClientV2')
+            w.importer.add_imports('com.dropbox.core.oauth.DbxRefreshResult')
+            w.importer.add_imports('com.dropbox.core.DbxException')
 
             w.write_imports()
 
@@ -2571,6 +2573,15 @@ class JavaCodeGenerationInstance:
                     w.out('this._client = _client;')
                     for namespace in namespaces:
                         w.out('this.%s = new %s(_client);', j.param_name(namespace), j.java_class(namespace))
+
+                w.out("")
+                w.javadoc(
+                    """
+                    Refreshes the client access token.
+                    """
+                )
+                with w.block("public DbxRefreshResult refreshAccessToken() throws DbxException"):
+                    w.out("return _client.refreshAccessToken();")
 
                 for namespace in namespaces:
                     w.out('')

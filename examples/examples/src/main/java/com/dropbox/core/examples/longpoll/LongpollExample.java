@@ -3,11 +3,11 @@ package com.dropbox.core.examples.longpoll;
 import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxAuthInfo;
 import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.NetworkIOException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.http.StandardHttpRequestor;
-import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.DbxUserClient;
+import com.dropbox.core.v2.DbxUserClientBuilder;
 import com.dropbox.core.v2.files.DeletedMetadata;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.FolderMetadata;
@@ -49,8 +49,8 @@ public class LongpollExample {
             .withReadTimeout(5, TimeUnit.MINUTES)
             .build();
 
-        DbxClientV2 dbxClient = createClient(auth, config);
-        DbxClientV2 dbxLongpollClient = createClient(auth, longpollConfig);
+        DbxUserClient dbxClient = createClient(auth, config);
+        DbxUserClient dbxLongpollClient = createClient(auth, longpollConfig);
 
         try {
             // We only care about file changes, not existing files, so grab latest cursor for this
@@ -106,14 +106,11 @@ public class LongpollExample {
      *
      * @return new Dropbox V2 client
      */
-    private static DbxClientV2 createClient(DbxAuthInfo auth, StandardHttpRequestor.Config config) {
-        String clientUserAgentId = "examples-longpoll";
-        StandardHttpRequestor requestor = new StandardHttpRequestor(config);
-        DbxRequestConfig requestConfig = DbxRequestConfig.newBuilder(clientUserAgentId)
-            .withHttpRequestor(requestor)
-            .build();
-
-        return new DbxClientV2(requestConfig, auth.getAccessToken(), auth.getHost());
+    private static DbxUserClient createClient(DbxAuthInfo auth, StandardHttpRequestor.Config config) {
+        return new DbxUserClientBuilder("examples-longpoll", auth.getAccessToken())
+                .setHttpRequestor(new StandardHttpRequestor(config))
+                .setHost(auth.getHost())
+                .build();
     }
 
     /**
@@ -125,7 +122,7 @@ public class LongpollExample {
      *
      * @return cursor for listing changes to the given Dropbox directory
      */
-    private static String getLatestCursor(DbxClientV2 dbxClient, String path)
+    private static String getLatestCursor(DbxUserClient dbxClient, String path)
         throws DbxApiException, DbxException {
         ListFolderGetLatestCursorResult result = dbxClient.files()
             .listFolderGetLatestCursorBuilder(path)
@@ -140,12 +137,12 @@ public class LongpollExample {
      * Prints changes made to a folder in Dropbox since the given
      * cursor was retrieved.
      *
-     * @param dbxClient Dropbox client to use for fetching folder changes
+     * @param client Dropbox client to use for fetching folder changes
      * @param cursor lastest cursor received since last set of changes
      *
      * @return latest cursor after changes
      */
-    private static String printChanges(DbxClientV2 client, String cursor)
+    private static String printChanges(DbxUserClient client, String cursor)
         throws DbxApiException, DbxException {
 
         while (true) {

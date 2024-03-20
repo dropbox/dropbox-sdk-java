@@ -279,12 +279,13 @@ tasks.named("generateStone", StoneTask) {
     String unusedClassesToGenerate = 'AuthError, PathRoot, PathRootError, AccessError, RateLimitError'
     String packageName = 'com.dropbox.core.v2'
     String globalRouteFilter = 'alpha_group=null and beta_group=null'
+    pythonCommand.set("python3")
     stoneConfigs.addAll([
             new StoneConfig(
                     packageName: packageName,
                     globalRouteFilter: globalRouteFilter,
                     client: new ClientSpec(
-                            name: 'DbxClientV2Base',
+                            name: 'DbxUserClient',
                             javadoc: 'Base class for user auth clients.',
                             requestsClassnamePrefix: "DbxUser",
                             routeFilter: 'auth="user" or auth="noauth" or auth="app, user"',
@@ -295,7 +296,7 @@ tasks.named("generateStone", StoneTask) {
                     packageName: packageName,
                     globalRouteFilter: globalRouteFilter,
                     client: new ClientSpec(
-                            name: 'DbxTeamClientV2Base',
+                            name: 'DbxTeamClient',
                             javadoc: 'Base class for team auth clients.',
                             requestsClassnamePrefix: 'DbxTeam',
                             routeFilter: 'auth="team"',
@@ -305,7 +306,7 @@ tasks.named("generateStone", StoneTask) {
                     packageName: packageName,
                     globalRouteFilter: globalRouteFilter,
                     client: new ClientSpec(
-                            name: 'DbxAppClientV2Base',
+                            name: 'DbxAppClient',
                             javadoc: 'Base class for app auth clients.',
                             requestsClassnamePrefix: "DbxApp",
                             routeFilter: 'auth="app" or auth="app, user"',
@@ -314,11 +315,13 @@ tasks.named("generateStone", StoneTask) {
 
     ])
     outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/main"))
-    sourceSets { main { java.srcDir(outputDir.file("src")) } }
+//    sourceSets { main { java.srcDir(outputDir.file("src")) } }
 }
+sourceSets.main.java.srcDir(generateStone.outputs.dir("src"))
 
 tasks.named("generateTestStone", StoneTask) {
     String packageName = 'com.dropbox.core.stone'
+    pythonCommand.set("python3")
     stoneConfigs.addAll([
             new StoneConfig(
                     packageName: packageName,
@@ -327,7 +330,7 @@ tasks.named("generateTestStone", StoneTask) {
             new StoneConfig(
                     packageName: packageName,
                     client: new ClientSpec(
-                            name: 'DbxClientV2Base',
+                            name: 'DbxUserClient',
                             javadoc: 'TestClass.',
                             requestsClassnamePrefix: "DbxTest",
                     )

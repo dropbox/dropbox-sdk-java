@@ -48,7 +48,7 @@ public class DbxClientV2Test {
             .withHttpRequestor(mockRequestor)
             .build();
 
-        DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
+        DbxUserClient client = new DbxUserClientBuilder(config, "fakeAccessToken").build();
 
         // 503 every time
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -96,7 +96,7 @@ public class DbxClientV2Test {
             .withHttpRequestor(mockRequestor)
             .build();
 
-        DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
+        DbxUserClient client = new DbxUserClientBuilder(config, "fakeAccessToken").build();
         FileMetadata expected = constructFileMetadate();
 
         // 503 twice, then return result
@@ -127,7 +127,7 @@ public class DbxClientV2Test {
             .withHttpRequestor(mockRequestor)
             .build();
 
-        DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
+        DbxUserClient client = new DbxUserClientBuilder(config, "fakeAccessToken").build();
 
         // 503 always and forever
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -152,7 +152,7 @@ public class DbxClientV2Test {
             .withHttpRequestor(mockRequestor)
             .build();
 
-        DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
+        DbxUserClient client = new DbxUserClientBuilder(config, "fakeAccessToken").build();
 
         // 503 once, then return 400
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -178,7 +178,7 @@ public class DbxClientV2Test {
             .withHttpRequestor(mockRequestor)
             .build();
 
-        DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
+        DbxUserClient client = new DbxUserClientBuilder(config, "fakeAccessToken").build();
         FileMetadata expectedMetadata = constructFileMetadate();
         byte [] expectedBytes = new byte [] { 1, 2, 3, 4 };
 
@@ -211,7 +211,7 @@ public class DbxClientV2Test {
             .withHttpRequestor(mockRequestor)
             .build();
 
-        DbxClientV2 client = new DbxClientV2(config, "fakeAccessToken");
+        DbxUserClient client = new DbxUserClientBuilder(config, "fakeAccessToken").build();
         FileMetadata expected = constructFileMetadate();
 
         // 503 twice, then return result
@@ -250,7 +250,7 @@ public class DbxClientV2Test {
         DbxCredential credential = new DbxCredential("accesstoken", 10L, "refresh_token",
             "appkey", "app_secret");
 
-        DbxClientV2 client = new DbxClientV2(config, credential);
+        DbxUserClient client = new DbxUserClientBuilder(config, credential).build();
         FileMetadata expected = constructFileMetadate();
 
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -289,7 +289,7 @@ public class DbxClientV2Test {
             "refresh_token",
             "appkey", "app_secret");
 
-        DbxClientV2 client = new DbxClientV2(config, credential);
+        DbxUserClient client = new DbxUserClientBuilder(config, credential).build();
         FileMetadata expected = constructFileMetadate();
 
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -329,7 +329,7 @@ public class DbxClientV2Test {
         DbxCredential credential = new DbxCredential("accesstoken", 10L, "refresh_token",
             "appkey", "app_secret");
 
-        DbxClientV2 client = new DbxClientV2(config, credential);
+        DbxUserClient client = new DbxUserClientBuilder(config, credential).build();
         FileMetadata expected = constructFileMetadate();
 
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -345,7 +345,7 @@ public class DbxClientV2Test {
         verify(mockRequestor, times(2)).startPost(anyString(), anyHeaders());
 
         assertThat(credential.getAccessToken()).isEqualTo("accesstoken");
-        assertThat(credential.getExpiresAt()).isEqualTo(new Long(10));
+        assertThat(credential.getExpiresAt()).isEqualTo(10L);
 
         assertThat(actual.getName()).isEqualTo(expected.getName());
         assertWithMessage(actual.getClass().toString()).that(actual instanceof FileMetadata).isTrue();
@@ -366,7 +366,7 @@ public class DbxClientV2Test {
             "refresh_token",
             "appkey", "app_secret");
 
-        DbxClientV2 client = new DbxClientV2(config, credential);
+        DbxUserClient client = new DbxUserClientBuilder(config, credential).build();
         FileMetadata expected = constructFileMetadate();
 
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -402,7 +402,7 @@ public class DbxClientV2Test {
             "refresh_token",
             "appkey", "app_secret");
 
-        DbxClientV2 client = new DbxClientV2(config, credential);
+        DbxUserClient client = new DbxUserClientBuilder(config, credential).build();
         FileMetadata expected = constructFileMetadate();
 
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -450,7 +450,7 @@ public class DbxClientV2Test {
             "refresh_token",
             "appkey", "app_secret");
 
-        DbxClientV2 client = new DbxClientV2(config, credential);
+        DbxUserClient client = new DbxUserClientBuilder(config, credential).build();
         FileMetadata expected = constructFileMetadate();
 
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -482,7 +482,7 @@ public class DbxClientV2Test {
 
         DbxCredential credential = new DbxCredential("accesstoken");
 
-        DbxClientV2 client = new DbxClientV2(config, credential);
+        DbxUserClient client = new DbxUserClientBuilder(config, credential).build();
         FileMetadata expected = constructFileMetadate();
 
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -515,7 +515,7 @@ public class DbxClientV2Test {
 
         DbxCredential credential = new DbxCredential("accesstoken");
 
-        DbxClientV2 client = new DbxClientV2(config, credential);
+        DbxUserClient client = new DbxUserClientBuilder(config, credential).build();
         FileMetadata expected = constructFileMetadate();
 
         HttpRequestor.Uploader mockUploader = mockUploader();
@@ -547,7 +547,7 @@ public class DbxClientV2Test {
 
         DbxCredential credential = new DbxCredential("accesstoken");
 
-        DbxClientV2 client = new DbxClientV2(config, credential);
+        DbxUserClient client = new DbxUserClientBuilder(config, credential).build();
         FileMetadata expected = constructFileMetadate();
 
         HttpRequestor.Uploader mockUploader = mockUploader();
