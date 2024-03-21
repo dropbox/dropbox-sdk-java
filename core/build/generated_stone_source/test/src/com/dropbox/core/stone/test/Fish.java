@@ -18,10 +18,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class Fish extends Pet {
     // struct test.Fish (test.stone)
 
+    @Nonnull
     protected final String species;
+    @Nonnull
     protected final TankSize tankSize;
 
     /**
@@ -35,7 +40,7 @@ public class Fish extends Pet {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Fish(String name, String species, TankSize tankSize, Date born) {
+    public Fish(@Nonnull String name, @Nonnull String species, @Nonnull TankSize tankSize, @Nullable Date born) {
         super(name, born);
         if (species == null) {
             throw new IllegalArgumentException("Required value for 'species' is null");
@@ -61,7 +66,7 @@ public class Fish extends Pet {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Fish(String name, String species, TankSize tankSize) {
+    public Fish(@Nonnull String name, @Nonnull String species, @Nonnull TankSize tankSize) {
         this(name, species, tankSize, null);
     }
 
@@ -70,7 +75,7 @@ public class Fish extends Pet {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -79,7 +84,7 @@ public class Fish extends Pet {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSpecies() {
         return species;
     }
@@ -88,7 +93,7 @@ public class Fish extends Pet {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public TankSize getTankSize() {
         return tankSize;
     }
@@ -97,7 +102,7 @@ public class Fish extends Pet {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getBorn() {
         return born;
     }

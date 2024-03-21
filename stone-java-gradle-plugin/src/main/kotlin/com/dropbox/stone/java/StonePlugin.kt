@@ -57,10 +57,10 @@ class StonePlugin : Plugin<Project> {
             val mySpecDir: String = specDirPropNameValue ?: "src/${sourceSet.name}/stone"
             specDir.set(File(mySpecDir))
 
-            generatorFile.set(File("${project.projectDir}/generator/java/java.stoneg.py"))
+            generatorFile.set(File("${project.layout.projectDirectory}/generator/java/java.stoneg.py"))
             stoneDir.set(File("stone"))
             pythonCommand.set("python")
-            outputDir.set(File("${project.buildDir}/generated/source/stone/${sourceSet.name}"))
+            outputDir.set(File("${project.layout.buildDirectory}/generated/source/stone/${sourceSet.name}/src"))
 
             sourceSet.java.srcDir("${outputDir}/src")
         }

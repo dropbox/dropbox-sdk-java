@@ -16,10 +16,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 class Uninitialized {
     // struct test.Uninitialized (test.stone)
 
+    @Nonnull
     protected final UninitializedReason reason;
+    @Nonnull
     protected final String sessionId;
 
     /**
@@ -30,7 +34,7 @@ class Uninitialized {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Uninitialized(UninitializedReason reason, String sessionId) {
+    public Uninitialized(@Nonnull UninitializedReason reason, @Nonnull String sessionId) {
         if (reason == null) {
             throw new IllegalArgumentException("Required value for 'reason' is null");
         }
@@ -45,7 +49,7 @@ class Uninitialized {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public UninitializedReason getReason() {
         return reason;
     }
@@ -54,7 +58,7 @@ class Uninitialized {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getSessionId() {
         return sessionId;
     }

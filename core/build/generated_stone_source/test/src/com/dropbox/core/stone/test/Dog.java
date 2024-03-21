@@ -18,10 +18,15 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class Dog extends Pet {
     // struct test.Dog (test.stone)
 
+    @Nonnull
     protected final String breed;
+    @Nullable
     protected final DogSize size;
 
     /**
@@ -36,7 +41,7 @@ public class Dog extends Pet {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Dog(String name, String breed, Date born, DogSize size) {
+    public Dog(@Nonnull String name, @Nonnull String breed, @Nullable Date born, @Nullable DogSize size) {
         super(name, born);
         if (breed == null) {
             throw new IllegalArgumentException("Required value for 'breed' is null");
@@ -58,7 +63,7 @@ public class Dog extends Pet {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public Dog(String name, String breed) {
+    public Dog(@Nonnull String name, @Nonnull String breed) {
         this(name, breed, null, null);
     }
 
@@ -67,7 +72,7 @@ public class Dog extends Pet {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -76,7 +81,7 @@ public class Dog extends Pet {
      *
      * @return value for this field, never {@code null}.
      */
-    @javax.annotation.Nonnull
+    @Nonnull
     public String getBreed() {
         return breed;
     }
@@ -85,7 +90,7 @@ public class Dog extends Pet {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public Date getBorn() {
         return born;
     }
@@ -94,7 +99,7 @@ public class Dog extends Pet {
      *
      * @return value for this field, or {@code null} if not present.
      */
-    @javax.annotation.Nullable
+    @Nullable
     public DogSize getSize() {
         return size;
     }
