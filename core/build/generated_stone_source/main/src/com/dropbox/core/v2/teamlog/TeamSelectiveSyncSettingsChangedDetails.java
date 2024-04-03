@@ -73,8 +73,8 @@ public class TeamSelectiveSyncSettingsChangedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            previousValue,
-            newValue
+            this.previousValue,
+            this.newValue
         });
         return hash;
     }

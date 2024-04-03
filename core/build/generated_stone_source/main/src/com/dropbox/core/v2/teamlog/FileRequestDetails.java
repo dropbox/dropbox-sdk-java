@@ -73,8 +73,8 @@ public class FileRequestDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            assetIndex,
-            deadline
+            this.assetIndex,
+            this.deadline
         });
         return hash;
     }

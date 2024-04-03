@@ -56,7 +56,7 @@ class ExcludedUsersListContinueArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            cursor
+            this.cursor
         });
         return hash;
     }

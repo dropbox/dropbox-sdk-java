@@ -86,8 +86,8 @@ public class SharingChangeMemberPolicyDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            newValue,
-            previousValue
+            this.newValue,
+            this.previousValue
         });
         return hash;
     }

@@ -178,8 +178,8 @@ public class Dog extends Pet {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            breed,
-            size
+            this.breed,
+            this.size
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

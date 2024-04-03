@@ -91,7 +91,7 @@ public class RevokeDesktopClientArg extends DeviceSessionArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            deleteOnUnlink
+            this.deleteOnUnlink
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

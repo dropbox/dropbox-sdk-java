@@ -303,13 +303,13 @@ public class SharedLinkSettings {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            requirePassword,
-            linkPassword,
-            expires,
-            audience,
-            access,
-            requestedVisibility,
-            allowDownload
+            this.requirePassword,
+            this.linkPassword,
+            this.expires,
+            this.audience,
+            this.access,
+            this.requestedVisibility,
+            this.allowDownload
         });
         return hash;
     }

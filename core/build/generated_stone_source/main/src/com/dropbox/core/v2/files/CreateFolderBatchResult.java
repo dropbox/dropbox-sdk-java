@@ -61,7 +61,7 @@ public class CreateFolderBatchResult extends FileOpsResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            entries
+            this.entries
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

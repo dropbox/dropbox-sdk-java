@@ -315,11 +315,11 @@ class SearchArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            query,
-            start,
-            maxResults,
-            mode
+            this.path,
+            this.query,
+            this.start,
+            this.maxResults,
+            this.mode
         });
         return hash;
     }

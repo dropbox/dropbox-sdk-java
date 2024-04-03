@@ -36,7 +36,7 @@ public class WithByte {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            field1
+            this.field1
         });
         return hash;
     }

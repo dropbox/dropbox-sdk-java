@@ -90,9 +90,9 @@ public class AdminAlertingChangedAlertConfigDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            alertName,
-            previousAlertConfig,
-            newAlertConfig
+            this.alertName,
+            this.previousAlertConfig,
+            this.newAlertConfig
         });
         return hash;
     }

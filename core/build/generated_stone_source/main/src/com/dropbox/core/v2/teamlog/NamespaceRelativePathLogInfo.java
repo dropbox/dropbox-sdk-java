@@ -161,9 +161,9 @@ public class NamespaceRelativePathLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            nsId,
-            relativePath,
-            isSharedNamespace
+            this.nsId,
+            this.relativePath,
+            this.isSharedNamespace
         });
         return hash;
     }

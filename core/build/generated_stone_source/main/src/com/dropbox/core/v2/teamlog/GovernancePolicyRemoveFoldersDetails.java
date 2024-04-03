@@ -238,11 +238,11 @@ public class GovernancePolicyRemoveFoldersDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            governancePolicyId,
-            name,
-            policyType,
-            folders,
-            reason
+            this.governancePolicyId,
+            this.name,
+            this.policyType,
+            this.folders,
+            this.reason
         });
         return hash;
     }

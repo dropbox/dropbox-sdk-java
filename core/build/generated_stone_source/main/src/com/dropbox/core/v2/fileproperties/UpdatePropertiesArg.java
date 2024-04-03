@@ -81,8 +81,8 @@ public class UpdatePropertiesArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            updatePropertyGroups
+            this.path,
+            this.updatePropertyGroups
         });
         return hash;
     }

@@ -87,8 +87,8 @@ class GroupsMembersListArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            group,
-            limit
+            this.group,
+            this.limit
         });
         return hash;
     }

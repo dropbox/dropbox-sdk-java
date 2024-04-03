@@ -234,10 +234,10 @@ public class MembershipInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accessType,
-            permissions,
-            initials,
-            isInherited
+            this.accessType,
+            this.permissions,
+            this.initials,
+            this.isInherited
         });
         return hash;
     }

@@ -221,8 +221,8 @@ public class TrustedNonTeamMemberLogInfo extends UserLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            trustedNonTeamMemberType,
-            team
+            this.trustedNonTeamMemberType,
+            this.team
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

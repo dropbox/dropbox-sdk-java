@@ -91,9 +91,9 @@ public class IntegrationPolicyChangedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            integrationName,
-            newValue,
-            previousValue
+            this.integrationName,
+            this.newValue,
+            this.previousValue
         });
         return hash;
     }

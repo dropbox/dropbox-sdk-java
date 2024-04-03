@@ -157,9 +157,9 @@ public class DeviceUnlinkDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sessionInfo,
-            displayName,
-            deleteData
+            this.sessionInfo,
+            this.displayName,
+            this.deleteData
         });
         return hash;
     }

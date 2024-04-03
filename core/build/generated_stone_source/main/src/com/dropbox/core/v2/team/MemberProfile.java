@@ -567,21 +567,21 @@ public class MemberProfile {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamMemberId,
-            externalId,
-            accountId,
-            email,
-            emailVerified,
-            secondaryEmails,
-            status,
-            name,
-            membershipType,
-            invitedOn,
-            joinedOn,
-            suspendedOn,
-            persistentId,
-            isDirectoryRestricted,
-            profilePhotoUrl
+            this.teamMemberId,
+            this.externalId,
+            this.accountId,
+            this.email,
+            this.emailVerified,
+            this.secondaryEmails,
+            this.status,
+            this.name,
+            this.membershipType,
+            this.invitedOn,
+            this.joinedOn,
+            this.suspendedOn,
+            this.persistentId,
+            this.isDirectoryRestricted,
+            this.profilePhotoUrl
         });
         return hash;
     }

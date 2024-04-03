@@ -161,8 +161,8 @@ public class FileRequestCreateDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            fileRequestId,
-            requestDetails
+            this.fileRequestId,
+            this.requestDetails
         });
         return hash;
     }

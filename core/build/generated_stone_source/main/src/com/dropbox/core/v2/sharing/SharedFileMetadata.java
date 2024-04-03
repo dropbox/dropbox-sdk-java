@@ -602,20 +602,20 @@ public class SharedFileMetadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accessType,
-            id,
-            expectedLinkMetadata,
-            linkMetadata,
-            name,
-            ownerDisplayNames,
-            ownerTeam,
-            parentSharedFolderId,
-            pathDisplay,
-            pathLower,
-            permissions,
-            policy,
-            previewUrl,
-            timeInvited
+            this.accessType,
+            this.id,
+            this.expectedLinkMetadata,
+            this.linkMetadata,
+            this.name,
+            this.ownerDisplayNames,
+            this.ownerTeam,
+            this.parentSharedFolderId,
+            this.pathDisplay,
+            this.pathLower,
+            this.permissions,
+            this.policy,
+            this.previewUrl,
+            this.timeInvited
         });
         return hash;
     }

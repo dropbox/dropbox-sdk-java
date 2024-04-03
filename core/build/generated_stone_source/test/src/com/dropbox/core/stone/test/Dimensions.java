@@ -46,8 +46,8 @@ public class Dimensions {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            width,
-            height
+            this.width,
+            this.height
         });
         return hash;
     }

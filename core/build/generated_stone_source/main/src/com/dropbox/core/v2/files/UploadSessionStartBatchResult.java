@@ -66,7 +66,7 @@ public class UploadSessionStartBatchResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sessionIds
+            this.sessionIds
         });
         return hash;
     }

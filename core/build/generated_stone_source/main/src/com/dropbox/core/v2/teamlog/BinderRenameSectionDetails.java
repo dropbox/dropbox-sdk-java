@@ -122,10 +122,10 @@ public class BinderRenameSectionDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            eventUuid,
-            docTitle,
-            binderItemName,
-            previousBinderItemName
+            this.eventUuid,
+            this.docTitle,
+            this.binderItemName,
+            this.previousBinderItemName
         });
         return hash;
     }

@@ -76,8 +76,8 @@ class TokenFromOAuth1Arg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            oauth1Token,
-            oauth1TokenSecret
+            this.oauth1Token,
+            this.oauth1TokenSecret
         });
         return hash;
     }

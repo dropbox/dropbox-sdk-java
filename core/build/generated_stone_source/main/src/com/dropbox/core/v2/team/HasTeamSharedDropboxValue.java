@@ -170,8 +170,8 @@ public final class HasTeamSharedDropboxValue {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            hasTeamSharedDropboxValue
+            this._tag,
+            this.hasTeamSharedDropboxValue
         });
         return hash;
     }

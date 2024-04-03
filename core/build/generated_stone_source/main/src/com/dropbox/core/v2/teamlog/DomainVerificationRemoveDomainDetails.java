@@ -62,7 +62,7 @@ public class DomainVerificationRemoveDomainDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            domainNames
+            this.domainNames
         });
         return hash;
     }

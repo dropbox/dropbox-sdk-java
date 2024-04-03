@@ -186,9 +186,9 @@ class GetSharedLinkMetadataArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            url,
-            path,
-            linkPassword
+            this.url,
+            this.path,
+            this.linkPassword
         });
         return hash;
     }

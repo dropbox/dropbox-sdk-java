@@ -51,7 +51,7 @@ class RefPaperDoc {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            docId
+            this.docId
         });
         return hash;
     }

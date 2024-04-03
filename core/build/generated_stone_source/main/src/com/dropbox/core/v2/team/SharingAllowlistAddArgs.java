@@ -180,8 +180,8 @@ class SharingAllowlistAddArgs {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            domains,
-            emails
+            this.domains,
+            this.emails
         });
         return hash;
     }

@@ -61,7 +61,7 @@ public class SharedLinkCreateDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedLinkAccessLevel
+            this.sharedLinkAccessLevel
         });
         return hash;
     }

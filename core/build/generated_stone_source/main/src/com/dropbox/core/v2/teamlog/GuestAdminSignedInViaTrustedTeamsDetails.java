@@ -135,8 +135,8 @@ public class GuestAdminSignedInViaTrustedTeamsDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamName,
-            trustedTeamName
+            this.teamName,
+            this.trustedTeamName
         });
         return hash;
     }

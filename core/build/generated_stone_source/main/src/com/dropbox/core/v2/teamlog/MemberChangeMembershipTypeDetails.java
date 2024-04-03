@@ -72,8 +72,8 @@ public class MemberChangeMembershipTypeDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            prevValue,
-            newValue
+            this.prevValue,
+            this.newValue
         });
         return hash;
     }

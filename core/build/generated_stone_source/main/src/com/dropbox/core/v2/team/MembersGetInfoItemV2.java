@@ -270,9 +270,9 @@ public final class MembersGetInfoItemV2 {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            idNotFoundValue,
-            memberInfoValue
+            this._tag,
+            this.idNotFoundValue,
+            this.memberInfoValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

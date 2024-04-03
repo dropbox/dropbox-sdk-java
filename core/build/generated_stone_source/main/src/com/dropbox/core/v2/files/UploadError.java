@@ -287,9 +287,9 @@ public final class UploadError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            pathValue,
-            propertiesErrorValue
+            this._tag,
+            this.pathValue,
+            this.propertiesErrorValue
         });
         return hash;
     }

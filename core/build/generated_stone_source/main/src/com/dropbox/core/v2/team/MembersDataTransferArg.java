@@ -83,8 +83,8 @@ class MembersDataTransferArg extends MembersDeactivateBaseArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            transferDestId,
-            transferAdminId
+            this.transferDestId,
+            this.transferAdminId
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

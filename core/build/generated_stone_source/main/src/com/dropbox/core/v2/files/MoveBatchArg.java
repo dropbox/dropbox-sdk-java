@@ -201,7 +201,7 @@ class MoveBatchArg extends RelocationBatchArgBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            allowOwnershipTransfer
+            this.allowOwnershipTransfer
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

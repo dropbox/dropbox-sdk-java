@@ -108,10 +108,10 @@ public class ChangedEnterpriseConnectedTeamStatusDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            action,
-            additionalInfo,
-            previousValue,
-            newValue
+            this.action,
+            this.additionalInfo,
+            this.previousValue,
+            this.newValue
         });
         return hash;
     }

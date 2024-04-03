@@ -249,11 +249,11 @@ public class EmailIngestReceiveFileDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            inboxName,
-            attachmentNames,
-            subject,
-            fromName,
-            fromEmail
+            this.inboxName,
+            this.attachmentNames,
+            this.subject,
+            this.fromName,
+            this.fromEmail
         });
         return hash;
     }

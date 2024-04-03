@@ -184,8 +184,8 @@ public final class PaperAsFilesValue {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            enabledValue
+            this._tag,
+            this.enabledValue
         });
         return hash;
     }

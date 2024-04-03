@@ -59,7 +59,7 @@ public class SharedContentClaimInvitationDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedContentLink
+            this.sharedContentLink
         });
         return hash;
     }

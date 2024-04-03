@@ -52,7 +52,7 @@ public class TokenScopeError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            requiredScope
+            this.requiredScope
         });
         return hash;
     }

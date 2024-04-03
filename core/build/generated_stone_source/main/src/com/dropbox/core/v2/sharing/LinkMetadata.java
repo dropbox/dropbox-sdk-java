@@ -108,9 +108,9 @@ public class LinkMetadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            url,
-            visibility,
-            expires
+            this.url,
+            this.visibility,
+            this.expires
         });
         return hash;
     }

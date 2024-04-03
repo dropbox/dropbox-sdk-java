@@ -196,9 +196,9 @@ public final class AlphaGetMetadataError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            pathValue,
-            propertiesErrorValue
+            this._tag,
+            this.pathValue,
+            this.propertiesErrorValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

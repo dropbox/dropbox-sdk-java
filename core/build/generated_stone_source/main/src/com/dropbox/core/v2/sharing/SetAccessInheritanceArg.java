@@ -90,8 +90,8 @@ class SetAccessInheritanceArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accessInheritance,
-            sharedFolderId
+            this.accessInheritance,
+            this.sharedFolderId
         });
         return hash;
     }

@@ -68,8 +68,8 @@ public class GetThumbnailBatchResultData {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            metadata,
-            thumbnail
+            this.metadata,
+            this.thumbnail
         });
         return hash;
     }

@@ -72,8 +72,8 @@ public class PaperFolderLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            folderId,
-            folderName
+            this.folderId,
+            this.folderName
         });
         return hash;
     }

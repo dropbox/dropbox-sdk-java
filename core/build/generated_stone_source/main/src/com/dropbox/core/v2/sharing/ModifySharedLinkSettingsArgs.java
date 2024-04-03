@@ -101,9 +101,9 @@ class ModifySharedLinkSettingsArgs {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            url,
-            settings,
-            removeExpiration
+            this.url,
+            this.settings,
+            this.removeExpiration
         });
         return hash;
     }

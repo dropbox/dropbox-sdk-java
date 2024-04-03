@@ -58,7 +58,7 @@ class GetCopyReferenceArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path
+            this.path
         });
         return hash;
     }

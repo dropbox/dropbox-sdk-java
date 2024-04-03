@@ -237,8 +237,8 @@ class RelocationBatchArg extends RelocationBatchArgBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            allowSharedFolder,
-            allowOwnershipTransfer
+            this.allowSharedFolder,
+            this.allowOwnershipTransfer
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

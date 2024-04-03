@@ -249,9 +249,9 @@ public final class TeamMergeRequestAcceptedExtraDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            primaryTeamValue,
-            secondaryTeamValue
+            this._tag,
+            this.primaryTeamValue,
+            this.secondaryTeamValue
         });
         return hash;
     }

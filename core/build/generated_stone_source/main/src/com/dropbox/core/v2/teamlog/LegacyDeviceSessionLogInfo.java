@@ -422,15 +422,15 @@ public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sessionInfo,
-            displayName,
-            isEmmManaged,
-            platform,
-            macAddress,
-            osVersion,
-            deviceType,
-            clientVersion,
-            legacyUniqId
+            this.sessionInfo,
+            this.displayName,
+            this.isEmmManaged,
+            this.platform,
+            this.macAddress,
+            this.osVersion,
+            this.deviceType,
+            this.clientVersion,
+            this.legacyUniqId
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

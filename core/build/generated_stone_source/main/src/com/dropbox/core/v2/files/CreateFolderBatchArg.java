@@ -215,9 +215,9 @@ class CreateFolderBatchArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            paths,
-            autorename,
-            forceAsync
+            this.paths,
+            this.autorename,
+            this.forceAsync
         });
         return hash;
     }

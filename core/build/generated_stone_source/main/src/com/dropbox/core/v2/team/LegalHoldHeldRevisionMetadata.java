@@ -240,16 +240,16 @@ public class LegalHoldHeldRevisionMetadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            newFilename,
-            originalRevisionId,
-            originalFilePath,
-            serverModified,
-            authorMemberId,
-            authorMemberStatus,
-            authorEmail,
-            fileType,
-            size,
-            contentHash
+            this.newFilename,
+            this.originalRevisionId,
+            this.originalFilePath,
+            this.serverModified,
+            this.authorMemberId,
+            this.authorMemberStatus,
+            this.authorEmail,
+            this.fileType,
+            this.size,
+            this.contentHash
         });
         return hash;
     }

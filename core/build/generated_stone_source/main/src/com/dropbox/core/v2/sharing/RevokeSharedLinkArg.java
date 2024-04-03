@@ -51,7 +51,7 @@ class RevokeSharedLinkArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            url
+            this.url
         });
         return hash;
     }

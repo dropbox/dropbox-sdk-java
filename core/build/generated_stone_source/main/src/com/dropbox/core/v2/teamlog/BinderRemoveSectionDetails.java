@@ -90,9 +90,9 @@ public class BinderRemoveSectionDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            eventUuid,
-            docTitle,
-            binderItemName
+            this.eventUuid,
+            this.docTitle,
+            this.binderItemName
         });
         return hash;
     }

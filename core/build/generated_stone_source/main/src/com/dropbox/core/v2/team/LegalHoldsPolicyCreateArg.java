@@ -255,11 +255,11 @@ class LegalHoldsPolicyCreateArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            name,
-            description,
-            members,
-            startDate,
-            endDate
+            this.name,
+            this.description,
+            this.members,
+            this.startDate,
+            this.endDate
         });
         return hash;
     }

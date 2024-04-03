@@ -232,8 +232,8 @@ public final class TeamFolderCreateError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            syncSettingsErrorValue
+            this._tag,
+            this.syncSettingsErrorValue
         });
         return hash;
     }

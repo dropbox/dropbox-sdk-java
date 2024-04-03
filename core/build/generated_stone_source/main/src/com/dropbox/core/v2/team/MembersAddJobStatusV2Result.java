@@ -283,9 +283,9 @@ public final class MembersAddJobStatusV2Result {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            completeValue,
-            failedValue
+            this._tag,
+            this.completeValue,
+            this.failedValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

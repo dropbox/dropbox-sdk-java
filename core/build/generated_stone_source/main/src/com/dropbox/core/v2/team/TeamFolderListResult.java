@@ -102,9 +102,9 @@ public class TeamFolderListResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamFolders,
-            cursor,
-            hasMore
+            this.teamFolders,
+            this.cursor,
+            this.hasMore
         });
         return hash;
     }

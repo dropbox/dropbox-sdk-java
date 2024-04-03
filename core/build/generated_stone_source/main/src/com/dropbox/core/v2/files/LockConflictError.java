@@ -51,7 +51,7 @@ public class LockConflictError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            lock
+            this.lock
         });
         return hash;
     }

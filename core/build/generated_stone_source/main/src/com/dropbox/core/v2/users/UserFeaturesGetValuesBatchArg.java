@@ -61,7 +61,7 @@ class UserFeaturesGetValuesBatchArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            features
+            this.features
         });
         return hash;
     }

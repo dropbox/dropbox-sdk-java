@@ -93,9 +93,9 @@ class RemoveFolderMemberArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedFolderId,
-            member,
-            leaveACopy
+            this.sharedFolderId,
+            this.member,
+            this.leaveACopy
         });
         return hash;
     }

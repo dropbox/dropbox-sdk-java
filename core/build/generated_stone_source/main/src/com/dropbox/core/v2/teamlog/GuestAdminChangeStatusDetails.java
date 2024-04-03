@@ -232,12 +232,12 @@ public class GuestAdminChangeStatusDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            isGuest,
-            guestTeamName,
-            hostTeamName,
-            previousValue,
-            newValue,
-            actionDetails
+            this.isGuest,
+            this.guestTeamName,
+            this.hostTeamName,
+            this.previousValue,
+            this.newValue,
+            this.actionDetails
         });
         return hash;
     }

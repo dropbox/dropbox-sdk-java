@@ -94,8 +94,8 @@ public class RemovePropertiesArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            propertyTemplateIds
+            this.path,
+            this.propertyTemplateIds
         });
         return hash;
     }

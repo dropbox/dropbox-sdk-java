@@ -83,8 +83,8 @@ public class UserSecondaryEmailsArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            user,
-            secondaryEmails
+            this.user,
+            this.secondaryEmails
         });
         return hash;
     }

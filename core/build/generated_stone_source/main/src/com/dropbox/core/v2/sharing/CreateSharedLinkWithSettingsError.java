@@ -337,10 +337,10 @@ public final class CreateSharedLinkWithSettingsError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            pathValue,
-            sharedLinkAlreadyExistsValue,
-            settingsErrorValue
+            this._tag,
+            this.pathValue,
+            this.sharedLinkAlreadyExistsValue,
+            this.settingsErrorValue
         });
         return hash;
     }

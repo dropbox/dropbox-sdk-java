@@ -218,11 +218,11 @@ public class GovernancePolicyZipPartDownloadedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            governancePolicyId,
-            name,
-            policyType,
-            exportName,
-            part
+            this.governancePolicyId,
+            this.name,
+            this.policyType,
+            this.exportName,
+            this.part
         });
         return hash;
     }

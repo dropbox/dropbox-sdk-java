@@ -51,7 +51,7 @@ class MembersAddArgBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            forceAsync
+            this.forceAsync
         });
         return hash;
     }

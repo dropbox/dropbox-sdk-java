@@ -192,8 +192,8 @@ public final class FileLockContent {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            singleUserValue
+            this._tag,
+            this.singleUserValue
         });
         return hash;
     }

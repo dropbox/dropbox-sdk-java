@@ -97,9 +97,9 @@ class PaperDocUpdateArgs extends RefPaperDoc {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            docUpdatePolicy,
-            revision,
-            importFormat
+            this.docUpdatePolicy,
+            this.revision,
+            this.importFormat
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

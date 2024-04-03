@@ -270,10 +270,10 @@ public class WebDeviceSessionLogInfo extends DeviceSessionLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sessionInfo,
-            userAgent,
-            os,
-            browser
+            this.sessionInfo,
+            this.userAgent,
+            this.os,
+            this.browser
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

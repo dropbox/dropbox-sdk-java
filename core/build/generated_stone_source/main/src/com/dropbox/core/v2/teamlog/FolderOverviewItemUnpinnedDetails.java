@@ -75,8 +75,8 @@ public class FolderOverviewItemUnpinnedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            folderOverviewLocationAsset,
-            pinnedItemsAssetIndices
+            this.folderOverviewLocationAsset,
+            this.pinnedItemsAssetIndices
         });
         return hash;
     }

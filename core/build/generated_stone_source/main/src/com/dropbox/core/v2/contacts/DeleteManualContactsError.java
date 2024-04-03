@@ -192,8 +192,8 @@ public final class DeleteManualContactsError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            contactsNotFoundValue
+            this._tag,
+            this.contactsNotFoundValue
         });
         return hash;
     }

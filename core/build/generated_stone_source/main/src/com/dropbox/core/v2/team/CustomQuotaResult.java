@@ -247,9 +247,9 @@ public final class CustomQuotaResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            successValue,
-            invalidUserValue
+            this._tag,
+            this.successValue,
+            this.invalidUserValue
         });
         return hash;
     }

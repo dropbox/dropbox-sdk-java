@@ -55,7 +55,7 @@ public class AccountCaptureRelinquishAccountDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            domainName
+            this.domainName
         });
         return hash;
     }

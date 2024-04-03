@@ -56,7 +56,7 @@ public class DataPlacementRestrictionSatisfyPolicyDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            placementRestriction
+            this.placementRestriction
         });
         return hash;
     }

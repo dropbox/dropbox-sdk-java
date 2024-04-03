@@ -120,10 +120,10 @@ public class GovernancePolicyExportCreatedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            governancePolicyId,
-            name,
-            policyType,
-            exportName
+            this.governancePolicyId,
+            this.name,
+            this.policyType,
+            this.exportName
         });
         return hash;
     }

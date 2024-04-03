@@ -80,8 +80,8 @@ public class PathToTags {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            tags
+            this.path,
+            this.tags
         });
         return hash;
     }

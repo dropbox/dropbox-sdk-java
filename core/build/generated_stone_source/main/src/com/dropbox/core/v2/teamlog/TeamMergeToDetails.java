@@ -56,7 +56,7 @@ public class TeamMergeToDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamName
+            this.teamName
         });
         return hash;
     }

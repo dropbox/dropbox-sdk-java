@@ -68,8 +68,8 @@ public class SfTeamJoinDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            targetAssetIndex,
-            originalFolderName
+            this.targetAssetIndex,
+            this.originalFolderName
         });
         return hash;
     }

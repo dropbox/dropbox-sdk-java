@@ -374,13 +374,13 @@ public class MemberAddArgBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            memberEmail,
-            memberGivenName,
-            memberSurname,
-            memberExternalId,
-            memberPersistentId,
-            sendWelcomeEmail,
-            isDirectoryRestricted
+            this.memberEmail,
+            this.memberGivenName,
+            this.memberSurname,
+            this.memberExternalId,
+            this.memberPersistentId,
+            this.sendWelcomeEmail,
+            this.isDirectoryRestricted
         });
         return hash;
     }

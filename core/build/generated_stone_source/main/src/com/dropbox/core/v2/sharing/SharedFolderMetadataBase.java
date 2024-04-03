@@ -375,15 +375,15 @@ public class SharedFolderMetadataBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accessType,
-            isInsideTeamFolder,
-            isTeamFolder,
-            ownerDisplayNames,
-            ownerTeam,
-            parentSharedFolderId,
-            pathDisplay,
-            pathLower,
-            parentFolderName
+            this.accessType,
+            this.isInsideTeamFolder,
+            this.isTeamFolder,
+            this.ownerDisplayNames,
+            this.ownerTeam,
+            this.parentSharedFolderId,
+            this.pathDisplay,
+            this.pathLower,
+            this.parentFolderName
         });
         return hash;
     }

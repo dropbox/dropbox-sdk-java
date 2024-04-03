@@ -59,7 +59,7 @@ public class ListMemberAppsResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            linkedApiApps
+            this.linkedApiApps
         });
         return hash;
     }

@@ -74,8 +74,8 @@ public class TeamMergeRequestCanceledShownToSecondaryTeamDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sentTo,
-            sentBy
+            this.sentTo,
+            this.sentBy
         });
         return hash;
     }

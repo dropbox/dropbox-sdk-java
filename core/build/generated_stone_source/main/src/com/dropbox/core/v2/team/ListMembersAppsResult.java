@@ -120,9 +120,9 @@ public class ListMembersAppsResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            apps,
-            hasMore,
-            cursor
+            this.apps,
+            this.hasMore,
+            this.cursor
         });
         return hash;
     }

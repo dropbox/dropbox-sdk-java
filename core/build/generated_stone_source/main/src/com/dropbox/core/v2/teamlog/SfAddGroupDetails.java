@@ -117,10 +117,10 @@ public class SfAddGroupDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            targetAssetIndex,
-            originalFolderName,
-            sharingPermission,
-            teamName
+            this.targetAssetIndex,
+            this.originalFolderName,
+            this.sharingPermission,
+            this.teamName
         });
         return hash;
     }

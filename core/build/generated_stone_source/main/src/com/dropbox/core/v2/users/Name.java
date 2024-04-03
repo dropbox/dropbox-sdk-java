@@ -132,11 +132,11 @@ public class Name {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            givenName,
-            surname,
-            familiarName,
-            displayName,
-            abbreviatedName
+            this.givenName,
+            this.surname,
+            this.familiarName,
+            this.displayName,
+            this.abbreviatedName
         });
         return hash;
     }

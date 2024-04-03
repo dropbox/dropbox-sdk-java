@@ -92,9 +92,9 @@ public class ExternalDriveBackupStatusChangedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            desktopDeviceSessionInfo,
-            previousValue,
-            newValue
+            this.desktopDeviceSessionInfo,
+            this.previousValue,
+            this.newValue
         });
         return hash;
     }

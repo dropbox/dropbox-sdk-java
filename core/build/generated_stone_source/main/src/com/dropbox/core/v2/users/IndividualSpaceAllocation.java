@@ -42,7 +42,7 @@ public class IndividualSpaceAllocation {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            allocated
+            this.allocated
         });
         return hash;
     }

@@ -86,8 +86,8 @@ public class SharedContentChangeMemberRoleDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            previousAccessLevel,
-            newAccessLevel
+            this.previousAccessLevel,
+            this.newAccessLevel
         });
         return hash;
     }

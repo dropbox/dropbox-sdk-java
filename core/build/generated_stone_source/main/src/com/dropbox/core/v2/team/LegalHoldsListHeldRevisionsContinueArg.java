@@ -95,8 +95,8 @@ class LegalHoldsListHeldRevisionsContinueArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            id,
-            cursor
+            this.id,
+            this.cursor
         });
         return hash;
     }

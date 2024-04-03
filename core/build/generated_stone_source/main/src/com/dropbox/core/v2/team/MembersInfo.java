@@ -71,8 +71,8 @@ public class MembersInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamMemberIds,
-            permanentlyDeletedUsers
+            this.teamMemberIds,
+            this.permanentlyDeletedUsers
         });
         return hash;
     }

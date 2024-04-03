@@ -111,9 +111,9 @@ public class GetDevicesReport extends BaseDfbReport {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            active1Day,
-            active7Day,
-            active28Day
+            this.active1Day,
+            this.active7Day,
+            this.active28Day
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

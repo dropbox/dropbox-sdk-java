@@ -109,11 +109,11 @@ public class TeamSpaceAllocation {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            used,
-            allocated,
-            userWithinTeamSpaceAllocated,
-            userWithinTeamSpaceLimitType,
-            userWithinTeamSpaceUsedCached
+            this.used,
+            this.allocated,
+            this.userWithinTeamSpaceAllocated,
+            this.userWithinTeamSpaceLimitType,
+            this.userWithinTeamSpaceUsedCached
         });
         return hash;
     }

@@ -99,8 +99,8 @@ public class DeleteArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            parentRev
+            this.path,
+            this.parentRev
         });
         return hash;
     }

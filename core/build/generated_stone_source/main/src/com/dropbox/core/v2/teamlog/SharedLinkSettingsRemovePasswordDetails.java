@@ -87,8 +87,8 @@ public class SharedLinkSettingsRemovePasswordDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedContentAccessLevel,
-            sharedContentLink
+            this.sharedContentAccessLevel,
+            this.sharedContentLink
         });
         return hash;
     }

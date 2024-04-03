@@ -65,8 +65,8 @@ public class ListFileMembersCountResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            members,
-            memberCount
+            this.members,
+            this.memberCount
         });
         return hash;
     }

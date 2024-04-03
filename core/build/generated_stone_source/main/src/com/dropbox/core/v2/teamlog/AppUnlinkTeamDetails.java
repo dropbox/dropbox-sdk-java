@@ -55,7 +55,7 @@ public class AppUnlinkTeamDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            appInfo
+            this.appInfo
         });
         return hash;
     }

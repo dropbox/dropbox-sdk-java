@@ -77,7 +77,7 @@ class ExcludedUsersUpdateArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            users
+            this.users
         });
         return hash;
     }

@@ -321,10 +321,10 @@ class MembersRemoveArg extends MembersDeactivateArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            transferDestId,
-            transferAdminId,
-            keepAccount,
-            retainTeamShares
+            this.transferDestId,
+            this.transferAdminId,
+            this.keepAccount,
+            this.retainTeamShares
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

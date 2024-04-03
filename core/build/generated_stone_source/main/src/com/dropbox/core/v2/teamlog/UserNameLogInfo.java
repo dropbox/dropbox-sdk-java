@@ -102,9 +102,9 @@ public class UserNameLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            givenName,
-            surname,
-            locale
+            this.givenName,
+            this.surname,
+            this.locale
         });
         return hash;
     }

@@ -259,9 +259,9 @@ public class TeamMemberLogInfo extends UserLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamMemberId,
-            memberExternalId,
-            team
+            this.teamMemberId,
+            this.memberExternalId,
+            this.team
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

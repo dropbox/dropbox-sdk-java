@@ -249,8 +249,8 @@ public class GroupFullInfo extends GroupSummary {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            members,
-            created
+            this.members,
+            this.created
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

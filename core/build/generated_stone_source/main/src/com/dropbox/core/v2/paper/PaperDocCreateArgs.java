@@ -85,8 +85,8 @@ class PaperDocCreateArgs {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            parentFolderId,
-            importFormat
+            this.parentFolderId,
+            this.importFormat
         });
         return hash;
     }

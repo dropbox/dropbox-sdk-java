@@ -79,8 +79,8 @@ public class RelocationPath {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            fromPath,
-            toPath
+            this.fromPath,
+            this.toPath
         });
         return hash;
     }

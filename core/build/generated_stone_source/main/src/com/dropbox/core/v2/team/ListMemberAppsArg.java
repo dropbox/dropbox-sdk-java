@@ -51,7 +51,7 @@ class ListMemberAppsArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamMemberId
+            this.teamMemberId
         });
         return hash;
     }

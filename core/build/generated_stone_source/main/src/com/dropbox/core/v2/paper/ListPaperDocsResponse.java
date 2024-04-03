@@ -107,9 +107,9 @@ public class ListPaperDocsResponse {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            docIds,
-            cursor,
-            hasMore
+            this.docIds,
+            this.cursor,
+            this.hasMore
         });
         return hash;
     }

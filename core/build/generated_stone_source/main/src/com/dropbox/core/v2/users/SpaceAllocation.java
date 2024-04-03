@@ -248,9 +248,9 @@ public final class SpaceAllocation {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            individualValue,
-            teamValue
+            this._tag,
+            this.individualValue,
+            this.teamValue
         });
         return hash;
     }

@@ -206,10 +206,10 @@ class SearchV2Arg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            query,
-            options,
-            matchFieldOptions,
-            includeHighlights
+            this.query,
+            this.options,
+            this.matchFieldOptions,
+            this.includeHighlights
         });
         return hash;
     }

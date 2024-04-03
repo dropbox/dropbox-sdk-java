@@ -344,8 +344,8 @@ public final class UploadSessionAppendError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            incorrectOffsetValue
+            this._tag,
+            this.incorrectOffsetValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

@@ -292,8 +292,8 @@ public final class RelinquishFolderMembershipError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            accessErrorValue
+            this._tag,
+            this.accessErrorValue
         });
         return hash;
     }

@@ -139,8 +139,8 @@ public class PreviewResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            fileMetadata,
-            linkMetadata
+            this.fileMetadata,
+            this.linkMetadata
         });
         return hash;
     }

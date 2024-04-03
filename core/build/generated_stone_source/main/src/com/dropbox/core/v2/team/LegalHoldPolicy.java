@@ -330,14 +330,14 @@ public class LegalHoldPolicy {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            id,
-            name,
-            description,
-            activationTime,
-            members,
-            status,
-            startDate,
-            endDate
+            this.id,
+            this.name,
+            this.description,
+            this.activationTime,
+            this.members,
+            this.status,
+            this.startDate,
+            this.endDate
         });
         return hash;
     }

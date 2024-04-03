@@ -334,12 +334,12 @@ class AddFileMemberArgs {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            file,
-            members,
-            customMessage,
-            quiet,
-            accessLevel,
-            addMessageAsComment
+            this.file,
+            this.members,
+            this.customMessage,
+            this.quiet,
+            this.accessLevel,
+            this.addMessageAsComment
         });
         return hash;
     }

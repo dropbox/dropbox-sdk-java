@@ -41,7 +41,7 @@ public class UploadSessionOffsetError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            correctOffset
+            this.correctOffset
         });
         return hash;
     }

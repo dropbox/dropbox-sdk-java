@@ -182,9 +182,9 @@ public class SharedLinkFileInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            url,
-            path,
-            password
+            this.url,
+            this.path,
+            this.password
         });
         return hash;
     }

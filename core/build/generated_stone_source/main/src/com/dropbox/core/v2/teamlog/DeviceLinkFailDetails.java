@@ -87,8 +87,8 @@ public class DeviceLinkFailDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            ipAddress,
-            deviceType
+            this.ipAddress,
+            this.deviceType
         });
         return hash;
     }

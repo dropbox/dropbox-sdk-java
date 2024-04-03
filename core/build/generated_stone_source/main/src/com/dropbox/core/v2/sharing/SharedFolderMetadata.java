@@ -580,14 +580,14 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            linkMetadata,
-            name,
-            permissions,
-            policy,
-            previewUrl,
-            sharedFolderId,
-            timeInvited,
-            accessInheritance
+            this.linkMetadata,
+            this.name,
+            this.permissions,
+            this.policy,
+            this.previewUrl,
+            this.sharedFolderId,
+            this.timeInvited,
+            this.accessInheritance
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

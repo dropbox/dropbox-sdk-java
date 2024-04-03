@@ -163,10 +163,10 @@ public class SharedFileMembers {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            users,
-            groups,
-            invitees,
-            cursor
+            this.users,
+            this.groups,
+            this.invitees,
+            this.cursor
         });
         return hash;
     }

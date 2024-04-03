@@ -202,8 +202,8 @@ public final class TemplateError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            templateNotFoundValue
+            this._tag,
+            this.templateNotFoundValue
         });
         return hash;
     }

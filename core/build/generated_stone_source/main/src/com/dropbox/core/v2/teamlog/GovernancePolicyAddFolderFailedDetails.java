@@ -217,11 +217,11 @@ public class GovernancePolicyAddFolderFailedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            governancePolicyId,
-            name,
-            policyType,
-            folder,
-            reason
+            this.governancePolicyId,
+            this.name,
+            this.policyType,
+            this.folder,
+            this.reason
         });
         return hash;
     }

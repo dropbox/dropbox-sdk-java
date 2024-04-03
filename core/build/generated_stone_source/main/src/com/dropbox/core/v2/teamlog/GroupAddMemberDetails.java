@@ -45,7 +45,7 @@ public class GroupAddMemberDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            isGroupOwner
+            this.isGroupOwner
         });
         return hash;
     }

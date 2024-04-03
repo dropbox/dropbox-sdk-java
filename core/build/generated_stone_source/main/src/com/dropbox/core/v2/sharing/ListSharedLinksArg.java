@@ -181,9 +181,9 @@ class ListSharedLinksArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            cursor,
-            directOnly
+            this.path,
+            this.cursor,
+            this.directOnly
         });
         return hash;
     }

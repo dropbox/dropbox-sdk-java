@@ -194,9 +194,9 @@ public final class UploadSessionFinishBatchResultEntry {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            successValue,
-            failureValue
+            this._tag,
+            this.successValue,
+            this.failureValue
         });
         return hash;
     }

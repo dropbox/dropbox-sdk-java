@@ -67,9 +67,9 @@ public class InsufficientQuotaAmounts {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            spaceNeeded,
-            spaceShortage,
-            spaceLeft
+            this.spaceNeeded,
+            this.spaceShortage,
+            this.spaceLeft
         });
         return hash;
     }

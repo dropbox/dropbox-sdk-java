@@ -168,9 +168,9 @@ public class PaperDocChangeSharingPolicyDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            eventUuid,
-            publicSharingPolicy,
-            teamSharingPolicy
+            this.eventUuid,
+            this.publicSharingPolicy,
+            this.teamSharingPolicy
         });
         return hash;
     }

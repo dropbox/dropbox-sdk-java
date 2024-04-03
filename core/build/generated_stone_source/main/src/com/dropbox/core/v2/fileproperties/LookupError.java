@@ -250,8 +250,8 @@ public final class LookupError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            malformedPathValue
+            this._tag,
+            this.malformedPathValue
         });
         return hash;
     }

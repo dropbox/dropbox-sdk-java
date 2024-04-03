@@ -656,25 +656,25 @@ public class LinkPermissions {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            resolvedVisibility,
-            requestedVisibility,
-            canRevoke,
-            revokeFailureReason,
-            effectiveAudience,
-            linkAccessLevel,
-            visibilityPolicies,
-            canSetExpiry,
-            canRemoveExpiry,
-            allowDownload,
-            canAllowDownload,
-            canDisallowDownload,
-            allowComments,
-            teamRestrictsComments,
-            audienceOptions,
-            canSetPassword,
-            canRemovePassword,
-            requirePassword,
-            canUseExtendedSharingControls
+            this.resolvedVisibility,
+            this.requestedVisibility,
+            this.canRevoke,
+            this.revokeFailureReason,
+            this.effectiveAudience,
+            this.linkAccessLevel,
+            this.visibilityPolicies,
+            this.canSetExpiry,
+            this.canRemoveExpiry,
+            this.allowDownload,
+            this.canAllowDownload,
+            this.canDisallowDownload,
+            this.allowComments,
+            this.teamRestrictsComments,
+            this.audienceOptions,
+            this.canSetPassword,
+            this.canRemovePassword,
+            this.requirePassword,
+            this.canUseExtendedSharingControls
         });
         return hash;
     }

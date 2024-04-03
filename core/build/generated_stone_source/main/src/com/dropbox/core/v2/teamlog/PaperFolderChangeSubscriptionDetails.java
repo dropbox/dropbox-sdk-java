@@ -106,9 +106,9 @@ public class PaperFolderChangeSubscriptionDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            eventUuid,
-            newSubscriptionLevel,
-            previousSubscriptionLevel
+            this.eventUuid,
+            this.newSubscriptionLevel,
+            this.previousSubscriptionLevel
         });
         return hash;
     }

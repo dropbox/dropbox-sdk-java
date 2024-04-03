@@ -342,7 +342,7 @@ public class MemberAddV2Arg extends MemberAddArgBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            roleIds
+            this.roleIds
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

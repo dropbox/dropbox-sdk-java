@@ -107,8 +107,8 @@ public class Cursor {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            value,
-            expiration
+            this.value,
+            this.expiration
         });
         return hash;
     }

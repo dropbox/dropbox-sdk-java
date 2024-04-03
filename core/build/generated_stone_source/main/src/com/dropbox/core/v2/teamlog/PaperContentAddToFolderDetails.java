@@ -79,9 +79,9 @@ public class PaperContentAddToFolderDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            eventUuid,
-            targetAssetIndex,
-            parentAssetIndex
+            this.eventUuid,
+            this.targetAssetIndex,
+            this.parentAssetIndex
         });
         return hash;
     }

@@ -438,16 +438,16 @@ public class TeamEvent {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            timestamp,
-            eventCategory,
-            actor,
-            origin,
-            involveNonTeamMember,
-            context,
-            participants,
-            assets,
-            eventType,
-            details
+            this.timestamp,
+            this.eventCategory,
+            this.actor,
+            this.origin,
+            this.involveNonTeamMember,
+            this.context,
+            this.participants,
+            this.assets,
+            this.eventType,
+            this.details
         });
         return hash;
     }

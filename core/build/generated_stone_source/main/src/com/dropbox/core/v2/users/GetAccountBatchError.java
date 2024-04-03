@@ -185,8 +185,8 @@ public final class GetAccountBatchError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            noAccountValue
+            this._tag,
+            this.noAccountValue
         });
         return hash;
     }

@@ -80,9 +80,9 @@ public class RansomwareRestoreProcessCompletedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            status,
-            restoredFilesCount,
-            restoredFilesFailedCount
+            this.status,
+            this.restoredFilesCount,
+            this.restoredFilesFailedCount
         });
         return hash;
     }

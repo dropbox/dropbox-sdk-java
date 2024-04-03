@@ -55,7 +55,7 @@ class IncludeMembersArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            returnMembers
+            this.returnMembers
         });
         return hash;
     }

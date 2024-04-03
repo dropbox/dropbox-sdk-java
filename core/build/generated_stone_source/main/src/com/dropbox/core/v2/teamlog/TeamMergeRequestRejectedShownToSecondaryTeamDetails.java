@@ -56,7 +56,7 @@ public class TeamMergeRequestRejectedShownToSecondaryTeamDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sentBy
+            this.sentBy
         });
         return hash;
     }

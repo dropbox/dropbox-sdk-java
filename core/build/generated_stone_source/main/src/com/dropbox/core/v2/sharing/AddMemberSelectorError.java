@@ -401,10 +401,10 @@ public final class AddMemberSelectorError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            invalidDropboxIdValue,
-            invalidEmailValue,
-            unverifiedDropboxIdValue
+            this._tag,
+            this.invalidDropboxIdValue,
+            this.invalidEmailValue,
+            this.unverifiedDropboxIdValue
         });
         return hash;
     }

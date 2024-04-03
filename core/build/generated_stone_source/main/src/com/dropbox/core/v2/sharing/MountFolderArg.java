@@ -56,7 +56,7 @@ class MountFolderArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedFolderId
+            this.sharedFolderId
         });
         return hash;
     }

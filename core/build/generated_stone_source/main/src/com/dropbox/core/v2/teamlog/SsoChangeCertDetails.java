@@ -88,8 +88,8 @@ public class SsoChangeCertDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            previousCertificateDetails,
-            newCertificateDetails
+            this.previousCertificateDetails,
+            this.newCertificateDetails
         });
         return hash;
     }

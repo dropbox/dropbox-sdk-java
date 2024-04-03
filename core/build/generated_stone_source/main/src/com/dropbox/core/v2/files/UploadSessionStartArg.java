@@ -212,9 +212,9 @@ class UploadSessionStartArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            close,
-            sessionType,
-            contentHash
+            this.close,
+            this.sessionType,
+            this.contentHash
         });
         return hash;
     }

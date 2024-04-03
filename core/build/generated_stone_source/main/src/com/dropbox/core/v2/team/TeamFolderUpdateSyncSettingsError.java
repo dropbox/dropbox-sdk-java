@@ -361,11 +361,11 @@ public final class TeamFolderUpdateSyncSettingsError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            accessErrorValue,
-            statusErrorValue,
-            teamSharedDropboxErrorValue,
-            syncSettingsErrorValue
+            this._tag,
+            this.accessErrorValue,
+            this.statusErrorValue,
+            this.teamSharedDropboxErrorValue,
+            this.syncSettingsErrorValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

@@ -163,8 +163,8 @@ public final class LaunchResultBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            asyncJobIdValue
+            this._tag,
+            this.asyncJobIdValue
         });
         return hash;
     }

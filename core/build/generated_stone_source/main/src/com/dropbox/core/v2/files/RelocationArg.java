@@ -254,9 +254,9 @@ class RelocationArg extends RelocationPath {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            allowSharedFolder,
-            autorename,
-            allowOwnershipTransfer
+            this.allowSharedFolder,
+            this.autorename,
+            this.allowOwnershipTransfer
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

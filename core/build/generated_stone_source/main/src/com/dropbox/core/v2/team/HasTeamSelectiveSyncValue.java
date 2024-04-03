@@ -171,8 +171,8 @@ public final class HasTeamSelectiveSyncValue {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            hasTeamSelectiveSyncValue
+            this._tag,
+            this.hasTeamSelectiveSyncValue
         });
         return hash;
     }

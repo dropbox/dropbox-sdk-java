@@ -78,8 +78,8 @@ class PaperCreateArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            importFormat
+            this.path,
+            this.importFormat
         });
         return hash;
     }

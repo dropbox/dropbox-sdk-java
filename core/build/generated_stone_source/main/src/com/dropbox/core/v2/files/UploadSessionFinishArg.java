@@ -119,9 +119,9 @@ public class UploadSessionFinishArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            cursor,
-            commit,
-            contentHash
+            this.cursor,
+            this.commit,
+            this.contentHash
         });
         return hash;
     }

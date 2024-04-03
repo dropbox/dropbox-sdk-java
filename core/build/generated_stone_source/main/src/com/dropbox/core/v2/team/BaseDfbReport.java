@@ -56,7 +56,7 @@ public class BaseDfbReport {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            startDate
+            this.startDate
         });
         return hash;
     }

@@ -101,9 +101,9 @@ public class FilePermission {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            action,
-            allow,
-            reason
+            this.action,
+            this.allow,
+            this.reason
         });
         return hash;
     }

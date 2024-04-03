@@ -137,8 +137,8 @@ public class SharingPolicy {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            publicSharingPolicy,
-            teamSharingPolicy
+            this.publicSharingPolicy,
+            this.teamSharingPolicy
         });
         return hash;
     }

@@ -256,10 +256,10 @@ public class GroupInfo extends GroupSummary {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            groupType,
-            isMember,
-            isOwner,
-            sameTeam
+            this.groupType,
+            this.isMember,
+            this.isOwner,
+            this.sameTeam
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

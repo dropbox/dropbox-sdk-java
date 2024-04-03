@@ -111,9 +111,9 @@ public class SingleUserLock {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            created,
-            lockHolderAccountId,
-            lockHolderTeamId
+            this.created,
+            this.lockHolderAccountId,
+            this.lockHolderTeamId
         });
         return hash;
     }

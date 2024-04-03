@@ -65,7 +65,7 @@ public class SharedContentRemoveInviteesDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            invitees
+            this.invitees
         });
         return hash;
     }

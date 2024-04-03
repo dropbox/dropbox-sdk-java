@@ -289,9 +289,9 @@ public final class PathRoot {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            rootValue,
-            namespaceIdValue
+            this._tag,
+            this.rootValue,
+            this.namespaceIdValue
         });
         return hash;
     }

@@ -215,9 +215,9 @@ public final class GroupSelector {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            groupIdValue,
-            groupExternalIdValue
+            this._tag,
+            this.groupIdValue,
+            this.groupExternalIdValue
         });
         return hash;
     }

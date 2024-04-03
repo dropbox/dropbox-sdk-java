@@ -125,10 +125,10 @@ public class SharedContentCopyDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedContentLink,
-            sharedContentOwner,
-            sharedContentAccessLevel,
-            destinationPath
+            this.sharedContentLink,
+            this.sharedContentOwner,
+            this.sharedContentAccessLevel,
+            this.destinationPath
         });
         return hash;
     }

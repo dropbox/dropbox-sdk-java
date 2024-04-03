@@ -71,7 +71,7 @@ public class ListTemplateResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            templateIds
+            this.templateIds
         });
         return hash;
     }

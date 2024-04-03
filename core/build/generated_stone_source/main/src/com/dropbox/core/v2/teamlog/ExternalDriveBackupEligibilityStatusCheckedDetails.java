@@ -87,9 +87,9 @@ public class ExternalDriveBackupEligibilityStatusCheckedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            desktopDeviceSessionInfo,
-            status,
-            numberOfExternalDriveBackup
+            this.desktopDeviceSessionInfo,
+            this.status,
+            this.numberOfExternalDriveBackup
         });
         return hash;
     }

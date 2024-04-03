@@ -71,8 +71,8 @@ class MembersSetProfilePhotoArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            user,
-            photo
+            this.user,
+            this.photo
         });
         return hash;
     }

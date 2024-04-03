@@ -178,13 +178,13 @@ public class Certificate {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            subject,
-            issuer,
-            issueDate,
-            expirationDate,
-            serialNumber,
-            sha1Fingerprint,
-            commonName
+            this.subject,
+            this.issuer,
+            this.issueDate,
+            this.expirationDate,
+            this.serialNumber,
+            this.sha1Fingerprint,
+            this.commonName
         });
         return hash;
     }

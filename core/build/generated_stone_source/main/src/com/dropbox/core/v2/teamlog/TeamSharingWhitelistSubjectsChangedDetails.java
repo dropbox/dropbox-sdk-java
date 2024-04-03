@@ -87,8 +87,8 @@ public class TeamSharingWhitelistSubjectsChangedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            addedWhitelistSubjects,
-            removedWhitelistSubjects
+            this.addedWhitelistSubjects,
+            this.removedWhitelistSubjects
         });
         return hash;
     }

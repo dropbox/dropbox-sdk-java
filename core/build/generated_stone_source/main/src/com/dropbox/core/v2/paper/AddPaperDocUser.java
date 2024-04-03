@@ -220,9 +220,9 @@ class AddPaperDocUser extends RefPaperDoc {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            members,
-            customMessage,
-            quiet
+            this.members,
+            this.customMessage,
+            this.quiet
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

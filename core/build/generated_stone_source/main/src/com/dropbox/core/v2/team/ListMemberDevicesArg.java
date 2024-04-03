@@ -219,10 +219,10 @@ class ListMemberDevicesArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamMemberId,
-            includeWebSessions,
-            includeDesktopClients,
-            includeMobileClients
+            this.teamMemberId,
+            this.includeWebSessions,
+            this.includeDesktopClients,
+            this.includeMobileClients
         });
         return hash;
     }

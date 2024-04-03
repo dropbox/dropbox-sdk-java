@@ -130,10 +130,10 @@ public class NamespaceMetadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            name,
-            namespaceId,
-            namespaceType,
-            teamMemberId
+            this.name,
+            this.namespaceId,
+            this.namespaceType,
+            this.teamMemberId
         });
         return hash;
     }

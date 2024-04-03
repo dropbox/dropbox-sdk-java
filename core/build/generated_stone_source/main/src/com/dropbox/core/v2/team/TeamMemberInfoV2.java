@@ -95,8 +95,8 @@ public class TeamMemberInfoV2 {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            profile,
-            roles
+            this.profile,
+            this.roles
         });
         return hash;
     }

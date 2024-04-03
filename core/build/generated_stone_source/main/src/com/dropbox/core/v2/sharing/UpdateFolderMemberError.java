@@ -349,10 +349,10 @@ public final class UpdateFolderMemberError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            accessErrorValue,
-            memberErrorValue,
-            noExplicitAccessValue
+            this._tag,
+            this.accessErrorValue,
+            this.memberErrorValue,
+            this.noExplicitAccessValue
         });
         return hash;
     }

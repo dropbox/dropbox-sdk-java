@@ -81,9 +81,9 @@ public class PaperDocCreateUpdateResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            docId,
-            revision,
-            title
+            this.docId,
+            this.revision,
+            this.title
         });
         return hash;
     }

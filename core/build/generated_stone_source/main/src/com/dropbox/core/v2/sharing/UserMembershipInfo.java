@@ -218,7 +218,7 @@ public class UserMembershipInfo extends MembershipInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            user
+            this.user
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

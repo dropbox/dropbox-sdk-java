@@ -272,11 +272,11 @@ public class Metadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            name,
-            pathLower,
-            pathDisplay,
-            parentSharedFolderId,
-            previewUrl
+            this.name,
+            this.pathLower,
+            this.pathDisplay,
+            this.parentSharedFolderId,
+            this.previewUrl
         });
         return hash;
     }

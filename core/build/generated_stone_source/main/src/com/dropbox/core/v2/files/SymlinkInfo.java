@@ -52,7 +52,7 @@ public class SymlinkInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            target
+            this.target
         });
         return hash;
     }

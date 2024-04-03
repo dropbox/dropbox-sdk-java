@@ -109,9 +109,9 @@ public class ListRevisionsResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            isDeleted,
-            serverDeleted,
-            entries
+            this.isDeleted,
+            this.serverDeleted,
+            this.entries
         });
         return hash;
     }

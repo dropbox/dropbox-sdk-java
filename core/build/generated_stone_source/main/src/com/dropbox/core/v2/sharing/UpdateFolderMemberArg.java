@@ -96,9 +96,9 @@ class UpdateFolderMemberArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedFolderId,
-            member,
-            accessLevel
+            this.sharedFolderId,
+            this.member,
+            this.accessLevel
         });
         return hash;
     }

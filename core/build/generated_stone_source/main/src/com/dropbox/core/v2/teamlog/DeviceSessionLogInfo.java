@@ -164,9 +164,9 @@ public class DeviceSessionLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            ipAddress,
-            created,
-            updated
+            this.ipAddress,
+            this.created,
+            this.updated
         });
         return hash;
     }

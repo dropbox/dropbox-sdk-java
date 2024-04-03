@@ -250,10 +250,10 @@ public class UpdateTemplateArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            templateId,
-            name,
-            description,
-            addFields
+            this.templateId,
+            this.name,
+            this.description,
+            this.addFields
         });
         return hash;
     }

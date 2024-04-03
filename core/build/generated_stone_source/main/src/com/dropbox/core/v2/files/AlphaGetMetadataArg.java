@@ -293,7 +293,7 @@ class AlphaGetMetadataArg extends GetMetadataArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            includePropertyTemplates
+            this.includePropertyTemplates
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

@@ -89,8 +89,8 @@ public class GetFileMetadataBatchResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            file,
-            result
+            this.file,
+            this.result
         });
         return hash;
     }

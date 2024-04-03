@@ -110,8 +110,8 @@ public class Fish extends Pet {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            species,
-            tankSize
+            this.species,
+            this.tankSize
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

@@ -80,8 +80,8 @@ public class AudienceExceptions {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            count,
-            exceptions
+            this.count,
+            this.exceptions
         });
         return hash;
     }

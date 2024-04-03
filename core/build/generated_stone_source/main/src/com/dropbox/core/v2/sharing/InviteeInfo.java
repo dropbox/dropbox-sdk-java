@@ -189,8 +189,8 @@ public final class InviteeInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            emailValue
+            this._tag,
+            this.emailValue
         });
         return hash;
     }

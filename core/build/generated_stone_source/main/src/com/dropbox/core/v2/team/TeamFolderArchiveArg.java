@@ -77,7 +77,7 @@ class TeamFolderArchiveArg extends TeamFolderIdArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            forceAsyncOff
+            this.forceAsyncOff
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

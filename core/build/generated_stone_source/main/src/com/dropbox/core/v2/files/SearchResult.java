@@ -90,9 +90,9 @@ public class SearchResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            matches,
-            more,
-            start
+            this.matches,
+            this.more,
+            this.start
         });
         return hash;
     }

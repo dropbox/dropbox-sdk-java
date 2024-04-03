@@ -878,16 +878,16 @@ public final class AddSecondaryEmailResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            successValue,
-            unavailableValue,
-            alreadyPendingValue,
-            alreadyOwnedByUserValue,
-            reachedLimitValue,
-            transientErrorValue,
-            tooManyUpdatesValue,
-            unknownErrorValue,
-            rateLimitedValue
+            this._tag,
+            this.successValue,
+            this.unavailableValue,
+            this.alreadyPendingValue,
+            this.alreadyOwnedByUserValue,
+            this.reachedLimitValue,
+            this.transientErrorValue,
+            this.tooManyUpdatesValue,
+            this.unknownErrorValue,
+            this.rateLimitedValue
         });
         return hash;
     }

@@ -135,10 +135,10 @@ class PaperUpdateArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            importFormat,
-            docUpdatePolicy,
-            paperRevision
+            this.path,
+            this.importFormat,
+            this.docUpdatePolicy,
+            this.paperRevision
         });
         return hash;
     }

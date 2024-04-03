@@ -168,8 +168,8 @@ public final class UserInfoError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            openidErrorValue
+            this._tag,
+            this.openidErrorValue
         });
         return hash;
     }

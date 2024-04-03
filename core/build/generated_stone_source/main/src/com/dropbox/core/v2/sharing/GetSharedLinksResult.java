@@ -58,7 +58,7 @@ public class GetSharedLinksResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            links
+            this.links
         });
         return hash;
     }

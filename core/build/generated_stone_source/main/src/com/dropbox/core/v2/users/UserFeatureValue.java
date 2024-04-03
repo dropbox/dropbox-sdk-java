@@ -237,9 +237,9 @@ public final class UserFeatureValue {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            paperAsFilesValue,
-            fileLockingValue
+            this._tag,
+            this.paperAsFilesValue,
+            this.fileLockingValue
         });
         return hash;
     }

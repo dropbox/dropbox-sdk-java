@@ -275,8 +275,8 @@ public final class ModifyTemplateError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            templateNotFoundValue
+            this._tag,
+            this.templateNotFoundValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

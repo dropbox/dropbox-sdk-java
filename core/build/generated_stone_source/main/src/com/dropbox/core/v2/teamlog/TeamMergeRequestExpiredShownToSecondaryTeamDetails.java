@@ -56,7 +56,7 @@ public class TeamMergeRequestExpiredShownToSecondaryTeamDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sentTo
+            this.sentTo
         });
         return hash;
     }

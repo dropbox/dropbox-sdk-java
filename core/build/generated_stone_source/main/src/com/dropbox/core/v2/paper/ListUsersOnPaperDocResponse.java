@@ -150,11 +150,11 @@ public class ListUsersOnPaperDocResponse {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            invitees,
-            users,
-            docOwner,
-            cursor,
-            hasMore
+            this.invitees,
+            this.users,
+            this.docOwner,
+            this.cursor,
+            this.hasMore
         });
         return hash;
     }

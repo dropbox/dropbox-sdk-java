@@ -60,7 +60,7 @@ public class SharedLinkDownloadDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedLinkOwner
+            this.sharedLinkOwner
         });
         return hash;
     }

@@ -107,10 +107,10 @@ public class PaperCreateResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            url,
-            resultPath,
-            fileId,
-            paperRevision
+            this.url,
+            this.resultPath,
+            this.fileId,
+            this.paperRevision
         });
         return hash;
     }

@@ -207,8 +207,8 @@ public final class ListUsersCursorError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            cursorErrorValue
+            this._tag,
+            this.cursorErrorValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

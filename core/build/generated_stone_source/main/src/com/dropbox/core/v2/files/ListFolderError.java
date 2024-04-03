@@ -232,9 +232,9 @@ public final class ListFolderError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            pathValue,
-            templateErrorValue
+            this._tag,
+            this.pathValue,
+            this.templateErrorValue
         });
         return hash;
     }

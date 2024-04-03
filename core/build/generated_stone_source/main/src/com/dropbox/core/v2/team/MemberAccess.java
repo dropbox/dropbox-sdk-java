@@ -72,8 +72,8 @@ public class MemberAccess {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            user,
-            accessType
+            this.user,
+            this.accessType
         });
         return hash;
     }

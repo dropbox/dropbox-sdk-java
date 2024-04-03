@@ -52,7 +52,7 @@ public class SetProfilePhotoResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            profilePhotoUrl
+            this.profilePhotoUrl
         });
         return hash;
     }

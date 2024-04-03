@@ -111,9 +111,9 @@ public class TeamMemberRole {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            roleId,
-            name,
-            description
+            this.roleId,
+            this.name,
+            this.description
         });
         return hash;
     }

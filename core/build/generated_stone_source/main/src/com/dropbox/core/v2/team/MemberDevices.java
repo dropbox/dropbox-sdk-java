@@ -254,10 +254,10 @@ public class MemberDevices {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamMemberId,
-            webSessions,
-            desktopClients,
-            mobileClients
+            this.teamMemberId,
+            this.webSessions,
+            this.desktopClients,
+            this.mobileClients
         });
         return hash;
     }

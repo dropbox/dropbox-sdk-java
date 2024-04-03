@@ -397,13 +397,13 @@ public class CommitInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            mode,
-            autorename,
-            clientModified,
-            mute,
-            propertyGroups,
-            strictConflict
+            this.path,
+            this.mode,
+            this.autorename,
+            this.clientModified,
+            this.mute,
+            this.propertyGroups,
+            this.strictConflict
         });
         return hash;
     }

@@ -55,7 +55,7 @@ public class DeviceChangeIpWebDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            userAgent
+            this.userAgent
         });
         return hash;
     }

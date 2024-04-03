@@ -87,8 +87,8 @@ public class TeamInviteDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            inviteMethod,
-            additionalLicensePurchase
+            this.inviteMethod,
+            this.additionalLicensePurchase
         });
         return hash;
     }

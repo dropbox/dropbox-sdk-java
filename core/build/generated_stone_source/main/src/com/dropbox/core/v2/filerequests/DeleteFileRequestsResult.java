@@ -62,7 +62,7 @@ public class DeleteFileRequestsResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            fileRequests
+            this.fileRequests
         });
         return hash;
     }

@@ -528,13 +528,13 @@ public final class AccessMethodLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            adminConsoleValue,
-            apiValue,
-            contentManagerValue,
-            endUserValue,
-            enterpriseConsoleValue,
-            signInAsValue
+            this._tag,
+            this.adminConsoleValue,
+            this.apiValue,
+            this.contentManagerValue,
+            this.endUserValue,
+            this.enterpriseConsoleValue,
+            this.signInAsValue
         });
         return hash;
     }

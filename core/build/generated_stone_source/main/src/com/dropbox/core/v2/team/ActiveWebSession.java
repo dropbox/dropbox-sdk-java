@@ -309,10 +309,10 @@ public class ActiveWebSession extends DeviceSession {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            userAgent,
-            os,
-            browser,
-            expires
+            this.userAgent,
+            this.os,
+            this.browser,
+            this.expires
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

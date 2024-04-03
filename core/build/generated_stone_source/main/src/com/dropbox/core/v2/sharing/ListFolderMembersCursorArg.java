@@ -186,8 +186,8 @@ class ListFolderMembersCursorArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            actions,
-            limit
+            this.actions,
+            this.limit
         });
         return hash;
     }

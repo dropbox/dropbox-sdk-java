@@ -89,8 +89,8 @@ class CreateSharedLinkWithSettingsArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            settings
+            this.path,
+            this.settings
         });
         return hash;
     }

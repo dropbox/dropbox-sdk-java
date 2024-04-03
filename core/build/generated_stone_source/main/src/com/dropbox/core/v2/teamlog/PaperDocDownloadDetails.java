@@ -72,8 +72,8 @@ public class PaperDocDownloadDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            eventUuid,
-            exportFileFormat
+            this.eventUuid,
+            this.exportFileFormat
         });
         return hash;
     }

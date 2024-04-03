@@ -87,8 +87,8 @@ public class InsufficientPlan {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            message,
-            upsellUrl
+            this.message,
+            this.upsellUrl
         });
         return hash;
     }

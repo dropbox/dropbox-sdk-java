@@ -67,8 +67,8 @@ public class DomainInvitesEmailExistingUsersDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            domainName,
-            numRecipients
+            this.domainName,
+            this.numRecipients
         });
         return hash;
     }

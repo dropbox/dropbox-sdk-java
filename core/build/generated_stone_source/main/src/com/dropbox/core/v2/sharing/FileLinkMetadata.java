@@ -412,10 +412,10 @@ public class FileLinkMetadata extends SharedLinkMetadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            clientModified,
-            serverModified,
-            rev,
-            size
+            this.clientModified,
+            this.serverModified,
+            this.rev,
+            this.size
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

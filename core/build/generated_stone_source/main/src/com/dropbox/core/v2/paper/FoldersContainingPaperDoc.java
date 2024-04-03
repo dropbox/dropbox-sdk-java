@@ -158,8 +158,8 @@ public class FoldersContainingPaperDoc {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            folderSharingPolicyType,
-            folders
+            this.folderSharingPolicyType,
+            this.folders
         });
         return hash;
     }

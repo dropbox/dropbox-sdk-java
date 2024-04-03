@@ -109,8 +109,8 @@ class GetFileMetadataArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            file,
-            actions
+            this.file,
+            this.actions
         });
         return hash;
     }

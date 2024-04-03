@@ -108,8 +108,8 @@ class ListFolderLongpollArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            cursor,
-            timeout
+            this.cursor,
+            this.timeout
         });
         return hash;
     }

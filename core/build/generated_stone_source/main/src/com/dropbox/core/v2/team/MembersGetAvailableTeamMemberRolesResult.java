@@ -64,7 +64,7 @@ public class MembersGetAvailableTeamMemberRolesResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            roles
+            this.roles
         });
         return hash;
     }

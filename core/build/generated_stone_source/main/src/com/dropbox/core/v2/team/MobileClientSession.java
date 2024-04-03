@@ -332,11 +332,11 @@ public class MobileClientSession extends DeviceSession {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            deviceName,
-            clientType,
-            clientVersion,
-            osVersion,
-            lastCarrier
+            this.deviceName,
+            this.clientType,
+            this.clientVersion,
+            this.osVersion,
+            this.lastCarrier
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

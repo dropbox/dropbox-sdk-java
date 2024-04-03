@@ -198,9 +198,9 @@ public class MemberAccessLevelResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accessLevel,
-            warning,
-            accessDetails
+            this.accessLevel,
+            this.warning,
+            this.accessDetails
         });
         return hash;
     }

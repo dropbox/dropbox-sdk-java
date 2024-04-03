@@ -276,10 +276,10 @@ public final class RevokeDeviceSessionArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            webSessionValue,
-            desktopClientValue,
-            mobileClientValue
+            this._tag,
+            this.webSessionValue,
+            this.desktopClientValue,
+            this.mobileClientValue
         });
         return hash;
     }

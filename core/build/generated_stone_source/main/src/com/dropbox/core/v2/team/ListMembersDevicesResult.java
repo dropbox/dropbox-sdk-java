@@ -110,9 +110,9 @@ public class ListMembersDevicesResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            devices,
-            hasMore,
-            cursor
+            this.devices,
+            this.hasMore,
+            this.cursor
         });
         return hash;
     }

@@ -73,8 +73,8 @@ public class GroupMemberInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            profile,
-            accessType
+            this.profile,
+            this.accessType
         });
         return hash;
     }

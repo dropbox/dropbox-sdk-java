@@ -302,9 +302,9 @@ public final class SharingAllowlistRemoveError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            malformedEntryValue,
-            entriesDoNotExistValue
+            this._tag,
+            this.malformedEntryValue,
+            this.entriesDoNotExistValue
         });
         return hash;
     }

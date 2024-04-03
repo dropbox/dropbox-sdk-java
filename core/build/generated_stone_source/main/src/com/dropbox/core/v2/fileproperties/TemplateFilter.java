@@ -208,8 +208,8 @@ public final class TemplateFilter {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            filterSomeValue
+            this._tag,
+            this.filterSomeValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

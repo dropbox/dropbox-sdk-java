@@ -109,10 +109,10 @@ public class PropertiesSearchMatch {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            id,
-            path,
-            isDeleted,
-            propertyGroups
+            this.id,
+            this.path,
+            this.isDeleted,
+            this.propertyGroups
         });
         return hash;
     }

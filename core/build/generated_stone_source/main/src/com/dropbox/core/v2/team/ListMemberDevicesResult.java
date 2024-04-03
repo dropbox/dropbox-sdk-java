@@ -217,9 +217,9 @@ public class ListMemberDevicesResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            activeWebSessions,
-            desktopClientSessions,
-            mobileClientSessions
+            this.activeWebSessions,
+            this.desktopClientSessions,
+            this.mobileClientSessions
         });
         return hash;
     }

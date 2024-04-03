@@ -395,20 +395,20 @@ public class GetActivityReport extends BaseDfbReport {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            adds,
-            edits,
-            deletes,
-            activeUsers28Day,
-            activeUsers7Day,
-            activeUsers1Day,
-            activeSharedFolders28Day,
-            activeSharedFolders7Day,
-            activeSharedFolders1Day,
-            sharedLinksCreated,
-            sharedLinksViewedByTeam,
-            sharedLinksViewedByOutsideUser,
-            sharedLinksViewedByNotLoggedIn,
-            sharedLinksViewedTotal
+            this.adds,
+            this.edits,
+            this.deletes,
+            this.activeUsers28Day,
+            this.activeUsers7Day,
+            this.activeUsers1Day,
+            this.activeSharedFolders28Day,
+            this.activeSharedFolders7Day,
+            this.activeSharedFolders1Day,
+            this.sharedLinksCreated,
+            this.sharedLinksViewedByTeam,
+            this.sharedLinksViewedByOutsideUser,
+            this.sharedLinksViewedByNotLoggedIn,
+            this.sharedLinksViewedTotal
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

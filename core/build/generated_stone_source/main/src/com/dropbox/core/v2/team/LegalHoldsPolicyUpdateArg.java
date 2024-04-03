@@ -249,10 +249,10 @@ class LegalHoldsPolicyUpdateArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            id,
-            name,
-            description,
-            members
+            this.id,
+            this.name,
+            this.description,
+            this.members
         });
         return hash;
     }

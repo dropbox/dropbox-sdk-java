@@ -105,9 +105,9 @@ public class SharedContentDownloadDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedContentLink,
-            sharedContentOwner,
-            sharedContentAccessLevel
+            this.sharedContentLink,
+            this.sharedContentOwner,
+            this.sharedContentAccessLevel
         });
         return hash;
     }

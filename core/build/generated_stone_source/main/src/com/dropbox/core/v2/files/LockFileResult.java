@@ -69,8 +69,8 @@ public class LockFileResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            metadata,
-            lock
+            this.metadata,
+            this.lock
         });
         return hash;
     }

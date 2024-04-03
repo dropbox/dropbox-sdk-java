@@ -372,10 +372,10 @@ public final class DeleteSecondaryEmailResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            successValue,
-            notFoundValue,
-            cannotRemovePrimaryValue
+            this._tag,
+            this.successValue,
+            this.notFoundValue,
+            this.cannotRemovePrimaryValue
         });
         return hash;
     }

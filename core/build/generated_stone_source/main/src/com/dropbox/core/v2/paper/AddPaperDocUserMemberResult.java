@@ -76,8 +76,8 @@ public class AddPaperDocUserMemberResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            member,
-            result
+            this.member,
+            this.result
         });
         return hash;
     }

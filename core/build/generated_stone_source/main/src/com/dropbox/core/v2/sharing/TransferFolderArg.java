@@ -77,8 +77,8 @@ class TransferFolderArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedFolderId,
-            toDropboxId
+            this.sharedFolderId,
+            this.toDropboxId
         });
         return hash;
     }

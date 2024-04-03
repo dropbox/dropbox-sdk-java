@@ -192,10 +192,10 @@ public class LinkSettings {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accessLevel,
-            audience,
-            expiry,
-            password
+            this.accessLevel,
+            this.audience,
+            this.expiry,
+            this.password
         });
         return hash;
     }

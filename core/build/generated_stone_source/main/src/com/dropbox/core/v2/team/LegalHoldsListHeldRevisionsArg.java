@@ -56,7 +56,7 @@ class LegalHoldsListHeldRevisionsArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            id
+            this.id
         });
         return hash;
     }

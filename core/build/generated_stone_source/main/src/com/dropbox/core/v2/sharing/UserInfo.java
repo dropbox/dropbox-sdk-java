@@ -156,11 +156,11 @@ public class UserInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accountId,
-            email,
-            displayName,
-            sameTeam,
-            teamMemberId
+            this.accountId,
+            this.email,
+            this.displayName,
+            this.sameTeam,
+            this.teamMemberId
         });
         return hash;
     }

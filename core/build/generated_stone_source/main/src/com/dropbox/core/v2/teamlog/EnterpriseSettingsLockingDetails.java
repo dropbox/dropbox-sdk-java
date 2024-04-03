@@ -108,10 +108,10 @@ public class EnterpriseSettingsLockingDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamName,
-            settingsPageName,
-            previousSettingsPageLockingState,
-            newSettingsPageLockingState
+            this.teamName,
+            this.settingsPageName,
+            this.previousSettingsPageLockingState,
+            this.newSettingsPageLockingState
         });
         return hash;
     }

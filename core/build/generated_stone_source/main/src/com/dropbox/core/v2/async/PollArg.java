@@ -61,7 +61,7 @@ public class PollArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            asyncJobId
+            this.asyncJobId
         });
         return hash;
     }

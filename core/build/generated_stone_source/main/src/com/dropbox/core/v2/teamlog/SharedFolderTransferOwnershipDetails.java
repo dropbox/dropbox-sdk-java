@@ -95,8 +95,8 @@ public class SharedFolderTransferOwnershipDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            previousOwnerEmail,
-            newOwnerEmail
+            this.previousOwnerEmail,
+            this.newOwnerEmail
         });
         return hash;
     }

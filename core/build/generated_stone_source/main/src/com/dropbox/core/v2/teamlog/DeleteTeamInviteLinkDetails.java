@@ -56,7 +56,7 @@ public class DeleteTeamInviteLinkDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            linkUrl
+            this.linkUrl
         });
         return hash;
     }

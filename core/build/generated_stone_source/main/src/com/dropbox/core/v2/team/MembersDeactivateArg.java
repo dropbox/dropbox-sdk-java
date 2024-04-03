@@ -77,7 +77,7 @@ class MembersDeactivateArg extends MembersDeactivateBaseArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            wipeData
+            this.wipeData
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

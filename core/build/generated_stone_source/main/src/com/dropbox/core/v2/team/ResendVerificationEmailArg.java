@@ -59,7 +59,7 @@ class ResendVerificationEmailArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            emailsToResend
+            this.emailsToResend
         });
         return hash;
     }

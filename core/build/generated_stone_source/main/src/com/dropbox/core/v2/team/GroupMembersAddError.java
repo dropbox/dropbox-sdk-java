@@ -447,10 +447,10 @@ public final class GroupMembersAddError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            membersNotInTeamValue,
-            usersNotFoundValue,
-            userCannotBeManagerOfCompanyManagedGroupValue
+            this._tag,
+            this.membersNotInTeamValue,
+            this.usersNotFoundValue,
+            this.userCannotBeManagerOfCompanyManagedGroupValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

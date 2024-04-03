@@ -55,7 +55,7 @@ public class CollectionShareDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            albumName
+            this.albumName
         });
         return hash;
     }

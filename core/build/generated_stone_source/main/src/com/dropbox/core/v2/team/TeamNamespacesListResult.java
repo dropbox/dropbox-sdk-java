@@ -98,9 +98,9 @@ public class TeamNamespacesListResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            namespaces,
-            cursor,
-            hasMore
+            this.namespaces,
+            this.cursor,
+            this.hasMore
         });
         return hash;
     }

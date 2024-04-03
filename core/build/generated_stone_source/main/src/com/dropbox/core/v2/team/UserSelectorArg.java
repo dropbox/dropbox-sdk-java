@@ -286,10 +286,10 @@ public final class UserSelectorArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            teamMemberIdValue,
-            externalIdValue,
-            emailValue
+            this._tag,
+            this.teamMemberIdValue,
+            this.externalIdValue,
+            this.emailValue
         });
         return hash;
     }

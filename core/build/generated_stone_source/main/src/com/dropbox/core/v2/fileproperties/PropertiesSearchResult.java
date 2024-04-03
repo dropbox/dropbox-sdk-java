@@ -99,8 +99,8 @@ public class PropertiesSearchResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            matches,
-            cursor
+            this.matches,
+            this.cursor
         });
         return hash;
     }

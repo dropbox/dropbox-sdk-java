@@ -80,8 +80,8 @@ public class MemberLinkedApps {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamMemberId,
-            linkedApiApps
+            this.teamMemberId,
+            this.linkedApiApps
         });
         return hash;
     }

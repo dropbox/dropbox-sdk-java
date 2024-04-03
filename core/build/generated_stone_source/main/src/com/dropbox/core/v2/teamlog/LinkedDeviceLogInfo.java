@@ -394,11 +394,11 @@ public final class LinkedDeviceLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            desktopDeviceSessionValue,
-            legacyDeviceSessionValue,
-            mobileDeviceSessionValue,
-            webDeviceSessionValue
+            this._tag,
+            this.desktopDeviceSessionValue,
+            this.legacyDeviceSessionValue,
+            this.mobileDeviceSessionValue,
+            this.webDeviceSessionValue
         });
         return hash;
     }

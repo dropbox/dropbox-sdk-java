@@ -55,7 +55,7 @@ public class PaperFolderFollowedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            eventUuid
+            this.eventUuid
         });
         return hash;
     }

@@ -216,9 +216,9 @@ class UploadSessionAppendArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            cursor,
-            close,
-            contentHash
+            this.cursor,
+            this.close,
+            this.contentHash
         });
         return hash;
     }

@@ -101,10 +101,10 @@ public class PaperDocExportResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            owner,
-            title,
-            revision,
-            mimeType
+            this.owner,
+            this.title,
+            this.revision,
+            this.mimeType
         });
         return hash;
     }

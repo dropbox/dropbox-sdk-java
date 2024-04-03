@@ -58,7 +58,7 @@ public class TeamMemberInfoV2Result {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            memberInfo
+            this.memberInfo
         });
         return hash;
     }

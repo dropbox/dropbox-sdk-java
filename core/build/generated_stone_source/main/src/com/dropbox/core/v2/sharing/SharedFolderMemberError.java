@@ -213,8 +213,8 @@ public final class SharedFolderMemberError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            noExplicitAccessValue
+            this._tag,
+            this.noExplicitAccessValue
         });
         return hash;
     }

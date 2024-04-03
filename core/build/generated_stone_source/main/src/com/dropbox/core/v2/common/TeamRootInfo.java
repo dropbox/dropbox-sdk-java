@@ -89,7 +89,7 @@ public class TeamRootInfo extends RootInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            homePath
+            this.homePath
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

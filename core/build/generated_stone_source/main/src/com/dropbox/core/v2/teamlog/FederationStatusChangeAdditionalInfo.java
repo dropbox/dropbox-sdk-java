@@ -321,10 +321,10 @@ public final class FederationStatusChangeAdditionalInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            connectedTeamNameValue,
-            nonTrustedTeamDetailsValue,
-            organizationNameValue
+            this._tag,
+            this.connectedTeamNameValue,
+            this.nonTrustedTeamDetailsValue,
+            this.organizationNameValue
         });
         return hash;
     }

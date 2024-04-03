@@ -190,8 +190,8 @@ public final class UploadApiRateLimitValue {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            limitValue
+            this._tag,
+            this.limitValue
         });
         return hash;
     }

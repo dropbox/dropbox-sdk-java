@@ -179,8 +179,8 @@ public final class RemoveTagError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            pathValue
+            this._tag,
+            this.pathValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

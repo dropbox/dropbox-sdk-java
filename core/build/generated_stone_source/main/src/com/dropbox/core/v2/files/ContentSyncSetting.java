@@ -76,8 +76,8 @@ public class ContentSyncSetting {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            id,
-            syncSetting
+            this.id,
+            this.syncSetting
         });
         return hash;
     }

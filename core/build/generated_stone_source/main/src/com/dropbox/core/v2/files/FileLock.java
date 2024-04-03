@@ -51,7 +51,7 @@ public class FileLock {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            content
+            this.content
         });
         return hash;
     }

@@ -238,9 +238,9 @@ public final class PathOrLink {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            pathValue,
-            linkValue
+            this._tag,
+            this.pathValue,
+            this.linkValue
         });
         return hash;
     }

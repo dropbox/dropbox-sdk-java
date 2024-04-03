@@ -208,9 +208,9 @@ public final class UninitializedReason {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            badHeaderValue,
-            badFeelsValue
+            this._tag,
+            this.badHeaderValue,
+            this.badFeelsValue
         });
         return hash;
     }

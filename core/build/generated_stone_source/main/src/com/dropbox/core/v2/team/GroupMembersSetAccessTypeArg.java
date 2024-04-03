@@ -117,8 +117,8 @@ class GroupMembersSetAccessTypeArg extends GroupMemberSelector {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accessType,
-            returnMembers
+            this.accessType,
+            this.returnMembers
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

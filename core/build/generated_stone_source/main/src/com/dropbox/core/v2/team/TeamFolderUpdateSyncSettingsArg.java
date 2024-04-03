@@ -190,8 +190,8 @@ class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            syncSetting,
-            contentSyncSettings
+            this.syncSetting,
+            this.contentSyncSettings
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

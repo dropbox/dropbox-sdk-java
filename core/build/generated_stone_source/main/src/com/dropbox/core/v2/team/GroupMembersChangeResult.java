@@ -89,8 +89,8 @@ public class GroupMembersChangeResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            groupInfo,
-            asyncJobId
+            this.groupInfo,
+            this.asyncJobId
         });
         return hash;
     }

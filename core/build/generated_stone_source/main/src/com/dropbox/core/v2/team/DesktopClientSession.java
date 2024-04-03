@@ -323,11 +323,11 @@ public class DesktopClientSession extends DeviceSession {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            hostName,
-            clientType,
-            clientVersion,
-            platform,
-            isDeleteOnUnlinkSupported
+            this.hostName,
+            this.clientType,
+            this.clientVersion,
+            this.platform,
+            this.isDeleteOnUnlinkSupported
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

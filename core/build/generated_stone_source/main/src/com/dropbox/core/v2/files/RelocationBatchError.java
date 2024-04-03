@@ -641,12 +641,12 @@ public final class RelocationBatchError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            fromLookupValue,
-            fromWriteValue,
-            toValue,
-            cantMoveIntoVaultValue,
-            cantMoveIntoFamilyValue
+            this._tag,
+            this.fromLookupValue,
+            this.fromWriteValue,
+            this.toValue,
+            this.cantMoveIntoVaultValue,
+            this.cantMoveIntoFamilyValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

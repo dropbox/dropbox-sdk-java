@@ -329,13 +329,13 @@ class ShareFolderArgBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            aclUpdatePolicy,
-            forceAsync,
-            memberPolicy,
-            path,
-            sharedLinkPolicy,
-            viewerInfoPolicy,
-            accessInheritance
+            this.aclUpdatePolicy,
+            this.forceAsync,
+            this.memberPolicy,
+            this.path,
+            this.sharedLinkPolicy,
+            this.viewerInfoPolicy,
+            this.accessInheritance
         });
         return hash;
     }

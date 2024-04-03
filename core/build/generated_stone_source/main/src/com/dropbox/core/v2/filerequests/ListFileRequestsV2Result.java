@@ -102,9 +102,9 @@ public class ListFileRequestsV2Result {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            fileRequests,
-            cursor,
-            hasMore
+            this.fileRequests,
+            this.cursor,
+            this.hasMore
         });
         return hash;
     }

@@ -64,8 +64,8 @@ public class HighlightSpan {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            highlightStr,
-            isHighlighted
+            this.highlightStr,
+            this.isHighlighted
         });
         return hash;
     }

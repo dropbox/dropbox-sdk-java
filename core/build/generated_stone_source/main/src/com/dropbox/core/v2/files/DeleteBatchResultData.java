@@ -52,7 +52,7 @@ public class DeleteBatchResultData {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            metadata
+            this.metadata
         });
         return hash;
     }

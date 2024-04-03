@@ -330,8 +330,8 @@ public final class UploadSessionLookupError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            incorrectOffsetValue
+            this._tag,
+            this.incorrectOffsetValue
         });
         return hash;
     }

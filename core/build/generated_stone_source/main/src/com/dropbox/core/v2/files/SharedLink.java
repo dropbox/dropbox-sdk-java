@@ -80,8 +80,8 @@ public class SharedLink {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            url,
-            password
+            this.url,
+            this.password
         });
         return hash;
     }

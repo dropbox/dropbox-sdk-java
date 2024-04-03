@@ -109,7 +109,7 @@ public class PathLinkMetadata extends LinkMetadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path
+            this.path
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

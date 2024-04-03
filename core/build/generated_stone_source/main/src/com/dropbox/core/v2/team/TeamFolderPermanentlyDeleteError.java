@@ -290,10 +290,10 @@ public final class TeamFolderPermanentlyDeleteError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            accessErrorValue,
-            statusErrorValue,
-            teamSharedDropboxErrorValue
+            this._tag,
+            this.accessErrorValue,
+            this.statusErrorValue,
+            this.teamSharedDropboxErrorValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

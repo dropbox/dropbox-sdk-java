@@ -69,8 +69,8 @@ public class UploadSessionCursor {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sessionId,
-            offset
+            this.sessionId,
+            this.offset
         });
         return hash;
     }

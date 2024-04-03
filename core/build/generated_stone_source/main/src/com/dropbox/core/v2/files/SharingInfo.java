@@ -46,7 +46,7 @@ public class SharingInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            readOnly
+            this.readOnly
         });
         return hash;
     }

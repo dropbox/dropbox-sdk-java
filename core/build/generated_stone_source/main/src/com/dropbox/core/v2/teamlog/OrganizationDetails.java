@@ -56,7 +56,7 @@ public class OrganizationDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            organization
+            this.organization
         });
         return hash;
     }

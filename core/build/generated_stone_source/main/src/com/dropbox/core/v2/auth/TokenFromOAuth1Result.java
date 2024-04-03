@@ -55,7 +55,7 @@ public class TokenFromOAuth1Result {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            oauth2Token
+            this.oauth2Token
         });
         return hash;
     }

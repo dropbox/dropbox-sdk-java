@@ -332,13 +332,13 @@ class UpdateFolderPolicyArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedFolderId,
-            memberPolicy,
-            aclUpdatePolicy,
-            viewerInfoPolicy,
-            sharedLinkPolicy,
-            linkSettings,
-            actions
+            this.sharedFolderId,
+            this.memberPolicy,
+            this.aclUpdatePolicy,
+            this.viewerInfoPolicy,
+            this.sharedLinkPolicy,
+            this.linkSettings,
+            this.actions
         });
         return hash;
     }

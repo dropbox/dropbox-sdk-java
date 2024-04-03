@@ -168,8 +168,8 @@ public final class PropertiesSearchError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            propertyGroupLookupValue
+            this._tag,
+            this.propertyGroupLookupValue
         });
         return hash;
     }

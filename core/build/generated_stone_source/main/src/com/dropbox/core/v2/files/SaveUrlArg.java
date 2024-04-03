@@ -73,8 +73,8 @@ class SaveUrlArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            url
+            this.path,
+            this.url
         });
         return hash;
     }

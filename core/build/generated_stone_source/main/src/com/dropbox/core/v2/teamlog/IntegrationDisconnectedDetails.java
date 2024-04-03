@@ -56,7 +56,7 @@ public class IntegrationDisconnectedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            integrationName
+            this.integrationName
         });
         return hash;
     }

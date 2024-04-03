@@ -58,7 +58,7 @@ public class MembersGetInfoV2Result {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            membersInfo
+            this.membersInfo
         });
         return hash;
     }

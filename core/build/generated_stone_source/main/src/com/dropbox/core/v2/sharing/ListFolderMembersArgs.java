@@ -188,7 +188,7 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedFolderId
+            this.sharedFolderId
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

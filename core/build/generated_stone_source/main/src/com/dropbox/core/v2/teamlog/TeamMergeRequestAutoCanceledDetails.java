@@ -59,7 +59,7 @@ public class TeamMergeRequestAutoCanceledDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            details
+            this.details
         });
         return hash;
     }

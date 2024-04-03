@@ -56,7 +56,7 @@ public class RansomwareAlertCreateReportFailedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            failureReason
+            this.failureReason
         });
         return hash;
     }

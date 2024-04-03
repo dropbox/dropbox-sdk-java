@@ -77,8 +77,8 @@ class GroupMemberSelector {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            group,
-            user
+            this.group,
+            this.user
         });
         return hash;
     }

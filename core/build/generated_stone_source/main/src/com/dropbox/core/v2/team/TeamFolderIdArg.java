@@ -56,7 +56,7 @@ class TeamFolderIdArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamFolderId
+            this.teamFolderId
         });
         return hash;
     }

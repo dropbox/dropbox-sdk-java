@@ -94,8 +94,8 @@ public class DomainVerificationAddDomainSuccessDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            domainNames,
-            verificationMethod
+            this.domainNames,
+            this.verificationMethod
         });
         return hash;
     }

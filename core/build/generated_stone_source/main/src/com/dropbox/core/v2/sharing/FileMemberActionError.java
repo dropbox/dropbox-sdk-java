@@ -290,9 +290,9 @@ public final class FileMemberActionError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            accessErrorValue,
-            noExplicitAccessValue
+            this._tag,
+            this.accessErrorValue,
+            this.noExplicitAccessValue
         });
         return hash;
     }

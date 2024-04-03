@@ -56,7 +56,7 @@ public class DropboxPasswordsExportedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            platform
+            this.platform
         });
         return hash;
     }

@@ -354,10 +354,10 @@ public final class JobError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            unshareFolderErrorValue,
-            removeFolderMemberErrorValue,
-            relinquishFolderMembershipErrorValue
+            this._tag,
+            this.unshareFolderErrorValue,
+            this.removeFolderMemberErrorValue,
+            this.relinquishFolderMembershipErrorValue
         });
         return hash;
     }

@@ -218,8 +218,8 @@ public final class RelocationBatchErrorEntry {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            relocationErrorValue
+            this._tag,
+            this.relocationErrorValue
         });
         return hash;
     }

@@ -58,7 +58,7 @@ class SetCustomQuotaArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            usersAndQuotas
+            this.usersAndQuotas
         });
         return hash;
     }

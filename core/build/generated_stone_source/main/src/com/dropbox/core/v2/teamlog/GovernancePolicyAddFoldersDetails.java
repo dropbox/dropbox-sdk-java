@@ -210,10 +210,10 @@ public class GovernancePolicyAddFoldersDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            governancePolicyId,
-            name,
-            policyType,
-            folders
+            this.governancePolicyId,
+            this.name,
+            this.policyType,
+            this.folders
         });
         return hash;
     }

@@ -69,7 +69,7 @@ public class GetAccountBatchArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accountIds
+            this.accountIds
         });
         return hash;
     }

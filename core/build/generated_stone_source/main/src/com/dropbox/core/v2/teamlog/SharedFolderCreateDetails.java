@@ -59,7 +59,7 @@ public class SharedFolderCreateDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            targetNsId
+            this.targetNsId
         });
         return hash;
     }

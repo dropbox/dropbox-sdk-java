@@ -328,12 +328,12 @@ class UpdateFileRequestArgs {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            id,
-            title,
-            destination,
-            deadline,
-            open,
-            description
+            this.id,
+            this.title,
+            this.destination,
+            this.deadline,
+            this.open,
+            this.description
         });
         return hash;
     }

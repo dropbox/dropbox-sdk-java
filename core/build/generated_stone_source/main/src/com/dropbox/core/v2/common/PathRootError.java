@@ -199,8 +199,8 @@ public final class PathRootError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            invalidRootValue
+            this._tag,
+            this.invalidRootValue
         });
         return hash;
     }

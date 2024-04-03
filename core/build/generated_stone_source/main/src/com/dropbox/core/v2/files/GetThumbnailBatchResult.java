@@ -58,7 +58,7 @@ public class GetThumbnailBatchResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            entries
+            this.entries
         });
         return hash;
     }

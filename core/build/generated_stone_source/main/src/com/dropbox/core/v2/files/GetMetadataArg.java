@@ -277,11 +277,11 @@ class GetMetadataArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            includeMediaInfo,
-            includeDeleted,
-            includeHasExplicitSharedMembers,
-            includePropertyGroups
+            this.path,
+            this.includeMediaInfo,
+            this.includeDeleted,
+            this.includeHasExplicitSharedMembers,
+            this.includePropertyGroups
         });
         return hash;
     }

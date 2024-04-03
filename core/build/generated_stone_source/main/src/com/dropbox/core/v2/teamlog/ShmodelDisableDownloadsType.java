@@ -50,7 +50,7 @@ public class ShmodelDisableDownloadsType {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            description
+            this.description
         });
         return hash;
     }

@@ -56,7 +56,7 @@ public class TeamMergeRequestCanceledDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            requestCanceledDetails
+            this.requestCanceledDetails
         });
         return hash;
     }

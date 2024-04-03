@@ -178,8 +178,8 @@ public final class TagObject {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            userGeneratedTagValue
+            this._tag,
+            this.userGeneratedTagValue
         });
         return hash;
     }

@@ -46,7 +46,7 @@ public class FolderOverviewDescriptionChangedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            folderOverviewLocationAsset
+            this.folderOverviewLocationAsset
         });
         return hash;
     }

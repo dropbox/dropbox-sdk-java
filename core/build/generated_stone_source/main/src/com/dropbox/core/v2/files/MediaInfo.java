@@ -159,8 +159,8 @@ public final class MediaInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            metadataValue
+            this._tag,
+            this.metadataValue
         });
         return hash;
     }

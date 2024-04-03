@@ -163,8 +163,8 @@ public final class UploadSessionFinishBatchJobStatus {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            completeValue
+            this._tag,
+            this.completeValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

@@ -45,7 +45,7 @@ public class TeamFolderDowngradeDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            targetAssetIndex
+            this.targetAssetIndex
         });
         return hash;
     }

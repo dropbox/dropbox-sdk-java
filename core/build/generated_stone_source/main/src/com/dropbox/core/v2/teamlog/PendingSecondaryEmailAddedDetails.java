@@ -59,7 +59,7 @@ public class PendingSecondaryEmailAddedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            secondaryEmail
+            this.secondaryEmail
         });
         return hash;
     }

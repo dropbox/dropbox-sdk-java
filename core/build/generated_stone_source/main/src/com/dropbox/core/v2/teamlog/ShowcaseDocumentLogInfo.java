@@ -72,8 +72,8 @@ public class ShowcaseDocumentLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            showcaseId,
-            showcaseTitle
+            this.showcaseId,
+            this.showcaseTitle
         });
         return hash;
     }

@@ -143,12 +143,12 @@ public class TeamGetInfoResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            name,
-            teamId,
-            numLicensedUsers,
-            numProvisionedUsers,
-            numUsedLicenses,
-            policies
+            this.name,
+            this.teamId,
+            this.numLicensedUsers,
+            this.numProvisionedUsers,
+            this.numUsedLicenses,
+            this.policies
         });
         return hash;
     }
