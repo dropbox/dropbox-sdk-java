@@ -246,9 +246,9 @@ public final class ParticipantLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            groupValue,
-            userValue
+            this._tag,
+            this.groupValue,
+            this.userValue
         });
         return hash;
     }

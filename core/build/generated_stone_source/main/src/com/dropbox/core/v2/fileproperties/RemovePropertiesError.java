@@ -343,10 +343,10 @@ public final class RemovePropertiesError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            templateNotFoundValue,
-            pathValue,
-            propertyGroupLookupValue
+            this._tag,
+            this.templateNotFoundValue,
+            this.pathValue,
+            this.propertyGroupLookupValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

@@ -56,7 +56,7 @@ public class SsoAddCertDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            certificateDetails
+            this.certificateDetails
         });
         return hash;
     }

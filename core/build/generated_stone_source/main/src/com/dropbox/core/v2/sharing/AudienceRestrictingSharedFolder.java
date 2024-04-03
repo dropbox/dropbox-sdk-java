@@ -97,9 +97,9 @@ public class AudienceRestrictingSharedFolder {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedFolderId,
-            name,
-            audience
+            this.sharedFolderId,
+            this.name,
+            this.audience
         });
         return hash;
     }

@@ -217,11 +217,11 @@ public class AdminAlertingAlertConfiguration {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            alertState,
-            sensitivityLevel,
-            recipientsSettings,
-            text,
-            excludedFileExtensions
+            this.alertState,
+            this.sensitivityLevel,
+            this.recipientsSettings,
+            this.text,
+            this.excludedFileExtensions
         });
         return hash;
     }

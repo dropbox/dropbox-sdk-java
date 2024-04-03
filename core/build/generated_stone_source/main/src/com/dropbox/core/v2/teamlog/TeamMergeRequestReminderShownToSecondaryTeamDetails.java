@@ -56,7 +56,7 @@ public class TeamMergeRequestReminderShownToSecondaryTeamDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sentTo
+            this.sentTo
         });
         return hash;
     }

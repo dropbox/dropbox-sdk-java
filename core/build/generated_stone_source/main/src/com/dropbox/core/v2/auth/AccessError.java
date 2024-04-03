@@ -254,9 +254,9 @@ public final class AccessError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            invalidAccountTypeValue,
-            paperAccessDeniedValue
+            this._tag,
+            this.invalidAccountTypeValue,
+            this.paperAccessDeniedValue
         });
         return hash;
     }

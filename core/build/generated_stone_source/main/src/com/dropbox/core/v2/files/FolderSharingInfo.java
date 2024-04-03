@@ -274,10 +274,10 @@ public class FolderSharingInfo extends SharingInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            parentSharedFolderId,
-            sharedFolderId,
-            traverseOnly,
-            noAccess
+            this.parentSharedFolderId,
+            this.sharedFolderId,
+            this.traverseOnly,
+            this.noAccess
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

@@ -70,8 +70,8 @@ public class ExportResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            exportMetadata,
-            fileMetadata
+            this.exportMetadata,
+            this.fileMetadata
         });
         return hash;
     }

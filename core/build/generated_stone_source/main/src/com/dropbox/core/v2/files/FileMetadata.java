@@ -753,20 +753,20 @@ public class FileMetadata extends Metadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            id,
-            clientModified,
-            serverModified,
-            rev,
-            size,
-            mediaInfo,
-            symlinkInfo,
-            sharingInfo,
-            isDownloadable,
-            exportInfo,
-            propertyGroups,
-            hasExplicitSharedMembers,
-            contentHash,
-            fileLockInfo
+            this.id,
+            this.clientModified,
+            this.serverModified,
+            this.rev,
+            this.size,
+            this.mediaInfo,
+            this.symlinkInfo,
+            this.sharingInfo,
+            this.isDownloadable,
+            this.exportInfo,
+            this.propertyGroups,
+            this.hasExplicitSharedMembers,
+            this.contentHash,
+            this.fileLockInfo
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

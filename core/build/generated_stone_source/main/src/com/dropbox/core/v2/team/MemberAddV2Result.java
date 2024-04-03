@@ -1077,18 +1077,18 @@ public final class MemberAddV2Result {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            teamLicenseLimitValue,
-            freeTeamMemberLimitReachedValue,
-            userAlreadyOnTeamValue,
-            userOnAnotherTeamValue,
-            userAlreadyPairedValue,
-            userMigrationFailedValue,
-            duplicateExternalMemberIdValue,
-            duplicateMemberPersistentIdValue,
-            persistentIdDisabledValue,
-            userCreationFailedValue,
-            successValue
+            this._tag,
+            this.teamLicenseLimitValue,
+            this.freeTeamMemberLimitReachedValue,
+            this.userAlreadyOnTeamValue,
+            this.userOnAnotherTeamValue,
+            this.userAlreadyPairedValue,
+            this.userMigrationFailedValue,
+            this.duplicateExternalMemberIdValue,
+            this.duplicateMemberPersistentIdValue,
+            this.persistentIdDisabledValue,
+            this.userCreationFailedValue,
+            this.successValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

@@ -120,10 +120,10 @@ public class ParentFolderAccessInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            folderName,
-            sharedFolderId,
-            permissions,
-            path
+            this.folderName,
+            this.sharedFolderId,
+            this.permissions,
+            this.path
         });
         return hash;
     }

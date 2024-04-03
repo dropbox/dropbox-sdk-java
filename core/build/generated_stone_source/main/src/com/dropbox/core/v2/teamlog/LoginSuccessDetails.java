@@ -86,8 +86,8 @@ public class LoginSuccessDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            isEmmManaged,
-            loginMethod
+            this.isEmmManaged,
+            this.loginMethod
         });
         return hash;
     }

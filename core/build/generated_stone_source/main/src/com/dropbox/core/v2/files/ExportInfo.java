@@ -159,8 +159,8 @@ public class ExportInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            exportAs,
-            exportOptions
+            this.exportAs,
+            this.exportOptions
         });
         return hash;
     }

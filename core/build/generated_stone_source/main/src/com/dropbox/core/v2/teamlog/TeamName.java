@@ -72,8 +72,8 @@ public class TeamName {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamDisplayName,
-            teamLegalName
+            this.teamDisplayName,
+            this.teamLegalName
         });
         return hash;
     }

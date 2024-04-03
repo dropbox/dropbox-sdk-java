@@ -285,11 +285,11 @@ class GetTeamEventsArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            limit,
-            accountId,
-            time,
-            category,
-            eventType
+            this.limit,
+            this.accountId,
+            this.time,
+            this.category,
+            this.eventType
         });
         return hash;
     }

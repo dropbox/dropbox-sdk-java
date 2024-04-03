@@ -220,11 +220,11 @@ public class GroupSummary {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            groupName,
-            groupId,
-            groupExternalId,
-            memberCount,
-            groupManagementType
+            this.groupName,
+            this.groupId,
+            this.groupExternalId,
+            this.memberCount,
+            this.groupManagementType
         });
         return hash;
     }

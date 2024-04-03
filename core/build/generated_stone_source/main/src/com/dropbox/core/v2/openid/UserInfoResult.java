@@ -281,12 +281,12 @@ public class UserInfoResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            familyName,
-            givenName,
-            email,
-            emailVerified,
-            iss,
-            sub
+            this.familyName,
+            this.givenName,
+            this.email,
+            this.emailVerified,
+            this.iss,
+            this.sub
         });
         return hash;
     }

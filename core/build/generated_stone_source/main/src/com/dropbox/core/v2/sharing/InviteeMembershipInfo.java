@@ -244,8 +244,8 @@ public class InviteeMembershipInfo extends MembershipInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            invitee,
-            user
+            this.invitee,
+            this.user
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

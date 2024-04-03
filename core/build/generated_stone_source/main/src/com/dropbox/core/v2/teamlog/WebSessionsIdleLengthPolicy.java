@@ -196,8 +196,8 @@ public final class WebSessionsIdleLengthPolicy {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            definedValue
+            this._tag,
+            this.definedValue
         });
         return hash;
     }

@@ -96,8 +96,8 @@ public class ExportArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            exportFormat
+            this.path,
+            this.exportFormat
         });
         return hash;
     }

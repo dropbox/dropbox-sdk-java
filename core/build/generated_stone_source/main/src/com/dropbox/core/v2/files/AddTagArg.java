@@ -86,8 +86,8 @@ class AddTagArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            tagText
+            this.path,
+            this.tagText
         });
         return hash;
     }

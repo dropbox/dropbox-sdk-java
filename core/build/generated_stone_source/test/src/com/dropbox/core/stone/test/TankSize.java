@@ -247,9 +247,9 @@ public final class TankSize {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            mediumValue,
-            aquariumValue
+            this._tag,
+            this.mediumValue,
+            this.aquariumValue
         });
         return hash;
     }

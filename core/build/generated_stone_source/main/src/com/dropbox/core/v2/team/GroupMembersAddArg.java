@@ -109,8 +109,8 @@ class GroupMembersAddArg extends IncludeMembersArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            group,
-            members
+            this.group,
+            this.members
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

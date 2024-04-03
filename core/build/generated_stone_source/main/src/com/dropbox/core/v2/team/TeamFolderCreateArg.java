@@ -83,8 +83,8 @@ class TeamFolderCreateArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            name,
-            syncSetting
+            this.name,
+            this.syncSetting
         });
         return hash;
     }

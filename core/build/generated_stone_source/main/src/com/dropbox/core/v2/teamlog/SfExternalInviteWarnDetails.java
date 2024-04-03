@@ -187,10 +187,10 @@ public class SfExternalInviteWarnDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            targetAssetIndex,
-            originalFolderName,
-            newSharingPermission,
-            previousSharingPermission
+            this.targetAssetIndex,
+            this.originalFolderName,
+            this.newSharingPermission,
+            this.previousSharingPermission
         });
         return hash;
     }

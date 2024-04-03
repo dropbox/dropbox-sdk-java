@@ -61,7 +61,7 @@ class TeamFolderListArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            limit
+            this.limit
         });
         return hash;
     }

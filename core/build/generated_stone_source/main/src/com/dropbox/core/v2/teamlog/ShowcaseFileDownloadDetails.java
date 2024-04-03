@@ -72,8 +72,8 @@ public class ShowcaseFileDownloadDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            eventUuid,
-            downloadType
+            this.eventUuid,
+            this.downloadType
         });
         return hash;
     }

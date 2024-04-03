@@ -374,13 +374,13 @@ class MembersSetProfileArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            user,
-            newEmail,
-            newExternalId,
-            newGivenName,
-            newSurname,
-            newPersistentId,
-            newIsDirectoryRestricted
+            this.user,
+            this.newEmail,
+            this.newExternalId,
+            this.newGivenName,
+            this.newSurname,
+            this.newPersistentId,
+            this.newIsDirectoryRestricted
         });
         return hash;
     }

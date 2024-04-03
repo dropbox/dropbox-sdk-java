@@ -55,7 +55,7 @@ public class ConnectedTeamName {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            team
+            this.team
         });
         return hash;
     }

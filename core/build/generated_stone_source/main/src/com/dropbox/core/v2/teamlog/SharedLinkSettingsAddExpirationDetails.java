@@ -178,9 +178,9 @@ public class SharedLinkSettingsAddExpirationDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedContentAccessLevel,
-            sharedContentLink,
-            newValue
+            this.sharedContentAccessLevel,
+            this.sharedContentLink,
+            this.newValue
         });
         return hash;
     }

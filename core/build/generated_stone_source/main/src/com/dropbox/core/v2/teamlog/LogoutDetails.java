@@ -59,7 +59,7 @@ public class LogoutDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            loginId
+            this.loginId
         });
         return hash;
     }

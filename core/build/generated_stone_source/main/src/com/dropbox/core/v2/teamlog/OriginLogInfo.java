@@ -86,8 +86,8 @@ public class OriginLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            geoLocation,
-            accessMethod
+            this.geoLocation,
+            this.accessMethod
         });
         return hash;
     }

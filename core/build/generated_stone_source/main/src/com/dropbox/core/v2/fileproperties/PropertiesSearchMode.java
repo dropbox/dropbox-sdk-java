@@ -173,8 +173,8 @@ public final class PropertiesSearchMode {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            fieldNameValue
+            this._tag,
+            this.fieldNameValue
         });
         return hash;
     }

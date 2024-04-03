@@ -112,9 +112,9 @@ public class SharedContentChangeInviteeRoleDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            previousAccessLevel,
-            newAccessLevel,
-            invitee
+            this.previousAccessLevel,
+            this.newAccessLevel,
+            this.invitee
         });
         return hash;
     }

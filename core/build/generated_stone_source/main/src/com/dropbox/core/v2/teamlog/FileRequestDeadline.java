@@ -140,8 +140,8 @@ public class FileRequestDeadline {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            deadline,
-            allowLateUploads
+            this.deadline,
+            this.allowLateUploads
         });
         return hash;
     }

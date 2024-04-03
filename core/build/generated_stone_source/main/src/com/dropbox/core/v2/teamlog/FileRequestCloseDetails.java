@@ -162,8 +162,8 @@ public class FileRequestCloseDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            fileRequestId,
-            previousDetails
+            this.fileRequestId,
+            this.previousDetails
         });
         return hash;
     }

@@ -68,7 +68,7 @@ class DeleteFileRequestArgs {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            ids
+            this.ids
         });
         return hash;
     }

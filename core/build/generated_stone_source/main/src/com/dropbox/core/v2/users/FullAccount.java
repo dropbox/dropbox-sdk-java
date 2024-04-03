@@ -488,14 +488,14 @@ public class FullAccount extends Account {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            country,
-            locale,
-            referralLink,
-            team,
-            teamMemberId,
-            isPaired,
-            accountType,
-            rootInfo
+            this.country,
+            this.locale,
+            this.referralLink,
+            this.team,
+            this.teamMemberId,
+            this.isPaired,
+            this.accountType,
+            this.rootInfo
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

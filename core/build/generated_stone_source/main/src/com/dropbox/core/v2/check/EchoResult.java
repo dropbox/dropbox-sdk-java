@@ -66,7 +66,7 @@ public class EchoResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            result
+            this.result
         });
         return hash;
     }

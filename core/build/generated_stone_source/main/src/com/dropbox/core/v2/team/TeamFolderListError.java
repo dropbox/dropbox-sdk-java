@@ -50,7 +50,7 @@ public class TeamFolderListError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accessError
+            this.accessError
         });
         return hash;
     }

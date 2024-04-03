@@ -326,10 +326,10 @@ public final class ActionDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            removeActionValue,
-            teamInviteDetailsValue,
-            teamJoinDetailsValue
+            this._tag,
+            this.removeActionValue,
+            this.teamInviteDetailsValue,
+            this.teamJoinDetailsValue
         });
         return hash;
     }

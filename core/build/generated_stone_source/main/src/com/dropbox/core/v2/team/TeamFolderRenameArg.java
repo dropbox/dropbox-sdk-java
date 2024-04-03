@@ -65,7 +65,7 @@ class TeamFolderRenameArg extends TeamFolderIdArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            name
+            this.name
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

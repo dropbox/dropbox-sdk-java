@@ -373,11 +373,11 @@ public final class FeatureValue {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            uploadApiRateLimitValue,
-            hasTeamSharedDropboxValue,
-            hasTeamFileEventsValue,
-            hasTeamSelectiveSyncValue
+            this._tag,
+            this.uploadApiRateLimitValue,
+            this.hasTeamSharedDropboxValue,
+            this.hasTeamFileEventsValue,
+            this.hasTeamSelectiveSyncValue
         });
         return hash;
     }

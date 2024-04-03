@@ -116,8 +116,8 @@ class GetFileMetadataBatchArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            files,
-            actions
+            this.files,
+            this.actions
         });
         return hash;
     }

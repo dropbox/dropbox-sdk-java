@@ -116,9 +116,9 @@ public class SearchV2Result {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            matches,
-            hasMore,
-            cursor
+            this.matches,
+            this.hasMore,
+            this.cursor
         });
         return hash;
     }

@@ -278,8 +278,8 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            timeLastSeen,
-            platformType
+            this.timeLastSeen,
+            this.platformType
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

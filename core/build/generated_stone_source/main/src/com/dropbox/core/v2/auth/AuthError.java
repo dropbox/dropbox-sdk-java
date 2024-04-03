@@ -297,8 +297,8 @@ public final class AuthError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            missingScopeValue
+            this._tag,
+            this.missingScopeValue
         });
         return hash;
     }

@@ -58,7 +58,7 @@ public class AudienceExceptionContentInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            name
+            this.name
         });
         return hash;
     }

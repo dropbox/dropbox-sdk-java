@@ -211,10 +211,10 @@ public class FileLockMetadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            isLockholder,
-            lockholderName,
-            lockholderAccountId,
-            created
+            this.isLockholder,
+            this.lockholderName,
+            this.lockholderAccountId,
+            this.created
         });
         return hash;
     }

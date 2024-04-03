@@ -252,8 +252,8 @@ public final class ModifySharedLinkSettingsError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            settingsErrorValue
+            this._tag,
+            this.settingsErrorValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

@@ -138,11 +138,11 @@ public class GovernancePolicyEditDurationDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            governancePolicyId,
-            name,
-            policyType,
-            previousValue,
-            newValue
+            this.governancePolicyId,
+            this.name,
+            this.policyType,
+            this.previousValue,
+            this.newValue
         });
         return hash;
     }

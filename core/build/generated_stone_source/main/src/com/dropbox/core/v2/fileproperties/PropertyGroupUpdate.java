@@ -227,9 +227,9 @@ public class PropertyGroupUpdate {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            templateId,
-            addOrUpdateFields,
-            removeFields
+            this.templateId,
+            this.addOrUpdateFields,
+            this.removeFields
         });
         return hash;
     }

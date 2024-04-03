@@ -102,9 +102,9 @@ public class GovernancePolicyDeleteDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            governancePolicyId,
-            name,
-            policyType
+            this.governancePolicyId,
+            this.name,
+            this.policyType
         });
         return hash;
     }

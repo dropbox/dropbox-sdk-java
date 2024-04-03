@@ -152,12 +152,12 @@ public class TeamFolderMetadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamFolderId,
-            name,
-            status,
-            isTeamSharedDropbox,
-            syncSetting,
-            contentSyncSettings
+            this.teamFolderId,
+            this.name,
+            this.status,
+            this.isTeamSharedDropbox,
+            this.syncSetting,
+            this.contentSyncSettings
         });
         return hash;
     }

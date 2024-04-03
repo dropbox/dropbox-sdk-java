@@ -78,8 +78,8 @@ public class PropertyField {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            name,
-            value
+            this.name,
+            this.value
         });
         return hash;
     }

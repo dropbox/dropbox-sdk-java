@@ -322,12 +322,12 @@ public class MobileDeviceSessionLogInfo extends DeviceSessionLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sessionInfo,
-            deviceName,
-            clientType,
-            clientVersion,
-            osVersion,
-            lastCarrier
+            this.sessionInfo,
+            this.deviceName,
+            this.clientType,
+            this.clientVersion,
+            this.osVersion,
+            this.lastCarrier
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

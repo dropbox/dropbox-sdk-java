@@ -246,10 +246,10 @@ class GroupUpdateArgs extends IncludeMembersArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            group,
-            newGroupName,
-            newGroupExternalId,
-            newGroupManagementType
+            this.group,
+            this.newGroupName,
+            this.newGroupExternalId,
+            this.newGroupManagementType
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

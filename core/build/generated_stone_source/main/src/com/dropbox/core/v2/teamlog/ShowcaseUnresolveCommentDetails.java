@@ -84,8 +84,8 @@ public class ShowcaseUnresolveCommentDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            eventUuid,
-            commentText
+            this.eventUuid,
+            this.commentText
         });
         return hash;
     }

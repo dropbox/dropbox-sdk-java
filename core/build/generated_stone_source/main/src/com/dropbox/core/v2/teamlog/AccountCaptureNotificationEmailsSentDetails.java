@@ -84,8 +84,8 @@ public class AccountCaptureNotificationEmailsSentDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            domainName,
-            notificationType
+            this.domainName,
+            this.notificationType
         });
         return hash;
     }

@@ -199,8 +199,8 @@ public final class ListFilesContinueError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            userErrorValue
+            this._tag,
+            this.userErrorValue
         });
         return hash;
     }

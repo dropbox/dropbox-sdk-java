@@ -184,9 +184,9 @@ class PaperFolderCreateArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            name,
-            parentFolderId,
-            isTeamFolder
+            this.name,
+            this.parentFolderId,
+            this.isTeamFolder
         });
         return hash;
     }

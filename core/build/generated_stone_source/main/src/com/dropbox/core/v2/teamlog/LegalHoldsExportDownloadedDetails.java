@@ -216,11 +216,11 @@ public class LegalHoldsExportDownloadedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            legalHoldId,
-            name,
-            exportName,
-            part,
-            fileName
+            this.legalHoldId,
+            this.name,
+            this.exportName,
+            this.part,
+            this.fileName
         });
         return hash;
     }

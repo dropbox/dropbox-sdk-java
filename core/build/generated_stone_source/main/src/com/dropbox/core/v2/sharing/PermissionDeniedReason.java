@@ -441,8 +441,8 @@ public final class PermissionDeniedReason {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            insufficientPlanValue
+            this._tag,
+            this.insufficientPlanValue
         });
         return hash;
     }

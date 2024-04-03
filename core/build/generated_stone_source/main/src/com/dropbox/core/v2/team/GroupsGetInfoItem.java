@@ -216,9 +216,9 @@ public final class GroupsGetInfoItem {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            idNotFoundValue,
-            groupInfoValue
+            this._tag,
+            this.idNotFoundValue,
+            this.groupInfoValue
         });
         return hash;
     }

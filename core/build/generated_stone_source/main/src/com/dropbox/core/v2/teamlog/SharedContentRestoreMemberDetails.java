@@ -57,7 +57,7 @@ public class SharedContentRestoreMemberDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedContentAccessLevel
+            this.sharedContentAccessLevel
         });
         return hash;
     }

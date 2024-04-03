@@ -122,10 +122,10 @@ public class LegalHoldsActivateAHoldDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            legalHoldId,
-            name,
-            startDate,
-            endDate
+            this.legalHoldId,
+            this.name,
+            this.startDate,
+            this.endDate
         });
         return hash;
     }

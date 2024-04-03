@@ -68,8 +68,8 @@ public class DropboxPasswordsNewDeviceEnrolledDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            isFirstDevice,
-            platform
+            this.isFirstDevice,
+            this.platform
         });
         return hash;
     }

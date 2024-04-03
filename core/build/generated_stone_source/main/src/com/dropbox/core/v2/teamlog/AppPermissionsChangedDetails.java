@@ -192,10 +192,10 @@ public class AppPermissionsChangedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            appName,
-            permission,
-            previousValue,
-            newValue
+            this.appName,
+            this.permission,
+            this.previousValue,
+            this.newValue
         });
         return hash;
     }

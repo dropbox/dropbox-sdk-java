@@ -128,11 +128,11 @@ public class TeamSharingPolicies {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedFolderMemberPolicy,
-            sharedFolderJoinPolicy,
-            sharedLinkCreatePolicy,
-            groupCreationPolicy,
-            sharedFolderLinkRestrictionPolicy
+            this.sharedFolderMemberPolicy,
+            this.sharedFolderJoinPolicy,
+            this.sharedLinkCreatePolicy,
+            this.groupCreationPolicy,
+            this.sharedFolderLinkRestrictionPolicy
         });
         return hash;
     }

@@ -270,10 +270,10 @@ class ListPaperDocsArgs {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            filterBy,
-            sortBy,
-            sortOrder,
-            limit
+            this.filterBy,
+            this.sortBy,
+            this.sortOrder,
+            this.limit
         });
         return hash;
     }

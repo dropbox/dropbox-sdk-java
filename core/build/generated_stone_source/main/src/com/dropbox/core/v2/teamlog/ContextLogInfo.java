@@ -430,11 +430,11 @@ public final class ContextLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            nonTeamMemberValue,
-            organizationTeamValue,
-            teamMemberValue,
-            trustedNonTeamMemberValue
+            this._tag,
+            this.nonTeamMemberValue,
+            this.organizationTeamValue,
+            this.teamMemberValue,
+            this.trustedNonTeamMemberValue
         });
         return hash;
     }

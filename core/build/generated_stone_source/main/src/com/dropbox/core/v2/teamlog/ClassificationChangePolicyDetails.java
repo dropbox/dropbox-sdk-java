@@ -90,9 +90,9 @@ public class ClassificationChangePolicyDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            previousValue,
-            newValue,
-            classificationType
+            this.previousValue,
+            this.newValue,
+            this.classificationType
         });
         return hash;
     }

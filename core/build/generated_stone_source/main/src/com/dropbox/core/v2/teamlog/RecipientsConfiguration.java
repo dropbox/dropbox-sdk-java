@@ -209,9 +209,9 @@ public class RecipientsConfiguration {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            recipientSettingType,
-            emails,
-            groups
+            this.recipientSettingType,
+            this.emails,
+            this.groups
         });
         return hash;
     }

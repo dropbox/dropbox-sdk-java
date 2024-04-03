@@ -372,15 +372,15 @@ public class FileRequest {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            id,
-            url,
-            title,
-            destination,
-            created,
-            deadline,
-            isOpen,
-            fileCount,
-            description
+            this.id,
+            this.url,
+            this.title,
+            this.destination,
+            this.created,
+            this.deadline,
+            this.isOpen,
+            this.fileCount,
+            this.description
         });
         return hash;
     }

@@ -52,7 +52,7 @@ public class PaperFolderCreateResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            folderId
+            this.folderId
         });
         return hash;
     }

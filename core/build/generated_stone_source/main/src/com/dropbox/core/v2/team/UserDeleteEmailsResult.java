@@ -73,8 +73,8 @@ public class UserDeleteEmailsResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            user,
-            results
+            this.user,
+            this.results
         });
         return hash;
     }

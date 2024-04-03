@@ -74,8 +74,8 @@ public class CreateTeamInviteLinkDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            linkUrl,
-            expiryDate
+            this.linkUrl,
+            this.expiryDate
         });
         return hash;
     }

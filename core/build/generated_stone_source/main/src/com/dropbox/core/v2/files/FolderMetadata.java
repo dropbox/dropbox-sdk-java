@@ -394,10 +394,10 @@ public class FolderMetadata extends Metadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            id,
-            sharedFolderId,
-            sharingInfo,
-            propertyGroups
+            this.id,
+            this.sharedFolderId,
+            this.sharingInfo,
+            this.propertyGroups
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

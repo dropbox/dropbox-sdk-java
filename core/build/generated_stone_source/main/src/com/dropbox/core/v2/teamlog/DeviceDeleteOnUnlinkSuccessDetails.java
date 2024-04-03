@@ -135,8 +135,8 @@ public class DeviceDeleteOnUnlinkSuccessDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sessionInfo,
-            displayName
+            this.sessionInfo,
+            this.displayName
         });
         return hash;
     }

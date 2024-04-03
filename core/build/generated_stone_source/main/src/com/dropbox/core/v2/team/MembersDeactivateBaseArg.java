@@ -58,7 +58,7 @@ class MembersDeactivateBaseArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            user
+            this.user
         });
         return hash;
     }

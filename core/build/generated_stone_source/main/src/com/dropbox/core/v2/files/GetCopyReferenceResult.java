@@ -93,9 +93,9 @@ public class GetCopyReferenceResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            metadata,
-            copyReference,
-            expires
+            this.metadata,
+            this.copyReference,
+            this.expires
         });
         return hash;
     }

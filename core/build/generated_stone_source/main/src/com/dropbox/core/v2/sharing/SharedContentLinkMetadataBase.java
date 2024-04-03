@@ -314,13 +314,13 @@ public class SharedContentLinkMetadataBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accessLevel,
-            audienceOptions,
-            audienceRestrictingSharedFolder,
-            currentAudience,
-            expiry,
-            linkPermissions,
-            passwordProtected
+            this.accessLevel,
+            this.audienceOptions,
+            this.audienceRestrictingSharedFolder,
+            this.currentAudience,
+            this.expiry,
+            this.linkPermissions,
+            this.passwordProtected
         });
         return hash;
     }

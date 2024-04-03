@@ -178,8 +178,8 @@ public final class LaunchEmptyResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            asyncJobIdValue
+            this._tag,
+            this.asyncJobIdValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

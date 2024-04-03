@@ -328,9 +328,9 @@ public final class GroupMembersRemoveError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            membersNotInTeamValue,
-            usersNotFoundValue
+            this._tag,
+            this.membersNotInTeamValue,
+            this.usersNotFoundValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

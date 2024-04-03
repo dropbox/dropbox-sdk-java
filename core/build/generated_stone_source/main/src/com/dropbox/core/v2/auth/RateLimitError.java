@@ -86,8 +86,8 @@ public class RateLimitError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            reason,
-            retryAfter
+            this.reason,
+            this.retryAfter
         });
         return hash;
     }

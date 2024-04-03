@@ -464,8 +464,8 @@ public final class SharePathError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            alreadySharedValue
+            this._tag,
+            this.alreadySharedValue
         });
         return hash;
     }

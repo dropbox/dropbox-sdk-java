@@ -72,8 +72,8 @@ public class PaperDocumentLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            docId,
-            docTitle
+            this.docId,
+            this.docTitle
         });
         return hash;
     }

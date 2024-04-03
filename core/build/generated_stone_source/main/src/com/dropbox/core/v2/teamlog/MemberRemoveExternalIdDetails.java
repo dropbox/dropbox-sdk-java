@@ -59,7 +59,7 @@ public class MemberRemoveExternalIdDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            previousValue
+            this.previousValue
         });
         return hash;
     }

@@ -264,11 +264,11 @@ class CreateFileRequestArgs {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            title,
-            destination,
-            deadline,
-            open,
-            description
+            this.title,
+            this.destination,
+            this.deadline,
+            this.open,
+            this.description
         });
         return hash;
     }

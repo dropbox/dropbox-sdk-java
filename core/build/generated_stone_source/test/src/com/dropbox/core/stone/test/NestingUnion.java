@@ -293,10 +293,10 @@ public final class NestingUnion {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            simpleValue,
-            valueValue,
-            catchAllValue
+            this._tag,
+            this.simpleValue,
+            this.valueValue,
+            this.catchAllValue
         });
         return hash;
     }

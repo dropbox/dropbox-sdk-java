@@ -103,9 +103,9 @@ class UpdateFileMemberArgs {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            file,
-            member,
-            accessLevel
+            this.file,
+            this.member,
+            this.accessLevel
         });
         return hash;
     }

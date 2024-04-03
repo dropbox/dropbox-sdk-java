@@ -73,8 +73,8 @@ public class TeamFolderRenameDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            previousFolderName,
-            newFolderName
+            this.previousFolderName,
+            this.newFolderName
         });
         return hash;
     }

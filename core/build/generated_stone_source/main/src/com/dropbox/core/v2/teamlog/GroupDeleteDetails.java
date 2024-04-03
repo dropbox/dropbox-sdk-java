@@ -59,7 +59,7 @@ public class GroupDeleteDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            isCompanyManaged
+            this.isCompanyManaged
         });
         return hash;
     }

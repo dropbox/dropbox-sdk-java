@@ -173,8 +173,8 @@ public final class PhotoSourceArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            base64DataValue
+            this._tag,
+            this.base64DataValue
         });
         return hash;
     }

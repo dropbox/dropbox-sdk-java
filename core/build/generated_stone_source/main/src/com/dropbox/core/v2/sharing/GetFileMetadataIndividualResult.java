@@ -243,9 +243,9 @@ public final class GetFileMetadataIndividualResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            metadataValue,
-            accessErrorValue
+            this._tag,
+            this.metadataValue,
+            this.accessErrorValue
         });
         return hash;
     }

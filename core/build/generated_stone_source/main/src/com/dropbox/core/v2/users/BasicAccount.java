@@ -275,8 +275,8 @@ public class BasicAccount extends Account {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            isTeammate,
-            teamMemberId
+            this.isTeammate,
+            this.teamMemberId
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

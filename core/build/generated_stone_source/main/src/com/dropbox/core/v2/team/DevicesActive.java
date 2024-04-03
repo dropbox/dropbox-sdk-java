@@ -209,13 +209,13 @@ public class DevicesActive {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            windows,
-            macos,
-            linux,
-            ios,
-            android,
-            other,
-            total
+            this.windows,
+            this.macos,
+            this.linux,
+            this.ios,
+            this.android,
+            this.other,
+            this.total
         });
         return hash;
     }

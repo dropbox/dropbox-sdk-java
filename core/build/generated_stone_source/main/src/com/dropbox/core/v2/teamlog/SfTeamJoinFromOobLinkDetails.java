@@ -187,10 +187,10 @@ public class SfTeamJoinFromOobLinkDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            targetAssetIndex,
-            originalFolderName,
-            tokenKey,
-            sharingPermission
+            this.targetAssetIndex,
+            this.originalFolderName,
+            this.tokenKey,
+            this.sharingPermission
         });
         return hash;
     }

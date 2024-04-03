@@ -64,7 +64,7 @@ class DeleteManualContactsArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            emailAddresses
+            this.emailAddresses
         });
         return hash;
     }

@@ -489,16 +489,16 @@ class ListFolderArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            recursive,
-            includeMediaInfo,
-            includeDeleted,
-            includeHasExplicitSharedMembers,
-            includeMountedFolders,
-            limit,
-            sharedLink,
-            includePropertyGroups,
-            includeNonDownloadableFiles
+            this.path,
+            this.recursive,
+            this.includeMediaInfo,
+            this.includeDeleted,
+            this.includeHasExplicitSharedMembers,
+            this.includeMountedFolders,
+            this.limit,
+            this.sharedLink,
+            this.includePropertyGroups,
+            this.includeNonDownloadableFiles
         });
         return hash;
     }

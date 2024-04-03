@@ -345,14 +345,14 @@ public class SharedLinkMetadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            url,
-            id,
-            name,
-            expires,
-            pathLower,
-            linkPermissions,
-            teamMemberInfo,
-            contentOwnerTeamInfo
+            this.url,
+            this.id,
+            this.name,
+            this.expires,
+            this.pathLower,
+            this.linkPermissions,
+            this.teamMemberInfo,
+            this.contentOwnerTeamInfo
         });
         return hash;
     }

@@ -58,7 +58,7 @@ public class AddSecondaryEmailsResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            results
+            this.results
         });
         return hash;
     }

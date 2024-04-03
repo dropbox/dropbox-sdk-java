@@ -74,8 +74,8 @@ public class NoPasswordLinkViewCreateReportDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            startDate,
-            endDate
+            this.startDate,
+            this.endDate
         });
         return hash;
     }

@@ -60,7 +60,7 @@ public class DefaultFloat {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            duration
+            this.duration
         });
         return hash;
     }

@@ -86,8 +86,8 @@ public class FileEditCommentDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            commentText,
-            previousCommentText
+            this.commentText,
+            this.previousCommentText
         });
         return hash;
     }

@@ -263,9 +263,9 @@ public final class MemberSelector {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            dropboxIdValue,
-            emailValue
+            this._tag,
+            this.dropboxIdValue,
+            this.emailValue
         });
         return hash;
     }

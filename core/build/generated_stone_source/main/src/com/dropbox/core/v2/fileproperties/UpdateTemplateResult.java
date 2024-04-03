@@ -66,7 +66,7 @@ public class UpdateTemplateResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            templateId
+            this.templateId
         });
         return hash;
     }

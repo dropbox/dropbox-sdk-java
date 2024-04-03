@@ -52,7 +52,7 @@ public class SearchMatchFieldOptions {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            includeHighlights
+            this.includeHighlights
         });
         return hash;
     }

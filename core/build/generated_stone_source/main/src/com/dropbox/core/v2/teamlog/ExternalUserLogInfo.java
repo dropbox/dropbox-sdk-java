@@ -73,8 +73,8 @@ public class ExternalUserLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            userIdentifier,
-            identifierType
+            this.userIdentifier,
+            this.identifierType
         });
         return hash;
     }

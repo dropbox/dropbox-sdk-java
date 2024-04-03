@@ -83,7 +83,7 @@ class ListUsersOnFolderArgs extends RefPaperDoc {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            limit
+            this.limit
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

@@ -56,7 +56,7 @@ public class TeamMergeRequestExpiredDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            requestExpiredDetails
+            this.requestExpiredDetails
         });
         return hash;
     }

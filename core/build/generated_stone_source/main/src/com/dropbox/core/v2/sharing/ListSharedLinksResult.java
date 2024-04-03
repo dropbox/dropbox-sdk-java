@@ -110,9 +110,9 @@ public class ListSharedLinksResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            links,
-            hasMore,
-            cursor
+            this.links,
+            this.hasMore,
+            this.cursor
         });
         return hash;
     }

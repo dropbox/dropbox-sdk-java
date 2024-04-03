@@ -135,8 +135,8 @@ public class TimeRange {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            startTime,
-            endTime
+            this.startTime,
+            this.endTime
         });
         return hash;
     }

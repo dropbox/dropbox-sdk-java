@@ -85,8 +85,8 @@ class UploadSessionStartBatchArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sessionType,
-            numSessions
+            this.sessionType,
+            this.numSessions
         });
         return hash;
     }

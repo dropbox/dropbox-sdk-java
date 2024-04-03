@@ -99,8 +99,8 @@ class RelocationBatchArgBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            entries,
-            autorename
+            this.entries,
+            this.autorename
         });
         return hash;
     }

@@ -219,9 +219,9 @@ public final class MembersAddLaunch {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            asyncJobIdValue,
-            completeValue
+            this._tag,
+            this.asyncJobIdValue,
+            this.completeValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

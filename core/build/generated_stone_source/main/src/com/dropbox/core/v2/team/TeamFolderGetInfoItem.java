@@ -215,9 +215,9 @@ public final class TeamFolderGetInfoItem {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            idNotFoundValue,
-            teamFolderMetadataValue
+            this._tag,
+            this.idNotFoundValue,
+            this.teamFolderMetadataValue
         });
         return hash;
     }

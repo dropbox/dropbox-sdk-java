@@ -67,8 +67,8 @@ public class SpaceUsage {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            used,
-            allocation
+            this.used,
+            this.allocation
         });
         return hash;
     }

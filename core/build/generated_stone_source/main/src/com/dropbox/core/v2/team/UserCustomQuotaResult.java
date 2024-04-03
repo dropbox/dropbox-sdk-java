@@ -90,8 +90,8 @@ public class UserCustomQuotaResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            user,
-            quotaGb
+            this.user,
+            this.quotaGb
         });
         return hash;
     }

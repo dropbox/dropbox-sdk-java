@@ -104,9 +104,9 @@ public class LoginFailDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            isEmmManaged,
-            loginMethod,
-            errorDetails
+            this.isEmmManaged,
+            this.loginMethod,
+            this.errorDetails
         });
         return hash;
     }

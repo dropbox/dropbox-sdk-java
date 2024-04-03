@@ -237,8 +237,8 @@ public final class GetTemporaryLinkError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            pathValue
+            this._tag,
+            this.pathValue
         });
         return hash;
     }

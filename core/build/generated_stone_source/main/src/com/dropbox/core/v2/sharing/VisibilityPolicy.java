@@ -130,10 +130,10 @@ public class VisibilityPolicy {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            policy,
-            resolvedPolicy,
-            allowed,
-            disallowedReason
+            this.policy,
+            this.resolvedPolicy,
+            this.allowed,
+            this.disallowedReason
         });
         return hash;
     }

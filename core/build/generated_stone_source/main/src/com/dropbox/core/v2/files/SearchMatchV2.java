@@ -189,9 +189,9 @@ public class SearchMatchV2 {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            metadata,
-            matchType,
-            highlightSpans
+            this.metadata,
+            this.matchType,
+            this.highlightSpans
         });
         return hash;
     }

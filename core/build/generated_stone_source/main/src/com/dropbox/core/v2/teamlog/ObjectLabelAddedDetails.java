@@ -55,7 +55,7 @@ public class ObjectLabelAddedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            labelType
+            this.labelType
         });
         return hash;
     }

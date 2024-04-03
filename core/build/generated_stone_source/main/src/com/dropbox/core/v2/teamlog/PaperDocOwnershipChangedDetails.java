@@ -119,9 +119,9 @@ public class PaperDocOwnershipChangedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            eventUuid,
-            oldOwnerUserId,
-            newOwnerUserId
+            this.eventUuid,
+            this.oldOwnerUserId,
+            this.newOwnerUserId
         });
         return hash;
     }

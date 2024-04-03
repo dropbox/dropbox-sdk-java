@@ -88,8 +88,8 @@ public class AddMember {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            permissionLevel,
-            member
+            this.permissionLevel,
+            this.member
         });
         return hash;
     }

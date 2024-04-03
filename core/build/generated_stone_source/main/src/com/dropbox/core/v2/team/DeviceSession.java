@@ -224,11 +224,11 @@ public class DeviceSession {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sessionId,
-            ipAddress,
-            country,
-            created,
-            updated
+            this.sessionId,
+            this.ipAddress,
+            this.country,
+            this.created,
+            this.updated
         });
         return hash;
     }

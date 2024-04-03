@@ -316,12 +316,12 @@ public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sessionInfo,
-            hostName,
-            clientType,
-            clientVersion,
-            platform,
-            isDeleteOnUnlinkSupported
+            this.sessionInfo,
+            this.hostName,
+            this.clientType,
+            this.clientVersion,
+            this.platform,
+            this.isDeleteOnUnlinkSupported
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

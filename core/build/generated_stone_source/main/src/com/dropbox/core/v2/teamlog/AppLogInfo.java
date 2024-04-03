@@ -133,8 +133,8 @@ public class AppLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            appId,
-            displayName
+            this.appId,
+            this.displayName
         });
         return hash;
     }

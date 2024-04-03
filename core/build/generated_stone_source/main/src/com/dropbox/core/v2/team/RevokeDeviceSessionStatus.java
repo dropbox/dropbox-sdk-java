@@ -69,8 +69,8 @@ public class RevokeDeviceSessionStatus {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            success,
-            errorType
+            this.success,
+            this.errorType
         });
         return hash;
     }

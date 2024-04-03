@@ -76,8 +76,8 @@ public class UploadWriteFailed {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            reason,
-            uploadSessionId
+            this.reason,
+            this.uploadSessionId
         });
         return hash;
     }

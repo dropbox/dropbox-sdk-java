@@ -59,8 +59,8 @@ public class RelocateAssetReferencesLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            srcAssetIndex,
-            destAssetIndex
+            this.srcAssetIndex,
+            this.destAssetIndex
         });
         return hash;
     }

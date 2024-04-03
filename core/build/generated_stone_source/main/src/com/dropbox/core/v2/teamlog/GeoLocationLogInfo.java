@@ -196,10 +196,10 @@ public class GeoLocationLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            city,
-            region,
-            country,
-            ipAddress
+            this.city,
+            this.region,
+            this.country,
+            this.ipAddress
         });
         return hash;
     }

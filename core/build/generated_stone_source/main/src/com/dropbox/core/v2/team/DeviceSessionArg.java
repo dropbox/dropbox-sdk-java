@@ -69,8 +69,8 @@ public class DeviceSessionArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sessionId,
-            teamMemberId
+            this.sessionId,
+            this.teamMemberId
         });
         return hash;
     }

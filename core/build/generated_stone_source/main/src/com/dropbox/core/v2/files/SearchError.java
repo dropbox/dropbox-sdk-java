@@ -254,9 +254,9 @@ public final class SearchError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            pathValue,
-            invalidArgumentValue
+            this._tag,
+            this.pathValue,
+            this.invalidArgumentValue
         });
         return hash;
     }

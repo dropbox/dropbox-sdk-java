@@ -106,10 +106,10 @@ public class LegalHoldsChangeHoldDetailsDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            legalHoldId,
-            name,
-            previousValue,
-            newValue
+            this.legalHoldId,
+            this.name,
+            this.previousValue,
+            this.newValue
         });
         return hash;
     }

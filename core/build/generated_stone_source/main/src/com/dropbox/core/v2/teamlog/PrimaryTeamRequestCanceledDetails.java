@@ -73,8 +73,8 @@ public class PrimaryTeamRequestCanceledDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            secondaryTeam,
-            sentBy
+            this.secondaryTeam,
+            this.sentBy
         });
         return hash;
     }

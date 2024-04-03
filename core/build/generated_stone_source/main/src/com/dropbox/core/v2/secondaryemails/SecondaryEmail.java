@@ -75,8 +75,8 @@ public class SecondaryEmail {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            email,
-            isVerified
+            this.email,
+            this.isVerified
         });
         return hash;
     }

@@ -437,14 +437,14 @@ public class SearchOptions {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            maxResults,
-            orderBy,
-            fileStatus,
-            filenameOnly,
-            fileExtensions,
-            fileCategories,
-            accountId
+            this.path,
+            this.maxResults,
+            this.orderBy,
+            this.fileStatus,
+            this.filenameOnly,
+            this.fileExtensions,
+            this.fileCategories,
+            this.accountId
         });
         return hash;
     }

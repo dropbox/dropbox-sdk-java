@@ -243,9 +243,9 @@ public final class FileMemberRemoveActionResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            successValue,
-            memberErrorValue
+            this._tag,
+            this.successValue,
+            this.memberErrorValue
         });
         return hash;
     }

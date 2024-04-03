@@ -120,10 +120,10 @@ public class TeamMemberPolicies {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharing,
-            emmState,
-            officeAddin,
-            suggestMembersPolicy
+            this.sharing,
+            this.emmState,
+            this.officeAddin,
+            this.suggestMembersPolicy
         });
         return hash;
     }

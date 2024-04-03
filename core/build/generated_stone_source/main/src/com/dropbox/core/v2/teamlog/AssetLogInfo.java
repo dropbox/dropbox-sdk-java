@@ -458,12 +458,12 @@ public final class AssetLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            fileValue,
-            folderValue,
-            paperDocumentValue,
-            paperFolderValue,
-            showcaseDocumentValue
+            this._tag,
+            this.fileValue,
+            this.folderValue,
+            this.paperDocumentValue,
+            this.paperFolderValue,
+            this.showcaseDocumentValue
         });
         return hash;
     }

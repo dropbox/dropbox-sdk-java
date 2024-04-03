@@ -72,8 +72,8 @@ public class PaperDocChangeMemberRoleDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            eventUuid,
-            accessType
+            this.eventUuid,
+            this.accessType
         });
         return hash;
     }

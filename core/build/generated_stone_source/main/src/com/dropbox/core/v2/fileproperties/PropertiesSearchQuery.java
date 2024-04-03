@@ -106,9 +106,9 @@ public class PropertiesSearchQuery {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            query,
-            mode,
-            logicalOperator
+            this.query,
+            this.mode,
+            this.logicalOperator
         });
         return hash;
     }

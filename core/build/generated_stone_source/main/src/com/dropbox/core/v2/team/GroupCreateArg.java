@@ -206,10 +206,10 @@ class GroupCreateArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            groupName,
-            addCreatorAsOwner,
-            groupExternalId,
-            groupManagementType
+            this.groupName,
+            this.addCreatorAsOwner,
+            this.groupExternalId,
+            this.groupManagementType
         });
         return hash;
     }

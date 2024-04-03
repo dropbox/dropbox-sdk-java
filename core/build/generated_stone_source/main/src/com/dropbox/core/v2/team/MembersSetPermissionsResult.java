@@ -69,8 +69,8 @@ public class MembersSetPermissionsResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamMemberId,
-            role
+            this.teamMemberId,
+            this.role
         });
         return hash;
     }

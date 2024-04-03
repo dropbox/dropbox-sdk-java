@@ -58,7 +58,7 @@ public class GetTagsResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            pathsToTags
+            this.pathsToTags
         });
         return hash;
     }

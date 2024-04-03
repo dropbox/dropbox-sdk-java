@@ -58,7 +58,7 @@ public class RewindFolderDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            rewindFolderTargetTsMs
+            this.rewindFolderTargetTsMs
         });
         return hash;
     }

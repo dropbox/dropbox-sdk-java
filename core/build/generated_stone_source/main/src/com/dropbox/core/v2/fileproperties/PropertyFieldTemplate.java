@@ -98,9 +98,9 @@ public class PropertyFieldTemplate {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            name,
-            description,
-            type
+            this.name,
+            this.description,
+            this.type
         });
         return hash;
     }

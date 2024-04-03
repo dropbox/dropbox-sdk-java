@@ -232,10 +232,10 @@ public class MinimalFileLinkMetadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            url,
-            id,
-            path,
-            rev
+            this.url,
+            this.id,
+            this.path,
+            this.rev
         });
         return hash;
     }

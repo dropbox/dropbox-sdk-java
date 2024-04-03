@@ -57,7 +57,7 @@ public class LegalHoldsListPoliciesResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            policies
+            this.policies
         });
         return hash;
     }

@@ -56,7 +56,7 @@ public class RansomwareRestoreProcessStartedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            extension
+            this.extension
         });
         return hash;
     }

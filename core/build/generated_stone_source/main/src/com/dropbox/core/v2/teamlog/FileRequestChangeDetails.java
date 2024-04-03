@@ -194,9 +194,9 @@ public class FileRequestChangeDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            fileRequestId,
-            previousDetails,
-            newDetails
+            this.fileRequestId,
+            this.previousDetails,
+            this.newDetails
         });
         return hash;
     }

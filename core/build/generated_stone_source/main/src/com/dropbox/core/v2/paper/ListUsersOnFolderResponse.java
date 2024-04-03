@@ -130,10 +130,10 @@ public class ListUsersOnFolderResponse {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            invitees,
-            users,
-            cursor,
-            hasMore
+            this.invitees,
+            this.users,
+            this.cursor,
+            this.hasMore
         });
         return hash;
     }

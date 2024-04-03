@@ -55,7 +55,7 @@ public class FileTransfersTransferViewDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            fileTransferId
+            this.fileTransferId
         });
         return hash;
     }

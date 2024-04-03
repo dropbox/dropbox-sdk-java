@@ -99,9 +99,9 @@ public class SfTeamInviteDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            targetAssetIndex,
-            originalFolderName,
-            sharingPermission
+            this.targetAssetIndex,
+            this.originalFolderName,
+            this.sharingPermission
         });
         return hash;
     }

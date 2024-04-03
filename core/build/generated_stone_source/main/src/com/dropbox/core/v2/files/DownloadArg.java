@@ -99,8 +99,8 @@ class DownloadArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            rev
+            this.path,
+            this.rev
         });
         return hash;
     }

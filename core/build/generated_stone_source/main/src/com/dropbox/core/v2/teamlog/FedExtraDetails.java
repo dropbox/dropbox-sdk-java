@@ -247,9 +247,9 @@ public final class FedExtraDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            organizationValue,
-            teamValue
+            this._tag,
+            this.organizationValue,
+            this.teamValue
         });
         return hash;
     }

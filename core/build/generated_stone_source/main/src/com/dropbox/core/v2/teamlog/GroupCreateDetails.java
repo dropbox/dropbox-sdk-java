@@ -133,8 +133,8 @@ public class GroupCreateDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            isCompanyManaged,
-            joinPolicy
+            this.isCompanyManaged,
+            this.joinPolicy
         });
         return hash;
     }

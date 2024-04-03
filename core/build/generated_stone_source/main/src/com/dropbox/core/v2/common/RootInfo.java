@@ -87,8 +87,8 @@ public class RootInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            rootNamespaceId,
-            homeNamespaceId
+            this.rootNamespaceId,
+            this.homeNamespaceId
         });
         return hash;
     }

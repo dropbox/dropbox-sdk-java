@@ -92,9 +92,9 @@ public class ChangedEnterpriseAdminRoleDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            previousValue,
-            newValue,
-            teamName
+            this.previousValue,
+            this.newValue,
+            this.teamName
         });
         return hash;
     }

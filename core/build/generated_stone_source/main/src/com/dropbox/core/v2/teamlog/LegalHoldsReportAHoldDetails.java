@@ -72,8 +72,8 @@ public class LegalHoldsReportAHoldDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            legalHoldId,
-            name
+            this.legalHoldId,
+            this.name
         });
         return hash;
     }

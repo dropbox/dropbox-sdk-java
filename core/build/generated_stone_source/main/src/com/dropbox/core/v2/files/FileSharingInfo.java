@@ -115,8 +115,8 @@ public class FileSharingInfo extends SharingInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            parentSharedFolderId,
-            modifiedBy
+            this.parentSharedFolderId,
+            this.modifiedBy
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

@@ -254,10 +254,10 @@ public class SharingAllowlistListResponse {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            domains,
-            emails,
-            cursor,
-            hasMore
+            this.domains,
+            this.emails,
+            this.cursor,
+            this.hasMore
         });
         return hash;
     }

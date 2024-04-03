@@ -86,8 +86,8 @@ class CreateFolderArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            autorename
+            this.path,
+            this.autorename
         });
         return hash;
     }

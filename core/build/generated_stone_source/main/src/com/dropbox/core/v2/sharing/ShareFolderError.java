@@ -251,8 +251,8 @@ public final class ShareFolderError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            badPathValue
+            this._tag,
+            this.badPathValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

@@ -173,11 +173,11 @@ public class GetMembershipReport extends BaseDfbReport {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamSize,
-            pendingInvites,
-            membersJoined,
-            suspendedMembers,
-            licenses
+            this.teamSize,
+            this.pendingInvites,
+            this.membersJoined,
+            this.suspendedMembers,
+            this.licenses
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

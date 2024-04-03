@@ -59,7 +59,7 @@ public class SsoAddLogoutUrlDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            newValue
+            this.newValue
         });
         return hash;
     }

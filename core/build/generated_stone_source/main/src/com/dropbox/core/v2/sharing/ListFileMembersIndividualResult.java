@@ -243,9 +243,9 @@ public final class ListFileMembersIndividualResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            resultValue,
-            accessErrorValue
+            this._tag,
+            this.resultValue,
+            this.accessErrorValue
         });
         return hash;
     }

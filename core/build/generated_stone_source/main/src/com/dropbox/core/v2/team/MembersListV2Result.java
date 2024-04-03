@@ -95,9 +95,9 @@ public class MembersListV2Result {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            members,
-            cursor,
-            hasMore
+            this.members,
+            this.cursor,
+            this.hasMore
         });
         return hash;
     }

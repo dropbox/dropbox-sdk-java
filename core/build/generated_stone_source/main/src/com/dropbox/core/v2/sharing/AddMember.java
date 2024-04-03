@@ -95,8 +95,8 @@ public class AddMember {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            member,
-            accessLevel
+            this.member,
+            this.accessLevel
         });
         return hash;
     }

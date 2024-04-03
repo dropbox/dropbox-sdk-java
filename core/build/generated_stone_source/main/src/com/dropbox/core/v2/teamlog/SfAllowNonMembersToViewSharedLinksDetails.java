@@ -99,9 +99,9 @@ public class SfAllowNonMembersToViewSharedLinksDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            targetAssetIndex,
-            originalFolderName,
-            sharedFolderType
+            this.targetAssetIndex,
+            this.originalFolderName,
+            this.sharedFolderType
         });
         return hash;
     }

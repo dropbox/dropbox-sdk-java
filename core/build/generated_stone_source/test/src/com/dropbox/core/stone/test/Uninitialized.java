@@ -66,8 +66,8 @@ class Uninitialized {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            reason,
-            sessionId
+            this.reason,
+            this.sessionId
         });
         return hash;
     }

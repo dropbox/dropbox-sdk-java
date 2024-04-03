@@ -55,7 +55,7 @@ public class ApiSessionLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            requestId
+            this.requestId
         });
         return hash;
     }

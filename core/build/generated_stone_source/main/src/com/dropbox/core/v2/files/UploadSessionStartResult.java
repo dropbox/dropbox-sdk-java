@@ -59,7 +59,7 @@ public class UploadSessionStartResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sessionId
+            this.sessionId
         });
         return hash;
     }

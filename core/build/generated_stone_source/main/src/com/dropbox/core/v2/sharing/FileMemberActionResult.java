@@ -224,10 +224,10 @@ public class FileMemberActionResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            member,
-            result,
-            sckeySha1,
-            invitationSignature
+            this.member,
+            this.result,
+            this.sckeySha1,
+            this.invitationSignature
         });
         return hash;
     }

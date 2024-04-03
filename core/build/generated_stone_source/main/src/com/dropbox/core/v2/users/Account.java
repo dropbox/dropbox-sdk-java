@@ -166,12 +166,12 @@ public class Account {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accountId,
-            name,
-            email,
-            emailVerified,
-            profilePhotoUrl,
-            disabled
+            this.accountId,
+            this.name,
+            this.email,
+            this.emailVerified,
+            this.profilePhotoUrl,
+            this.disabled
         });
         return hash;
     }

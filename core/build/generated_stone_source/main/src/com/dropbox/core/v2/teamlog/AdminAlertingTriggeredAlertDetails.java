@@ -106,10 +106,10 @@ public class AdminAlertingTriggeredAlertDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            alertName,
-            alertSeverity,
-            alertCategory,
-            alertInstanceId
+            this.alertName,
+            this.alertSeverity,
+            this.alertCategory,
+            this.alertInstanceId
         });
         return hash;
     }

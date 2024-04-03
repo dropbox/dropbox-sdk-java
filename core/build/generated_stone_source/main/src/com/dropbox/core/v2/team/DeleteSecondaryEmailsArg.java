@@ -58,7 +58,7 @@ class DeleteSecondaryEmailsArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            emailsToDelete
+            this.emailsToDelete
         });
         return hash;
     }

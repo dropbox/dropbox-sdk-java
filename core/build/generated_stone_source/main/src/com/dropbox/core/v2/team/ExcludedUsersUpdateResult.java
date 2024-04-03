@@ -55,7 +55,7 @@ public class ExcludedUsersUpdateResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            status
+            this.status
         });
         return hash;
     }

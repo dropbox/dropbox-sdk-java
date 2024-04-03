@@ -187,10 +187,10 @@ public class SfFbInviteChangeRoleDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            targetAssetIndex,
-            originalFolderName,
-            previousSharingPermission,
-            newSharingPermission
+            this.targetAssetIndex,
+            this.originalFolderName,
+            this.previousSharingPermission,
+            this.newSharingPermission
         });
         return hash;
     }

@@ -249,11 +249,11 @@ public class FolderPolicy {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            memberPolicy,
-            resolvedMemberPolicy,
-            aclUpdatePolicy,
-            sharedLinkPolicy,
-            viewerInfoPolicy
+            this.memberPolicy,
+            this.resolvedMemberPolicy,
+            this.aclUpdatePolicy,
+            this.sharedLinkPolicy,
+            this.viewerInfoPolicy
         });
         return hash;
     }

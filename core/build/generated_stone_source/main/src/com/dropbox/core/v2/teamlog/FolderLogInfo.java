@@ -200,7 +200,7 @@ public class FolderLogInfo extends FileOrFolderLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            fileCount
+            this.fileCount
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

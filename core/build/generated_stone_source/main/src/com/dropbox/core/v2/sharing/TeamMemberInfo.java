@@ -109,9 +109,9 @@ public class TeamMemberInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            teamInfo,
-            displayName,
-            memberId
+            this.teamInfo,
+            this.displayName,
+            this.memberId
         });
         return hash;
     }

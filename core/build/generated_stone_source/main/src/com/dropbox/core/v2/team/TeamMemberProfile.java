@@ -505,8 +505,8 @@ public class TeamMemberProfile extends MemberProfile {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            groups,
-            memberFolderId
+            this.groups,
+            this.memberFolderId
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

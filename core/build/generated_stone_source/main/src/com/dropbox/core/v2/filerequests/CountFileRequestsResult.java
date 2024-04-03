@@ -45,7 +45,7 @@ public class CountFileRequestsResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            fileRequestCount
+            this.fileRequestCount
         });
         return hash;
     }

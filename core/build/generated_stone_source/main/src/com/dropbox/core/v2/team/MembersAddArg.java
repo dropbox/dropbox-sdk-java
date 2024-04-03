@@ -85,7 +85,7 @@ class MembersAddArg extends MembersAddArgBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            newMembers
+            this.newMembers
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

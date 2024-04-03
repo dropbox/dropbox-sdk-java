@@ -161,8 +161,8 @@ class MembersListArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            limit,
-            includeRemoved
+            this.limit,
+            this.includeRemoved
         });
         return hash;
     }

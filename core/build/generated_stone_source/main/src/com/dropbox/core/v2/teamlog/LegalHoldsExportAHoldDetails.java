@@ -102,9 +102,9 @@ public class LegalHoldsExportAHoldDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            legalHoldId,
-            name,
-            exportName
+            this.legalHoldId,
+            this.name,
+            this.exportName
         });
         return hash;
     }

@@ -106,8 +106,8 @@ class ListFileMembersBatchArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            files,
-            limit
+            this.files,
+            this.limit
         });
         return hash;
     }

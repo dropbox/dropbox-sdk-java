@@ -77,8 +77,8 @@ public class ListFolderLongpollResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            changes,
-            backoff
+            this.changes,
+            this.backoff
         });
         return hash;
     }

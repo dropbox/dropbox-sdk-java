@@ -69,8 +69,8 @@ public class GetTemporaryLinkResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            metadata,
-            link
+            this.metadata,
+            this.link
         });
         return hash;
     }

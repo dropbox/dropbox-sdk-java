@@ -62,7 +62,7 @@ public class FileMoveDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            relocateActionDetails
+            this.relocateActionDetails
         });
         return hash;
     }

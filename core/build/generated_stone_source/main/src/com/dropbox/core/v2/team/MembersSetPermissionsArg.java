@@ -75,8 +75,8 @@ class MembersSetPermissionsArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            user,
-            newRole
+            this.user,
+            this.newRole
         });
         return hash;
     }

@@ -53,7 +53,7 @@ public class GetTemporaryUploadLinkResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            link
+            this.link
         });
         return hash;
     }

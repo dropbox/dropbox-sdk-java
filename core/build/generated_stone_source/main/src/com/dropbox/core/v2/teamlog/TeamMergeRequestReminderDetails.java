@@ -56,7 +56,7 @@ public class TeamMergeRequestReminderDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            requestReminderDetails
+            this.requestReminderDetails
         });
         return hash;
     }

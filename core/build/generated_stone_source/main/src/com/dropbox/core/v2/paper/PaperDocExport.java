@@ -62,7 +62,7 @@ class PaperDocExport extends RefPaperDoc {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            exportFormat
+            this.exportFormat
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

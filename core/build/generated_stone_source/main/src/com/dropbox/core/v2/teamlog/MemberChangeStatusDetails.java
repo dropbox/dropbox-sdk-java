@@ -235,11 +235,11 @@ public class MemberChangeStatusDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            previousValue,
-            newValue,
-            action,
-            newTeam,
-            previousTeam
+            this.previousValue,
+            this.newValue,
+            this.action,
+            this.newTeam,
+            this.previousTeam
         });
         return hash;
     }

@@ -57,7 +57,7 @@ class RevokeDeviceSessionBatchArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            revokeDevices
+            this.revokeDevices
         });
         return hash;
     }

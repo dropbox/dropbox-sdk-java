@@ -225,8 +225,8 @@ public final class GetTeamEventsContinueError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            resetValue
+            this._tag,
+            this.resetValue
         });
         return hash;
     }

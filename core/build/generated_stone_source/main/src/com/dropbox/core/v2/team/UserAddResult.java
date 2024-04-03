@@ -411,11 +411,11 @@ public final class UserAddResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            successValue,
-            invalidUserValue,
-            unverifiedValue,
-            placeholderUserValue
+            this._tag,
+            this.successValue,
+            this.invalidUserValue,
+            this.unverifiedValue,
+            this.placeholderUserValue
         });
         return hash;
     }

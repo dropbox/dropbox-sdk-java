@@ -57,8 +57,8 @@ public class GpsCoordinates {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            latitude,
-            longitude
+            this.latitude,
+            this.longitude
         });
         return hash;
     }

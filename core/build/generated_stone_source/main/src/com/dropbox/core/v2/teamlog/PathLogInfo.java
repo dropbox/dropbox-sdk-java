@@ -86,8 +86,8 @@ public class PathLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            contextual,
-            namespaceRelative
+            this.contextual,
+            this.namespaceRelative
         });
         return hash;
     }

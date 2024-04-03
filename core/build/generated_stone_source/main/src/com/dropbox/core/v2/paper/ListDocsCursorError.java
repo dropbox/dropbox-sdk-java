@@ -168,8 +168,8 @@ public final class ListDocsCursorError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            cursorErrorValue
+            this._tag,
+            this.cursorErrorValue
         });
         return hash;
     }

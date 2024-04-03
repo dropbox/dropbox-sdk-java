@@ -281,9 +281,9 @@ public final class RestoreError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            pathLookupValue,
-            pathWriteValue
+            this._tag,
+            this.pathLookupValue,
+            this.pathWriteValue
         });
         return hash;
     }

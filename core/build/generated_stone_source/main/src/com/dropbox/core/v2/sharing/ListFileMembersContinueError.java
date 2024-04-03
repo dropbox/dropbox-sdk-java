@@ -255,9 +255,9 @@ public final class ListFileMembersContinueError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            userErrorValue,
-            accessErrorValue
+            this._tag,
+            this.userErrorValue,
+            this.accessErrorValue
         });
         return hash;
     }

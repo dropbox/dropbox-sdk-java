@@ -176,8 +176,8 @@ public final class JobStatus {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            failedValue
+            this._tag,
+            this.failedValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

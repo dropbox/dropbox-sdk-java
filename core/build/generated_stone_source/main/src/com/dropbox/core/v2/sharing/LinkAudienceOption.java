@@ -101,9 +101,9 @@ public class LinkAudienceOption {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            audience,
-            allowed,
-            disallowedReason
+            this.audience,
+            this.allowed,
+            this.disallowedReason
         });
         return hash;
     }

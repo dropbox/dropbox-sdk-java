@@ -192,8 +192,8 @@ class ListFilesArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            limit,
-            actions
+            this.limit,
+            this.actions
         });
         return hash;
     }

@@ -69,7 +69,7 @@ class EchoArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            query
+            this.query
         });
         return hash;
     }

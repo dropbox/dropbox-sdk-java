@@ -331,9 +331,9 @@ public final class RemoveFolderMemberError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            accessErrorValue,
-            memberErrorValue
+            this._tag,
+            this.accessErrorValue,
+            this.memberErrorValue
         });
         return hash;
     }

@@ -41,7 +41,7 @@ public class PaperUpdateResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            paperRevision
+            this.paperRevision
         });
         return hash;
     }

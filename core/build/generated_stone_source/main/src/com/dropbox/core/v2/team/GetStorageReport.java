@@ -193,11 +193,11 @@ public class GetStorageReport extends BaseDfbReport {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            totalUsage,
-            sharedUsage,
-            unsharedUsage,
-            sharedFolders,
-            memberStorageMap
+            this.totalUsage,
+            this.sharedUsage,
+            this.unsharedUsage,
+            this.sharedFolders,
+            this.memberStorageMap
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

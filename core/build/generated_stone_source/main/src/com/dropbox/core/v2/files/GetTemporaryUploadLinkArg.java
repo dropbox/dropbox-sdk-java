@@ -95,8 +95,8 @@ class GetTemporaryUploadLinkArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            commitInfo,
-            duration
+            this.commitInfo,
+            this.duration
         });
         return hash;
     }

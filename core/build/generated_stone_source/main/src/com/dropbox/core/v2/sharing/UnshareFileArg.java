@@ -64,7 +64,7 @@ class UnshareFileArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            file
+            this.file
         });
         return hash;
     }

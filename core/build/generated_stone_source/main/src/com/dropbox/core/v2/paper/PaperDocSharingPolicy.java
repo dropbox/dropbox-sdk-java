@@ -64,7 +64,7 @@ class PaperDocSharingPolicy extends RefPaperDoc {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharingPolicy
+            this.sharingPolicy
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

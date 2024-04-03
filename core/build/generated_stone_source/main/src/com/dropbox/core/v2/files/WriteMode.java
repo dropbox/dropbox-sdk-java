@@ -251,8 +251,8 @@ public final class WriteMode {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            updateValue
+            this._tag,
+            this.updateValue
         });
         return hash;
     }

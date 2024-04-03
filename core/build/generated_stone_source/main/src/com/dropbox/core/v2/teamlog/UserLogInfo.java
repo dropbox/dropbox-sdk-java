@@ -198,9 +198,9 @@ public class UserLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accountId,
-            displayName,
-            email
+            this.accountId,
+            this.displayName,
+            this.email
         });
         return hash;
     }

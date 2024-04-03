@@ -89,9 +89,9 @@ public class LegalHoldsChangeHoldNameDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            legalHoldId,
-            previousValue,
-            newValue
+            this.legalHoldId,
+            this.previousValue,
+            this.newValue
         });
         return hash;
     }

@@ -76,8 +76,8 @@ public class ResellerLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            resellerName,
-            resellerEmail
+            this.resellerName,
+            this.resellerEmail
         });
         return hash;
     }

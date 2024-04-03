@@ -227,8 +227,8 @@ public final class MembersSetProfilePhotoError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            photoErrorValue
+            this._tag,
+            this.photoErrorValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

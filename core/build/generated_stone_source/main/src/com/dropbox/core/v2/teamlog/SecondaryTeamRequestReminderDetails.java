@@ -56,7 +56,7 @@ public class SecondaryTeamRequestReminderDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sentTo
+            this.sentTo
         });
         return hash;
     }

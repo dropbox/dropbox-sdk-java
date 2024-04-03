@@ -55,7 +55,7 @@ public class SsoErrorDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            errorDetails
+            this.errorDetails
         });
         return hash;
     }

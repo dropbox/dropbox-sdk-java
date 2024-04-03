@@ -70,8 +70,8 @@ public class UserInfoWithPermissionLevel {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            user,
-            permissionLevel
+            this.user,
+            this.permissionLevel
         });
         return hash;
     }

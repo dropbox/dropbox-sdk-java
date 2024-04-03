@@ -278,11 +278,11 @@ public class FileRequestReceiveFileDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            fileRequestId,
-            fileRequestDetails,
-            submittedFileNames,
-            submitterName,
-            submitterEmail
+            this.fileRequestId,
+            this.fileRequestDetails,
+            this.submittedFileNames,
+            this.submitterName,
+            this.submitterEmail
         });
         return hash;
     }

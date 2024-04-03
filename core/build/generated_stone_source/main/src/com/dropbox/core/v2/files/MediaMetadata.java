@@ -163,9 +163,9 @@ public class MediaMetadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            dimensions,
-            location,
-            timeTaken
+            this.dimensions,
+            this.location,
+            this.timeTaken
         });
         return hash;
     }

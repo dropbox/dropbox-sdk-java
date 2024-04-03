@@ -176,9 +176,9 @@ class CreateSharedLinkArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            shortUrl,
-            pendingUpload
+            this.path,
+            this.shortUrl,
+            this.pendingUpload
         });
         return hash;
     }

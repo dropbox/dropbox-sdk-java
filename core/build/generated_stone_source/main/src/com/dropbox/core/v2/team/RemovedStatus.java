@@ -54,8 +54,8 @@ public class RemovedStatus {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            isRecoverable,
-            isDisconnected
+            this.isRecoverable,
+            this.isDisconnected
         });
         return hash;
     }

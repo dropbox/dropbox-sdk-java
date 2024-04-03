@@ -96,8 +96,8 @@ class PropertiesSearchArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            queries,
-            templateFilter
+            this.queries,
+            this.templateFilter
         });
         return hash;
     }

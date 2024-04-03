@@ -395,15 +395,15 @@ public class JoinTeamDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            linkedApps,
-            linkedDevices,
-            linkedSharedFolders,
-            wasLinkedAppsTruncated,
-            wasLinkedDevicesTruncated,
-            wasLinkedSharedFoldersTruncated,
-            hasLinkedApps,
-            hasLinkedDevices,
-            hasLinkedSharedFolders
+            this.linkedApps,
+            this.linkedDevices,
+            this.linkedSharedFolders,
+            this.wasLinkedAppsTruncated,
+            this.wasLinkedDevicesTruncated,
+            this.wasLinkedSharedFoldersTruncated,
+            this.hasLinkedApps,
+            this.hasLinkedDevices,
+            this.hasLinkedSharedFolders
         });
         return hash;
     }

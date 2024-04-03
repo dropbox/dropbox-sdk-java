@@ -322,9 +322,9 @@ public final class MountFolderError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            accessErrorValue,
-            insufficientQuotaValue
+            this._tag,
+            this.accessErrorValue,
+            this.insufficientQuotaValue
         });
         return hash;
     }

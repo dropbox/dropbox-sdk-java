@@ -66,7 +66,7 @@ class RemovePaperDocUser extends RefPaperDoc {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            member
+            this.member
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

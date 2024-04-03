@@ -91,9 +91,9 @@ public class PaperPublishedLinkChangePermissionDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            eventUuid,
-            newPermissionLevel,
-            previousPermissionLevel
+            this.eventUuid,
+            this.newPermissionLevel,
+            this.previousPermissionLevel
         });
         return hash;
     }

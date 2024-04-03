@@ -320,10 +320,10 @@ public final class RemoveFileMemberError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            userErrorValue,
-            accessErrorValue,
-            noExplicitAccessValue
+            this._tag,
+            this.userErrorValue,
+            this.accessErrorValue,
+            this.noExplicitAccessValue
         });
         return hash;
     }

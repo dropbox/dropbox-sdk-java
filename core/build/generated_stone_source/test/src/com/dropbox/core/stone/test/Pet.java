@@ -84,8 +84,8 @@ public class Pet {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            name,
-            born
+            this.name,
+            this.born
         });
         return hash;
     }

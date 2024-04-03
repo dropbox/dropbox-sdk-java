@@ -95,9 +95,9 @@ public class GroupsListResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            groups,
-            cursor,
-            hasMore
+            this.groups,
+            this.cursor,
+            this.hasMore
         });
         return hash;
     }

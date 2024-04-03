@@ -189,10 +189,10 @@ public class SharedFolderNestDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            previousParentNsId,
-            newParentNsId,
-            previousNsPath,
-            newNsPath
+            this.previousParentNsId,
+            this.newParentNsId,
+            this.previousNsPath,
+            this.newNsPath
         });
         return hash;
     }

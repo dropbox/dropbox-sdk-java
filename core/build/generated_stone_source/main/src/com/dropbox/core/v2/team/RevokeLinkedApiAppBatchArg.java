@@ -57,7 +57,7 @@ class RevokeLinkedApiAppBatchArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            revokeLinkedApp
+            this.revokeLinkedApp
         });
         return hash;
     }

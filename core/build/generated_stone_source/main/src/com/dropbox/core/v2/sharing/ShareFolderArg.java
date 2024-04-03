@@ -357,8 +357,8 @@ class ShareFolderArg extends ShareFolderArgBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            actions,
-            linkSettings
+            this.actions,
+            this.linkSettings
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

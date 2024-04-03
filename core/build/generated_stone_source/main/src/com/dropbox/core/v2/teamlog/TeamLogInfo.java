@@ -55,7 +55,7 @@ public class TeamLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            displayName
+            this.displayName
         });
         return hash;
     }

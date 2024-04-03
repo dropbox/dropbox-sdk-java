@@ -76,8 +76,8 @@ class SaveCopyReferenceArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            copyReference,
-            path
+            this.copyReference,
+            this.path
         });
         return hash;
     }

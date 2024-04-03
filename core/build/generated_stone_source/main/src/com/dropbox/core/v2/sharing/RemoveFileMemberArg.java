@@ -89,8 +89,8 @@ class RemoveFileMemberArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            file,
-            member
+            this.file,
+            this.member
         });
         return hash;
     }

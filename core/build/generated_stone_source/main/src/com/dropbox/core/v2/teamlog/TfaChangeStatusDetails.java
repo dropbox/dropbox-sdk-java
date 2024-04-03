@@ -179,9 +179,9 @@ public class TfaChangeStatusDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            newValue,
-            previousValue,
-            usedRescueCode
+            this.newValue,
+            this.previousValue,
+            this.usedRescueCode
         });
         return hash;
     }

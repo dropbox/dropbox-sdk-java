@@ -158,8 +158,8 @@ public class SharedLinkShareDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedLinkOwner,
-            externalUsers
+            this.sharedLinkOwner,
+            this.externalUsers
         });
         return hash;
     }

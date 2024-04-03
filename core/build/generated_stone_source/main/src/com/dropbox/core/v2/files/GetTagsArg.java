@@ -61,7 +61,7 @@ class GetTagsArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            paths
+            this.paths
         });
         return hash;
     }

@@ -69,8 +69,8 @@ public class SearchMatch {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            matchType,
-            metadata
+            this.matchType,
+            this.metadata
         });
         return hash;
     }

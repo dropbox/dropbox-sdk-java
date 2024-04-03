@@ -241,12 +241,12 @@ public class ApiApp {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            appId,
-            appName,
-            publisher,
-            publisherUrl,
-            linked,
-            isAppFolder
+            this.appId,
+            this.appName,
+            this.publisher,
+            this.publisherUrl,
+            this.linked,
+            this.isAppFolder
         });
         return hash;
     }

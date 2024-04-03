@@ -194,8 +194,8 @@ public final class LinkExpiry {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            setExpiryValue
+            this._tag,
+            this.setExpiryValue
         });
         return hash;
     }

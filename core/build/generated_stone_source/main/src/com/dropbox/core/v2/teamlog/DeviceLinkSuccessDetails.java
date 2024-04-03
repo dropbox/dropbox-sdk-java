@@ -59,7 +59,7 @@ public class DeviceLinkSuccessDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            deviceSessionInfo
+            this.deviceSessionInfo
         });
         return hash;
     }

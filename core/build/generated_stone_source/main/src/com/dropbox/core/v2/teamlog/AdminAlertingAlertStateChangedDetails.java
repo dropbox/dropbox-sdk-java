@@ -141,12 +141,12 @@ public class AdminAlertingAlertStateChangedDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            alertName,
-            alertSeverity,
-            alertCategory,
-            alertInstanceId,
-            previousValue,
-            newValue
+            this.alertName,
+            this.alertSeverity,
+            this.alertCategory,
+            this.alertInstanceId,
+            this.previousValue,
+            this.newValue
         });
         return hash;
     }

@@ -58,7 +58,7 @@ public class GetAccountArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            accountId
+            this.accountId
         });
         return hash;
     }

@@ -309,8 +309,8 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            audienceExceptions,
-            url
+            this.audienceExceptions,
+            this.url
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

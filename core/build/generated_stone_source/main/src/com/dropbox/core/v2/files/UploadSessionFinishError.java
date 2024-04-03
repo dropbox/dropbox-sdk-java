@@ -467,10 +467,10 @@ public final class UploadSessionFinishError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            lookupFailedValue,
-            pathValue,
-            propertiesErrorValue
+            this._tag,
+            this.lookupFailedValue,
+            this.pathValue,
+            this.propertiesErrorValue
         });
         return hash;
     }

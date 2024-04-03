@@ -89,8 +89,8 @@ class UnshareFolderArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedFolderId,
-            leaveACopy
+            this.sharedFolderId,
+            this.leaveACopy
         });
         return hash;
     }

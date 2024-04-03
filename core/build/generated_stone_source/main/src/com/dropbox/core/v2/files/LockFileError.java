@@ -366,9 +366,9 @@ public final class LockFileError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            pathLookupValue,
-            lockConflictValue
+            this._tag,
+            this.pathLookupValue,
+            this.lockConflictValue
         });
         return hash;
     }

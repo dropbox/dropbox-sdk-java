@@ -101,8 +101,8 @@ class GetMetadataArgs {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedFolderId,
-            actions
+            this.sharedFolderId,
+            this.actions
         });
         return hash;
     }

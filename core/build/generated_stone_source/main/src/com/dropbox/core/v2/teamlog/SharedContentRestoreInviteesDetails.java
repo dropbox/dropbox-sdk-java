@@ -84,8 +84,8 @@ public class SharedContentRestoreInviteesDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedContentAccessLevel,
-            invitees
+            this.sharedContentAccessLevel,
+            this.invitees
         });
         return hash;
     }

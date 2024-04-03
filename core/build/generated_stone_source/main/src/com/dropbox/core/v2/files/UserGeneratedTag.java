@@ -61,7 +61,7 @@ public class UserGeneratedTag {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            tagText
+            this.tagText
         });
         return hash;
     }

@@ -220,9 +220,9 @@ class ListRevisionsArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            mode,
-            limit
+            this.path,
+            this.mode,
+            this.limit
         });
         return hash;
     }

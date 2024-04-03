@@ -71,8 +71,8 @@ public class InviteeInfoWithPermissionLevel {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            invitee,
-            permissionLevel
+            this.invitee,
+            this.permissionLevel
         });
         return hash;
     }

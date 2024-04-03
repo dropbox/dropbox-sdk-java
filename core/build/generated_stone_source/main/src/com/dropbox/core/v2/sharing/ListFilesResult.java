@@ -92,8 +92,8 @@ public class ListFilesResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            entries,
-            cursor
+            this.entries,
+            this.cursor
         });
         return hash;
     }

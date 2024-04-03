@@ -196,10 +196,10 @@ public class FileOrFolderLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            displayName,
-            fileId,
-            fileSize
+            this.path,
+            this.displayName,
+            this.fileId,
+            this.fileSize
         });
         return hash;
     }

@@ -241,10 +241,10 @@ class AddFolderMemberArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sharedFolderId,
-            members,
-            quiet,
-            customMessage
+            this.sharedFolderId,
+            this.members,
+            this.quiet,
+            this.customMessage
         });
         return hash;
     }

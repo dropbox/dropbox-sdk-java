@@ -101,9 +101,9 @@ public class PropertyGroupTemplate {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            name,
-            description,
-            fields
+            this.name,
+            this.description,
+            this.fields
         });
         return hash;
     }

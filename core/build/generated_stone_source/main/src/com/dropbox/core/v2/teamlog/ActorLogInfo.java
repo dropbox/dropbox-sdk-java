@@ -423,11 +423,11 @@ public final class ActorLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            adminValue,
-            appValue,
-            resellerValue,
-            userValue
+            this._tag,
+            this.adminValue,
+            this.appValue,
+            this.resellerValue,
+            this.userValue
         });
         return hash;
     }

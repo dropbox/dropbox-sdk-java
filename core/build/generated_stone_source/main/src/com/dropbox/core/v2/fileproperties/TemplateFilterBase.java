@@ -194,8 +194,8 @@ public final class TemplateFilterBase {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            filterSomeValue
+            this._tag,
+            this.filterSomeValue
         });
         return hash;
     }

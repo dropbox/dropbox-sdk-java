@@ -381,9 +381,9 @@ public final class WriteError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            malformedPathValue,
-            conflictValue
+            this._tag,
+            this.malformedPathValue,
+            this.conflictValue
         });
         return hash;
     }

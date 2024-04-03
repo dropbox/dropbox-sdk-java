@@ -277,10 +277,10 @@ class ListFileMembersArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            file,
-            actions,
-            includeInherited,
-            limit
+            this.file,
+            this.actions,
+            this.includeInherited,
+            this.limit
         });
         return hash;
     }

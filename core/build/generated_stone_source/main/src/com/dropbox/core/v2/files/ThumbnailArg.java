@@ -264,10 +264,10 @@ public class ThumbnailArg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            path,
-            format,
-            size,
-            mode
+            this.path,
+            this.format,
+            this.size,
+            this.mode
         });
         return hash;
     }

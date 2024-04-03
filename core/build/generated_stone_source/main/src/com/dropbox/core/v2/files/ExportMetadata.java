@@ -222,10 +222,10 @@ public class ExportMetadata {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            name,
-            size,
-            exportHash,
-            paperRevision
+            this.name,
+            this.size,
+            this.exportHash,
+            this.paperRevision
         });
         return hash;
     }

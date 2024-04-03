@@ -234,11 +234,11 @@ public class GovernancePolicyCreateDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            governancePolicyId,
-            name,
-            policyType,
-            duration,
-            folders
+            this.governancePolicyId,
+            this.name,
+            this.policyType,
+            this.duration,
+            this.folders
         });
         return hash;
     }

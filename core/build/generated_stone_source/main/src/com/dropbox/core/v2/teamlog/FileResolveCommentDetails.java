@@ -59,7 +59,7 @@ public class FileResolveCommentDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            commentText
+            this.commentText
         });
         return hash;
     }

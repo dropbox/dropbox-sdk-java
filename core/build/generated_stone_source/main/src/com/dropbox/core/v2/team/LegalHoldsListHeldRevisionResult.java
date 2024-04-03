@@ -118,9 +118,9 @@ public class LegalHoldsListHeldRevisionResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            entries,
-            cursor,
-            hasMore
+            this.entries,
+            this.cursor,
+            this.hasMore
         });
         return hash;
     }

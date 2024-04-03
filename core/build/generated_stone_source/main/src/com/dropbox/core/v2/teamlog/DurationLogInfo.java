@@ -67,8 +67,8 @@ public class DurationLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            unit,
-            amount
+            this.unit,
+            this.amount
         });
         return hash;
     }

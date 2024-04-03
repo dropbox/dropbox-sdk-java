@@ -116,9 +116,9 @@ public class GetTeamEventsResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            events,
-            cursor,
-            hasMore
+            this.events,
+            this.cursor,
+            this.hasMore
         });
         return hash;
     }

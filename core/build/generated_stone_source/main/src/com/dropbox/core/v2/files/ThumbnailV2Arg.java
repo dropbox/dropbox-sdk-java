@@ -259,10 +259,10 @@ class ThumbnailV2Arg {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            resource,
-            format,
-            size,
-            mode
+            this.resource,
+            this.format,
+            this.size,
+            this.mode
         });
         return hash;
     }

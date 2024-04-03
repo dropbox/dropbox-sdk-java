@@ -321,9 +321,9 @@ public final class SharingAllowlistAddError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            malformedEntryValue,
-            entriesAlreadyExistValue
+            this._tag,
+            this.malformedEntryValue,
+            this.entriesAlreadyExistValue
         });
         return hash;
     }

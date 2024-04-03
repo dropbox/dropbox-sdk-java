@@ -205,8 +205,8 @@ public final class TeamMemberStatus {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            removedValue
+            this._tag,
+            this.removedValue
         });
         return hash;
     }

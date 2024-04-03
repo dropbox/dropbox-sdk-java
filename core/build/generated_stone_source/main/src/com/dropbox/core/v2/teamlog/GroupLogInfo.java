@@ -168,9 +168,9 @@ public class GroupLogInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            groupId,
-            displayName,
-            externalId
+            this.groupId,
+            this.displayName,
+            this.externalId
         });
         return hash;
     }

@@ -117,9 +117,9 @@ public class ExcludedUsersListResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            users,
-            cursor,
-            hasMore
+            this.users,
+            this.cursor,
+            this.hasMore
         });
         return hash;
     }

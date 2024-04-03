@@ -379,7 +379,7 @@ class UploadArg extends CommitInfo {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            contentHash
+            this.contentHash
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

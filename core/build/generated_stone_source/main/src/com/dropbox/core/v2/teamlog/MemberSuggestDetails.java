@@ -65,7 +65,7 @@ public class MemberSuggestDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            suggestedMembers
+            this.suggestedMembers
         });
         return hash;
     }

@@ -52,7 +52,7 @@ public class CreateFolderResult extends FileOpsResult {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            metadata
+            this.metadata
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;

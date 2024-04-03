@@ -96,8 +96,8 @@ public class PropertyGroup {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            templateId,
-            fields
+            this.templateId,
+            this.fields
         });
         return hash;
     }

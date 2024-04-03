@@ -55,7 +55,7 @@ public class ShowcaseRemoveMemberDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            eventUuid
+            this.eventUuid
         });
         return hash;
     }

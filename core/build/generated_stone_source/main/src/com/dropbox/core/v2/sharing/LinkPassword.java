@@ -193,8 +193,8 @@ public final class LinkPassword {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            setPasswordValue
+            this._tag,
+            this.setPasswordValue
         });
         return hash;
     }

@@ -553,11 +553,11 @@ public final class AddFolderMemberError {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            _tag,
-            accessErrorValue,
-            badMemberValue,
-            tooManyMembersValue,
-            tooManyPendingInvitesValue
+            this._tag,
+            this.accessErrorValue,
+            this.badMemberValue,
+            this.tooManyMembersValue,
+            this.tooManyPendingInvitesValue
         });
         return hash;
     }

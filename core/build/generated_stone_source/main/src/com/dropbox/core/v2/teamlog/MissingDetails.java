@@ -63,7 +63,7 @@ public class MissingDetails {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            sourceEventFields
+            this.sourceEventFields
         });
         return hash;
     }

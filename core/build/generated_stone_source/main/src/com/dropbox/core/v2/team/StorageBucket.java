@@ -72,8 +72,8 @@ public class StorageBucket {
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            bucket,
-            users
+            this.bucket,
+            this.users
         });
         return hash;
     }
