@@ -17,6 +17,7 @@ from contextlib import contextmanager
 from functools import (
     total_ordering,
     wraps,
+    reduce
 )
 from itertools import chain
 
@@ -4283,7 +4284,8 @@ class JavaCodeGenerationInstance:
             else:
                 arrays_class = JavaClass('java.util.Arrays')
                 with w.block('int hash = %s.hashCode(new Object []', arrays_class, after=');'):
-                    self.g.generate_multiline_list(fields, delim=('', ''))
+                    prefixed_fields = reduce(lambda res, item: res + ['this.' + item], fields, [])
+                    self.g.generate_multiline_list(prefixed_fields, delim=('', ''))
                 if data_type.parent_type:
                     w.out('hash = (31 * super.hashCode()) + hash;')
                 w.out('return hash;')
