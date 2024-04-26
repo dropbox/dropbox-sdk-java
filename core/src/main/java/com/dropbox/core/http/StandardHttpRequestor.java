@@ -210,7 +210,6 @@ public class StandardHttpRequestor extends HttpRequestor {
         // Some JREs (like the one provided by Google AppEngine) will return HttpURLConnection
         // instead of HttpsURLConnection. So we have to check here.
         if (conn instanceof HttpsURLConnection) {
-            SSLConfig.apply((HttpsURLConnection) conn);
             configureConnection((HttpsURLConnection) conn);
         } else {
             logCertificatePinningWarning();
