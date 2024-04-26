@@ -9,7 +9,9 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import javax.annotation.Nullable;
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSocketFactory;
 
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.ProgressOutputStream;
@@ -210,9 +212,15 @@ public class StandardHttpRequestor extends HttpRequestor {
         // Some JREs (like the one provided by Google AppEngine) will return HttpURLConnection
         // instead of HttpsURLConnection. So we have to check here.
         if (conn instanceof HttpsURLConnection) {
+            if (config.getSslSocketFactory() != null) {
+                ((HttpsURLConnection) conn).setSSLSocketFactory(config.getSslSocketFactory());
+            }
             configureConnection((HttpsURLConnection) conn);
         } else {
-            logCertificatePinningWarning();
+            if (config.getSslSocketFactory() != null) {
+                // only show warning about cert pinning if cert pinning is configured
+                logCertificatePinningWarning();
+            }
         }
 
         configure(conn);
@@ -259,13 +267,16 @@ public class StandardHttpRequestor extends HttpRequestor {
         private final Proxy proxy;
         private final long connectTimeoutMillis;
         private final long readTimeoutMillis;
+        private final SSLSocketFactory sslSocketFactory;
 
         private Config(Proxy proxy,
                        long connectTimeoutMillis,
-                       long readTimeoutMillis) {
+                       long readTimeoutMillis,
+                       SSLSocketFactory sslSocketFactory) {
             this.proxy = proxy;
             this.connectTimeoutMillis = connectTimeoutMillis;
             this.readTimeoutMillis = readTimeoutMillis;
+            this.sslSocketFactory = sslSocketFactory;
         }
 
         /**
@@ -304,6 +315,17 @@ public class StandardHttpRequestor extends HttpRequestor {
         }
 
         /**
+         * Returns the custom SSLSocketFactory if provided. This is to be used
+         * for certificate pinning and other custom SSL configurations.
+         *
+         * @return custom SSLSocketFactory or null.
+         */
+        @Nullable
+        public SSLSocketFactory getSslSocketFactory() {
+            return sslSocketFactory;
+        }
+
+        /**
          * Returns a new builder for creating a copy of this
          * config. The builder is configured to use this config's
          * values as its default.
@@ -311,7 +333,7 @@ public class StandardHttpRequestor extends HttpRequestor {
          * @return builder for creating a copy of this config.
          */
         public Builder copy() {
-            return new Builder(proxy, connectTimeoutMillis, readTimeoutMillis);
+            return new Builder(proxy, connectTimeoutMillis, readTimeoutMillis, sslSocketFactory);
         }
 
         /**
@@ -330,15 +352,17 @@ public class StandardHttpRequestor extends HttpRequestor {
             private Proxy proxy;
             private long connectTimeoutMillis;
             private long readTimeoutMillis;
+            private SSLSocketFactory sslSocketFactory;
 
             private Builder() {
-                this(Proxy.NO_PROXY, DEFAULT_CONNECT_TIMEOUT_MILLIS, DEFAULT_READ_TIMEOUT_MILLIS);
+                this(Proxy.NO_PROXY, DEFAULT_CONNECT_TIMEOUT_MILLIS, DEFAULT_READ_TIMEOUT_MILLIS, null);
             }
 
-            private Builder(Proxy proxy, long connectTimeoutMillis, long readTimeoutMillis) {
+            private Builder(Proxy proxy, long connectTimeoutMillis, long readTimeoutMillis, SSLSocketFactory sslSocketFactory) {
                 this.proxy = proxy;
                 this.connectTimeoutMillis = connectTimeoutMillis;
                 this.readTimeoutMillis = readTimeoutMillis;
+                this.sslSocketFactory = sslSocketFactory;
             }
 
             /**
@@ -419,6 +443,22 @@ public class StandardHttpRequestor extends HttpRequestor {
             }
 
             /**
+             * Sets a custom SSLSocketFactory for all connections.
+             *
+             * This is optional and should only be used if you wish to provide certificates to pin against
+             * or to be used for other custom SSL configurations.
+             *
+             * @param sslSocketFactory the custom SSLSocketFactory
+             *
+             * @return this builder
+             */
+
+            public Builder withCustomSslSocketFactory(SSLSocketFactory sslSocketFactory) {
+                this.sslSocketFactory = sslSocketFactory;
+                return this;
+            }
+
+            /**
              * Returns a {@link Config} with the values set by this builder.
              *
              * @return {@link Config} with this builder's values
@@ -427,7 +467,8 @@ public class StandardHttpRequestor extends HttpRequestor {
                 return new Config(
                     proxy,
                     connectTimeoutMillis,
-                    readTimeoutMillis
+                    readTimeoutMillis,
+                    sslSocketFactory
                 );
             }
 
