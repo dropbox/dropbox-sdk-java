@@ -519,17 +519,6 @@ public final class com/dropbox/core/http/OkHttpRequestor$AsyncCallback : com/squ
 	public fun onResponse (Lcom/squareup/okhttp/Response;)V
 }
 
-public class com/dropbox/core/http/SSLConfig {
-	public fun <init> ()V
-	public static fun apply (Ljavax/net/ssl/HttpsURLConnection;)V
-	public static fun getSSLSocketFactory ()Ljavax/net/ssl/SSLSocketFactory;
-	public static fun getTrustManager ()Ljavax/net/ssl/X509TrustManager;
-}
-
-public final class com/dropbox/core/http/SSLConfig$LoadException : java/lang/Exception {
-	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
-}
-
 public class com/dropbox/core/http/StandardHttpRequestor : com/dropbox/core/http/HttpRequestor {
 	public static final field INSTANCE Lcom/dropbox/core/http/StandardHttpRequestor;
 	public fun <init> (Lcom/dropbox/core/http/StandardHttpRequestor$Config;)V
@@ -553,6 +542,7 @@ public final class com/dropbox/core/http/StandardHttpRequestor$Config {
 	public fun getConnectTimeoutMillis ()J
 	public fun getProxy ()Ljava/net/Proxy;
 	public fun getReadTimeoutMillis ()J
+	public fun getSslSocketFactory ()Ljavax/net/ssl/SSLSocketFactory;
 }
 
 public final class com/dropbox/core/http/StandardHttpRequestor$Config$Builder {
@@ -562,6 +552,7 @@ public final class com/dropbox/core/http/StandardHttpRequestor$Config$Builder {
 	public fun withNoReadTimeout ()Lcom/dropbox/core/http/StandardHttpRequestor$Config$Builder;
 	public fun withProxy (Ljava/net/Proxy;)Lcom/dropbox/core/http/StandardHttpRequestor$Config$Builder;
 	public fun withReadTimeout (JLjava/util/concurrent/TimeUnit;)Lcom/dropbox/core/http/StandardHttpRequestor$Config$Builder;
+	public fun withSslSocketFactory (Ljavax/net/ssl/SSLSocketFactory;)Lcom/dropbox/core/http/StandardHttpRequestor$Config$Builder;
 }
 
 public class com/dropbox/core/json/JsonArrayReader : com/dropbox/core/json/JsonReader {

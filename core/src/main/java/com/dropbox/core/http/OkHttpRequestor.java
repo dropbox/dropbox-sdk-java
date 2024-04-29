@@ -40,8 +40,6 @@ public class OkHttpRequestor extends HttpRequestor {
         client.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
         client.setReadTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
         client.setWriteTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
-        // enables certificate pinning
-        client.setSslSocketFactory(SSLConfig.getSSLSocketFactory());
         return client;
     }
 
@@ -61,14 +59,6 @@ public class OkHttpRequestor extends HttpRequestor {
      * HttpRequestor requestor = new OkHttpRequestor(client);
      * </pre>
      *
-     * <p>
-     * If you don't use {@link #defaultOkHttpClient()}, make sure to use Dropbox's
-     * hardened SSL settings from {@link SSLConfig}:
-     * </p>
-     *
-     * <pre>
-     * client.setSslSocketFactory(SSLConfig.getSSLSocketFactory())
-     * </pre>
      */
     public OkHttpRequestor(OkHttpClient client) {
         if (client == null) throw new NullPointerException("client");
