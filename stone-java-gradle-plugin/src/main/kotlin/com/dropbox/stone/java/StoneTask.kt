@@ -53,10 +53,12 @@ abstract class StoneTask : DefaultTask() {
 
     init {
         stoneFiles.setFrom(stoneDir.asFileTree.matching {
+            exclude("**/__pycache__/**")
             include("**/*.py")
         })
 
         specFiles.setFrom(specDir.asFileTree.matching {
+            exclude("**/__pycache__/**")
             include("**/*.stone")
         })
     }
