@@ -1,6 +1,7 @@
 7.0.0 (2024-03-19)
 ---------------------------------------------
 - [#537](https://github.com/dropbox/dropbox-sdk-java/pull/537) Remove cert pinning from the SDK
+- [#539](https://github.com/dropbox/dropbox-sdk-java/pull/539) Exclude pycache from task input key on StoneTask
 
 6.1.0 (2024-03-19)
 ---------------------------------------------

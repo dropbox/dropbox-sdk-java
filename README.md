@@ -403,7 +403,10 @@ The only ProGuard rules necessary are for the SDK's required and optional depend
 ### How do I enable certificate pinning?
 
 As of version 7.0.0, the SDK no longer provides certificate pinning by default. We provide hooks for you to run each of your requests with
-your own `SSLSocketFactory` or `CertificatePinner`. To provide this to your calls, you can use any of the requestors provided
+your own `SSLSocketFactory` or `CertificatePinner`. To provide this to your calls, you can use any of the requestors provided.
+
+*Note*: If you were previously using `SSLConfig`, this is no longer available. You can view the source in [git history](https://github.com/dropbox/dropbox-sdk-java/blob/0f765cb69940ac047682cf117af7a94a1f66b6eb/core/src/main/java/com/dropbox/core/http/SSLConfig.java)
+but we no longer provide any default certificate pinning or any other configuration.
 
 #### Using `StandardHttpRequestor`
 
