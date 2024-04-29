@@ -411,6 +411,7 @@ your own `SSLSocketFactory` or `CertificatePinner`. To provide this to your call
 StandardHttpRequestor.Config customConfig = StandardHttpRequestor.Config.DEFAULT_INSTANCE.copy()
         .withSslSocketFactory(mySslSocketFactory)
         .build();
+StandardHttpRequestor requestor = new StandardHttpRequestor(customConfig);
 ```
 
 #### Using `OkHttp3Requestor`
@@ -418,8 +419,8 @@ StandardHttpRequestor.Config customConfig = StandardHttpRequestor.Config.DEFAULT
 See: [CertificatePinner](https://square.github.io/okhttp/3.x/okhttp/okhttp3/CertificatePinner.html)
 
 ```java
-OkHttp3Requestor.Config customConfig = OkHttp3Requestor.Config.DEFAULT_INSTANCE.copy()
-        .withCertificatePinner(myCertificatePinner)
+okhttp3.OkHttpClient httpClient = OkHttp3Requestor.defaultOkHttpClientBuilder()
+        .certificatePinner(myCertificatePinner)
         .build();
 ```
 
@@ -428,8 +429,8 @@ OkHttp3Requestor.Config customConfig = OkHttp3Requestor.Config.DEFAULT_INSTANCE.
 See: [CertificatePinner](https://square.github.io/okhttp/2.x/okhttp/com/squareup/okhttp/CertificatePinner.html)
 
 ```java
-OkHttpRequestor.Config customConfig = OkHttpRequestor.Config.DEFAULT_INSTANCE.copy()
-        .withCertificatePinner(myCertificatePinner)
+OkHttpClient httpClient = OkHttpRequestor.defaultOkHttpClient().clone()
+        .setCertificatePinner(myCertificatePinner)
         .build();
 ```
 
