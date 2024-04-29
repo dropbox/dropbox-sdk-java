@@ -6,7 +6,6 @@ buildscript {
     }
 
     dependencies {
-        classpath files('gradle/dropbox-pem-converter-plugin')
         classpath(dropboxJavaSdkLibs.android.gradle.plugin)
         classpath(dropboxJavaSdkLibs.kotlin.gradle.plugin)
         classpath("com.dropbox.gradle.plugins:stone-java-gradle-plugin")

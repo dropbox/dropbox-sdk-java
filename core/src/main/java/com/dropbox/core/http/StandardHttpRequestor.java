@@ -315,10 +315,10 @@ public class StandardHttpRequestor extends HttpRequestor {
         }
 
         /**
-         * Returns the custom SSLSocketFactory if provided. This is to be used
+         * Returns the SSLSocketFactory if provided. This is to be used
          * for certificate pinning and other custom SSL configurations.
          *
-         * @return custom SSLSocketFactory or null.
+         * @return SSLSocketFactory or null.
          */
         @Nullable
         public SSLSocketFactory getSslSocketFactory() {
@@ -443,17 +443,16 @@ public class StandardHttpRequestor extends HttpRequestor {
             }
 
             /**
-             * Sets a custom SSLSocketFactory for all connections.
+             * Sets a SSLSocketFactory for all connections.
              *
-             * This is optional and should only be used if you wish to provide certificates to pin against
-             * or to be used for other custom SSL configurations.
+             * Providing your own SSLSocketFactory is optional and can be used to
+             * customize SSL configurations (e.g. for certificate pinning).
              *
-             * @param sslSocketFactory the custom SSLSocketFactory
+             * @param sslSocketFactory The SSLSocketFactory instance to be used with each HttpsURLConnection.
              *
              * @return this builder
              */
-
-            public Builder withCustomSslSocketFactory(SSLSocketFactory sslSocketFactory) {
+            public Builder withSslSocketFactory(SSLSocketFactory sslSocketFactory) {
                 this.sslSocketFactory = sslSocketFactory;
                 return this;
             }

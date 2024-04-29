@@ -82,26 +82,6 @@ configurations {
     withoutOsgi.extendsFrom api
 }
 
-processResources { task ->
-    filesMatching('**/*.crt') { fcd ->
-        def inputstream = fcd.open()
-        def certDatas = com.dropbox.maven.pem_converter.PemLoader.load(
-                new InputStreamReader(inputstream, "UTF-8")
-        )
-        inputstream.close()
-
-        def crtPath = fcd.getPath()
-        def rawPath = crtPath.substring(0, crtPath.length() - 4) + ".raw"
-        def rawFile = new File(task.getDestinationDir(), rawPath);
-        rawFile.getParentFile().mkdirs();
-        def out = new DataOutputStream(new FileOutputStream(rawFile))
-        com.dropbox.maven.pem_converter.RawLoader.store(certDatas, out)
-        out.close()
-
-        fcd.exclude()
-    }
-}
-
 tasks.named("compileJava", JavaCompile) {
     options.compilerArgs << '-Xlint:all'
     options.warnings = true
