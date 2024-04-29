@@ -24,7 +24,7 @@ If you're using Maven, then edit your project's "pom.xml" and add this to the `<
 <dependency>
     <groupId>com.dropbox.core</groupId>
     <artifactId>dropbox-core-sdk</artifactId>
-    <version>6.1.0</version>
+    <version>7.0.0</version>
 </dependency>
 ```
 
@@ -33,7 +33,7 @@ If you are using Gradle, then edit your project's "build.gradle" and add this to
 ```groovy
 dependencies {
     // ...
-    implementation 'com.dropbox.core:dropbox-core-sdk:6.1.0'
+    implementation 'com.dropbox.core:dropbox-core-sdk:7.0.0'
 }
 ```
 
@@ -268,8 +268,8 @@ Edit your project's "build.gradle" and add the following to the dependencies sec
 ```
 dependencies {
     // ...
-    implementation 'com.dropbox.core:dropbox-core-sdk:6.1.0'
-    implementation 'com.dropbox.core:dropbox-android-sdk:6.1.0'
+    implementation 'com.dropbox.core:dropbox-core-sdk:7.0.0'
+    implementation 'com.dropbox.core:dropbox-android-sdk:7.0.0'
 }
 ```
 If you leverage jettifier and see the following errors then please add `android.jetifier.ignorelist = jackson-core,fastdoubleparser` to your `gradle.properties` file.
@@ -399,3 +399,37 @@ The only ProGuard rules necessary are for the SDK's required and optional depend
 -dontwarn javax.servlet.**
 -dontwarn org.apache.**
 ```
+
+### How do I enable certificate pinning?
+
+As of version 7.0.0, the SDK no longer provides certificate pinning by default. We provide hooks for you to run each of your requests with
+your own `SSLSocketFactory` or `CertificatePinner`. To provide this to your calls, you can use any of the requestors provided
+
+#### Using `StandardHttpRequestor`
+
+```java
+StandardHttpRequestor.Config customConfig = StandardHttpRequestor.Config.DEFAULT_INSTANCE.copy()
+        .withSslSocketFactory(mySslSocketFactory)
+        .build();
+```
+
+#### Using `OkHttp3Requestor`
+
+See: [CertificatePinner](https://square.github.io/okhttp/3.x/okhttp/okhttp3/CertificatePinner.html)
+
+```java
+OkHttp3Requestor.Config customConfig = OkHttp3Requestor.Config.DEFAULT_INSTANCE.copy()
+        .withCertificatePinner(myCertificatePinner)
+        .build();
+```
+
+#### Using `OkHttpRequestor`
+
+See: [CertificatePinner](https://square.github.io/okhttp/2.x/okhttp/com/squareup/okhttp/CertificatePinner.html)
+
+```java
+OkHttpRequestor.Config customConfig = OkHttpRequestor.Config.DEFAULT_INSTANCE.copy()
+        .withCertificatePinner(myCertificatePinner)
+        .build();
+```
+
