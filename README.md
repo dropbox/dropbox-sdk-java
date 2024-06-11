@@ -284,9 +284,9 @@ At this point in time, the Android code is bundled with the main Java artifact, 
 
 If the [official Dropbox App](https://play.google.com/store/apps/details?id=com.dropbox.android) is installed, it will attempt to use it to do authorization.  If it is not, a web authentication flow is launched in-browser.
 
-Use the methods in the [`Auth`](https://github.com/dropbox/dropbox-sdk-java/blob/main/dropbox-sdk-android/src/main/java/com/dropbox/core/android/Auth.kt) to start an authentication sessions.
-* [`Auth.startOAuth2Authentication(...)`](https://github.com/dropbox/dropbox-sdk-java/blob/main/dropbox-sdk-android/src/main/java/com/dropbox/core/android/Auth.kt)
-* [`Auth.startOAuth2PKCE(...)`](https://github.com/dropbox/dropbox-sdk-java/blob/main/dropbox-sdk-android/src/main/java/com/dropbox/core/android/Auth.kt)
+Use the methods in the [`Auth`](https://github.com/dropbox/dropbox-sdk-java/blob/main/android/src/main/java/com/dropbox/core/android/Auth.kt) to start an authentication sessions.
+* [`Auth.startOAuth2Authentication(...)`](https://github.com/dropbox/dropbox-sdk-java/blob/main/android/src/main/java/com/dropbox/core/android/Auth.kt)
+* [`Auth.startOAuth2PKCE(...)`](https://github.com/dropbox/dropbox-sdk-java/blob/main/android/src/main/java/com/dropbox/core/android/Auth.kt)
 
 Please look at the `examples/android` sample app for usage as well.
 
