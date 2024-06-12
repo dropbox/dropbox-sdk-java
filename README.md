@@ -280,8 +280,6 @@ Failed to transform jackson-core-2.15.0.jar (com.fasterxml.jackson.core:jackson-
 
 The Android code in this SDK is written in Kotlin (as of 5.4.x) and Kotlin is now a runtime dependency. If you do not already have Kotlin in your project, you will need to add `implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")` to your dependencies block in order to avoid a runtime exception.
 
-At this point in time, the Android code is bundled with the main Java artifact, but will be published as a separate artifact at some point in the future.
-
 If the [official Dropbox App](https://play.google.com/store/apps/details?id=com.dropbox.android) is installed, it will attempt to use it to do authorization.  If it is not, a web authentication flow is launched in-browser.
 
 Use the methods in the [`Auth`](https://github.com/dropbox/dropbox-sdk-java/blob/main/android/src/main/java/com/dropbox/core/android/Auth.kt) to start an authentication sessions.
