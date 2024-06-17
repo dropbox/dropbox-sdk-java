@@ -491,7 +491,7 @@ fun accessToken(modifier: Modifier = Modifier
     ) {
         Image (
             painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo",
+            contentDescription = "Logo", // there is a logo above log in button.
             alignment = Alignment.Center
         )
         if (!isButtonPressed) {
