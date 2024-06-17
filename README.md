@@ -344,6 +344,192 @@ Additionally, you need to allow `queries` from the Dropbox official app for veri
 </manifest>
 ```
 
+## Dropbox for Android Tutorial
+
+Let's create a simple android app that will use OAuth2.
+
+Make a class for interaction with dropbox api.
+
+```kt
+/**
+ * Class for all interactions with the dropbox server.
+ * Using dropbox sdk.
+ * @param appKey key to the app credentials.
+ * @param appSecret secret to the app credentials.
+ * @param appToken generated token for testing and debugging.
+ * @param uri for redirect uris.
+ */
+class CloudInteractions (
+    private val appName   : String,
+    private val appKey    : String? = null,
+    private val appSecret : String? = null,
+    private val uri       : String? = null,
+    private val appToken  : String? = null, // For testing
+    ) {
+
+    private var client : DbxClientV2? = null
+    private var config : DbxRequestConfig = DbxRequestConfig.newBuilder(this.appName).build()
+    private var appInfo: DbxAppInfo = DbxAppInfo(this.appKey, this.appSecret)
+    private var auth   : DbxWebAuth = DbxWebAuth(this.config, appInfo)
+
+    public var state : Boolean = false
+
+    /**
+     * Make a connection with access token. Use only during development for testing.
+     */
+    public fun connectWithToken() : Boolean {
+        this.client = DbxClientV2(this.config, this.appToken)
+        return this.client != null
+    }
+
+    /**
+     * Make a connection with dropbox server with OAuth2 flow.
+     */
+    public fun getAuthUrl() : String {
+        this.state = true
+        val codeFlow = DbxWebAuth(this.config, this.appInfo)
+        val authRequest: DbxWebAuth.Request = DbxWebAuth.newRequestBuilder()
+            .withNoRedirect()
+            .build()
+
+        // Generates a url, that must open browser for user to authorize themselves.
+        return this.auth.authorize(authRequest)
+    }
+
+    /**
+     * Get key from user input.
+     */
+    public fun authWithKey(key : String) : Boolean {
+        // Get authorization code and clean it.
+        val code : String = key.trim()
+        val authFinish : DbxAuthFinish = this.auth.finishFromCode(code)
+        this.client = DbxClientV2(this.config, authFinish.accessToken)
+        return this.client != null
+    }
+
+    /**
+     * Get folder data.
+     * @param path valid path to folder.
+     * @return metadata string with folder info.
+     */
+    public fun getFolderData(path : String = "") : String? {
+        return this.client?.files()?.listFolder(path)?.toString()
+    }
+
+    /**
+     * Upload a specified file to a specific location on dropbox server.
+     * @param path valid path to the folder on server.
+     * @param file valid path to the file in local storage
+     * @return metadata
+     */
+    public fun uploadFile(path : String, file : String) : String? {
+        var metadata : FileMetadata? = null
+        val input : InputStream = FileInputStream(file)
+        try {
+            metadata = this.client?.files()?.uploadBuilder("$path$file")?.uploadAndFinish(input)
+        } catch (e : Exception) {
+            println(e)
+        }
+        return metadata?.toString()
+    }
+
+    /**
+     * Download a specified file from dropbox.
+     * @param path valid path to a file on server.
+     */
+    public fun downloadFile(path : String) : DbxDownloader<FileMetadata>? {
+        var file : DbxDownloader<FileMetadata>? = null
+        try {
+            file = this.client?.files()?.download(path)
+        } catch (e : Exception) {
+            println(e)
+        }
+        return file
+    }
+}
+
+```
+
+And let's use it in **MainActivity.kt** ! 
+
+The application will open up, showing a logo and a button for sing in acitvity that will open browser and ask for authentication of the dropbox app, afterwards it will generate key and ask you user for input.
+
+```kt
+class MainActivity : ComponentActivity() {
+
+    private var cloud : CloudInteractions? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            DevelopmentapplicationTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    this.cloud  = accessToken()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun accessToken(modifier: Modifier = Modifier
+    .fillMaxSize()
+    .wrapContentSize(Alignment.Center)) : CloudInteractions {
+
+    var key by remember { mutableStateOf("") }
+    var isButtonPressed by remember { mutableStateOf(false) }
+
+    val cloud = cloudConnect()
+    val context = LocalContext.current
+
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image (
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Logo",
+            alignment = Alignment.Center
+        )
+        if (!isButtonPressed) {
+            Button(
+                onClick = {
+                    openBrowser(uri = cloud.getAuthUrl(), context = context)
+                    isButtonPressed = true
+                }) {
+                Text(stringResource(id = R.string.connect_button))
+            }
+        } else {
+            TextField(value = key,
+                onValueChange = { key = it } )
+            Button(onClick = {cloud.authWithKey(key)}) {
+                Text(text = stringResource(id = R.string.connect_button))
+            }
+        }
+    }
+    return cloud // return's cloud object for futher interaction.
+}
+
+@Composable
+fun cloudConnect(): CloudInteractions {
+    return CloudInteractions(
+        appName =   "Hello"      // Your application's name
+        appKey =    "Test key"   //  Your application's key
+        appSecret = "App secret" // Your application's secret
+        // You can find them all on your dropbox application's page
+    )
+}
+
+// Open's up installed browser on android device and passes a link to the authentication page.
+fun openBrowser(uri : String, context : Context) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+    startActivity(context, intent, null)
+}
+```
+
 ## FAQ
 
 ### When I use `OkHttp3Requestor` in `DbxRequestConfig`, I get errors like 'class file for okhttp3.OkHttpClient not found'
