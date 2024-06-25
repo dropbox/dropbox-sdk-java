@@ -7,23 +7,20 @@ import com.dropbox.core.DbxSdkVersion
 import com.dropbox.core.android.AuthActivity
 
 internal object DropboxAuthIntent {
-
-    fun buildActionAuthenticateIntent(): Intent {
-        return Intent(AuthActivity.ACTION_AUTHENTICATE_V2)
+    fun buildActionAuthenticateIntent(): Intent =
+        Intent(AuthActivity.ACTION_AUTHENTICATE_V2)
             .apply {
                 setPackage("com.dropbox.android")
             }
-    }
 
-    fun Context.getTargetSdkVersion(): Int? {
-        return try {
+    private fun Context.getTargetSdkVersion(): Int? =
+        try {
             val packageInfo: PackageInfo = packageManager.getPackageInfo(packageName, 0)
-            val targetSdkVersion: Int = packageInfo.applicationInfo.targetSdkVersion
+            val targetSdkVersion: Int? = packageInfo.applicationInfo?.targetSdkVersion
             targetSdkVersion
         } catch (e: Exception) {
             null
         }
-    }
 
     /**
      * @return Intent to auth with official app
@@ -34,7 +31,6 @@ internal object DropboxAuthIntent {
         stateNonce: String,
         authActivity: AuthActivity,
     ): Intent {
-
         val callingActivityFullyQualifiedClassName = authActivity::class.java.name
         val packageName = authActivity.packageName
 
@@ -53,12 +49,13 @@ internal object DropboxAuthIntent {
             }
 
             mState.mTokenAccessType?.apply {
-                val queryParams = QueryParamsUtil.createExtraQueryParams(
-                    tokenAccessType = mState.mTokenAccessType,
-                    scope = mState.mScope,
-                    includeGrantedScopes = mState.mIncludeGrantedScopes,
-                    pkceManagerCodeChallenge = mState.mPKCEManager.codeChallenge
-                )
+                val queryParams =
+                    QueryParamsUtil.createExtraQueryParams(
+                        tokenAccessType = mState.mTokenAccessType,
+                        scope = mState.mScope,
+                        includeGrantedScopes = mState.mIncludeGrantedScopes,
+                        pkceManagerCodeChallenge = mState.mPKCEManager.codeChallenge,
+                    )
                 // to support legacy DBApp with V1 flow with
                 putExtra(EXTRA_AUTH_QUERY_PARAMS, queryParams)
             }
@@ -147,6 +144,4 @@ internal object DropboxAuthIntent {
      * Used for internal authentication. You won't ever have to use this.
      */
     const val EXTRA_AUTH_QUERY_PARAMS: String = "AUTH_QUERY_PARAMS"
-
-
 }
