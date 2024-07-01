@@ -26,9 +26,9 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Parcel
 import android.util.Base64
-import com.dropbox.core.android.DropboxUidNotInitializedException
 import com.dropbox.core.android.internal.DropboxAuthIntent
 
 /**
@@ -152,7 +152,7 @@ public class DbxOfficialAppConnector(uid: String?) {
         public const val EXTRA_DROPBOX_UID: String = "com.dropbox.android.intent.extra.DROPBOX_UID"
         public const val EXTRA_CALLING_PACKAGE: String = "com.dropbox.android.intent.extra.CALLING_PACKAGE"
 
-        //OpenWith intent definitions. You won't need to use this unless you are our official partner in openwith.
+        // OpenWith intent definitions. You won't need to use this unless you are our official partner in openwith.
         // from Dropbox actions
         public const val ACTION_DBXC_EDIT: String = "com.dropbox.android.intent.action.DBXC_EDIT"
         public const val ACTION_DBXC_VIEW: String = "com.dropbox.android.intent.action.DBXC_VIEW"
@@ -160,7 +160,7 @@ public class DbxOfficialAppConnector(uid: String?) {
         // to Dropbox actions
         public const val ACTION_SHOW_DROPBOX_PREVIEW: String = "com.dropbox.android.intent.action.SHOW_PREVIEW"
 
-        //extras (used either dirction)
+        // extras (used either dirction)
         public const val EXTRA_DROPBOX_PATH: String = "com.dropbox.android.intent.extra.DROPBOX_PATH"
         public const val EXTRA_DROPBOX_READ_ONLY: String = "com.dropbox.android.intent.extra.READ_ONLY"
         public const val EXTRA_DROPBOX_REV: String = "com.dropbox.android.intent.extra.DROPBOX_REV"
@@ -173,7 +173,6 @@ public class DbxOfficialAppConnector(uid: String?) {
          */
         @JvmStatic
         public fun isInstalled(context: Context): DbxOfficialAppInstallInfo? {
-
             // For now, use dAuth intent
             val authIntent = DropboxAuthIntent.buildActionAuthenticateIntent()
             val dropboxPackage = getDropboxAppPackage(context, authIntent) ?: return null
@@ -281,23 +280,37 @@ public class DbxOfficialAppConnector(uid: String?) {
                 // The official app doesn't exist, or only an older version
                 // is available, or multiple activities are confusing us.
                 return null
-            } else {
-                // The official app exists. Make sure it's the correct one by
-                // checking signing keys.
-                val resolveInfo = manager.resolveActivity(intent, 0) ?: return null
-                val packageInfo: PackageInfo = try {
-                    manager.getPackageInfo(
-                        resolveInfo.activityInfo.packageName,
-                        PackageManager.GET_SIGNATURES
-                    )
+            }
+            // The official app exists. Make sure it's the correct one by
+            // checking signing keys.
+            val resolveInfo = manager.resolveActivity(intent, 0) ?: return null
+            val packageInfo: PackageInfo =
+                try {
+                    if (Build.VERSION.SDK_INT >= 28) {
+                        manager.getPackageInfo(
+                            resolveInfo.activityInfo.packageName,
+                            PackageManager.GET_SIGNING_CERTIFICATES,
+                        )
+                    } else {
+                        manager.getPackageInfo(
+                            resolveInfo.activityInfo.packageName,
+                            PackageManager.GET_SIGNATURES
+                        )
+                    }
                 } catch (e: PackageManager.NameNotFoundException) {
                     return null
                 }
-                for (signature in packageInfo.signatures) {
-                    for (dbSignature in DROPBOX_APP_SIGNATURES) {
-                        if (dbSignature == signature.toCharsString()) {
-                            return packageInfo
-                        }
+
+            val signatures = if (Build.VERSION.SDK_INT >= 28) {
+                packageInfo.signingInfo?.signingCertificateHistory
+            } else {
+                packageInfo.signatures
+            } ?: return null
+
+            for (signature in signatures) {
+                for (dbSignature in DROPBOX_APP_SIGNATURES) {
+                    if (dbSignature == signature.toCharsString()) {
+                        return packageInfo
                     }
                 }
             }
