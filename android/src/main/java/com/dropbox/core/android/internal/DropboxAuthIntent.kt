@@ -7,20 +7,23 @@ import com.dropbox.core.DbxSdkVersion
 import com.dropbox.core.android.AuthActivity
 
 internal object DropboxAuthIntent {
-    fun buildActionAuthenticateIntent(): Intent =
-        Intent(AuthActivity.ACTION_AUTHENTICATE_V2)
+
+    fun buildActionAuthenticateIntent(): Intent {
+        return Intent(AuthActivity.ACTION_AUTHENTICATE_V2)
             .apply {
                 setPackage("com.dropbox.android")
             }
+    }
 
-    private fun Context.getTargetSdkVersion(): Int? =
-        try {
-            val packageInfo: PackageInfo = packageManager.getPackageInfo(packageName, 0)
-            val targetSdkVersion: Int? = packageInfo.applicationInfo?.targetSdkVersion
+    fun Context.getTargetSdkVersion(): Int? {
+        return try {
+            val packageInfo: PackageInfo = packageManager.getPackageInfo(packageName, 0) ?: return null
+            val targetSdkVersion: Int = packageInfo.applicationInfo.targetSdkVersion
             targetSdkVersion
         } catch (e: Exception) {
             null
         }
+    }
 
     /**
      * @return Intent to auth with official app
@@ -49,13 +52,12 @@ internal object DropboxAuthIntent {
             }
 
             mState.mTokenAccessType?.apply {
-                val queryParams =
-                    QueryParamsUtil.createExtraQueryParams(
-                        tokenAccessType = mState.mTokenAccessType,
-                        scope = mState.mScope,
-                        includeGrantedScopes = mState.mIncludeGrantedScopes,
-                        pkceManagerCodeChallenge = mState.mPKCEManager.codeChallenge,
-                    )
+                val queryParams = QueryParamsUtil.createExtraQueryParams(
+                    tokenAccessType = mState.mTokenAccessType,
+                    scope = mState.mScope,
+                    includeGrantedScopes = mState.mIncludeGrantedScopes,
+                    pkceManagerCodeChallenge = mState.mPKCEManager.codeChallenge
+                )
                 // to support legacy DBApp with V1 flow with
                 putExtra(EXTRA_AUTH_QUERY_PARAMS, queryParams)
             }
