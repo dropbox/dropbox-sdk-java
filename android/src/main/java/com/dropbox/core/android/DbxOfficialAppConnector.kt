@@ -26,6 +26,7 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Parcel
 import android.util.Base64
 import com.dropbox.core.android.internal.DropboxAuthIntent
@@ -279,35 +280,37 @@ public class DbxOfficialAppConnector(uid: String?) {
                 // The official app doesn't exist, or only an older version
                 // is available, or multiple activities are confusing us.
                 return null
-            } else {
-                // The official app exists. Make sure it's the correct one by
-                // checking signing keys.
-                val resolveInfo = manager.resolveActivity(intent, 0) ?: return null
-                val packageInfo: PackageInfo =
-                    try {
-                        if (Build.VERSION.SDK_INT >= 28) {
-                            manager.getPackageInfo(
-                                resolveInfo.activityInfo.packageName,
-                                PackageManager.GET_SIGNING_CERTIFICATES,
-                            )
-                        } else {
-                            manager.getPackageInfo(
-                                resolveInfo.activityInfo.packageName,
-                                PackageManager.GET_SIGNATURES
-                            )
-                        }
-                    } catch (e: PackageManager.NameNotFoundException) {
-                        return null
+            }
+            // The official app exists. Make sure it's the correct one by
+            // checking signing keys.
+            val resolveInfo = manager.resolveActivity(intent, 0) ?: return null
+            val packageInfo: PackageInfo =
+                try {
+                    if (Build.VERSION.SDK_INT >= 28) {
+                        manager.getPackageInfo(
+                            resolveInfo.activityInfo.packageName,
+                            PackageManager.GET_SIGNING_CERTIFICATES,
+                        )
+                    } else {
+                        manager.getPackageInfo(
+                            resolveInfo.activityInfo.packageName,
+                            PackageManager.GET_SIGNATURES
+                        )
                     }
-                val signatures = if (Build.VERSION.SDK_INT >= 28) {
-                    packageInfo.signingInfo?.signingCertificateHistory ?: return null
-                } else packageInfo.signatures
+                } catch (e: PackageManager.NameNotFoundException) {
+                    return null
+                }
 
-                for (signature in signatures) {
-                    for (dbSignature in DROPBOX_APP_SIGNATURES) {
-                        if (dbSignature == signature.toCharsString()) {
-                            return packageInfo
-                        }
+            val signatures = if (Build.VERSION.SDK_INT >= 28) {
+                packageInfo.signingInfo?.signingCertificateHistory
+            } else {
+                packageInfo.signatures
+            } ?: return null
+
+            for (signature in signatures) {
+                for (dbSignature in DROPBOX_APP_SIGNATURES) {
+                    if (dbSignature == signature.toCharsString()) {
+                        return packageInfo
                     }
                 }
             }
