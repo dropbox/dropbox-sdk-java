@@ -17,8 +17,8 @@ internal object DropboxAuthIntent {
 
     fun Context.getTargetSdkVersion(): Int? {
         return try {
-            val packageInfo: PackageInfo = packageManager.getPackageInfo(packageName, 0) ?: return null
-            val targetSdkVersion: Int = packageInfo.applicationInfo.targetSdkVersion
+            val packageInfo: PackageInfo = packageManager.getPackageInfo(packageName, 0)
+            val targetSdkVersion: Int? = packageInfo.applicationInfo?.targetSdkVersion
             targetSdkVersion
         } catch (e: Exception) {
             null
