@@ -11,20 +11,20 @@ import com.dropbox.core.LocalizedText;
  * MembersListContinueError} error.
  *
  * <p> This exception is raised by {@link
- * DbxTeamTeamRequests#membersListContinueV2(String)} and {@link
- * DbxTeamTeamRequests#membersListContinue(String)}. </p>
+ * DbxTeamTeamRequests#membersListContinue(String)} and {@link
+ * DbxTeamTeamRequests#membersListContinueV2(String)}. </p>
  */
 public class MembersListContinueErrorException extends DbxApiException {
     // exception for routes:
-    //     2/team/members/list/continue_v2
     //     2/team/members/list/continue
+    //     2/team/members/list/continue_v2
 
     private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeamTeamRequests#membersListContinueV2(String)} and {@link
-     * DbxTeamTeamRequests#membersListContinue(String)}.
+     * DbxTeamTeamRequests#membersListContinue(String)} and {@link
+     * DbxTeamTeamRequests#membersListContinueV2(String)}.
      */
     public final MembersListContinueError errorValue;
 

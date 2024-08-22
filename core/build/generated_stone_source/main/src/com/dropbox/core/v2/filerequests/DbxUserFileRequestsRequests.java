@@ -236,6 +236,32 @@ public class DbxUserFileRequestsRequests {
     }
 
     //
+    // route 2/file_requests/list
+    //
+
+    /**
+     * Returns a list of file requests owned by this user. For apps with the app
+     * folder permission, this will only return file requests with destinations
+     * in the app folder.
+     *
+     * @return Result for {@link DbxUserFileRequestsRequests#list}.
+     */
+    public ListFileRequestsResult list() throws ListFileRequestsErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/file_requests/list",
+                                        null,
+                                        false,
+                                        com.dropbox.core.stone.StoneSerializers.void_(),
+                                        ListFileRequestsResult.Serializer.INSTANCE,
+                                        ListFileRequestsError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new ListFileRequestsErrorException("2/file_requests/list", ex.getRequestId(), ex.getUserMessage(), (ListFileRequestsError) ex.getErrorValue());
+        }
+    }
+
+    //
     // route 2/file_requests/list_v2
     //
 
@@ -295,32 +321,6 @@ public class DbxUserFileRequestsRequests {
     public ListFileRequestsV2Result listV2(long limit) throws ListFileRequestsErrorException, DbxException {
         ListFileRequestsArg _arg = new ListFileRequestsArg(limit);
         return listV2(_arg);
-    }
-
-    //
-    // route 2/file_requests/list
-    //
-
-    /**
-     * Returns a list of file requests owned by this user. For apps with the app
-     * folder permission, this will only return file requests with destinations
-     * in the app folder.
-     *
-     * @return Result for {@link DbxUserFileRequestsRequests#list}.
-     */
-    public ListFileRequestsResult list() throws ListFileRequestsErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/file_requests/list",
-                                        null,
-                                        false,
-                                        com.dropbox.core.stone.StoneSerializers.void_(),
-                                        ListFileRequestsResult.Serializer.INSTANCE,
-                                        ListFileRequestsError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new ListFileRequestsErrorException("2/file_requests/list", ex.getRequestId(), ex.getUserMessage(), (ListFileRequestsError) ex.getErrorValue());
-        }
     }
 
     //

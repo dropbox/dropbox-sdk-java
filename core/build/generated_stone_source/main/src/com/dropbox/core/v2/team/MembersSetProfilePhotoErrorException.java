@@ -11,23 +11,23 @@ import com.dropbox.core.LocalizedText;
  * MembersSetProfilePhotoError} error.
  *
  * <p> This exception is raised by {@link
- * DbxTeamTeamRequests#membersSetProfilePhotoV2(UserSelectorArg,com.dropbox.core.v2.account.PhotoSourceArg)}
+ * DbxTeamTeamRequests#membersSetProfilePhoto(UserSelectorArg,com.dropbox.core.v2.account.PhotoSourceArg)}
  * and {@link
- * DbxTeamTeamRequests#membersSetProfilePhoto(UserSelectorArg,com.dropbox.core.v2.account.PhotoSourceArg)}.
+ * DbxTeamTeamRequests#membersSetProfilePhotoV2(UserSelectorArg,com.dropbox.core.v2.account.PhotoSourceArg)}.
  * </p>
  */
 public class MembersSetProfilePhotoErrorException extends DbxApiException {
     // exception for routes:
-    //     2/team/members/set_profile_photo_v2
     //     2/team/members/set_profile_photo
+    //     2/team/members/set_profile_photo_v2
 
     private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeamTeamRequests#membersSetProfilePhotoV2(UserSelectorArg,com.dropbox.core.v2.account.PhotoSourceArg)}
+     * DbxTeamTeamRequests#membersSetProfilePhoto(UserSelectorArg,com.dropbox.core.v2.account.PhotoSourceArg)}
      * and {@link
-     * DbxTeamTeamRequests#membersSetProfilePhoto(UserSelectorArg,com.dropbox.core.v2.account.PhotoSourceArg)}.
+     * DbxTeamTeamRequests#membersSetProfilePhotoV2(UserSelectorArg,com.dropbox.core.v2.account.PhotoSourceArg)}.
      */
     public final MembersSetProfilePhotoError errorValue;
 

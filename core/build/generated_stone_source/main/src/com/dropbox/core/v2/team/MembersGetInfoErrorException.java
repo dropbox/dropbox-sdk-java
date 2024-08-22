@@ -11,20 +11,20 @@ import com.dropbox.core.LocalizedText;
  * error.
  *
  * <p> This exception is raised by {@link
- * DbxTeamTeamRequests#membersGetInfoV2(java.util.List)} and {@link
- * DbxTeamTeamRequests#membersGetInfo(java.util.List)}. </p>
+ * DbxTeamTeamRequests#membersGetInfo(java.util.List)} and {@link
+ * DbxTeamTeamRequests#membersGetInfoV2(java.util.List)}. </p>
  */
 public class MembersGetInfoErrorException extends DbxApiException {
     // exception for routes:
-    //     2/team/members/get_info_v2
     //     2/team/members/get_info
+    //     2/team/members/get_info_v2
 
     private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeamTeamRequests#membersGetInfoV2(java.util.List)} and {@link
-     * DbxTeamTeamRequests#membersGetInfo(java.util.List)}.
+     * DbxTeamTeamRequests#membersGetInfo(java.util.List)} and {@link
+     * DbxTeamTeamRequests#membersGetInfoV2(java.util.List)}.
      */
     public final MembersGetInfoError errorValue;
 

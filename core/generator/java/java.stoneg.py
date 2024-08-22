@@ -2586,7 +2586,6 @@ class JavaCodeGenerationInstance:
 
     def generate_namespace(self, namespace):
         assert isinstance(namespace, ApiNamespace), repr(namespace)
-
         j = self.j
 
         # add documentation to our packages
@@ -2679,6 +2678,7 @@ class JavaCodeGenerationInstance:
                     w.out('this.client = client;')
 
                 for route in namespace.routes:
+                    print("++++++++ " + namespace.name + " " + route.name)
                     w.out('')
                     w.out('//')
                     w.out('// route %s', j.url_path(route))

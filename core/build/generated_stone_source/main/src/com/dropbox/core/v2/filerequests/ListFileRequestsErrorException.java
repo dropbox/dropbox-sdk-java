@@ -10,20 +10,19 @@ import com.dropbox.core.LocalizedText;
  * Exception thrown when the server responds with a {@link
  * ListFileRequestsError} error.
  *
- * <p> This exception is raised by {@link
- * DbxUserFileRequestsRequests#listV2(long)} and {@link
- * DbxUserFileRequestsRequests#list}. </p>
+ * <p> This exception is raised by {@link DbxUserFileRequestsRequests#list} and
+ * {@link DbxUserFileRequestsRequests#listV2(long)}. </p>
  */
 public class ListFileRequestsErrorException extends DbxApiException {
     // exception for routes:
-    //     2/file_requests/list_v2
     //     2/file_requests/list
+    //     2/file_requests/list_v2
 
     private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxUserFileRequestsRequests#listV2(long)}
-     * and {@link DbxUserFileRequestsRequests#list}.
+     * The error reported by {@link DbxUserFileRequestsRequests#list} and {@link
+     * DbxUserFileRequestsRequests#listV2(long)}.
      */
     public final ListFileRequestsError errorValue;
 

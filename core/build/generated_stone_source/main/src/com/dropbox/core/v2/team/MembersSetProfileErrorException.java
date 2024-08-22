@@ -11,20 +11,20 @@ import com.dropbox.core.LocalizedText;
  * MembersSetProfileError} error.
  *
  * <p> This exception is raised by {@link
- * DbxTeamTeamRequests#membersSetProfileV2(UserSelectorArg)} and {@link
- * DbxTeamTeamRequests#membersSetProfile(UserSelectorArg)}. </p>
+ * DbxTeamTeamRequests#membersSetProfile(UserSelectorArg)} and {@link
+ * DbxTeamTeamRequests#membersSetProfileV2(UserSelectorArg)}. </p>
  */
 public class MembersSetProfileErrorException extends DbxApiException {
     // exception for routes:
-    //     2/team/members/set_profile_v2
     //     2/team/members/set_profile
+    //     2/team/members/set_profile_v2
 
     private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeamTeamRequests#membersSetProfileV2(UserSelectorArg)} and {@link
-     * DbxTeamTeamRequests#membersSetProfile(UserSelectorArg)}.
+     * DbxTeamTeamRequests#membersSetProfile(UserSelectorArg)} and {@link
+     * DbxTeamTeamRequests#membersSetProfileV2(UserSelectorArg)}.
      */
     public final MembersSetProfileError errorValue;
 
