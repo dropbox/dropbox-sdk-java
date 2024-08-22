@@ -2586,7 +2586,9 @@ class JavaCodeGenerationInstance:
 
     def generate_namespace(self, namespace):
         assert isinstance(namespace, ApiNamespace), repr(namespace)
-
+        # We need a stable sort in order to keep the resultant output
+        # the same across runs.
+        namespace.routes.sort()
         j = self.j
 
         # add documentation to our packages
