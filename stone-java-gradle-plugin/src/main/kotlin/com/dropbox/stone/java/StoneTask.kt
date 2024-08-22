@@ -12,12 +12,16 @@ import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.ProjectLayout
 
 @CacheableTask
 abstract class StoneTask : DefaultTask() {
 
     @get:Inject
     abstract val exec: ExecOperations
+
+    @get:Inject
+    abstract val layout: ProjectLayout
 
     @get:Input
     abstract val stoneConfigs: ListProperty<StoneConfig>
@@ -90,6 +94,13 @@ abstract class StoneTask : DefaultTask() {
             }
         }
 
+        // Order of inputs can affect the output of stone
+        // Sorting spec files by relative path makes order stable across machines
+        val projectDirectory = layout.projectDirectory.asFile
+        val sortedSpecFiles = specFiles.sortedBy {
+            it.toRelativeString(projectDirectory)
+        }.map { it.absolutePath }.toTypedArray()
+
         stoneConfigs.get().forEachIndexed { index, stoneConfig ->
             val isFirst = index == 0
             val append: Boolean = !isFirst
@@ -100,7 +111,7 @@ abstract class StoneTask : DefaultTask() {
 
                     generatorFile.get().asFile,
                     outputDirectory.absolutePath,
-                    *specFiles.map { it.absolutePath }.toTypedArray(),
+                    *sortedSpecFiles,
                     "--", "--package", stoneConfig.packageName,
             )
 
