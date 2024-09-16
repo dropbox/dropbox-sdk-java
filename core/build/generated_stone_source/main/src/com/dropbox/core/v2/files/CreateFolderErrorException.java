@@ -11,20 +11,20 @@ import com.dropbox.core.LocalizedText;
  * error.
  *
  * <p> This exception is raised by {@link
- * DbxUserFilesRequests#createFolderV2(String,boolean)} and {@link
- * DbxUserFilesRequests#createFolder(String,boolean)}. </p>
+ * DbxUserFilesRequests#createFolder(String,boolean)} and {@link
+ * DbxUserFilesRequests#createFolderV2(String,boolean)}. </p>
  */
 public class CreateFolderErrorException extends DbxApiException {
     // exception for routes:
-    //     2/files/create_folder_v2
     //     2/files/create_folder
+    //     2/files/create_folder_v2
 
     private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxUserFilesRequests#createFolderV2(String,boolean)} and {@link
-     * DbxUserFilesRequests#createFolder(String,boolean)}.
+     * DbxUserFilesRequests#createFolder(String,boolean)} and {@link
+     * DbxUserFilesRequests#createFolderV2(String,boolean)}.
      */
     public final CreateFolderError errorValue;
 

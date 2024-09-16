@@ -2039,105 +2039,6 @@ public class DbxTeamTeamRequests {
     }
 
     //
-    // route 2/team/members/add_v2
-    //
-
-    /**
-     * Adds members to a team. Permission : Team member management A maximum of
-     * 20 members can be specified in a single call. If no Dropbox account
-     * exists with the email address specified, a new Dropbox account will be
-     * created with the given email address, and that account will be invited to
-     * the team. If a personal Dropbox account exists with the email address
-     * specified in the call, this call will create a placeholder Dropbox
-     * account for the user on the team and send an email inviting the user to
-     * migrate their existing personal account onto the team. Team member
-     * management apps are required to set an initial given_name and surname for
-     * a user to use in the team invitation and for 'Perform as team member'
-     * actions taken on the user before they become 'active'.
-     *
-     */
-    MembersAddLaunchV2Result membersAddV2(MembersAddV2Arg arg) throws DbxApiException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/team/members/add_v2",
-                                        arg,
-                                        false,
-                                        MembersAddV2Arg.Serializer.INSTANCE,
-                                        MembersAddLaunchV2Result.Serializer.INSTANCE,
-                                        com.dropbox.core.stone.StoneSerializers.void_());
-        }
-        catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/add_v2\":" + ex.getErrorValue());
-        }
-    }
-
-    /**
-     * Adds members to a team.
-     *
-     * <p> Permission : Team member management </p>
-     *
-     * <p> A maximum of 20 members can be specified in a single call. </p>
-     *
-     * <p> If no Dropbox account exists with the email address specified, a new
-     * Dropbox account will be created with the given email address, and that
-     * account will be invited to the team. </p>
-     *
-     * <p> If a personal Dropbox account exists with the email address specified
-     * in the call, this call will create a placeholder Dropbox account for the
-     * user on the team and send an email inviting the user to migrate their
-     * existing personal account onto the team. </p>
-     *
-     * <p> Team member management apps are required to set an initial given_name
-     * and surname for a user to use in the team invitation and for 'Perform as
-     * team member' actions taken on the user before they become 'active'. </p>
-     *
-     * <p> The {@code forceAsync} request parameter will default to {@code
-     * false} (see {@link #membersAddV2(List,boolean)}). </p>
-     *
-     * @param newMembers  Details of new members to be added to the team. Must
-     *     not contain a {@code null} item and not be {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public MembersAddLaunchV2Result membersAddV2(List<MemberAddV2Arg> newMembers) throws DbxApiException, DbxException {
-        MembersAddV2Arg _arg = new MembersAddV2Arg(newMembers);
-        return membersAddV2(_arg);
-    }
-
-    /**
-     * Adds members to a team.
-     *
-     * <p> Permission : Team member management </p>
-     *
-     * <p> A maximum of 20 members can be specified in a single call. </p>
-     *
-     * <p> If no Dropbox account exists with the email address specified, a new
-     * Dropbox account will be created with the given email address, and that
-     * account will be invited to the team. </p>
-     *
-     * <p> If a personal Dropbox account exists with the email address specified
-     * in the call, this call will create a placeholder Dropbox account for the
-     * user on the team and send an email inviting the user to migrate their
-     * existing personal account onto the team. </p>
-     *
-     * <p> Team member management apps are required to set an initial given_name
-     * and surname for a user to use in the team invitation and for 'Perform as
-     * team member' actions taken on the user before they become 'active'. </p>
-     *
-     * @param newMembers  Details of new members to be added to the team. Must
-     *     not contain a {@code null} item and not be {@code null}.
-     * @param forceAsync  Whether to force the add to happen asynchronously.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public MembersAddLaunchV2Result membersAddV2(List<MemberAddV2Arg> newMembers, boolean forceAsync) throws DbxApiException, DbxException {
-        MembersAddV2Arg _arg = new MembersAddV2Arg(newMembers, forceAsync);
-        return membersAddV2(_arg);
-    }
-
-    //
     // route 2/team/members/add
     //
 
@@ -2237,49 +2138,102 @@ public class DbxTeamTeamRequests {
     }
 
     //
-    // route 2/team/members/add/job_status/get_v2
+    // route 2/team/members/add_v2
     //
 
     /**
-     * Once an async_job_id is returned from {@link
-     * DbxTeamTeamRequests#membersAddV2(List,boolean)} , use this to poll the
-     * status of the asynchronous request. Permission : Team member management.
+     * Adds members to a team. Permission : Team member management A maximum of
+     * 20 members can be specified in a single call. If no Dropbox account
+     * exists with the email address specified, a new Dropbox account will be
+     * created with the given email address, and that account will be invited to
+     * the team. If a personal Dropbox account exists with the email address
+     * specified in the call, this call will create a placeholder Dropbox
+     * account for the user on the team and send an email inviting the user to
+     * migrate their existing personal account onto the team. Team member
+     * management apps are required to set an initial given_name and surname for
+     * a user to use in the team invitation and for 'Perform as team member'
+     * actions taken on the user before they become 'active'.
      *
-     * @param arg  Arguments for methods that poll the status of an asynchronous
-     *     job.
      */
-    MembersAddJobStatusV2Result membersAddJobStatusGetV2(PollArg arg) throws PollErrorException, DbxException {
+    MembersAddLaunchV2Result membersAddV2(MembersAddV2Arg arg) throws DbxApiException, DbxException {
         try {
             return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/team/members/add/job_status/get_v2",
+                                        "2/team/members/add_v2",
                                         arg,
                                         false,
-                                        PollArg.Serializer.INSTANCE,
-                                        MembersAddJobStatusV2Result.Serializer.INSTANCE,
-                                        PollError.Serializer.INSTANCE);
+                                        MembersAddV2Arg.Serializer.INSTANCE,
+                                        MembersAddLaunchV2Result.Serializer.INSTANCE,
+                                        com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/team/members/add/job_status/get_v2", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/add_v2\":" + ex.getErrorValue());
         }
     }
 
     /**
-     * Once an async_job_id is returned from {@link
-     * DbxTeamTeamRequests#membersAddV2(List,boolean)} , use this to poll the
-     * status of the asynchronous request.
+     * Adds members to a team.
      *
-     * <p> Permission : Team member management. </p>
+     * <p> Permission : Team member management </p>
      *
-     * @param asyncJobId  Id of the asynchronous job. This is the value of a
-     *     response returned from the method that launched the job. Must have
-     *     length of at least 1 and not be {@code null}.
+     * <p> A maximum of 20 members can be specified in a single call. </p>
+     *
+     * <p> If no Dropbox account exists with the email address specified, a new
+     * Dropbox account will be created with the given email address, and that
+     * account will be invited to the team. </p>
+     *
+     * <p> If a personal Dropbox account exists with the email address specified
+     * in the call, this call will create a placeholder Dropbox account for the
+     * user on the team and send an email inviting the user to migrate their
+     * existing personal account onto the team. </p>
+     *
+     * <p> Team member management apps are required to set an initial given_name
+     * and surname for a user to use in the team invitation and for 'Perform as
+     * team member' actions taken on the user before they become 'active'. </p>
+     *
+     * <p> The {@code forceAsync} request parameter will default to {@code
+     * false} (see {@link #membersAddV2(List,boolean)}). </p>
+     *
+     * @param newMembers  Details of new members to be added to the team. Must
+     *     not contain a {@code null} item and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersAddJobStatusV2Result membersAddJobStatusGetV2(String asyncJobId) throws PollErrorException, DbxException {
-        PollArg _arg = new PollArg(asyncJobId);
-        return membersAddJobStatusGetV2(_arg);
+    public MembersAddLaunchV2Result membersAddV2(List<MemberAddV2Arg> newMembers) throws DbxApiException, DbxException {
+        MembersAddV2Arg _arg = new MembersAddV2Arg(newMembers);
+        return membersAddV2(_arg);
+    }
+
+    /**
+     * Adds members to a team.
+     *
+     * <p> Permission : Team member management </p>
+     *
+     * <p> A maximum of 20 members can be specified in a single call. </p>
+     *
+     * <p> If no Dropbox account exists with the email address specified, a new
+     * Dropbox account will be created with the given email address, and that
+     * account will be invited to the team. </p>
+     *
+     * <p> If a personal Dropbox account exists with the email address specified
+     * in the call, this call will create a placeholder Dropbox account for the
+     * user on the team and send an email inviting the user to migrate their
+     * existing personal account onto the team. </p>
+     *
+     * <p> Team member management apps are required to set an initial given_name
+     * and surname for a user to use in the team invitation and for 'Perform as
+     * team member' actions taken on the user before they become 'active'. </p>
+     *
+     * @param newMembers  Details of new members to be added to the team. Must
+     *     not contain a {@code null} item and not be {@code null}.
+     * @param forceAsync  Whether to force the add to happen asynchronously.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public MembersAddLaunchV2Result membersAddV2(List<MemberAddV2Arg> newMembers, boolean forceAsync) throws DbxApiException, DbxException {
+        MembersAddV2Arg _arg = new MembersAddV2Arg(newMembers, forceAsync);
+        return membersAddV2(_arg);
     }
 
     //
@@ -2329,49 +2283,49 @@ public class DbxTeamTeamRequests {
     }
 
     //
-    // route 2/team/members/delete_profile_photo_v2
+    // route 2/team/members/add/job_status/get_v2
     //
 
     /**
-     * Deletes a team member's profile photo. Permission : Team member
-     * management.
+     * Once an async_job_id is returned from {@link
+     * DbxTeamTeamRequests#membersAddV2(List,boolean)} , use this to poll the
+     * status of the asynchronous request. Permission : Team member management.
      *
-     *
-     * @return Information about a team member, after the change, like at {@link
-     *     DbxTeamTeamRequests#membersSetProfileV2(UserSelectorArg)}.
+     * @param arg  Arguments for methods that poll the status of an asynchronous
+     *     job.
      */
-    TeamMemberInfoV2Result membersDeleteProfilePhotoV2(MembersDeleteProfilePhotoArg arg) throws MembersDeleteProfilePhotoErrorException, DbxException {
+    MembersAddJobStatusV2Result membersAddJobStatusGetV2(PollArg arg) throws PollErrorException, DbxException {
         try {
             return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/team/members/delete_profile_photo_v2",
+                                        "2/team/members/add/job_status/get_v2",
                                         arg,
                                         false,
-                                        MembersDeleteProfilePhotoArg.Serializer.INSTANCE,
-                                        TeamMemberInfoV2Result.Serializer.INSTANCE,
-                                        MembersDeleteProfilePhotoError.Serializer.INSTANCE);
+                                        PollArg.Serializer.INSTANCE,
+                                        MembersAddJobStatusV2Result.Serializer.INSTANCE,
+                                        PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersDeleteProfilePhotoErrorException("2/team/members/delete_profile_photo_v2", ex.getRequestId(), ex.getUserMessage(), (MembersDeleteProfilePhotoError) ex.getErrorValue());
+            throw new PollErrorException("2/team/members/add/job_status/get_v2", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
         }
     }
 
     /**
-     * Deletes a team member's profile photo.
+     * Once an async_job_id is returned from {@link
+     * DbxTeamTeamRequests#membersAddV2(List,boolean)} , use this to poll the
+     * status of the asynchronous request.
      *
      * <p> Permission : Team member management. </p>
      *
-     * @param user  Identity of the user whose profile photo will be deleted.
-     *     Must not be {@code null}.
-     *
-     * @return Information about a team member, after the change, like at {@link
-     *     DbxTeamTeamRequests#membersSetProfileV2(UserSelectorArg)}.
+     * @param asyncJobId  Id of the asynchronous job. This is the value of a
+     *     response returned from the method that launched the job. Must have
+     *     length of at least 1 and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberInfoV2Result membersDeleteProfilePhotoV2(UserSelectorArg user) throws MembersDeleteProfilePhotoErrorException, DbxException {
-        MembersDeleteProfilePhotoArg _arg = new MembersDeleteProfilePhotoArg(user);
-        return membersDeleteProfilePhotoV2(_arg);
+    public MembersAddJobStatusV2Result membersAddJobStatusGetV2(String asyncJobId) throws PollErrorException, DbxException {
+        PollArg _arg = new PollArg(asyncJobId);
+        return membersAddJobStatusGetV2(_arg);
     }
 
     //
@@ -2419,6 +2373,52 @@ public class DbxTeamTeamRequests {
     }
 
     //
+    // route 2/team/members/delete_profile_photo_v2
+    //
+
+    /**
+     * Deletes a team member's profile photo. Permission : Team member
+     * management.
+     *
+     *
+     * @return Information about a team member, after the change, like at {@link
+     *     DbxTeamTeamRequests#membersSetProfileV2(UserSelectorArg)}.
+     */
+    TeamMemberInfoV2Result membersDeleteProfilePhotoV2(MembersDeleteProfilePhotoArg arg) throws MembersDeleteProfilePhotoErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/team/members/delete_profile_photo_v2",
+                                        arg,
+                                        false,
+                                        MembersDeleteProfilePhotoArg.Serializer.INSTANCE,
+                                        TeamMemberInfoV2Result.Serializer.INSTANCE,
+                                        MembersDeleteProfilePhotoError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new MembersDeleteProfilePhotoErrorException("2/team/members/delete_profile_photo_v2", ex.getRequestId(), ex.getUserMessage(), (MembersDeleteProfilePhotoError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Deletes a team member's profile photo.
+     *
+     * <p> Permission : Team member management. </p>
+     *
+     * @param user  Identity of the user whose profile photo will be deleted.
+     *     Must not be {@code null}.
+     *
+     * @return Information about a team member, after the change, like at {@link
+     *     DbxTeamTeamRequests#membersSetProfileV2(UserSelectorArg)}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public TeamMemberInfoV2Result membersDeleteProfilePhotoV2(UserSelectorArg user) throws MembersDeleteProfilePhotoErrorException, DbxException {
+        MembersDeleteProfilePhotoArg _arg = new MembersDeleteProfilePhotoArg(user);
+        return membersDeleteProfilePhotoV2(_arg);
+    }
+
+    //
     // route 2/team/members/get_available_team_member_roles
     //
 
@@ -2445,52 +2445,6 @@ public class DbxTeamTeamRequests {
         catch (DbxWrappedException ex) {
             throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/get_available_team_member_roles\":" + ex.getErrorValue());
         }
-    }
-
-    //
-    // route 2/team/members/get_info_v2
-    //
-
-    /**
-     * Returns information about multiple team members. Permission : Team
-     * information This endpoint will return {@link
-     * MembersGetInfoItem#getIdNotFoundValue}, for IDs (or emails) that cannot
-     * be matched to a valid team member.
-     *
-     */
-    MembersGetInfoV2Result membersGetInfoV2(MembersGetInfoV2Arg arg) throws MembersGetInfoErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/team/members/get_info_v2",
-                                        arg,
-                                        false,
-                                        MembersGetInfoV2Arg.Serializer.INSTANCE,
-                                        MembersGetInfoV2Result.Serializer.INSTANCE,
-                                        MembersGetInfoError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new MembersGetInfoErrorException("2/team/members/get_info_v2", ex.getRequestId(), ex.getUserMessage(), (MembersGetInfoError) ex.getErrorValue());
-        }
-    }
-
-    /**
-     * Returns information about multiple team members.
-     *
-     * <p> Permission : Team information </p>
-     *
-     * <p> This endpoint will return {@link
-     * MembersGetInfoItem#getIdNotFoundValue}, for IDs (or emails) that cannot
-     * be matched to a valid team member. </p>
-     *
-     * @param members  List of team members. Must not contain a {@code null}
-     *     item and not be {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public MembersGetInfoV2Result membersGetInfoV2(List<UserSelectorArg> members) throws MembersGetInfoErrorException, DbxException {
-        MembersGetInfoV2Arg _arg = new MembersGetInfoV2Arg(members);
-        return membersGetInfoV2(_arg);
     }
 
     //
@@ -2540,50 +2494,49 @@ public class DbxTeamTeamRequests {
     }
 
     //
-    // route 2/team/members/list_v2
+    // route 2/team/members/get_info_v2
     //
 
     /**
-     * Lists members of a team. Permission : Team information.
+     * Returns information about multiple team members. Permission : Team
+     * information This endpoint will return {@link
+     * MembersGetInfoItem#getIdNotFoundValue}, for IDs (or emails) that cannot
+     * be matched to a valid team member.
      *
      */
-    MembersListV2Result membersListV2(MembersListArg arg) throws MembersListErrorException, DbxException {
+    MembersGetInfoV2Result membersGetInfoV2(MembersGetInfoV2Arg arg) throws MembersGetInfoErrorException, DbxException {
         try {
             return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/team/members/list_v2",
+                                        "2/team/members/get_info_v2",
                                         arg,
                                         false,
-                                        MembersListArg.Serializer.INSTANCE,
-                                        MembersListV2Result.Serializer.INSTANCE,
-                                        MembersListError.Serializer.INSTANCE);
+                                        MembersGetInfoV2Arg.Serializer.INSTANCE,
+                                        MembersGetInfoV2Result.Serializer.INSTANCE,
+                                        MembersGetInfoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersListErrorException("2/team/members/list_v2", ex.getRequestId(), ex.getUserMessage(), (MembersListError) ex.getErrorValue());
+            throw new MembersGetInfoErrorException("2/team/members/get_info_v2", ex.getRequestId(), ex.getUserMessage(), (MembersGetInfoError) ex.getErrorValue());
         }
     }
 
     /**
-     * Lists members of a team.
+     * Returns information about multiple team members.
      *
-     * <p> Permission : Team information. </p>
+     * <p> Permission : Team information </p>
      *
-     * <p> The default values for the optional request parameters will be used.
-     * See {@link MembersListV2Builder} for more details. </p>
+     * <p> This endpoint will return {@link
+     * MembersGetInfoItem#getIdNotFoundValue}, for IDs (or emails) that cannot
+     * be matched to a valid team member. </p>
+     *
+     * @param members  List of team members. Must not contain a {@code null}
+     *     item and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
      */
-    public MembersListV2Result membersListV2() throws MembersListErrorException, DbxException {
-        MembersListArg _arg = new MembersListArg();
-        return membersListV2(_arg);
-    }
-
-    /**
-     * Lists members of a team. Permission : Team information.
-     *
-     * @return Request builder for configuring request parameters and completing
-     *     the request.
-     */
-    public MembersListV2Builder membersListV2Builder() {
-        MembersListArg.Builder argBuilder_ = MembersListArg.newBuilder();
-        return new MembersListV2Builder(this, argBuilder_);
+    public MembersGetInfoV2Result membersGetInfoV2(List<UserSelectorArg> members) throws MembersGetInfoErrorException, DbxException {
+        MembersGetInfoV2Arg _arg = new MembersGetInfoV2Arg(members);
+        return membersGetInfoV2(_arg);
     }
 
     //
@@ -2634,46 +2587,50 @@ public class DbxTeamTeamRequests {
     }
 
     //
-    // route 2/team/members/list/continue_v2
+    // route 2/team/members/list_v2
     //
 
     /**
-     * Once a cursor has been retrieved from {@link
-     * DbxTeamTeamRequests#membersListV2}, use this to paginate through all team
-     * members. Permission : Team information.
+     * Lists members of a team. Permission : Team information.
      *
      */
-    MembersListV2Result membersListContinueV2(MembersListContinueArg arg) throws MembersListContinueErrorException, DbxException {
+    MembersListV2Result membersListV2(MembersListArg arg) throws MembersListErrorException, DbxException {
         try {
             return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/team/members/list/continue_v2",
+                                        "2/team/members/list_v2",
                                         arg,
                                         false,
-                                        MembersListContinueArg.Serializer.INSTANCE,
+                                        MembersListArg.Serializer.INSTANCE,
                                         MembersListV2Result.Serializer.INSTANCE,
-                                        MembersListContinueError.Serializer.INSTANCE);
+                                        MembersListError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersListContinueErrorException("2/team/members/list/continue_v2", ex.getRequestId(), ex.getUserMessage(), (MembersListContinueError) ex.getErrorValue());
+            throw new MembersListErrorException("2/team/members/list_v2", ex.getRequestId(), ex.getUserMessage(), (MembersListError) ex.getErrorValue());
         }
     }
 
     /**
-     * Once a cursor has been retrieved from {@link
-     * DbxTeamTeamRequests#membersListV2}, use this to paginate through all team
-     * members.
+     * Lists members of a team.
      *
      * <p> Permission : Team information. </p>
      *
-     * @param cursor  Indicates from what point to get the next set of members.
-     *     Must not be {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link MembersListV2Builder} for more details. </p>
      */
-    public MembersListV2Result membersListContinueV2(String cursor) throws MembersListContinueErrorException, DbxException {
-        MembersListContinueArg _arg = new MembersListContinueArg(cursor);
-        return membersListContinueV2(_arg);
+    public MembersListV2Result membersListV2() throws MembersListErrorException, DbxException {
+        MembersListArg _arg = new MembersListArg();
+        return membersListV2(_arg);
+    }
+
+    /**
+     * Lists members of a team. Permission : Team information.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     */
+    public MembersListV2Builder membersListV2Builder() {
+        MembersListArg.Builder argBuilder_ = MembersListArg.newBuilder();
+        return new MembersListV2Builder(this, argBuilder_);
     }
 
     //
@@ -2717,6 +2674,49 @@ public class DbxTeamTeamRequests {
     public MembersListResult membersListContinue(String cursor) throws MembersListContinueErrorException, DbxException {
         MembersListContinueArg _arg = new MembersListContinueArg(cursor);
         return membersListContinue(_arg);
+    }
+
+    //
+    // route 2/team/members/list/continue_v2
+    //
+
+    /**
+     * Once a cursor has been retrieved from {@link
+     * DbxTeamTeamRequests#membersListV2}, use this to paginate through all team
+     * members. Permission : Team information.
+     *
+     */
+    MembersListV2Result membersListContinueV2(MembersListContinueArg arg) throws MembersListContinueErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/team/members/list/continue_v2",
+                                        arg,
+                                        false,
+                                        MembersListContinueArg.Serializer.INSTANCE,
+                                        MembersListV2Result.Serializer.INSTANCE,
+                                        MembersListContinueError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new MembersListContinueErrorException("2/team/members/list/continue_v2", ex.getRequestId(), ex.getUserMessage(), (MembersListContinueError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Once a cursor has been retrieved from {@link
+     * DbxTeamTeamRequests#membersListV2}, use this to paginate through all team
+     * members.
+     *
+     * <p> Permission : Team information. </p>
+     *
+     * @param cursor  Indicates from what point to get the next set of members.
+     *     Must not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public MembersListV2Result membersListContinueV2(String cursor) throws MembersListContinueErrorException, DbxException {
+        MembersListContinueArg _arg = new MembersListContinueArg(cursor);
+        return membersListContinueV2(_arg);
     }
 
     //
@@ -3208,6 +3208,48 @@ public class DbxTeamTeamRequests {
     }
 
     //
+    // route 2/team/members/set_admin_permissions
+    //
+
+    /**
+     * Updates a team member's permissions. Permission : Team member management.
+     *
+     * @param arg  Exactly one of team_member_id, email, or external_id must be
+     *     provided to identify the user account.
+     */
+    MembersSetPermissionsResult membersSetAdminPermissions(MembersSetPermissionsArg arg) throws MembersSetPermissionsErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/team/members/set_admin_permissions",
+                                        arg,
+                                        false,
+                                        MembersSetPermissionsArg.Serializer.INSTANCE,
+                                        MembersSetPermissionsResult.Serializer.INSTANCE,
+                                        MembersSetPermissionsError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new MembersSetPermissionsErrorException("2/team/members/set_admin_permissions", ex.getRequestId(), ex.getUserMessage(), (MembersSetPermissionsError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Updates a team member's permissions.
+     *
+     * <p> Permission : Team member management. </p>
+     *
+     * @param user  Identity of user whose role will be set. Must not be {@code
+     *     null}.
+     * @param newRole  The new role of the member. Must not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public MembersSetPermissionsResult membersSetAdminPermissions(UserSelectorArg user, AdminTier newRole) throws MembersSetPermissionsErrorException, DbxException {
+        MembersSetPermissionsArg _arg = new MembersSetPermissionsArg(user, newRole);
+        return membersSetAdminPermissions(_arg);
+    }
+
+    //
     // route 2/team/members/set_admin_permissions_v2
     //
 
@@ -3284,45 +3326,66 @@ public class DbxTeamTeamRequests {
     }
 
     //
-    // route 2/team/members/set_admin_permissions
+    // route 2/team/members/set_profile
     //
 
     /**
-     * Updates a team member's permissions. Permission : Team member management.
+     * Updates a team member's profile. Permission : Team member management.
      *
      * @param arg  Exactly one of team_member_id, email, or external_id must be
-     *     provided to identify the user account.
+     *     provided to identify the user account. At least one of new_email,
+     *     new_external_id, new_given_name, and/or new_surname must be provided.
+     *
+     * @return Information about a team member.
      */
-    MembersSetPermissionsResult membersSetAdminPermissions(MembersSetPermissionsArg arg) throws MembersSetPermissionsErrorException, DbxException {
+    TeamMemberInfo membersSetProfile(MembersSetProfileArg arg) throws MembersSetProfileErrorException, DbxException {
         try {
             return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/team/members/set_admin_permissions",
+                                        "2/team/members/set_profile",
                                         arg,
                                         false,
-                                        MembersSetPermissionsArg.Serializer.INSTANCE,
-                                        MembersSetPermissionsResult.Serializer.INSTANCE,
-                                        MembersSetPermissionsError.Serializer.INSTANCE);
+                                        MembersSetProfileArg.Serializer.INSTANCE,
+                                        TeamMemberInfo.Serializer.INSTANCE,
+                                        MembersSetProfileError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersSetPermissionsErrorException("2/team/members/set_admin_permissions", ex.getRequestId(), ex.getUserMessage(), (MembersSetPermissionsError) ex.getErrorValue());
+            throw new MembersSetProfileErrorException("2/team/members/set_profile", ex.getRequestId(), ex.getUserMessage(), (MembersSetProfileError) ex.getErrorValue());
         }
     }
 
     /**
-     * Updates a team member's permissions.
+     * Updates a team member's profile.
      *
      * <p> Permission : Team member management. </p>
      *
-     * @param user  Identity of user whose role will be set. Must not be {@code
-     *     null}.
-     * @param newRole  The new role of the member. Must not be {@code null}.
+     * @param user  Identity of user whose profile will be set. Must not be
+     *     {@code null}.
+     *
+     * @return Information about a team member.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersSetPermissionsResult membersSetAdminPermissions(UserSelectorArg user, AdminTier newRole) throws MembersSetPermissionsErrorException, DbxException {
-        MembersSetPermissionsArg _arg = new MembersSetPermissionsArg(user, newRole);
-        return membersSetAdminPermissions(_arg);
+    public TeamMemberInfo membersSetProfile(UserSelectorArg user) throws MembersSetProfileErrorException, DbxException {
+        MembersSetProfileArg _arg = new MembersSetProfileArg(user);
+        return membersSetProfile(_arg);
+    }
+
+    /**
+     * Updates a team member's profile. Permission : Team member management.
+     *
+     * @param user  Identity of user whose profile will be set. Must not be
+     *     {@code null}.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public MembersSetProfileBuilder membersSetProfileBuilder(UserSelectorArg user) {
+        MembersSetProfileArg.Builder argBuilder_ = MembersSetProfileArg.newBuilder(user);
+        return new MembersSetProfileBuilder(this, argBuilder_);
     }
 
     //
@@ -3391,39 +3454,39 @@ public class DbxTeamTeamRequests {
     }
 
     //
-    // route 2/team/members/set_profile
+    // route 2/team/members/set_profile_photo
     //
 
     /**
-     * Updates a team member's profile. Permission : Team member management.
+     * Updates a team member's profile photo. Permission : Team member
+     * management.
      *
-     * @param arg  Exactly one of team_member_id, email, or external_id must be
-     *     provided to identify the user account. At least one of new_email,
-     *     new_external_id, new_given_name, and/or new_surname must be provided.
      *
      * @return Information about a team member.
      */
-    TeamMemberInfo membersSetProfile(MembersSetProfileArg arg) throws MembersSetProfileErrorException, DbxException {
+    TeamMemberInfo membersSetProfilePhoto(MembersSetProfilePhotoArg arg) throws MembersSetProfilePhotoErrorException, DbxException {
         try {
             return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/team/members/set_profile",
+                                        "2/team/members/set_profile_photo",
                                         arg,
                                         false,
-                                        MembersSetProfileArg.Serializer.INSTANCE,
+                                        MembersSetProfilePhotoArg.Serializer.INSTANCE,
                                         TeamMemberInfo.Serializer.INSTANCE,
-                                        MembersSetProfileError.Serializer.INSTANCE);
+                                        MembersSetProfilePhotoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersSetProfileErrorException("2/team/members/set_profile", ex.getRequestId(), ex.getUserMessage(), (MembersSetProfileError) ex.getErrorValue());
+            throw new MembersSetProfilePhotoErrorException("2/team/members/set_profile_photo", ex.getRequestId(), ex.getUserMessage(), (MembersSetProfilePhotoError) ex.getErrorValue());
         }
     }
 
     /**
-     * Updates a team member's profile.
+     * Updates a team member's profile photo.
      *
      * <p> Permission : Team member management. </p>
      *
-     * @param user  Identity of user whose profile will be set. Must not be
+     * @param user  Identity of the user whose profile photo will be set. Must
+     *     not be {@code null}.
+     * @param photo  Image to set as the member's new profile photo. Must not be
      *     {@code null}.
      *
      * @return Information about a team member.
@@ -3431,26 +3494,9 @@ public class DbxTeamTeamRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberInfo membersSetProfile(UserSelectorArg user) throws MembersSetProfileErrorException, DbxException {
-        MembersSetProfileArg _arg = new MembersSetProfileArg(user);
-        return membersSetProfile(_arg);
-    }
-
-    /**
-     * Updates a team member's profile. Permission : Team member management.
-     *
-     * @param user  Identity of user whose profile will be set. Must not be
-     *     {@code null}.
-     *
-     * @return Request builder for configuring request parameters and completing
-     *     the request.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public MembersSetProfileBuilder membersSetProfileBuilder(UserSelectorArg user) {
-        MembersSetProfileArg.Builder argBuilder_ = MembersSetProfileArg.newBuilder(user);
-        return new MembersSetProfileBuilder(this, argBuilder_);
+    public TeamMemberInfo membersSetProfilePhoto(UserSelectorArg user, PhotoSourceArg photo) throws MembersSetProfilePhotoErrorException, DbxException {
+        MembersSetProfilePhotoArg _arg = new MembersSetProfilePhotoArg(user, photo);
+        return membersSetProfilePhoto(_arg);
     }
 
     //
@@ -3499,52 +3545,6 @@ public class DbxTeamTeamRequests {
     public TeamMemberInfoV2Result membersSetProfilePhotoV2(UserSelectorArg user, PhotoSourceArg photo) throws MembersSetProfilePhotoErrorException, DbxException {
         MembersSetProfilePhotoArg _arg = new MembersSetProfilePhotoArg(user, photo);
         return membersSetProfilePhotoV2(_arg);
-    }
-
-    //
-    // route 2/team/members/set_profile_photo
-    //
-
-    /**
-     * Updates a team member's profile photo. Permission : Team member
-     * management.
-     *
-     *
-     * @return Information about a team member.
-     */
-    TeamMemberInfo membersSetProfilePhoto(MembersSetProfilePhotoArg arg) throws MembersSetProfilePhotoErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/team/members/set_profile_photo",
-                                        arg,
-                                        false,
-                                        MembersSetProfilePhotoArg.Serializer.INSTANCE,
-                                        TeamMemberInfo.Serializer.INSTANCE,
-                                        MembersSetProfilePhotoError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new MembersSetProfilePhotoErrorException("2/team/members/set_profile_photo", ex.getRequestId(), ex.getUserMessage(), (MembersSetProfilePhotoError) ex.getErrorValue());
-        }
-    }
-
-    /**
-     * Updates a team member's profile photo.
-     *
-     * <p> Permission : Team member management. </p>
-     *
-     * @param user  Identity of the user whose profile photo will be set. Must
-     *     not be {@code null}.
-     * @param photo  Image to set as the member's new profile photo. Must not be
-     *     {@code null}.
-     *
-     * @return Information about a team member.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public TeamMemberInfo membersSetProfilePhoto(UserSelectorArg user, PhotoSourceArg photo) throws MembersSetProfilePhotoErrorException, DbxException {
-        MembersSetProfilePhotoArg _arg = new MembersSetProfilePhotoArg(user, photo);
-        return membersSetProfilePhoto(_arg);
     }
 
     //

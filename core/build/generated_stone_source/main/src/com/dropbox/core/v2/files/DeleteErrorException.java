@@ -10,22 +10,21 @@ import com.dropbox.core.LocalizedText;
  * Exception thrown when the server responds with a {@link DeleteError} error.
  *
  * <p> This exception is raised by {@link
- * DbxUserFilesRequests#deleteV2(String,String)}, {@link
- * DbxUserFilesRequests#delete(String,String)}, and {@link
+ * DbxUserFilesRequests#delete(String,String)}, {@link
+ * DbxUserFilesRequests#deleteV2(String,String)}, and {@link
  * DbxUserFilesRequests#permanentlyDelete(String,String)}. </p>
  */
 public class DeleteErrorException extends DbxApiException {
     // exception for routes:
-    //     2/files/delete_v2
     //     2/files/delete
+    //     2/files/delete_v2
     //     2/files/permanently_delete
 
     private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link
-     * DbxUserFilesRequests#deleteV2(String,String)}, {@link
-     * DbxUserFilesRequests#delete(String,String)}, and {@link
+     * The error reported by {@link DbxUserFilesRequests#delete(String,String)},
+     * {@link DbxUserFilesRequests#deleteV2(String,String)}, and {@link
      * DbxUserFilesRequests#permanentlyDelete(String,String)}.
      */
     public final DeleteError errorValue;

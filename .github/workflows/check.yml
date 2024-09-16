@@ -29,7 +29,7 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: '3.9.14'
-    - run: python -m pip install ply && pip install six
+    - run: python -m pip install ply six packaging
 
     - name: Grant execute permissions
       run: chmod +x gradlew 

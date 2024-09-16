@@ -11,25 +11,25 @@ import com.dropbox.core.LocalizedText;
  * error.
  *
  * <p> This exception is raised by {@link
- * DbxUserFilesRequests#copyV2(String,String)}, {@link
  * DbxUserFilesRequests#copy(String,String)}, {@link
- * DbxUserFilesRequests#moveV2(String,String)}, and {@link
- * DbxUserFilesRequests#move(String,String)}. </p>
+ * DbxUserFilesRequests#copyV2(String,String)}, {@link
+ * DbxUserFilesRequests#move(String,String)}, and {@link
+ * DbxUserFilesRequests#moveV2(String,String)}. </p>
  */
 public class RelocationErrorException extends DbxApiException {
     // exception for routes:
-    //     2/files/copy_v2
     //     2/files/copy
-    //     2/files/move_v2
+    //     2/files/copy_v2
     //     2/files/move
+    //     2/files/move_v2
 
     private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxUserFilesRequests#copyV2(String,String)},
-     * {@link DbxUserFilesRequests#copy(String,String)}, {@link
-     * DbxUserFilesRequests#moveV2(String,String)}, and {@link
-     * DbxUserFilesRequests#move(String,String)}.
+     * The error reported by {@link DbxUserFilesRequests#copy(String,String)},
+     * {@link DbxUserFilesRequests#copyV2(String,String)}, {@link
+     * DbxUserFilesRequests#move(String,String)}, and {@link
+     * DbxUserFilesRequests#moveV2(String,String)}.
      */
     public final RelocationError errorValue;
 

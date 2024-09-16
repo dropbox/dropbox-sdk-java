@@ -10,19 +10,19 @@ import com.dropbox.core.LocalizedText;
  * Exception thrown when the server responds with a {@link MembersListError}
  * error.
  *
- * <p> This exception is raised by {@link DbxTeamTeamRequests#membersListV2} and
- * {@link DbxTeamTeamRequests#membersList}. </p>
+ * <p> This exception is raised by {@link DbxTeamTeamRequests#membersList} and
+ * {@link DbxTeamTeamRequests#membersListV2}. </p>
  */
 public class MembersListErrorException extends DbxApiException {
     // exception for routes:
-    //     2/team/members/list_v2
     //     2/team/members/list
+    //     2/team/members/list_v2
 
     private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxTeamTeamRequests#membersListV2} and
-     * {@link DbxTeamTeamRequests#membersList}.
+     * The error reported by {@link DbxTeamTeamRequests#membersList} and {@link
+     * DbxTeamTeamRequests#membersListV2}.
      */
     public final MembersListError errorValue;
 

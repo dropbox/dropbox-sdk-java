@@ -11,20 +11,20 @@ import com.dropbox.core.LocalizedText;
  * MembersDeleteProfilePhotoError} error.
  *
  * <p> This exception is raised by {@link
- * DbxTeamTeamRequests#membersDeleteProfilePhotoV2(UserSelectorArg)} and {@link
- * DbxTeamTeamRequests#membersDeleteProfilePhoto(UserSelectorArg)}. </p>
+ * DbxTeamTeamRequests#membersDeleteProfilePhoto(UserSelectorArg)} and {@link
+ * DbxTeamTeamRequests#membersDeleteProfilePhotoV2(UserSelectorArg)}. </p>
  */
 public class MembersDeleteProfilePhotoErrorException extends DbxApiException {
     // exception for routes:
-    //     2/team/members/delete_profile_photo_v2
     //     2/team/members/delete_profile_photo
+    //     2/team/members/delete_profile_photo_v2
 
     private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxTeamTeamRequests#membersDeleteProfilePhotoV2(UserSelectorArg)} and
-     * {@link DbxTeamTeamRequests#membersDeleteProfilePhoto(UserSelectorArg)}.
+     * DbxTeamTeamRequests#membersDeleteProfilePhoto(UserSelectorArg)} and
+     * {@link DbxTeamTeamRequests#membersDeleteProfilePhotoV2(UserSelectorArg)}.
      */
     public final MembersDeleteProfilePhotoError errorValue;
 

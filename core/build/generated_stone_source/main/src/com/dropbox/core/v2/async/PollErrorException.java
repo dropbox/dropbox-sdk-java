@@ -10,9 +10,9 @@ import com.dropbox.core.LocalizedText;
  * Exception thrown when the server responds with a {@link PollError} error.
  *
  * <p> This exception is raised by {@link
- * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersAddJobStatusGetV2(String)},
- * {@link
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersAddJobStatusGet(String)},
+ * {@link
+ * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersAddJobStatusGetV2(String)},
  * {@link
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersMoveFormerMemberFilesJobStatusCheck(String)},
  * {@link
@@ -20,17 +20,17 @@ import com.dropbox.core.LocalizedText;
  * {@link
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#teamFolderArchiveCheck(String)},
  * {@link
- * com.dropbox.core.v2.files.DbxUserFilesRequests#copyBatchCheckV2(String)},
- * {@link
  * com.dropbox.core.v2.files.DbxUserFilesRequests#copyBatchCheck(String)},
+ * {@link
+ * com.dropbox.core.v2.files.DbxUserFilesRequests#copyBatchCheckV2(String)},
  * {@link
  * com.dropbox.core.v2.files.DbxUserFilesRequests#createFolderBatchCheck(String)},
  * {@link
  * com.dropbox.core.v2.files.DbxUserFilesRequests#deleteBatchCheck(String)},
  * {@link
- * com.dropbox.core.v2.files.DbxUserFilesRequests#moveBatchCheckV2(String)},
- * {@link
  * com.dropbox.core.v2.files.DbxUserFilesRequests#moveBatchCheck(String)},
+ * {@link
+ * com.dropbox.core.v2.files.DbxUserFilesRequests#moveBatchCheckV2(String)},
  * {@link
  * com.dropbox.core.v2.files.DbxUserFilesRequests#saveUrlCheckJobStatus(String)},
  * {@link
@@ -45,17 +45,17 @@ import com.dropbox.core.LocalizedText;
  */
 public class PollErrorException extends DbxApiException {
     // exception for routes:
-    //     2/team/members/add/job_status/get_v2
     //     2/team/members/add/job_status/get
+    //     2/team/members/add/job_status/get_v2
     //     2/team/members/move_former_member_files/job_status/check
     //     2/team/members/remove/job_status/get
     //     2/team/team_folder/archive/check
-    //     2/files/copy_batch/check_v2
     //     2/files/copy_batch/check
+    //     2/files/copy_batch/check_v2
     //     2/files/create_folder_batch/check
     //     2/files/delete_batch/check
-    //     2/files/move_batch/check_v2
     //     2/files/move_batch/check
+    //     2/files/move_batch/check_v2
     //     2/files/save_url/check_job_status
     //     2/files/upload_session/finish_batch/check
     //     2/sharing/check_job_status
@@ -66,9 +66,9 @@ public class PollErrorException extends DbxApiException {
 
     /**
      * The error reported by {@link
-     * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersAddJobStatusGetV2(String)},
-     * {@link
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersAddJobStatusGet(String)},
+     * {@link
+     * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersAddJobStatusGetV2(String)},
      * {@link
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersMoveFormerMemberFilesJobStatusCheck(String)},
      * {@link
@@ -76,17 +76,17 @@ public class PollErrorException extends DbxApiException {
      * {@link
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#teamFolderArchiveCheck(String)},
      * {@link
-     * com.dropbox.core.v2.files.DbxUserFilesRequests#copyBatchCheckV2(String)},
-     * {@link
      * com.dropbox.core.v2.files.DbxUserFilesRequests#copyBatchCheck(String)},
+     * {@link
+     * com.dropbox.core.v2.files.DbxUserFilesRequests#copyBatchCheckV2(String)},
      * {@link
      * com.dropbox.core.v2.files.DbxUserFilesRequests#createFolderBatchCheck(String)},
      * {@link
      * com.dropbox.core.v2.files.DbxUserFilesRequests#deleteBatchCheck(String)},
      * {@link
-     * com.dropbox.core.v2.files.DbxUserFilesRequests#moveBatchCheckV2(String)},
-     * {@link
      * com.dropbox.core.v2.files.DbxUserFilesRequests#moveBatchCheck(String)},
+     * {@link
+     * com.dropbox.core.v2.files.DbxUserFilesRequests#moveBatchCheckV2(String)},
      * {@link
      * com.dropbox.core.v2.files.DbxUserFilesRequests#saveUrlCheckJobStatus(String)},
      * {@link

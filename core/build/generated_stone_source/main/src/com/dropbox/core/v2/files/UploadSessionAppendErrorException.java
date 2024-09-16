@@ -11,20 +11,20 @@ import com.dropbox.core.LocalizedText;
  * UploadSessionAppendError} error.
  *
  * <p> This exception is raised by {@link
- * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} and {@link
- * DbxUserFilesRequests#uploadSessionAppend(String,long)}. </p>
+ * DbxUserFilesRequests#uploadSessionAppend(String,long)} and {@link
+ * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}. </p>
  */
 public class UploadSessionAppendErrorException extends DbxApiException {
     // exception for routes:
-    //     2/files/upload_session/append_v2
     //     2/files/upload_session/append
+    //     2/files/upload_session/append_v2
 
     private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} and
-     * {@link DbxUserFilesRequests#uploadSessionAppend(String,long)}.
+     * DbxUserFilesRequests#uploadSessionAppend(String,long)} and {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}.
      */
     public final UploadSessionAppendError errorValue;
 

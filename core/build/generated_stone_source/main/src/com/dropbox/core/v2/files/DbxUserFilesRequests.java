@@ -203,75 +203,6 @@ public class DbxUserFilesRequests {
     }
 
     //
-    // route 2/files/copy_v2
-    //
-
-    /**
-     * Copy a file or folder to a different location in the user's Dropbox. If
-     * the source path is a folder all its contents will be copied.
-     *
-     */
-    RelocationResult copyV2(RelocationArg arg) throws RelocationErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/files/copy_v2",
-                                        arg,
-                                        false,
-                                        RelocationArg.Serializer.INSTANCE,
-                                        RelocationResult.Serializer.INSTANCE,
-                                        RelocationError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new RelocationErrorException("2/files/copy_v2", ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue());
-        }
-    }
-
-    /**
-     * Copy a file or folder to a different location in the user's Dropbox.
-     *
-     * <p> If the source path is a folder all its contents will be copied. </p>
-     *
-     * <p> The default values for the optional request parameters will be used.
-     * See {@link CopyV2Builder} for more details. </p>
-     *
-     * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
-     * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public RelocationResult copyV2(String fromPath, String toPath) throws RelocationErrorException, DbxException {
-        RelocationArg _arg = new RelocationArg(fromPath, toPath);
-        return copyV2(_arg);
-    }
-
-    /**
-     * Copy a file or folder to a different location in the user's Dropbox. If
-     * the source path is a folder all its contents will be copied.
-     *
-     * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
-     * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
-     *
-     * @return Request builder for configuring request parameters and completing
-     *     the request.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public CopyV2Builder copyV2Builder(String fromPath, String toPath) {
-        RelocationArg.Builder argBuilder_ = RelocationArg.newBuilder(fromPath, toPath);
-        return new CopyV2Builder(this, argBuilder_);
-    }
-
-    //
     // route 2/files/copy
     //
 
@@ -350,6 +281,163 @@ public class DbxUserFilesRequests {
     public CopyBuilder copyBuilder(String fromPath, String toPath) {
         RelocationArg.Builder argBuilder_ = RelocationArg.newBuilder(fromPath, toPath);
         return new CopyBuilder(this, argBuilder_);
+    }
+
+    //
+    // route 2/files/copy_v2
+    //
+
+    /**
+     * Copy a file or folder to a different location in the user's Dropbox. If
+     * the source path is a folder all its contents will be copied.
+     *
+     */
+    RelocationResult copyV2(RelocationArg arg) throws RelocationErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/files/copy_v2",
+                                        arg,
+                                        false,
+                                        RelocationArg.Serializer.INSTANCE,
+                                        RelocationResult.Serializer.INSTANCE,
+                                        RelocationError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new RelocationErrorException("2/files/copy_v2", ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Copy a file or folder to a different location in the user's Dropbox.
+     *
+     * <p> If the source path is a folder all its contents will be copied. </p>
+     *
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link CopyV2Builder} for more details. </p>
+     *
+     * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
+     *     and not be {@code null}.
+     * @param toPath  Path in the user's Dropbox that is the destination. Must
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
+     *     and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public RelocationResult copyV2(String fromPath, String toPath) throws RelocationErrorException, DbxException {
+        RelocationArg _arg = new RelocationArg(fromPath, toPath);
+        return copyV2(_arg);
+    }
+
+    /**
+     * Copy a file or folder to a different location in the user's Dropbox. If
+     * the source path is a folder all its contents will be copied.
+     *
+     * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
+     *     and not be {@code null}.
+     * @param toPath  Path in the user's Dropbox that is the destination. Must
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
+     *     and not be {@code null}.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public CopyV2Builder copyV2Builder(String fromPath, String toPath) {
+        RelocationArg.Builder argBuilder_ = RelocationArg.newBuilder(fromPath, toPath);
+        return new CopyV2Builder(this, argBuilder_);
+    }
+
+    //
+    // route 2/files/copy_batch
+    //
+
+    /**
+     * Copy multiple files or folders to different locations at once in the
+     * user's Dropbox. This route will return job ID immediately and do the
+     * async copy job in background. Please use {@code copyBatchCheck:1} to
+     * check the job status.
+     *
+     *
+     * @return Result returned by {@link DbxUserFilesRequests#copyBatch(List)}
+     *     or {@link DbxUserFilesRequests#moveBatch(List)} that may either
+     *     launch an asynchronous job or complete synchronously.
+     */
+    RelocationBatchLaunch copyBatch(RelocationBatchArg arg) throws DbxApiException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/files/copy_batch",
+                                        arg,
+                                        false,
+                                        RelocationBatchArg.Serializer.INSTANCE,
+                                        RelocationBatchLaunch.Serializer.INSTANCE,
+                                        com.dropbox.core.stone.StoneSerializers.void_());
+        }
+        catch (DbxWrappedException ex) {
+            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"copy_batch\":" + ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Copy multiple files or folders to different locations at once in the
+     * user's Dropbox.
+     *
+     * <p> This route will return job ID immediately and do the async copy job
+     * in background. Please use {@code copyBatchCheck:1} to check the job
+     * status. </p>
+     *
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link CopyBatchBuilder} for more details. </p>
+     *
+     * @param entries  List of entries to be moved or copied. Each entry is
+     *     {@link RelocationPath}. Must contain at least 1 items, contain at
+     *     most 1000 items, not contain a {@code null} item, and not be {@code
+     *     null}.
+     *
+     * @return Result returned by {@link DbxUserFilesRequests#copyBatch(List)}
+     *     or {@link DbxUserFilesRequests#moveBatch(List)} that may either
+     *     launch an asynchronous job or complete synchronously.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     *
+     * @deprecated use {@link DbxUserFilesRequests#copyBatchV2(List,boolean)}
+     *     instead.
+     */
+    @Deprecated
+    public RelocationBatchLaunch copyBatch(List<RelocationPath> entries) throws DbxApiException, DbxException {
+        RelocationBatchArg _arg = new RelocationBatchArg(entries);
+        return copyBatch(_arg);
+    }
+
+    /**
+     * Copy multiple files or folders to different locations at once in the
+     * user's Dropbox. This route will return job ID immediately and do the
+     * async copy job in background. Please use {@code copyBatchCheck:1} to
+     * check the job status.
+     *
+     * @param entries  List of entries to be moved or copied. Each entry is
+     *     {@link RelocationPath}. Must contain at least 1 items, contain at
+     *     most 1000 items, not contain a {@code null} item, and not be {@code
+     *     null}.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     *
+     * @deprecated use {@link DbxUserFilesRequests#copyBatchV2(List,boolean)}
+     *     instead.
+     */
+    @Deprecated
+    public CopyBatchBuilder copyBatchBuilder(List<RelocationPath> entries) {
+        RelocationBatchArg.Builder argBuilder_ = RelocationBatchArg.newBuilder(entries);
+        return new CopyBatchBuilder(this, argBuilder_);
     }
 
     //
@@ -454,91 +542,49 @@ public class DbxUserFilesRequests {
     }
 
     //
-    // route 2/files/copy_batch
+    // route 2/files/copy_batch/check
     //
 
     /**
-     * Copy multiple files or folders to different locations at once in the
-     * user's Dropbox. This route will return job ID immediately and do the
-     * async copy job in background. Please use {@code copyBatchCheck:1} to
-     * check the job status.
+     * Returns the status of an asynchronous job for {@code copyBatch:1}. If
+     * success, it returns list of results for each entry.
      *
-     *
-     * @return Result returned by {@link DbxUserFilesRequests#copyBatch(List)}
-     *     or {@link DbxUserFilesRequests#moveBatch(List)} that may either
-     *     launch an asynchronous job or complete synchronously.
+     * @param arg  Arguments for methods that poll the status of an asynchronous
+     *     job.
      */
-    RelocationBatchLaunch copyBatch(RelocationBatchArg arg) throws DbxApiException, DbxException {
+    RelocationBatchJobStatus copyBatchCheck(PollArg arg) throws PollErrorException, DbxException {
         try {
             return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/files/copy_batch",
+                                        "2/files/copy_batch/check",
                                         arg,
                                         false,
-                                        RelocationBatchArg.Serializer.INSTANCE,
-                                        RelocationBatchLaunch.Serializer.INSTANCE,
-                                        com.dropbox.core.stone.StoneSerializers.void_());
+                                        PollArg.Serializer.INSTANCE,
+                                        RelocationBatchJobStatus.Serializer.INSTANCE,
+                                        PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"copy_batch\":" + ex.getErrorValue());
+            throw new PollErrorException("2/files/copy_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
         }
     }
 
     /**
-     * Copy multiple files or folders to different locations at once in the
-     * user's Dropbox.
+     * Returns the status of an asynchronous job for {@code copyBatch:1}. If
+     * success, it returns list of results for each entry.
      *
-     * <p> This route will return job ID immediately and do the async copy job
-     * in background. Please use {@code copyBatchCheck:1} to check the job
-     * status. </p>
-     *
-     * <p> The default values for the optional request parameters will be used.
-     * See {@link CopyBatchBuilder} for more details. </p>
-     *
-     * @param entries  List of entries to be moved or copied. Each entry is
-     *     {@link RelocationPath}. Must contain at least 1 items, contain at
-     *     most 1000 items, not contain a {@code null} item, and not be {@code
-     *     null}.
-     *
-     * @return Result returned by {@link DbxUserFilesRequests#copyBatch(List)}
-     *     or {@link DbxUserFilesRequests#moveBatch(List)} that may either
-     *     launch an asynchronous job or complete synchronously.
+     * @param asyncJobId  Id of the asynchronous job. This is the value of a
+     *     response returned from the method that launched the job. Must have
+     *     length of at least 1 and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#copyBatchV2(List,boolean)}
+     * @deprecated use {@link DbxUserFilesRequests#copyBatchCheckV2(String)}
      *     instead.
      */
     @Deprecated
-    public RelocationBatchLaunch copyBatch(List<RelocationPath> entries) throws DbxApiException, DbxException {
-        RelocationBatchArg _arg = new RelocationBatchArg(entries);
-        return copyBatch(_arg);
-    }
-
-    /**
-     * Copy multiple files or folders to different locations at once in the
-     * user's Dropbox. This route will return job ID immediately and do the
-     * async copy job in background. Please use {@code copyBatchCheck:1} to
-     * check the job status.
-     *
-     * @param entries  List of entries to be moved or copied. Each entry is
-     *     {@link RelocationPath}. Must contain at least 1 items, contain at
-     *     most 1000 items, not contain a {@code null} item, and not be {@code
-     *     null}.
-     *
-     * @return Request builder for configuring request parameters and completing
-     *     the request.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     *
-     * @deprecated use {@link DbxUserFilesRequests#copyBatchV2(List,boolean)}
-     *     instead.
-     */
-    @Deprecated
-    public CopyBatchBuilder copyBatchBuilder(List<RelocationPath> entries) {
-        RelocationBatchArg.Builder argBuilder_ = RelocationBatchArg.newBuilder(entries);
-        return new CopyBatchBuilder(this, argBuilder_);
+    public RelocationBatchJobStatus copyBatchCheck(String asyncJobId) throws PollErrorException, DbxException {
+        PollArg _arg = new PollArg(asyncJobId);
+        return copyBatchCheck(_arg);
     }
 
     //
@@ -593,52 +639,6 @@ public class DbxUserFilesRequests {
     public RelocationBatchV2JobStatus copyBatchCheckV2(String asyncJobId) throws PollErrorException, DbxException {
         PollArg _arg = new PollArg(asyncJobId);
         return copyBatchCheckV2(_arg);
-    }
-
-    //
-    // route 2/files/copy_batch/check
-    //
-
-    /**
-     * Returns the status of an asynchronous job for {@code copyBatch:1}. If
-     * success, it returns list of results for each entry.
-     *
-     * @param arg  Arguments for methods that poll the status of an asynchronous
-     *     job.
-     */
-    RelocationBatchJobStatus copyBatchCheck(PollArg arg) throws PollErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/files/copy_batch/check",
-                                        arg,
-                                        false,
-                                        PollArg.Serializer.INSTANCE,
-                                        RelocationBatchJobStatus.Serializer.INSTANCE,
-                                        PollError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/files/copy_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
-        }
-    }
-
-    /**
-     * Returns the status of an asynchronous job for {@code copyBatch:1}. If
-     * success, it returns list of results for each entry.
-     *
-     * @param asyncJobId  Id of the asynchronous job. This is the value of a
-     *     response returned from the method that launched the job. Must have
-     *     length of at least 1 and not be {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     *
-     * @deprecated use {@link DbxUserFilesRequests#copyBatchCheckV2(String)}
-     *     instead.
-     */
-    @Deprecated
-    public RelocationBatchJobStatus copyBatchCheck(String asyncJobId) throws PollErrorException, DbxException {
-        PollArg _arg = new PollArg(asyncJobId);
-        return copyBatchCheck(_arg);
     }
 
     //
@@ -727,62 +727,6 @@ public class DbxUserFilesRequests {
     }
 
     //
-    // route 2/files/create_folder_v2
-    //
-
-    /**
-     * Create a folder at a given path.
-     *
-     */
-    CreateFolderResult createFolderV2(CreateFolderArg arg) throws CreateFolderErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/files/create_folder_v2",
-                                        arg,
-                                        false,
-                                        CreateFolderArg.Serializer.INSTANCE,
-                                        CreateFolderResult.Serializer.INSTANCE,
-                                        CreateFolderError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new CreateFolderErrorException("2/files/create_folder_v2", ex.getRequestId(), ex.getUserMessage(), (CreateFolderError) ex.getErrorValue());
-        }
-    }
-
-    /**
-     * Create a folder at a given path.
-     *
-     * <p> The {@code autorename} request parameter will default to {@code
-     * false} (see {@link #createFolderV2(String,boolean)}). </p>
-     *
-     * @param path  Path in the user's Dropbox to create. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public CreateFolderResult createFolderV2(String path) throws CreateFolderErrorException, DbxException {
-        CreateFolderArg _arg = new CreateFolderArg(path);
-        return createFolderV2(_arg);
-    }
-
-    /**
-     * Create a folder at a given path.
-     *
-     * @param path  Path in the user's Dropbox to create. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
-     * @param autorename  If there's a conflict, have the Dropbox server try to
-     *     autorename the folder to avoid the conflict.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public CreateFolderResult createFolderV2(String path, boolean autorename) throws CreateFolderErrorException, DbxException {
-        CreateFolderArg _arg = new CreateFolderArg(path, autorename);
-        return createFolderV2(_arg);
-    }
-
-    //
     // route 2/files/create_folder
     //
 
@@ -844,6 +788,62 @@ public class DbxUserFilesRequests {
     public FolderMetadata createFolder(String path, boolean autorename) throws CreateFolderErrorException, DbxException {
         CreateFolderArg _arg = new CreateFolderArg(path, autorename);
         return createFolder(_arg);
+    }
+
+    //
+    // route 2/files/create_folder_v2
+    //
+
+    /**
+     * Create a folder at a given path.
+     *
+     */
+    CreateFolderResult createFolderV2(CreateFolderArg arg) throws CreateFolderErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/files/create_folder_v2",
+                                        arg,
+                                        false,
+                                        CreateFolderArg.Serializer.INSTANCE,
+                                        CreateFolderResult.Serializer.INSTANCE,
+                                        CreateFolderError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new CreateFolderErrorException("2/files/create_folder_v2", ex.getRequestId(), ex.getUserMessage(), (CreateFolderError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Create a folder at a given path.
+     *
+     * <p> The {@code autorename} request parameter will default to {@code
+     * false} (see {@link #createFolderV2(String,boolean)}). </p>
+     *
+     * @param path  Path in the user's Dropbox to create. Must match pattern
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public CreateFolderResult createFolderV2(String path) throws CreateFolderErrorException, DbxException {
+        CreateFolderArg _arg = new CreateFolderArg(path);
+        return createFolderV2(_arg);
+    }
+
+    /**
+     * Create a folder at a given path.
+     *
+     * @param path  Path in the user's Dropbox to create. Must match pattern
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     * @param autorename  If there's a conflict, have the Dropbox server try to
+     *     autorename the folder to avoid the conflict.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public CreateFolderResult createFolderV2(String path, boolean autorename) throws CreateFolderErrorException, DbxException {
+        CreateFolderArg _arg = new CreateFolderArg(path, autorename);
+        return createFolderV2(_arg);
     }
 
     //
@@ -980,88 +980,6 @@ public class DbxUserFilesRequests {
     }
 
     //
-    // route 2/files/delete_v2
-    //
-
-    /**
-     * Delete the file or folder at a given path. If the path is a folder, all
-     * its contents will be deleted too. A successful response indicates that
-     * the file or folder was deleted. The returned metadata will be the
-     * corresponding {@link FileMetadata} or {@link FolderMetadata} for the item
-     * at time of deletion, and not a {@link DeletedMetadata} object.
-     *
-     */
-    DeleteResult deleteV2(DeleteArg arg) throws DeleteErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/files/delete_v2",
-                                        arg,
-                                        false,
-                                        DeleteArg.Serializer.INSTANCE,
-                                        DeleteResult.Serializer.INSTANCE,
-                                        DeleteError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new DeleteErrorException("2/files/delete_v2", ex.getRequestId(), ex.getUserMessage(), (DeleteError) ex.getErrorValue());
-        }
-    }
-
-    /**
-     * Delete the file or folder at a given path.
-     *
-     * <p> If the path is a folder, all its contents will be deleted too. </p>
-     *
-     * <p> A successful response indicates that the file or folder was deleted.
-     * The returned metadata will be the corresponding {@link FileMetadata} or
-     * {@link FolderMetadata} for the item at time of deletion, and not a {@link
-     * DeletedMetadata} object. </p>
-     *
-     * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be
-     *     {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public DeleteResult deleteV2(String path) throws DeleteErrorException, DbxException {
-        DeleteArg _arg = new DeleteArg(path);
-        return deleteV2(_arg);
-    }
-
-    /**
-     * Delete the file or folder at a given path.
-     *
-     * <p> If the path is a folder, all its contents will be deleted too. </p>
-     *
-     * <p> A successful response indicates that the file or folder was deleted.
-     * The returned metadata will be the corresponding {@link FileMetadata} or
-     * {@link FolderMetadata} for the item at time of deletion, and not a {@link
-     * DeletedMetadata} object. </p>
-     *
-     * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be
-     *     {@code null}.
-     * @param parentRev  Perform delete if given "rev" matches the existing
-     *     file's latest "rev". This field does not support deleting a folder.
-     *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public DeleteResult deleteV2(String path, String parentRev) throws DeleteErrorException, DbxException {
-        if (parentRev != null) {
-            if (parentRev.length() < 9) {
-                throw new IllegalArgumentException("String 'parentRev' is shorter than 9");
-            }
-            if (!java.util.regex.Pattern.matches("[0-9a-f]+", parentRev)) {
-                throw new IllegalArgumentException("String 'parentRev' does not match pattern");
-            }
-        }
-        DeleteArg _arg = new DeleteArg(path, parentRev);
-        return deleteV2(_arg);
-    }
-
-    //
     // route 2/files/delete
     //
 
@@ -1155,6 +1073,88 @@ public class DbxUserFilesRequests {
         }
         DeleteArg _arg = new DeleteArg(path, parentRev);
         return delete(_arg);
+    }
+
+    //
+    // route 2/files/delete_v2
+    //
+
+    /**
+     * Delete the file or folder at a given path. If the path is a folder, all
+     * its contents will be deleted too. A successful response indicates that
+     * the file or folder was deleted. The returned metadata will be the
+     * corresponding {@link FileMetadata} or {@link FolderMetadata} for the item
+     * at time of deletion, and not a {@link DeletedMetadata} object.
+     *
+     */
+    DeleteResult deleteV2(DeleteArg arg) throws DeleteErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/files/delete_v2",
+                                        arg,
+                                        false,
+                                        DeleteArg.Serializer.INSTANCE,
+                                        DeleteResult.Serializer.INSTANCE,
+                                        DeleteError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new DeleteErrorException("2/files/delete_v2", ex.getRequestId(), ex.getUserMessage(), (DeleteError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Delete the file or folder at a given path.
+     *
+     * <p> If the path is a folder, all its contents will be deleted too. </p>
+     *
+     * <p> A successful response indicates that the file or folder was deleted.
+     * The returned metadata will be the corresponding {@link FileMetadata} or
+     * {@link FolderMetadata} for the item at time of deletion, and not a {@link
+     * DeletedMetadata} object. </p>
+     *
+     * @param path  Path in the user's Dropbox to delete. Must match pattern
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be
+     *     {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public DeleteResult deleteV2(String path) throws DeleteErrorException, DbxException {
+        DeleteArg _arg = new DeleteArg(path);
+        return deleteV2(_arg);
+    }
+
+    /**
+     * Delete the file or folder at a given path.
+     *
+     * <p> If the path is a folder, all its contents will be deleted too. </p>
+     *
+     * <p> A successful response indicates that the file or folder was deleted.
+     * The returned metadata will be the corresponding {@link FileMetadata} or
+     * {@link FolderMetadata} for the item at time of deletion, and not a {@link
+     * DeletedMetadata} object. </p>
+     *
+     * @param path  Path in the user's Dropbox to delete. Must match pattern
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be
+     *     {@code null}.
+     * @param parentRev  Perform delete if given "rev" matches the existing
+     *     file's latest "rev". This field does not support deleting a folder.
+     *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public DeleteResult deleteV2(String path, String parentRev) throws DeleteErrorException, DbxException {
+        if (parentRev != null) {
+            if (parentRev.length() < 9) {
+                throw new IllegalArgumentException("String 'parentRev' is shorter than 9");
+            }
+            if (!java.util.regex.Pattern.matches("[0-9a-f]+", parentRev)) {
+                throw new IllegalArgumentException("String 'parentRev' does not match pattern");
+            }
+        }
+        DeleteArg _arg = new DeleteArg(path, parentRev);
+        return deleteV2(_arg);
     }
 
     //
@@ -2679,79 +2679,6 @@ public class DbxUserFilesRequests {
     }
 
     //
-    // route 2/files/move_v2
-    //
-
-    /**
-     * Move a file or folder to a different location in the user's Dropbox. If
-     * the source path is a folder all its contents will be moved. Note that we
-     * do not currently support case-only renaming.
-     *
-     */
-    RelocationResult moveV2(RelocationArg arg) throws RelocationErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/files/move_v2",
-                                        arg,
-                                        false,
-                                        RelocationArg.Serializer.INSTANCE,
-                                        RelocationResult.Serializer.INSTANCE,
-                                        RelocationError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new RelocationErrorException("2/files/move_v2", ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue());
-        }
-    }
-
-    /**
-     * Move a file or folder to a different location in the user's Dropbox.
-     *
-     * <p> If the source path is a folder all its contents will be moved. </p>
-     *
-     * <p> Note that we do not currently support case-only renaming. </p>
-     *
-     * <p> The default values for the optional request parameters will be used.
-     * See {@link MoveV2Builder} for more details. </p>
-     *
-     * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
-     * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public RelocationResult moveV2(String fromPath, String toPath) throws RelocationErrorException, DbxException {
-        RelocationArg _arg = new RelocationArg(fromPath, toPath);
-        return moveV2(_arg);
-    }
-
-    /**
-     * Move a file or folder to a different location in the user's Dropbox. If
-     * the source path is a folder all its contents will be moved. Note that we
-     * do not currently support case-only renaming.
-     *
-     * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
-     * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
-     *
-     * @return Request builder for configuring request parameters and completing
-     *     the request.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public MoveV2Builder moveV2Builder(String fromPath, String toPath) {
-        RelocationArg.Builder argBuilder_ = RelocationArg.newBuilder(fromPath, toPath);
-        return new MoveV2Builder(this, argBuilder_);
-    }
-
-    //
     // route 2/files/move
     //
 
@@ -2830,6 +2757,165 @@ public class DbxUserFilesRequests {
     public MoveBuilder moveBuilder(String fromPath, String toPath) {
         RelocationArg.Builder argBuilder_ = RelocationArg.newBuilder(fromPath, toPath);
         return new MoveBuilder(this, argBuilder_);
+    }
+
+    //
+    // route 2/files/move_v2
+    //
+
+    /**
+     * Move a file or folder to a different location in the user's Dropbox. If
+     * the source path is a folder all its contents will be moved. Note that we
+     * do not currently support case-only renaming.
+     *
+     */
+    RelocationResult moveV2(RelocationArg arg) throws RelocationErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/files/move_v2",
+                                        arg,
+                                        false,
+                                        RelocationArg.Serializer.INSTANCE,
+                                        RelocationResult.Serializer.INSTANCE,
+                                        RelocationError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new RelocationErrorException("2/files/move_v2", ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Move a file or folder to a different location in the user's Dropbox.
+     *
+     * <p> If the source path is a folder all its contents will be moved. </p>
+     *
+     * <p> Note that we do not currently support case-only renaming. </p>
+     *
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link MoveV2Builder} for more details. </p>
+     *
+     * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
+     *     and not be {@code null}.
+     * @param toPath  Path in the user's Dropbox that is the destination. Must
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
+     *     and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public RelocationResult moveV2(String fromPath, String toPath) throws RelocationErrorException, DbxException {
+        RelocationArg _arg = new RelocationArg(fromPath, toPath);
+        return moveV2(_arg);
+    }
+
+    /**
+     * Move a file or folder to a different location in the user's Dropbox. If
+     * the source path is a folder all its contents will be moved. Note that we
+     * do not currently support case-only renaming.
+     *
+     * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
+     *     and not be {@code null}.
+     * @param toPath  Path in the user's Dropbox that is the destination. Must
+     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
+     *     and not be {@code null}.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public MoveV2Builder moveV2Builder(String fromPath, String toPath) {
+        RelocationArg.Builder argBuilder_ = RelocationArg.newBuilder(fromPath, toPath);
+        return new MoveV2Builder(this, argBuilder_);
+    }
+
+    //
+    // route 2/files/move_batch
+    //
+
+    /**
+     * Move multiple files or folders to different locations at once in the
+     * user's Dropbox. This route will return job ID immediately and do the
+     * async moving job in background. Please use {@code moveBatchCheck:1} to
+     * check the job status.
+     *
+     *
+     * @return Result returned by {@link DbxUserFilesRequests#copyBatch(List)}
+     *     or {@link DbxUserFilesRequests#moveBatch(List)} that may either
+     *     launch an asynchronous job or complete synchronously.
+     */
+    RelocationBatchLaunch moveBatch(RelocationBatchArg arg) throws DbxApiException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/files/move_batch",
+                                        arg,
+                                        false,
+                                        RelocationBatchArg.Serializer.INSTANCE,
+                                        RelocationBatchLaunch.Serializer.INSTANCE,
+                                        com.dropbox.core.stone.StoneSerializers.void_());
+        }
+        catch (DbxWrappedException ex) {
+            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"move_batch\":" + ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Move multiple files or folders to different locations at once in the
+     * user's Dropbox.
+     *
+     * <p> This route will return job ID immediately and do the async moving job
+     * in background. Please use {@code moveBatchCheck:1} to check the job
+     * status. </p>
+     *
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link MoveBatchBuilder} for more details. </p>
+     *
+     * @param entries  List of entries to be moved or copied. Each entry is
+     *     {@link RelocationPath}. Must contain at least 1 items, contain at
+     *     most 1000 items, not contain a {@code null} item, and not be {@code
+     *     null}.
+     *
+     * @return Result returned by {@link DbxUserFilesRequests#copyBatch(List)}
+     *     or {@link DbxUserFilesRequests#moveBatch(List)} that may either
+     *     launch an asynchronous job or complete synchronously.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     *
+     * @deprecated use {@link DbxUserFilesRequests#moveBatchV2(List)} instead.
+     */
+    @Deprecated
+    public RelocationBatchLaunch moveBatch(List<RelocationPath> entries) throws DbxApiException, DbxException {
+        RelocationBatchArg _arg = new RelocationBatchArg(entries);
+        return moveBatch(_arg);
+    }
+
+    /**
+     * Move multiple files or folders to different locations at once in the
+     * user's Dropbox. This route will return job ID immediately and do the
+     * async moving job in background. Please use {@code moveBatchCheck:1} to
+     * check the job status.
+     *
+     * @param entries  List of entries to be moved or copied. Each entry is
+     *     {@link RelocationPath}. Must contain at least 1 items, contain at
+     *     most 1000 items, not contain a {@code null} item, and not be {@code
+     *     null}.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     *
+     * @deprecated use {@link DbxUserFilesRequests#moveBatchV2(List)} instead.
+     */
+    @Deprecated
+    public MoveBatchBuilder moveBatchBuilder(List<RelocationPath> entries) {
+        RelocationBatchArg.Builder argBuilder_ = RelocationBatchArg.newBuilder(entries);
+        return new MoveBatchBuilder(this, argBuilder_);
     }
 
     //
@@ -2928,89 +3014,49 @@ public class DbxUserFilesRequests {
     }
 
     //
-    // route 2/files/move_batch
+    // route 2/files/move_batch/check
     //
 
     /**
-     * Move multiple files or folders to different locations at once in the
-     * user's Dropbox. This route will return job ID immediately and do the
-     * async moving job in background. Please use {@code moveBatchCheck:1} to
-     * check the job status.
+     * Returns the status of an asynchronous job for {@code moveBatch:1}. If
+     * success, it returns list of results for each entry.
      *
-     *
-     * @return Result returned by {@link DbxUserFilesRequests#copyBatch(List)}
-     *     or {@link DbxUserFilesRequests#moveBatch(List)} that may either
-     *     launch an asynchronous job or complete synchronously.
+     * @param arg  Arguments for methods that poll the status of an asynchronous
+     *     job.
      */
-    RelocationBatchLaunch moveBatch(RelocationBatchArg arg) throws DbxApiException, DbxException {
+    RelocationBatchJobStatus moveBatchCheck(PollArg arg) throws PollErrorException, DbxException {
         try {
             return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/files/move_batch",
+                                        "2/files/move_batch/check",
                                         arg,
                                         false,
-                                        RelocationBatchArg.Serializer.INSTANCE,
-                                        RelocationBatchLaunch.Serializer.INSTANCE,
-                                        com.dropbox.core.stone.StoneSerializers.void_());
+                                        PollArg.Serializer.INSTANCE,
+                                        RelocationBatchJobStatus.Serializer.INSTANCE,
+                                        PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"move_batch\":" + ex.getErrorValue());
+            throw new PollErrorException("2/files/move_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
         }
     }
 
     /**
-     * Move multiple files or folders to different locations at once in the
-     * user's Dropbox.
+     * Returns the status of an asynchronous job for {@code moveBatch:1}. If
+     * success, it returns list of results for each entry.
      *
-     * <p> This route will return job ID immediately and do the async moving job
-     * in background. Please use {@code moveBatchCheck:1} to check the job
-     * status. </p>
-     *
-     * <p> The default values for the optional request parameters will be used.
-     * See {@link MoveBatchBuilder} for more details. </p>
-     *
-     * @param entries  List of entries to be moved or copied. Each entry is
-     *     {@link RelocationPath}. Must contain at least 1 items, contain at
-     *     most 1000 items, not contain a {@code null} item, and not be {@code
-     *     null}.
-     *
-     * @return Result returned by {@link DbxUserFilesRequests#copyBatch(List)}
-     *     or {@link DbxUserFilesRequests#moveBatch(List)} that may either
-     *     launch an asynchronous job or complete synchronously.
+     * @param asyncJobId  Id of the asynchronous job. This is the value of a
+     *     response returned from the method that launched the job. Must have
+     *     length of at least 1 and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#moveBatchV2(List)} instead.
+     * @deprecated use {@link DbxUserFilesRequests#moveBatchCheckV2(String)}
+     *     instead.
      */
     @Deprecated
-    public RelocationBatchLaunch moveBatch(List<RelocationPath> entries) throws DbxApiException, DbxException {
-        RelocationBatchArg _arg = new RelocationBatchArg(entries);
-        return moveBatch(_arg);
-    }
-
-    /**
-     * Move multiple files or folders to different locations at once in the
-     * user's Dropbox. This route will return job ID immediately and do the
-     * async moving job in background. Please use {@code moveBatchCheck:1} to
-     * check the job status.
-     *
-     * @param entries  List of entries to be moved or copied. Each entry is
-     *     {@link RelocationPath}. Must contain at least 1 items, contain at
-     *     most 1000 items, not contain a {@code null} item, and not be {@code
-     *     null}.
-     *
-     * @return Request builder for configuring request parameters and completing
-     *     the request.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     *
-     * @deprecated use {@link DbxUserFilesRequests#moveBatchV2(List)} instead.
-     */
-    @Deprecated
-    public MoveBatchBuilder moveBatchBuilder(List<RelocationPath> entries) {
-        RelocationBatchArg.Builder argBuilder_ = RelocationBatchArg.newBuilder(entries);
-        return new MoveBatchBuilder(this, argBuilder_);
+    public RelocationBatchJobStatus moveBatchCheck(String asyncJobId) throws PollErrorException, DbxException {
+        PollArg _arg = new PollArg(asyncJobId);
+        return moveBatchCheck(_arg);
     }
 
     //
@@ -3065,52 +3111,6 @@ public class DbxUserFilesRequests {
     public RelocationBatchV2JobStatus moveBatchCheckV2(String asyncJobId) throws PollErrorException, DbxException {
         PollArg _arg = new PollArg(asyncJobId);
         return moveBatchCheckV2(_arg);
-    }
-
-    //
-    // route 2/files/move_batch/check
-    //
-
-    /**
-     * Returns the status of an asynchronous job for {@code moveBatch:1}. If
-     * success, it returns list of results for each entry.
-     *
-     * @param arg  Arguments for methods that poll the status of an asynchronous
-     *     job.
-     */
-    RelocationBatchJobStatus moveBatchCheck(PollArg arg) throws PollErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/files/move_batch/check",
-                                        arg,
-                                        false,
-                                        PollArg.Serializer.INSTANCE,
-                                        RelocationBatchJobStatus.Serializer.INSTANCE,
-                                        PollError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/files/move_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
-        }
-    }
-
-    /**
-     * Returns the status of an asynchronous job for {@code moveBatch:1}. If
-     * success, it returns list of results for each entry.
-     *
-     * @param asyncJobId  Id of the asynchronous job. This is the value of a
-     *     response returned from the method that launched the job. Must have
-     *     length of at least 1 and not be {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     *
-     * @deprecated use {@link DbxUserFilesRequests#moveBatchCheckV2(String)}
-     *     instead.
-     */
-    @Deprecated
-    public RelocationBatchJobStatus moveBatchCheck(String asyncJobId) throws PollErrorException, DbxException {
-        PollArg _arg = new PollArg(asyncJobId);
-        return moveBatchCheck(_arg);
     }
 
     //
@@ -4129,6 +4129,64 @@ public class DbxUserFilesRequests {
     }
 
     //
+    // route 2/files/upload_session/append
+    //
+
+    /**
+     * Append more data to an upload session. A single request should not upload
+     * more than 150 MB. The maximum size of a file one can upload to an upload
+     * session is 350 GB. Calls to this endpoint will count as data transport
+     * calls for any Dropbox Business teams with a limit on the number of data
+     * transport calls allowed per month. For more information, see the <a
+     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
+     * transport limit page</a>.
+     *
+     *
+     * @return Uploader used to upload the request body and finish request.
+     */
+    UploadSessionAppendUploader uploadSessionAppend(UploadSessionCursor arg) throws DbxException {
+        HttpRequestor.Uploader _uploader = this.client.uploadStyle(this.client.getHost().getContent(),
+                                                                   "2/files/upload_session/append",
+                                                                   arg,
+                                                                   false,
+                                                                   UploadSessionCursor.Serializer.INSTANCE);
+        return new UploadSessionAppendUploader(_uploader, this.client.getUserId());
+    }
+
+    /**
+     * Append more data to an upload session.
+     *
+     * <p> A single request should not upload more than 150 MB. The maximum size
+     * of a file one can upload to an upload session is 350 GB. </p>
+     *
+     * <p> Calls to this endpoint will count as data transport calls for any
+     * Dropbox Business teams with a limit on the number of data transport calls
+     * allowed per month. For more information, see the <a
+     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
+     * transport limit page</a>. </p>
+     *
+     * @param sessionId  The upload session ID (returned by {@link
+     *     DbxUserFilesRequests#uploadSessionStart}). Must not be {@code null}.
+     * @param offset  Offset in bytes at which data should be appended. We use
+     *     this to make sure upload data isn't lost or duplicated in the event
+     *     of a network error.
+     *
+     * @return Uploader used to upload the request body and finish request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     *
+     * @deprecated use {@link
+     *     DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
+     *     instead.
+     */
+    @Deprecated
+    public UploadSessionAppendUploader uploadSessionAppend(String sessionId, long offset) throws DbxException {
+        UploadSessionCursor _arg = new UploadSessionCursor(sessionId, offset);
+        return uploadSessionAppend(_arg);
+    }
+
+    //
     // route 2/files/upload_session/append_v2
     //
 
@@ -4207,64 +4265,6 @@ public class DbxUserFilesRequests {
     public UploadSessionAppendV2Builder uploadSessionAppendV2Builder(UploadSessionCursor cursor) {
         UploadSessionAppendArg.Builder argBuilder_ = UploadSessionAppendArg.newBuilder(cursor);
         return new UploadSessionAppendV2Builder(this, argBuilder_);
-    }
-
-    //
-    // route 2/files/upload_session/append
-    //
-
-    /**
-     * Append more data to an upload session. A single request should not upload
-     * more than 150 MB. The maximum size of a file one can upload to an upload
-     * session is 350 GB. Calls to this endpoint will count as data transport
-     * calls for any Dropbox Business teams with a limit on the number of data
-     * transport calls allowed per month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>.
-     *
-     *
-     * @return Uploader used to upload the request body and finish request.
-     */
-    UploadSessionAppendUploader uploadSessionAppend(UploadSessionCursor arg) throws DbxException {
-        HttpRequestor.Uploader _uploader = this.client.uploadStyle(this.client.getHost().getContent(),
-                                                                   "2/files/upload_session/append",
-                                                                   arg,
-                                                                   false,
-                                                                   UploadSessionCursor.Serializer.INSTANCE);
-        return new UploadSessionAppendUploader(_uploader, this.client.getUserId());
-    }
-
-    /**
-     * Append more data to an upload session.
-     *
-     * <p> A single request should not upload more than 150 MB. The maximum size
-     * of a file one can upload to an upload session is 350 GB. </p>
-     *
-     * <p> Calls to this endpoint will count as data transport calls for any
-     * Dropbox Business teams with a limit on the number of data transport calls
-     * allowed per month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>. </p>
-     *
-     * @param sessionId  The upload session ID (returned by {@link
-     *     DbxUserFilesRequests#uploadSessionStart}). Must not be {@code null}.
-     * @param offset  Offset in bytes at which data should be appended. We use
-     *     this to make sure upload data isn't lost or duplicated in the event
-     *     of a network error.
-     *
-     * @return Uploader used to upload the request body and finish request.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     *
-     * @deprecated use {@link
-     *     DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
-     *     instead.
-     */
-    @Deprecated
-    public UploadSessionAppendUploader uploadSessionAppend(String sessionId, long offset) throws DbxException {
-        UploadSessionCursor _arg = new UploadSessionCursor(sessionId, offset);
-        return uploadSessionAppend(_arg);
     }
 
     //
