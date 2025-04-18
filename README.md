@@ -18,6 +18,10 @@ Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v5
 
 The current release of Dropbox SDK Java supports Java 8+.
 
+### Android Version
+
+The current release of Dropbox SDK Java supports Android 8+ (SDK 26+)
+
 ### Add a dependency on the Dropbox Java SDK to your project
 
 If you're using Maven, then edit your project's "pom.xml" and add this to the `<dependencies>` section:
