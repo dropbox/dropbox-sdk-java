@@ -1,7 +1,7 @@
 [versions]
 android-compile-sdk = "33"
 android-gradle-plugin = "7.4.2"
-android-min-sdk = "21"
+android-min-sdk = "26"
 android-target-sdk = "33"
 androidx-activity = "1.5.0"
 binary-compatibility-validator = "0.11.1"
