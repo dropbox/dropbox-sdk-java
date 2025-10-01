@@ -1,5 +1,7 @@
 package com.dropbox.core;
 
+import javax.annotation.Nullable;
+
 /**
  * Base class for API-specific exceptions raised by API v2 routes.
  */
@@ -25,6 +27,7 @@ public class DbxApiException extends DbxException {
      *
      * @return human-readable message to display to end user, or {@code null} if unavailable
      */
+    @Nullable
     public LocalizedText getUserMessage() {
         return userMessage;
     }
