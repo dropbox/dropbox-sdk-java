@@ -10,7 +10,7 @@ A Java library to access [Dropbox's HTTP-based Core API v2](https://www.dropbox.
 
 License: [MIT](License.txt)
 
-Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/api-docs/v5.4.3/)
+Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/)
 
 ## Setup
 
