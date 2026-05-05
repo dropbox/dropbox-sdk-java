@@ -69,11 +69,15 @@ object CredentialsUtil {
     private val authOutputFile = File("../../auth_output")
 
     fun getDbxCredential(): DbxCredential {
-        return DbxCredential.Reader.readFromFile(authOutputFile)
+        return requireNotNull(DbxCredential.Reader.readFromFile(authOutputFile)) {
+            "Credential file did not contain credentials."
+        }
     }
 
     fun getAuthInfo(): DbxAuthInfo {
-        return DbxAuthInfo.Reader.readFromFile(authOutputFile)
+        return requireNotNull(DbxAuthInfo.Reader.readFromFile(authOutputFile)) {
+            "Credential file did not contain auth info."
+        }
     }
 
 }
