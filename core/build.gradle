@@ -56,7 +56,6 @@ sourceSets.main.java.srcDir(versionWriterTask)
 
 dependencies {
     api(dropboxJavaSdkLibs.jackson.core)
-    api(dropboxJavaSdkLibs.checker.qual)
     api(dropboxJavaSdkLibs.jsr305)
 
     compileOnly dropboxJavaSdkLibs.appengine.api

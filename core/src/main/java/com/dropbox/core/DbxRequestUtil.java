@@ -1,6 +1,6 @@
 package com.dropbox.core;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -50,7 +50,7 @@ public final class DbxRequestUtil {
     public static String buildUrlWithParams(@Nullable String userLocale,
                                             String host,
                                             String path,
-                                            @Nullable String @Nullable [] params) {
+                                            @Nullable String[] params) {
         return buildUri(host, path) + "?" + encodeUrlParams(userLocale, params);
     }
 
@@ -75,7 +75,7 @@ public final class DbxRequestUtil {
     }
 
     private static String encodeUrlParams(@Nullable String userLocale,
-                                          @Nullable String @Nullable [] params) {
+                                          @Nullable String[] params) {
         StringBuilder buf = new StringBuilder();
         String sep = "";
         if (userLocale != null) {
@@ -198,7 +198,7 @@ public final class DbxRequestUtil {
                                                   String sdkUserAgentIdentifier,
                                                   String host,
                                                   String path,
-                                                  @Nullable String @Nullable [] params,
+                                                  @Nullable String[] params,
                                                   @Nullable List<HttpRequestor.Header> headers)
         throws NetworkIOException {
         headers = copyHeaders(headers);
@@ -221,7 +221,7 @@ public final class DbxRequestUtil {
                                                   String accessToken,
                                                   String sdkUserAgentIdentifier,
                                                   String host, String path,
-                                                  @Nullable String @Nullable [] params,
+                                                  @Nullable String[] params,
                                                   @Nullable List<HttpRequestor.Header> headers)
         throws NetworkIOException {
         headers = copyHeaders(headers);
@@ -244,7 +244,7 @@ public final class DbxRequestUtil {
                                                          String sdkUserAgentIdentifier,
                                                          String host,
                                                          String path,
-                                                         @Nullable String @Nullable [] params,
+                                                         @Nullable String[] params,
                                                          @Nullable List<HttpRequestor.Header> headers)
         throws NetworkIOException {
         byte[] encodedParams = StringUtil.stringToUtf8(encodeUrlParams(requestConfig.getUserLocale(), params));
@@ -459,7 +459,7 @@ public final class DbxRequestUtil {
                               final String sdkUserAgentIdentifier,
                               final String host,
                               final String path,
-                              final @Nullable String @Nullable [] params,
+                              final @Nullable String[] params,
                               final @Nullable List<HttpRequestor.Header> headers,
                               final ResponseHandler<T> handler)
         throws DbxException {
@@ -486,7 +486,7 @@ public final class DbxRequestUtil {
                                String sdkUserAgentIdentifier,
                                String host,
                                String path,
-                               @Nullable String @Nullable [] params,
+                               @Nullable String[] params,
                                @Nullable List<HttpRequestor.Header> headers,
                                ResponseHandler<T> handler)
         throws DbxException {
@@ -499,7 +499,7 @@ public final class DbxRequestUtil {
                                      final String sdkUserAgentIdentifier,
                                      final String host,
                                      final String path,
-                                     final @Nullable String @Nullable [] params,
+                                     final @Nullable String[] params,
                                      final @Nullable List<HttpRequestor.Header> headers,
                                      final ResponseHandler<T> handler)
         throws DbxException {

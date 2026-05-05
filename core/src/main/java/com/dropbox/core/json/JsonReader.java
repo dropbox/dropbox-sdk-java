@@ -1,6 +1,6 @@
 package com.dropbox.core.json;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nullable;
 import com.dropbox.core.util.IOUtil;
 import static com.dropbox.core.util.LangUtil.mkAssert;
 
@@ -41,7 +41,7 @@ public abstract class JsonReader<T>
         // Base implementation does nothing.
     }
 
-    public final T readField(JsonParser parser, String fieldName, @Nullable Object v)
+    public final T readField(JsonParser parser, String fieldName, Object v)
         throws IOException, JsonReadException
     {
         if (v != null) throw new JsonReadException("duplicate field \"" + fieldName + "\"", parser.getTokenLocation());

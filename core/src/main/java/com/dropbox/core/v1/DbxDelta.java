@@ -1,6 +1,6 @@
 package com.dropbox.core.v1;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nullable;
 import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;

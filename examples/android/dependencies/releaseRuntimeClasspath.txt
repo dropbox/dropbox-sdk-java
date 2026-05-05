@@ -58,7 +58,6 @@ com.google.code.findbugs:jsr305:3.0.2
 com.google.guava:listenablefuture:1.0
 com.squareup.okhttp3:okhttp:4.0.0
 com.squareup.okio:okio:2.2.2
-org.checkerframework:checker-qual:4.1.0
 org.jetbrains.kotlin:kotlin-stdlib-common:1.6.21
 org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21
 org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21

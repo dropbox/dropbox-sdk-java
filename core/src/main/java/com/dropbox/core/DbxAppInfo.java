@@ -1,6 +1,6 @@
 package com.dropbox.core;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nullable;
 import java.io.IOException;
 
 import static com.dropbox.core.util.StringUtil.jq;

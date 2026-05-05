@@ -1,6 +1,6 @@
 package com.dropbox.core.util;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 
@@ -28,7 +28,7 @@ public abstract class Collector<E,L>
         }
     }
 
-    public static final class NullSkipper<E,L> extends Collector<@Nullable E,L>
+    public static final class NullSkipper<E,L> extends Collector<E,L>
     {
         private final Collector<E,L> underlying;
 
@@ -37,7 +37,7 @@ public abstract class Collector<E,L>
             this.underlying = underlying;
         }
 
-        public static <E,L> Collector<@Nullable E,L> mk(Collector<E,L> underlying)
+        public static <E,L> Collector<E,L> mk(Collector<E,L> underlying)
         {
             return new NullSkipper<E,L>(underlying);
         }

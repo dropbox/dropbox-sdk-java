@@ -1,6 +1,6 @@
 package com.dropbox.core.oauth;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import javax.annotation.Nonnull;
 import com.dropbox.core.DbxAuthFinish;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.json.JsonReadException;
@@ -28,7 +28,7 @@ public class DbxRefreshResult {
      * @param expiresIn Duration time of accessToken in second.
      * was passed
      */
-    public DbxRefreshResult(@NonNull String accessToken, long expiresIn) {
+    public DbxRefreshResult(@Nonnull String accessToken, long expiresIn) {
         this(accessToken, expiresIn, null);
     }
 
@@ -37,7 +37,7 @@ public class DbxRefreshResult {
      * @param expiresIn Duration time of accessToken in second.
      * was passed
      */
-    public DbxRefreshResult(@NonNull String accessToken, long expiresIn, String scope) {
+    public DbxRefreshResult(@Nonnull String accessToken, long expiresIn, String scope) {
         if (accessToken == null) {
             throw new IllegalArgumentException("access token can't be null.");
         }

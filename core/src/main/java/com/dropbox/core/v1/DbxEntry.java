@@ -1,7 +1,6 @@
 package com.dropbox.core.v1;
 
-import org.checkerframework.checker.nullness.qual.PolyNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
@@ -322,9 +321,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         };
 
-        public static final JsonReader<DbxEntry.@Nullable File> ReaderMaybeDeleted = new JsonReader<DbxEntry.@Nullable File>()
+        public static final JsonReader<DbxEntry.File> ReaderMaybeDeleted = new JsonReader<DbxEntry.File>()
         {
-            public final DbxEntry.@Nullable File read(JsonParser parser)
+            public final @Nullable DbxEntry.File read(JsonParser parser)
                 throws IOException, JsonReadException
             {
                 JsonLocation top = parser.getCurrentLocation();
@@ -557,7 +556,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 this.longitude = longitude;
             }
 
-            public static JsonReader<@Nullable Location> Reader = new JsonReader<@Nullable Location>()
+            public static JsonReader<Location> Reader = new JsonReader<Location>()
             {
                 @Override
                 public @Nullable Location read(JsonParser parser)
@@ -622,7 +621,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         }
     };
 
-    public static final JsonReader<@Nullable DbxEntry> ReaderMaybeDeleted = new JsonReader<@Nullable DbxEntry>()
+    public static final JsonReader<DbxEntry> ReaderMaybeDeleted = new JsonReader<DbxEntry>()
     {
         public final @Nullable DbxEntry read(JsonParser parser)
             throws IOException, JsonReadException
@@ -654,20 +653,20 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * contents.  This value can be used with {@link DbxClientV1#getMetadataWithChildrenIfChanged}
          * to void downloading the folder contents if they havne't changed.
          */
-        public final @PolyNull String hash;
+        public final @Nullable String hash;
 
         /**
          * If {@link #entry} is a folder, this will contain the metadata of the folder's
          * immediate children.  If it's not a folder, this will be {@code null}.
          */
-        public final @PolyNull List<DbxEntry> children;
+        public final @Nullable List<DbxEntry> children;
 
         /**
          * @param entry {@link #entry}
          * @param hash {@link #hash}
          * @param children {@link #children}
          */
-        public WithChildren(DbxEntry entry, @PolyNull String hash, @PolyNull List<DbxEntry> children)
+        public WithChildren(DbxEntry entry, @Nullable String hash, @Nullable List<DbxEntry> children)
         {
             this.entry = entry;
             this.hash = hash;
@@ -684,7 +683,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
         };
 
-        public static final JsonReader<@Nullable WithChildren> ReaderMaybeDeleted = new JsonReader<@Nullable WithChildren>()
+        public static final JsonReader<WithChildren> ReaderMaybeDeleted = new JsonReader<WithChildren>()
         {
             public final @Nullable WithChildren read(JsonParser parser)
                 throws IOException, JsonReadException
@@ -745,20 +744,20 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * contents.  This value can be used with {@link DbxClientV1#getMetadataWithChildrenIfChanged}
          * to void downloading the folder contents if they havne't changed.
          */
-        public final @PolyNull String hash;
+        public final @Nullable String hash;
 
         /**
          * If {@link #entry} is a folder, this will contain the metadata of the folder's
          * immediate children.  If it's not a folder, this will be {@code null}.
          */
-        public final @PolyNull C children;
+        public final @Nullable C children;
 
         /**
          * @param entry {@link #entry}
          * @param hash {@link #hash}
          * @param children {@link #children}
          */
-        public WithChildrenC(DbxEntry entry, @PolyNull String hash, @PolyNull C children)
+        public WithChildrenC(DbxEntry entry, @Nullable String hash, @Nullable C children)
         {
             this.entry = entry;
             this.hash = hash;
@@ -777,7 +776,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
         }
 
-        public static class ReaderMaybeDeleted<C> extends JsonReader<@Nullable WithChildrenC<C>>
+        public static class ReaderMaybeDeleted<C> extends JsonReader<WithChildrenC<C>>
         {
             private final Collector<DbxEntry,? extends C> collector;
             public ReaderMaybeDeleted(Collector<DbxEntry,? extends C> collector) { this.collector = collector; }

@@ -1,6 +1,6 @@
 package com.dropbox.core.util;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nullable;
 import com.dropbox.core.json.JsonDateReader;
 
 import java.util.Calendar;

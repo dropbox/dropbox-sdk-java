@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nullable;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
 

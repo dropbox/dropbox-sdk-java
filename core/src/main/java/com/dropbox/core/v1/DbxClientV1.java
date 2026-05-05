@@ -1,9 +1,7 @@
 package com.dropbox.core.v1;
 
-import org.checkerframework.checker.initialization.qual.Initialized;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -124,7 +122,7 @@ public final class DbxClientV1
             "include_media_info", includeMediaInfo ? "true" : null,
         };
 
-        return doGet(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<@Nullable DbxEntry>() {
+        return doGet(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxEntry>() {
             @Override
             public @Nullable DbxEntry handle(HttpRequestor.Response response) throws DbxException
             {
@@ -171,7 +169,7 @@ public final class DbxClientV1
      *    Otherwise, return the metadata for that path and the metadata for all its immediate
      *    children (if it's a folder).
      */
-    public DbxEntry.@Nullable WithChildren getMetadataWithChildren(String path, boolean includeMediaInfo)
+    public @Nullable DbxEntry.WithChildren getMetadataWithChildren(String path, boolean includeMediaInfo)
         throws DbxException
     {
         return getMetadataWithChildrenBase(path, includeMediaInfo, DbxEntry.WithChildren.ReaderMaybeDeleted);
@@ -181,7 +179,7 @@ public final class DbxClientV1
      * Same as {@link #getMetadataWithChildren(String, boolean)} with {@code includeMediaInfo} set
      * to {@code false}.
      */
-    public DbxEntry.@Nullable WithChildren getMetadataWithChildren(String path)
+    public @Nullable DbxEntry.WithChildren getMetadataWithChildren(String path)
         throws DbxException
     {
         return getMetadataWithChildren(path, false);
@@ -201,7 +199,7 @@ public final class DbxClientV1
      * the entire call succeeds.
      * </p>
      */
-    public <C> DbxEntry.@Nullable WithChildrenC<C> getMetadataWithChildrenC(String path, boolean includeMediaInfo, final Collector<DbxEntry, ? extends C> collector)
+    public <C> @Nullable DbxEntry.WithChildrenC<C> getMetadataWithChildrenC(String path, boolean includeMediaInfo, final Collector<DbxEntry, ? extends C> collector)
         throws DbxException
     {
         return getMetadataWithChildrenBase(path, includeMediaInfo, new DbxEntry.WithChildrenC.ReaderMaybeDeleted<C>(collector));
@@ -211,7 +209,7 @@ public final class DbxClientV1
      * Same as {@link #getMetadataWithChildrenC(String, boolean, Collector)} with {@code includeMediaInfo} set
      * to {@code false}.
      */
-    public <C> DbxEntry.@Nullable WithChildrenC<C> getMetadataWithChildrenC(String path, final Collector<DbxEntry, ? extends C> collector)
+    public <C> @Nullable DbxEntry.WithChildrenC<C> getMetadataWithChildrenC(String path, final Collector<DbxEntry, ? extends C> collector)
         throws DbxException
     {
         return getMetadataWithChildrenC(path, false, collector);
@@ -231,7 +229,7 @@ public final class DbxClientV1
             "include_media_info", includeMediaInfo ? "true" : null,
         };
 
-        return doGet(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<@Nullable T>() {
+        return doGet(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<T>() {
             @Override
             public @Nullable T handle(HttpRequestor.Response response) throws DbxException
             {
@@ -261,7 +259,7 @@ public final class DbxClientV1
      *    {@code Maybe.Just(null)} if there's nothing there or {@code Maybe.Just} with the
      *    metadata.
      */
-    public Maybe<DbxEntry.@Nullable WithChildren> getMetadataWithChildrenIfChanged(String path, boolean includeMediaInfo, @Nullable String previousFolderHash)
+    public Maybe<DbxEntry.WithChildren> getMetadataWithChildrenIfChanged(String path, boolean includeMediaInfo, String previousFolderHash)
         throws DbxException
     {
         return getMetadataWithChildrenIfChangedBase(path, includeMediaInfo, previousFolderHash, DbxEntry.WithChildren.ReaderMaybeDeleted);
@@ -271,7 +269,7 @@ public final class DbxClientV1
      * Same as {@link #getMetadataWithChildrenIfChanged(String, boolean, String)} with {@code includeMediaInfo} set
      * to {@code false}.
      */
-    public Maybe<DbxEntry.@Nullable WithChildren> getMetadataWithChildrenIfChanged(String path, @Nullable String previousFolderHash)
+    public Maybe<DbxEntry.WithChildren> getMetadataWithChildrenIfChanged(String path, String previousFolderHash)
         throws DbxException
     {
         return getMetadataWithChildrenIfChanged(path, false, previousFolderHash);
@@ -291,7 +289,7 @@ public final class DbxClientV1
      * the entire call succeeds.
      * </p>
      */
-    public <C> Maybe<DbxEntry.@Nullable WithChildrenC<C>> getMetadataWithChildrenIfChangedC(
+    public <C> Maybe<DbxEntry.WithChildrenC<C>> getMetadataWithChildrenIfChangedC(
             String path, boolean includeMediaInfo, @Nullable String previousFolderHash, Collector<DbxEntry,? extends C> collector)
         throws DbxException
     {
@@ -302,14 +300,14 @@ public final class DbxClientV1
      * Same as {@link #getMetadataWithChildrenIfChangedC(String, boolean, String, Collector)} with
      * {@code includeMediaInfo} set to {@code false}.
      */
-    public <C> Maybe<DbxEntry.@Nullable WithChildrenC<C>> getMetadataWithChildrenIfChangedC(
+    public <C> Maybe<DbxEntry.WithChildrenC<C>> getMetadataWithChildrenIfChangedC(
             String path, @Nullable String previousFolderHash, Collector<DbxEntry,? extends C> collector)
         throws DbxException
     {
         return getMetadataWithChildrenIfChangedC(path, false, previousFolderHash, collector);
     }
 
-    private <T> Maybe<@Nullable T> getMetadataWithChildrenIfChangedBase(
+    private <T> Maybe<T> getMetadataWithChildrenIfChangedBase(
             String path, boolean includeMediaInfo, @Nullable String previousFolderHash, final JsonReader<T> reader)
         throws DbxException
     {
@@ -327,15 +325,15 @@ public final class DbxClientV1
             "include_media_info", includeMediaInfo ? "true" : null,
         };
 
-        return doGet(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<Maybe<@Nullable T>>() {
+        return doGet(host, apiPath, params, null, new DbxRequestUtil.ResponseHandler<Maybe<T>>() {
             @Override
-            public Maybe<@Nullable T> handle(HttpRequestor.Response response) throws DbxException
+            public Maybe<T> handle(HttpRequestor.Response response) throws DbxException
             {
-                if (response.getStatusCode() == 404) return Maybe.<@Nullable T>Just(null);
-                if (response.getStatusCode() == 304) return Maybe.<@Nullable T>Nothing();
+                if (response.getStatusCode() == 404) return Maybe.<T>Just(null);
+                if (response.getStatusCode() == 304) return Maybe.<T>Nothing();
                 if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
 
-                return Maybe.<@Nullable T>Just(DbxRequestUtil.readJsonFromResponse(reader, response));
+                return Maybe.<T>Just(DbxRequestUtil.readJsonFromResponse(reader, response));
             }
         });
     }
@@ -377,7 +375,7 @@ public final class DbxClientV1
         String host = this.host.getApi();
         String apiPath = "1/disable_access_token";
 
-        doPost(host, apiPath, null, null, new DbxRequestUtil.ResponseHandler<@Nullable Void>() {
+        doPost(host, apiPath, null, null, new DbxRequestUtil.ResponseHandler<Void>() {
             @Override
             public @Nullable Void handle(HttpRequestor.Response response) throws DbxException
             {
@@ -419,7 +417,7 @@ public final class DbxClientV1
      * @throws IOException
      *    If there's an error writing to {@code target}.
      */
-    public DbxEntry.@Nullable File getFile(String path, @Nullable String rev, OutputStream target)
+    public @Nullable DbxEntry.File getFile(String path, @Nullable String rev, OutputStream target)
         throws DbxException, IOException
     {
         Downloader downloader = startGetFile(path, rev);
@@ -760,7 +758,7 @@ public final class DbxClientV1
 
     private static final class SingleUploader extends Uploader
     {
-        private HttpRequestor.@Nullable Uploader httpUploader;
+        private @Nullable HttpRequestor.Uploader httpUploader;
         private final long claimedBytes;
         private final CountingOutputStream body;
 
@@ -843,7 +841,7 @@ public final class DbxClientV1
             }
 
             @SuppressWarnings("nullness")  // Workaround for bug in Checker Framework: https://code.google.com/p/checker-framework/issues/detail?id=293
-            final HttpRequestor.@Initialized @NonNull Response nonNullResponse = response;
+            final HttpRequestor.Response nonNullResponse = response;
 
             return DbxRequestUtil.finishResponse(nonNullResponse, new DbxRequestUtil.ResponseHandler<DbxEntry.File>() {
                 @Override
@@ -1333,7 +1331,7 @@ public final class DbxClientV1
     {
         private final byte[] chunk;
         private int chunkPos = 0;
-        private @MonotonicNonNull String uploadId;
+        private @Nullable String uploadId;
         private long uploadOffset;
 
         private ChunkedUploadOutputStream(int chunkSize)
@@ -1547,8 +1545,7 @@ public final class DbxClientV1
      * A more generic version of {@link #getDeltaWithPathPrefix}.  You provide a <em>collector</em>,
      * which lets you process the delta entries as they arrive over the network.
      */
-    public <C> DbxDeltaC<C> getDeltaCWithPathPrefix(Collector<DbxDeltaC.Entry<DbxEntry>, C> collector,
-                                                    @Nullable String cursor, String pathPrefix,
+    public <C> DbxDeltaC<C> getDeltaCWithPathPrefix(Collector<DbxDeltaC.Entry<DbxEntry>, C> collector, @Nullable String cursor, String pathPrefix,
                                                     boolean includeMediaInfo)
         throws DbxException
     {
@@ -1560,8 +1557,7 @@ public final class DbxClientV1
      * Same as {@link #getDeltaCWithPathPrefix(Collector, String, String, boolean)} with {@code includeMediaInfo}
      * set to {@code false}.
      */
-    public <C> DbxDeltaC<C> getDeltaCWithPathPrefix(Collector<DbxDeltaC.Entry<DbxEntry>, C> collector,
-                                                    @Nullable String cursor, String pathPrefix)
+    public <C> DbxDeltaC<C> getDeltaCWithPathPrefix(Collector<DbxDeltaC.Entry<DbxEntry>, C> collector, @Nullable String cursor, String pathPrefix)
         throws DbxException
     {
         return getDeltaCWithPathPrefix(collector, cursor, pathPrefix, false);
@@ -1588,8 +1584,7 @@ public final class DbxClientV1
         });
     }
 
-    private <C> DbxDeltaC<C> _getDeltaC(final Collector<DbxDeltaC.Entry<DbxEntry>, C> collector,
-                                        @Nullable String cursor, @Nullable String pathPrefix,
+    private <C> DbxDeltaC<C> _getDeltaC(final Collector<DbxDeltaC.Entry<DbxEntry>, C> collector, @Nullable String cursor, @Nullable String pathPrefix,
                                         boolean includeMediaInfo)
         throws DbxException
     {
@@ -1765,7 +1760,7 @@ public final class DbxClientV1
      *    The metadata for the original file (not the thumbnail) or {@code null} if there
      *    is no file at that path.
      */
-    public DbxEntry.@Nullable File getThumbnail(
+    public @Nullable DbxEntry.File getThumbnail(
             DbxThumbnailSize sizeBound, DbxThumbnailFormat format,
             String path, @Nullable String rev, OutputStream target)
             throws DbxException, IOException
@@ -1823,7 +1818,7 @@ public final class DbxClientV1
                 throws DbxException
             {
                 if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
-                Collector<DbxEntry.@Nullable File,ArrayList<DbxEntry.File>> collector =
+                Collector<DbxEntry.File,ArrayList<DbxEntry.File>> collector =
                     Collector.NullSkipper.<DbxEntry.File,ArrayList<DbxEntry.File>>mk(new Collector.ArrayListCollector<DbxEntry.File>());
                 return DbxRequestUtil.readJsonFromResponse(JsonArrayReader.mk(DbxEntry.File.ReaderMaybeDeleted, collector), response);
             }
@@ -1845,7 +1840,7 @@ public final class DbxClientV1
      *     If the specified {@code path}/{@code rev} couldn't be found, return {@code null}.
      *     Otherwise, return metadata for the newly-created latest revision of the file.
      */
-    public DbxEntry.@Nullable File restoreFile(String path, String rev)
+    public @Nullable DbxEntry.File restoreFile(String path, String rev)
         throws DbxException
     {
         DbxPathV1.checkArgNonRoot("path", path);
@@ -1857,8 +1852,8 @@ public final class DbxClientV1
             "rev", rev,
         };
 
-        return doGet(host.getApi(), apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxEntry.@Nullable File>() {
-            public DbxEntry.@Nullable File handle(HttpRequestor.Response response)
+        return doGet(host.getApi(), apiPath, params, null, new DbxRequestUtil.ResponseHandler<DbxEntry.File>() {
+            public @Nullable DbxEntry.File handle(HttpRequestor.Response response)
                 throws DbxException
             {
                 if (response.getStatusCode() == 404) return null;
@@ -1921,7 +1916,7 @@ public final class DbxClientV1
         String apiPath = "1/shares/auto" + path;
         String[] params = {"short_url", "false"};
 
-        return doPost(host.getApi(), apiPath, params, null, new DbxRequestUtil.ResponseHandler<@Nullable String>() {
+        return doPost(host.getApi(), apiPath, params, null, new DbxRequestUtil.ResponseHandler<String>() {
             @Override
             public @Nullable String handle(HttpRequestor.Response response)
                 throws DbxException
@@ -1952,7 +1947,7 @@ public final class DbxClientV1
 
         String apiPath = "1/media/auto" + path;
 
-        return doPost(host.getApi(), apiPath, null, null, new DbxRequestUtil.ResponseHandler<@Nullable DbxUrlWithExpiration>() {
+        return doPost(host.getApi(), apiPath, null, null, new DbxRequestUtil.ResponseHandler<DbxUrlWithExpiration>() {
             @Override
             public @Nullable DbxUrlWithExpiration handle(HttpRequestor.Response response)
                 throws DbxException
@@ -1992,7 +1987,7 @@ public final class DbxClientV1
 
         String apiPath = "1/copy_ref/auto" + path;
 
-        return doPost(host.getApi(), apiPath, null, null, new DbxRequestUtil.ResponseHandler<@Nullable String>()
+        return doPost(host.getApi(), apiPath, null, null, new DbxRequestUtil.ResponseHandler<String>()
         {
             @Override
             public @Nullable String handle(HttpRequestor.Response response)
@@ -2076,7 +2071,7 @@ public final class DbxClientV1
             "to_path", toPath,
         };
 
-        return doPost(host.getApi(), "1/fileops/copy", params, null, new DbxRequestUtil.ResponseHandler<@Nullable DbxEntry>() {
+        return doPost(host.getApi(), "1/fileops/copy", params, null, new DbxRequestUtil.ResponseHandler<DbxEntry>() {
             @Override
             public @Nullable DbxEntry handle(HttpRequestor.Response response)
                 throws DbxException
@@ -2107,7 +2102,7 @@ public final class DbxClientV1
             "to_path", toPath,
         };
 
-        return doPost(host.getApi(), "1/fileops/copy", params, null, new DbxRequestUtil.ResponseHandler<@Nullable DbxEntry>()
+        return doPost(host.getApi(), "1/fileops/copy", params, null, new DbxRequestUtil.ResponseHandler<DbxEntry>()
         {
             @Override
             public @Nullable DbxEntry handle(HttpRequestor.Response response)
@@ -2128,7 +2123,7 @@ public final class DbxClientV1
      *    If successful, returns the metadata for the newly created folder, otherwise
      *    returns {@code null}.
      */
-    public DbxEntry.@Nullable Folder createFolder(String path)
+    public @Nullable DbxEntry.Folder createFolder(String path)
         throws DbxException
     {
         DbxPathV1.checkArgNonRoot("path", path);
@@ -2138,9 +2133,9 @@ public final class DbxClientV1
             "path", path,
         };
 
-        return doPost(host.getApi(), "1/fileops/create_folder", params, null, new DbxRequestUtil.ResponseHandler<DbxEntry.@Nullable Folder>() {
+        return doPost(host.getApi(), "1/fileops/create_folder", params, null, new DbxRequestUtil.ResponseHandler<DbxEntry.Folder>() {
             @Override
-            public DbxEntry.@Nullable Folder handle(HttpRequestor.Response response)
+            public @Nullable DbxEntry.Folder handle(HttpRequestor.Response response)
                 throws DbxException
             {
                 if (response.getStatusCode() == 403) return null;
@@ -2193,7 +2188,7 @@ public final class DbxClientV1
             "to_path", toPath,
         };
 
-        return doPost(host.getApi(), "1/fileops/move", params, null, new DbxRequestUtil.ResponseHandler<@Nullable DbxEntry>()
+        return doPost(host.getApi(), "1/fileops/move", params, null, new DbxRequestUtil.ResponseHandler<DbxEntry>()
         {
             @Override
             public @Nullable DbxEntry handle(HttpRequestor.Response response)
@@ -2211,7 +2206,7 @@ public final class DbxClientV1
     // --------------------------------------------------------
 
     // Convenience function that calls RequestUtil.doGet with the first two parameters filled in.
-    private <T> T doGet(String host, String path, @Nullable String @Nullable [] params,
+    private <T> T doGet(String host, String path, @Nullable String[] params,
                         @Nullable ArrayList<HttpRequestor.Header> headers,
                         DbxRequestUtil.ResponseHandler<T> handler)
         throws DbxException
@@ -2221,7 +2216,7 @@ public final class DbxClientV1
 
     // Convenience function that calls RequestUtil.doPost with the first two parameters filled in.
     public <T> T doPost(String host, String path,
-                        @Nullable String @Nullable [] params,
+                        @Nullable String[] params,
                         @Nullable ArrayList<HttpRequestor.Header> headers,
                         DbxRequestUtil.ResponseHandler<T> handler)
         throws DbxException

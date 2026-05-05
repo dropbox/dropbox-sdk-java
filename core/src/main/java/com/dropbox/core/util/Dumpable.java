@@ -1,6 +1,6 @@
 package com.dropbox.core.util;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nullable;
 
 /**
  * A common superclass for pure-data classes.  Contains a function to dump

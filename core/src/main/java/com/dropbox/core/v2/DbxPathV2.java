@@ -1,6 +1,6 @@
 package com.dropbox.core.v2;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nullable;
 
 /**
  * Utility functions for working with Dropbox paths.  This SDK uses {@code String}s

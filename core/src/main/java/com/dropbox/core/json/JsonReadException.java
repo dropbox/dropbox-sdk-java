@@ -1,6 +1,6 @@
 package com.dropbox.core.json;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nullable;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -87,7 +87,7 @@ public final class JsonReadException extends java.lang.Exception
         public final String description;
         public final @Nullable PathPart next;
 
-        public PathPart(String description, @Nullable PathPart next)
+        public PathPart(String description, PathPart next)
         {
             this.description = description;
             this.next = next;

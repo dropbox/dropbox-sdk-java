@@ -1,6 +1,6 @@
 package com.dropbox.core.oauth;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.Nullable;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxHost;
 import com.dropbox.core.DbxRequestConfig;
@@ -67,7 +67,7 @@ public class DbxCredential {
      * @param refreshToken Refresh token from OAuth flow.
      * @param appKey You app's client id.
      */
-    public DbxCredential(String accessToken, @Nullable Long expiresAt, String refreshToken, String
+    public DbxCredential(String accessToken, Long expiresAt, String refreshToken, String
         appKey) {
         this(accessToken, expiresAt, refreshToken, appKey, null);
     }
@@ -81,7 +81,7 @@ public class DbxCredential {
      * @param appKey You app's client id.
      * @param appSecret You app's client secret.
      */
-    public DbxCredential(String accessToken, @Nullable Long expiresAt, String refreshToken, String appKey, String appSecret) {
+    public DbxCredential(String accessToken, Long expiresAt, String refreshToken, String appKey, String appSecret) {
         if (accessToken == null) {
             throw new IllegalArgumentException("Missing access token.");
         }
