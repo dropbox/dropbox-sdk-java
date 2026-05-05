@@ -33,7 +33,6 @@ public class DbxApiException extends DbxException {
      *
      * @return human-readable message to display to end user, or {@code null} if unavailable
      */
-    @Nullable
     public @Nullable LocalizedText getUserMessage() {
         return userMessage;
     }
