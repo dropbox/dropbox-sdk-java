@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_namespaces.stone */
+/* This file was generated from team_namespaces_apiv2_team_namespaces.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum NamespaceType {
-    // union team.NamespaceType (team_namespaces.stone)
+    // union team.NamespaceType (team_namespaces_apiv2_team_namespaces.stone)
     /**
      * App sandbox folder.
      */
@@ -34,6 +34,10 @@ public enum NamespaceType {
      * Team member's home folder.
      */
     TEAM_MEMBER_FOLDER,
+    /**
+     * Team member's root folder.
+     */
+    TEAM_MEMBER_ROOT,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -66,6 +70,10 @@ public enum NamespaceType {
                 }
                 case TEAM_MEMBER_FOLDER: {
                     g.writeString("team_member_folder");
+                    break;
+                }
+                case TEAM_MEMBER_ROOT: {
+                    g.writeString("team_member_root");
                     break;
                 }
                 default: {
@@ -103,6 +111,9 @@ public enum NamespaceType {
             }
             else if ("team_member_folder".equals(tag)) {
                 value = NamespaceType.TEAM_MEMBER_FOLDER;
+            }
+            else if ("team_member_root".equals(tag)) {
+                value = NamespaceType.TEAM_MEMBER_ROOT;
             }
             else {
                 value = NamespaceType.OTHER;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Uninvited Facebook user from shared folder.
  */
 public class SfFbUninviteDetails {
-    // struct team_log.SfFbUninviteDetails (team_log_generated.stone)
+    // struct team_log.SfFbUninviteDetails (team_log_stone_gen_team_log_generated.stone)
 
     protected final long targetAssetIndex;
     @Nonnull

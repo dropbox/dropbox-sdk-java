@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
  * An audit log event.
  */
 public class TeamEvent {
-    // struct team_log.TeamEvent (team_log_generated.stone)
+    // struct team_log.TeamEvent (team_log_stone_gen_team_log_generated.stone)
 
     @Nonnull
     protected final Date timestamp;
@@ -64,17 +64,15 @@ public class TeamEvent {
      * @param details  The variable event schema applicable to this type of
      *     action, instantiated with respect to this particular action. Must not
      *     be {@code null}.
-     * @param actor  The entity who actually performed the action. Might be
-     *     missing due to historical data gap.
+     * @param actor  The entity who actually performed the action.
      * @param origin  The origin from which the actor performed the action
      *     including information about host, ip address, location, session, etc.
      *     If the action was performed programmatically via the API the origin
      *     represents the API client.
      * @param involveNonTeamMember  True if the action involved a non team
-     *     member either as the actor or as one of the affected users. Might be
-     *     missing due to historical data gap.
+     *     member either as the actor or as one of the affected users.
      * @param context  The user or team on whose behalf the actor performed the
-     *     action. Might be missing due to historical data gap.
+     *     action.
      * @param participants  Zero or more users and/or groups that are affected
      *     by the action. Note that this list doesn't include any actors or
      *     users in context. Must not contain a {@code null} item.
@@ -189,8 +187,7 @@ public class TeamEvent {
     }
 
     /**
-     * The entity who actually performed the action. Might be missing due to
-     * historical data gap.
+     * The entity who actually performed the action.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -214,7 +211,7 @@ public class TeamEvent {
 
     /**
      * True if the action involved a non team member either as the actor or as
-     * one of the affected users. Might be missing due to historical data gap.
+     * one of the affected users.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -224,8 +221,7 @@ public class TeamEvent {
     }
 
     /**
-     * The user or team on whose behalf the actor performed the action. Might be
-     * missing due to historical data gap.
+     * The user or team on whose behalf the actor performed the action.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -323,8 +319,7 @@ public class TeamEvent {
         /**
          * Set value for optional field.
          *
-         * @param actor  The entity who actually performed the action. Might be
-         *     missing due to historical data gap.
+         * @param actor  The entity who actually performed the action.
          *
          * @return this builder
          */
@@ -352,8 +347,7 @@ public class TeamEvent {
          * Set value for optional field.
          *
          * @param involveNonTeamMember  True if the action involved a non team
-         *     member either as the actor or as one of the affected users. Might
-         *     be missing due to historical data gap.
+         *     member either as the actor or as one of the affected users.
          *
          * @return this builder
          */
@@ -366,7 +360,7 @@ public class TeamEvent {
          * Set value for optional field.
          *
          * @param context  The user or team on whose behalf the actor performed
-         *     the action. Might be missing due to historical data gap.
+         *     the action.
          *
          * @return this builder
          */

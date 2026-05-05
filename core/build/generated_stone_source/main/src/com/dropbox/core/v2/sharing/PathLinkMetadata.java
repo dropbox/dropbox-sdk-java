@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing_apiv2_shared_links_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Metadata for a path-based shared link.
  */
 public class PathLinkMetadata extends LinkMetadata {
-    // struct sharing.PathLinkMetadata (shared_links.stone)
+    // struct sharing.PathLinkMetadata (sharing_apiv2_shared_links_types.stone)
 
     @Nonnull
     protected final String path;

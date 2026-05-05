@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -23,7 +23,7 @@ import java.util.Arrays;
  * associated with this instance.
  */
 public final class LockFileResultEntry {
-    // union files.LockFileResultEntry (files.stone)
+    // union files.LockFileResultEntry (files_files_public_types.stone)
 
     /**
      * Discriminating tag type for {@link LockFileResultEntry}.

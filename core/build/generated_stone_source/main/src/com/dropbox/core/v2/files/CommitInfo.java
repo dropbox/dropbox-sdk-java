@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class CommitInfo {
-    // struct files.CommitInfo (files.stone)
+    // struct files.CommitInfo (files_files_public_base.stone)
 
     @Nonnull
     protected final String path;
@@ -44,8 +44,9 @@ public class CommitInfo {
      * specifying values for all optional fields.
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param mode  Selects what to do if the file already exists. Must not be
      *     {@code null}.
      * @param autorename  If there's a conflict, as determined by {@link
@@ -77,7 +78,7 @@ public class CommitInfo {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)", path)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -105,8 +106,9 @@ public class CommitInfo {
      * <p> The default values for unset fields will be used. </p>
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -203,8 +205,9 @@ public class CommitInfo {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return builder for this class.
      *
@@ -232,7 +235,7 @@ public class CommitInfo {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)", path)) {
+            if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * The desired export format of the Paper doc.
  */
 public enum ExportFormat {
-    // union paper.ExportFormat (paper.stone)
+    // union paper.ExportFormat (paper_apiv2_paper_types.stone)
     /**
      * The HTML export format.
      */
@@ -29,6 +29,10 @@ public enum ExportFormat {
      * The markdown export format.
      */
     MARKDOWN,
+    /**
+     * Doc metadata JSON export format.
+     */
+    JSON,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -53,6 +57,10 @@ public enum ExportFormat {
                 }
                 case MARKDOWN: {
                     g.writeString("markdown");
+                    break;
+                }
+                case JSON: {
+                    g.writeString("json");
                     break;
                 }
                 default: {
@@ -84,6 +92,9 @@ public enum ExportFormat {
             }
             else if ("markdown".equals(tag)) {
                 value = ExportFormat.MARKDOWN;
+            }
+            else if ("json".equals(tag)) {
+                value = ExportFormat.JSON;
             }
             else {
                 value = ExportFormat.OTHER;

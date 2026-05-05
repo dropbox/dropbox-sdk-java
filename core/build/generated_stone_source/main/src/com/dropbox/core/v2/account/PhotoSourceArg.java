@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from account.stone */
+/* This file was generated from account_account_photo.stone */
 
 package com.dropbox.core.v2.account;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class PhotoSourceArg {
-    // union account.PhotoSourceArg (account.stone)
+    // union account.PhotoSourceArg (account_account_photo.stone)
 
     /**
      * Discriminating tag type for {@link PhotoSourceArg}.

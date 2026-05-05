@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing_apiv2_sharing_files_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class ListFileMembersCountResult {
-    // struct sharing.ListFileMembersCountResult (sharing_files.stone)
+    // struct sharing.ListFileMembersCountResult (sharing_apiv2_sharing_files_types.stone)
 
     @Nonnull
     protected final SharedFileMembers members;

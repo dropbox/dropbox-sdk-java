@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class GetTemporaryLinkResult {
-    // struct files.GetTemporaryLinkResult (files.stone)
+    // struct files.GetTemporaryLinkResult (files_files_public_types.stone)
 
     @Nonnull
     protected final FileMetadata metadata;

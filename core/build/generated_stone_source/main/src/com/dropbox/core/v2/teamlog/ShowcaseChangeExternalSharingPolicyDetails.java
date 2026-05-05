@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Enabled/disabled sharing Dropbox Showcase externally for team.
  */
 public class ShowcaseChangeExternalSharingPolicyDetails {
-    // struct team_log.ShowcaseChangeExternalSharingPolicyDetails (team_log_generated.stone)
+    // struct team_log.ShowcaseChangeExternalSharingPolicyDetails (team_log_stone_gen_team_log_generated.stone)
 
     @Nonnull
     protected final ShowcaseExternalSharingPolicy newValue;

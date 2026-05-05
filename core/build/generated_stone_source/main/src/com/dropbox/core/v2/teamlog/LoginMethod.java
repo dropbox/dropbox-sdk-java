@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -17,16 +17,19 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum LoginMethod {
-    // union team_log.LoginMethod (team_log_generated.stone)
+    // union team_log.LoginMethod (team_log_stone_gen_team_log_generated.stone)
     APPLE_OAUTH,
     FIRST_PARTY_TOKEN_EXCHANGE,
     GOOGLE_OAUTH,
+    KAKAO_OAUTH,
     LENOVO_OAUTH,
+    PASSKEY,
     PASSWORD,
     QR_CODE,
     SAML,
     TWO_FACTOR_AUTHENTICATION,
     WEB_SESSION,
+    MICROSOFT_OAUTH,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -57,8 +60,16 @@ public enum LoginMethod {
                     g.writeString("google_oauth");
                     break;
                 }
+                case KAKAO_OAUTH: {
+                    g.writeString("kakao_oauth");
+                    break;
+                }
                 case LENOVO_OAUTH: {
                     g.writeString("lenovo_oauth");
+                    break;
+                }
+                case PASSKEY: {
+                    g.writeString("passkey");
                     break;
                 }
                 case PASSWORD: {
@@ -79,6 +90,10 @@ public enum LoginMethod {
                 }
                 case WEB_SESSION: {
                     g.writeString("web_session");
+                    break;
+                }
+                case MICROSOFT_OAUTH: {
+                    g.writeString("microsoft_oauth");
                     break;
                 }
                 default: {
@@ -114,8 +129,14 @@ public enum LoginMethod {
             else if ("google_oauth".equals(tag)) {
                 value = LoginMethod.GOOGLE_OAUTH;
             }
+            else if ("kakao_oauth".equals(tag)) {
+                value = LoginMethod.KAKAO_OAUTH;
+            }
             else if ("lenovo_oauth".equals(tag)) {
                 value = LoginMethod.LENOVO_OAUTH;
+            }
+            else if ("passkey".equals(tag)) {
+                value = LoginMethod.PASSKEY;
             }
             else if ("password".equals(tag)) {
                 value = LoginMethod.PASSWORD;
@@ -131,6 +152,9 @@ public enum LoginMethod {
             }
             else if ("web_session".equals(tag)) {
                 value = LoginMethod.WEB_SESSION;
+            }
+            else if ("microsoft_oauth".equals(tag)) {
+                value = LoginMethod.MICROSOFT_OAUTH;
             }
             else {
                 value = LoginMethod.OTHER;

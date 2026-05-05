@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from team_team_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class TeamGetInfoResult {
-    // struct team.TeamGetInfoResult (team.stone)
+    // struct team.TeamGetInfoResult (team_team_types.stone)
 
     @Nonnull
     protected final String name;

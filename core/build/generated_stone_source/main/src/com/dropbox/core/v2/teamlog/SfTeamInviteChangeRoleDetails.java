@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Changed team member's role in shared folder.
  */
 public class SfTeamInviteChangeRoleDetails {
-    // struct team_log.SfTeamInviteChangeRoleDetails (team_log_generated.stone)
+    // struct team_log.SfTeamInviteChangeRoleDetails (team_log_stone_gen_team_log_generated.stone)
 
     protected final long targetAssetIndex;
     @Nonnull

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ListFolderLongpollResult {
-    // struct files.ListFolderLongpollResult (files.stone)
+    // struct files.ListFolderLongpollResult (files_files_public_types.stone)
 
     protected final boolean changes;
     @Nullable

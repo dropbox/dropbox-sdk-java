@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_member_space_limits.stone */
+/* This file was generated from team_apiv2_team_member_space_limits.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Excluded users list continue error.
  */
 public enum ExcludedUsersListContinueError {
-    // union team.ExcludedUsersListContinueError (team_member_space_limits.stone)
+    // union team.ExcludedUsersListContinueError (team_apiv2_team_member_space_limits.stone)
     /**
      * The cursor is invalid.
      */

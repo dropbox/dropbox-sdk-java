@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class LockFileBatchResult extends FileOpsResult {
-    // struct files.LockFileBatchResult (files.stone)
+    // struct files.LockFileBatchResult (files_files_public_types.stone)
 
     @Nonnull
     protected final List<LockFileResultEntry> entries;

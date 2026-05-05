@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * GPS coordinates for a photo or video.
  */
 public class GpsCoordinates {
-    // struct files.GpsCoordinates (files.stone)
+    // struct files.GpsCoordinates (files_files_public_base.stone)
 
     protected final double latitude;
     protected final double longitude;

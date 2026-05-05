@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Sharing info for a file or folder.
  */
 public class SharingInfo {
-    // struct files.SharingInfo (files.stone)
+    // struct files.SharingInfo (files_files_public_base.stone)
 
     protected final boolean readOnly;
 

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class FileMetadata extends Metadata {
-    // struct files.FileMetadata (files.stone)
+    // struct files.FileMetadata (files_files_public_base.stone)
 
     @Nonnull
     protected final String id;
@@ -107,12 +107,12 @@ public class FileMetadata extends Metadata {
      *     properties with the property template specified. Must not contain a
      *     {@code null} item.
      * @param hasExplicitSharedMembers  This flag will only be present if
-     *     include_has_explicit_shared_members  is true in {@link
+     *     include_has_explicit_shared_members is true in {@link
      *     DbxAppFilesRequests#listFolder(String)} or {@link
-     *     DbxUserFilesRequests#getMetadata(String)}. If this  flag is present,
-     *     it will be true if this file has any explicit shared  members. This
-     *     is different from sharing_info in that this could be true  in the
-     *     case where a file has explicit members but is not contained within  a
+     *     DbxUserFilesRequests#getMetadata(String)}. If this flag is present,
+     *     it will be true if this file has any explicit shared members. This is
+     *     different from sharing_info in that this could be true in the case
+     *     where a file has explicit members but is not contained within a
      *     shared folder.
      * @param contentHash  A hash of the file content. This field can be used to
      *     verify data integrity. For more information see our <a
@@ -390,12 +390,12 @@ public class FileMetadata extends Metadata {
     }
 
     /**
-     * This flag will only be present if include_has_explicit_shared_members  is
+     * This flag will only be present if include_has_explicit_shared_members is
      * true in {@link DbxAppFilesRequests#listFolder(String)} or {@link
-     * DbxUserFilesRequests#getMetadata(String)}. If this  flag is present, it
-     * will be true if this file has any explicit shared  members. This is
-     * different from sharing_info in that this could be true  in the case where
-     * a file has explicit members but is not contained within  a shared folder.
+     * DbxUserFilesRequests#getMetadata(String)}. If this flag is present, it
+     * will be true if this file has any explicit shared members. This is
+     * different from sharing_info in that this could be true in the case where
+     * a file has explicit members but is not contained within a shared folder.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -621,13 +621,13 @@ public class FileMetadata extends Metadata {
          * Set value for optional field.
          *
          * @param hasExplicitSharedMembers  This flag will only be present if
-         *     include_has_explicit_shared_members  is true in {@link
+         *     include_has_explicit_shared_members is true in {@link
          *     DbxAppFilesRequests#listFolder(String)} or {@link
-         *     DbxUserFilesRequests#getMetadata(String)}. If this  flag is
+         *     DbxUserFilesRequests#getMetadata(String)}. If this flag is
          *     present, it will be true if this file has any explicit shared
          *     members. This is different from sharing_info in that this could
-         *     be true  in the case where a file has explicit members but is not
-         *     contained within  a shared folder.
+         *     be true in the case where a file has explicit members but is not
+         *     contained within a shared folder.
          *
          * @return this builder
          */

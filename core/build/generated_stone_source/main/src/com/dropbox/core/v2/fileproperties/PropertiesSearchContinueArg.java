@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties.stone */
+/* This file was generated from file_properties_apiv2_file_properties_types.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class PropertiesSearchContinueArg {
-    // struct file_properties.PropertiesSearchContinueArg (file_properties.stone)
+    // struct file_properties.PropertiesSearchContinueArg (file_properties_apiv2_file_properties_types.stone)
 
     @Nonnull
     protected final String cursor;

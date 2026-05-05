@@ -70,17 +70,10 @@ public class AddFileMemberBuilder {
     /**
      * Set value for optional field.
      *
-     * <p> If left unset or set to {@code null}, defaults to {@code
-     * AccessLevel.VIEWER}. </p>
-     *
      * @param accessLevel  AccessLevel union object, describing what access
-     *     level we want to give new members. Must not be {@code null}. Defaults
-     *     to {@code AccessLevel.VIEWER} when set to {@code null}.
+     *     level we want to give new members.
      *
      * @return this builder
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
      */
     public AddFileMemberBuilder withAccessLevel(AccessLevel accessLevel) {
         this._builder.withAccessLevel(accessLevel);
@@ -93,13 +86,25 @@ public class AddFileMemberBuilder {
      * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
      *
      * @param addMessageAsComment  If the custom message should be added as a
-     *     comment on the file. Defaults to {@code false} when set to {@code
-     *     null}.
+     *     comment on the file. Only meant for Paper files. Defaults to {@code
+     *     false} when set to {@code null}.
      *
      * @return this builder
      */
     public AddFileMemberBuilder withAddMessageAsComment(Boolean addMessageAsComment) {
         this._builder.withAddMessageAsComment(addMessageAsComment);
+        return this;
+    }
+
+    /**
+     * Set value for optional field.
+     *
+     * @param fpSealedResult  The FingerprintJS Sealed Client Result value.
+     *
+     * @return this builder
+     */
+    public AddFileMemberBuilder withFpSealedResult(String fpSealedResult) {
+        this._builder.withFpSealedResult(fpSealedResult);
         return this;
     }
 

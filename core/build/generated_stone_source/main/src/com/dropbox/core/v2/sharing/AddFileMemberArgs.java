@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing_apiv2_sharing_files_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Arguments for {@link DbxUserSharingRequests#addFileMember(String,List)}.
  */
 class AddFileMemberArgs {
-    // struct sharing.AddFileMemberArgs (sharing_files.stone)
+    // struct sharing.AddFileMemberArgs (sharing_apiv2_sharing_files_types.stone)
 
     @Nonnull
     protected final String file;
@@ -34,9 +34,11 @@ class AddFileMemberArgs {
     @Nullable
     protected final String customMessage;
     protected final boolean quiet;
-    @Nonnull
+    @Nullable
     protected final AccessLevel accessLevel;
     protected final boolean addMessageAsComment;
+    @Nullable
+    protected final String fpSealedResult;
 
     /**
      * Arguments for {@link DbxUserSharingRequests#addFileMember(String,List)}.
@@ -57,14 +59,15 @@ class AddFileMemberArgs {
      * @param quiet  Whether added members should be notified via email and
      *     device notifications of their invitation.
      * @param accessLevel  AccessLevel union object, describing what access
-     *     level we want to give new members. Must not be {@code null}.
+     *     level we want to give new members.
      * @param addMessageAsComment  If the custom message should be added as a
-     *     comment on the file.
+     *     comment on the file. Only meant for Paper files.
+     * @param fpSealedResult  The FingerprintJS Sealed Client Result value.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFileMemberArgs(@Nonnull String file, @Nonnull List<MemberSelector> members, @Nullable String customMessage, boolean quiet, @Nonnull AccessLevel accessLevel, boolean addMessageAsComment) {
+    public AddFileMemberArgs(@Nonnull String file, @Nonnull List<MemberSelector> members, @Nullable String customMessage, boolean quiet, @Nullable AccessLevel accessLevel, boolean addMessageAsComment, @Nullable String fpSealedResult) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -86,11 +89,9 @@ class AddFileMemberArgs {
         this.members = members;
         this.customMessage = customMessage;
         this.quiet = quiet;
-        if (accessLevel == null) {
-            throw new IllegalArgumentException("Required value for 'accessLevel' is null");
-        }
         this.accessLevel = accessLevel;
         this.addMessageAsComment = addMessageAsComment;
+        this.fpSealedResult = fpSealedResult;
     }
 
     /**
@@ -111,7 +112,7 @@ class AddFileMemberArgs {
      *     preconditions.
      */
     public AddFileMemberArgs(@Nonnull String file, @Nonnull List<MemberSelector> members) {
-        this(file, members, null, false, AccessLevel.VIEWER, false);
+        this(file, members, null, false, null, false, null);
     }
 
     /**
@@ -161,22 +162,32 @@ class AddFileMemberArgs {
      * AccessLevel union object, describing what access level we want to give
      * new members.
      *
-     * @return value for this field, or {@code null} if not present. Defaults to
-     *     AccessLevel.VIEWER.
+     * @return value for this field, or {@code null} if not present.
      */
-    @Nonnull
+    @Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
 
     /**
-     * If the custom message should be added as a comment on the file.
+     * If the custom message should be added as a comment on the file. Only
+     * meant for Paper files.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
      */
     public boolean getAddMessageAsComment() {
         return addMessageAsComment;
+    }
+
+    /**
+     * The FingerprintJS Sealed Client Result value
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public String getFpSealedResult() {
+        return fpSealedResult;
     }
 
     /**
@@ -211,6 +222,7 @@ class AddFileMemberArgs {
         protected boolean quiet;
         protected AccessLevel accessLevel;
         protected boolean addMessageAsComment;
+        protected String fpSealedResult;
 
         protected Builder(String file, List<MemberSelector> members) {
             if (file == null) {
@@ -234,8 +246,9 @@ class AddFileMemberArgs {
             this.members = members;
             this.customMessage = null;
             this.quiet = false;
-            this.accessLevel = AccessLevel.VIEWER;
+            this.accessLevel = null;
             this.addMessageAsComment = false;
+            this.fpSealedResult = null;
         }
 
         /**
@@ -276,25 +289,13 @@ class AddFileMemberArgs {
         /**
          * Set value for optional field.
          *
-         * <p> If left unset or set to {@code null}, defaults to {@code
-         * AccessLevel.VIEWER}. </p>
-         *
          * @param accessLevel  AccessLevel union object, describing what access
-         *     level we want to give new members. Must not be {@code null}.
-         *     Defaults to {@code AccessLevel.VIEWER} when set to {@code null}.
+         *     level we want to give new members.
          *
          * @return this builder
-         *
-         * @throws IllegalArgumentException  If any argument does not meet its
-         *     preconditions.
          */
         public Builder withAccessLevel(AccessLevel accessLevel) {
-            if (accessLevel != null) {
-                this.accessLevel = accessLevel;
-            }
-            else {
-                this.accessLevel = AccessLevel.VIEWER;
-            }
+            this.accessLevel = accessLevel;
             return this;
         }
 
@@ -305,8 +306,8 @@ class AddFileMemberArgs {
          * </p>
          *
          * @param addMessageAsComment  If the custom message should be added as
-         *     a comment on the file. Defaults to {@code false} when set to
-         *     {@code null}.
+         *     a comment on the file. Only meant for Paper files. Defaults to
+         *     {@code false} when set to {@code null}.
          *
          * @return this builder
          */
@@ -321,13 +322,25 @@ class AddFileMemberArgs {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param fpSealedResult  The FingerprintJS Sealed Client Result value.
+         *
+         * @return this builder
+         */
+        public Builder withFpSealedResult(String fpSealedResult) {
+            this.fpSealedResult = fpSealedResult;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link AddFileMemberArgs} configured with this
          * builder's values
          *
          * @return new instance of {@link AddFileMemberArgs}
          */
         public AddFileMemberArgs build() {
-            return new AddFileMemberArgs(file, members, customMessage, quiet, accessLevel, addMessageAsComment);
+            return new AddFileMemberArgs(file, members, customMessage, quiet, accessLevel, addMessageAsComment, fpSealedResult);
         }
     }
 
@@ -339,7 +352,8 @@ class AddFileMemberArgs {
             this.customMessage,
             this.quiet,
             this.accessLevel,
-            this.addMessageAsComment
+            this.addMessageAsComment,
+            this.fpSealedResult
         });
         return hash;
     }
@@ -359,8 +373,9 @@ class AddFileMemberArgs {
                 && ((this.members == other.members) || (this.members.equals(other.members)))
                 && ((this.customMessage == other.customMessage) || (this.customMessage != null && this.customMessage.equals(other.customMessage)))
                 && (this.quiet == other.quiet)
-                && ((this.accessLevel == other.accessLevel) || (this.accessLevel.equals(other.accessLevel)))
+                && ((this.accessLevel == other.accessLevel) || (this.accessLevel != null && this.accessLevel.equals(other.accessLevel)))
                 && (this.addMessageAsComment == other.addMessageAsComment)
+                && ((this.fpSealedResult == other.fpSealedResult) || (this.fpSealedResult != null && this.fpSealedResult.equals(other.fpSealedResult)))
                 ;
         }
         else {
@@ -406,10 +421,16 @@ class AddFileMemberArgs {
             }
             g.writeFieldName("quiet");
             StoneSerializers.boolean_().serialize(value.quiet, g);
-            g.writeFieldName("access_level");
-            AccessLevel.Serializer.INSTANCE.serialize(value.accessLevel, g);
+            if (value.accessLevel != null) {
+                g.writeFieldName("access_level");
+                StoneSerializers.nullable(AccessLevel.Serializer.INSTANCE).serialize(value.accessLevel, g);
+            }
             g.writeFieldName("add_message_as_comment");
             StoneSerializers.boolean_().serialize(value.addMessageAsComment, g);
+            if (value.fpSealedResult != null) {
+                g.writeFieldName("fp_sealed_result");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.fpSealedResult, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -428,8 +449,9 @@ class AddFileMemberArgs {
                 List<MemberSelector> f_members = null;
                 String f_customMessage = null;
                 Boolean f_quiet = false;
-                AccessLevel f_accessLevel = AccessLevel.VIEWER;
+                AccessLevel f_accessLevel = null;
                 Boolean f_addMessageAsComment = false;
+                String f_fpSealedResult = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -446,10 +468,13 @@ class AddFileMemberArgs {
                         f_quiet = StoneSerializers.boolean_().deserialize(p);
                     }
                     else if ("access_level".equals(field)) {
-                        f_accessLevel = AccessLevel.Serializer.INSTANCE.deserialize(p);
+                        f_accessLevel = StoneSerializers.nullable(AccessLevel.Serializer.INSTANCE).deserialize(p);
                     }
                     else if ("add_message_as_comment".equals(field)) {
                         f_addMessageAsComment = StoneSerializers.boolean_().deserialize(p);
+                    }
+                    else if ("fp_sealed_result".equals(field)) {
+                        f_fpSealedResult = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
                     else {
                         skipValue(p);
@@ -461,7 +486,7 @@ class AddFileMemberArgs {
                 if (f_members == null) {
                     throw new JsonParseException(p, "Required field \"members\" missing.");
                 }
-                value = new AddFileMemberArgs(f_file, f_members, f_customMessage, f_quiet, f_accessLevel, f_addMessageAsComment);
+                value = new AddFileMemberArgs(f_file, f_members, f_customMessage, f_quiet, f_accessLevel, f_addMessageAsComment, f_fpSealedResult);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -22,17 +22,20 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class ListFolderMembersArgs extends ListFolderMembersCursorArg {
-    // struct sharing.ListFolderMembersArgs (sharing_folders.stone)
+    // struct sharing.ListFolderMembersArgs (sharing_apiv2_sharing_folders_types.stone)
 
     @Nonnull
     protected final String sharedFolderId;
+    @Nullable
+    protected final String path;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields.
      *
-     * @param sharedFolderId  The ID for the shared folder. Must match pattern
-     *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     * @param sharedFolderId  The ID for the shared folder. When path is
+     *     provided, the folder ID will be extracted from the path instead. Must
+     *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      * @param actions  This is a list indicating whether each returned member
      *     will include a boolean value {@link MemberPermission#getAllow} that
      *     describes whether the current user can perform the MemberAction on
@@ -40,11 +43,15 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
      * @param limit  The maximum number of results that include members, groups
      *     and invitees to return per request. Must be greater than or equal to
      *     1 and be less than or equal to 1000.
+     * @param path  Optional path to get inherited members. When omitted, uses
+     *     shared_folder_id to return direct members. When provided, extracts
+     *     folder ID from this path and returns users who have access through
+     *     parent shared folder.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderMembersArgs(@Nonnull String sharedFolderId, @Nullable List<MemberAction> actions, long limit) {
+    public ListFolderMembersArgs(@Nonnull String sharedFolderId, @Nullable List<MemberAction> actions, long limit, @Nullable String path) {
         super(actions, limit);
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
@@ -53,6 +60,7 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
             throw new IllegalArgumentException("String 'sharedFolderId' does not match pattern");
         }
         this.sharedFolderId = sharedFolderId;
+        this.path = path;
     }
 
     /**
@@ -60,18 +68,20 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
      *
      * <p> The default values for unset fields will be used. </p>
      *
-     * @param sharedFolderId  The ID for the shared folder. Must match pattern
-     *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     * @param sharedFolderId  The ID for the shared folder. When path is
+     *     provided, the folder ID will be extracted from the path instead. Must
+     *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
     public ListFolderMembersArgs(@Nonnull String sharedFolderId) {
-        this(sharedFolderId, null, 1000L);
+        this(sharedFolderId, null, 1000L, null);
     }
 
     /**
-     * The ID for the shared folder.
+     * The ID for the shared folder. When path is provided, the folder ID will
+     * be extracted from the path instead.
      *
      * @return value for this field, never {@code null}.
      */
@@ -104,10 +114,24 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
     }
 
     /**
+     * Optional path to get inherited members. When omitted, uses
+     * shared_folder_id to return direct members. When provided, extracts folder
+     * ID from this path and returns users who have access through parent shared
+     * folder.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public String getPath() {
+        return path;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
-     * @param sharedFolderId  The ID for the shared folder. Must match pattern
-     *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     * @param sharedFolderId  The ID for the shared folder. When path is
+     *     provided, the folder ID will be extracted from the path instead. Must
+     *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      *
      * @return builder for this class.
      *
@@ -124,6 +148,8 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
     public static class Builder extends ListFolderMembersCursorArg.Builder {
         protected final String sharedFolderId;
 
+        protected String path;
+
         protected Builder(String sharedFolderId) {
             if (sharedFolderId == null) {
                 throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
@@ -132,6 +158,22 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
                 throw new IllegalArgumentException("String 'sharedFolderId' does not match pattern");
             }
             this.sharedFolderId = sharedFolderId;
+            this.path = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param path  Optional path to get inherited members. When omitted,
+         *     uses shared_folder_id to return direct members. When provided,
+         *     extracts folder ID from this path and returns users who have
+         *     access through parent shared folder.
+         *
+         * @return this builder
+         */
+        public Builder withPath(String path) {
+            this.path = path;
+            return this;
         }
 
         /**
@@ -181,14 +223,15 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
          * @return new instance of {@link ListFolderMembersArgs}
          */
         public ListFolderMembersArgs build() {
-            return new ListFolderMembersArgs(sharedFolderId, actions, limit);
+            return new ListFolderMembersArgs(sharedFolderId, actions, limit, path);
         }
     }
 
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            this.sharedFolderId
+            this.sharedFolderId,
+            this.path
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -208,6 +251,7 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
             return ((this.sharedFolderId == other.sharedFolderId) || (this.sharedFolderId.equals(other.sharedFolderId)))
                 && ((this.actions == other.actions) || (this.actions != null && this.actions.equals(other.actions)))
                 && (this.limit == other.limit)
+                && ((this.path == other.path) || (this.path != null && this.path.equals(other.path)))
                 ;
         }
         else {
@@ -251,6 +295,10 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
             }
             g.writeFieldName("limit");
             StoneSerializers.uInt32().serialize(value.limit, g);
+            if (value.path != null) {
+                g.writeFieldName("path");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.path, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -268,6 +316,7 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
                 String f_sharedFolderId = null;
                 List<MemberAction> f_actions = null;
                 Long f_limit = 1000L;
+                String f_path = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -280,6 +329,9 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
                     else if ("limit".equals(field)) {
                         f_limit = StoneSerializers.uInt32().deserialize(p);
                     }
+                    else if ("path".equals(field)) {
+                        f_path = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -287,7 +339,7 @@ class ListFolderMembersArgs extends ListFolderMembersCursorArg {
                 if (f_sharedFolderId == null) {
                     throw new JsonParseException(p, "Required field \"shared_folder_id\" missing.");
                 }
-                value = new ListFolderMembersArgs(f_sharedFolderId, f_actions, f_limit);
+                value = new ListFolderMembersArgs(f_sharedFolderId, f_actions, f_limit, f_path);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

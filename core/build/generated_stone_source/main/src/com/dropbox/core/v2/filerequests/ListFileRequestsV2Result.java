@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_requests.stone */
+/* This file was generated from file_requests_apiv2_file_requests_public.stone */
 
 package com.dropbox.core.v2.filerequests;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  * DbxUserFileRequestsRequests#listContinue(String)}.
  */
 public class ListFileRequestsV2Result {
-    // struct file_requests.ListFileRequestsV2Result (file_requests.stone)
+    // struct file_requests.ListFileRequestsV2Result (file_requests_apiv2_file_requests_public.stone)
 
     @Nonnull
     protected final List<FileRequest> fileRequests;

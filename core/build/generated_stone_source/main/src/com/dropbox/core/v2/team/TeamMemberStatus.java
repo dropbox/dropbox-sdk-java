@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from team_team_common.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import java.util.Arrays;
  * tag associated with this instance. </p>
  */
 public final class TeamMemberStatus {
-    // union team.TeamMemberStatus (team.stone)
+    // union team.TeamMemberStatus (team_team_common.stone)
 
     /**
      * Discriminating tag type for {@link TeamMemberStatus}.

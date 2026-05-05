@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_legal_holds.stone */
+/* This file was generated from team_team_legal_holds.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum LegalHoldsPolicyReleaseError {
-    // union team.LegalHoldsPolicyReleaseError (team_legal_holds.stone)
+    // union team.LegalHoldsPolicyReleaseError (team_team_legal_holds.stone)
     /**
      * There has been an unknown legal hold error.
      */

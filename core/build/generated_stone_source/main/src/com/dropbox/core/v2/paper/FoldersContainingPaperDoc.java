@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Metadata about Paper folders containing the specififed Paper doc.
  */
 public class FoldersContainingPaperDoc {
-    // struct paper.FoldersContainingPaperDoc (paper.stone)
+    // struct paper.FoldersContainingPaperDoc (paper_apiv2_paper_types.stone)
 
     @Nullable
     protected final FolderSharingPolicyType folderSharingPolicyType;

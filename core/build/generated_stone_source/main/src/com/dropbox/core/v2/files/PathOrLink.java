@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * will be used. </p>
  */
 public final class PathOrLink {
-    // union files.PathOrLink (files.stone)
+    // union files.PathOrLink (files_files_public_base.stone)
 
     /**
      * Discriminating tag type for {@link PathOrLink}.
@@ -80,8 +80,8 @@ public final class PathOrLink {
     /**
      *
      * @param pathValue  Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -150,14 +150,15 @@ public final class PathOrLink {
      *     Tag#PATH}.
      *
      * @throws IllegalArgumentException  if {@code value} does not match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     or is {@code null}.
      */
     public static PathOrLink path(String value) {
         if (value == null) {
             throw new IllegalArgumentException("Value is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", value)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)", value)) {
             throw new IllegalArgumentException("String does not match pattern");
         }
         return new PathOrLink().withTagAndPath(Tag.PATH, value);

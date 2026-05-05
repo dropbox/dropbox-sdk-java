@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import java.util.Arrays;
  * associated with this instance.
  */
 public final class ShareFolderError {
-    // union sharing.ShareFolderError (sharing_folders.stone)
+    // union sharing.ShareFolderError (sharing_apiv2_sharing_folders_types.stone)
 
     /**
      * Discriminating tag type for {@link ShareFolderError}.
@@ -41,8 +41,8 @@ public final class ShareFolderError {
          */
         BAD_PATH, // SharePathError
         /**
-         * Team policy is more restrictive than {@link
-         * ShareFolderArg#getMemberPolicy}.
+         * Team policy or group sharing settings are more restrictive than
+         * {@link ShareFolderArg#getMemberPolicy}.
          */
         TEAM_POLICY_DISALLOWS_MEMBER_POLICY,
         /**
@@ -72,7 +72,7 @@ public final class ShareFolderError {
      */
     public static final ShareFolderError EMAIL_UNVERIFIED = new ShareFolderError().withTag(Tag.EMAIL_UNVERIFIED);
     /**
-     * Team policy is more restrictive than {@link
+     * Team policy or group sharing settings are more restrictive than {@link
      * ShareFolderArg#getMemberPolicy}.
      */
     public static final ShareFolderError TEAM_POLICY_DISALLOWS_MEMBER_POLICY = new ShareFolderError().withTag(Tag.TEAM_POLICY_DISALLOWS_MEMBER_POLICY);

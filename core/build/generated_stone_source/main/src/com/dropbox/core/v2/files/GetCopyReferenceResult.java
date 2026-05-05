@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -21,7 +21,7 @@ import java.util.Date;
 import javax.annotation.Nonnull;
 
 public class GetCopyReferenceResult {
-    // struct files.GetCopyReferenceResult (files.stone)
+    // struct files.GetCopyReferenceResult (files_files_public_types.stone)
 
     @Nonnull
     protected final Metadata metadata;

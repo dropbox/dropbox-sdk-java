@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class SearchV2Arg {
-    // struct files.SearchV2Arg (files.stone)
+    // struct files.SearchV2Arg (files_files_public_types.stone)
 
     @Nonnull
     protected final String query;

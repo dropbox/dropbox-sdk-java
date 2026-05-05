@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing_apiv2_sharing_files_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Arguments of {@link DbxUserSharingRequests#getFileMetadata(String,List)}.
  */
 class GetFileMetadataArg {
-    // struct sharing.GetFileMetadataArg (sharing_files.stone)
+    // struct sharing.GetFileMetadataArg (sharing_apiv2_sharing_files_types.stone)
 
     @Nonnull
     protected final String file;
@@ -39,7 +39,7 @@ class GetFileMetadataArg {
      *     pattern "{@code ((/|id:).*|nspath:[0-9]+:.*)|ns:[0-9]+(/.*)?}", and
      *     not be {@code null}.
      * @param actions  A list of `FileAction`s corresponding to
-     *     `FilePermission`s that should appear in the  response's {@link
+     *     `FilePermission`s that should appear in the response's {@link
      *     SharedFileMetadata#getPermissions} field describing the actions the
      *     authenticated user can perform on the file. Must not contain a {@code
      *     null} item.
@@ -96,8 +96,8 @@ class GetFileMetadataArg {
 
     /**
      * A list of `FileAction`s corresponding to `FilePermission`s that should
-     * appear in the  response's {@link SharedFileMetadata#getPermissions} field
-     * describing the actions the  authenticated user can perform on the file.
+     * appear in the response's {@link SharedFileMetadata#getPermissions} field
+     * describing the actions the authenticated user can perform on the file.
      *
      * @return value for this field, or {@code null} if not present.
      */

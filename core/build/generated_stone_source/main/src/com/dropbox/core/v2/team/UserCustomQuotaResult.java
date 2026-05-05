@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_member_space_limits.stone */
+/* This file was generated from team_apiv2_team_member_space_limits.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,11 +20,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * User and their custom quota in GB (1 TB = 1024 GB).  No quota returns if the
+ * User and their custom quota in GB (1 TB = 1024 GB). No quota returns if the
  * user has no custom quota set.
  */
 public class UserCustomQuotaResult {
-    // struct team.UserCustomQuotaResult (team_member_space_limits.stone)
+    // struct team.UserCustomQuotaResult (team_apiv2_team_member_space_limits.stone)
 
     @Nonnull
     protected final UserSelectorArg user;
@@ -32,11 +32,11 @@ public class UserCustomQuotaResult {
     protected final Long quotaGb;
 
     /**
-     * User and their custom quota in GB (1 TB = 1024 GB).  No quota returns if
+     * User and their custom quota in GB (1 TB = 1024 GB). No quota returns if
      * the user has no custom quota set.
      *
      * @param user  Must not be {@code null}.
-     * @param quotaGb  Must be greater than or equal to 15.
+     * @param quotaGb  Must be greater than or equal to 2.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -47,15 +47,15 @@ public class UserCustomQuotaResult {
         }
         this.user = user;
         if (quotaGb != null) {
-            if (quotaGb < 15L) {
-                throw new IllegalArgumentException("Number 'quotaGb' is smaller than 15L");
+            if (quotaGb < 2L) {
+                throw new IllegalArgumentException("Number 'quotaGb' is smaller than 2L");
             }
         }
         this.quotaGb = quotaGb;
     }
 
     /**
-     * User and their custom quota in GB (1 TB = 1024 GB).  No quota returns if
+     * User and their custom quota in GB (1 TB = 1024 GB). No quota returns if
      * the user has no custom quota set.
      *
      * <p> The default values for unset fields will be used. </p>

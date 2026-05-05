@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from async.stone */
+/* This file was generated from async_common_async.stone */
 
 package com.dropbox.core.v2.async;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Error returned by methods for polling the status of asynchronous job.
  */
 public enum PollError {
-    // union async.PollError (async.stone)
+    // union async.PollError (async_common_async.stone)
     /**
      * The job ID is invalid.
      */

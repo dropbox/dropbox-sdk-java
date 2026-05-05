@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.stone */
+/* This file was generated from team_apiv2_team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class GroupsMembersListResult {
-    // struct team.GroupsMembersListResult (team_groups.stone)
+    // struct team.GroupsMembersListResult (team_apiv2_team_groups.stone)
 
     @Nonnull
     protected final List<GroupMemberInfo> members;

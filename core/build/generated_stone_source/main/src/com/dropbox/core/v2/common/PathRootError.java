@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from common.stone */
+/* This file was generated from common_common.stone */
 
 package com.dropbox.core.v2.common;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class PathRootError {
-    // union common.PathRootError (common.stone)
+    // union common.PathRootError (common_common.stone)
 
     /**
      * Discriminating tag type for {@link PathRootError}.
@@ -40,7 +40,7 @@ public final class PathRootError {
         INVALID_ROOT, // RootInfo
         /**
          * You don't have permission to access the namespace id in
-         * Dropbox-API-Path-Root  header.
+         * Dropbox-API-Path-Root header.
          */
         NO_PERMISSION,
         /**
@@ -56,7 +56,7 @@ public final class PathRootError {
 
     /**
      * You don't have permission to access the namespace id in
-     * Dropbox-API-Path-Root  header.
+     * Dropbox-API-Path-Root header.
      */
     public static final PathRootError NO_PERMISSION = new PathRootError().withTag(Tag.NO_PERMISSION);
     /**

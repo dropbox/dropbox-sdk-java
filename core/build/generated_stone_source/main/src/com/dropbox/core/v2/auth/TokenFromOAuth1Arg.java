@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from auth.stone */
+/* This file was generated from auth_apiv2_auth.stone */
 
 package com.dropbox.core.v2.auth;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class TokenFromOAuth1Arg {
-    // struct auth.TokenFromOAuth1Arg (auth.stone)
+    // struct auth.TokenFromOAuth1Arg (auth_apiv2_auth.stone)
 
     @Nonnull
     protected final String oauth1Token;

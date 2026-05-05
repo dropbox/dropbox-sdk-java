@@ -86,7 +86,7 @@ public class MembersRemoveBuilder {
      * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
      *
      * @param keepAccount  Downgrade the member to a Basic account. The user
-     *     will retain the email address associated with their Dropbox  account
+     *     will retain the email address associated with their Dropbox account
      *     and data in their account that is not restricted to team members. In
      *     order to keep the account the argument the {@code wipeData} argument
      *     to {@link
@@ -121,6 +121,23 @@ public class MembersRemoveBuilder {
      */
     public MembersRemoveBuilder withRetainTeamShares(Boolean retainTeamShares) {
         this._builder.withRetainTeamShares(retainTeamShares);
+        return this;
+    }
+
+    /**
+     * Set value for optional field.
+     *
+     * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
+     *
+     * @param permanentlyDeleteFiles  Permanently delete the data in the deleted
+     *     member's account. After permanent deletion, the data is no longer
+     *     available to be transferred to a different user. Defaults to {@code
+     *     false} when set to {@code null}.
+     *
+     * @return this builder
+     */
+    public MembersRemoveBuilder withPermanentlyDeleteFiles(Boolean permanentlyDeleteFiles) {
+        this._builder.withPermanentlyDeleteFiles(permanentlyDeleteFiles);
         return this;
     }
 

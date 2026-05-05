@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports.stone */
+/* This file was generated from team_reports_apiv2_team_reports_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum TeamReportFailureReason {
-    // union team.TeamReportFailureReason (team_reports.stone)
+    // union team.TeamReportFailureReason (team_reports_apiv2_team_reports_types.stone)
     /**
      * We couldn't create the report, but we think this was a fluke. Everything
      * should work if you try it again.

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Data structure representing a Paper folder.
  */
 public class Folder {
-    // struct paper.Folder (paper.stone)
+    // struct paper.Folder (paper_apiv2_paper_types.stone)
 
     @Nonnull
     protected final String id;

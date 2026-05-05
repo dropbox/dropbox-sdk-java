@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Added members as audience of shared link.
  */
 public class SharedLinkShareDetails {
-    // struct team_log.SharedLinkShareDetails (team_log_generated.stone)
+    // struct team_log.SharedLinkShareDetails (team_log_stone_gen_team_log_generated.stone)
 
     @Nullable
     protected final UserLogInfo sharedLinkOwner;

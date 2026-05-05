@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone, sharing_files.stone, shared_links.stone, shared_content_links.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone, sharing_apiv2_sharing_common_types.stone, sharing_apiv2_sharing_folders_base.stone, sharing_apiv2_sharing_files_types.stone, sharing_apiv2_shared_links_types.stone, sharing_apiv2_shared_content_links.stone, sharing_apiv2_sharing_files_service.stone, sharing_folders_apiv2_sharing_folders.stone, sharing_apiv2_shared_links_sharing_api_v2.stone, sharing_apiv2_shared_links_api_v2.stone, sharing_apiv2_file_metadata_service.stone, sharing_folders_apiv2_sharing_folders_members.stone, sharing_apiv2_shared_link_file_api_v2.stone, sharing_apiv2_list_file_member_service.stone, sharing_apiv2_sharing_files_async_service.stone, sharing_apiv2_list_shared_links_api_v2.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -25,7 +25,7 @@ import java.util.Map;
  * Routes in namespace "sharing".
  */
 public class DbxUserSharingRequests {
-    // namespace sharing (sharing_folders.stone, sharing_files.stone, shared_links.stone, shared_content_links.stone)
+    // namespace sharing (sharing_apiv2_sharing_folders_types.stone, sharing_apiv2_sharing_common_types.stone, sharing_apiv2_sharing_folders_base.stone, sharing_apiv2_sharing_files_types.stone, sharing_apiv2_shared_links_types.stone, sharing_apiv2_shared_content_links.stone, sharing_apiv2_sharing_files_service.stone, sharing_folders_apiv2_sharing_folders.stone, sharing_apiv2_shared_links_sharing_api_v2.stone, sharing_apiv2_shared_links_api_v2.stone, sharing_apiv2_file_metadata_service.stone, sharing_folders_apiv2_sharing_folders_members.stone, sharing_apiv2_shared_link_file_api_v2.stone, sharing_apiv2_list_file_member_service.stone, sharing_apiv2_sharing_files_async_service.stone, sharing_apiv2_list_shared_links_api_v2.stone)
 
     private final DbxRawClientV2 client;
 
@@ -132,11 +132,9 @@ public class DbxUserSharingRequests {
 
     /**
      * Allows an owner or editor (if the ACL update policy allows) of a shared
-     * folder to add another member.
-     *
-     * <p> For the new member to get access to all the functionality for this
-     * folder, you will need to call {@link
-     * DbxUserSharingRequests#mountFolder(String)} on their behalf. </p>
+     * folder to add another member. For the new member to get access to all the
+     * functionality for this folder, you will need to call {@link
+     * DbxUserSharingRequests#mountFolder(String)} on their behalf.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link AddFolderMemberBuilder} for more details. </p>
@@ -308,7 +306,8 @@ public class DbxUserSharingRequests {
      * shared link by moving or renaming the corresponding file or folder. In
      * the future, this will no longer be the case, so your app shouldn't rely
      * on this behavior. Instead, if your app needs to revoke a shared link, use
-     * {@link DbxUserSharingRequests#revokeSharedLink(String)}.
+     * revoke_shared_link. DEPRECATED: Use create_shared_link_with_settings
+     * instead.
      *
      *
      * @return Metadata for a path-based shared link.
@@ -329,16 +328,13 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * Create a shared link.
-     *
-     * <p> If a shared link already exists for the given path, that link is
-     * returned. </p>
-     *
-     * <p> Previously, it was technically possible to break a shared link by
-     * moving or renaming the corresponding file or folder. In the future, this
-     * will no longer be the case, so your app shouldn't rely on this behavior.
-     * Instead, if your app needs to revoke a shared link, use {@link
-     * DbxUserSharingRequests#revokeSharedLink(String)}. </p>
+     * Create a shared link. If a shared link already exists for the given path,
+     * that link is returned. Previously, it was technically possible to break a
+     * shared link by moving or renaming the corresponding file or folder. In
+     * the future, this will no longer be the case, so your app shouldn't rely
+     * on this behavior. Instead, if your app needs to revoke a shared link, use
+     * revoke_shared_link. DEPRECATED: Use create_shared_link_with_settings
+     * instead.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link CreateSharedLinkBuilder} for more details. </p>
@@ -350,9 +346,7 @@ public class DbxUserSharingRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link
-     *     DbxUserSharingRequests#createSharedLinkWithSettings(String,SharedLinkSettings)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public PathLinkMetadata createSharedLink(String path) throws CreateSharedLinkErrorException, DbxException {
@@ -366,7 +360,8 @@ public class DbxUserSharingRequests {
      * shared link by moving or renaming the corresponding file or folder. In
      * the future, this will no longer be the case, so your app shouldn't rely
      * on this behavior. Instead, if your app needs to revoke a shared link, use
-     * {@link DbxUserSharingRequests#revokeSharedLink(String)}.
+     * revoke_shared_link. DEPRECATED: Use create_shared_link_with_settings
+     * instead.
      *
      * @param path  The path to share. Must not be {@code null}.
      *
@@ -376,9 +371,7 @@ public class DbxUserSharingRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link
-     *     DbxUserSharingRequests#createSharedLinkWithSettings(String,SharedLinkSettings)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public CreateSharedLinkBuilder createSharedLinkBuilder(String path) {
@@ -392,9 +385,9 @@ public class DbxUserSharingRequests {
 
     /**
      * Create a shared link with custom settings. If no settings are given then
-     * the default visibility is {@link RequestedVisibility#PUBLIC} (The
-     * resolved visibility, though, may depend on other aspects such as team and
-     * shared folder settings).
+     * the default visibility is RequestedVisibility.public (The resolved
+     * visibility, though, may depend on other aspects such as team and shared
+     * folder settings).
      *
      *
      * @return The metadata of a shared link.
@@ -416,12 +409,13 @@ public class DbxUserSharingRequests {
 
     /**
      * Create a shared link with custom settings. If no settings are given then
-     * the default visibility is {@link RequestedVisibility#PUBLIC} (The
-     * resolved visibility, though, may depend on other aspects such as team and
-     * shared folder settings).
+     * the default visibility is RequestedVisibility.public (The resolved
+     * visibility, though, may depend on other aspects such as team and shared
+     * folder settings).
      *
      * @param path  The path to be shared by the shared link. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @return The metadata of a shared link.
@@ -436,12 +430,13 @@ public class DbxUserSharingRequests {
 
     /**
      * Create a shared link with custom settings. If no settings are given then
-     * the default visibility is {@link RequestedVisibility#PUBLIC} (The
-     * resolved visibility, though, may depend on other aspects such as team and
-     * shared folder settings).
+     * the default visibility is RequestedVisibility.public (The resolved
+     * visibility, though, may depend on other aspects such as team and shared
+     * folder settings).
      *
      * @param path  The path to be shared by the shared link. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      * @param settings  The requested settings for the newly created shared
      *     link.
@@ -507,7 +502,7 @@ public class DbxUserSharingRequests {
      *     pattern "{@code ((/|id:).*|nspath:[0-9]+:.*)|ns:[0-9]+(/.*)?}", and
      *     not be {@code null}.
      * @param actions  A list of `FileAction`s corresponding to
-     *     `FilePermission`s that should appear in the  response's {@link
+     *     `FilePermission`s that should appear in the response's {@link
      *     SharedFileMetadata#getPermissions} field describing the actions the
      *     authenticated user can perform on the file. Must not contain a {@code
      *     null} item.
@@ -574,7 +569,7 @@ public class DbxUserSharingRequests {
      * @param files  The files to query. Must contain at most 100 items, not
      *     contain a {@code null} item, and not be {@code null}.
      * @param actions  A list of `FileAction`s corresponding to
-     *     `FilePermission`s that should appear in the  response's {@link
+     *     `FilePermission`s that should appear in the response's {@link
      *     SharedFileMetadata#getPermissions} field describing the actions the
      *     authenticated user can perform on the file. Must not contain a {@code
      *     null} item.
@@ -643,7 +638,7 @@ public class DbxUserSharingRequests {
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      * @param actions  A list of `FolderAction`s corresponding to
-     *     `FolderPermission`s that should appear in the  response's {@link
+     *     `FolderPermission`s that should appear in the response's {@link
      *     SharedFolderMetadata#getPermissions} field describing the actions the
      *     authenticated user can perform on the folder. Must not contain a
      *     {@code null} item.
@@ -671,7 +666,8 @@ public class DbxUserSharingRequests {
     //
 
     /**
-     * Download the shared link's file from a user's Dropbox.
+     * Download the shared link's file from a user's Dropbox. This is a
+     * download-style endpoint that returns the file content.
      *
      * @param _headers  Extra headers to send with request.
      *
@@ -695,7 +691,8 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * Download the shared link's file from a user's Dropbox.
+     * Download the shared link's file from a user's Dropbox. This is a
+     * download-style endpoint that returns the file content.
      *
      * @param url  URL of the shared link. Must not be {@code null}.
      *
@@ -711,7 +708,8 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * Download the shared link's file from a user's Dropbox.
+     * Download the shared link's file from a user's Dropbox. This is a
+     * download-style endpoint that returns the file content.
      *
      * @param url  URL of the shared link. Must not be {@code null}.
      *
@@ -721,9 +719,9 @@ public class DbxUserSharingRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GetSharedLinkFileBuilder getSharedLinkFileBuilder(String url) {
+    public DbxUserGetSharedLinkFileBuilder getSharedLinkFileBuilder(String url) {
         GetSharedLinkMetadataArg.Builder argBuilder_ = GetSharedLinkMetadataArg.newBuilder(url);
-        return new GetSharedLinkFileBuilder(this, argBuilder_);
+        return new DbxUserGetSharedLinkFileBuilder(this, argBuilder_);
     }
 
     //
@@ -736,7 +734,7 @@ public class DbxUserSharingRequests {
      *
      * @return The metadata of a shared link.
      */
-    SharedLinkMetadata getSharedLinkMetadata(GetSharedLinkMetadataArg arg) throws SharedLinkErrorException, DbxException {
+    SharedLinkMetadata getSharedLinkMetadata(GetSharedLinkMetadataArg arg) throws SharedLinkMetadataErrorException, DbxException {
         try {
             return this.client.rpcStyle(this.client.getHost().getApi(),
                                         "2/sharing/get_shared_link_metadata",
@@ -744,10 +742,10 @@ public class DbxUserSharingRequests {
                                         false,
                                         GetSharedLinkMetadataArg.Serializer.INSTANCE,
                                         SharedLinkMetadata.Serializer.INSTANCE,
-                                        SharedLinkError.Serializer.INSTANCE);
+                                        SharedLinkMetadataError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SharedLinkErrorException("2/sharing/get_shared_link_metadata", ex.getRequestId(), ex.getUserMessage(), (SharedLinkError) ex.getErrorValue());
+            throw new SharedLinkMetadataErrorException("2/sharing/get_shared_link_metadata", ex.getRequestId(), ex.getUserMessage(), (SharedLinkMetadataError) ex.getErrorValue());
         }
     }
 
@@ -761,7 +759,7 @@ public class DbxUserSharingRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkMetadata getSharedLinkMetadata(String url) throws SharedLinkErrorException, DbxException {
+    public SharedLinkMetadata getSharedLinkMetadata(String url) throws SharedLinkMetadataErrorException, DbxException {
         GetSharedLinkMetadataArg _arg = new GetSharedLinkMetadataArg(url);
         return getSharedLinkMetadata(_arg);
     }
@@ -791,8 +789,8 @@ public class DbxUserSharingRequests {
      * collection links. If no path is given, returns a list of all shared links
      * for the current user, including collection links, up to a maximum of 1000
      * links. If a non-empty path is given, returns a list of all shared links
-     * that allow access to the given path.  Collection links are never returned
-     * in this case.
+     * that allow access to the given path. Collection links are never returned
+     * in this case. DEPRECATED: Use list_shared_links instead.
      *
      */
     GetSharedLinksResult getSharedLinks(GetSharedLinksArg arg) throws GetSharedLinksErrorException, DbxException {
@@ -812,17 +810,13 @@ public class DbxUserSharingRequests {
 
     /**
      * Returns a list of {@link LinkMetadata} objects for this user, including
-     * collection links.
+     * collection links. If no path is given, returns a list of all shared links
+     * for the current user, including collection links, up to a maximum of 1000
+     * links. If a non-empty path is given, returns a list of all shared links
+     * that allow access to the given path. Collection links are never returned
+     * in this case. DEPRECATED: Use list_shared_links instead.
      *
-     * <p> If no path is given, returns a list of all shared links for the
-     * current user, including collection links, up to a maximum of 1000 links.
-     * </p>
-     *
-     * <p> If a non-empty path is given, returns a list of all shared links that
-     * allow access to the given path.  Collection links are never returned in
-     * this case. </p>
-     *
-     * @deprecated use {@link DbxUserSharingRequests#listSharedLinks} instead.
+     * @deprecated
      */
     @Deprecated
     public GetSharedLinksResult getSharedLinks() throws GetSharedLinksErrorException, DbxException {
@@ -832,20 +826,16 @@ public class DbxUserSharingRequests {
 
     /**
      * Returns a list of {@link LinkMetadata} objects for this user, including
-     * collection links.
-     *
-     * <p> If no path is given, returns a list of all shared links for the
-     * current user, including collection links, up to a maximum of 1000 links.
-     * </p>
-     *
-     * <p> If a non-empty path is given, returns a list of all shared links that
-     * allow access to the given path.  Collection links are never returned in
-     * this case. </p>
+     * collection links. If no path is given, returns a list of all shared links
+     * for the current user, including collection links, up to a maximum of 1000
+     * links. If a non-empty path is given, returns a list of all shared links
+     * that allow access to the given path. Collection links are never returned
+     * in this case. DEPRECATED: Use list_shared_links instead.
      *
      * @param path  See {@link DbxUserSharingRequests#getSharedLinks(String)}
      *     description.
      *
-     * @deprecated use {@link DbxUserSharingRequests#listSharedLinks} instead.
+     * @deprecated
      */
     @Deprecated
     public GetSharedLinksResult getSharedLinks(String path) throws GetSharedLinksErrorException, DbxException {
@@ -964,12 +954,11 @@ public class DbxUserSharingRequests {
      * Get members of multiple files at once. The arguments to this route are
      * more limited, and the limit on query result size per file is more strict.
      * To customize the results more, use the individual file endpoint.
+     * Inherited users and groups are not included in the result, and
+     * permissions are not returned for this endpoint.
      *
-     * <p> Inherited users and groups are not included in the result, and
-     * permissions are not returned for this endpoint. </p>
-     *
-     * <p> The {@code limit} request parameter will default to {@code 10L} (see
-     * {@link #listFileMembersBatch(List,long)}). </p>
+     * <p> The {@code limit} request parameter will default to {@code 1000L}
+     * (see {@link #listFileMembersBatch(List,long)}). </p>
      *
      * @param files  Files for which to return members. Must contain at most 100
      *     items, not contain a {@code null} item, and not be {@code null}.
@@ -986,21 +975,20 @@ public class DbxUserSharingRequests {
      * Get members of multiple files at once. The arguments to this route are
      * more limited, and the limit on query result size per file is more strict.
      * To customize the results more, use the individual file endpoint.
-     *
-     * <p> Inherited users and groups are not included in the result, and
-     * permissions are not returned for this endpoint. </p>
+     * Inherited users and groups are not included in the result, and
+     * permissions are not returned for this endpoint.
      *
      * @param files  Files for which to return members. Must contain at most 100
      *     items, not contain a {@code null} item, and not be {@code null}.
-     * @param limit  Number of members to return max per query. Defaults to 10
-     *     if no limit is specified. Must be less than or equal to 20.
+     * @param limit  Number of members to return max per query. Defaults to 1000
+     *     if no limit is specified. Must be less than or equal to 3000.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
     public List<ListFileMembersBatchResult> listFileMembersBatch(List<String> files, long limit) throws SharingUserErrorException, DbxException {
-        if (limit > 20L) {
-            throw new IllegalArgumentException("Number 'limit' is larger than 20L");
+        if (limit > 3000L) {
+            throw new IllegalArgumentException("Number 'limit' is larger than 3000L");
         }
         ListFileMembersBatchArg _arg = new ListFileMembersBatchArg(files, limit);
         return listFileMembersBatch(_arg);
@@ -1097,8 +1085,9 @@ public class DbxUserSharingRequests {
      * <p> The default values for the optional request parameters will be used.
      * See {@link ListFolderMembersBuilder} for more details. </p>
      *
-     * @param sharedFolderId  The ID for the shared folder. Must match pattern
-     *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     * @param sharedFolderId  The ID for the shared folder. When path is
+     *     provided, the folder ID will be extracted from the path instead. Must
+     *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      *
      * @return Shared folder user and group membership.
      *
@@ -1113,8 +1102,9 @@ public class DbxUserSharingRequests {
     /**
      * Returns shared folder membership by its folder ID.
      *
-     * @param sharedFolderId  The ID for the shared folder. Must match pattern
-     *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     * @param sharedFolderId  The ID for the shared folder. When path is
+     *     provided, the folder ID will be extracted from the path instead. Must
+     *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -1402,9 +1392,7 @@ public class DbxUserSharingRequests {
     //
 
     /**
-     * Returns a list of all files shared with current user. Does not include
-     * files the user has received via shared folders, and does  not include
-     * unclaimed invitations.
+     * Returns a list of all files shared with current user.
      *
      * @param arg  Arguments for {@link
      *     DbxUserSharingRequests#listReceivedFiles}.
@@ -1430,9 +1418,6 @@ public class DbxUserSharingRequests {
     /**
      * Returns a list of all files shared with current user.
      *
-     * <p> Does not include files the user has received via shared folders, and
-     * does not include unclaimed invitations. </p>
-     *
      * <p> The default values for the optional request parameters will be used.
      * See {@link ListReceivedFilesBuilder} for more details. </p>
      *
@@ -1445,9 +1430,7 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * Returns a list of all files shared with current user. Does not include
-     * files the user has received via shared folders, and does  not include
-     * unclaimed invitations.
+     * Returns a list of all files shared with current user.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -1513,12 +1496,10 @@ public class DbxUserSharingRequests {
      * all shared links for the current user. For members of business teams
      * using team space and member folders, returns all shared links in the team
      * member's home folder unless the team space ID is specified in the request
-     * header. For more information, refer to the <a
-     * href="https://www.dropbox.com/developers/reference/namespace-guide">Namespace
-     * Guide</a>. If a non-empty path is given, returns a list of all shared
-     * links that allow access to the given path - direct links to the given
-     * path and links to parent folders of the given path. Links to parent
-     * folders can be suppressed by setting direct_only to true.
+     * header. If a non-empty path is given, returns a list of all shared links
+     * that allow access to the given path - direct links to the given path and
+     * links to parent folders of the given path. Links to parent folders can be
+     * suppressed by setting direct_only to true.
      *
      */
     ListSharedLinksResult listSharedLinks(ListSharedLinksArg arg) throws ListSharedLinksErrorException, DbxException {
@@ -1537,19 +1518,14 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * List shared links of this user.
-     *
-     * <p> If no path is given, returns a list of all shared links for the
-     * current user. For members of business teams using team space and member
-     * folders, returns all shared links in the team member's home folder unless
-     * the team space ID is specified in the request header. For more
-     * information, refer to the :link:`Namespace Guide
-     * https://www.dropbox.com/developers/reference/namespace-guide`. </p>
-     *
-     * <p> If a non-empty path is given, returns a list of all shared links that
-     * allow access to the given path - direct links to the given path and links
-     * to parent folders of the given path. Links to parent folders can be
-     * suppressed by setting direct_only to true. </p>
+     * List shared links of this user. If no path is given, returns a list of
+     * all shared links for the current user. For members of business teams
+     * using team space and member folders, returns all shared links in the team
+     * member's home folder unless the team space ID is specified in the request
+     * header. If a non-empty path is given, returns a list of all shared links
+     * that allow access to the given path - direct links to the given path and
+     * links to parent folders of the given path. Links to parent folders can be
+     * suppressed by setting direct_only to true.
      */
     public ListSharedLinksResult listSharedLinks() throws ListSharedLinksErrorException, DbxException {
         ListSharedLinksArg _arg = new ListSharedLinksArg();
@@ -1561,12 +1537,10 @@ public class DbxUserSharingRequests {
      * all shared links for the current user. For members of business teams
      * using team space and member folders, returns all shared links in the team
      * member's home folder unless the team space ID is specified in the request
-     * header. For more information, refer to the <a
-     * href="https://www.dropbox.com/developers/reference/namespace-guide">Namespace
-     * Guide</a>. If a non-empty path is given, returns a list of all shared
-     * links that allow access to the given path - direct links to the given
-     * path and links to parent folders of the given path. Links to parent
-     * folders can be suppressed by setting direct_only to true.
+     * header. If a non-empty path is given, returns a list of all shared links
+     * that allow access to the given path - direct links to the given path and
+     * links to parent folders of the given path. Links to parent folders can be
+     * suppressed by setting direct_only to true.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -1583,11 +1557,11 @@ public class DbxUserSharingRequests {
     /**
      * Modify the shared link's settings. If the requested visibility conflict
      * with the shared links policy of the team or the shared folder (in case
-     * the linked file is part of a shared folder) then the {@link
-     * LinkPermissions#getResolvedVisibility} of the returned {@link
-     * SharedLinkMetadata} will reflect the actual visibility of the shared link
-     * and the {@link LinkPermissions#getRequestedVisibility} will reflect the
-     * requested visibility.
+     * the linked file is part of a shared folder) then the
+     * LinkPermissions.resolved_visibility of the returned SharedLinkMetadata
+     * will reflect the actual visibility of the shared link and the
+     * LinkPermissions.requested_visibility will reflect the requested
+     * visibility.
      *
      *
      * @return The metadata of a shared link.
@@ -1608,15 +1582,13 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * Modify the shared link's settings.
-     *
-     * <p> If the requested visibility conflict with the shared links policy of
-     * the team or the shared folder (in case the linked file is part of a
-     * shared folder) then the {@link LinkPermissions#getResolvedVisibility} of
-     * the returned {@link SharedLinkMetadata} will reflect the actual
-     * visibility of the shared link and the {@link
-     * LinkPermissions#getRequestedVisibility} will reflect the requested
-     * visibility. </p>
+     * Modify the shared link's settings. If the requested visibility conflict
+     * with the shared links policy of the team or the shared folder (in case
+     * the linked file is part of a shared folder) then the
+     * LinkPermissions.resolved_visibility of the returned SharedLinkMetadata
+     * will reflect the actual visibility of the shared link and the
+     * LinkPermissions.requested_visibility will reflect the requested
+     * visibility.
      *
      * <p> The {@code removeExpiration} request parameter will default to {@code
      * false} (see {@link
@@ -1638,15 +1610,13 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * Modify the shared link's settings.
-     *
-     * <p> If the requested visibility conflict with the shared links policy of
-     * the team or the shared folder (in case the linked file is part of a
-     * shared folder) then the {@link LinkPermissions#getResolvedVisibility} of
-     * the returned {@link SharedLinkMetadata} will reflect the actual
-     * visibility of the shared link and the {@link
-     * LinkPermissions#getRequestedVisibility} will reflect the requested
-     * visibility. </p>
+     * Modify the shared link's settings. If the requested visibility conflict
+     * with the shared links policy of the team or the shared folder (in case
+     * the linked file is part of a shared folder) then the
+     * LinkPermissions.resolved_visibility of the returned SharedLinkMetadata
+     * will reflect the actual visibility of the shared link and the
+     * LinkPermissions.requested_visibility will reflect the requested
+     * visibility.
      *
      * @param url  URL of the shared link to change its settings. Must not be
      *     {@code null}.
@@ -1694,11 +1664,9 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * The current user mounts the designated folder.
-     *
-     * <p> Mount a shared folder for a user after they have been added as a
-     * member. Once mounted, the shared folder will appear in their Dropbox.
-     * </p>
+     * The current user mounts the designated folder. Mount a shared folder for
+     * a user after they have been added as a member. Once mounted, the shared
+     * folder will appear in their Dropbox.
      *
      * @param sharedFolderId  The ID of the shared folder to mount. Must match
      *     pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -1715,13 +1683,60 @@ public class DbxUserSharingRequests {
     }
 
     //
+    // route 2/sharing/relinquish_access
+    //
+
+    /**
+     * Removes all self-removable access from a file or folder for the current
+     * user. Best-effort and idempotent: attempts to drop link-visitor
+     * associations and explicit ACL membership.
+     *
+     * @param arg  Removes all self-removable access from a file or folder. For
+     *     folders: always relinquishes without keeping a local copy
+     *     (leave_a_copy=false behavior). If you need control over keeping
+     *     folder contents, use the relinquish_folder_membership endpoint
+     *     instead.
+     *
+     * @return Returns an empty response for the relinquish_access endpoint.
+     */
+    RelinquishAccessResult relinquishAccess(RelinquishAccessArg arg) throws RelinquishAccessErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/sharing/relinquish_access",
+                                        arg,
+                                        false,
+                                        RelinquishAccessArg.Serializer.INSTANCE,
+                                        RelinquishAccessResult.Serializer.INSTANCE,
+                                        RelinquishAccessError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new RelinquishAccessErrorException("2/sharing/relinquish_access", ex.getRequestId(), ex.getUserMessage(), (RelinquishAccessError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Removes all self-removable access from a file or folder for the current
+     * user. Best-effort and idempotent: attempts to drop link-visitor
+     * associations and explicit ACL membership.
+     *
+     * @param fileId  The id for the file or folder. Must not be {@code null}.
+     *
+     * @return Returns an empty response for the relinquish_access endpoint.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public RelinquishAccessResult relinquishAccess(String fileId) throws RelinquishAccessErrorException, DbxException {
+        RelinquishAccessArg _arg = new RelinquishAccessArg(fileId);
+        return relinquishAccess(_arg);
+    }
+
+    //
     // route 2/sharing/relinquish_file_membership
     //
 
     /**
      * The current user relinquishes their membership in the designated file.
-     * Note that the current user may still have inherited access to this file
-     * through the parent folder.
      *
      */
     void relinquishFileMembership(RelinquishFileMembershipArg arg) throws RelinquishFileMembershipErrorException, DbxException {
@@ -1741,8 +1756,6 @@ public class DbxUserSharingRequests {
 
     /**
      * The current user relinquishes their membership in the designated file.
-     * Note that the current user may still have inherited access to this file
-     * through the parent folder.
      *
      * @param file  The path or id for the file. Must have length of at least 1,
      *     match pattern "{@code ((/|id:).*|nspath:[0-9]+:.*)|ns:[0-9]+(/.*)?}",
@@ -1790,10 +1803,9 @@ public class DbxUserSharingRequests {
     /**
      * The current user relinquishes their membership in the designated shared
      * folder and will no longer have access to the folder.  A folder owner
-     * cannot relinquish membership in their own folder.
-     *
-     * <p> This will run synchronously if leave_a_copy is false, and
-     * asynchronously if leave_a_copy is true. </p>
+     * cannot relinquish membership in their own folder. This will run
+     * synchronously if leave_a_copy is false, and asynchronously if
+     * leave_a_copy is true.
      *
      * <p> The {@code leaveACopy} request parameter will default to {@code
      * false} (see {@link #relinquishFolderMembership(String,boolean)}). </p>
@@ -1816,10 +1828,9 @@ public class DbxUserSharingRequests {
     /**
      * The current user relinquishes their membership in the designated shared
      * folder and will no longer have access to the folder.  A folder owner
-     * cannot relinquish membership in their own folder.
-     *
-     * <p> This will run synchronously if leave_a_copy is false, and
-     * asynchronously if leave_a_copy is true. </p>
+     * cannot relinquish membership in their own folder. This will run
+     * synchronously if leave_a_copy is false, and asynchronously if
+     * leave_a_copy is true.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -1879,9 +1890,7 @@ public class DbxUserSharingRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link
-     *     DbxUserSharingRequests#removeFileMember2(String,MemberSelector)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public FileMemberActionIndividualResult removeFileMember(String file, MemberSelector member) throws RemoveFileMemberErrorException, DbxException {
@@ -2000,9 +2009,8 @@ public class DbxUserSharingRequests {
      * Revoke a shared link. Note that even after revoking a shared link to a
      * file, the file may be accessible if there are shared links leading to any
      * of the file parent folders. To list all shared links that enable access
-     * to a specific file, you can use the {@link
-     * DbxUserSharingRequests#listSharedLinks} with the file as the {@link
-     * ListSharedLinksArg#getPath} argument.
+     * to a specific file, you can use the list_shared_links with the file as
+     * the ListSharedLinksArg.path argument.
      *
      */
     void revokeSharedLink(RevokeSharedLinkArg arg) throws RevokeSharedLinkErrorException, DbxException {
@@ -2021,13 +2029,11 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * Revoke a shared link.
-     *
-     * <p> Note that even after revoking a shared link to a file, the file may
-     * be accessible if there are shared links leading to any of the file parent
-     * folders. To list all shared links that enable access to a specific file,
-     * you can use the {@link DbxUserSharingRequests#listSharedLinks} with the
-     * file as the {@link ListSharedLinksArg#getPath} argument. </p>
+     * Revoke a shared link. Note that even after revoking a shared link to a
+     * file, the file may be accessible if there are shared links leading to any
+     * of the file parent folders. To list all shared links that enable access
+     * to a specific file, you can use the list_shared_links with the file as
+     * the ListSharedLinksArg.path argument.
      *
      * @param url  URL of the shared link. Must not be {@code null}.
      *
@@ -2068,11 +2074,10 @@ public class DbxUserSharingRequests {
 
     /**
      * Change the inheritance policy of an existing Shared Folder. Only
-     * permitted for shared folders in a shared team root.
-     *
-     * <p> If a {@link ShareFolderLaunch#getAsyncJobIdValue} is returned, you'll
-     * need to call {@link DbxUserSharingRequests#checkShareJobStatus(String)}
-     * until the action completes to get the metadata for the folder. </p>
+     * permitted for shared folders in a shared team root. If a {@link
+     * ShareFolderLaunch#getAsyncJobIdValue} is returned, you'll need to call
+     * {@link DbxUserSharingRequests#checkShareJobStatus(String)} until the
+     * action completes to get the metadata for the folder.
      *
      * <p> The {@code accessInheritance} request parameter will default to
      * {@code AccessInheritance.INHERIT} (see {@link
@@ -2091,11 +2096,10 @@ public class DbxUserSharingRequests {
 
     /**
      * Change the inheritance policy of an existing Shared Folder. Only
-     * permitted for shared folders in a shared team root.
-     *
-     * <p> If a {@link ShareFolderLaunch#getAsyncJobIdValue} is returned, you'll
-     * need to call {@link DbxUserSharingRequests#checkShareJobStatus(String)}
-     * until the action completes to get the metadata for the folder. </p>
+     * permitted for shared folders in a shared team root. If a {@link
+     * ShareFolderLaunch#getAsyncJobIdValue} is returned, you'll need to call
+     * {@link DbxUserSharingRequests#checkShareJobStatus(String)} until the
+     * action completes to get the metadata for the folder.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -2142,22 +2146,20 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * Share a folder with collaborators.
-     *
-     * <p> Most sharing will be completed synchronously. Large folders will be
-     * completed asynchronously. To make testing the async case repeatable, set
-     * `ShareFolderArg.force_async`. </p>
-     *
-     * <p> If a {@link ShareFolderLaunch#getAsyncJobIdValue} is returned, you'll
-     * need to call {@link DbxUserSharingRequests#checkShareJobStatus(String)}
-     * until the action completes to get the metadata for the folder. </p>
+     * Share a folder with collaborators. Most sharing will be completed
+     * synchronously. Large folders will be completed asynchronously. To make
+     * testing the async case repeatable, set `ShareFolderArg.force_async`. If a
+     * {@link ShareFolderLaunch#getAsyncJobIdValue} is returned, you'll need to
+     * call {@link DbxUserSharingRequests#checkShareJobStatus(String)} until the
+     * action completes to get the metadata for the folder.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link ShareFolderBuilder} for more details. </p>
      *
      * @param path  The path or the file id to the folder to share. If it does
      *     not exist, then a new one is created. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -2177,7 +2179,8 @@ public class DbxUserSharingRequests {
      *
      * @param path  The path or the file id to the folder to share. If it does
      *     not exist, then a new one is created. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -2217,9 +2220,8 @@ public class DbxUserSharingRequests {
 
     /**
      * Transfer ownership of a shared folder to a member of the shared folder.
-     *
-     * <p> User must have {@link AccessLevel#OWNER} access to the shared folder
-     * to perform a transfer. </p>
+     * User must have {@link AccessLevel#OWNER} access to the shared folder to
+     * perform a transfer.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -2320,9 +2322,11 @@ public class DbxUserSharingRequests {
     //
 
     /**
-     * Allows a shared folder owner to unshare the folder. You'll need to call
-     * {@link DbxUserSharingRequests#checkJobStatus(String)} to determine if the
-     * action has completed successfully.
+     * Allows a shared folder owner to unshare the folder. Unshare will not work
+     * in following cases: The shared folder contains shared folders OR the
+     * shared folder is inside another shared folder. You'll need to call {@link
+     * DbxUserSharingRequests#checkJobStatus(String)} to determine if the action
+     * has completed successfully.
      *
      *
      * @return Result returned by methods that may either launch an asynchronous
@@ -2345,11 +2349,11 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * Allows a shared folder owner to unshare the folder.
-     *
-     * <p> You'll need to call {@link
+     * Allows a shared folder owner to unshare the folder. Unshare will not work
+     * in following cases: The shared folder contains shared folders OR the
+     * shared folder is inside another shared folder. You'll need to call {@link
      * DbxUserSharingRequests#checkJobStatus(String)} to determine if the action
-     * has completed successfully. </p>
+     * has completed successfully.
      *
      * <p> The {@code leaveACopy} request parameter will default to {@code
      * false} (see {@link #unshareFolder(String,boolean)}). </p>
@@ -2370,11 +2374,11 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * Allows a shared folder owner to unshare the folder.
-     *
-     * <p> You'll need to call {@link
+     * Allows a shared folder owner to unshare the folder. Unshare will not work
+     * in following cases: The shared folder contains shared folders OR the
+     * shared folder is inside another shared folder. You'll need to call {@link
      * DbxUserSharingRequests#checkJobStatus(String)} to determine if the action
-     * has completed successfully. </p>
+     * has completed successfully.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -2527,10 +2531,8 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * Update the sharing policies for a shared folder.
-     *
-     * <p> User must have {@link AccessLevel#OWNER} access to the shared folder
-     * to update its policies. </p>
+     * Update the sharing policies for a shared folder. User must have {@link
+     * AccessLevel#OWNER} access to the shared folder to update its policies.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.

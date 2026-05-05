@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 class CreateFolderBatchArg {
-    // struct files.CreateFolderBatchArg (files.stone)
+    // struct files.CreateFolderBatchArg (files_files_public_types.stone)
 
     @Nonnull
     protected final List<String> paths;
@@ -53,7 +53,7 @@ class CreateFolderBatchArg {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'paths' is null");
             }
-            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)", x)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)", x)) {
                 throw new IllegalArgumentException("Stringan item in list 'paths' does not match pattern");
             }
         }
@@ -148,7 +148,7 @@ class CreateFolderBatchArg {
                 if (x == null) {
                     throw new IllegalArgumentException("An item in list 'paths' is null");
                 }
-                if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)", x)) {
+                if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)", x)) {
                     throw new IllegalArgumentException("Stringan item in list 'paths' does not match pattern");
                 }
             }

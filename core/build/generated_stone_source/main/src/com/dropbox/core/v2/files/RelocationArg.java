@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 class RelocationArg extends RelocationPath {
-    // struct files.RelocationArg (files.stone)
+    // struct files.RelocationArg (files_files_public_types.stone)
 
     protected final boolean allowSharedFolder;
     protected final boolean autorename;
@@ -31,11 +31,13 @@ class RelocationArg extends RelocationPath {
      * specifying values for all optional fields.
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param allowSharedFolder  This flag has no effect.
      * @param autorename  If there's a conflict, have the Dropbox server try to
      *     autorename the file to avoid the conflict.
@@ -59,11 +61,13 @@ class RelocationArg extends RelocationPath {
      * <p> The default values for unset fields will be used. </p>
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -128,11 +132,13 @@ class RelocationArg extends RelocationPath {
      * Returns a new builder for creating an instance of this class.
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return builder for this class.
      *
@@ -158,14 +164,14 @@ class RelocationArg extends RelocationPath {
             if (fromPath == null) {
                 throw new IllegalArgumentException("Required value for 'fromPath' is null");
             }
-            if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)", fromPath)) {
+            if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)", fromPath)) {
                 throw new IllegalArgumentException("String 'fromPath' does not match pattern");
             }
             this.fromPath = fromPath;
             if (toPath == null) {
                 throw new IllegalArgumentException("Required value for 'toPath' is null");
             }
-            if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)", toPath)) {
+            if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)", toPath)) {
                 throw new IllegalArgumentException("String 'toPath' does not match pattern");
             }
             this.toPath = toPath;

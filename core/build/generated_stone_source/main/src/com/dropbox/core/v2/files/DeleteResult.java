@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class DeleteResult extends FileOpsResult {
-    // struct files.DeleteResult (files.stone)
+    // struct files.DeleteResult (files_files_public_types.stone)
 
     @Nonnull
     protected final Metadata metadata;

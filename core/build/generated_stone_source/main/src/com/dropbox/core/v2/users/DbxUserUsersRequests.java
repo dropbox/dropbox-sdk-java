@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users.stone */
+/* This file was generated from users_users_types.stone, users_users_base.stone, users_apiv2_users_features.stone, users_apiv2_users_api_auth.stone, users_apiv2_users_identity.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  * Routes in namespace "users".
  */
 public class DbxUserUsersRequests {
-    // namespace users (users.stone)
+    // namespace users (users_users_types.stone, users_users_base.stone, users_apiv2_users_features.stone, users_apiv2_users_api_auth.stone, users_apiv2_users_identity.stone)
 
     private final DbxRawClientV2 client;
 
@@ -112,8 +112,8 @@ public class DbxUserUsersRequests {
     //
 
     /**
-     * Get information about multiple user accounts.  At most 300 accounts may
-     * be queried per request.
+     * Get information about multiple user accounts. At most 300 accounts may be
+     * queried per request.
      *
      */
     List<BasicAccount> getAccountBatch(GetAccountBatchArg arg) throws GetAccountBatchErrorException, DbxException {
@@ -132,8 +132,8 @@ public class DbxUserUsersRequests {
     }
 
     /**
-     * Get information about multiple user accounts.  At most 300 accounts may
-     * be queried per request.
+     * Get information about multiple user accounts. At most 300 accounts may be
+     * queried per request.
      *
      * @param accountIds  List of user account identifiers.  Should not contain
      *     any duplicate account IDs. Must contain at least 1 items, not contain

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 class SearchArg {
-    // struct files.SearchArg (files.stone)
+    // struct files.SearchArg (files_files_public_types.stone)
 
     @Nonnull
     protected final String path;
@@ -37,7 +37,8 @@ class SearchArg {
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
      *     a folder. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      * @param query  The string to search for. Query string may be rewritten to
      *     improve relevance of results. The string is split on spaces into
      *     multiple tokens. For file name searching, the last token is used for
@@ -58,7 +59,7 @@ class SearchArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)", path)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -93,7 +94,8 @@ class SearchArg {
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
      *     a folder. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      * @param query  The string to search for. Query string may be rewritten to
      *     improve relevance of results. The string is split on spaces into
      *     multiple tokens. For file name searching, the last token is used for
@@ -168,7 +170,8 @@ class SearchArg {
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
      *     a folder. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      * @param query  The string to search for. Query string may be rewritten to
      *     improve relevance of results. The string is split on spaces into
      *     multiple tokens. For file name searching, the last token is used for
@@ -199,7 +202,7 @@ class SearchArg {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)", path)) {
+            if (!Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;

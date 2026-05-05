@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_sharing_allowlist.stone */
+/* This file was generated from team_apiv2_team_sharing_allowlist.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.io.IOException;
  * indentation issues with Stone.
  */
 public class SharingAllowlistAddResponse {
-    // struct team.SharingAllowlistAddResponse (team_sharing_allowlist.stone)
+    // struct team.SharingAllowlistAddResponse (team_apiv2_team_sharing_allowlist.stone)
 
 
     /**

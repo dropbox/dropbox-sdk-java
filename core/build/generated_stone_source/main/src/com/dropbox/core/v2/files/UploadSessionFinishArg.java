@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class UploadSessionFinishArg {
-    // struct files.UploadSessionFinishArg (files.stone)
+    // struct files.UploadSessionFinishArg (files_files_public_base.stone)
 
     @Nonnull
     protected final UploadSessionCursor cursor;

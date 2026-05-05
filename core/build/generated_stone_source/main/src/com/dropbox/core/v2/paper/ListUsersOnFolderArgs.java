@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class ListUsersOnFolderArgs extends RefPaperDoc {
-    // struct paper.ListUsersOnFolderArgs (paper.stone)
+    // struct paper.ListUsersOnFolderArgs (paper_apiv2_paper_types.stone)
 
     protected final int limit;
 

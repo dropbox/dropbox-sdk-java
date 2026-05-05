@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing_apiv2_sharing_files_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class FileMemberRemoveActionResult {
-    // union sharing.FileMemberRemoveActionResult (sharing_files.stone)
+    // union sharing.FileMemberRemoveActionResult (sharing_apiv2_sharing_files_types.stone)
 
     /**
      * Discriminating tag type for {@link FileMemberRemoveActionResult}.

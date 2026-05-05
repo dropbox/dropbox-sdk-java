@@ -14,10 +14,10 @@ import com.dropbox.core.LocalizedText;
  * DbxTeamFilePropertiesRequests#templatesListForTeam}, {@link
  * DbxTeamFilePropertiesRequests#templatesRemoveForTeam(String)}, {@link
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#propertiesTemplateGet(String)},
- * {@link com.dropbox.core.v2.team.DbxTeamTeamRequests#propertiesTemplateList},
  * {@link DbxUserFilePropertiesRequests#templatesGetForUser(String)}, {@link
  * DbxUserFilePropertiesRequests#templatesListForUser}, {@link
  * DbxUserFilePropertiesRequests#templatesRemoveForUser(String)}, {@link
+ * com.dropbox.core.v2.team.DbxTeamTeamRequests#propertiesTemplateList}, {@link
  * com.dropbox.core.v2.files.DbxUserFilesRequests#propertiesTemplateGet(String)},
  * and {@link
  * com.dropbox.core.v2.files.DbxUserFilesRequests#propertiesTemplateList}. </p>
@@ -28,10 +28,10 @@ public class TemplateErrorException extends DbxApiException {
     //     2/file_properties/templates/list_for_team
     //     2/file_properties/templates/remove_for_team
     //     2/team/properties/template/get
-    //     2/team/properties/template/list
     //     2/file_properties/templates/get_for_user
     //     2/file_properties/templates/list_for_user
     //     2/file_properties/templates/remove_for_user
+    //     2/team/properties/template/list
     //     2/files/properties/template/get
     //     2/files/properties/template/list
 
@@ -43,11 +43,11 @@ public class TemplateErrorException extends DbxApiException {
      * DbxTeamFilePropertiesRequests#templatesListForTeam}, {@link
      * DbxTeamFilePropertiesRequests#templatesRemoveForTeam(String)}, {@link
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#propertiesTemplateGet(String)},
-     * {@link
-     * com.dropbox.core.v2.team.DbxTeamTeamRequests#propertiesTemplateList},
      * {@link DbxUserFilePropertiesRequests#templatesGetForUser(String)}, {@link
      * DbxUserFilePropertiesRequests#templatesListForUser}, {@link
      * DbxUserFilePropertiesRequests#templatesRemoveForUser(String)}, {@link
+     * com.dropbox.core.v2.team.DbxTeamTeamRequests#propertiesTemplateList},
+     * {@link
      * com.dropbox.core.v2.files.DbxUserFilesRequests#propertiesTemplateGet(String)},
      * and {@link
      * com.dropbox.core.v2.files.DbxUserFilesRequests#propertiesTemplateList}.

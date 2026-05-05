@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_common.stone */
+/* This file was generated from team_common_team_common.stone */
 
 package com.dropbox.core.v2.teamcommon;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * The group type determines how a group is managed.
  */
 public enum GroupManagementType {
-    // union team_common.GroupManagementType (team_common.stone)
+    // union team_common.GroupManagementType (team_common_team_common.stone)
     /**
      * A group which is managed by selected users.
      */

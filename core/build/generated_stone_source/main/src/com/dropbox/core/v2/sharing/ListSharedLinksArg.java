@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing_apiv2_shared_links_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class ListSharedLinksArg {
-    // struct sharing.ListSharedLinksArg (shared_links.stone)
+    // struct sharing.ListSharedLinksArg (sharing_apiv2_shared_links_types.stone)
 
     @Nullable
     protected final String path;
@@ -35,7 +35,7 @@ class ListSharedLinksArg {
      *
      * @param path  See {@link DbxUserSharingRequests#listSharedLinks}
      *     description. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}".
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}".
      * @param cursor  The cursor returned by your last call to {@link
      *     DbxUserSharingRequests#listSharedLinks}.
      * @param directOnly  See {@link DbxUserSharingRequests#listSharedLinks}
@@ -46,7 +46,7 @@ class ListSharedLinksArg {
      */
     public ListSharedLinksArg(@Nullable String path, @Nullable String cursor, @Nullable Boolean directOnly) {
         if (path != null) {
-            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
         }
@@ -124,7 +124,7 @@ class ListSharedLinksArg {
          *
          * @param path  See {@link DbxUserSharingRequests#listSharedLinks}
          *     description. Must match pattern "{@code
-         *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}".
+         *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}".
          *
          * @return this builder
          *
@@ -133,7 +133,7 @@ class ListSharedLinksArg {
          */
         public Builder withPath(String path) {
             if (path != null) {
-                if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
+                if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
                     throw new IllegalArgumentException("String 'path' does not match pattern");
                 }
             }

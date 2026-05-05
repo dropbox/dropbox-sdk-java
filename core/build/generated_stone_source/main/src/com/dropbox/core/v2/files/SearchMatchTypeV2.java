@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Indicates what type of match was found for a given item.
  */
 public enum SearchMatchTypeV2 {
-    // union files.SearchMatchTypeV2 (files.stone)
+    // union files.SearchMatchTypeV2 (files_files_public_types.stone)
     /**
      * This item was matched on its file or folder name.
      */
@@ -37,6 +37,10 @@ public enum SearchMatchTypeV2 {
      * This item was matched on image content.
      */
     IMAGE_CONTENT,
+    /**
+     * This item was matched based on its metadata.
+     */
+    METADATA,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -69,6 +73,10 @@ public enum SearchMatchTypeV2 {
                 }
                 case IMAGE_CONTENT: {
                     g.writeString("image_content");
+                    break;
+                }
+                case METADATA: {
+                    g.writeString("metadata");
                     break;
                 }
                 default: {
@@ -106,6 +114,9 @@ public enum SearchMatchTypeV2 {
             }
             else if ("image_content".equals(tag)) {
                 value = SearchMatchTypeV2.IMAGE_CONTENT;
+            }
+            else if ("metadata".equals(tag)) {
+                value = SearchMatchTypeV2.METADATA;
             }
             else {
                 value = SearchMatchTypeV2.OTHER;

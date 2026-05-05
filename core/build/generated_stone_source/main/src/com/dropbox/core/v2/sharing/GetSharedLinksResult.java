@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing_apiv2_shared_links_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class GetSharedLinksResult {
-    // struct sharing.GetSharedLinksResult (shared_links.stone)
+    // struct sharing.GetSharedLinksResult (sharing_apiv2_shared_links_types.stone)
 
     @Nonnull
     protected final List<LinkMetadata> links;

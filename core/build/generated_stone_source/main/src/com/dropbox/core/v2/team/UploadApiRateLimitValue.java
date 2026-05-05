@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from team_team_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -29,7 +29,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class UploadApiRateLimitValue {
-    // union team.UploadApiRateLimitValue (team.stone)
+    // union team.UploadApiRateLimitValue (team_team_types.stone)
 
     /**
      * Discriminating tag type for {@link UploadApiRateLimitValue}.
@@ -37,7 +37,7 @@ public final class UploadApiRateLimitValue {
     public enum Tag {
         /**
          * This team has unlimited upload API quota. So far both server version
-         * account and legacy  account type have unlimited monthly upload api
+         * account and legacy account type have unlimited monthly upload api
          * quota.
          */
         UNLIMITED,
@@ -58,7 +58,7 @@ public final class UploadApiRateLimitValue {
 
     /**
      * This team has unlimited upload API quota. So far both server version
-     * account and legacy  account type have unlimited monthly upload api quota.
+     * account and legacy account type have unlimited monthly upload api quota.
      */
     public static final UploadApiRateLimitValue UNLIMITED = new UploadApiRateLimitValue().withTag(Tag.UNLIMITED);
     /**

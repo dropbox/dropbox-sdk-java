@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team_team_members_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum MembersRemoveError {
-    // union team.MembersRemoveError (team_members.stone)
+    // union team.MembersRemoveError (team_team_members_types.stone)
     /**
      * No matching user found. The provided team_member_id, email, or
      * external_id does not exist on this team.
@@ -35,6 +35,19 @@ public enum MembersRemoveError {
      * tags. </p>
      */
     OTHER,
+    /**
+     * Cannot permanently delete files while it's being transferred.
+     */
+    TRANSFER_IN_PROGRESS,
+    /**
+     * Cannot permanently delete files that have already been transferred.
+     */
+    ALREADY_TRANSFERRED,
+    /**
+     * Cannot permanently delete files that have already been transferred or
+     * deleted.
+     */
+    ALREADY_TRANSFERRED_OR_DELETED,
     /**
      * Expected removed user and transfer_dest user to be different.
      */
@@ -87,6 +100,12 @@ public enum MembersRemoveError {
      */
     CANNOT_KEEP_ACCOUNT_AND_DELETE_DATA,
     /**
+     * Cannot keep account and permanently delete the data at the same time. To
+     * keep the account the argument permanently_delete_files should be set to
+     * {@code false}.
+     */
+    CANNOT_KEEP_ACCOUNT_AND_PERMANENTLY_DELETE,
+    /**
      * The email address of the user is too long to be disabled.
      */
     EMAIL_ADDRESS_TOO_LONG_TO_BE_DISABLED,
@@ -124,7 +143,17 @@ public enum MembersRemoveError {
      * To convert this member to a Basic account, they'll first need to sign in
      * to Dropbox and agree to the terms of service.
      */
-    CANNOT_KEEP_ACCOUNT_REQUIRED_TO_SIGN_TOS;
+    CANNOT_KEEP_ACCOUNT_REQUIRED_TO_SIGN_TOS,
+    /**
+     * Cannot permanently delete files and transfer the data to another user at
+     * the same time.
+     */
+    CANNOT_PERMANENTLY_DELETE_AND_TRANSFER,
+    /**
+     * This user is the active destination of an in-progress file transfer. Wait
+     * for the transfer to complete before removing this member.
+     */
+    MEMBER_IS_TRANSFER_DESTINATION;
 
     /**
      * For internal use only.
@@ -145,6 +174,18 @@ public enum MembersRemoveError {
                 }
                 case OTHER: {
                     g.writeString("other");
+                    break;
+                }
+                case TRANSFER_IN_PROGRESS: {
+                    g.writeString("transfer_in_progress");
+                    break;
+                }
+                case ALREADY_TRANSFERRED: {
+                    g.writeString("already_transferred");
+                    break;
+                }
+                case ALREADY_TRANSFERRED_OR_DELETED: {
+                    g.writeString("already_transferred_or_deleted");
                     break;
                 }
                 case REMOVED_AND_TRANSFER_DEST_SHOULD_DIFFER: {
@@ -195,6 +236,10 @@ public enum MembersRemoveError {
                     g.writeString("cannot_keep_account_and_delete_data");
                     break;
                 }
+                case CANNOT_KEEP_ACCOUNT_AND_PERMANENTLY_DELETE: {
+                    g.writeString("cannot_keep_account_and_permanently_delete");
+                    break;
+                }
                 case EMAIL_ADDRESS_TOO_LONG_TO_BE_DISABLED: {
                     g.writeString("email_address_too_long_to_be_disabled");
                     break;
@@ -225,6 +270,14 @@ public enum MembersRemoveError {
                 }
                 case CANNOT_KEEP_ACCOUNT_REQUIRED_TO_SIGN_TOS: {
                     g.writeString("cannot_keep_account_required_to_sign_tos");
+                    break;
+                }
+                case CANNOT_PERMANENTLY_DELETE_AND_TRANSFER: {
+                    g.writeString("cannot_permanently_delete_and_transfer");
+                    break;
+                }
+                case MEMBER_IS_TRANSFER_DESTINATION: {
+                    g.writeString("member_is_transfer_destination");
                     break;
                 }
                 default: {
@@ -259,6 +312,15 @@ public enum MembersRemoveError {
             }
             else if ("other".equals(tag)) {
                 value = MembersRemoveError.OTHER;
+            }
+            else if ("transfer_in_progress".equals(tag)) {
+                value = MembersRemoveError.TRANSFER_IN_PROGRESS;
+            }
+            else if ("already_transferred".equals(tag)) {
+                value = MembersRemoveError.ALREADY_TRANSFERRED;
+            }
+            else if ("already_transferred_or_deleted".equals(tag)) {
+                value = MembersRemoveError.ALREADY_TRANSFERRED_OR_DELETED;
             }
             else if ("removed_and_transfer_dest_should_differ".equals(tag)) {
                 value = MembersRemoveError.REMOVED_AND_TRANSFER_DEST_SHOULD_DIFFER;
@@ -296,6 +358,9 @@ public enum MembersRemoveError {
             else if ("cannot_keep_account_and_delete_data".equals(tag)) {
                 value = MembersRemoveError.CANNOT_KEEP_ACCOUNT_AND_DELETE_DATA;
             }
+            else if ("cannot_keep_account_and_permanently_delete".equals(tag)) {
+                value = MembersRemoveError.CANNOT_KEEP_ACCOUNT_AND_PERMANENTLY_DELETE;
+            }
             else if ("email_address_too_long_to_be_disabled".equals(tag)) {
                 value = MembersRemoveError.EMAIL_ADDRESS_TOO_LONG_TO_BE_DISABLED;
             }
@@ -319,6 +384,12 @@ public enum MembersRemoveError {
             }
             else if ("cannot_keep_account_required_to_sign_tos".equals(tag)) {
                 value = MembersRemoveError.CANNOT_KEEP_ACCOUNT_REQUIRED_TO_SIGN_TOS;
+            }
+            else if ("cannot_permanently_delete_and_transfer".equals(tag)) {
+                value = MembersRemoveError.CANNOT_PERMANENTLY_DELETE_AND_TRANSFER;
+            }
+            else if ("member_is_transfer_destination".equals(tag)) {
+                value = MembersRemoveError.MEMBER_IS_TRANSFER_DESTINATION;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

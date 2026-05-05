@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.stone */
+/* This file was generated from team_apiv2_team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
  * DbxTeamTeamRequests#groupsMembersRemove(GroupSelector,java.util.List,boolean)}.
  */
 public class GroupMembersChangeResult {
-    // struct team.GroupMembersChangeResult (team_groups.stone)
+    // struct team.GroupMembersChangeResult (team_apiv2_team_groups.stone)
 
     @Nonnull
     protected final GroupFullInfo groupInfo;

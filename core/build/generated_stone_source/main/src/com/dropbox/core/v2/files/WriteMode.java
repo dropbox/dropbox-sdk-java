@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  * tag associated with this instance. </p>
  */
 public final class WriteMode {
-    // union files.WriteMode (files.stone)
+    // union files.WriteMode (files_files_public_base.stone)
 
     /**
      * Discriminating tag type for {@link WriteMode}.

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.stone */
+/* This file was generated from team_apiv2_team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Specify access type a member should have when joined to a group.
  */
 public class MemberAccess {
-    // struct team.MemberAccess (team_groups.stone)
+    // struct team.MemberAccess (team_apiv2_team_groups.stone)
 
     @Nonnull
     protected final UserSelectorArg user;

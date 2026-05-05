@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class DeleteArg {
-    // struct files.DeleteArg (files.stone)
+    // struct files.DeleteArg (files_files_public_types.stone)
 
     @Nonnull
     protected final String path;
@@ -31,8 +31,8 @@ public class DeleteArg {
     /**
      *
      * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be
-     *     {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and
+     *     not be {@code null}.
      * @param parentRev  Perform delete if given "rev" matches the existing
      *     file's latest "rev". This field does not support deleting a folder.
      *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
@@ -44,7 +44,7 @@ public class DeleteArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)", path)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -65,8 +65,8 @@ public class DeleteArg {
      * <p> The default values for unset fields will be used. </p>
      *
      * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be
-     *     {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and
+     *     not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing_apiv2_sharing_files_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -30,7 +30,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class AddFileMemberError {
-    // union sharing.AddFileMemberError (sharing_files.stone)
+    // union sharing.AddFileMemberError (sharing_apiv2_sharing_files_types.stone)
 
     /**
      * Discriminating tag type for {@link AddFileMemberError}.
@@ -46,6 +46,10 @@ public final class AddFileMemberError {
          * The custom message did not pass comment permissions checks.
          */
         INVALID_COMMENT,
+        /**
+         * The current user has been banned for abuse reasons.
+         */
+        BANNED_MEMBER,
         /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
@@ -65,6 +69,10 @@ public final class AddFileMemberError {
      * The custom message did not pass comment permissions checks.
      */
     public static final AddFileMemberError INVALID_COMMENT = new AddFileMemberError().withTag(Tag.INVALID_COMMENT);
+    /**
+     * The current user has been banned for abuse reasons.
+     */
+    public static final AddFileMemberError BANNED_MEMBER = new AddFileMemberError().withTag(Tag.BANNED_MEMBER);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -265,6 +273,17 @@ public final class AddFileMemberError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BANNED_MEMBER}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BANNED_MEMBER}, {@code false} otherwise.
+     */
+    public boolean isBannedMember() {
+        return this._tag == Tag.BANNED_MEMBER;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -306,6 +325,8 @@ public final class AddFileMemberError {
                 case RATE_LIMIT:
                     return true;
                 case INVALID_COMMENT:
+                    return true;
+                case BANNED_MEMBER:
                     return true;
                 case OTHER:
                     return true;
@@ -368,6 +389,10 @@ public final class AddFileMemberError {
                     g.writeString("invalid_comment");
                     break;
                 }
+                case BANNED_MEMBER: {
+                    g.writeString("banned_member");
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -409,6 +434,9 @@ public final class AddFileMemberError {
             }
             else if ("invalid_comment".equals(tag)) {
                 value = AddFileMemberError.INVALID_COMMENT;
+            }
+            else if ("banned_member".equals(tag)) {
+                value = AddFileMemberError.BANNED_MEMBER;
             }
             else {
                 value = AddFileMemberError.OTHER;

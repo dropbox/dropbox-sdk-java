@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports.stone */
+/* This file was generated from team_reports_apiv2_team_reports_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
  * will be None.
  */
 public class GetActivityReport extends BaseDfbReport {
-    // struct team.GetActivityReport (team_reports.stone)
+    // struct team.GetActivityReport (team_reports_apiv2_team_reports_types.stone)
 
     @Nonnull
     protected final List<Long> adds;

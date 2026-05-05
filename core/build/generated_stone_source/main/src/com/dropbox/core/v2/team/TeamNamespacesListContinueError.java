@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_namespaces.stone */
+/* This file was generated from team_namespaces_apiv2_team_namespaces.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum TeamNamespacesListContinueError {
-    // union team.TeamNamespacesListContinueError (team_namespaces.stone)
+    // union team.TeamNamespacesListContinueError (team_namespaces_apiv2_team_namespaces.stone)
     /**
      * Argument passed in is invalid.
      */

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from team_team_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum FeaturesGetValuesBatchError {
-    // union team.FeaturesGetValuesBatchError (team.stone)
+    // union team.FeaturesGetValuesBatchError (team_team_types.stone)
     /**
      * At least one {@link Feature} must be included in the {@link
      * FeaturesGetValuesBatchArg}.features list.

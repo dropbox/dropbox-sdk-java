@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Sharing policy of Paper doc.
  */
 public class SharingPolicy {
-    // struct paper.SharingPolicy (paper.stone)
+    // struct paper.SharingPolicy (paper_apiv2_paper_types.stone)
 
     @Nullable
     protected final SharingPublicPolicyType publicSharingPolicy;

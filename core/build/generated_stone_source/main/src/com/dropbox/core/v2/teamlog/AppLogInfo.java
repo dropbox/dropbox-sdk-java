@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * App's logged information.
  */
 public class AppLogInfo {
-    // struct team_log.AppLogInfo (team_log_generated.stone)
+    // struct team_log.AppLogInfo (team_log_stone_gen_team_log_generated.stone)
 
     @Nullable
     protected final String appId;
@@ -184,16 +184,16 @@ public class AppLogInfo {
 
         @Override
         public void serialize(AppLogInfo value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
-            if (value instanceof UserOrTeamLinkedAppLogInfo) {
-                UserOrTeamLinkedAppLogInfo.Serializer.INSTANCE.serialize((UserOrTeamLinkedAppLogInfo) value, g, collapse);
+            if (value instanceof TeamLinkedAppLogInfo) {
+                TeamLinkedAppLogInfo.Serializer.INSTANCE.serialize((TeamLinkedAppLogInfo) value, g, collapse);
                 return;
             }
             if (value instanceof UserLinkedAppLogInfo) {
                 UserLinkedAppLogInfo.Serializer.INSTANCE.serialize((UserLinkedAppLogInfo) value, g, collapse);
                 return;
             }
-            if (value instanceof TeamLinkedAppLogInfo) {
-                TeamLinkedAppLogInfo.Serializer.INSTANCE.serialize((TeamLinkedAppLogInfo) value, g, collapse);
+            if (value instanceof UserOrTeamLinkedAppLogInfo) {
+                UserOrTeamLinkedAppLogInfo.Serializer.INSTANCE.serialize((UserOrTeamLinkedAppLogInfo) value, g, collapse);
                 return;
             }
             if (!collapse) {
@@ -244,14 +244,14 @@ public class AppLogInfo {
             else if ("".equals(tag)) {
                 value = Serializer.INSTANCE.deserialize(p, true);
             }
-            else if ("user_or_team_linked_app".equals(tag)) {
-                value = UserOrTeamLinkedAppLogInfo.Serializer.INSTANCE.deserialize(p, true);
+            else if ("team_linked_app".equals(tag)) {
+                value = TeamLinkedAppLogInfo.Serializer.INSTANCE.deserialize(p, true);
             }
             else if ("user_linked_app".equals(tag)) {
                 value = UserLinkedAppLogInfo.Serializer.INSTANCE.deserialize(p, true);
             }
-            else if ("team_linked_app".equals(tag)) {
-                value = TeamLinkedAppLogInfo.Serializer.INSTANCE.deserialize(p, true);
+            else if ("user_or_team_linked_app".equals(tag)) {
+                value = UserOrTeamLinkedAppLogInfo.Serializer.INSTANCE.deserialize(p, true);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

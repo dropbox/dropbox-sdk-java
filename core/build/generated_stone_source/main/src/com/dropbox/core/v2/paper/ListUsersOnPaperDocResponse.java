@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -21,7 +21,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class ListUsersOnPaperDocResponse {
-    // struct paper.ListUsersOnPaperDocResponse (paper.stone)
+    // struct paper.ListUsersOnPaperDocResponse (paper_apiv2_paper_types.stone)
 
     @Nonnull
     protected final List<InviteeInfoWithPermissionLevel> invitees;

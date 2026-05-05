@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from auth.stone */
+/* This file was generated from auth_apiv2_auth.stone */
 
 package com.dropbox.core.v2.auth;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Error occurred because the app is being rate limited.
  */
 public class RateLimitError {
-    // struct auth.RateLimitError (auth.stone)
+    // struct auth.RateLimitError (auth_apiv2_auth.stone)
 
     @Nonnull
     protected final RateLimitReason reason;

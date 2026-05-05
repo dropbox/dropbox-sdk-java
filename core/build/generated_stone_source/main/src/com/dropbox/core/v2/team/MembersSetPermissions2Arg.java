@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team_team_members_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * identify the user account.
  */
 class MembersSetPermissions2Arg {
-    // struct team.MembersSetPermissions2Arg (team_members.stone)
+    // struct team.MembersSetPermissions2Arg (team_team_members_types.stone)
 
     @Nonnull
     protected final UserSelectorArg user;

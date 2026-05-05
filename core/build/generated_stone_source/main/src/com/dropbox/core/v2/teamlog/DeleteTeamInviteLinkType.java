@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class DeleteTeamInviteLinkType {
-    // struct team_log.DeleteTeamInviteLinkType (team_log_generated.stone)
+    // struct team_log.DeleteTeamInviteLinkType (team_log_stone_gen_team_log_generated.stone)
 
     @Nonnull
     protected final String description;

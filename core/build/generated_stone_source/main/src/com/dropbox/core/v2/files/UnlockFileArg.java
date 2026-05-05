@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 public class UnlockFileArg {
-    // struct files.UnlockFileArg (files.stone)
+    // struct files.UnlockFileArg (files_files_public_types.stone)
 
     @Nonnull
     protected final String path;
@@ -28,8 +28,8 @@ public class UnlockFileArg {
     /**
      *
      * @param path  Path in the user's Dropbox to a file. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be
-     *     {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and
+     *     not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -38,7 +38,7 @@ public class UnlockFileArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)", path)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;

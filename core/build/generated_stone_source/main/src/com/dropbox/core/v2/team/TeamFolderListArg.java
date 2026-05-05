@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_folders.stone */
+/* This file was generated from team_team_folders.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 class TeamFolderListArg {
-    // struct team.TeamFolderListArg (team_folders.stone)
+    // struct team.TeamFolderListArg (team_team_folders.stone)
 
     protected final long limit;
 

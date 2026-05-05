@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import java.util.Arrays;
  * associated with this instance.
  */
 public final class ShareFolderJobStatus {
-    // union sharing.ShareFolderJobStatus (sharing_folders.stone)
+    // union sharing.ShareFolderJobStatus (sharing_apiv2_sharing_folders_types.stone)
 
     /**
      * Discriminating tag type for {@link ShareFolderJobStatus}.

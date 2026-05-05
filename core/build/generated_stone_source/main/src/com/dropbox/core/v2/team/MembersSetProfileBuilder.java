@@ -73,7 +73,7 @@ public class MembersSetProfileBuilder {
      * Set value for optional field.
      *
      * @param newGivenName  New given name for member. Must have length of at
-     *     most 100 and match pattern "{@code [^/:?*<>\"|]*}".
+     *     most 50 and match pattern "{@code [^/:?*<>\"|]*}".
      *
      * @return this builder
      *
@@ -88,8 +88,8 @@ public class MembersSetProfileBuilder {
     /**
      * Set value for optional field.
      *
-     * @param newSurname  New surname for member. Must have length of at most
-     *     100 and match pattern "{@code [^/:?*<>\"|]*}".
+     * @param newSurname  New surname for member. Must have length of at most 50
+     *     and match pattern "{@code [^/:?*<>\"|]*}".
      *
      * @return this builder
      *

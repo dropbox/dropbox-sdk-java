@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class SaveUrlError {
-    // union files.SaveUrlError (files.stone)
+    // union files.SaveUrlError (files_files_public_types.stone)
 
     /**
      * Discriminating tag type for {@link SaveUrlError}.
@@ -35,9 +35,8 @@ public final class SaveUrlError {
     public enum Tag {
         PATH, // WriteError
         /**
-         * Failed downloading the given URL. The URL may be  password-protected
-         * and the password provided was incorrect,  or the link may be
-         * disabled.
+         * Failed downloading the given URL. The URL may be password-protected
+         * and the password provided was incorrect, or the link may be disabled.
          */
         DOWNLOAD_FAILED,
         /**
@@ -60,8 +59,8 @@ public final class SaveUrlError {
     }
 
     /**
-     * Failed downloading the given URL. The URL may be  password-protected and
-     * the password provided was incorrect,  or the link may be disabled.
+     * Failed downloading the given URL. The URL may be password-protected and
+     * the password provided was incorrect, or the link may be disabled.
      */
     public static final SaveUrlError DOWNLOAD_FAILED = new SaveUrlError().withTag(Tag.DOWNLOAD_FAILED);
     /**

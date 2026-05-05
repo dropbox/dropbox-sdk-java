@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.stone */
+/* This file was generated from team_apiv2_team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Error that can be raised when {@link GroupSelector} is used.
  */
 public enum GroupSelectorError {
-    // union team.GroupSelectorError (team_groups.stone)
+    // union team.GroupSelectorError (team_apiv2_team_groups.stone)
     /**
      * No matching group found. No groups match the specified group ID.
      */

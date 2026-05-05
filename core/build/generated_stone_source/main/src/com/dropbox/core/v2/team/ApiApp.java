@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_linked_apps.stone */
+/* This file was generated from team_apiv2_team_linked_apps.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Information on linked third party applications.
  */
 public class ApiApp {
-    // struct team.ApiApp (team_linked_apps.stone)
+    // struct team.ApiApp (team_apiv2_team_linked_apps.stone)
 
     @Nonnull
     protected final String appId;

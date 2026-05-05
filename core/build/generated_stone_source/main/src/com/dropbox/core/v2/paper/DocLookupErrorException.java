@@ -12,9 +12,10 @@ import com.dropbox.core.LocalizedText;
  *
  * <p> This exception is raised by {@link
  * DbxUserPaperRequests#docsArchive(String)}, {@link
- * DbxUserPaperRequests#docsDownload(String,ExportFormat)}, {@link
+ * DbxUserPaperRequests#docsDownload(String,ExportFormat,boolean)}, {@link
  * DbxUserPaperRequests#docsFolderUsersList(String,int)}, {@link
  * DbxUserPaperRequests#docsGetFolderInfo(String)}, {@link
+ * DbxUserPaperRequests#docsGetMetadata}, {@link
  * DbxUserPaperRequests#docsPermanentlyDelete(String)}, {@link
  * DbxUserPaperRequests#docsSharingPolicyGet(String)}, {@link
  * DbxUserPaperRequests#docsSharingPolicySet(String,SharingPolicy)}, {@link
@@ -29,6 +30,7 @@ public class DocLookupErrorException extends DbxApiException {
     //     2/paper/docs/download
     //     2/paper/docs/folder_users/list
     //     2/paper/docs/get_folder_info
+    //     2/paper/docs/get_metadata
     //     2/paper/docs/permanently_delete
     //     2/paper/docs/sharing_policy/get
     //     2/paper/docs/sharing_policy/set
@@ -40,9 +42,10 @@ public class DocLookupErrorException extends DbxApiException {
 
     /**
      * The error reported by {@link DbxUserPaperRequests#docsArchive(String)},
-     * {@link DbxUserPaperRequests#docsDownload(String,ExportFormat)}, {@link
-     * DbxUserPaperRequests#docsFolderUsersList(String,int)}, {@link
+     * {@link DbxUserPaperRequests#docsDownload(String,ExportFormat,boolean)},
+     * {@link DbxUserPaperRequests#docsFolderUsersList(String,int)}, {@link
      * DbxUserPaperRequests#docsGetFolderInfo(String)}, {@link
+     * DbxUserPaperRequests#docsGetMetadata}, {@link
      * DbxUserPaperRequests#docsPermanentlyDelete(String)}, {@link
      * DbxUserPaperRequests#docsSharingPolicyGet(String)}, {@link
      * DbxUserPaperRequests#docsSharingPolicySet(String,SharingPolicy)}, {@link

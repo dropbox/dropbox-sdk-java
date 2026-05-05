@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing_apiv2_shared_links_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import java.util.Arrays;
  * values of shared links.
  */
 public enum RequestedVisibility {
-    // union sharing.RequestedVisibility (shared_links.stone)
+    // union sharing.RequestedVisibility (sharing_apiv2_shared_links_types.stone)
     /**
      * Anyone who has received the link can access it. No login required.
      */

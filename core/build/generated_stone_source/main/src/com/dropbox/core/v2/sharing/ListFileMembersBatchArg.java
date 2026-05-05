@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing_apiv2_sharing_files_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Arguments for {@link DbxUserSharingRequests#listFileMembersBatch(List,long)}.
  */
 class ListFileMembersBatchArg {
-    // struct sharing.ListFileMembersBatchArg (sharing_files.stone)
+    // struct sharing.ListFileMembersBatchArg (sharing_apiv2_sharing_files_types.stone)
 
     @Nonnull
     protected final List<String> files;
@@ -35,8 +35,8 @@ class ListFileMembersBatchArg {
      *
      * @param files  Files for which to return members. Must contain at most 100
      *     items, not contain a {@code null} item, and not be {@code null}.
-     * @param limit  Number of members to return max per query. Defaults to 10
-     *     if no limit is specified. Must be less than or equal to 20.
+     * @param limit  Number of members to return max per query. Defaults to 1000
+     *     if no limit is specified. Must be less than or equal to 3000.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -60,8 +60,8 @@ class ListFileMembersBatchArg {
             }
         }
         this.files = files;
-        if (limit > 20L) {
-            throw new IllegalArgumentException("Number 'limit' is larger than 20L");
+        if (limit > 3000L) {
+            throw new IllegalArgumentException("Number 'limit' is larger than 3000L");
         }
         this.limit = limit;
     }
@@ -79,7 +79,7 @@ class ListFileMembersBatchArg {
      *     preconditions.
      */
     public ListFileMembersBatchArg(@Nonnull List<String> files) {
-        this(files, 10L);
+        this(files, 1000L);
     }
 
     /**
@@ -93,11 +93,11 @@ class ListFileMembersBatchArg {
     }
 
     /**
-     * Number of members to return max per query. Defaults to 10 if no limit is
-     * specified.
+     * Number of members to return max per query. Defaults to 1000 if no limit
+     * is specified.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
-     *     10L.
+     *     1000L.
      */
     public long getLimit() {
         return limit;
@@ -179,7 +179,7 @@ class ListFileMembersBatchArg {
             }
             if (tag == null) {
                 List<String> f_files = null;
-                Long f_limit = 10L;
+                Long f_limit = 1000L;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();

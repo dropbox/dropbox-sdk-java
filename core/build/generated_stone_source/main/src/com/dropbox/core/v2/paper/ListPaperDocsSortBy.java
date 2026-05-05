@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum ListPaperDocsSortBy {
-    // union paper.ListPaperDocsSortBy (paper.stone)
+    // union paper.ListPaperDocsSortBy (paper_apiv2_paper_types.stone)
     /**
      * Sorts the Paper docs by the time they were last accessed.
      */

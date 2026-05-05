@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * The information about a group member of the shared content.
  */
 public class GroupMembershipInfo extends MembershipInfo {
-    // struct sharing.GroupMembershipInfo (sharing_folders.stone)
+    // struct sharing.GroupMembershipInfo (sharing_apiv2_sharing_folders_types.stone)
 
     @Nonnull
     protected final GroupInfo group;
@@ -44,7 +44,7 @@ public class GroupMembershipInfo extends MembershipInfo {
      *     member. The set of permissions corresponds to the MemberActions in
      *     the request. Must not contain a {@code null} item.
      * @param initials  Never set.
-     * @param isInherited  True if the member has access from a parent folder.
+     * @param isInherited  True if the member has access on a parent folder.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -118,7 +118,7 @@ public class GroupMembershipInfo extends MembershipInfo {
     }
 
     /**
-     * True if the member has access from a parent folder.
+     * True if the member has access on a parent folder.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
@@ -194,8 +194,8 @@ public class GroupMembershipInfo extends MembershipInfo {
          * <p> If left unset or set to {@code null}, defaults to {@code false}.
          * </p>
          *
-         * @param isInherited  True if the member has access from a parent
-         *     folder. Defaults to {@code false} when set to {@code null}.
+         * @param isInherited  True if the member has access on a parent folder.
+         *     Defaults to {@code false} when set to {@code null}.
          *
          * @return this builder
          */

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from team_team_common.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum TeamMembershipType {
-    // union team.TeamMembershipType (team.stone)
+    // union team.TeamMembershipType (team_team_common.stone)
     /**
      * User uses a license and has full access to team resources like the shared
      * quota.

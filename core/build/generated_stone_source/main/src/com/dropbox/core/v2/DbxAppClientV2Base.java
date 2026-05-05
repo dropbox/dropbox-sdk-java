@@ -6,6 +6,7 @@ package com.dropbox.core.v2;
 import com.dropbox.core.v2.auth.DbxAppAuthRequests;
 import com.dropbox.core.v2.check.DbxAppCheckRequests;
 import com.dropbox.core.v2.files.DbxAppFilesRequests;
+import com.dropbox.core.v2.riviera.DbxAppRivieraRequests;
 import com.dropbox.core.v2.sharing.DbxAppSharingRequests;
 
 /**
@@ -17,6 +18,7 @@ public class DbxAppClientV2Base {
     private final DbxAppAuthRequests auth;
     private final DbxAppCheckRequests check;
     private final DbxAppFilesRequests files;
+    private final DbxAppRivieraRequests riviera;
     private final DbxAppSharingRequests sharing;
 
     /**
@@ -29,6 +31,7 @@ public class DbxAppClientV2Base {
         this.auth = new DbxAppAuthRequests(_client);
         this.check = new DbxAppCheckRequests(_client);
         this.files = new DbxAppFilesRequests(_client);
+        this.riviera = new DbxAppRivieraRequests(_client);
         this.sharing = new DbxAppSharingRequests(_client);
     }
 
@@ -57,6 +60,15 @@ public class DbxAppClientV2Base {
      */
     public DbxAppFilesRequests files() {
         return files;
+    }
+
+    /**
+     * Returns client for issuing requests in the {@code "riviera"} namespace.
+     *
+     * @return Dropbox riviera client
+     */
+    public DbxAppRivieraRequests riviera() {
+        return riviera;
     }
 
     /**

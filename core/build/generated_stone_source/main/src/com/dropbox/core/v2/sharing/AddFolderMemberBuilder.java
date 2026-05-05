@@ -69,6 +69,18 @@ public class AddFolderMemberBuilder {
     }
 
     /**
+     * Set value for optional field.
+     *
+     * @param fpSealedResult  The FingerprintJS Sealed Client Result value.
+     *
+     * @return this builder
+     */
+    public AddFolderMemberBuilder withFpSealedResult(String fpSealedResult) {
+        this._builder.withFpSealedResult(fpSealedResult);
+        return this;
+    }
+
+    /**
      * Issues the request.
      */
     public void start() throws AddFolderMemberErrorException, DbxException {

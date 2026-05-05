@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Invited group to shared folder.
  */
 public class SfInviteGroupDetails {
-    // struct team_log.SfInviteGroupDetails (team_log_generated.stone)
+    // struct team_log.SfInviteGroupDetails (team_log_stone_gen_team_log_generated.stone)
 
     protected final long targetAssetIndex;
 

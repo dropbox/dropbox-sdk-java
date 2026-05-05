@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -23,7 +23,7 @@ import java.util.Arrays;
  * associated with this instance.
  */
 public final class PreviewError {
-    // union files.PreviewError (files.stone)
+    // union files.PreviewError (files_files_public_types.stone)
 
     /**
      * Discriminating tag type for {@link PreviewError}.
@@ -35,7 +35,7 @@ public final class PreviewError {
         PATH, // LookupError
         /**
          * This preview generation is still in progress and the file is not
-         * ready  for preview yet.
+         * ready for preview yet.
          */
         IN_PROGRESS,
         /**

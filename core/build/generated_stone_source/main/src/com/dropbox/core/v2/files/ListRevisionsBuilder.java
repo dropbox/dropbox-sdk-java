@@ -76,6 +76,25 @@ public class ListRevisionsBuilder {
     }
 
     /**
+     * Set value for optional field.
+     *
+     * @param beforeRev  If set, ListRevisions will only return revisions prior
+     *     to before_rev. Can be set using the last revision from a previous
+     *     call to list_revisions to fetch the next page of revisions. Only
+     *     supported in path mode. Must have length of at least 9 and match
+     *     pattern "{@code [0-9a-f]+}".
+     *
+     * @return this builder
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public ListRevisionsBuilder withBeforeRev(String beforeRev) {
+        this._builder.withBeforeRev(beforeRev);
+        return this;
+    }
+
+    /**
      * Issues the request.
      */
     public ListRevisionsResult start() throws ListRevisionsErrorException, DbxException {

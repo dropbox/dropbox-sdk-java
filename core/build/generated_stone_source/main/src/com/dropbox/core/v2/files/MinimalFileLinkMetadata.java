@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class MinimalFileLinkMetadata {
-    // struct files.MinimalFileLinkMetadata (files.stone)
+    // struct files.MinimalFileLinkMetadata (files_files_public_types.stone)
 
     @Nonnull
     protected final String url;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_legal_holds.stone */
+/* This file was generated from team_team_legal_holds.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class LegalHoldsListPoliciesResult {
-    // struct team.LegalHoldsListPoliciesResult (team_legal_holds.stone)
+    // struct team.LegalHoldsListPoliciesResult (team_team_legal_holds.stone)
 
     @Nonnull
     protected final List<LegalHoldPolicy> policies;

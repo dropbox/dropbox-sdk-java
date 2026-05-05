@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Changed SAML identity mode for SSO.
  */
 public class SsoChangeSamlIdentityModeDetails {
-    // struct team_log.SsoChangeSamlIdentityModeDetails (team_log_generated.stone)
+    // struct team_log.SsoChangeSamlIdentityModeDetails (team_log_stone_gen_team_log_generated.stone)
 
     protected final long previousValue;
     protected final long newValue;

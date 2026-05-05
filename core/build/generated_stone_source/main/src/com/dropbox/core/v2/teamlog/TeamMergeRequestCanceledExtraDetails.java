@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -29,18 +29,18 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class TeamMergeRequestCanceledExtraDetails {
-    // union team_log.TeamMergeRequestCanceledExtraDetails (team_log_generated.stone)
+    // union team_log.TeamMergeRequestCanceledExtraDetails (team_log_stone_gen_team_log_generated.stone)
 
     /**
      * Discriminating tag type for {@link TeamMergeRequestCanceledExtraDetails}.
      */
     public enum Tag {
         /**
-         * Team merge request cancellation details shown to the primary team.
+         * Team merge request cancellation details shown to the primary team
          */
         PRIMARY_TEAM, // PrimaryTeamRequestCanceledDetails
         /**
-         * Team merge request cancellation details shown to the secondary team.
+         * Team merge request cancellation details shown to the secondary team
          */
         SECONDARY_TEAM, // SecondaryTeamRequestCanceledDetails
         /**
@@ -152,7 +152,7 @@ public final class TeamMergeRequestCanceledExtraDetails {
      * Returns an instance of {@code TeamMergeRequestCanceledExtraDetails} that
      * has its tag set to {@link Tag#PRIMARY_TEAM}.
      *
-     * <p> Team merge request cancellation details shown to the primary team.
+     * <p> Team merge request cancellation details shown to the primary team
      * </p>
      *
      * @param value  value to assign to this instance.
@@ -170,7 +170,7 @@ public final class TeamMergeRequestCanceledExtraDetails {
     }
 
     /**
-     * Team merge request cancellation details shown to the primary team.
+     * Team merge request cancellation details shown to the primary team
      *
      * <p> This instance must be tagged as {@link Tag#PRIMARY_TEAM}. </p>
      *
@@ -202,7 +202,7 @@ public final class TeamMergeRequestCanceledExtraDetails {
      * Returns an instance of {@code TeamMergeRequestCanceledExtraDetails} that
      * has its tag set to {@link Tag#SECONDARY_TEAM}.
      *
-     * <p> Team merge request cancellation details shown to the secondary team.
+     * <p> Team merge request cancellation details shown to the secondary team
      * </p>
      *
      * @param value  value to assign to this instance.
@@ -220,7 +220,7 @@ public final class TeamMergeRequestCanceledExtraDetails {
     }
 
     /**
-     * Team merge request cancellation details shown to the secondary team.
+     * Team merge request cancellation details shown to the secondary team
      *
      * <p> This instance must be tagged as {@link Tag#SECONDARY_TEAM}. </p>
      *

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.stone */
+/* This file was generated from team_apiv2_team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Role of a user in group.
  */
 public enum GroupAccessType {
-    // union team.GroupAccessType (team_groups.stone)
+    // union team.GroupAccessType (team_apiv2_team_groups.stone)
     /**
      * User is a member of the group, but has no special permissions.
      */

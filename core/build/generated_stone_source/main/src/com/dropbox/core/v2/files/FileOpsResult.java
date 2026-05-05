@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -15,10 +15,16 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+/**
+ * Result for File Operations
+ */
 public class FileOpsResult {
-    // struct files.FileOpsResult (files.stone)
+    // struct files.FileOpsResult (files_files_public_types.stone)
 
 
+    /**
+     * Result for File Operations
+     */
     public FileOpsResult() {
     }
 

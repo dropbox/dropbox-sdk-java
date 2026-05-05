@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_requests.stone */
+/* This file was generated from file_requests_apiv2_file_requests_public.stone */
 
 package com.dropbox.core.v2.filerequests;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class UpdateFileRequestDeadline {
-    // union file_requests.UpdateFileRequestDeadline (file_requests.stone)
+    // union file_requests.UpdateFileRequestDeadline (file_requests_apiv2_file_requests_public.stone)
 
     /**
      * Discriminating tag type for {@link UpdateFileRequestDeadline}.

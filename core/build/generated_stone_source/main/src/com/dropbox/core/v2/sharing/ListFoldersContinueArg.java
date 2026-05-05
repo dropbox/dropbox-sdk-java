@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class ListFoldersContinueArg {
-    // struct sharing.ListFoldersContinueArg (sharing_folders.stone)
+    // struct sharing.ListFoldersContinueArg (sharing_apiv2_sharing_folders_types.stone)
 
     @Nonnull
     protected final String cursor;

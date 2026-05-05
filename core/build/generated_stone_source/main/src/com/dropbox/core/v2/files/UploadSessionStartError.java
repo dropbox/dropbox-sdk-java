@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum UploadSessionStartError {
-    // union files.UploadSessionStartError (files.stone)
+    // union files.UploadSessionStartError (files_files_public_types.stone)
     /**
      * Uploading data not allowed when starting concurrent upload session.
      */
@@ -27,7 +27,7 @@ public enum UploadSessionStartError {
      */
     CONCURRENT_SESSION_CLOSE_NOT_ALLOWED,
     /**
-     * The request payload must be at most 150 MB.
+     * The request payload must be at most 150 MiB.
      */
     PAYLOAD_TOO_LARGE,
     /**

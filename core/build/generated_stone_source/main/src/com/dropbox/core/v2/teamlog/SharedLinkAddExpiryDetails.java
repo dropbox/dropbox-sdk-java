@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -19,18 +19,42 @@ import java.util.Arrays;
 import java.util.Date;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Added shared link expiration date.
  */
 public class SharedLinkAddExpiryDetails {
-    // struct team_log.SharedLinkAddExpiryDetails (team_log_generated.stone)
+    // struct team_log.SharedLinkAddExpiryDetails (team_log_stone_gen_team_log_generated.stone)
 
     @Nonnull
     protected final Date newValue;
+    @Nullable
+    protected final Boolean isConsolidationAction;
 
     /**
      * Added shared link expiration date.
+     *
+     * @param newValue  New shared link expiration date. Must not be {@code
+     *     null}.
+     * @param isConsolidationAction  Indicates whether this was a consolidation
+     *     action by system.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SharedLinkAddExpiryDetails(@Nonnull Date newValue, @Nullable Boolean isConsolidationAction) {
+        if (newValue == null) {
+            throw new IllegalArgumentException("Required value for 'newValue' is null");
+        }
+        this.newValue = LangUtil.truncateMillis(newValue);
+        this.isConsolidationAction = isConsolidationAction;
+    }
+
+    /**
+     * Added shared link expiration date.
+     *
+     * <p> The default values for unset fields will be used. </p>
      *
      * @param newValue  New shared link expiration date. Must not be {@code
      *     null}.
@@ -39,10 +63,7 @@ public class SharedLinkAddExpiryDetails {
      *     preconditions.
      */
     public SharedLinkAddExpiryDetails(@Nonnull Date newValue) {
-        if (newValue == null) {
-            throw new IllegalArgumentException("Required value for 'newValue' is null");
-        }
-        this.newValue = LangUtil.truncateMillis(newValue);
+        this(newValue, null);
     }
 
     /**
@@ -55,10 +76,21 @@ public class SharedLinkAddExpiryDetails {
         return newValue;
     }
 
+    /**
+     * Indicates whether this was a consolidation action by system.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public Boolean getIsConsolidationAction() {
+        return isConsolidationAction;
+    }
+
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            this.newValue
+            this.newValue,
+            this.isConsolidationAction
         });
         return hash;
     }
@@ -74,7 +106,9 @@ public class SharedLinkAddExpiryDetails {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             SharedLinkAddExpiryDetails other = (SharedLinkAddExpiryDetails) obj;
-            return (this.newValue == other.newValue) || (this.newValue.equals(other.newValue));
+            return ((this.newValue == other.newValue) || (this.newValue.equals(other.newValue)))
+                && ((this.isConsolidationAction == other.isConsolidationAction) || (this.isConsolidationAction != null && this.isConsolidationAction.equals(other.isConsolidationAction)))
+                ;
         }
         else {
             return false;
@@ -111,6 +145,10 @@ public class SharedLinkAddExpiryDetails {
             }
             g.writeFieldName("new_value");
             StoneSerializers.timestamp().serialize(value.newValue, g);
+            if (value.isConsolidationAction != null) {
+                g.writeFieldName("is_consolidation_action");
+                StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.isConsolidationAction, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -126,11 +164,15 @@ public class SharedLinkAddExpiryDetails {
             }
             if (tag == null) {
                 Date f_newValue = null;
+                Boolean f_isConsolidationAction = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
                     if ("new_value".equals(field)) {
                         f_newValue = StoneSerializers.timestamp().deserialize(p);
+                    }
+                    else if ("is_consolidation_action".equals(field)) {
+                        f_isConsolidationAction = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
                     }
                     else {
                         skipValue(p);
@@ -139,7 +181,7 @@ public class SharedLinkAddExpiryDetails {
                 if (f_newValue == null) {
                     throw new JsonParseException(p, "Required field \"new_value\" missing.");
                 }
-                value = new SharedLinkAddExpiryDetails(f_newValue);
+                value = new SharedLinkAddExpiryDetails(f_newValue, f_isConsolidationAction);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

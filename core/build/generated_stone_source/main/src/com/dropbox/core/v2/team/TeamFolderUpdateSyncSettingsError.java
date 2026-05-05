@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_folders.stone */
+/* This file was generated from team_team_folders.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -24,7 +24,7 @@ import java.util.Arrays;
  * associated with this instance.
  */
 public final class TeamFolderUpdateSyncSettingsError {
-    // union team.TeamFolderUpdateSyncSettingsError (team_folders.stone)
+    // union team.TeamFolderUpdateSyncSettingsError (team_team_folders.stone)
 
     /**
      * Discriminating tag type for {@link TeamFolderUpdateSyncSettingsError}.

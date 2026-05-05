@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_tagging.stone, files.stone */
+/* This file was generated from file_tagging_file_tagging.stone, files_files_public_types.stone, files_files_public_base.stone, files_files_public_primitives.stone, files_apiv2_files_previews_apiv2.stone, files_apiv2_files_metadata_apiv2.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -19,7 +19,7 @@ import java.util.Map;
  * Routes in namespace "files".
  */
 public class DbxAppFilesRequests {
-    // namespace files (file_tagging.stone, files.stone)
+    // namespace files (file_tagging_file_tagging.stone, files_files_public_types.stone, files_files_public_base.stone, files_files_public_primitives.stone, files_apiv2_files_previews_apiv2.stone, files_apiv2_files_metadata_apiv2.stone)
 
     private final DbxRawClientV2 client;
 
@@ -59,11 +59,10 @@ public class DbxAppFilesRequests {
     }
 
     /**
-     * Get a thumbnail for an image.
-     *
-     * <p> This method currently supports files with the following file
-     * extensions: jpg, jpeg, png, tiff, tif, gif, webp, ppm and bmp. Photos
-     * that are larger than 20MB in size won't be converted to a thumbnail. </p>
+     * Get a thumbnail for an image. This method currently supports files with
+     * the following file extensions: jpg, jpeg, png, tiff, tif, gif, webp, ppm
+     * and bmp. Photos that are larger than 20MB in size won't be converted to a
+     * thumbnail.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link DbxAppGetThumbnailV2Builder} for more details. </p>
@@ -112,25 +111,24 @@ public class DbxAppFilesRequests {
 
     /**
      * Starts returning the contents of a folder. If the result's {@link
-     * ListFolderResult#getHasMore} field is {@code true}, call {@link
-     * DbxAppFilesRequests#listFolderContinue(String)} with the returned {@link
-     * ListFolderResult#getCursor} to retrieve more entries. If you're using
-     * {@link ListFolderArg#getRecursive} set to {@code true} to keep a local
-     * cache of the contents of a Dropbox account, iterate through each entry in
-     * order and process them as follows to keep your local state in sync: For
-     * each {@link FileMetadata}, store the new entry at the given path in your
+     * ListFolderResult#getHasMore} field is true, call {@link
+     * DbxAppFilesRequests#listFolderContinue(String)} with the returned
+     * ListFolderResult.cursor to retrieve more entries. If you're using
+     * ListFolderArg.recursive set to true to keep a local cache of the contents
+     * of a Dropbox account, iterate through each entry in order and process
+     * them as follows to keep your local state in sync: For each FileMetadata,
+     * store the new entry at the given path in your local state. If the
+     * required parent folders don't exist yet, create them. If there's already
+     * something else at the given path, replace it and remove all its children.
+     * For each FolderMetadata, store the new entry at the given path in your
      * local state. If the required parent folders don't exist yet, create them.
-     * If there's already something else at the given path, replace it and
-     * remove all its children. For each {@link FolderMetadata}, store the new
-     * entry at the given path in your local state. If the required parent
-     * folders don't exist yet, create them. If there's already something else
-     * at the given path, replace it but leave the children as they are. Check
-     * the new entry's {@link FolderSharingInfo#getReadOnly} and set all its
-     * children's read-only statuses to match. For each {@link DeletedMetadata},
-     * if your local state has something at the given path, remove it and all
-     * its children. If there's nothing at the given path, ignore this entry.
-     * Note: {@link com.dropbox.core.v2.auth.RateLimitError} may be returned if
-     * multiple {@link DbxAppFilesRequests#listFolder(String)} or {@link
+     * If there's already something else at the given path, replace it but leave
+     * the children as they are. Check the new entry's
+     * FolderSharingInfo.read_only and set all its children's read-only statuses
+     * to match. For each DeletedMetadata, if your local state has something at
+     * the given path, remove it and all its children. If there's nothing at the
+     * given path, ignore this entry. Note: auth.RateLimitError may be returned
+     * if multiple {@link DbxAppFilesRequests#listFolder(String)} or {@link
      * DbxAppFilesRequests#listFolderContinue(String)} calls with same
      * parameters are made simultaneously by same API app for same user. If your
      * app implements retry logic, please hold off the retry until the previous
@@ -154,43 +152,35 @@ public class DbxAppFilesRequests {
 
     /**
      * Starts returning the contents of a folder. If the result's {@link
-     * ListFolderResult#getHasMore} field is {@code true}, call {@link
-     * DbxAppFilesRequests#listFolderContinue(String)} with the returned {@link
-     * ListFolderResult#getCursor} to retrieve more entries.
-     *
-     * <p> If you're using {@link ListFolderArg#getRecursive} set to {@code
-     * true} to keep a local cache of the contents of a Dropbox account, iterate
-     * through each entry in order and process them as follows to keep your
-     * local state in sync: </p>
-     *
-     * <p> For each {@link FileMetadata}, store the new entry at the given path
-     * in your local state. If the required parent folders don't exist yet,
-     * create them. If there's already something else at the given path, replace
-     * it and remove all its children. </p>
-     *
-     * <p> For each {@link FolderMetadata}, store the new entry at the given
-     * path in your local state. If the required parent folders don't exist yet,
-     * create them. If there's already something else at the given path, replace
-     * it but leave the children as they are. Check the new entry's {@link
-     * FolderSharingInfo#getReadOnly} and set all its children's read-only
-     * statuses to match. </p>
-     *
-     * <p> For each {@link DeletedMetadata}, if your local state has something
-     * at the given path, remove it and all its children. If there's nothing at
-     * the given path, ignore this entry. </p>
-     *
-     * <p> Note: {@link com.dropbox.core.v2.auth.RateLimitError} may be returned
+     * ListFolderResult#getHasMore} field is true, call {@link
+     * DbxAppFilesRequests#listFolderContinue(String)} with the returned
+     * ListFolderResult.cursor to retrieve more entries. If you're using
+     * ListFolderArg.recursive set to true to keep a local cache of the contents
+     * of a Dropbox account, iterate through each entry in order and process
+     * them as follows to keep your local state in sync: For each FileMetadata,
+     * store the new entry at the given path in your local state. If the
+     * required parent folders don't exist yet, create them. If there's already
+     * something else at the given path, replace it and remove all its children.
+     * For each FolderMetadata, store the new entry at the given path in your
+     * local state. If the required parent folders don't exist yet, create them.
+     * If there's already something else at the given path, replace it but leave
+     * the children as they are. Check the new entry's
+     * FolderSharingInfo.read_only and set all its children's read-only statuses
+     * to match. For each DeletedMetadata, if your local state has something at
+     * the given path, remove it and all its children. If there's nothing at the
+     * given path, ignore this entry. Note: auth.RateLimitError may be returned
      * if multiple {@link DbxAppFilesRequests#listFolder(String)} or {@link
      * DbxAppFilesRequests#listFolderContinue(String)} calls with same
      * parameters are made simultaneously by same API app for same user. If your
      * app implements retry logic, please hold off the retry until the previous
-     * request finishes. </p>
+     * request finishes.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link DbxAppListFolderBuilder} for more details. </p>
      *
      * @param path  A unique identifier for the file. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -202,32 +192,32 @@ public class DbxAppFilesRequests {
 
     /**
      * Starts returning the contents of a folder. If the result's {@link
-     * ListFolderResult#getHasMore} field is {@code true}, call {@link
-     * DbxAppFilesRequests#listFolderContinue(String)} with the returned {@link
-     * ListFolderResult#getCursor} to retrieve more entries. If you're using
-     * {@link ListFolderArg#getRecursive} set to {@code true} to keep a local
-     * cache of the contents of a Dropbox account, iterate through each entry in
-     * order and process them as follows to keep your local state in sync: For
-     * each {@link FileMetadata}, store the new entry at the given path in your
+     * ListFolderResult#getHasMore} field is true, call {@link
+     * DbxAppFilesRequests#listFolderContinue(String)} with the returned
+     * ListFolderResult.cursor to retrieve more entries. If you're using
+     * ListFolderArg.recursive set to true to keep a local cache of the contents
+     * of a Dropbox account, iterate through each entry in order and process
+     * them as follows to keep your local state in sync: For each FileMetadata,
+     * store the new entry at the given path in your local state. If the
+     * required parent folders don't exist yet, create them. If there's already
+     * something else at the given path, replace it and remove all its children.
+     * For each FolderMetadata, store the new entry at the given path in your
      * local state. If the required parent folders don't exist yet, create them.
-     * If there's already something else at the given path, replace it and
-     * remove all its children. For each {@link FolderMetadata}, store the new
-     * entry at the given path in your local state. If the required parent
-     * folders don't exist yet, create them. If there's already something else
-     * at the given path, replace it but leave the children as they are. Check
-     * the new entry's {@link FolderSharingInfo#getReadOnly} and set all its
-     * children's read-only statuses to match. For each {@link DeletedMetadata},
-     * if your local state has something at the given path, remove it and all
-     * its children. If there's nothing at the given path, ignore this entry.
-     * Note: {@link com.dropbox.core.v2.auth.RateLimitError} may be returned if
-     * multiple {@link DbxAppFilesRequests#listFolder(String)} or {@link
+     * If there's already something else at the given path, replace it but leave
+     * the children as they are. Check the new entry's
+     * FolderSharingInfo.read_only and set all its children's read-only statuses
+     * to match. For each DeletedMetadata, if your local state has something at
+     * the given path, remove it and all its children. If there's nothing at the
+     * given path, ignore this entry. Note: auth.RateLimitError may be returned
+     * if multiple {@link DbxAppFilesRequests#listFolder(String)} or {@link
      * DbxAppFilesRequests#listFolderContinue(String)} calls with same
      * parameters are made simultaneously by same API app for same user. If your
      * app implements retry logic, please hold off the retry until the previous
      * request finishes.
      *
      * @param path  A unique identifier for the file. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.

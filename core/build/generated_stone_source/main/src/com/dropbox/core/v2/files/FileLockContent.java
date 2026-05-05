@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class FileLockContent {
-    // union files.FileLockContent (files.stone)
+    // union files.FileLockContent (files_files_public_base.stone)
 
     /**
      * Discriminating tag type for {@link FileLockContent}.

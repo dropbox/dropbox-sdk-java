@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -17,9 +17,10 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum ThumbnailFormat {
-    // union files.ThumbnailFormat (files.stone)
+    // union files.ThumbnailFormat (files_files_public_base.stone)
     JPEG,
-    PNG;
+    PNG,
+    WEBP;
 
     /**
      * For internal use only.
@@ -36,6 +37,10 @@ public enum ThumbnailFormat {
                 }
                 case PNG: {
                     g.writeString("png");
+                    break;
+                }
+                case WEBP: {
+                    g.writeString("webp");
                     break;
                 }
                 default: {
@@ -67,6 +72,9 @@ public enum ThumbnailFormat {
             }
             else if ("png".equals(tag)) {
                 value = ThumbnailFormat.PNG;
+            }
+            else if ("webp".equals(tag)) {
+                value = ThumbnailFormat.WEBP;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

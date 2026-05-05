@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum PaperDocUpdatePolicy {
-    // union paper.PaperDocUpdatePolicy (paper.stone)
+    // union paper.PaperDocUpdatePolicy (paper_apiv2_paper_types.stone)
     /**
      * The content will be appended to the doc.
      */

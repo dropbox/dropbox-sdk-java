@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.stone */
+/* This file was generated from team_team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Information about linked Dropbox mobile client sessions.
  */
 public class MobileClientSession extends DeviceSession {
-    // struct team.MobileClientSession (team_devices.stone)
+    // struct team.MobileClientSession (team_team_devices.stone)
 
     @Nonnull
     protected final String deviceName;

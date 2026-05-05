@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_member_space_limits.stone */
+/* This file was generated from team_apiv2_team_member_space_limits.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * User and their required custom quota in GB (1 TB = 1024 GB).
  */
 public class UserCustomQuotaArg {
-    // struct team.UserCustomQuotaArg (team_member_space_limits.stone)
+    // struct team.UserCustomQuotaArg (team_apiv2_team_member_space_limits.stone)
 
     @Nonnull
     protected final UserSelectorArg user;
@@ -32,7 +32,7 @@ public class UserCustomQuotaArg {
      * User and their required custom quota in GB (1 TB = 1024 GB).
      *
      * @param user  Must not be {@code null}.
-     * @param quotaGb  Must be greater than or equal to 15.
+     * @param quotaGb  Must be greater than or equal to 2.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -42,8 +42,8 @@ public class UserCustomQuotaArg {
             throw new IllegalArgumentException("Required value for 'user' is null");
         }
         this.user = user;
-        if (quotaGb < 15L) {
-            throw new IllegalArgumentException("Number 'quotaGb' is smaller than 15L");
+        if (quotaGb < 2L) {
+            throw new IllegalArgumentException("Number 'quotaGb' is smaller than 2L");
         }
         this.quotaGb = quotaGb;
     }

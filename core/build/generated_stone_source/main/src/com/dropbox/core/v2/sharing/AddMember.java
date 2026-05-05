@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -17,17 +17,18 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * The member and type of access the member should have when added to a shared
  * folder.
  */
 public class AddMember {
-    // struct sharing.AddMember (sharing_folders.stone)
+    // struct sharing.AddMember (sharing_apiv2_sharing_folders_types.stone)
 
     @Nonnull
     protected final MemberSelector member;
-    @Nonnull
+    @Nullable
     protected final AccessLevel accessLevel;
 
     /**
@@ -37,20 +38,16 @@ public class AddMember {
      * @param member  The member to add to the shared folder. Must not be {@code
      *     null}.
      * @param accessLevel  The access level to grant {@link AddMember#getMember}
-     *     to the shared folder.  {@link AccessLevel#OWNER} is disallowed. Must
-     *     not be {@code null}.
+     *     to the shared folder.  {@link AccessLevel#OWNER} is disallowed.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddMember(@Nonnull MemberSelector member, @Nonnull AccessLevel accessLevel) {
+    public AddMember(@Nonnull MemberSelector member, @Nullable AccessLevel accessLevel) {
         if (member == null) {
             throw new IllegalArgumentException("Required value for 'member' is null");
         }
         this.member = member;
-        if (accessLevel == null) {
-            throw new IllegalArgumentException("Required value for 'accessLevel' is null");
-        }
         this.accessLevel = accessLevel;
     }
 
@@ -67,7 +64,7 @@ public class AddMember {
      *     preconditions.
      */
     public AddMember(@Nonnull MemberSelector member) {
-        this(member, AccessLevel.VIEWER);
+        this(member, null);
     }
 
     /**
@@ -84,10 +81,9 @@ public class AddMember {
      * The access level to grant {@link AddMember#getMember} to the shared
      * folder.  {@link AccessLevel#OWNER} is disallowed.
      *
-     * @return value for this field, or {@code null} if not present. Defaults to
-     *     AccessLevel.VIEWER.
+     * @return value for this field, or {@code null} if not present.
      */
-    @Nonnull
+    @Nullable
     public AccessLevel getAccessLevel() {
         return accessLevel;
     }
@@ -113,7 +109,7 @@ public class AddMember {
         else if (obj.getClass().equals(this.getClass())) {
             AddMember other = (AddMember) obj;
             return ((this.member == other.member) || (this.member.equals(other.member)))
-                && ((this.accessLevel == other.accessLevel) || (this.accessLevel.equals(other.accessLevel)))
+                && ((this.accessLevel == other.accessLevel) || (this.accessLevel != null && this.accessLevel.equals(other.accessLevel)))
                 ;
         }
         else {
@@ -151,8 +147,10 @@ public class AddMember {
             }
             g.writeFieldName("member");
             MemberSelector.Serializer.INSTANCE.serialize(value.member, g);
-            g.writeFieldName("access_level");
-            AccessLevel.Serializer.INSTANCE.serialize(value.accessLevel, g);
+            if (value.accessLevel != null) {
+                g.writeFieldName("access_level");
+                StoneSerializers.nullable(AccessLevel.Serializer.INSTANCE).serialize(value.accessLevel, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -168,7 +166,7 @@ public class AddMember {
             }
             if (tag == null) {
                 MemberSelector f_member = null;
-                AccessLevel f_accessLevel = AccessLevel.VIEWER;
+                AccessLevel f_accessLevel = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -176,7 +174,7 @@ public class AddMember {
                         f_member = MemberSelector.Serializer.INSTANCE.deserialize(p);
                     }
                     else if ("access_level".equals(field)) {
-                        f_accessLevel = AccessLevel.Serializer.INSTANCE.deserialize(p);
+                        f_accessLevel = StoneSerializers.nullable(AccessLevel.Serializer.INSTANCE).deserialize(p);
                     }
                     else {
                         skipValue(p);

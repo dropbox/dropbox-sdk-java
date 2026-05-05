@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 class RestoreArg {
-    // struct files.RestoreArg (files.stone)
+    // struct files.RestoreArg (files_files_public_types.stone)
 
     @Nonnull
     protected final String path;
@@ -30,7 +30,8 @@ class RestoreArg {
     /**
      *
      * @param path  The path to save the restored file. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      * @param rev  The revision to restore. Must have length of at least 9,
      *     match pattern "{@code [0-9a-f]+}", and not be {@code null}.
      *
@@ -41,7 +42,7 @@ class RestoreArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)", path)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;

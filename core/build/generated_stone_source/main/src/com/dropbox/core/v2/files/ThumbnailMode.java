@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum ThumbnailMode {
-    // union files.ThumbnailMode (files.stone)
+    // union files.ThumbnailMode (files_files_public_base.stone)
     /**
      * Scale down the image to fit within the given size.
      */
@@ -29,7 +29,11 @@ public enum ThumbnailMode {
     /**
      * Scale down the image to completely cover the given size or its transpose.
      */
-    FITONE_BESTFIT;
+    FITONE_BESTFIT,
+    /**
+     * Don't resize the image at all.
+     */
+    ORIGINAL;
 
     /**
      * For internal use only.
@@ -50,6 +54,10 @@ public enum ThumbnailMode {
                 }
                 case FITONE_BESTFIT: {
                     g.writeString("fitone_bestfit");
+                    break;
+                }
+                case ORIGINAL: {
+                    g.writeString("original");
                     break;
                 }
                 default: {
@@ -84,6 +92,9 @@ public enum ThumbnailMode {
             }
             else if ("fitone_bestfit".equals(tag)) {
                 value = ThumbnailMode.FITONE_BESTFIT;
+            }
+            else if ("original".equals(tag)) {
+                value = ThumbnailMode.ORIGINAL;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

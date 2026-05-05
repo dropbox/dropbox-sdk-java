@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum ListFoldersContinueError {
-    // union sharing.ListFoldersContinueError (sharing_folders.stone)
+    // union sharing.ListFoldersContinueError (sharing_apiv2_sharing_folders_types.stone)
     /**
      * {@link ListFoldersContinueArg#getCursor} is invalid.
      */

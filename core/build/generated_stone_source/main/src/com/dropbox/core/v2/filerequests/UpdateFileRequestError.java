@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_requests.stone */
+/* This file was generated from file_requests_apiv2_file_requests_public.stone */
 
 package com.dropbox.core.v2.filerequests;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
  * There is an error updating the file request.
  */
 public enum UpdateFileRequestError {
-    // union file_requests.UpdateFileRequestError (file_requests.stone)
+    // union file_requests.UpdateFileRequestError (file_requests_apiv2_file_requests_public.stone)
     /**
      * This user's Dropbox Business team doesn't allow file requests.
      */
@@ -59,7 +59,11 @@ public enum UpdateFileRequestError {
      * There was an error validating the request. For example, the title was
      * invalid, or there were disallowed characters in the destination path.
      */
-    VALIDATION_ERROR;
+    VALIDATION_ERROR,
+    /**
+     * This user doesn't have permission to edit files in a destination folder
+     */
+    NO_WRITE_PERMISSION;
 
     /**
      * For internal use only.
@@ -100,6 +104,10 @@ public enum UpdateFileRequestError {
                 }
                 case VALIDATION_ERROR: {
                     g.writeString("validation_error");
+                    break;
+                }
+                case NO_WRITE_PERMISSION: {
+                    g.writeString("no_write_permission");
                     break;
                 }
                 default: {
@@ -149,6 +157,9 @@ public enum UpdateFileRequestError {
             }
             else if ("validation_error".equals(tag)) {
                 value = UpdateFileRequestError.VALIDATION_ERROR;
+            }
+            else if ("no_write_permission".equals(tag)) {
+                value = UpdateFileRequestError.NO_WRITE_PERMISSION;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

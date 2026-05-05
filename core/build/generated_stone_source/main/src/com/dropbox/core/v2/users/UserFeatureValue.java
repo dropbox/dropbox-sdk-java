@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users.stone */
+/* This file was generated from users_users_types.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -29,7 +29,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class UserFeatureValue {
-    // union users.UserFeatureValue (users.stone)
+    // union users.UserFeatureValue (users_users_types.stone)
 
     /**
      * Discriminating tag type for {@link UserFeatureValue}.
@@ -37,6 +37,8 @@ public final class UserFeatureValue {
     public enum Tag {
         PAPER_AS_FILES, // PaperAsFilesValue
         FILE_LOCKING, // FileLockingValue
+        TEAM_SHARED_DROPBOX, // TeamSharedDropboxValue
+        DISTINCT_MEMBER_HOME, // DistinctMemberHomeValue
         /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
@@ -60,6 +62,8 @@ public final class UserFeatureValue {
     private Tag _tag;
     private PaperAsFilesValue paperAsFilesValue;
     private FileLockingValue fileLockingValue;
+    private TeamSharedDropboxValue teamSharedDropboxValue;
+    private DistinctMemberHomeValue distinctMemberHomeValue;
 
     /**
      * Private default constructor, so that object is uninitializable publicly.
@@ -108,6 +112,38 @@ public final class UserFeatureValue {
         UserFeatureValue result = new UserFeatureValue();
         result._tag = _tag;
         result.fileLockingValue = fileLockingValue;
+        return result;
+    }
+
+    /**
+     * Values that correspond to entries in {@link UserFeature}.
+     *
+     * @param teamSharedDropboxValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private UserFeatureValue withTagAndTeamSharedDropbox(Tag _tag, TeamSharedDropboxValue teamSharedDropboxValue) {
+        UserFeatureValue result = new UserFeatureValue();
+        result._tag = _tag;
+        result.teamSharedDropboxValue = teamSharedDropboxValue;
+        return result;
+    }
+
+    /**
+     * Values that correspond to entries in {@link UserFeature}.
+     *
+     * @param distinctMemberHomeValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private UserFeatureValue withTagAndDistinctMemberHome(Tag _tag, DistinctMemberHomeValue distinctMemberHomeValue) {
+        UserFeatureValue result = new UserFeatureValue();
+        result._tag = _tag;
+        result.distinctMemberHomeValue = distinctMemberHomeValue;
         return result;
     }
 
@@ -224,6 +260,100 @@ public final class UserFeatureValue {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_SHARED_DROPBOX}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_SHARED_DROPBOX}, {@code false} otherwise.
+     */
+    public boolean isTeamSharedDropbox() {
+        return this._tag == Tag.TEAM_SHARED_DROPBOX;
+    }
+
+    /**
+     * Returns an instance of {@code UserFeatureValue} that has its tag set to
+     * {@link Tag#TEAM_SHARED_DROPBOX}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code UserFeatureValue} with its tag set to {@link
+     *     Tag#TEAM_SHARED_DROPBOX}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static UserFeatureValue teamSharedDropbox(TeamSharedDropboxValue value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new UserFeatureValue().withTagAndTeamSharedDropbox(Tag.TEAM_SHARED_DROPBOX, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link Tag#TEAM_SHARED_DROPBOX}.
+     *
+     * @return The {@link TeamSharedDropboxValue} value associated with this
+     *     instance if {@link #isTeamSharedDropbox} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isTeamSharedDropbox} is {@code
+     *     false}.
+     */
+    public TeamSharedDropboxValue getTeamSharedDropboxValue() {
+        if (this._tag != Tag.TEAM_SHARED_DROPBOX) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_SHARED_DROPBOX, but was Tag." + this._tag.name());
+        }
+        return teamSharedDropboxValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DISTINCT_MEMBER_HOME}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DISTINCT_MEMBER_HOME}, {@code false} otherwise.
+     */
+    public boolean isDistinctMemberHome() {
+        return this._tag == Tag.DISTINCT_MEMBER_HOME;
+    }
+
+    /**
+     * Returns an instance of {@code UserFeatureValue} that has its tag set to
+     * {@link Tag#DISTINCT_MEMBER_HOME}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code UserFeatureValue} with its tag set to {@link
+     *     Tag#DISTINCT_MEMBER_HOME}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static UserFeatureValue distinctMemberHome(DistinctMemberHomeValue value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new UserFeatureValue().withTagAndDistinctMemberHome(Tag.DISTINCT_MEMBER_HOME, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link Tag#DISTINCT_MEMBER_HOME}.
+     *
+     * @return The {@link DistinctMemberHomeValue} value associated with this
+     *     instance if {@link #isDistinctMemberHome} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDistinctMemberHome} is {@code
+     *     false}.
+     */
+    public DistinctMemberHomeValue getDistinctMemberHomeValue() {
+        if (this._tag != Tag.DISTINCT_MEMBER_HOME) {
+            throw new IllegalStateException("Invalid tag: required Tag.DISTINCT_MEMBER_HOME, but was Tag." + this._tag.name());
+        }
+        return distinctMemberHomeValue;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -239,7 +369,9 @@ public final class UserFeatureValue {
         int hash = Arrays.hashCode(new Object [] {
             this._tag,
             this.paperAsFilesValue,
-            this.fileLockingValue
+            this.fileLockingValue,
+            this.teamSharedDropboxValue,
+            this.distinctMemberHomeValue
         });
         return hash;
     }
@@ -262,6 +394,10 @@ public final class UserFeatureValue {
                     return (this.paperAsFilesValue == other.paperAsFilesValue) || (this.paperAsFilesValue.equals(other.paperAsFilesValue));
                 case FILE_LOCKING:
                     return (this.fileLockingValue == other.fileLockingValue) || (this.fileLockingValue.equals(other.fileLockingValue));
+                case TEAM_SHARED_DROPBOX:
+                    return (this.teamSharedDropboxValue == other.teamSharedDropboxValue) || (this.teamSharedDropboxValue.equals(other.teamSharedDropboxValue));
+                case DISTINCT_MEMBER_HOME:
+                    return (this.distinctMemberHomeValue == other.distinctMemberHomeValue) || (this.distinctMemberHomeValue.equals(other.distinctMemberHomeValue));
                 case OTHER:
                     return true;
                 default:
@@ -315,6 +451,22 @@ public final class UserFeatureValue {
                     g.writeEndObject();
                     break;
                 }
+                case TEAM_SHARED_DROPBOX: {
+                    g.writeStartObject();
+                    writeTag("team_shared_dropbox", g);
+                    g.writeFieldName("team_shared_dropbox");
+                    TeamSharedDropboxValue.Serializer.INSTANCE.serialize(value.teamSharedDropboxValue, g);
+                    g.writeEndObject();
+                    break;
+                }
+                case DISTINCT_MEMBER_HOME: {
+                    g.writeStartObject();
+                    writeTag("distinct_member_home", g);
+                    g.writeFieldName("distinct_member_home");
+                    DistinctMemberHomeValue.Serializer.INSTANCE.serialize(value.distinctMemberHomeValue, g);
+                    g.writeEndObject();
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -350,6 +502,18 @@ public final class UserFeatureValue {
                 expectField("file_locking", p);
                 fieldValue = FileLockingValue.Serializer.INSTANCE.deserialize(p);
                 value = UserFeatureValue.fileLocking(fieldValue);
+            }
+            else if ("team_shared_dropbox".equals(tag)) {
+                TeamSharedDropboxValue fieldValue = null;
+                expectField("team_shared_dropbox", p);
+                fieldValue = TeamSharedDropboxValue.Serializer.INSTANCE.deserialize(p);
+                value = UserFeatureValue.teamSharedDropbox(fieldValue);
+            }
+            else if ("distinct_member_home".equals(tag)) {
+                DistinctMemberHomeValue fieldValue = null;
+                expectField("distinct_member_home", p);
+                fieldValue = DistinctMemberHomeValue.Serializer.INSTANCE.deserialize(p);
+                value = UserFeatureValue.distinctMemberHome(fieldValue);
             }
             else {
                 value = UserFeatureValue.OTHER;

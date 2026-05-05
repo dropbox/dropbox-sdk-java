@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from team_team_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -30,7 +30,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class FeatureValue {
-    // union team.FeatureValue (team.stone)
+    // union team.FeatureValue (team_team_types.stone)
 
     /**
      * Discriminating tag type for {@link FeatureValue}.
@@ -40,6 +40,7 @@ public final class FeatureValue {
         HAS_TEAM_SHARED_DROPBOX, // HasTeamSharedDropboxValue
         HAS_TEAM_FILE_EVENTS, // HasTeamFileEventsValue
         HAS_TEAM_SELECTIVE_SYNC, // HasTeamSelectiveSyncValue
+        HAS_DISTINCT_MEMBER_HOMES, // HasDistinctMemberHomesValue
         /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
@@ -65,6 +66,7 @@ public final class FeatureValue {
     private HasTeamSharedDropboxValue hasTeamSharedDropboxValue;
     private HasTeamFileEventsValue hasTeamFileEventsValue;
     private HasTeamSelectiveSyncValue hasTeamSelectiveSyncValue;
+    private HasDistinctMemberHomesValue hasDistinctMemberHomesValue;
 
     /**
      * Private default constructor, so that object is uninitializable publicly.
@@ -150,6 +152,23 @@ public final class FeatureValue {
         FeatureValue result = new FeatureValue();
         result._tag = _tag;
         result.hasTeamSelectiveSyncValue = hasTeamSelectiveSyncValue;
+        return result;
+    }
+
+    /**
+     * The values correspond to entries in {@link Feature}. You may get
+     * different value according to your Dropbox Business plan.
+     *
+     * @param hasDistinctMemberHomesValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private FeatureValue withTagAndHasDistinctMemberHomes(Tag _tag, HasDistinctMemberHomesValue hasDistinctMemberHomesValue) {
+        FeatureValue result = new FeatureValue();
+        result._tag = _tag;
+        result.hasDistinctMemberHomesValue = hasDistinctMemberHomesValue;
         return result;
     }
 
@@ -360,6 +379,53 @@ public final class FeatureValue {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#HAS_DISTINCT_MEMBER_HOMES}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#HAS_DISTINCT_MEMBER_HOMES}, {@code false} otherwise.
+     */
+    public boolean isHasDistinctMemberHomes() {
+        return this._tag == Tag.HAS_DISTINCT_MEMBER_HOMES;
+    }
+
+    /**
+     * Returns an instance of {@code FeatureValue} that has its tag set to
+     * {@link Tag#HAS_DISTINCT_MEMBER_HOMES}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code FeatureValue} with its tag set to {@link
+     *     Tag#HAS_DISTINCT_MEMBER_HOMES}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static FeatureValue hasDistinctMemberHomes(HasDistinctMemberHomesValue value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new FeatureValue().withTagAndHasDistinctMemberHomes(Tag.HAS_DISTINCT_MEMBER_HOMES, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link Tag#HAS_DISTINCT_MEMBER_HOMES}.
+     *
+     * @return The {@link HasDistinctMemberHomesValue} value associated with
+     *     this instance if {@link #isHasDistinctMemberHomes} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isHasDistinctMemberHomes} is
+     *     {@code false}.
+     */
+    public HasDistinctMemberHomesValue getHasDistinctMemberHomesValue() {
+        if (this._tag != Tag.HAS_DISTINCT_MEMBER_HOMES) {
+            throw new IllegalStateException("Invalid tag: required Tag.HAS_DISTINCT_MEMBER_HOMES, but was Tag." + this._tag.name());
+        }
+        return hasDistinctMemberHomesValue;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -377,7 +443,8 @@ public final class FeatureValue {
             this.uploadApiRateLimitValue,
             this.hasTeamSharedDropboxValue,
             this.hasTeamFileEventsValue,
-            this.hasTeamSelectiveSyncValue
+            this.hasTeamSelectiveSyncValue,
+            this.hasDistinctMemberHomesValue
         });
         return hash;
     }
@@ -404,6 +471,8 @@ public final class FeatureValue {
                     return (this.hasTeamFileEventsValue == other.hasTeamFileEventsValue) || (this.hasTeamFileEventsValue.equals(other.hasTeamFileEventsValue));
                 case HAS_TEAM_SELECTIVE_SYNC:
                     return (this.hasTeamSelectiveSyncValue == other.hasTeamSelectiveSyncValue) || (this.hasTeamSelectiveSyncValue.equals(other.hasTeamSelectiveSyncValue));
+                case HAS_DISTINCT_MEMBER_HOMES:
+                    return (this.hasDistinctMemberHomesValue == other.hasDistinctMemberHomesValue) || (this.hasDistinctMemberHomesValue.equals(other.hasDistinctMemberHomesValue));
                 case OTHER:
                     return true;
                 default:
@@ -473,6 +542,14 @@ public final class FeatureValue {
                     g.writeEndObject();
                     break;
                 }
+                case HAS_DISTINCT_MEMBER_HOMES: {
+                    g.writeStartObject();
+                    writeTag("has_distinct_member_homes", g);
+                    g.writeFieldName("has_distinct_member_homes");
+                    HasDistinctMemberHomesValue.Serializer.INSTANCE.serialize(value.hasDistinctMemberHomesValue, g);
+                    g.writeEndObject();
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -520,6 +597,12 @@ public final class FeatureValue {
                 expectField("has_team_selective_sync", p);
                 fieldValue = HasTeamSelectiveSyncValue.Serializer.INSTANCE.deserialize(p);
                 value = FeatureValue.hasTeamSelectiveSync(fieldValue);
+            }
+            else if ("has_distinct_member_homes".equals(tag)) {
+                HasDistinctMemberHomesValue fieldValue = null;
+                expectField("has_distinct_member_homes", p);
+                fieldValue = HasDistinctMemberHomesValue.Serializer.INSTANCE.deserialize(p);
+                value = FeatureValue.hasDistinctMemberHomes(fieldValue);
             }
             else {
                 value = FeatureValue.OTHER;

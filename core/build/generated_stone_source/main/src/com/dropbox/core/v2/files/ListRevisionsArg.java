@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -18,36 +18,45 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 class ListRevisionsArg {
-    // struct files.ListRevisionsArg (files.stone)
+    // struct files.ListRevisionsArg (files_files_public_types.stone)
 
     @Nonnull
     protected final String path;
     @Nonnull
     protected final ListRevisionsMode mode;
     protected final long limit;
+    @Nullable
+    protected final String beforeRev;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields.
      *
      * @param path  The path to the file you want to see the revisions of. Must
-     *     match pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and
-     *     not be {@code null}.
+     *     match pattern "{@code
+     *     /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be {@code
+     *     null}.
      * @param mode  Determines the behavior of the API in listing the revisions
      *     for a given file path or id. Must not be {@code null}.
      * @param limit  The maximum number of revision entries returned. Must be
      *     greater than or equal to 1 and be less than or equal to 100.
+     * @param beforeRev  If set, ListRevisions will only return revisions prior
+     *     to before_rev. Can be set using the last revision from a previous
+     *     call to list_revisions to fetch the next page of revisions. Only
+     *     supported in path mode. Must have length of at least 9 and match
+     *     pattern "{@code [0-9a-f]+}".
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListRevisionsArg(@Nonnull String path, @Nonnull ListRevisionsMode mode, long limit) {
+    public ListRevisionsArg(@Nonnull String path, @Nonnull ListRevisionsMode mode, long limit, @Nullable String beforeRev) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("/(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)", path)) {
+        if (!Pattern.matches("/(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -62,6 +71,15 @@ class ListRevisionsArg {
             throw new IllegalArgumentException("Number 'limit' is larger than 100L");
         }
         this.limit = limit;
+        if (beforeRev != null) {
+            if (beforeRev.length() < 9) {
+                throw new IllegalArgumentException("String 'beforeRev' is shorter than 9");
+            }
+            if (!Pattern.matches("[0-9a-f]+", beforeRev)) {
+                throw new IllegalArgumentException("String 'beforeRev' does not match pattern");
+            }
+        }
+        this.beforeRev = beforeRev;
     }
 
     /**
@@ -70,14 +88,15 @@ class ListRevisionsArg {
      * <p> The default values for unset fields will be used. </p>
      *
      * @param path  The path to the file you want to see the revisions of. Must
-     *     match pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and
-     *     not be {@code null}.
+     *     match pattern "{@code
+     *     /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be {@code
+     *     null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
     public ListRevisionsArg(@Nonnull String path) {
-        this(path, ListRevisionsMode.PATH, 10L);
+        this(path, ListRevisionsMode.PATH, 10L, null);
     }
 
     /**
@@ -113,11 +132,24 @@ class ListRevisionsArg {
     }
 
     /**
+     * If set, ListRevisions will only return revisions prior to before_rev. Can
+     * be set using the last revision from a previous call to list_revisions to
+     * fetch the next page of revisions. Only supported in path mode.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public String getBeforeRev() {
+        return beforeRev;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path to the file you want to see the revisions of. Must
-     *     match pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and
-     *     not be {@code null}.
+     *     match pattern "{@code
+     *     /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be {@code
+     *     null}.
      *
      * @return builder for this class.
      *
@@ -136,17 +168,19 @@ class ListRevisionsArg {
 
         protected ListRevisionsMode mode;
         protected long limit;
+        protected String beforeRev;
 
         protected Builder(String path) {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!Pattern.matches("/(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)", path)) {
+            if (!Pattern.matches("/(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;
             this.mode = ListRevisionsMode.PATH;
             this.limit = 10L;
+            this.beforeRev = null;
         }
 
         /**
@@ -207,13 +241,40 @@ class ListRevisionsArg {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param beforeRev  If set, ListRevisions will only return revisions
+         *     prior to before_rev. Can be set using the last revision from a
+         *     previous call to list_revisions to fetch the next page of
+         *     revisions. Only supported in path mode. Must have length of at
+         *     least 9 and match pattern "{@code [0-9a-f]+}".
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withBeforeRev(String beforeRev) {
+            if (beforeRev != null) {
+                if (beforeRev.length() < 9) {
+                    throw new IllegalArgumentException("String 'beforeRev' is shorter than 9");
+                }
+                if (!Pattern.matches("[0-9a-f]+", beforeRev)) {
+                    throw new IllegalArgumentException("String 'beforeRev' does not match pattern");
+                }
+            }
+            this.beforeRev = beforeRev;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link ListRevisionsArg} configured with this
          * builder's values
          *
          * @return new instance of {@link ListRevisionsArg}
          */
         public ListRevisionsArg build() {
-            return new ListRevisionsArg(path, mode, limit);
+            return new ListRevisionsArg(path, mode, limit, beforeRev);
         }
     }
 
@@ -222,7 +283,8 @@ class ListRevisionsArg {
         int hash = Arrays.hashCode(new Object [] {
             this.path,
             this.mode,
-            this.limit
+            this.limit,
+            this.beforeRev
         });
         return hash;
     }
@@ -241,6 +303,7 @@ class ListRevisionsArg {
             return ((this.path == other.path) || (this.path.equals(other.path)))
                 && ((this.mode == other.mode) || (this.mode.equals(other.mode)))
                 && (this.limit == other.limit)
+                && ((this.beforeRev == other.beforeRev) || (this.beforeRev != null && this.beforeRev.equals(other.beforeRev)))
                 ;
         }
         else {
@@ -282,6 +345,10 @@ class ListRevisionsArg {
             ListRevisionsMode.Serializer.INSTANCE.serialize(value.mode, g);
             g.writeFieldName("limit");
             StoneSerializers.uInt64().serialize(value.limit, g);
+            if (value.beforeRev != null) {
+                g.writeFieldName("before_rev");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.beforeRev, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -299,6 +366,7 @@ class ListRevisionsArg {
                 String f_path = null;
                 ListRevisionsMode f_mode = ListRevisionsMode.PATH;
                 Long f_limit = 10L;
+                String f_beforeRev = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -311,6 +379,9 @@ class ListRevisionsArg {
                     else if ("limit".equals(field)) {
                         f_limit = StoneSerializers.uInt64().deserialize(p);
                     }
+                    else if ("before_rev".equals(field)) {
+                        f_beforeRev = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -318,7 +389,7 @@ class ListRevisionsArg {
                 if (f_path == null) {
                     throw new JsonParseException(p, "Required field \"path\" missing.");
                 }
-                value = new ListRevisionsArg(f_path, f_mode, f_limit);
+                value = new ListRevisionsArg(f_path, f_mode, f_limit, f_beforeRev);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

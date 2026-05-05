@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum PaperDocUpdatePolicy {
-    // union files.PaperDocUpdatePolicy (files.stone)
+    // union files.PaperDocUpdatePolicy (files_files_public_types.stone)
     /**
      * Sets the doc content to the provided content if the provided
      * paper_revision matches the latest doc revision. Otherwise, returns an

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.stone */
+/* This file was generated from team_apiv2_team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,14 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 
 class IncludeMembersArg {
-    // struct team.IncludeMembersArg (team_groups.stone)
+    // struct team.IncludeMembersArg (team_apiv2_team_groups.stone)
 
     protected final boolean returnMembers;
 
     /**
      *
      * @param returnMembers  Whether to return the list of members in the group.
-     *     Note that the default value will cause all the group members  to be
+     *     Note that the default value will cause all the group members to be
      *     returned in the response. This may take a long time for large groups.
      */
     public IncludeMembersArg(boolean returnMembers) {
@@ -41,9 +41,9 @@ class IncludeMembersArg {
     }
 
     /**
-     * Whether to return the list of members in the group.  Note that the
-     * default value will cause all the group members  to be returned in the
-     * response. This may take a long time for large groups.
+     * Whether to return the list of members in the group. Note that the default
+     * value will cause all the group members to be returned in the response.
+     * This may take a long time for large groups.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     true.

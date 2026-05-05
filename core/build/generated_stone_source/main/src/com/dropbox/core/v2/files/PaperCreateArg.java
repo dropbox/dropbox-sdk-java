@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 class PaperCreateArg {
-    // struct files.PaperCreateArg (files.stone)
+    // struct files.PaperCreateArg (files_files_public_types.stone)
 
     @Nonnull
     protected final String path;

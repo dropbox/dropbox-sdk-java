@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_requests.stone */
+/* This file was generated from file_requests_apiv2_file_requests_public.stone */
 
 package com.dropbox.core.v2.filerequests;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class FileRequestDeadline {
-    // struct file_requests.FileRequestDeadline (file_requests.stone)
+    // struct file_requests.FileRequestDeadline (file_requests_apiv2_file_requests_public.stone)
 
     @Nonnull
     protected final Date deadline;
@@ -34,7 +34,7 @@ public class FileRequestDeadline {
      * @param deadline  The deadline for this file request. Must not be {@code
      *     null}.
      * @param allowLateUploads  If set, allow uploads after the deadline has
-     *     passed. These     uploads will be marked overdue.
+     *     passed. These uploads will be marked overdue.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -73,8 +73,8 @@ public class FileRequestDeadline {
     }
 
     /**
-     * If set, allow uploads after the deadline has passed. These     uploads
-     * will be marked overdue.
+     * If set, allow uploads after the deadline has passed. These uploads will
+     * be marked overdue.
      *
      * @return value for this field, or {@code null} if not present.
      */

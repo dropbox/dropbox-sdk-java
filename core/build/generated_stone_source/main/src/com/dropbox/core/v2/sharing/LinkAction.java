@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_content_links.stone */
+/* This file was generated from sharing_apiv2_shared_content_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Actions that can be performed on a link.
  */
 public enum LinkAction {
-    // union sharing.LinkAction (shared_content_links.stone)
+    // union sharing.LinkAction (sharing_apiv2_shared_content_links.stone)
     /**
      * Change the access level of the link.
      */

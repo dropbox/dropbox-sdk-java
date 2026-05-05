@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team_team_common.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -29,12 +29,14 @@ import javax.annotation.Nullable;
  * Profile of a user as a member of a team.
  */
 public class TeamMemberProfile extends MemberProfile {
-    // struct team.TeamMemberProfile (team_members.stone)
+    // struct team.TeamMemberProfile (team_team_common.stone)
 
     @Nonnull
     protected final List<String> groups;
     @Nonnull
     protected final String memberFolderId;
+    @Nonnull
+    protected final String rootFolderId;
 
     /**
      * Profile of a user as a member of a team.
@@ -56,7 +58,9 @@ public class TeamMemberProfile extends MemberProfile {
      *     shared quota). Must not be {@code null}.
      * @param groups  List of group IDs of groups that the user belongs to. Must
      *     not contain a {@code null} item and not be {@code null}.
-     * @param memberFolderId  The namespace id of the user's root folder. Must
+     * @param memberFolderId  The namespace id of the user's member folder. Must
+     *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     * @param rootFolderId  The namespace id of the user's root folder. Must
      *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      * @param externalId  External ID that a team can attach to the user. An
      *     application using the API may find it easier to use their own IDs
@@ -83,7 +87,7 @@ public class TeamMemberProfile extends MemberProfile {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberProfile(@Nonnull String teamMemberId, @Nonnull String email, boolean emailVerified, @Nonnull TeamMemberStatus status, @Nonnull Name name, @Nonnull TeamMembershipType membershipType, @Nonnull List<String> groups, @Nonnull String memberFolderId, @Nullable String externalId, @Nullable String accountId, @Nullable List<SecondaryEmail> secondaryEmails, @Nullable Date invitedOn, @Nullable Date joinedOn, @Nullable Date suspendedOn, @Nullable String persistentId, @Nullable Boolean isDirectoryRestricted, @Nullable String profilePhotoUrl) {
+    public TeamMemberProfile(@Nonnull String teamMemberId, @Nonnull String email, boolean emailVerified, @Nonnull TeamMemberStatus status, @Nonnull Name name, @Nonnull TeamMembershipType membershipType, @Nonnull List<String> groups, @Nonnull String memberFolderId, @Nonnull String rootFolderId, @Nullable String externalId, @Nullable String accountId, @Nullable List<SecondaryEmail> secondaryEmails, @Nullable Date invitedOn, @Nullable Date joinedOn, @Nullable Date suspendedOn, @Nullable String persistentId, @Nullable Boolean isDirectoryRestricted, @Nullable String profilePhotoUrl) {
         super(teamMemberId, email, emailVerified, status, name, membershipType, externalId, accountId, secondaryEmails, invitedOn, joinedOn, suspendedOn, persistentId, isDirectoryRestricted, profilePhotoUrl);
         if (groups == null) {
             throw new IllegalArgumentException("Required value for 'groups' is null");
@@ -101,6 +105,13 @@ public class TeamMemberProfile extends MemberProfile {
             throw new IllegalArgumentException("String 'memberFolderId' does not match pattern");
         }
         this.memberFolderId = memberFolderId;
+        if (rootFolderId == null) {
+            throw new IllegalArgumentException("Required value for 'rootFolderId' is null");
+        }
+        if (!Pattern.matches("[-_0-9a-zA-Z:]+", rootFolderId)) {
+            throw new IllegalArgumentException("String 'rootFolderId' does not match pattern");
+        }
+        this.rootFolderId = rootFolderId;
     }
 
     /**
@@ -122,14 +133,16 @@ public class TeamMemberProfile extends MemberProfile {
      *     shared quota). Must not be {@code null}.
      * @param groups  List of group IDs of groups that the user belongs to. Must
      *     not contain a {@code null} item and not be {@code null}.
-     * @param memberFolderId  The namespace id of the user's root folder. Must
+     * @param memberFolderId  The namespace id of the user's member folder. Must
+     *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     * @param rootFolderId  The namespace id of the user's root folder. Must
      *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberProfile(@Nonnull String teamMemberId, @Nonnull String email, boolean emailVerified, @Nonnull TeamMemberStatus status, @Nonnull Name name, @Nonnull TeamMembershipType membershipType, @Nonnull List<String> groups, @Nonnull String memberFolderId) {
-        this(teamMemberId, email, emailVerified, status, name, membershipType, groups, memberFolderId, null, null, null, null, null, null, null, null, null);
+    public TeamMemberProfile(@Nonnull String teamMemberId, @Nonnull String email, boolean emailVerified, @Nonnull TeamMemberStatus status, @Nonnull Name name, @Nonnull TeamMembershipType membershipType, @Nonnull List<String> groups, @Nonnull String memberFolderId, @Nonnull String rootFolderId) {
+        this(teamMemberId, email, emailVerified, status, name, membershipType, groups, memberFolderId, rootFolderId, null, null, null, null, null, null, null, null, null);
     }
 
     /**
@@ -203,13 +216,23 @@ public class TeamMemberProfile extends MemberProfile {
     }
 
     /**
-     * The namespace id of the user's root folder.
+     * The namespace id of the user's member folder.
      *
      * @return value for this field, never {@code null}.
      */
     @Nonnull
     public String getMemberFolderId() {
         return memberFolderId;
+    }
+
+    /**
+     * The namespace id of the user's root folder.
+     *
+     * @return value for this field, never {@code null}.
+     */
+    @Nonnull
+    public String getRootFolderId() {
+        return rootFolderId;
     }
 
     /**
@@ -325,7 +348,9 @@ public class TeamMemberProfile extends MemberProfile {
      *     shared quota). Must not be {@code null}.
      * @param groups  List of group IDs of groups that the user belongs to. Must
      *     not contain a {@code null} item and not be {@code null}.
-     * @param memberFolderId  The namespace id of the user's root folder. Must
+     * @param memberFolderId  The namespace id of the user's member folder. Must
+     *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     * @param rootFolderId  The namespace id of the user's root folder. Must
      *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      *
      * @return builder for this class.
@@ -333,8 +358,8 @@ public class TeamMemberProfile extends MemberProfile {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public static Builder newBuilder(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType, List<String> groups, String memberFolderId) {
-        return new Builder(teamMemberId, email, emailVerified, status, name, membershipType, groups, memberFolderId);
+    public static Builder newBuilder(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType, List<String> groups, String memberFolderId, String rootFolderId) {
+        return new Builder(teamMemberId, email, emailVerified, status, name, membershipType, groups, memberFolderId, rootFolderId);
     }
 
     /**
@@ -343,8 +368,9 @@ public class TeamMemberProfile extends MemberProfile {
     public static class Builder extends MemberProfile.Builder {
         protected final List<String> groups;
         protected final String memberFolderId;
+        protected final String rootFolderId;
 
-        protected Builder(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType, List<String> groups, String memberFolderId) {
+        protected Builder(String teamMemberId, String email, boolean emailVerified, TeamMemberStatus status, Name name, TeamMembershipType membershipType, List<String> groups, String memberFolderId, String rootFolderId) {
             super(teamMemberId, email, emailVerified, status, name, membershipType);
             if (groups == null) {
                 throw new IllegalArgumentException("Required value for 'groups' is null");
@@ -362,6 +388,13 @@ public class TeamMemberProfile extends MemberProfile {
                 throw new IllegalArgumentException("String 'memberFolderId' does not match pattern");
             }
             this.memberFolderId = memberFolderId;
+            if (rootFolderId == null) {
+                throw new IllegalArgumentException("Required value for 'rootFolderId' is null");
+            }
+            if (!Pattern.matches("[-_0-9a-zA-Z:]+", rootFolderId)) {
+                throw new IllegalArgumentException("String 'rootFolderId' does not match pattern");
+            }
+            this.rootFolderId = rootFolderId;
         }
 
         /**
@@ -498,7 +531,7 @@ public class TeamMemberProfile extends MemberProfile {
          * @return new instance of {@link TeamMemberProfile}
          */
         public TeamMemberProfile build() {
-            return new TeamMemberProfile(teamMemberId, email, emailVerified, status, name, membershipType, groups, memberFolderId, externalId, accountId, secondaryEmails, invitedOn, joinedOn, suspendedOn, persistentId, isDirectoryRestricted, profilePhotoUrl);
+            return new TeamMemberProfile(teamMemberId, email, emailVerified, status, name, membershipType, groups, memberFolderId, rootFolderId, externalId, accountId, secondaryEmails, invitedOn, joinedOn, suspendedOn, persistentId, isDirectoryRestricted, profilePhotoUrl);
         }
     }
 
@@ -506,7 +539,8 @@ public class TeamMemberProfile extends MemberProfile {
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
             this.groups,
-            this.memberFolderId
+            this.memberFolderId,
+            this.rootFolderId
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -531,6 +565,7 @@ public class TeamMemberProfile extends MemberProfile {
                 && ((this.membershipType == other.membershipType) || (this.membershipType.equals(other.membershipType)))
                 && ((this.groups == other.groups) || (this.groups.equals(other.groups)))
                 && ((this.memberFolderId == other.memberFolderId) || (this.memberFolderId.equals(other.memberFolderId)))
+                && ((this.rootFolderId == other.rootFolderId) || (this.rootFolderId.equals(other.rootFolderId)))
                 && ((this.externalId == other.externalId) || (this.externalId != null && this.externalId.equals(other.externalId)))
                 && ((this.accountId == other.accountId) || (this.accountId != null && this.accountId.equals(other.accountId)))
                 && ((this.secondaryEmails == other.secondaryEmails) || (this.secondaryEmails != null && this.secondaryEmails.equals(other.secondaryEmails)))
@@ -591,6 +626,8 @@ public class TeamMemberProfile extends MemberProfile {
             StoneSerializers.list(StoneSerializers.string()).serialize(value.groups, g);
             g.writeFieldName("member_folder_id");
             StoneSerializers.string().serialize(value.memberFolderId, g);
+            g.writeFieldName("root_folder_id");
+            StoneSerializers.string().serialize(value.rootFolderId, g);
             if (value.externalId != null) {
                 g.writeFieldName("external_id");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.externalId, g);
@@ -649,6 +686,7 @@ public class TeamMemberProfile extends MemberProfile {
                 TeamMembershipType f_membershipType = null;
                 List<String> f_groups = null;
                 String f_memberFolderId = null;
+                String f_rootFolderId = null;
                 String f_externalId = null;
                 String f_accountId = null;
                 List<SecondaryEmail> f_secondaryEmails = null;
@@ -684,6 +722,9 @@ public class TeamMemberProfile extends MemberProfile {
                     }
                     else if ("member_folder_id".equals(field)) {
                         f_memberFolderId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("root_folder_id".equals(field)) {
+                        f_rootFolderId = StoneSerializers.string().deserialize(p);
                     }
                     else if ("external_id".equals(field)) {
                         f_externalId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
@@ -740,7 +781,10 @@ public class TeamMemberProfile extends MemberProfile {
                 if (f_memberFolderId == null) {
                     throw new JsonParseException(p, "Required field \"member_folder_id\" missing.");
                 }
-                value = new TeamMemberProfile(f_teamMemberId, f_email, f_emailVerified, f_status, f_name, f_membershipType, f_groups, f_memberFolderId, f_externalId, f_accountId, f_secondaryEmails, f_invitedOn, f_joinedOn, f_suspendedOn, f_persistentId, f_isDirectoryRestricted, f_profilePhotoUrl);
+                if (f_rootFolderId == null) {
+                    throw new JsonParseException(p, "Required field \"root_folder_id\" missing.");
+                }
+                value = new TeamMemberProfile(f_teamMemberId, f_email, f_emailVerified, f_status, f_name, f_membershipType, f_groups, f_memberFolderId, f_rootFolderId, f_externalId, f_accountId, f_secondaryEmails, f_invitedOn, f_joinedOn, f_suspendedOn, f_persistentId, f_isDirectoryRestricted, f_profilePhotoUrl);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

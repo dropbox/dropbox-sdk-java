@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_tagging.stone */
+/* This file was generated from file_tagging_file_tagging.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 public class PathToTags {
-    // struct files.PathToTags (file_tagging.stone)
+    // struct files.PathToTags (file_tagging_file_tagging.stone)
 
     @Nonnull
     protected final String path;

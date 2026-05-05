@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing_apiv2_sharing_files_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  * DbxUserSharingRequests#removeFileMember2(String,MemberSelector)}.
  */
 class RemoveFileMemberArg {
-    // struct sharing.RemoveFileMemberArg (sharing_files.stone)
+    // struct sharing.RemoveFileMemberArg (sharing_apiv2_sharing_files_types.stone)
 
     @Nonnull
     protected final String file;

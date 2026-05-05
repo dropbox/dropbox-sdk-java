@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team_team_members_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  * tag associated with this instance. </p>
  */
 public final class MemberAddResult {
-    // union team.MemberAddResult (team_members.stone)
+    // union team.MemberAddResult (team_team_members_types.stone)
 
     /**
      * Discriminating tag type for {@link MemberAddResult}.

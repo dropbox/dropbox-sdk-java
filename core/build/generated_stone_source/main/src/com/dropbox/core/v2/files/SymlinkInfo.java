@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class SymlinkInfo {
-    // struct files.SymlinkInfo (files.stone)
+    // struct files.SymlinkInfo (files_files_public_base.stone)
 
     @Nonnull
     protected final String target;

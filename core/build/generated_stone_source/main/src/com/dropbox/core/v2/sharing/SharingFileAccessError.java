@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing_apiv2_sharing_files_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * User could not access this file.
  */
 public enum SharingFileAccessError {
-    // union sharing.SharingFileAccessError (sharing_files.stone)
+    // union sharing.SharingFileAccessError (sharing_apiv2_sharing_files_types.stone)
     /**
      * Current user does not have sufficient privileges to perform the desired
      * action.

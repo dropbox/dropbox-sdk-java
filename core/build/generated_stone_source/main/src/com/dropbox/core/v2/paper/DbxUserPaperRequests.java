@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone, paper_apiv2_paper.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -22,7 +22,7 @@ import java.util.Map;
  * Routes in namespace "paper".
  */
 public class DbxUserPaperRequests {
-    // namespace paper (paper.stone)
+    // namespace paper (paper_apiv2_paper_types.stone, paper_apiv2_paper.stone)
 
     private final DbxRawClientV2 client;
 
@@ -62,19 +62,15 @@ public class DbxUserPaperRequests {
     }
 
     /**
-     * Marks the given Paper doc as archived.
-     *
-     * <p> This action can be performed or undone by anyone with edit
-     * permissions to the doc. </p>
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> This endpoint will be retired in September 2020. Refer to the <a
+     * Marks the given Paper doc as archived. This action can be performed or
+     * undone by anyone with edit permissions to the doc. Note that this
+     * endpoint will continue to work for content created by users on the older
+     * version of Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. This endpoint will be
+     * retired in September 2020. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for more information. </p>
+     * Migration Guide</a> for more information.
      *
      * @param docId  The Paper doc ID. Must not be {@code null}.
      *
@@ -116,16 +112,14 @@ public class DbxUserPaperRequests {
     }
 
     /**
-     * Creates a new Paper doc with the provided content.
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> This endpoint will be retired in September 2020. Refer to the <a
+     * Creates a new Paper doc with the provided content. Note that this
+     * endpoint will continue to work for content created by users on the older
+     * version of Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. This endpoint will be
+     * retired in September 2020. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for more information. </p>
+     * Migration Guide</a> for more information.
      *
      * @param importFormat  The format of provided data. Must not be {@code
      *     null}.
@@ -144,16 +138,14 @@ public class DbxUserPaperRequests {
     }
 
     /**
-     * Creates a new Paper doc with the provided content.
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> This endpoint will be retired in September 2020. Refer to the <a
+     * Creates a new Paper doc with the provided content. Note that this
+     * endpoint will continue to work for content created by users on the older
+     * version of Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. This endpoint will be
+     * retired in September 2020. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for more information. </p>
+     * Migration Guide</a> for more information.
      *
      * @param importFormat  The format of provided data. Must not be {@code
      *     null}.
@@ -209,16 +201,16 @@ public class DbxUserPaperRequests {
     }
 
     /**
-     * Exports and downloads Paper doc either as HTML or markdown.
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * Exports and downloads Paper doc either as HTML or markdown. Note that
+     * this endpoint will continue to work for content created by users on the
+     * older version of Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
+     *
+     * <p> The default values for the optional request parameters will be used.
+     * See {@link DocsDownloadBuilder} for more details. </p>
      *
      * @param docId  The Paper doc ID. Must not be {@code null}.
      * @param exportFormat  Must not be {@code null}.
@@ -234,6 +226,37 @@ public class DbxUserPaperRequests {
     @Deprecated
     public DbxDownloader<PaperDocExportResult> docsDownload(String docId, ExportFormat exportFormat) throws DocLookupErrorException, DbxException {
         PaperDocExport _arg = new PaperDocExport(docId, exportFormat);
+        return docsDownload(_arg, Collections.<HttpRequestor.Header>emptyList());
+    }
+
+    /**
+     * Exports and downloads Paper doc either as HTML or markdown. Note that
+     * this endpoint will continue to work for content created by users on the
+     * older version of Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. Refer to the <a
+     * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
+     * Migration Guide</a> for migration information.
+     *
+     * @param docId  The Paper doc ID. Must not be {@code null}.
+     * @param exportFormat  Must not be {@code null}.
+     * @param includeComments  When true, export includes comment threads (e.g.
+     *     markdown footnotes). When false or omitted, body only. Other formats
+     *     may adopt this later; currently only markdown uses it. Plain bool
+     *     (not optional): protoc-gen-godbx does not support proto3 optional
+     *     yet.
+     *
+     * @return Downloader used to download the response body and view the server
+     *     response.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     *
+     * @deprecated
+     */
+    @Deprecated
+    public DbxDownloader<PaperDocExportResult> docsDownload(String docId, ExportFormat exportFormat, boolean includeComments) throws DocLookupErrorException, DbxException {
+        PaperDocExport _arg = new PaperDocExport(docId, exportFormat, includeComments);
         return docsDownload(_arg, Collections.<HttpRequestor.Header>emptyList());
     }
 
@@ -298,16 +321,13 @@ public class DbxUserPaperRequests {
      * Lists the users who are explicitly invited to the Paper folder in which
      * the Paper doc is contained. For private folders all users (including
      * owner) shared on the folder are listed and for team folders all non-team
-     * users shared on the folder are returned.
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * users shared on the folder are returned. Note that this endpoint will
+     * continue to work for content created by users on the older version of
+     * Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * <p> The {@code limit} request parameter will default to {@code 1000} (see
      * {@link #docsFolderUsersList(String,int)}). </p>
@@ -329,16 +349,13 @@ public class DbxUserPaperRequests {
      * Lists the users who are explicitly invited to the Paper folder in which
      * the Paper doc is contained. For private folders all users (including
      * owner) shared on the folder are listed and for team folders all non-team
-     * users shared on the folder are returned.
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * users shared on the folder are returned. Note that this endpoint will
+     * continue to work for content created by users on the older version of
+     * Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * @param docId  The Paper doc ID. Must not be {@code null}.
      * @param limit  Size limit per batch. The maximum number of users that can
@@ -397,16 +414,13 @@ public class DbxUserPaperRequests {
     /**
      * Once a cursor has been retrieved from {@link
      * DbxUserPaperRequests#docsFolderUsersList(String,int)}, use this to
-     * paginate through all users on the Paper folder.
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * paginate through all users on the Paper folder. Note that this endpoint
+     * will continue to work for content created by users on the older version
+     * of Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * @param docId  The Paper doc ID. Must not be {@code null}.
      * @param cursor  The cursor obtained from {@link
@@ -433,17 +447,15 @@ public class DbxUserPaperRequests {
      * Retrieves folder information for the given Paper doc. This includes: -
      * folder sharing policy; permissions for subfolders are set by the
      * top-level folder. - full 'filepath', i.e. the list of folders (both
-     * folderId and folderName) from     the root folder to the folder directly
-     * containing the Paper doc.
-     *
-     * <p> If the Paper doc is not in any folder (aka unfiled) the response will
-     * be empty. Note that this endpoint will continue to work for content
-     * created by users on the older version of Paper. To check which version of
-     * Paper a user is on, use /users/features/get_values. If the paper_as_files
-     * feature is enabled, then the user is running the new version of Paper.
-     * Refer to the <a
+     * folderId and folderName) from the root folder to the folder directly
+     * containing the Paper doc. If the Paper doc is not in any folder (aka
+     * unfiled) the response will be empty. Note that this endpoint will
+     * continue to work for content created by users on the older version of
+     * Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      *
      * @return Metadata about Paper folders containing the specififed Paper doc.
@@ -464,26 +476,18 @@ public class DbxUserPaperRequests {
     }
 
     /**
-     * Retrieves folder information for the given Paper doc. This includes:
-     *
-     * <p> - folder sharing policy; permissions for subfolders are set by the
-     * top-level folder. </p>
-     *
-     * <p> - full 'filepath', i.e. the list of folders (both folderId and
-     * folderName) from the root folder to the folder directly containing the
-     * Paper doc. </p>
-     *
-     * <p> If the Paper doc is not in any folder (aka unfiled) the response will
-     * be empty. </p>
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * Retrieves folder information for the given Paper doc. This includes: -
+     * folder sharing policy; permissions for subfolders are set by the
+     * top-level folder. - full 'filepath', i.e. the list of folders (both
+     * folderId and folderName) from the root folder to the folder directly
+     * containing the Paper doc. If the Paper doc is not in any folder (aka
+     * unfiled) the response will be empty. Note that this endpoint will
+     * continue to work for content created by users on the older version of
+     * Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * @param docId  The Paper doc ID. Must not be {@code null}.
      *
@@ -498,6 +502,54 @@ public class DbxUserPaperRequests {
     public FoldersContainingPaperDoc docsGetFolderInfo(String docId) throws DocLookupErrorException, DbxException {
         RefPaperDoc _arg = new RefPaperDoc(docId);
         return docsGetFolderInfo(_arg);
+    }
+
+    //
+    // route 2/paper/docs/get_metadata
+    //
+
+    /**
+     * Returns metadata for a Paper doc or Cloud Doc.
+     *
+     * @param arg  Argument for retrieving Paper doc metadata. Accepts either a
+     *     legacy Paper doc ID or a Cloud Doc file ID.
+     *
+     * @return Metadata returned by docs/get_metadata.
+     */
+    PaperDocGetMetadataResult docsGetMetadata(GetDocMetadataArg arg) throws DocLookupErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/paper/docs/get_metadata",
+                                        arg,
+                                        false,
+                                        GetDocMetadataArg.Serializer.INSTANCE,
+                                        PaperDocGetMetadataResult.Serializer.INSTANCE,
+                                        DocLookupError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new DocLookupErrorException("2/paper/docs/get_metadata", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Returns metadata for a Paper doc or Cloud Doc.
+     *
+     * @return Metadata returned by docs/get_metadata.
+     */
+    public PaperDocGetMetadataResult docsGetMetadata() throws DocLookupErrorException, DbxException {
+        GetDocMetadataArg _arg = new GetDocMetadataArg();
+        return docsGetMetadata(_arg);
+    }
+
+    /**
+     * Returns metadata for a Paper doc or Cloud Doc.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     */
+    public DocsGetMetadataBuilder docsGetMetadataBuilder() {
+        GetDocMetadataArg.Builder argBuilder_ = GetDocMetadataArg.newBuilder();
+        return new DocsGetMetadataBuilder(this, argBuilder_);
     }
 
     //
@@ -534,16 +586,13 @@ public class DbxUserPaperRequests {
     /**
      * Return the list of all Paper docs according to the argument
      * specifications. To iterate over through the full pagination, pass the
-     * cursor to {@link DbxUserPaperRequests#docsListContinue(String)}.
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * cursor to {@link DbxUserPaperRequests#docsListContinue(String)}. Note
+     * that this endpoint will continue to work for content created by users on
+     * the older version of Paper. To check which version of Paper a user is on,
+     * use /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link DocsListBuilder} for more details. </p>
@@ -612,16 +661,13 @@ public class DbxUserPaperRequests {
     /**
      * Once a cursor has been retrieved from {@link
      * DbxUserPaperRequests#docsList}, use this to paginate through all Paper
-     * doc.
-     *
-     * <p> Note that this endpoint will continue to work for content created by
+     * doc. Note that this endpoint will continue to work for content created by
      * users on the older version of Paper. To check which version of Paper a
      * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * is enabled, then the user is running the new version of Paper. Refer to
+     * the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * @param cursor  The cursor obtained from {@link
      *     DbxUserPaperRequests#docsList} or {@link
@@ -672,18 +718,14 @@ public class DbxUserPaperRequests {
 
     /**
      * Permanently deletes the given Paper doc. This operation is final as the
-     * doc cannot be recovered.
-     *
-     * <p> This action can be performed only by the doc owner. </p>
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
+     * doc cannot be recovered. This action can be performed only by the doc
+     * owner. Note that this endpoint will continue to work for content created
+     * by users on the older version of Paper. To check which version of Paper a
      * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * is enabled, then the user is running the new version of Paper. Refer to
+     * the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * @param docId  The Paper doc ID. Must not be {@code null}.
      *
@@ -730,16 +772,13 @@ public class DbxUserPaperRequests {
     }
 
     /**
-     * Gets the default sharing policy for the given Paper doc.
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * Gets the default sharing policy for the given Paper doc. Note that this
+     * endpoint will continue to work for content created by users on the older
+     * version of Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * @param docId  The Paper doc ID. Must not be {@code null}.
      *
@@ -792,20 +831,15 @@ public class DbxUserPaperRequests {
     /**
      * Sets the default sharing policy for the given Paper doc. The default
      * 'team_sharing_policy' can be changed only by teams, omit this field for
-     * personal accounts.
-     *
-     * <p> The 'public_sharing_policy' policy can't be set to the value
-     * 'disabled' because this setting can be changed only via the team admin
-     * console. </p>
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * personal accounts. The 'public_sharing_policy' policy can't be set to the
+     * value 'disabled' because this setting can be changed only via the team
+     * admin console. Note that this endpoint will continue to work for content
+     * created by users on the older version of Paper. To check which version of
+     * Paper a user is on, use /users/features/get_values. If the paper_as_files
+     * feature is enabled, then the user is running the new version of Paper.
+     * Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * @param docId  The Paper doc ID. Must not be {@code null}.
      * @param sharingPolicy  The default sharing policy to be set for the Paper
@@ -849,16 +883,14 @@ public class DbxUserPaperRequests {
     }
 
     /**
-     * Updates an existing Paper doc with the provided content.
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> This endpoint will be retired in September 2020. Refer to the <a
+     * Updates an existing Paper doc with the provided content. Note that this
+     * endpoint will continue to work for content created by users on the older
+     * version of Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. This endpoint will be
+     * retired in September 2020. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for more information. </p>
+     * Migration Guide</a> for more information.
      *
      * @param docId  The Paper doc ID. Must not be {@code null}.
      * @param docUpdatePolicy  The policy used for the current update call. Must
@@ -915,18 +947,14 @@ public class DbxUserPaperRequests {
 
     /**
      * Allows an owner or editor to add users to a Paper doc or change their
-     * permissions using their email address or Dropbox account ID.
-     *
-     * <p> The doc owner's permissions cannot be changed. </p>
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * permissions using their email address or Dropbox account ID. The doc
+     * owner's permissions cannot be changed. Note that this endpoint will
+     * continue to work for content created by users on the older version of
+     * Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link DocsUsersAddBuilder} for more details. </p>
@@ -1013,19 +1041,15 @@ public class DbxUserPaperRequests {
     /**
      * Lists all users who visited the Paper doc or users with explicit access.
      * This call excludes users who have been removed. The list is sorted by the
-     * date of the visit or the share date.
-     *
-     * <p> The list will include both users, the explicitly shared ones as well
-     * as those who came in using the Paper url link. </p>
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * date of the visit or the share date. The list will include both users,
+     * the explicitly shared ones as well as those who came in using the Paper
+     * url link. Note that this endpoint will continue to work for content
+     * created by users on the older version of Paper. To check which version of
+     * Paper a user is on, use /users/features/get_values. If the paper_as_files
+     * feature is enabled, then the user is running the new version of Paper.
+     * Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link DocsUsersListBuilder} for more details. </p>
@@ -1106,16 +1130,13 @@ public class DbxUserPaperRequests {
     /**
      * Once a cursor has been retrieved from {@link
      * DbxUserPaperRequests#docsUsersList(String)}, use this to paginate through
-     * all users on the Paper doc.
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * all users on the Paper doc. Note that this endpoint will continue to work
+     * for content created by users on the older version of Paper. To check
+     * which version of Paper a user is on, use /users/features/get_values. If
+     * the paper_as_files feature is enabled, then the user is running the new
+     * version of Paper. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * @param docId  The Paper doc ID. Must not be {@code null}.
      * @param cursor  The cursor obtained from {@link
@@ -1167,18 +1188,14 @@ public class DbxUserPaperRequests {
 
     /**
      * Allows an owner or editor to remove users from a Paper doc using their
-     * email address or Dropbox account ID.
-     *
-     * <p> The doc owner cannot be removed. </p>
-     *
-     * <p> Note that this endpoint will continue to work for content created by
+     * email address or Dropbox account ID. The doc owner cannot be removed.
+     * Note that this endpoint will continue to work for content created by
      * users on the older version of Paper. To check which version of Paper a
      * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * is enabled, then the user is running the new version of Paper. Refer to
+     * the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * @param docId  The Paper doc ID. Must not be {@code null}.
      * @param member  User which should be removed from the Paper doc. Specify
@@ -1225,16 +1242,13 @@ public class DbxUserPaperRequests {
     }
 
     /**
-     * Create a new Paper folder with the provided info.
-     *
-     * <p> Note that this endpoint will continue to work for content created by
-     * users on the older version of Paper. To check which version of Paper a
-     * user is on, use /users/features/get_values. If the paper_as_files feature
-     * is enabled, then the user is running the new version of Paper. </p>
-     *
-     * <p> Refer to the <a
+     * Create a new Paper folder with the provided info. Note that this endpoint
+     * will continue to work for content created by users on the older version
+     * of Paper. To check which version of Paper a user is on, use
+     * /users/features/get_values. If the paper_as_files feature is enabled,
+     * then the user is running the new version of Paper. Refer to the <a
      * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
-     * Migration Guide</a> for migration information. </p>
+     * Migration Guide</a> for migration information.
      *
      * @param name  The name of the new Paper folder. Must not be {@code null}.
      *

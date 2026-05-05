@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_base.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Actions that may be taken on shared folders.
  */
 public enum FolderAction {
-    // union sharing.FolderAction (sharing_folders.stone)
+    // union sharing.FolderAction (sharing_apiv2_sharing_folders_base.stone)
     /**
      * Change folder options, such as who can be invited to join the folder.
      */
@@ -67,13 +67,21 @@ public enum FolderAction {
      */
     LEAVE_A_COPY,
     /**
-     * Use create_link instead.
+     * Use create_view_link and create_edit_link instead.
      */
     SHARE_LINK,
     /**
-     * Create a shared link for folder.
+     * Use create_view_link and create_edit_link instead.
      */
     CREATE_LINK,
+    /**
+     * Create a shared link that only allows users to view the content.
+     */
+    CREATE_VIEW_LINK,
+    /**
+     * Create a shared link that allows users to edit the content.
+     */
+    CREATE_EDIT_LINK,
     /**
      * Set whether the folder inherits permissions from its parent.
      */
@@ -148,6 +156,14 @@ public enum FolderAction {
                     g.writeString("create_link");
                     break;
                 }
+                case CREATE_VIEW_LINK: {
+                    g.writeString("create_view_link");
+                    break;
+                }
+                case CREATE_EDIT_LINK: {
+                    g.writeString("create_edit_link");
+                    break;
+                }
                 case SET_ACCESS_INHERITANCE: {
                     g.writeString("set_access_inheritance");
                     break;
@@ -214,6 +230,12 @@ public enum FolderAction {
             }
             else if ("create_link".equals(tag)) {
                 value = FolderAction.CREATE_LINK;
+            }
+            else if ("create_view_link".equals(tag)) {
+                value = FolderAction.CREATE_VIEW_LINK;
+            }
+            else if ("create_edit_link".equals(tag)) {
+                value = FolderAction.CREATE_EDIT_LINK;
             }
             else if ("set_access_inheritance".equals(tag)) {
                 value = FolderAction.SET_ACCESS_INHERITANCE;

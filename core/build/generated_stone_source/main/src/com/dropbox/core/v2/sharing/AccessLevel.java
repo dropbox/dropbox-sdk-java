@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_common_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Defines the access levels for collaborators.
  */
 public enum AccessLevel {
-    // union sharing.AccessLevel (sharing_folders.stone)
+    // union sharing.AccessLevel (sharing_apiv2_sharing_common_types.stone)
     /**
      * The collaborator is the owner of the shared folder. Owners can view and
      * edit the shared folder as well as set the folder's policies using {@link

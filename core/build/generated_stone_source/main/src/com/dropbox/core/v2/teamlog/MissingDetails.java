@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * attributes of the event may be omitted as a result.
  */
 public class MissingDetails {
-    // struct team_log.MissingDetails (team_log_generated.stone)
+    // struct team_log.MissingDetails (team_log_stone_gen_team_log_generated.stone)
 
     @Nullable
     protected final String sourceEventFields;

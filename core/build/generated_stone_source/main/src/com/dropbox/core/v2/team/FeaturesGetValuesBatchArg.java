@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from team_team_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 class FeaturesGetValuesBatchArg {
-    // struct team.FeaturesGetValuesBatchArg (team.stone)
+    // struct team.FeaturesGetValuesBatchArg (team_team_types.stone)
 
     @Nonnull
     protected final List<Feature> features;

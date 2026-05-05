@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_linked_apps.stone */
+/* This file was generated from team_apiv2_team_linked_apps.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * DbxTeamTeamRequests#linkedAppsRevokeLinkedApp(String,String,boolean)}.
  */
 public enum RevokeLinkedAppError {
-    // union team.RevokeLinkedAppError (team_linked_apps.stone)
+    // union team.RevokeLinkedAppError (team_apiv2_team_linked_apps.stone)
     /**
      * Application not found.
      */

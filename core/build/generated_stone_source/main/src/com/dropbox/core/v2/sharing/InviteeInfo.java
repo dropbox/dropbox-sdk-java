@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * will be used. </p>
  */
 public final class InviteeInfo {
-    // union sharing.InviteeInfo (sharing_folders.stone)
+    // union sharing.InviteeInfo (sharing_apiv2_sharing_folders_types.stone)
 
     /**
      * Discriminating tag type for {@link InviteeInfo}.

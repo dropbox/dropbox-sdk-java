@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  * Report created: Views of old links.
  */
 public class OutdatedLinkViewCreateReportDetails {
-    // struct team_log.OutdatedLinkViewCreateReportDetails (team_log_generated.stone)
+    // struct team_log.OutdatedLinkViewCreateReportDetails (team_log_stone_gen_team_log_generated.stone)
 
     @Nonnull
     protected final Date startDate;

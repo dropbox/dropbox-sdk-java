@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.stone */
+/* This file was generated from team_team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum RevokeDeviceSessionError {
-    // union team.RevokeDeviceSessionError (team_devices.stone)
+    // union team.RevokeDeviceSessionError (team_team_devices.stone)
     /**
      * Device session not found.
      */

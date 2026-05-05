@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team_team_members_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class MembersSetPermissions2Result {
-    // struct team.MembersSetPermissions2Result (team_members.stone)
+    // struct team.MembersSetPermissions2Result (team_team_members_types.stone)
 
     @Nonnull
     protected final String teamMemberId;

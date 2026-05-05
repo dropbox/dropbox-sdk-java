@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from secondary_emails.stone */
+/* This file was generated from secondary_emails_secondary_emails.stone */
 
 package com.dropbox.core.v2.secondaryemails;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 public class SecondaryEmail {
-    // struct secondary_emails.SecondaryEmail (secondary_emails.stone)
+    // struct secondary_emails.SecondaryEmail (secondary_emails_secondary_emails.stone)
 
     @Nonnull
     protected final String email;

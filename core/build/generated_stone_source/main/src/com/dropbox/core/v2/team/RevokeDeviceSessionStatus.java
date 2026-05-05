@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.stone */
+/* This file was generated from team_team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class RevokeDeviceSessionStatus {
-    // struct team.RevokeDeviceSessionStatus (team_devices.stone)
+    // struct team.RevokeDeviceSessionStatus (team_team_devices.stone)
 
     protected final boolean success;
     @Nullable

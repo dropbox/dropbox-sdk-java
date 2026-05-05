@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from team_team_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -29,7 +29,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class HasTeamSharedDropboxValue {
-    // union team.HasTeamSharedDropboxValue (team.stone)
+    // union team.HasTeamSharedDropboxValue (team_team_types.stone)
 
     /**
      * Discriminating tag type for {@link HasTeamSharedDropboxValue}.

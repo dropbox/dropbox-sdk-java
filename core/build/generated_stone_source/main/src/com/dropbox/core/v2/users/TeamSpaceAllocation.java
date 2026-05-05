@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users.stone */
+/* This file was generated from users_users_types.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class TeamSpaceAllocation {
-    // struct users.TeamSpaceAllocation (users.stone)
+    // struct users.TeamSpaceAllocation (users_users_types.stone)
 
     protected final long used;
     protected final long allocated;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Deleted all files from unlinked device.
  */
 public class DeviceDeleteOnUnlinkSuccessDetails {
-    // struct team_log.DeviceDeleteOnUnlinkSuccessDetails (team_log_generated.stone)
+    // struct team_log.DeviceDeleteOnUnlinkSuccessDetails (team_log_stone_gen_team_log_generated.stone)
 
     @Nullable
     protected final SessionLogInfo sessionInfo;

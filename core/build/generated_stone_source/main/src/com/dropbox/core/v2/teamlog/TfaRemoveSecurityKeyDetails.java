@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -16,14 +16,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 
 /**
- * Removed security key for two-step verification.
+ * Removed security key for two-factor authentication.
  */
 public class TfaRemoveSecurityKeyDetails {
-    // struct team_log.TfaRemoveSecurityKeyDetails (team_log_generated.stone)
+    // struct team_log.TfaRemoveSecurityKeyDetails (team_log_stone_gen_team_log_generated.stone)
 
 
     /**
-     * Removed security key for two-step verification.
+     * Removed security key for two-factor authentication.
      */
     public TfaRemoveSecurityKeyDetails() {
     }

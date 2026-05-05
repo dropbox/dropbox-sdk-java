@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_secondary_mails.stone */
+/* This file was generated from team_apiv2_team_members_secondary_emails.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  * will be used. </p>
  */
 public final class AddSecondaryEmailResult {
-    // union team.AddSecondaryEmailResult (team_secondary_mails.stone)
+    // union team.AddSecondaryEmailResult (team_apiv2_team_members_secondary_emails.stone)
 
     /**
      * Discriminating tag type for {@link AddSecondaryEmailResult}.

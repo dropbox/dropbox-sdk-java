@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.stone */
+/* This file was generated from team_apiv2_team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum GroupCreateError {
-    // union team.GroupCreateError (team_groups.stone)
+    // union team.GroupCreateError (team_apiv2_team_groups.stone)
     /**
      * The requested group name is already being used by another group.
      */

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Received files for file request.
  */
 public class FileRequestReceiveFileDetails {
-    // struct team_log.FileRequestReceiveFileDetails (team_log_generated.stone)
+    // struct team_log.FileRequestReceiveFileDetails (team_log_stone_gen_team_log_generated.stone)
 
     @Nullable
     protected final String fileRequestId;

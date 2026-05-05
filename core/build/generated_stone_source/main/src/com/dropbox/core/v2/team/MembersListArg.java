@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team_team_members_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 class MembersListArg {
-    // struct team.MembersListArg (team_members.stone)
+    // struct team.MembersListArg (team_team_members_types.stone)
 
     protected final long limit;
     protected final boolean includeRemoved;

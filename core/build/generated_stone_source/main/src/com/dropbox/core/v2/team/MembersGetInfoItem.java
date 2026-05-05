@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team_team_members_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -26,7 +26,7 @@ import java.util.Arrays;
  * tag associated with this instance. </p>
  */
 public final class MembersGetInfoItem {
-    // union team.MembersGetInfoItem (team_members.stone)
+    // union team.MembersGetInfoItem (team_team_members_types.stone)
 
     /**
      * Discriminating tag type for {@link MembersGetInfoItem}.

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class SearchV2ContinueArg {
-    // struct files.SearchV2ContinueArg (files.stone)
+    // struct files.SearchV2ContinueArg (files_files_public_types.stone)
 
     @Nonnull
     protected final String cursor;

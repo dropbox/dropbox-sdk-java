@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log.stone */
+/* This file was generated from team_log_apiv2_team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -32,7 +32,7 @@ import java.util.Date;
  * will be used. </p>
  */
 public final class GetTeamEventsContinueError {
-    // union team_log.GetTeamEventsContinueError (team_log.stone)
+    // union team_log.GetTeamEventsContinueError (team_log_apiv2_team_log.stone)
 
     /**
      * Discriminating tag type for {@link GetTeamEventsContinueError}.

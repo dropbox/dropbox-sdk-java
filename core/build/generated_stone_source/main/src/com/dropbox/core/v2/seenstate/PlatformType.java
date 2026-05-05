@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from seen_state.stone */
+/* This file was generated from seen_state_apiv2_seen_state.stone */
 
 package com.dropbox.core.v2.seenstate;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Possible platforms on which a user may view content.
  */
 public enum PlatformType {
-    // union seen_state.PlatformType (seen_state.stone)
+    // union seen_state.PlatformType (seen_state_apiv2_seen_state.stone)
     /**
      * The content was viewed on the web.
      */

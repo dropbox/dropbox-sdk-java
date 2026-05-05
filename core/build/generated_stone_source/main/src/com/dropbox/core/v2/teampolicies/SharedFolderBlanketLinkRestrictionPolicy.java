@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_policies.stone */
+/* This file was generated from team_policies_team_policies.stone */
 
 package com.dropbox.core.v2.teampolicies;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * shared links.
  */
 public enum SharedFolderBlanketLinkRestrictionPolicy {
-    // union team_policies.SharedFolderBlanketLinkRestrictionPolicy (team_policies.stone)
+    // union team_policies.SharedFolderBlanketLinkRestrictionPolicy (team_policies_team_policies.stone)
     /**
      * Only members of shared folders can access folder content via shared link.
      */

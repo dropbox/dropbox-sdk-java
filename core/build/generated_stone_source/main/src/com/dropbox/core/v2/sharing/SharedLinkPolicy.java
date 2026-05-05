@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_base.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Who can view shared links in this folder.
  */
 public enum SharedLinkPolicy {
-    // union sharing.SharedLinkPolicy (sharing_folders.stone)
+    // union sharing.SharedLinkPolicy (sharing_apiv2_sharing_folders_base.stone)
     /**
      * Links can be shared with anyone.
      */

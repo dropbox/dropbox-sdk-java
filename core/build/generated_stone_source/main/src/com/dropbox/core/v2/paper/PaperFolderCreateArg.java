@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class PaperFolderCreateArg {
-    // struct paper.PaperFolderCreateArg (paper.stone)
+    // struct paper.PaperFolderCreateArg (paper_apiv2_paper_types.stone)
 
     @Nonnull
     protected final String name;

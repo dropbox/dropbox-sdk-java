@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_tagging.stone */
+/* This file was generated from file_tagging_file_tagging.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 class GetTagsArg {
-    // struct files.GetTagsArg (file_tagging.stone)
+    // struct files.GetTagsArg (file_tagging_file_tagging.stone)
 
     @Nonnull
     protected final List<String> paths;

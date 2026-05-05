@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing_apiv2_shared_links_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum RevokeSharedLinkError {
-    // union sharing.RevokeSharedLinkError (shared_links.stone)
+    // union sharing.RevokeSharedLinkError (sharing_apiv2_shared_links_types.stone)
     /**
      * The shared link wasn't found.
      */
@@ -32,6 +32,11 @@ public enum RevokeSharedLinkError {
      * instead.
      */
     UNSUPPORTED_LINK_TYPE,
+    /**
+     * Private shared links do not support `path` or `link_password` parameter
+     * fields.
+     */
+    UNSUPPORTED_PARAMETER_FIELD,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -64,6 +69,10 @@ public enum RevokeSharedLinkError {
                 }
                 case UNSUPPORTED_LINK_TYPE: {
                     g.writeString("unsupported_link_type");
+                    break;
+                }
+                case UNSUPPORTED_PARAMETER_FIELD: {
+                    g.writeString("unsupported_parameter_field");
                     break;
                 }
                 case OTHER: {
@@ -106,6 +115,9 @@ public enum RevokeSharedLinkError {
             }
             else if ("unsupported_link_type".equals(tag)) {
                 value = RevokeSharedLinkError.UNSUPPORTED_LINK_TYPE;
+            }
+            else if ("unsupported_parameter_field".equals(tag)) {
+                value = RevokeSharedLinkError.UNSUPPORTED_PARAMETER_FIELD;
             }
             else if ("other".equals(tag)) {
                 value = RevokeSharedLinkError.OTHER;

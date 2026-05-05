@@ -77,6 +77,21 @@ public class ListFolderMembersBuilder {
     }
 
     /**
+     * Set value for optional field.
+     *
+     * @param path  Optional path to get inherited members. When omitted, uses
+     *     shared_folder_id to return direct members. When provided, extracts
+     *     folder ID from this path and returns users who have access through
+     *     parent shared folder.
+     *
+     * @return this builder
+     */
+    public ListFolderMembersBuilder withPath(String path) {
+        this._builder.withPath(path);
+        return this;
+    }
+
+    /**
      * Issues the request.
      */
     public SharedFolderMembers start() throws SharedFolderAccessErrorException, DbxException {

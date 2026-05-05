@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Policy for controlling whether App Integrations are enabled for the team.
  */
 public enum TeamExtensionsPolicy {
-    // union team_log.TeamExtensionsPolicy (team_log_generated.stone)
+    // union team_log.TeamExtensionsPolicy (team_log_stone_gen_team_log_generated.stone)
     DISABLED,
     ENABLED,
     /**

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class ListPaperDocsResponse {
-    // struct paper.ListPaperDocsResponse (paper.stone)
+    // struct paper.ListPaperDocsResponse (paper_apiv2_paper_types.stone)
 
     @Nonnull
     protected final List<String> docIds;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Metadata for a video.
  */
 public class VideoMetadata extends MediaMetadata {
-    // struct files.VideoMetadata (files.stone)
+    // struct files.VideoMetadata (files_files_public_base.stone)
 
     @Nullable
     protected final Long duration;

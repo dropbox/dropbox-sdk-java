@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.stone */
+/* This file was generated from team_team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum ListTeamDevicesError {
-    // union team.ListTeamDevicesError (team_devices.stone)
+    // union team.ListTeamDevicesError (team_team_devices.stone)
     /**
      * Indicates that the cursor has been invalidated. Call {@link
      * DbxTeamTeamRequests#devicesListTeamDevices} again with an empty cursor to

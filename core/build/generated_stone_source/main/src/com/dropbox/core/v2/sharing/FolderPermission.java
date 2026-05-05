@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Whether the user is allowed to take the action on the shared folder.
  */
 public class FolderPermission {
-    // struct sharing.FolderPermission (sharing_folders.stone)
+    // struct sharing.FolderPermission (sharing_apiv2_sharing_folders_types.stone)
 
     @Nonnull
     protected final FolderAction action;

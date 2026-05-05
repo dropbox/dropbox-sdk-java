@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class MountFolderError {
-    // union sharing.MountFolderError (sharing_folders.stone)
+    // union sharing.MountFolderError (sharing_apiv2_sharing_folders_types.stone)
 
     /**
      * Discriminating tag type for {@link MountFolderError}.
@@ -59,6 +59,11 @@ public final class MountFolderError {
          */
         NOT_MOUNTABLE,
         /**
+         * The shared folder is not mountable by directly call APIs, instead the
+         * automounter is responsible for mounting it.
+         */
+        MUST_AUTOMOUNT,
+        /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
          *
@@ -88,6 +93,11 @@ public final class MountFolderError {
      * Dropbox.
      */
     public static final MountFolderError NOT_MOUNTABLE = new MountFolderError().withTag(Tag.NOT_MOUNTABLE);
+    /**
+     * The shared folder is not mountable by directly call APIs, instead the
+     * automounter is responsible for mounting it.
+     */
+    public static final MountFolderError MUST_AUTOMOUNT = new MountFolderError().withTag(Tag.MUST_AUTOMOUNT);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -309,6 +319,17 @@ public final class MountFolderError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MUST_AUTOMOUNT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MUST_AUTOMOUNT}, {@code false} otherwise.
+     */
+    public boolean isMustAutomount() {
+        return this._tag == Tag.MUST_AUTOMOUNT;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -354,6 +375,8 @@ public final class MountFolderError {
                 case NO_PERMISSION:
                     return true;
                 case NOT_MOUNTABLE:
+                    return true;
+                case MUST_AUTOMOUNT:
                     return true;
                 case OTHER:
                     return true;
@@ -423,6 +446,10 @@ public final class MountFolderError {
                     g.writeString("not_mountable");
                     break;
                 }
+                case MUST_AUTOMOUNT: {
+                    g.writeString("must_automount");
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -469,6 +496,9 @@ public final class MountFolderError {
             }
             else if ("not_mountable".equals(tag)) {
                 value = MountFolderError.NOT_MOUNTABLE;
+            }
+            else if ("must_automount".equals(tag)) {
+                value = MountFolderError.MUST_AUTOMOUNT;
             }
             else {
                 value = MountFolderError.OTHER;

@@ -70,7 +70,7 @@ public class DbxUserGetSharedLinkMetadataBuilder {
     /**
      * Issues the request.
      */
-    public SharedLinkMetadata start() throws SharedLinkErrorException, DbxException {
+    public SharedLinkMetadata start() throws SharedLinkMetadataErrorException, DbxException {
         GetSharedLinkMetadataArg arg_ = this._builder.build();
         return _client.getSharedLinkMetadata(arg_);
     }

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from team_team_common.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
  * Basic member profile.
  */
 public class MemberProfile {
-    // struct team.MemberProfile (team.stone)
+    // struct team.MemberProfile (team_team_common.stone)
 
     @Nonnull
     protected final String teamMemberId;

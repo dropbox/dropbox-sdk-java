@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from common.stone */
+/* This file was generated from common_common.stone */
 
 package com.dropbox.core.v2.common;
 
@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * will be used. </p>
  */
 public final class PathRoot {
-    // union common.PathRoot (common.stone)
+    // union common.PathRoot (common_common.stone)
 
     /**
      * Discriminating tag type for {@link PathRoot}.

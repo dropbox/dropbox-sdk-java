@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_requests.stone */
+/* This file was generated from file_requests_apiv2_file_requests_public.stone */
 
 package com.dropbox.core.v2.filerequests;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * There was an error creating the file request.
  */
 public enum CreateFileRequestError {
-    // union file_requests.CreateFileRequestError (file_requests.stone)
+    // union file_requests.CreateFileRequestError (file_requests_apiv2_file_requests_public.stone)
     /**
      * This user's Dropbox Business team doesn't allow file requests.
      */
@@ -61,6 +61,10 @@ public enum CreateFileRequestError {
      * invalid, or there were disallowed characters in the destination path.
      */
     VALIDATION_ERROR,
+    /**
+     * This user doesn't have permission to edit files in a destination folder
+     */
+    NO_WRITE_PERMISSION,
     /**
      * File requests are not available on the specified folder.
      */
@@ -110,6 +114,10 @@ public enum CreateFileRequestError {
                 }
                 case VALIDATION_ERROR: {
                     g.writeString("validation_error");
+                    break;
+                }
+                case NO_WRITE_PERMISSION: {
+                    g.writeString("no_write_permission");
                     break;
                 }
                 case INVALID_LOCATION: {
@@ -167,6 +175,9 @@ public enum CreateFileRequestError {
             }
             else if ("validation_error".equals(tag)) {
                 value = CreateFileRequestError.VALIDATION_ERROR;
+            }
+            else if ("no_write_permission".equals(tag)) {
+                value = CreateFileRequestError.NO_WRITE_PERMISSION;
             }
             else if ("invalid_location".equals(tag)) {
                 value = CreateFileRequestError.INVALID_LOCATION;

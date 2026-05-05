@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from team_team_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * A set of features that a Dropbox Business account may support.
  */
 public enum Feature {
-    // union team.Feature (team.stone)
+    // union team.Feature (team_team_types.stone)
     /**
      * The number of upload API calls allowed per month.
      */
@@ -37,6 +37,10 @@ public enum Feature {
      * Does this team have team selective sync enabled.
      */
     HAS_TEAM_SELECTIVE_SYNC,
+    /**
+     * Does this team have team member folder.
+     */
+    HAS_DISTINCT_MEMBER_HOMES,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -69,6 +73,10 @@ public enum Feature {
                 }
                 case HAS_TEAM_SELECTIVE_SYNC: {
                     g.writeString("has_team_selective_sync");
+                    break;
+                }
+                case HAS_DISTINCT_MEMBER_HOMES: {
+                    g.writeString("has_distinct_member_homes");
                     break;
                 }
                 default: {
@@ -106,6 +114,9 @@ public enum Feature {
             }
             else if ("has_team_selective_sync".equals(tag)) {
                 value = Feature.HAS_TEAM_SELECTIVE_SYNC;
+            }
+            else if ("has_distinct_member_homes".equals(tag)) {
+                value = Feature.HAS_DISTINCT_MEMBER_HOMES;
             }
             else {
                 value = Feature.OTHER;

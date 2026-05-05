@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_linked_apps.stone */
+/* This file was generated from team_apiv2_team_linked_apps.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * DbxTeamTeamRequests#linkedAppsListTeamLinkedApps(String)}.
  */
 class ListTeamAppsArg {
-    // struct team.ListTeamAppsArg (team_linked_apps.stone)
+    // struct team.ListTeamAppsArg (team_apiv2_team_linked_apps.stone)
 
     @Nullable
     protected final String cursor;

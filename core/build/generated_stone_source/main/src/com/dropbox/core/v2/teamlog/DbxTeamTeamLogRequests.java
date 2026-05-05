@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone, team_log.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone, team_log_apiv2_team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -15,7 +15,7 @@ import java.util.Map;
  * Routes in namespace "team_log".
  */
 public class DbxTeamTeamLogRequests {
-    // namespace team_log (team_log_generated.stone, team_log.stone)
+    // namespace team_log (team_log_stone_gen_team_log_generated.stone, team_log_apiv2_team_log.stone)
 
     private final DbxRawClientV2 client;
 
@@ -63,18 +63,13 @@ public class DbxTeamTeamLogRequests {
      * DbxTeamTeamLogRequests#getEventsContinue(String)} with the returned
      * cursor to retrieve more entries. If end_time is not specified in your
      * request, you may use the returned cursor to poll {@link
-     * DbxTeamTeamLogRequests#getEventsContinue(String)} for new events.
-     *
-     * <p> Many attributes note 'may be missing due to historical data gap'.
-     * </p>
-     *
-     * <p> Note that the file_operations category and &amp; analogous paper
-     * events are not available on all Dropbox Business <a
+     * DbxTeamTeamLogRequests#getEventsContinue(String)} for new events. Many
+     * attributes note 'may be missing due to historical data gap'. Note that
+     * the file_operations category and &amp; analogous paper events are not
+     * available on all Dropbox Business <a
      * href="/business/plans-comparison">plans</a>. Use <a
      * href="/developers/documentation/http/teams#team-features-get_values">features/get_values</a>
-     * to check for this feature. </p>
-     *
-     * <p> Permission : Team Auditing. </p>
+     * to check for this feature. Permission : Team Auditing.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link GetEventsBuilder} for more details. </p>
@@ -134,9 +129,7 @@ public class DbxTeamTeamLogRequests {
     /**
      * Once a cursor has been retrieved from {@link
      * DbxTeamTeamLogRequests#getEvents}, use this to paginate through all
-     * events.
-     *
-     * <p> Permission : Team Auditing. </p>
+     * events. Permission : Team Auditing.
      *
      * @param cursor  Indicates from what point to get the next set of events.
      *     Must not be {@code null}.

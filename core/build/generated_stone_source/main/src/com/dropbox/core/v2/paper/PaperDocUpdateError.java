@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum PaperDocUpdateError {
-    // union paper.PaperDocUpdateError (paper.stone)
+    // union paper.PaperDocUpdateError (paper_apiv2_paper_types.stone)
     /**
      * Your account does not have permissions to perform this action. This may
      * be due to it only having access to Paper as files in the Dropbox

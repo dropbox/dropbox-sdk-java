@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from contacts.stone */
+/* This file was generated from contacts_apiv2_contacts.stone */
 
 package com.dropbox.core.v2.contacts;
 
@@ -28,7 +28,7 @@ import java.util.List;
  * will be used. </p>
  */
 public final class DeleteManualContactsError {
-    // union contacts.DeleteManualContactsError (contacts.stone)
+    // union contacts.DeleteManualContactsError (contacts_apiv2_contacts.stone)
 
     /**
      * Discriminating tag type for {@link DeleteManualContactsError}.

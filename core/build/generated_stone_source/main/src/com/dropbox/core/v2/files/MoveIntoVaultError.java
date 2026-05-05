@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum MoveIntoVaultError {
-    // union files.MoveIntoVaultError (files.stone)
+    // union files.MoveIntoVaultError (files_files_public_types.stone)
     /**
      * Moving shared folder into Vault is not allowed.
      */

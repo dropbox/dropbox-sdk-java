@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from team_team_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Error returned by {@link DbxTeamTeamRequests#tokenGetAuthenticatedAdmin}.
  */
 public enum TokenGetAuthenticatedAdminError {
-    // union team.TokenGetAuthenticatedAdminError (team.stone)
+    // union team.TokenGetAuthenticatedAdminError (team_team_types.stone)
     /**
      * The current token is not associated with a team admin, because mappings
      * were not recorded when the token was created. Consider re-authorizing a

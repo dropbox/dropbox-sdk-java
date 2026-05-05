@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -27,13 +27,21 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class ListRevisionsError {
-    // union files.ListRevisionsError (files.stone)
+    // union files.ListRevisionsError (files_files_public_types.stone)
 
     /**
      * Discriminating tag type for {@link ListRevisionsError}.
      */
     public enum Tag {
         PATH, // LookupError
+        /**
+         * The revision in before_rev is invalid.
+         */
+        INVALID_BEFORE_REV,
+        /**
+         * The before_rev argument is only supported in path mode.
+         */
+        BEFORE_REV_NOT_SUPPORTED,
         /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
@@ -45,6 +53,14 @@ public final class ListRevisionsError {
         OTHER; // *catch_all
     }
 
+    /**
+     * The revision in before_rev is invalid.
+     */
+    public static final ListRevisionsError INVALID_BEFORE_REV = new ListRevisionsError().withTag(Tag.INVALID_BEFORE_REV);
+    /**
+     * The before_rev argument is only supported in path mode.
+     */
+    public static final ListRevisionsError BEFORE_REV_NOT_SUPPORTED = new ListRevisionsError().withTag(Tag.BEFORE_REV_NOT_SUPPORTED);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -154,6 +170,28 @@ public final class ListRevisionsError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#INVALID_BEFORE_REV}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#INVALID_BEFORE_REV}, {@code false} otherwise.
+     */
+    public boolean isInvalidBeforeRev() {
+        return this._tag == Tag.INVALID_BEFORE_REV;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BEFORE_REV_NOT_SUPPORTED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BEFORE_REV_NOT_SUPPORTED}, {@code false} otherwise.
+     */
+    public boolean isBeforeRevNotSupported() {
+        return this._tag == Tag.BEFORE_REV_NOT_SUPPORTED;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -189,6 +227,10 @@ public final class ListRevisionsError {
             switch (_tag) {
                 case PATH:
                     return (this.pathValue == other.pathValue) || (this.pathValue.equals(other.pathValue));
+                case INVALID_BEFORE_REV:
+                    return true;
+                case BEFORE_REV_NOT_SUPPORTED:
+                    return true;
                 case OTHER:
                     return true;
                 default:
@@ -234,6 +276,14 @@ public final class ListRevisionsError {
                     g.writeEndObject();
                     break;
                 }
+                case INVALID_BEFORE_REV: {
+                    g.writeString("invalid_before_rev");
+                    break;
+                }
+                case BEFORE_REV_NOT_SUPPORTED: {
+                    g.writeString("before_rev_not_supported");
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -263,6 +313,12 @@ public final class ListRevisionsError {
                 expectField("path", p);
                 fieldValue = LookupError.Serializer.INSTANCE.deserialize(p);
                 value = ListRevisionsError.path(fieldValue);
+            }
+            else if ("invalid_before_rev".equals(tag)) {
+                value = ListRevisionsError.INVALID_BEFORE_REV;
+            }
+            else if ("before_rev_not_supported".equals(tag)) {
+                value = ListRevisionsError.BEFORE_REV_NOT_SUPPORTED;
             }
             else {
                 value = ListRevisionsError.OTHER;

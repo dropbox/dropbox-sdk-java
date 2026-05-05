@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * There is an error accessing the shared folder.
  */
 public enum SharedFolderAccessError {
-    // union sharing.SharedFolderAccessError (sharing_folders.stone)
+    // union sharing.SharedFolderAccessError (sharing_apiv2_sharing_folders_types.stone)
     /**
      * This shared folder ID is invalid.
      */

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum ListPaperDocsSortOrder {
-    // union paper.ListPaperDocsSortOrder (paper.stone)
+    // union paper.ListPaperDocsSortOrder (paper_apiv2_paper_types.stone)
     /**
      * Sorts the search result in ascending order.
      */

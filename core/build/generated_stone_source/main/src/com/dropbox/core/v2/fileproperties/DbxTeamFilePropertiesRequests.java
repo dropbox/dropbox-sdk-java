@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties.stone */
+/* This file was generated from file_properties_apiv2_file_properties_types.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -16,7 +16,7 @@ import java.util.Map;
  * Routes in namespace "file_properties".
  */
 public class DbxTeamFilePropertiesRequests {
-    // namespace file_properties (file_properties.stone)
+    // namespace file_properties (file_properties_apiv2_file_properties_types.stone)
 
     private final DbxRawClientV2 client;
 
@@ -53,9 +53,8 @@ public class DbxTeamFilePropertiesRequests {
     /**
      * Add a template associated with a team. See {@link
      * DbxUserFilePropertiesRequests#propertiesAdd(String,List)} to add
-     * properties to a file or folder.
-     *
-     * <p> Note: this endpoint will create team-owned templates. </p>
+     * properties to a file or folder. Note: this endpoint will create
+     * team-owned templates.
      *
      * @param name  Display name for the template. Template names can be up to
      *     256 bytes. Must not be {@code null}.

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum FileCategory {
-    // union files.FileCategory (files.stone)
+    // union files.FileCategory (files_files_public_types.stone)
     /**
      * jpg, png, gif, and more.
      */

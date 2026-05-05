@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum CreateFolderBatchError {
-    // union files.CreateFolderBatchError (files.stone)
+    // union files.CreateFolderBatchError (files_files_public_types.stone)
     /**
      * The operation would involve too many files or folders.
      */

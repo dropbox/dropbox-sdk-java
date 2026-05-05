@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * longer exists.
  */
 public class DeletedMetadata extends Metadata {
-    // struct files.DeletedMetadata (files.stone)
+    // struct files.DeletedMetadata (files_files_public_base.stone)
 
 
     /**

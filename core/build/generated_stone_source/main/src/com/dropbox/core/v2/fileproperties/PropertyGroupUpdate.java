@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties.stone */
+/* This file was generated from file_properties_apiv2_file_properties_types.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -21,8 +21,11 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/**
+ * Property routes
+ */
 public class PropertyGroupUpdate {
-    // struct file_properties.PropertyGroupUpdate (file_properties.stone)
+    // struct file_properties.PropertyGroupUpdate (file_properties_apiv2_file_properties_types.stone)
 
     @Nonnull
     protected final String templateId;
@@ -32,16 +35,18 @@ public class PropertyGroupUpdate {
     protected final List<String> removeFields;
 
     /**
-     * Use {@link newBuilder} to create instances of this class without
-     * specifying values for all optional fields.
+     * Property routes
+     *
+     * <p> Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields. </p>
      *
      * @param templateId  A unique identifier for a property template. Must have
      *     length of at least 1, match pattern "{@code (/|ptid:).*}", and not be
      *     {@code null}.
      * @param addOrUpdateFields  Property fields to update. If the property
      *     field already exists, it is updated. If the property field doesn't
-     *     exist, the property group is added. Must not contain a {@code null}
-     *     item.
+     *     exist, it will be created as long as the property group already
+     *     exists. Must not contain a {@code null} item.
      * @param removeFields  Property fields to remove (by name), provided they
      *     exist. Must not contain a {@code null} item.
      *
@@ -78,7 +83,7 @@ public class PropertyGroupUpdate {
     }
 
     /**
-     * None
+     * Property routes
      *
      * <p> The default values for unset fields will be used. </p>
      *
@@ -105,8 +110,8 @@ public class PropertyGroupUpdate {
 
     /**
      * Property fields to update. If the property field already exists, it is
-     * updated. If the property field doesn't exist, the property group is
-     * added.
+     * updated. If the property field doesn't exist, it will be created as long
+     * as the property group already exists.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -170,8 +175,8 @@ public class PropertyGroupUpdate {
          *
          * @param addOrUpdateFields  Property fields to update. If the property
          *     field already exists, it is updated. If the property field
-         *     doesn't exist, the property group is added. Must not contain a
-         *     {@code null} item.
+         *     doesn't exist, it will be created as long as the property group
+         *     already exists. Must not contain a {@code null} item.
          *
          * @return this builder
          *

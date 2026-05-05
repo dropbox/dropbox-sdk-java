@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Policy for controlling whether an alert can be triggered or not
  */
 public enum AdminAlertingAlertStatePolicy {
-    // union team_log.AdminAlertingAlertStatePolicy (team_log_generated.stone)
+    // union team_log.AdminAlertingAlertStatePolicy (team_log_stone_gen_team_log_generated.stone)
     OFF,
     ON,
     /**

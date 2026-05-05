@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -21,10 +21,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Changed two-step verification setting for team.
+ * Changed two-factor authentication setting for team.
  */
 public class TfaChangePolicyDetails {
-    // struct team_log.TfaChangePolicyDetails (team_log_generated.stone)
+    // struct team_log.TfaChangePolicyDetails (team_log_stone_gen_team_log_generated.stone)
 
     @Nonnull
     protected final TwoStepVerificationPolicy newValue;
@@ -32,7 +32,7 @@ public class TfaChangePolicyDetails {
     protected final TwoStepVerificationPolicy previousValue;
 
     /**
-     * Changed two-step verification setting for team.
+     * Changed two-factor authentication setting for team.
      *
      * @param newValue  New change policy. Must not be {@code null}.
      * @param previousValue  Previous change policy. Might be missing due to
@@ -50,7 +50,7 @@ public class TfaChangePolicyDetails {
     }
 
     /**
-     * Changed two-step verification setting for team.
+     * Changed two-factor authentication setting for team.
      *
      * <p> The default values for unset fields will be used. </p>
      *

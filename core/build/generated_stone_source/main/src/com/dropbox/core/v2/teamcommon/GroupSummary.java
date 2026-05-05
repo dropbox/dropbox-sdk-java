@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_common.stone */
+/* This file was generated from team_common_team_common.stone */
 
 package com.dropbox.core.v2.teamcommon;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Information about a group.
  */
 public class GroupSummary {
-    // struct team_common.GroupSummary (team_common.stone)
+    // struct team_common.GroupSummary (team_common_team_common.stone)
 
     @Nonnull
     protected final String groupName;

@@ -1,11 +1,12 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
 import com.dropbox.core.stone.StoneDeserializerLogger;
 import com.dropbox.core.stone.StoneSerializers;
 import com.dropbox.core.stone.StructSerializer;
+import com.dropbox.core.util.LangUtil;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -15,11 +16,13 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 class ListPaperDocsArgs {
-    // struct paper.ListPaperDocsArgs (paper.stone)
+    // struct paper.ListPaperDocsArgs (paper_apiv2_paper_types.stone)
 
     @Nonnull
     protected final ListPaperDocsFilterBy filterBy;
@@ -28,6 +31,8 @@ class ListPaperDocsArgs {
     @Nonnull
     protected final ListPaperDocsSortOrder sortOrder;
     protected final int limit;
+    @Nullable
+    protected final Date stopAtDate;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -43,11 +48,13 @@ class ListPaperDocsArgs {
      *     be retrieved per batch is 1000. Higher value results in invalid
      *     arguments error. Must be greater than or equal to 1 and be less than
      *     or equal to 1000.
+     * @param stopAtDate  Do not return results beyond this date. Behavior
+     *     depends on sort order.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListPaperDocsArgs(@Nonnull ListPaperDocsFilterBy filterBy, @Nonnull ListPaperDocsSortBy sortBy, @Nonnull ListPaperDocsSortOrder sortOrder, int limit) {
+    public ListPaperDocsArgs(@Nonnull ListPaperDocsFilterBy filterBy, @Nonnull ListPaperDocsSortBy sortBy, @Nonnull ListPaperDocsSortOrder sortOrder, int limit, @Nullable Date stopAtDate) {
         if (filterBy == null) {
             throw new IllegalArgumentException("Required value for 'filterBy' is null");
         }
@@ -67,6 +74,7 @@ class ListPaperDocsArgs {
             throw new IllegalArgumentException("Number 'limit' is larger than 1000");
         }
         this.limit = limit;
+        this.stopAtDate = LangUtil.truncateMillis(stopAtDate);
     }
 
     /**
@@ -75,7 +83,7 @@ class ListPaperDocsArgs {
      * <p> The default values for unset fields will be used. </p>
      */
     public ListPaperDocsArgs() {
-        this(ListPaperDocsFilterBy.DOCS_ACCESSED, ListPaperDocsSortBy.ACCESSED, ListPaperDocsSortOrder.ASCENDING, 1000);
+        this(ListPaperDocsFilterBy.DOCS_ACCESSED, ListPaperDocsSortBy.ACCESSED, ListPaperDocsSortOrder.ASCENDING, 1000, null);
     }
 
     /**
@@ -123,6 +131,16 @@ class ListPaperDocsArgs {
     }
 
     /**
+     * Do not return results beyond this date. Behavior depends on sort order.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public Date getStopAtDate() {
+        return stopAtDate;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @return builder for this class.
@@ -140,12 +158,14 @@ class ListPaperDocsArgs {
         protected ListPaperDocsSortBy sortBy;
         protected ListPaperDocsSortOrder sortOrder;
         protected int limit;
+        protected Date stopAtDate;
 
         protected Builder() {
             this.filterBy = ListPaperDocsFilterBy.DOCS_ACCESSED;
             this.sortBy = ListPaperDocsSortBy.ACCESSED;
             this.sortOrder = ListPaperDocsSortOrder.ASCENDING;
             this.limit = 1000;
+            this.stopAtDate = null;
         }
 
         /**
@@ -257,13 +277,26 @@ class ListPaperDocsArgs {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param stopAtDate  Do not return results beyond this date. Behavior
+         *     depends on sort order.
+         *
+         * @return this builder
+         */
+        public Builder withStopAtDate(Date stopAtDate) {
+            this.stopAtDate = LangUtil.truncateMillis(stopAtDate);
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link ListPaperDocsArgs} configured with this
          * builder's values
          *
          * @return new instance of {@link ListPaperDocsArgs}
          */
         public ListPaperDocsArgs build() {
-            return new ListPaperDocsArgs(filterBy, sortBy, sortOrder, limit);
+            return new ListPaperDocsArgs(filterBy, sortBy, sortOrder, limit, stopAtDate);
         }
     }
 
@@ -273,7 +306,8 @@ class ListPaperDocsArgs {
             this.filterBy,
             this.sortBy,
             this.sortOrder,
-            this.limit
+            this.limit,
+            this.stopAtDate
         });
         return hash;
     }
@@ -293,6 +327,7 @@ class ListPaperDocsArgs {
                 && ((this.sortBy == other.sortBy) || (this.sortBy.equals(other.sortBy)))
                 && ((this.sortOrder == other.sortOrder) || (this.sortOrder.equals(other.sortOrder)))
                 && (this.limit == other.limit)
+                && ((this.stopAtDate == other.stopAtDate) || (this.stopAtDate != null && this.stopAtDate.equals(other.stopAtDate)))
                 ;
         }
         else {
@@ -336,6 +371,10 @@ class ListPaperDocsArgs {
             ListPaperDocsSortOrder.Serializer.INSTANCE.serialize(value.sortOrder, g);
             g.writeFieldName("limit");
             StoneSerializers.int32().serialize(value.limit, g);
+            if (value.stopAtDate != null) {
+                g.writeFieldName("stop_at_date");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.stopAtDate, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -354,6 +393,7 @@ class ListPaperDocsArgs {
                 ListPaperDocsSortBy f_sortBy = ListPaperDocsSortBy.ACCESSED;
                 ListPaperDocsSortOrder f_sortOrder = ListPaperDocsSortOrder.ASCENDING;
                 Integer f_limit = 1000;
+                Date f_stopAtDate = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -369,11 +409,14 @@ class ListPaperDocsArgs {
                     else if ("limit".equals(field)) {
                         f_limit = StoneSerializers.int32().deserialize(p);
                     }
+                    else if ("stop_at_date".equals(field)) {
+                        f_stopAtDate = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
                 }
-                value = new ListPaperDocsArgs(f_filterBy, f_sortBy, f_sortOrder, f_limit);
+                value = new ListPaperDocsArgs(f_filterBy, f_sortBy, f_sortOrder, f_limit, f_stopAtDate);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

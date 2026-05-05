@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Arguments for {@link DbxUserFilesRequests#getThumbnailBatch(List)}.
  */
 class GetThumbnailBatchArg {
-    // struct files.GetThumbnailBatchArg (files.stone)
+    // struct files.GetThumbnailBatchArg (files_files_public_types.stone)
 
     @Nonnull
     protected final List<ThumbnailArg> entries;

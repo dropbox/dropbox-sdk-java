@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log.stone */
+/* This file was generated from team_log_apiv2_team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class GetTeamEventsResult {
-    // struct team_log.GetTeamEventsResult (team_log.stone)
+    // struct team_log.GetTeamEventsResult (team_log_apiv2_team_log.stone)
 
     @Nonnull
     protected final List<TeamEvent> events;

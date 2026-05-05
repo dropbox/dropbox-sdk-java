@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from team_team_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  * tag associated with this instance. </p>
  */
 public final class UserSelectorArg {
-    // union team.UserSelectorArg (team.stone)
+    // union team.UserSelectorArg (team_team_types.stone)
 
     /**
      * Discriminating tag type for {@link UserSelectorArg}.

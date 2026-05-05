@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_requests.stone */
+/* This file was generated from file_requests_apiv2_file_requests_public.stone */
 
 package com.dropbox.core.v2.filerequests;
 
@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
  * files into the user's Dropbox account.
  */
 public class FileRequest {
-    // struct file_requests.FileRequest (file_requests.stone)
+    // struct file_requests.FileRequest (file_requests_apiv2_file_requests_public.stone)
 
     @Nonnull
     protected final String id;
@@ -45,6 +45,8 @@ public class FileRequest {
     protected final long fileCount;
     @Nullable
     protected final String description;
+    @Nullable
+    protected final String videoProjectId;
 
     /**
      * A <a href="https://www.dropbox.com/help/9090">file request</a> for
@@ -72,11 +74,13 @@ public class FileRequest {
      * @param deadline  The deadline for this file request. Only set if the
      *     request has a deadline.
      * @param description  A description of the file request.
+     * @param videoProjectId  If this request was created from video project,
+     *     its id.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileRequest(@Nonnull String id, @Nonnull String url, @Nonnull String title, @Nonnull Date created, boolean isOpen, long fileCount, @Nullable String destination, @Nullable FileRequestDeadline deadline, @Nullable String description) {
+    public FileRequest(@Nonnull String id, @Nonnull String url, @Nonnull String title, @Nonnull Date created, boolean isOpen, long fileCount, @Nullable String destination, @Nullable FileRequestDeadline deadline, @Nullable String description, @Nullable String videoProjectId) {
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
         }
@@ -115,6 +119,7 @@ public class FileRequest {
         this.isOpen = isOpen;
         this.fileCount = fileCount;
         this.description = description;
+        this.videoProjectId = videoProjectId;
     }
 
     /**
@@ -139,7 +144,7 @@ public class FileRequest {
      *     preconditions.
      */
     public FileRequest(@Nonnull String id, @Nonnull String url, @Nonnull String title, @Nonnull Date created, boolean isOpen, long fileCount) {
-        this(id, url, title, created, isOpen, fileCount, null, null, null);
+        this(id, url, title, created, isOpen, fileCount, null, null, null, null);
     }
 
     /**
@@ -235,6 +240,16 @@ public class FileRequest {
     }
 
     /**
+     * If this request was created from video project, its id.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public String getVideoProjectId() {
+        return videoProjectId;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param id  The ID of the file request. Must have length of at least 1,
@@ -272,6 +287,7 @@ public class FileRequest {
         protected String destination;
         protected FileRequestDeadline deadline;
         protected String description;
+        protected String videoProjectId;
 
         protected Builder(String id, String url, String title, Date created, boolean isOpen, long fileCount) {
             if (id == null) {
@@ -307,6 +323,7 @@ public class FileRequest {
             this.destination = null;
             this.deadline = null;
             this.description = null;
+            this.videoProjectId = null;
         }
 
         /**
@@ -359,13 +376,26 @@ public class FileRequest {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param videoProjectId  If this request was created from video
+         *     project, its id.
+         *
+         * @return this builder
+         */
+        public Builder withVideoProjectId(String videoProjectId) {
+            this.videoProjectId = videoProjectId;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link FileRequest} configured with this
          * builder's values
          *
          * @return new instance of {@link FileRequest}
          */
         public FileRequest build() {
-            return new FileRequest(id, url, title, created, isOpen, fileCount, destination, deadline, description);
+            return new FileRequest(id, url, title, created, isOpen, fileCount, destination, deadline, description, videoProjectId);
         }
     }
 
@@ -380,7 +410,8 @@ public class FileRequest {
             this.deadline,
             this.isOpen,
             this.fileCount,
-            this.description
+            this.description,
+            this.videoProjectId
         });
         return hash;
     }
@@ -405,6 +436,7 @@ public class FileRequest {
                 && ((this.destination == other.destination) || (this.destination != null && this.destination.equals(other.destination)))
                 && ((this.deadline == other.deadline) || (this.deadline != null && this.deadline.equals(other.deadline)))
                 && ((this.description == other.description) || (this.description != null && this.description.equals(other.description)))
+                && ((this.videoProjectId == other.videoProjectId) || (this.videoProjectId != null && this.videoProjectId.equals(other.videoProjectId)))
                 ;
         }
         else {
@@ -464,6 +496,10 @@ public class FileRequest {
                 g.writeFieldName("description");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.description, g);
             }
+            if (value.videoProjectId != null) {
+                g.writeFieldName("video_project_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.videoProjectId, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -487,6 +523,7 @@ public class FileRequest {
                 String f_destination = null;
                 FileRequestDeadline f_deadline = null;
                 String f_description = null;
+                String f_videoProjectId = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -517,6 +554,9 @@ public class FileRequest {
                     else if ("description".equals(field)) {
                         f_description = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
+                    else if ("video_project_id".equals(field)) {
+                        f_videoProjectId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -539,7 +579,7 @@ public class FileRequest {
                 if (f_fileCount == null) {
                     throw new JsonParseException(p, "Required field \"file_count\" missing.");
                 }
-                value = new FileRequest(f_id, f_url, f_title, f_created, f_isOpen, f_fileCount, f_destination, f_deadline, f_description);
+                value = new FileRequest(f_id, f_url, f_title, f_created, f_isOpen, f_fileCount, f_destination, f_deadline, f_description, f_videoProjectId);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

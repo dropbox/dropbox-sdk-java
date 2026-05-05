@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Microsoft Office addin policy
  */
 public enum MicrosoftOfficeAddinPolicy {
-    // union team_log.MicrosoftOfficeAddinPolicy (team_log_generated.stone)
+    // union team_log.MicrosoftOfficeAddinPolicy (team_log_stone_gen_team_log_generated.stone)
     DISABLED,
     ENABLED,
     /**

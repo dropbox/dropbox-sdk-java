@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class SearchOptions {
-    // struct files.SearchOptions (files.stone)
+    // struct files.SearchOptions (files_files_public_types.stone)
 
     @Nullable
     protected final String path;
@@ -44,7 +44,7 @@ public class SearchOptions {
      *
      * @param path  Scopes the search to a path in the user's Dropbox. Searches
      *     the entire Dropbox if not specified. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}".
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}".
      * @param maxResults  The maximum number of search results to return. Must
      *     be greater than or equal to 1 and be less than or equal to 1000.
      * @param orderBy  Specified property of the order of search results. By
@@ -66,7 +66,7 @@ public class SearchOptions {
      */
     public SearchOptions(@Nullable String path, long maxResults, @Nullable SearchOrderBy orderBy, @Nonnull FileStatus fileStatus, boolean filenameOnly, @Nullable List<String> fileExtensions, @Nullable List<FileCategory> fileCategories, @Nullable String accountId) {
         if (path != null) {
-            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)", path)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
         }
@@ -244,7 +244,7 @@ public class SearchOptions {
          *
          * @param path  Scopes the search to a path in the user's Dropbox.
          *     Searches the entire Dropbox if not specified. Must match pattern
-         *     "{@code (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}".
+         *     "{@code (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}".
          *
          * @return this builder
          *
@@ -253,7 +253,7 @@ public class SearchOptions {
          */
         public Builder withPath(String path) {
             if (path != null) {
-                if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)", path)) {
+                if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
                     throw new IllegalArgumentException("String 'path' does not match pattern");
                 }
             }

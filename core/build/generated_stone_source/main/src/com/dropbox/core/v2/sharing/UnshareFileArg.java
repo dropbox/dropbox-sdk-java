@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing_apiv2_sharing_files_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Arguments for {@link DbxUserSharingRequests#unshareFile(String)}.
  */
 class UnshareFileArg {
-    // struct sharing.UnshareFileArg (sharing_files.stone)
+    // struct sharing.UnshareFileArg (sharing_apiv2_sharing_files_types.stone)
 
     @Nonnull
     protected final String file;

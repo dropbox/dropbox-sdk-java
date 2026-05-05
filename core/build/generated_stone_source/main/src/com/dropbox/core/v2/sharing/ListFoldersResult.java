@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
  * {@link SharedFolderMetadata#getPathLower}.
  */
 public class ListFoldersResult {
-    // struct sharing.ListFoldersResult (sharing_folders.stone)
+    // struct sharing.ListFoldersResult (sharing_apiv2_sharing_folders_types.stone)
 
     @Nonnull
     protected final List<SharedFolderMetadata> entries;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Information on sessions, in legacy format
  */
 public class LegacyDeviceSessionLogInfo extends DeviceSessionLogInfo {
-    // struct team_log.LegacyDeviceSessionLogInfo (team_log_generated.stone)
+    // struct team_log.LegacyDeviceSessionLogInfo (team_log_stone_gen_team_log_generated.stone)
 
     @Nullable
     protected final SessionLogInfo sessionInfo;

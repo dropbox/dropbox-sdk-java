@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper.stone */
+/* This file was generated from paper_apiv2_paper_types.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum AddPaperDocUserResult {
-    // union paper.AddPaperDocUserResult (paper.stone)
+    // union paper.AddPaperDocUserResult (paper_apiv2_paper_types.stone)
     /**
      * User was successfully added to the Paper doc.
      */

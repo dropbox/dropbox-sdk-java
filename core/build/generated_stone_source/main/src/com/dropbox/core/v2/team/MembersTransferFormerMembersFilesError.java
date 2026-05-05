@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team_team_members_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum MembersTransferFormerMembersFilesError {
-    // union team.MembersTransferFormerMembersFilesError (team_members.stone)
+    // union team.MembersTransferFormerMembersFilesError (team_team_members_types.stone)
     /**
      * No matching user found. The provided team_member_id, email, or
      * external_id does not exist on this team.
@@ -35,6 +35,19 @@ public enum MembersTransferFormerMembersFilesError {
      * tags. </p>
      */
     OTHER,
+    /**
+     * Cannot permanently delete files while it's being transferred.
+     */
+    TRANSFER_IN_PROGRESS,
+    /**
+     * Cannot permanently delete files that have already been transferred.
+     */
+    ALREADY_TRANSFERRED,
+    /**
+     * Cannot permanently delete files that have already been transferred or
+     * deleted.
+     */
+    ALREADY_TRANSFERRED_OR_DELETED,
     /**
      * Expected removed user and transfer_dest user to be different.
      */
@@ -109,6 +122,18 @@ public enum MembersTransferFormerMembersFilesError {
                 }
                 case OTHER: {
                     g.writeString("other");
+                    break;
+                }
+                case TRANSFER_IN_PROGRESS: {
+                    g.writeString("transfer_in_progress");
+                    break;
+                }
+                case ALREADY_TRANSFERRED: {
+                    g.writeString("already_transferred");
+                    break;
+                }
+                case ALREADY_TRANSFERRED_OR_DELETED: {
+                    g.writeString("already_transferred_or_deleted");
                     break;
                 }
                 case REMOVED_AND_TRANSFER_DEST_SHOULD_DIFFER: {
@@ -195,6 +220,15 @@ public enum MembersTransferFormerMembersFilesError {
             }
             else if ("other".equals(tag)) {
                 value = MembersTransferFormerMembersFilesError.OTHER;
+            }
+            else if ("transfer_in_progress".equals(tag)) {
+                value = MembersTransferFormerMembersFilesError.TRANSFER_IN_PROGRESS;
+            }
+            else if ("already_transferred".equals(tag)) {
+                value = MembersTransferFormerMembersFilesError.ALREADY_TRANSFERRED;
+            }
+            else if ("already_transferred_or_deleted".equals(tag)) {
+                value = MembersTransferFormerMembersFilesError.ALREADY_TRANSFERRED_OR_DELETED;
             }
             else if ("removed_and_transfer_dest_should_differ".equals(tag)) {
                 value = MembersTransferFormerMembersFilesError.REMOVED_AND_TRANSFER_DEST_SHOULD_DIFFER;

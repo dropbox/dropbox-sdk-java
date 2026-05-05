@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_folders.stone */
+/* This file was generated from team_team_folders.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class TeamFolderCreateArg {
-    // struct team.TeamFolderCreateArg (team_folders.stone)
+    // struct team.TeamFolderCreateArg (team_team_folders.stone)
 
     @Nonnull
     protected final String name;

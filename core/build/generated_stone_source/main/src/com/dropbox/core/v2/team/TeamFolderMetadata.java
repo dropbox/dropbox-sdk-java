@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_folders.stone */
+/* This file was generated from team_team_folders.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
  * Properties of a team folder.
  */
 public class TeamFolderMetadata {
-    // struct team.TeamFolderMetadata (team_folders.stone)
+    // struct team.TeamFolderMetadata (team_team_folders.stone)
 
     @Nonnull
     protected final String teamFolderId;
@@ -39,6 +39,7 @@ public class TeamFolderMetadata {
     protected final SyncSetting syncSetting;
     @Nonnull
     protected final List<ContentSyncSetting> contentSyncSettings;
+    protected final long quotaLimit;
 
     /**
      * Properties of a team folder.
@@ -54,11 +55,13 @@ public class TeamFolderMetadata {
      * @param contentSyncSettings  Sync settings applied to contents of this
      *     team folder. Must not contain a {@code null} item and not be {@code
      *     null}.
+     * @param quotaLimit  The quota limit in bytes for this team folder
+     *     namespace tree.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamFolderMetadata(@Nonnull String teamFolderId, @Nonnull String name, @Nonnull TeamFolderStatus status, boolean isTeamSharedDropbox, @Nonnull SyncSetting syncSetting, @Nonnull List<ContentSyncSetting> contentSyncSettings) {
+    public TeamFolderMetadata(@Nonnull String teamFolderId, @Nonnull String name, @Nonnull TeamFolderStatus status, boolean isTeamSharedDropbox, @Nonnull SyncSetting syncSetting, @Nonnull List<ContentSyncSetting> contentSyncSettings, long quotaLimit) {
         if (teamFolderId == null) {
             throw new IllegalArgumentException("Required value for 'teamFolderId' is null");
         }
@@ -88,6 +91,31 @@ public class TeamFolderMetadata {
             }
         }
         this.contentSyncSettings = contentSyncSettings;
+        this.quotaLimit = quotaLimit;
+    }
+
+    /**
+     * Properties of a team folder.
+     *
+     * <p> The default values for unset fields will be used. </p>
+     *
+     * @param teamFolderId  The ID of the team folder. Must match pattern
+     *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     * @param name  The name of the team folder. Must not be {@code null}.
+     * @param status  The status of the team folder. Must not be {@code null}.
+     * @param isTeamSharedDropbox  True if this team folder is a shared team
+     *     root.
+     * @param syncSetting  The sync setting applied to this team folder. Must
+     *     not be {@code null}.
+     * @param contentSyncSettings  Sync settings applied to contents of this
+     *     team folder. Must not contain a {@code null} item and not be {@code
+     *     null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public TeamFolderMetadata(@Nonnull String teamFolderId, @Nonnull String name, @Nonnull TeamFolderStatus status, boolean isTeamSharedDropbox, @Nonnull SyncSetting syncSetting, @Nonnull List<ContentSyncSetting> contentSyncSettings) {
+        this(teamFolderId, name, status, isTeamSharedDropbox, syncSetting, contentSyncSettings, 0L);
     }
 
     /**
@@ -149,6 +177,16 @@ public class TeamFolderMetadata {
         return contentSyncSettings;
     }
 
+    /**
+     * The quota limit in bytes for this team folder namespace tree.
+     *
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     0L.
+     */
+    public long getQuotaLimit() {
+        return quotaLimit;
+    }
+
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
@@ -157,7 +195,8 @@ public class TeamFolderMetadata {
             this.status,
             this.isTeamSharedDropbox,
             this.syncSetting,
-            this.contentSyncSettings
+            this.contentSyncSettings,
+            this.quotaLimit
         });
         return hash;
     }
@@ -179,6 +218,7 @@ public class TeamFolderMetadata {
                 && (this.isTeamSharedDropbox == other.isTeamSharedDropbox)
                 && ((this.syncSetting == other.syncSetting) || (this.syncSetting.equals(other.syncSetting)))
                 && ((this.contentSyncSettings == other.contentSyncSettings) || (this.contentSyncSettings.equals(other.contentSyncSettings)))
+                && (this.quotaLimit == other.quotaLimit)
                 ;
         }
         else {
@@ -226,6 +266,8 @@ public class TeamFolderMetadata {
             SyncSetting.Serializer.INSTANCE.serialize(value.syncSetting, g);
             g.writeFieldName("content_sync_settings");
             StoneSerializers.list(ContentSyncSetting.Serializer.INSTANCE).serialize(value.contentSyncSettings, g);
+            g.writeFieldName("quota_limit");
+            StoneSerializers.int64().serialize(value.quotaLimit, g);
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -246,6 +288,7 @@ public class TeamFolderMetadata {
                 Boolean f_isTeamSharedDropbox = null;
                 SyncSetting f_syncSetting = null;
                 List<ContentSyncSetting> f_contentSyncSettings = null;
+                Long f_quotaLimit = 0L;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -266,6 +309,9 @@ public class TeamFolderMetadata {
                     }
                     else if ("content_sync_settings".equals(field)) {
                         f_contentSyncSettings = StoneSerializers.list(ContentSyncSetting.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("quota_limit".equals(field)) {
+                        f_quotaLimit = StoneSerializers.int64().deserialize(p);
                     }
                     else {
                         skipValue(p);
@@ -289,7 +335,7 @@ public class TeamFolderMetadata {
                 if (f_contentSyncSettings == null) {
                     throw new JsonParseException(p, "Required field \"content_sync_settings\" missing.");
                 }
-                value = new TeamFolderMetadata(f_teamFolderId, f_name, f_status, f_isTeamSharedDropbox, f_syncSetting, f_contentSyncSettings);
+                value = new TeamFolderMetadata(f_teamFolderId, f_name, f_status, f_isTeamSharedDropbox, f_syncSetting, f_contentSyncSettings, f_quotaLimit);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

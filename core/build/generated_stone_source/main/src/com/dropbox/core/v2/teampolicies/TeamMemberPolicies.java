@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_policies.stone */
+/* This file was generated from team_policies_team_policies.stone */
 
 package com.dropbox.core.v2.teampolicies;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Policies governing team members.
  */
 public class TeamMemberPolicies {
-    // struct team_policies.TeamMemberPolicies (team_policies.stone)
+    // struct team_policies.TeamMemberPolicies (team_policies_team_policies.stone)
 
     @Nonnull
     protected final TeamSharingPolicies sharing;
@@ -32,6 +32,8 @@ public class TeamMemberPolicies {
     protected final OfficeAddInPolicy officeAddin;
     @Nonnull
     protected final SuggestMembersPolicy suggestMembersPolicy;
+    @Nonnull
+    protected final TopLevelContentPolicy topLevelContentPolicy;
 
     /**
      * Policies governing team members.
@@ -48,11 +50,14 @@ public class TeamMemberPolicies {
      * @param suggestMembersPolicy  The team policy on if teammembers are
      *     allowed to suggest users for admins to invite to the team. Must not
      *     be {@code null}.
+     * @param topLevelContentPolicy  Policy for deciding whether members can
+     *     edit team folders at the top level of the team space. Must not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamMemberPolicies(@Nonnull TeamSharingPolicies sharing, @Nonnull EmmState emmState, @Nonnull OfficeAddInPolicy officeAddin, @Nonnull SuggestMembersPolicy suggestMembersPolicy) {
+    public TeamMemberPolicies(@Nonnull TeamSharingPolicies sharing, @Nonnull EmmState emmState, @Nonnull OfficeAddInPolicy officeAddin, @Nonnull SuggestMembersPolicy suggestMembersPolicy, @Nonnull TopLevelContentPolicy topLevelContentPolicy) {
         if (sharing == null) {
             throw new IllegalArgumentException("Required value for 'sharing' is null");
         }
@@ -69,6 +74,10 @@ public class TeamMemberPolicies {
             throw new IllegalArgumentException("Required value for 'suggestMembersPolicy' is null");
         }
         this.suggestMembersPolicy = suggestMembersPolicy;
+        if (topLevelContentPolicy == null) {
+            throw new IllegalArgumentException("Required value for 'topLevelContentPolicy' is null");
+        }
+        this.topLevelContentPolicy = topLevelContentPolicy;
     }
 
     /**
@@ -117,13 +126,25 @@ public class TeamMemberPolicies {
         return suggestMembersPolicy;
     }
 
+    /**
+     * Policy for deciding whether members can edit team folders at the top
+     * level of the team space.
+     *
+     * @return value for this field, never {@code null}.
+     */
+    @Nonnull
+    public TopLevelContentPolicy getTopLevelContentPolicy() {
+        return topLevelContentPolicy;
+    }
+
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
             this.sharing,
             this.emmState,
             this.officeAddin,
-            this.suggestMembersPolicy
+            this.suggestMembersPolicy,
+            this.topLevelContentPolicy
         });
         return hash;
     }
@@ -143,6 +164,7 @@ public class TeamMemberPolicies {
                 && ((this.emmState == other.emmState) || (this.emmState.equals(other.emmState)))
                 && ((this.officeAddin == other.officeAddin) || (this.officeAddin.equals(other.officeAddin)))
                 && ((this.suggestMembersPolicy == other.suggestMembersPolicy) || (this.suggestMembersPolicy.equals(other.suggestMembersPolicy)))
+                && ((this.topLevelContentPolicy == other.topLevelContentPolicy) || (this.topLevelContentPolicy.equals(other.topLevelContentPolicy)))
                 ;
         }
         else {
@@ -186,6 +208,8 @@ public class TeamMemberPolicies {
             OfficeAddInPolicy.Serializer.INSTANCE.serialize(value.officeAddin, g);
             g.writeFieldName("suggest_members_policy");
             SuggestMembersPolicy.Serializer.INSTANCE.serialize(value.suggestMembersPolicy, g);
+            g.writeFieldName("top_level_content_policy");
+            TopLevelContentPolicy.Serializer.INSTANCE.serialize(value.topLevelContentPolicy, g);
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -204,6 +228,7 @@ public class TeamMemberPolicies {
                 EmmState f_emmState = null;
                 OfficeAddInPolicy f_officeAddin = null;
                 SuggestMembersPolicy f_suggestMembersPolicy = null;
+                TopLevelContentPolicy f_topLevelContentPolicy = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -218,6 +243,9 @@ public class TeamMemberPolicies {
                     }
                     else if ("suggest_members_policy".equals(field)) {
                         f_suggestMembersPolicy = SuggestMembersPolicy.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("top_level_content_policy".equals(field)) {
+                        f_topLevelContentPolicy = TopLevelContentPolicy.Serializer.INSTANCE.deserialize(p);
                     }
                     else {
                         skipValue(p);
@@ -235,7 +263,10 @@ public class TeamMemberPolicies {
                 if (f_suggestMembersPolicy == null) {
                     throw new JsonParseException(p, "Required field \"suggest_members_policy\" missing.");
                 }
-                value = new TeamMemberPolicies(f_sharing, f_emmState, f_officeAddin, f_suggestMembersPolicy);
+                if (f_topLevelContentPolicy == null) {
+                    throw new JsonParseException(p, "Required field \"top_level_content_policy\" missing.");
+                }
+                value = new TeamMemberPolicies(f_sharing, f_emmState, f_officeAddin, f_suggestMembersPolicy, f_topLevelContentPolicy);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

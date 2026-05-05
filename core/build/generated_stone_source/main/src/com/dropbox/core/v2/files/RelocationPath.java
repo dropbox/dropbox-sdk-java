@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 public class RelocationPath {
-    // struct files.RelocationPath (files.stone)
+    // struct files.RelocationPath (files_files_public_base.stone)
 
     @Nonnull
     protected final String fromPath;
@@ -30,11 +30,13 @@ public class RelocationPath {
     /**
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -43,14 +45,14 @@ public class RelocationPath {
         if (fromPath == null) {
             throw new IllegalArgumentException("Required value for 'fromPath' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)", fromPath)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)", fromPath)) {
             throw new IllegalArgumentException("String 'fromPath' does not match pattern");
         }
         this.fromPath = fromPath;
         if (toPath == null) {
             throw new IllegalArgumentException("Required value for 'toPath' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)", toPath)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)", toPath)) {
             throw new IllegalArgumentException("String 'toPath' does not match pattern");
         }
         this.toPath = toPath;

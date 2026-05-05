@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_policies.stone */
+/* This file was generated from team_policies_team_policies.stone */
 
 package com.dropbox.core.v2.teampolicies;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum FileProviderMigrationPolicyState {
-    // union team_policies.FileProviderMigrationPolicyState (team_policies.stone)
+    // union team_policies.FileProviderMigrationPolicyState (team_policies_team_policies.stone)
     /**
      * Team admin has opted out of File Provider Migration for team members.
      */
@@ -30,6 +30,11 @@ public enum FileProviderMigrationPolicyState {
      * Team admin has default value based on team tier.
      */
     DEFAULT,
+    /**
+     * Team admin has chosen to do File Provider Migration immediately for the
+     * team.
+     */
+    IMMEDIATE,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -58,6 +63,10 @@ public enum FileProviderMigrationPolicyState {
                 }
                 case DEFAULT: {
                     g.writeString("default");
+                    break;
+                }
+                case IMMEDIATE: {
+                    g.writeString("immediate");
                     break;
                 }
                 default: {
@@ -92,6 +101,9 @@ public enum FileProviderMigrationPolicyState {
             }
             else if ("default".equals(tag)) {
                 value = FileProviderMigrationPolicyState.DEFAULT;
+            }
+            else if ("immediate".equals(tag)) {
+                value = FileProviderMigrationPolicyState.IMMEDIATE;
             }
             else {
                 value = FileProviderMigrationPolicyState.OTHER;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  * Contains information about a parent folder that a member has access to.
  */
 public class ParentFolderAccessInfo {
-    // struct sharing.ParentFolderAccessInfo (sharing_folders.stone)
+    // struct sharing.ParentFolderAccessInfo (sharing_apiv2_sharing_folders_types.stone)
 
     @Nonnull
     protected final String folderName;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team_team_members_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum MembersSetPermissions2Error {
-    // union team.MembersSetPermissions2Error (team_members.stone)
+    // union team.MembersSetPermissions2Error (team_team_members_types.stone)
     /**
      * No matching user found. The provided team_member_id, email, or
      * external_id does not exist on this team.

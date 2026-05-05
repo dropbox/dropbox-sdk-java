@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team.stone */
+/* This file was generated from team_team_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -29,7 +29,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class HasTeamSelectiveSyncValue {
-    // union team.HasTeamSelectiveSyncValue (team.stone)
+    // union team.HasTeamSelectiveSyncValue (team_team_types.stone)
 
     /**
      * Discriminating tag type for {@link HasTeamSelectiveSyncValue}.

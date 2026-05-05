@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from auth.stone */
+/* This file was generated from auth_apiv2_auth.stone */
 
 package com.dropbox.core.v2.auth;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum TokenFromOAuth1Error {
-    // union auth.TokenFromOAuth1Error (auth.stone)
+    // union auth.TokenFromOAuth1Error (auth_apiv2_auth.stone)
     /**
      * Part or all of the OAuth 1.0 access token info is invalid.
      */

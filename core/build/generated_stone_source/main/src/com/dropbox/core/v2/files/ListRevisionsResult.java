@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -23,27 +23,32 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ListRevisionsResult {
-    // struct files.ListRevisionsResult (files.stone)
+    // struct files.ListRevisionsResult (files_files_public_types.stone)
 
     protected final boolean isDeleted;
     @Nullable
     protected final Date serverDeleted;
     @Nonnull
     protected final List<FileMetadata> entries;
+    protected final boolean hasMore;
 
     /**
      *
      * @param isDeleted  If the file identified by the latest revision in the
-     *     response is either deleted or moved.
+     *     response is either deleted or moved. If before_rev is set, this
+     *     refers to the latest revision of the file older than before_rev.
      * @param entries  The revisions for the file. Only revisions that are not
      *     deleted will show up here. Must not contain a {@code null} item and
      *     not be {@code null}.
+     * @param hasMore  If true, then there are more entries available. Call
+     *     list_revisions again with before_rev equal to the revision of the
+     *     last returned entry to retrieve the rest.
      * @param serverDeleted  The time of deletion if the file was deleted.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListRevisionsResult(boolean isDeleted, @Nonnull List<FileMetadata> entries, @Nullable Date serverDeleted) {
+    public ListRevisionsResult(boolean isDeleted, @Nonnull List<FileMetadata> entries, boolean hasMore, @Nullable Date serverDeleted) {
         this.isDeleted = isDeleted;
         this.serverDeleted = LangUtil.truncateMillis(serverDeleted);
         if (entries == null) {
@@ -55,6 +60,7 @@ public class ListRevisionsResult {
             }
         }
         this.entries = entries;
+        this.hasMore = hasMore;
     }
 
     /**
@@ -63,21 +69,26 @@ public class ListRevisionsResult {
      * <p> The default values for unset fields will be used. </p>
      *
      * @param isDeleted  If the file identified by the latest revision in the
-     *     response is either deleted or moved.
+     *     response is either deleted or moved. If before_rev is set, this
+     *     refers to the latest revision of the file older than before_rev.
      * @param entries  The revisions for the file. Only revisions that are not
      *     deleted will show up here. Must not contain a {@code null} item and
      *     not be {@code null}.
+     * @param hasMore  If true, then there are more entries available. Call
+     *     list_revisions again with before_rev equal to the revision of the
+     *     last returned entry to retrieve the rest.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListRevisionsResult(boolean isDeleted, @Nonnull List<FileMetadata> entries) {
-        this(isDeleted, entries, null);
+    public ListRevisionsResult(boolean isDeleted, @Nonnull List<FileMetadata> entries, boolean hasMore) {
+        this(isDeleted, entries, hasMore, null);
     }
 
     /**
      * If the file identified by the latest revision in the response is either
-     * deleted or moved.
+     * deleted or moved. If before_rev is set, this refers to the latest
+     * revision of the file older than before_rev.
      *
      * @return value for this field.
      */
@@ -97,6 +108,17 @@ public class ListRevisionsResult {
     }
 
     /**
+     * If true, then there are more entries available. Call list_revisions again
+     * with before_rev equal to the revision of the last returned entry to
+     * retrieve the rest.
+     *
+     * @return value for this field.
+     */
+    public boolean getHasMore() {
+        return hasMore;
+    }
+
+    /**
      * The time of deletion if the file was deleted.
      *
      * @return value for this field, or {@code null} if not present.
@@ -111,7 +133,8 @@ public class ListRevisionsResult {
         int hash = Arrays.hashCode(new Object [] {
             this.isDeleted,
             this.serverDeleted,
-            this.entries
+            this.entries,
+            this.hasMore
         });
         return hash;
     }
@@ -129,6 +152,7 @@ public class ListRevisionsResult {
             ListRevisionsResult other = (ListRevisionsResult) obj;
             return (this.isDeleted == other.isDeleted)
                 && ((this.entries == other.entries) || (this.entries.equals(other.entries)))
+                && (this.hasMore == other.hasMore)
                 && ((this.serverDeleted == other.serverDeleted) || (this.serverDeleted != null && this.serverDeleted.equals(other.serverDeleted)))
                 ;
         }
@@ -169,6 +193,8 @@ public class ListRevisionsResult {
             StoneSerializers.boolean_().serialize(value.isDeleted, g);
             g.writeFieldName("entries");
             StoneSerializers.list(FileMetadata.Serializer.INSTANCE).serialize(value.entries, g);
+            g.writeFieldName("has_more");
+            StoneSerializers.boolean_().serialize(value.hasMore, g);
             if (value.serverDeleted != null) {
                 g.writeFieldName("server_deleted");
                 StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.serverDeleted, g);
@@ -189,6 +215,7 @@ public class ListRevisionsResult {
             if (tag == null) {
                 Boolean f_isDeleted = null;
                 List<FileMetadata> f_entries = null;
+                Boolean f_hasMore = null;
                 Date f_serverDeleted = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
@@ -198,6 +225,9 @@ public class ListRevisionsResult {
                     }
                     else if ("entries".equals(field)) {
                         f_entries = StoneSerializers.list(FileMetadata.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("has_more".equals(field)) {
+                        f_hasMore = StoneSerializers.boolean_().deserialize(p);
                     }
                     else if ("server_deleted".equals(field)) {
                         f_serverDeleted = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
@@ -212,7 +242,10 @@ public class ListRevisionsResult {
                 if (f_entries == null) {
                     throw new JsonParseException(p, "Required field \"entries\" missing.");
                 }
-                value = new ListRevisionsResult(f_isDeleted, f_entries, f_serverDeleted);
+                if (f_hasMore == null) {
+                    throw new JsonParseException(p, "Required field \"has_more\" missing.");
+                }
+                value = new ListRevisionsResult(f_isDeleted, f_entries, f_hasMore, f_serverDeleted);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

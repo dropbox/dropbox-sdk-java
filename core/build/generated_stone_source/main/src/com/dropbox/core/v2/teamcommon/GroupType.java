@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_common.stone */
+/* This file was generated from team_common_team_common.stone */
 
 package com.dropbox.core.v2.teamcommon;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * The group type determines how a group is created and managed.
  */
 public enum GroupType {
-    // union team_common.GroupType (team_common.stone)
+    // union team_common.GroupType (team_common_team_common.stone)
     /**
      * A group to which team members are automatically added. Applicable to <a
      * href="https://www.dropbox.com/help/986">team folders</a> only.

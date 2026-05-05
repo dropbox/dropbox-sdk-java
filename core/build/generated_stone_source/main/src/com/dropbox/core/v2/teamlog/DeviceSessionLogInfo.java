@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Device's session logged information.
  */
 public class DeviceSessionLogInfo {
-    // struct team_log.DeviceSessionLogInfo (team_log_generated.stone)
+    // struct team_log.DeviceSessionLogInfo (team_log_stone_gen_team_log_generated.stone)
 
     @Nullable
     protected final String ipAddress;
@@ -221,16 +221,16 @@ public class DeviceSessionLogInfo {
                 DesktopDeviceSessionLogInfo.Serializer.INSTANCE.serialize((DesktopDeviceSessionLogInfo) value, g, collapse);
                 return;
             }
+            if (value instanceof LegacyDeviceSessionLogInfo) {
+                LegacyDeviceSessionLogInfo.Serializer.INSTANCE.serialize((LegacyDeviceSessionLogInfo) value, g, collapse);
+                return;
+            }
             if (value instanceof MobileDeviceSessionLogInfo) {
                 MobileDeviceSessionLogInfo.Serializer.INSTANCE.serialize((MobileDeviceSessionLogInfo) value, g, collapse);
                 return;
             }
             if (value instanceof WebDeviceSessionLogInfo) {
                 WebDeviceSessionLogInfo.Serializer.INSTANCE.serialize((WebDeviceSessionLogInfo) value, g, collapse);
-                return;
-            }
-            if (value instanceof LegacyDeviceSessionLogInfo) {
-                LegacyDeviceSessionLogInfo.Serializer.INSTANCE.serialize((LegacyDeviceSessionLogInfo) value, g, collapse);
                 return;
             }
             if (!collapse) {
@@ -292,14 +292,14 @@ public class DeviceSessionLogInfo {
             else if ("desktop_device_session".equals(tag)) {
                 value = DesktopDeviceSessionLogInfo.Serializer.INSTANCE.deserialize(p, true);
             }
+            else if ("legacy_device_session".equals(tag)) {
+                value = LegacyDeviceSessionLogInfo.Serializer.INSTANCE.deserialize(p, true);
+            }
             else if ("mobile_device_session".equals(tag)) {
                 value = MobileDeviceSessionLogInfo.Serializer.INSTANCE.deserialize(p, true);
             }
             else if ("web_device_session".equals(tag)) {
                 value = WebDeviceSessionLogInfo.Serializer.INSTANCE.deserialize(p, true);
-            }
-            else if ("legacy_device_session".equals(tag)) {
-                value = LegacyDeviceSessionLogInfo.Serializer.INSTANCE.deserialize(p, true);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

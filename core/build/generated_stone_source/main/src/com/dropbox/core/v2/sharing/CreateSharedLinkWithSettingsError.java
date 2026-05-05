@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing_apiv2_shared_links_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import java.util.Arrays;
  * associated with this instance.
  */
 public final class CreateSharedLinkWithSettingsError {
-    // union sharing.CreateSharedLinkWithSettingsError (shared_links.stone)
+    // union sharing.CreateSharedLinkWithSettingsError (sharing_apiv2_shared_links_types.stone)
 
     /**
      * Discriminating tag type for {@link CreateSharedLinkWithSettingsError}.
@@ -40,8 +40,11 @@ public final class CreateSharedLinkWithSettingsError {
         EMAIL_NOT_VERIFIED,
         /**
          * The shared link already exists. You can call {@link
-         * DbxUserSharingRequests#listSharedLinks} to get the  existing link, or
-         * use the provided metadata if it is returned.
+         * DbxUserSharingRequests#listSharedLinks} to get the existing link, or
+         * use the provided metadata if it is returned. Existing link metadata
+         * will not be returned if custom settings were specified in the request
+         * that could make the existing link incompatible with the requested
+         * settings.
          */
         SHARED_LINK_ALREADY_EXISTS, // SharedLinkAlreadyExistsMetadata
         /**
@@ -50,11 +53,23 @@ public final class CreateSharedLinkWithSettingsError {
         SETTINGS_ERROR, // SharedLinkSettingsError
         /**
          * The user is not allowed to create a shared link to the specified
-         * file. For  example, this can occur if the file is restricted or if
-         * the user's links are  <a
+         * file. For example, this can occur if the file is restricted or if the
+         * user's links are <a
          * href="https://help.dropbox.com/files-folders/share/banned-links">banned</a>.
          */
-        ACCESS_DENIED;
+        ACCESS_DENIED,
+        /**
+         * The current user has been <a
+         * href="https://help.dropbox.com/files-folders/share/banned-links">banned</a>
+         * for abuse reasons.
+         */
+        BANNED_MEMBER,
+        /**
+         * Your Dropbox folder will have too many shared folders after the
+         * operation.
+         * https://help.dropbox.com/share/shared-folder-faq#Is-there-a-limit-to-the-number-of-shared-folders-I-can-create
+         */
+        TOO_MANY_SHARED_FOLDERS;
     }
 
     /**
@@ -65,11 +80,23 @@ public final class CreateSharedLinkWithSettingsError {
     public static final CreateSharedLinkWithSettingsError EMAIL_NOT_VERIFIED = new CreateSharedLinkWithSettingsError().withTag(Tag.EMAIL_NOT_VERIFIED);
     /**
      * The user is not allowed to create a shared link to the specified file.
-     * For  example, this can occur if the file is restricted or if the user's
-     * links are  <a
+     * For example, this can occur if the file is restricted or if the user's
+     * links are <a
      * href="https://help.dropbox.com/files-folders/share/banned-links">banned</a>.
      */
     public static final CreateSharedLinkWithSettingsError ACCESS_DENIED = new CreateSharedLinkWithSettingsError().withTag(Tag.ACCESS_DENIED);
+    /**
+     * The current user has been <a
+     * href="https://help.dropbox.com/files-folders/share/banned-links">banned</a>
+     * for abuse reasons.
+     */
+    public static final CreateSharedLinkWithSettingsError BANNED_MEMBER = new CreateSharedLinkWithSettingsError().withTag(Tag.BANNED_MEMBER);
+    /**
+     * Your Dropbox folder will have too many shared folders after the
+     * operation.
+     * https://help.dropbox.com/share/shared-folder-faq#Is-there-a-limit-to-the-number-of-shared-folders-I-can-create
+     */
+    public static final CreateSharedLinkWithSettingsError TOO_MANY_SHARED_FOLDERS = new CreateSharedLinkWithSettingsError().withTag(Tag.TOO_MANY_SHARED_FOLDERS);
 
     private Tag _tag;
     private LookupError pathValue;
@@ -113,6 +140,9 @@ public final class CreateSharedLinkWithSettingsError {
      * @param sharedLinkAlreadyExistsValue  The shared link already exists. You
      *     can call {@link DbxUserSharingRequests#listSharedLinks} to get the
      *     existing link, or use the provided metadata if it is returned.
+     *     Existing link metadata will not be returned if custom settings were
+     *     specified in the request that could make the existing link
+     *     incompatible with the requested settings.
      * @param _tag  Discriminating tag for this instance.
      */
     private CreateSharedLinkWithSettingsError withTagAndSharedLinkAlreadyExists(Tag _tag, SharedLinkAlreadyExistsMetadata sharedLinkAlreadyExistsValue) {
@@ -226,8 +256,10 @@ public final class CreateSharedLinkWithSettingsError {
      * its tag set to {@link Tag#SHARED_LINK_ALREADY_EXISTS}.
      *
      * <p> The shared link already exists. You can call {@link
-     * DbxUserSharingRequests#listSharedLinks} to get the  existing link, or use
-     * the provided metadata if it is returned. </p>
+     * DbxUserSharingRequests#listSharedLinks} to get the existing link, or use
+     * the provided metadata if it is returned. Existing link metadata will not
+     * be returned if custom settings were specified in the request that could
+     * make the existing link incompatible with the requested settings. </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -243,8 +275,10 @@ public final class CreateSharedLinkWithSettingsError {
      * its tag set to {@link Tag#SHARED_LINK_ALREADY_EXISTS}.
      *
      * <p> The shared link already exists. You can call {@link
-     * DbxUserSharingRequests#listSharedLinks} to get the  existing link, or use
-     * the provided metadata if it is returned. </p>
+     * DbxUserSharingRequests#listSharedLinks} to get the existing link, or use
+     * the provided metadata if it is returned. Existing link metadata will not
+     * be returned if custom settings were specified in the request that could
+     * make the existing link incompatible with the requested settings. </p>
      *
      * @return Instance of {@code CreateSharedLinkWithSettingsError} with its
      *     tag set to {@link Tag#SHARED_LINK_ALREADY_EXISTS}.
@@ -255,8 +289,10 @@ public final class CreateSharedLinkWithSettingsError {
 
     /**
      * The shared link already exists. You can call {@link
-     * DbxUserSharingRequests#listSharedLinks} to get the  existing link, or use
-     * the provided metadata if it is returned.
+     * DbxUserSharingRequests#listSharedLinks} to get the existing link, or use
+     * the provided metadata if it is returned. Existing link metadata will not
+     * be returned if custom settings were specified in the request that could
+     * make the existing link incompatible with the requested settings.
      *
      * <p> This instance must be tagged as {@link
      * Tag#SHARED_LINK_ALREADY_EXISTS}. </p>
@@ -334,6 +370,28 @@ public final class CreateSharedLinkWithSettingsError {
         return this._tag == Tag.ACCESS_DENIED;
     }
 
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#BANNED_MEMBER}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#BANNED_MEMBER}, {@code false} otherwise.
+     */
+    public boolean isBannedMember() {
+        return this._tag == Tag.BANNED_MEMBER;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TOO_MANY_SHARED_FOLDERS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TOO_MANY_SHARED_FOLDERS}, {@code false} otherwise.
+     */
+    public boolean isTooManySharedFolders() {
+        return this._tag == Tag.TOO_MANY_SHARED_FOLDERS;
+    }
+
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
@@ -368,6 +426,10 @@ public final class CreateSharedLinkWithSettingsError {
                 case SETTINGS_ERROR:
                     return (this.settingsErrorValue == other.settingsErrorValue) || (this.settingsErrorValue.equals(other.settingsErrorValue));
                 case ACCESS_DENIED:
+                    return true;
+                case BANNED_MEMBER:
+                    return true;
+                case TOO_MANY_SHARED_FOLDERS:
                     return true;
                 default:
                     return false;
@@ -436,6 +498,14 @@ public final class CreateSharedLinkWithSettingsError {
                     g.writeString("access_denied");
                     break;
                 }
+                case BANNED_MEMBER: {
+                    g.writeString("banned_member");
+                    break;
+                }
+                case TOO_MANY_SHARED_FOLDERS: {
+                    g.writeString("too_many_shared_folders");
+                    break;
+                }
                 default: {
                     throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
                 }
@@ -490,6 +560,12 @@ public final class CreateSharedLinkWithSettingsError {
             }
             else if ("access_denied".equals(tag)) {
                 value = CreateSharedLinkWithSettingsError.ACCESS_DENIED;
+            }
+            else if ("banned_member".equals(tag)) {
+                value = CreateSharedLinkWithSettingsError.BANNED_MEMBER;
+            }
+            else if ("too_many_shared_folders".equals(tag)) {
+                value = CreateSharedLinkWithSettingsError.TOO_MANY_SHARED_FOLDERS;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

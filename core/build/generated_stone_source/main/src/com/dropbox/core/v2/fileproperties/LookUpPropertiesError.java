@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties.stone */
+/* This file was generated from file_properties_apiv2_file_properties_types.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum LookUpPropertiesError {
-    // union file_properties.LookUpPropertiesError (file_properties.stone)
+    // union file_properties.LookUpPropertiesError (file_properties_apiv2_file_properties_types.stone)
     /**
      * No property group was found.
      */

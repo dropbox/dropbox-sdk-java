@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.stone */
+/* This file was generated from team_team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Information on devices of a team's member.
  */
 public class MemberDevices {
-    // struct team.MemberDevices (team_devices.stone)
+    // struct team.MemberDevices (team_team_devices.stone)
 
     @Nonnull
     protected final String teamMemberId;

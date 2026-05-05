@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -31,7 +31,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class JobError {
-    // union sharing.JobError (sharing_folders.stone)
+    // union sharing.JobError (sharing_apiv2_sharing_folders_types.stone)
 
     /**
      * Discriminating tag type for {@link JobError}.

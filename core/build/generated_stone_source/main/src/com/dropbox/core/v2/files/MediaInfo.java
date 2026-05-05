@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -23,7 +23,7 @@ import java.util.Arrays;
  * associated with this instance.
  */
 public final class MediaInfo {
-    // union files.MediaInfo (files.stone)
+    // union files.MediaInfo (files_files_public_base.stone)
 
     /**
      * Discriminating tag type for {@link MediaInfo}.
@@ -35,7 +35,8 @@ public final class MediaInfo {
          */
         PENDING,
         /**
-         * The metadata for the photo/video.
+         * The metadata for the photo/video. Uses MediaMetadataAbstract to
+         * preserve photo/video subtypes (e.g. VideoMetadata.duration).
          */
         METADATA; // MediaMetadata
     }
@@ -68,8 +69,9 @@ public final class MediaInfo {
 
     /**
      *
-     * @param metadataValue  The metadata for the photo/video. Must not be
-     *     {@code null}.
+     * @param metadataValue  The metadata for the photo/video. Uses
+     *     MediaMetadataAbstract to preserve photo/video subtypes (e.g.
+     *     VideoMetadata.duration). Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -123,7 +125,8 @@ public final class MediaInfo {
      * Returns an instance of {@code MediaInfo} that has its tag set to {@link
      * Tag#METADATA}.
      *
-     * <p> The metadata for the photo/video. </p>
+     * <p> The metadata for the photo/video. Uses MediaMetadataAbstract to
+     * preserve photo/video subtypes (e.g. VideoMetadata.duration). </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -140,7 +143,8 @@ public final class MediaInfo {
     }
 
     /**
-     * The metadata for the photo/video.
+     * The metadata for the photo/video. Uses MediaMetadataAbstract to preserve
+     * photo/video subtypes (e.g. VideoMetadata.duration).
      *
      * <p> This instance must be tagged as {@link Tag#METADATA}. </p>
      *

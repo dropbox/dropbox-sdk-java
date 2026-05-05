@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class GetTemporaryUploadLinkArg {
-    // struct files.GetTemporaryUploadLinkArg (files.stone)
+    // struct files.GetTemporaryUploadLinkArg (files_files_public_types.stone)
 
     @Nonnull
     protected final CommitInfo commitInfo;
@@ -81,9 +81,9 @@ class GetTemporaryUploadLinkArg {
     }
 
     /**
-     * How long before this link expires, in seconds.  Attempting to start an
-     * upload with this link longer than this period  of time after link
-     * creation will result in an error.
+     * How long before this link expires, in seconds. Attempting to start an
+     * upload with this link longer than this period of time after link creation
+     * will result in an error.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     14400.0.

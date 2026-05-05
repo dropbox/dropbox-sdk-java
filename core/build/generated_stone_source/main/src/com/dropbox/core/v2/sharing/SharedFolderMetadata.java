@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
  * The metadata which includes basic information about the shared folder.
  */
 public class SharedFolderMetadata extends SharedFolderMetadataBase {
-    // struct sharing.SharedFolderMetadata (sharing_folders.stone)
+    // struct sharing.SharedFolderMetadata (sharing_apiv2_sharing_folders_types.stone)
 
     @Nullable
     protected final SharedContentLinkMetadata linkMetadata;
@@ -46,6 +46,8 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
     protected final Date timeInvited;
     @Nonnull
     protected final AccessInheritance accessInheritance;
+    @Nullable
+    protected final String folderId;
 
     /**
      * The metadata which includes basic information about the shared folder.
@@ -91,11 +93,13 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *     FolderActions in the request. Must not contain a {@code null} item.
      * @param accessInheritance  Whether the folder inherits its members from
      *     its parent. Must not be {@code null}.
+     * @param folderId  The ID of the content. Must have length of at least 4
+     *     and match pattern "{@code id:.+}".
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedFolderMetadata(@Nonnull AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, @Nonnull String name, @Nonnull FolderPolicy policy, @Nonnull String previewUrl, @Nonnull String sharedFolderId, @Nonnull Date timeInvited, @Nullable List<String> ownerDisplayNames, @Nullable Team ownerTeam, @Nullable String parentSharedFolderId, @Nullable String pathDisplay, @Nullable String pathLower, @Nullable String parentFolderName, @Nullable SharedContentLinkMetadata linkMetadata, @Nullable List<FolderPermission> permissions, @Nonnull AccessInheritance accessInheritance) {
+    public SharedFolderMetadata(@Nonnull AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, @Nonnull String name, @Nonnull FolderPolicy policy, @Nonnull String previewUrl, @Nonnull String sharedFolderId, @Nonnull Date timeInvited, @Nullable List<String> ownerDisplayNames, @Nullable Team ownerTeam, @Nullable String parentSharedFolderId, @Nullable String pathDisplay, @Nullable String pathLower, @Nullable String parentFolderName, @Nullable SharedContentLinkMetadata linkMetadata, @Nullable List<FolderPermission> permissions, @Nonnull AccessInheritance accessInheritance, @Nullable String folderId) {
         super(accessType, isInsideTeamFolder, isTeamFolder, ownerDisplayNames, ownerTeam, parentSharedFolderId, pathDisplay, pathLower, parentFolderName);
         this.linkMetadata = linkMetadata;
         if (name == null) {
@@ -133,6 +137,15 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
             throw new IllegalArgumentException("Required value for 'accessInheritance' is null");
         }
         this.accessInheritance = accessInheritance;
+        if (folderId != null) {
+            if (folderId.length() < 4) {
+                throw new IllegalArgumentException("String 'folderId' is shorter than 4");
+            }
+            if (!Pattern.matches("id:.+", folderId)) {
+                throw new IllegalArgumentException("String 'folderId' does not match pattern");
+            }
+        }
+        this.folderId = folderId;
     }
 
     /**
@@ -161,7 +174,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
      *     preconditions.
      */
     public SharedFolderMetadata(@Nonnull AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, @Nonnull String name, @Nonnull FolderPolicy policy, @Nonnull String previewUrl, @Nonnull String sharedFolderId, @Nonnull Date timeInvited) {
-        this(accessType, isInsideTeamFolder, isTeamFolder, name, policy, previewUrl, sharedFolderId, timeInvited, null, null, null, null, null, null, null, null, AccessInheritance.INHERIT);
+        this(accessType, isInsideTeamFolder, isTeamFolder, name, policy, previewUrl, sharedFolderId, timeInvited, null, null, null, null, null, null, null, null, AccessInheritance.INHERIT, null);
     }
 
     /**
@@ -344,6 +357,16 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
     }
 
     /**
+     * The ID of the content.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public String getFolderId() {
+        return folderId;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param accessType  The current user's access level for this shared
@@ -385,6 +408,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
         protected SharedContentLinkMetadata linkMetadata;
         protected List<FolderPermission> permissions;
         protected AccessInheritance accessInheritance;
+        protected String folderId;
 
         protected Builder(AccessLevel accessType, boolean isInsideTeamFolder, boolean isTeamFolder, String name, FolderPolicy policy, String previewUrl, String sharedFolderId, Date timeInvited) {
             super(accessType, isInsideTeamFolder, isTeamFolder);
@@ -414,6 +438,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
             this.linkMetadata = null;
             this.permissions = null;
             this.accessInheritance = AccessInheritance.INHERIT;
+            this.folderId = null;
         }
 
         /**
@@ -477,6 +502,30 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
             else {
                 this.accessInheritance = AccessInheritance.INHERIT;
             }
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param folderId  The ID of the content. Must have length of at least
+         *     4 and match pattern "{@code id:.+}".
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withFolderId(String folderId) {
+            if (folderId != null) {
+                if (folderId.length() < 4) {
+                    throw new IllegalArgumentException("String 'folderId' is shorter than 4");
+                }
+                if (!Pattern.matches("id:.+", folderId)) {
+                    throw new IllegalArgumentException("String 'folderId' does not match pattern");
+                }
+            }
+            this.folderId = folderId;
             return this;
         }
 
@@ -573,7 +622,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
          * @return new instance of {@link SharedFolderMetadata}
          */
         public SharedFolderMetadata build() {
-            return new SharedFolderMetadata(accessType, isInsideTeamFolder, isTeamFolder, name, policy, previewUrl, sharedFolderId, timeInvited, ownerDisplayNames, ownerTeam, parentSharedFolderId, pathDisplay, pathLower, parentFolderName, linkMetadata, permissions, accessInheritance);
+            return new SharedFolderMetadata(accessType, isInsideTeamFolder, isTeamFolder, name, policy, previewUrl, sharedFolderId, timeInvited, ownerDisplayNames, ownerTeam, parentSharedFolderId, pathDisplay, pathLower, parentFolderName, linkMetadata, permissions, accessInheritance, folderId);
         }
     }
 
@@ -587,7 +636,8 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
             this.previewUrl,
             this.sharedFolderId,
             this.timeInvited,
-            this.accessInheritance
+            this.accessInheritance,
+            this.folderId
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -621,6 +671,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
                 && ((this.linkMetadata == other.linkMetadata) || (this.linkMetadata != null && this.linkMetadata.equals(other.linkMetadata)))
                 && ((this.permissions == other.permissions) || (this.permissions != null && this.permissions.equals(other.permissions)))
                 && ((this.accessInheritance == other.accessInheritance) || (this.accessInheritance.equals(other.accessInheritance)))
+                && ((this.folderId == other.folderId) || (this.folderId != null && this.folderId.equals(other.folderId)))
                 ;
         }
         else {
@@ -706,6 +757,10 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
             }
             g.writeFieldName("access_inheritance");
             AccessInheritance.Serializer.INSTANCE.serialize(value.accessInheritance, g);
+            if (value.folderId != null) {
+                g.writeFieldName("folder_id");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.folderId, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -737,6 +792,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
                 SharedContentLinkMetadata f_linkMetadata = null;
                 List<FolderPermission> f_permissions = null;
                 AccessInheritance f_accessInheritance = AccessInheritance.INHERIT;
+                String f_folderId = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -791,6 +847,9 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
                     else if ("access_inheritance".equals(field)) {
                         f_accessInheritance = AccessInheritance.Serializer.INSTANCE.deserialize(p);
                     }
+                    else if ("folder_id".equals(field)) {
+                        f_folderId = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -819,7 +878,7 @@ public class SharedFolderMetadata extends SharedFolderMetadataBase {
                 if (f_timeInvited == null) {
                     throw new JsonParseException(p, "Required field \"time_invited\" missing.");
                 }
-                value = new SharedFolderMetadata(f_accessType, f_isInsideTeamFolder, f_isTeamFolder, f_name, f_policy, f_previewUrl, f_sharedFolderId, f_timeInvited, f_ownerDisplayNames, f_ownerTeam, f_parentSharedFolderId, f_pathDisplay, f_pathLower, f_parentFolderName, f_linkMetadata, f_permissions, f_accessInheritance);
+                value = new SharedFolderMetadata(f_accessType, f_isInsideTeamFolder, f_isTeamFolder, f_name, f_policy, f_previewUrl, f_sharedFolderId, f_timeInvited, f_ownerDisplayNames, f_ownerTeam, f_parentSharedFolderId, f_pathDisplay, f_pathLower, f_parentFolderName, f_linkMetadata, f_permissions, f_accessInheritance, f_folderId);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

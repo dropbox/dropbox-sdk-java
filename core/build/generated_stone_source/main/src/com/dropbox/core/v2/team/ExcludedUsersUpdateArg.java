@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_member_space_limits.stone */
+/* This file was generated from team_apiv2_team_member_space_limits.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
  * users.
  */
 class ExcludedUsersUpdateArg {
-    // struct team.ExcludedUsersUpdateArg (team_member_space_limits.stone)
+    // struct team.ExcludedUsersUpdateArg (team_apiv2_team_member_space_limits.stone)
 
     @Nullable
     protected final List<UserSelectorArg> users;

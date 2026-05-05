@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_member_space_limits.stone */
+/* This file was generated from team_apiv2_team_member_space_limits.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Excluded users update result.
  */
 public class ExcludedUsersUpdateResult {
-    // struct team.ExcludedUsersUpdateResult (team_member_space_limits.stone)
+    // struct team.ExcludedUsersUpdateResult (team_apiv2_team_member_space_limits.stone)
 
     @Nonnull
     protected final ExcludedUsersUpdateStatus status;

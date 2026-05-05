@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Requested access to Paper doc.
  */
 public class PaperDocRequestAccessDetails {
-    // struct team_log.PaperDocRequestAccessDetails (team_log_generated.stone)
+    // struct team_log.PaperDocRequestAccessDetails (team_log_stone_gen_team_log_generated.stone)
 
     @Nonnull
     protected final String eventUuid;

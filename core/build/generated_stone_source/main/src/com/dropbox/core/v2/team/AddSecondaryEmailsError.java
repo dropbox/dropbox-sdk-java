@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_secondary_mails.stone */
+/* This file was generated from team_apiv2_team_members_secondary_emails.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Error returned when adding secondary emails fails.
  */
 public enum AddSecondaryEmailsError {
-    // union team.AddSecondaryEmailsError (team_secondary_mails.stone)
+    // union team.AddSecondaryEmailsError (team_apiv2_team_members_secondary_emails.stone)
     /**
      * Secondary emails are disabled for the team.
      */

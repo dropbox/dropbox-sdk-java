@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team_team_members_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class MembersRemoveArg extends MembersDeactivateArg {
-    // struct team.MembersRemoveArg (team_members.stone)
+    // struct team.MembersRemoveArg (team_team_members_types.stone)
 
     @Nullable
     protected final UserSelectorArg transferDestId;
@@ -28,6 +28,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
     protected final UserSelectorArg transferAdminId;
     protected final boolean keepAccount;
     protected final boolean retainTeamShares;
+    protected final boolean permanentlyDeleteFiles;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -43,7 +44,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
      *     will be sent via email to this user. If the transfer_dest_id argument
      *     was provided, then this argument must be provided as well.
      * @param keepAccount  Downgrade the member to a Basic account. The user
-     *     will retain the email address associated with their Dropbox  account
+     *     will retain the email address associated with their Dropbox account
      *     and data in their account that is not restricted to team members. In
      *     order to keep the account the argument the {@code wipeData} argument
      *     to {@link
@@ -58,16 +59,20 @@ class MembersRemoveArg extends MembersDeactivateArg {
      *     DbxTeamTeamRequests#membersSuspend(UserSelectorArg,boolean)} should
      *     be set to {@code false} and {@link MembersRemoveArg#getKeepAccount}
      *     should be set to {@code true}.
+     * @param permanentlyDeleteFiles  Permanently delete the data in the deleted
+     *     member's account. After permanent deletion, the data is no longer
+     *     available to be transferred to a different user.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembersRemoveArg(@Nonnull UserSelectorArg user, boolean wipeData, @Nullable UserSelectorArg transferDestId, @Nullable UserSelectorArg transferAdminId, boolean keepAccount, boolean retainTeamShares) {
+    public MembersRemoveArg(@Nonnull UserSelectorArg user, boolean wipeData, @Nullable UserSelectorArg transferDestId, @Nullable UserSelectorArg transferAdminId, boolean keepAccount, boolean retainTeamShares, boolean permanentlyDeleteFiles) {
         super(user, wipeData);
         this.transferDestId = transferDestId;
         this.transferAdminId = transferAdminId;
         this.keepAccount = keepAccount;
         this.retainTeamShares = retainTeamShares;
+        this.permanentlyDeleteFiles = permanentlyDeleteFiles;
     }
 
     /**
@@ -82,7 +87,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
      *     preconditions.
      */
     public MembersRemoveArg(@Nonnull UserSelectorArg user) {
-        this(user, true, null, null, false, false);
+        this(user, true, null, null, false, false, false);
     }
 
     /**
@@ -131,7 +136,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
 
     /**
      * Downgrade the member to a Basic account. The user will retain the email
-     * address associated with their Dropbox  account and data in their account
+     * address associated with their Dropbox account and data in their account
      * that is not restricted to team members. In order to keep the account the
      * argument the {@code wipeData} argument to {@link
      * DbxTeamTeamRequests#membersSuspend(UserSelectorArg,boolean)} should be
@@ -162,6 +167,18 @@ class MembersRemoveArg extends MembersDeactivateArg {
     }
 
     /**
+     * Permanently delete the data in the deleted member's account. After
+     * permanent deletion, the data is no longer available to be transferred to
+     * a different user.
+     *
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     false.
+     */
+    public boolean getPermanentlyDeleteFiles() {
+        return permanentlyDeleteFiles;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param user  Identity of user to remove/suspend/have their files moved.
@@ -187,6 +204,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
         protected UserSelectorArg transferAdminId;
         protected boolean keepAccount;
         protected boolean retainTeamShares;
+        protected boolean permanentlyDeleteFiles;
 
         protected Builder(UserSelectorArg user) {
             if (user == null) {
@@ -198,6 +216,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
             this.transferAdminId = null;
             this.keepAccount = false;
             this.retainTeamShares = false;
+            this.permanentlyDeleteFiles = false;
         }
 
         /**
@@ -308,13 +327,36 @@ class MembersRemoveArg extends MembersDeactivateArg {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code false}.
+         * </p>
+         *
+         * @param permanentlyDeleteFiles  Permanently delete the data in the
+         *     deleted member's account. After permanent deletion, the data is
+         *     no longer available to be transferred to a different user.
+         *     Defaults to {@code false} when set to {@code null}.
+         *
+         * @return this builder
+         */
+        public Builder withPermanentlyDeleteFiles(Boolean permanentlyDeleteFiles) {
+            if (permanentlyDeleteFiles != null) {
+                this.permanentlyDeleteFiles = permanentlyDeleteFiles;
+            }
+            else {
+                this.permanentlyDeleteFiles = false;
+            }
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link MembersRemoveArg} configured with this
          * builder's values
          *
          * @return new instance of {@link MembersRemoveArg}
          */
         public MembersRemoveArg build() {
-            return new MembersRemoveArg(user, wipeData, transferDestId, transferAdminId, keepAccount, retainTeamShares);
+            return new MembersRemoveArg(user, wipeData, transferDestId, transferAdminId, keepAccount, retainTeamShares, permanentlyDeleteFiles);
         }
     }
 
@@ -324,7 +366,8 @@ class MembersRemoveArg extends MembersDeactivateArg {
             this.transferDestId,
             this.transferAdminId,
             this.keepAccount,
-            this.retainTeamShares
+            this.retainTeamShares,
+            this.permanentlyDeleteFiles
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -347,6 +390,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
                 && ((this.transferAdminId == other.transferAdminId) || (this.transferAdminId != null && this.transferAdminId.equals(other.transferAdminId)))
                 && (this.keepAccount == other.keepAccount)
                 && (this.retainTeamShares == other.retainTeamShares)
+                && (this.permanentlyDeleteFiles == other.permanentlyDeleteFiles)
                 ;
         }
         else {
@@ -398,6 +442,8 @@ class MembersRemoveArg extends MembersDeactivateArg {
             StoneSerializers.boolean_().serialize(value.keepAccount, g);
             g.writeFieldName("retain_team_shares");
             StoneSerializers.boolean_().serialize(value.retainTeamShares, g);
+            g.writeFieldName("permanently_delete_files");
+            StoneSerializers.boolean_().serialize(value.permanentlyDeleteFiles, g);
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -418,6 +464,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
                 UserSelectorArg f_transferAdminId = null;
                 Boolean f_keepAccount = false;
                 Boolean f_retainTeamShares = false;
+                Boolean f_permanentlyDeleteFiles = false;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -439,6 +486,9 @@ class MembersRemoveArg extends MembersDeactivateArg {
                     else if ("retain_team_shares".equals(field)) {
                         f_retainTeamShares = StoneSerializers.boolean_().deserialize(p);
                     }
+                    else if ("permanently_delete_files".equals(field)) {
+                        f_permanentlyDeleteFiles = StoneSerializers.boolean_().deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -446,7 +496,7 @@ class MembersRemoveArg extends MembersDeactivateArg {
                 if (f_user == null) {
                     throw new JsonParseException(p, "Required field \"user\" missing.");
                 }
-                value = new MembersRemoveArg(f_user, f_wipeData, f_transferDestId, f_transferAdminId, f_keepAccount, f_retainTeamShares);
+                value = new MembersRemoveArg(f_user, f_wipeData, f_transferDestId, f_transferAdminId, f_keepAccount, f_retainTeamShares, f_permanentlyDeleteFiles);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users.stone */
+/* This file was generated from users_users_types.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum GetAccountError {
-    // union users.GetAccountError (users.stone)
+    // union users.GetAccountError (users_users_types.stone)
     /**
      * The specified {@link GetAccountArg#getAccountId} does not exist.
      */

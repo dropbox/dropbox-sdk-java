@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Metadata for a photo.
  */
 public class PhotoMetadata extends MediaMetadata {
-    // struct files.PhotoMetadata (files.stone)
+    // struct files.PhotoMetadata (files_files_public_base.stone)
 
 
     /**

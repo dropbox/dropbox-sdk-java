@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_content_links.stone */
+/* This file was generated from sharing_apiv2_shared_content_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
  * Metadata of a shared link for a file or folder.
  */
 public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
-    // struct sharing.SharedContentLinkMetadata (shared_content_links.stone)
+    // struct sharing.SharedContentLinkMetadata (sharing_apiv2_shared_content_links.stone)
 
     @Nullable
     protected final AudienceExceptions audienceExceptions;
@@ -56,7 +56,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
      * @param audienceRestrictingSharedFolder  The shared folder that prevents
      *     the link audience for this link from being more restrictive.
      * @param expiry  Whether the link has an expiry set on it. A link with an
-     *     expiry will have its  audience changed to members when the expiry is
+     *     expiry will have its audience changed to members when the expiry is
      *     reached.
      * @param audienceExceptions  The content inside this folder with link
      *     audience different than this folder's. This is only returned when an
@@ -176,7 +176,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
 
     /**
      * Whether the link has an expiry set on it. A link with an expiry will have
-     * its  audience changed to members when the expiry is reached.
+     * its audience changed to members when the expiry is reached.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -285,7 +285,7 @@ public class SharedContentLinkMetadata extends SharedContentLinkMetadataBase {
          * Set value for optional field.
          *
          * @param expiry  Whether the link has an expiry set on it. A link with
-         *     an expiry will have its  audience changed to members when the
+         *     an expiry will have its audience changed to members when the
          *     expiry is reached.
          *
          * @return this builder

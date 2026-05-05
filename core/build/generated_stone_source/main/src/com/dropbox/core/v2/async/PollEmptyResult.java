@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from async.stone */
+/* This file was generated from async_common_async.stone */
 
 package com.dropbox.core.v2.async;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * Upon completion of the job, no additional information is returned.
  */
 public enum PollEmptyResult {
-    // union async.PollEmptyResult (async.stone)
+    // union async.PollEmptyResult (async_common_async.stone)
     /**
      * The asynchronous job is still in progress.
      */

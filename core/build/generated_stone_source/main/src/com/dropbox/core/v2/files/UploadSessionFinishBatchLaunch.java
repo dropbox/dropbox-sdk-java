@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -31,7 +31,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class UploadSessionFinishBatchLaunch {
-    // union files.UploadSessionFinishBatchLaunch (files.stone)
+    // union files.UploadSessionFinishBatchLaunch (files_files_public_types.stone)
 
     /**
      * Discriminating tag type for {@link UploadSessionFinishBatchLaunch}.

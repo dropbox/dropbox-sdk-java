@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -17,11 +17,10 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum AccountCapturePolicy {
-    // union team_log.AccountCapturePolicy (team_log_generated.stone)
+    // union team_log.AccountCapturePolicy (team_log_stone_gen_team_log_generated.stone)
     ALL_USERS,
     DISABLED,
     INVITED_USERS,
-    PREVENT_PERSONAL_CREATION,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -50,10 +49,6 @@ public enum AccountCapturePolicy {
                 }
                 case INVITED_USERS: {
                     g.writeString("invited_users");
-                    break;
-                }
-                case PREVENT_PERSONAL_CREATION: {
-                    g.writeString("prevent_personal_creation");
                     break;
                 }
                 default: {
@@ -88,9 +83,6 @@ public enum AccountCapturePolicy {
             }
             else if ("invited_users".equals(tag)) {
                 value = AccountCapturePolicy.INVITED_USERS;
-            }
-            else if ("prevent_personal_creation".equals(tag)) {
-                value = AccountCapturePolicy.PREVENT_PERSONAL_CREATION;
             }
             else {
                 value = AccountCapturePolicy.OTHER;

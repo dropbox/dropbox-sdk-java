@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing_apiv2_shared_links_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class CreateSharedLinkWithSettingsArg {
-    // struct sharing.CreateSharedLinkWithSettingsArg (shared_links.stone)
+    // struct sharing.CreateSharedLinkWithSettingsArg (sharing_apiv2_shared_links_types.stone)
 
     @Nonnull
     protected final String path;
@@ -31,7 +31,8 @@ class CreateSharedLinkWithSettingsArg {
     /**
      *
      * @param path  The path to be shared by the shared link. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      * @param settings  The requested settings for the newly created shared
      *     link.
@@ -43,7 +44,7 @@ class CreateSharedLinkWithSettingsArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -56,7 +57,8 @@ class CreateSharedLinkWithSettingsArg {
      * <p> The default values for unset fields will be used. </p>
      *
      * @param path  The path to be shared by the shared link. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its

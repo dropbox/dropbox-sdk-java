@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users.stone */
+/* This file was generated from users_users_types.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Information about a user's space usage and quota.
  */
 public class SpaceUsage {
-    // struct users.SpaceUsage (users.stone)
+    // struct users.SpaceUsage (users_users_types.stone)
 
     protected final long used;
     @Nonnull

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties.stone */
+/* This file was generated from file_properties_apiv2_file_properties_types.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -24,7 +24,7 @@ import java.util.List;
  * associated with this instance.
  */
 public final class TemplateFilter {
-    // union file_properties.TemplateFilter (file_properties.stone)
+    // union file_properties.TemplateFilter (file_properties_apiv2_file_properties_types.stone)
 
     /**
      * Discriminating tag type for {@link TemplateFilter}.

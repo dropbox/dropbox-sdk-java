@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team_team_members_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class MembersSetProfilePhotoArg {
-    // struct team.MembersSetProfilePhotoArg (team_members.stone)
+    // struct team.MembersSetProfilePhotoArg (team_team_members_types.stone)
 
     @Nonnull
     protected final UserSelectorArg user;

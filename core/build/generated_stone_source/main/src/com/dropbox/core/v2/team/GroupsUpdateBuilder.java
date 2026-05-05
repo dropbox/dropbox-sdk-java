@@ -43,7 +43,7 @@ public class GroupsUpdateBuilder {
      * <p> If left unset or set to {@code null}, defaults to {@code true}. </p>
      *
      * @param returnMembers  Whether to return the list of members in the group.
-     *     Note that the default value will cause all the group members  to be
+     *     Note that the default value will cause all the group members to be
      *     returned in the response. This may take a long time for large groups.
      *     Defaults to {@code true} when set to {@code null}.
      *

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team_team_members_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Information about a team member.
  */
 public class TeamMemberInfoV2 {
-    // struct team.TeamMemberInfoV2 (team_members.stone)
+    // struct team.TeamMemberInfoV2 (team_team_members_types.stone)
 
     @Nonnull
     protected final TeamMemberProfile profile;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,10 +20,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Enabled/disabled/changed two-step verification setting.
+ * Enabled/disabled/changed two-factor authentication setting.
  */
 public class TfaChangeStatusDetails {
-    // struct team_log.TfaChangeStatusDetails (team_log_generated.stone)
+    // struct team_log.TfaChangeStatusDetails (team_log_stone_gen_team_log_generated.stone)
 
     @Nonnull
     protected final TfaConfiguration newValue;
@@ -33,7 +33,7 @@ public class TfaChangeStatusDetails {
     protected final Boolean usedRescueCode;
 
     /**
-     * Enabled/disabled/changed two-step verification setting.
+     * Enabled/disabled/changed two-factor authentication setting.
      *
      * <p> Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields. </p>
@@ -59,7 +59,7 @@ public class TfaChangeStatusDetails {
     }
 
     /**
-     * Enabled/disabled/changed two-step verification setting.
+     * Enabled/disabled/changed two-factor authentication setting.
      *
      * <p> The default values for unset fields will be used. </p>
      *

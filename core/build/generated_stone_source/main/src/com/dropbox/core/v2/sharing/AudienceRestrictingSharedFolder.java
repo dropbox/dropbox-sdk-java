@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_content_links.stone */
+/* This file was generated from sharing_apiv2_shared_content_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  * link from being more restrictive.
  */
 public class AudienceRestrictingSharedFolder {
-    // struct sharing.AudienceRestrictingSharedFolder (shared_content_links.stone)
+    // struct sharing.AudienceRestrictingSharedFolder (sharing_apiv2_shared_content_links.stone)
 
     @Nonnull
     protected final String sharedFolderId;

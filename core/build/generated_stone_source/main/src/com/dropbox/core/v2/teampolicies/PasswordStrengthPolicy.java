@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_policies.stone */
+/* This file was generated from team_policies_team_policies.stone */
 
 package com.dropbox.core.v2.teampolicies;
 
@@ -17,17 +17,21 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum PasswordStrengthPolicy {
-    // union team_policies.PasswordStrengthPolicy (team_policies.stone)
+    // union team_policies.PasswordStrengthPolicy (team_policies_team_policies.stone)
     /**
-     * User passwords will adhere to the minimal password strength policy.
+     * User passwords will not adhere to a password strength policy.
      */
     MINIMAL_REQUIREMENTS,
     /**
-     * User passwords will adhere to the moderate password strength policy.
+     * User passwords will adhere to the strong password strength policy. Note
+     * that product surfaces refer to this as the strong policy but the value
+     * must be kept as is for backwards compatability.
      */
     MODERATE_PASSWORD,
     /**
      * User passwords will adhere to the very strong password strength policy.
+     * Note that product surfaces refer to this as the very strong policy but
+     * the value must be kept as is for backwards compatability.
      */
     STRONG_PASSWORD,
     /**

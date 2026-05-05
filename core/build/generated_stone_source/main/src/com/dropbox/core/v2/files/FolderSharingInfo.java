@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * shared folder mount point.
  */
 public class FolderSharingInfo extends SharingInfo {
-    // struct files.FolderSharingInfo (files.stone)
+    // struct files.FolderSharingInfo (files_files_public_base.stone)
 
     @Nullable
     protected final String parentSharedFolderId;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.stone */
+/* This file was generated from team_apiv2_team_groups.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class GroupCreateArg {
-    // struct team.GroupCreateArg (team_groups.stone)
+    // struct team.GroupCreateArg (team_apiv2_team_groups.stone)
 
     @Nonnull
     protected final String groupName;

@@ -62,7 +62,7 @@ public class ListReceivedFilesBuilder {
      * Set value for optional field.
      *
      * @param actions  A list of `FileAction`s corresponding to
-     *     `FilePermission`s that should appear in the  response's {@link
+     *     `FilePermission`s that should appear in the response's {@link
      *     SharedFileMetadata#getPermissions} field describing the actions the
      *     authenticated user can perform on the file. Must not contain a {@code
      *     null} item.

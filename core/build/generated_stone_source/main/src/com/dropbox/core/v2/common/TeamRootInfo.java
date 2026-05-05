@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from common.stone */
+/* This file was generated from common_common.stone */
 
 package com.dropbox.core.v2.common;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Root info when user is member of a team with a separate root namespace ID.
  */
 public class TeamRootInfo extends RootInfo {
-    // struct common.TeamRootInfo (common.stone)
+    // struct common.TeamRootInfo (common_common.stone)
 
     @Nonnull
     protected final String homePath;
@@ -34,9 +34,10 @@ public class TeamRootInfo extends RootInfo {
      *
      * @param rootNamespaceId  The namespace ID for user's root namespace. It
      *     will be the namespace ID of the shared team root if the user is
-     *     member of a team with a separate team root. Otherwise it will be same
-     *     as {@link RootInfo#getHomeNamespaceId}. Must match pattern "{@code
-     *     [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     *     member of a team with a separate team root, or the user root if user
+     *     is member of a team with separate distinct roots for users. Otherwise
+     *     it will be the same as {@link RootInfo#getHomeNamespaceId}. Must
+     *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      * @param homeNamespaceId  The namespace ID for user's home namespace. Must
      *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      * @param homePath  The path for user's home directory under the shared team
@@ -56,7 +57,8 @@ public class TeamRootInfo extends RootInfo {
     /**
      * The namespace ID for user's root namespace. It will be the namespace ID
      * of the shared team root if the user is member of a team with a separate
-     * team root. Otherwise it will be same as {@link
+     * team root, or the user root if user is member of a team with separate
+     * distinct roots for users. Otherwise it will be the same as {@link
      * RootInfo#getHomeNamespaceId}.
      *
      * @return value for this field, never {@code null}.

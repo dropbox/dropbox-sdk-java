@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class DownloadZipError {
-    // union files.DownloadZipError (files.stone)
+    // union files.DownloadZipError (files_files_public_types.stone)
 
     /**
      * Discriminating tag type for {@link DownloadZipError}.

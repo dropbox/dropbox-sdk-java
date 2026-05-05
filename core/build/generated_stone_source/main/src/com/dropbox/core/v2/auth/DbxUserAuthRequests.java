@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from auth.stone */
+/* This file was generated from auth_apiv2_auth.stone */
 
 package com.dropbox.core.v2.auth;
 
@@ -16,7 +16,7 @@ import java.util.Map;
  * Routes in namespace "auth".
  */
 public class DbxUserAuthRequests {
-    // namespace auth (auth.stone)
+    // namespace auth (auth_apiv2_auth.stone)
 
     private final DbxRawClientV2 client;
 

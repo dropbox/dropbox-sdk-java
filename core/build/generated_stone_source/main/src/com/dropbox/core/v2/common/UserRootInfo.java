@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from common.stone */
+/* This file was generated from common_common.stone */
 
 package com.dropbox.core.v2.common;
 
@@ -14,17 +14,21 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Root info when user is not member of a team or the user is a member of a team
  * and the team does not have a separate root namespace.
  */
 public class UserRootInfo extends RootInfo {
-    // struct common.UserRootInfo (common.stone)
+    // struct common.UserRootInfo (common_common.stone)
 
+    @Nullable
+    protected final String homePath;
 
     /**
      * Root info when user is not member of a team or the user is a member of a
@@ -32,9 +36,35 @@ public class UserRootInfo extends RootInfo {
      *
      * @param rootNamespaceId  The namespace ID for user's root namespace. It
      *     will be the namespace ID of the shared team root if the user is
-     *     member of a team with a separate team root. Otherwise it will be same
-     *     as {@link RootInfo#getHomeNamespaceId}. Must match pattern "{@code
-     *     [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     *     member of a team with a separate team root, or the user root if user
+     *     is member of a team with separate distinct roots for users. Otherwise
+     *     it will be the same as {@link RootInfo#getHomeNamespaceId}. Must
+     *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     * @param homeNamespaceId  The namespace ID for user's home namespace. Must
+     *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     * @param homePath  The path for user's home directory under the distinct
+     *     user root.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public UserRootInfo(@Nonnull String rootNamespaceId, @Nonnull String homeNamespaceId, @Nullable String homePath) {
+        super(rootNamespaceId, homeNamespaceId);
+        this.homePath = homePath;
+    }
+
+    /**
+     * Root info when user is not member of a team or the user is a member of a
+     * team and the team does not have a separate root namespace.
+     *
+     * <p> The default values for unset fields will be used. </p>
+     *
+     * @param rootNamespaceId  The namespace ID for user's root namespace. It
+     *     will be the namespace ID of the shared team root if the user is
+     *     member of a team with a separate team root, or the user root if user
+     *     is member of a team with separate distinct roots for users. Otherwise
+     *     it will be the same as {@link RootInfo#getHomeNamespaceId}. Must
+     *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      * @param homeNamespaceId  The namespace ID for user's home namespace. Must
      *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      *
@@ -42,13 +72,14 @@ public class UserRootInfo extends RootInfo {
      *     preconditions.
      */
     public UserRootInfo(@Nonnull String rootNamespaceId, @Nonnull String homeNamespaceId) {
-        super(rootNamespaceId, homeNamespaceId);
+        this(rootNamespaceId, homeNamespaceId, null);
     }
 
     /**
      * The namespace ID for user's root namespace. It will be the namespace ID
      * of the shared team root if the user is member of a team with a separate
-     * team root. Otherwise it will be same as {@link
+     * team root, or the user root if user is member of a team with separate
+     * distinct roots for users. Otherwise it will be the same as {@link
      * RootInfo#getHomeNamespaceId}.
      *
      * @return value for this field, never {@code null}.
@@ -68,10 +99,23 @@ public class UserRootInfo extends RootInfo {
         return homeNamespaceId;
     }
 
+    /**
+     * The path for user's home directory under the distinct user root.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public String getHomePath() {
+        return homePath;
+    }
+
     @Override
     public int hashCode() {
-        // attempt to deal with inheritance
-        return getClass().toString().hashCode();
+        int hash = Arrays.hashCode(new Object [] {
+            this.homePath
+        });
+        hash = (31 * super.hashCode()) + hash;
+        return hash;
     }
 
     @Override
@@ -87,6 +131,7 @@ public class UserRootInfo extends RootInfo {
             UserRootInfo other = (UserRootInfo) obj;
             return ((this.rootNamespaceId == other.rootNamespaceId) || (this.rootNamespaceId.equals(other.rootNamespaceId)))
                 && ((this.homeNamespaceId == other.homeNamespaceId) || (this.homeNamespaceId.equals(other.homeNamespaceId)))
+                && ((this.homePath == other.homePath) || (this.homePath != null && this.homePath.equals(other.homePath)))
                 ;
         }
         else {
@@ -127,6 +172,10 @@ public class UserRootInfo extends RootInfo {
             StoneSerializers.string().serialize(value.rootNamespaceId, g);
             g.writeFieldName("home_namespace_id");
             StoneSerializers.string().serialize(value.homeNamespaceId, g);
+            if (value.homePath != null) {
+                g.writeFieldName("home_path");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.homePath, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -146,6 +195,7 @@ public class UserRootInfo extends RootInfo {
             if (tag == null) {
                 String f_rootNamespaceId = null;
                 String f_homeNamespaceId = null;
+                String f_homePath = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -154,6 +204,9 @@ public class UserRootInfo extends RootInfo {
                     }
                     else if ("home_namespace_id".equals(field)) {
                         f_homeNamespaceId = StoneSerializers.string().deserialize(p);
+                    }
+                    else if ("home_path".equals(field)) {
+                        f_homePath = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
                     else {
                         skipValue(p);
@@ -165,7 +218,7 @@ public class UserRootInfo extends RootInfo {
                 if (f_homeNamespaceId == null) {
                     throw new JsonParseException(p, "Required field \"home_namespace_id\" missing.");
                 }
-                value = new UserRootInfo(f_rootNamespaceId, f_homeNamespaceId);
+                value = new UserRootInfo(f_rootNamespaceId, f_homeNamespaceId, f_homePath);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

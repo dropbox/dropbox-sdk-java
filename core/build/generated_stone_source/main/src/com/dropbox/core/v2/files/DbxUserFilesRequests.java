@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_tagging.stone, files.stone */
+/* This file was generated from file_tagging_file_tagging.stone, files_files_public_types.stone, files_files_public_base.stone, files_files_public_primitives.stone, files_apiv2_files_metadata_apiv2.stone, files_apiv2_files_upload_apiv2.stone, files_apiv2_fileops_apiv2.stone, files_apiv2_files_copyref_apiv2.stone, files_apiv2_fileops_cdm_apiv2.stone, files_apiv2_files_download_apiv2.stone, files_apiv2_files_download_zip_apiv2.stone, files_apiv2_files_export_apiv2.stone, files_apiv2_files_locking_apiv2.stone, files_apiv2_files_previews_apiv2.stone, files_apiv2_files_content_apiv2.stone, files_apiv2_files_extensions_apiv2.stone, files_apiv2_revisions_apiv2.stone, files_apiv2_files_paper_apiv2.stone, files_apiv2_files_properties_deprecated_apiv2.stone, files_apiv2_files_saveurl_apiv2.stone, files_search.stone, files_apiv2_files_upload_batch_apiv2.stone, files_apiv2_files_upload_async_apiv2.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -18,19 +18,11 @@ import com.dropbox.core.v2.async.PollErrorException;
 import com.dropbox.core.v2.fileproperties.AddPropertiesArg;
 import com.dropbox.core.v2.fileproperties.AddPropertiesError;
 import com.dropbox.core.v2.fileproperties.AddPropertiesErrorException;
-import com.dropbox.core.v2.fileproperties.GetTemplateArg;
-import com.dropbox.core.v2.fileproperties.GetTemplateResult;
 import com.dropbox.core.v2.fileproperties.InvalidPropertyGroupError;
 import com.dropbox.core.v2.fileproperties.InvalidPropertyGroupErrorException;
-import com.dropbox.core.v2.fileproperties.ListTemplateResult;
 import com.dropbox.core.v2.fileproperties.OverwritePropertyGroupArg;
 import com.dropbox.core.v2.fileproperties.PropertyGroup;
 import com.dropbox.core.v2.fileproperties.PropertyGroupUpdate;
-import com.dropbox.core.v2.fileproperties.RemovePropertiesArg;
-import com.dropbox.core.v2.fileproperties.RemovePropertiesError;
-import com.dropbox.core.v2.fileproperties.RemovePropertiesErrorException;
-import com.dropbox.core.v2.fileproperties.TemplateError;
-import com.dropbox.core.v2.fileproperties.TemplateErrorException;
 import com.dropbox.core.v2.fileproperties.UpdatePropertiesArg;
 import com.dropbox.core.v2.fileproperties.UpdatePropertiesError;
 import com.dropbox.core.v2.fileproperties.UpdatePropertiesErrorException;
@@ -44,7 +36,7 @@ import java.util.Map;
  * Routes in namespace "files".
  */
 public class DbxUserFilesRequests {
-    // namespace files (file_tagging.stone, files.stone)
+    // namespace files (file_tagging_file_tagging.stone, files_files_public_types.stone, files_files_public_base.stone, files_files_public_primitives.stone, files_apiv2_files_metadata_apiv2.stone, files_apiv2_files_upload_apiv2.stone, files_apiv2_fileops_apiv2.stone, files_apiv2_files_copyref_apiv2.stone, files_apiv2_fileops_cdm_apiv2.stone, files_apiv2_files_download_apiv2.stone, files_apiv2_files_download_zip_apiv2.stone, files_apiv2_files_export_apiv2.stone, files_apiv2_files_locking_apiv2.stone, files_apiv2_files_previews_apiv2.stone, files_apiv2_files_content_apiv2.stone, files_apiv2_files_extensions_apiv2.stone, files_apiv2_revisions_apiv2.stone, files_apiv2_files_paper_apiv2.stone, files_apiv2_files_properties_deprecated_apiv2.stone, files_apiv2_files_saveurl_apiv2.stone, files_search.stone, files_apiv2_files_upload_batch_apiv2.stone, files_apiv2_files_upload_async_apiv2.stone)
 
     private final DbxRawClientV2 client;
 
@@ -81,15 +73,15 @@ public class DbxUserFilesRequests {
 
     /**
      * Returns the metadata for a file or folder. This is an alpha endpoint
-     * compatible with the properties API.
-     *
-     * <p> Note: Metadata for the root folder is unsupported. </p>
+     * compatible with the properties API. Note: Metadata for the root folder is
+     * unsupported.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link AlphaGetMetadataBuilder} for more details. </p>
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @return Metadata for a file or folder.
@@ -97,7 +89,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#getMetadata(String)} instead.
+     * @deprecated
      */
     @Deprecated
     public Metadata alphaGetMetadata(String path) throws AlphaGetMetadataErrorException, DbxException {
@@ -111,7 +103,8 @@ public class DbxUserFilesRequests {
      * unsupported.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
@@ -120,7 +113,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#getMetadata(String)} instead.
+     * @deprecated
      */
     @Deprecated
     public AlphaGetMetadataBuilder alphaGetMetadataBuilder(String path) {
@@ -135,7 +128,7 @@ public class DbxUserFilesRequests {
     /**
      * Create a new file with the contents provided in the request. Note that
      * the behavior of this alpha endpoint is unstable and subject to change. Do
-     * not use this to upload a file larger than 150 MB. Instead, create an
+     * not use this to upload a file larger than 150 MiB. Instead, create an
      * upload session with {@link DbxUserFilesRequests#uploadSessionStart}.
      *
      *
@@ -152,25 +145,24 @@ public class DbxUserFilesRequests {
 
     /**
      * Create a new file with the contents provided in the request. Note that
-     * the behavior of this alpha endpoint is unstable and subject to change.
-     *
-     * <p> Do not use this to upload a file larger than 150 MB. Instead, create
-     * an upload session with {@link DbxUserFilesRequests#uploadSessionStart}.
-     * </p>
+     * the behavior of this alpha endpoint is unstable and subject to change. Do
+     * not use this to upload a file larger than 150 MiB. Instead, create an
+     * upload session with {@link DbxUserFilesRequests#uploadSessionStart}.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link AlphaUploadBuilder} for more details. </p>
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return Uploader used to upload the request body and finish request.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#upload(String)} instead.
+     * @deprecated
      */
     @Deprecated
     public AlphaUploadUploader alphaUpload(String path) throws DbxException {
@@ -181,12 +173,13 @@ public class DbxUserFilesRequests {
     /**
      * Create a new file with the contents provided in the request. Note that
      * the behavior of this alpha endpoint is unstable and subject to change. Do
-     * not use this to upload a file larger than 150 MB. Instead, create an
+     * not use this to upload a file larger than 150 MiB. Instead, create an
      * upload session with {@link DbxUserFilesRequests#uploadSessionStart}.
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return Uploader builder for configuring request parameters and
      *     instantiating an uploader.
@@ -194,7 +187,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#upload(String)} instead.
+     * @deprecated
      */
     @Deprecated
     public AlphaUploadBuilder alphaUploadBuilder(String path) {
@@ -229,27 +222,27 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Copy a file or folder to a different location in the user's Dropbox.
-     *
-     * <p> If the source path is a folder all its contents will be copied. </p>
+     * Copy a file or folder to a different location in the user's Dropbox. If
+     * the source path is a folder all its contents will be copied.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link CopyBuilder} for more details. </p>
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return Metadata for a file or folder.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#copyV2(String,String)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public Metadata copy(String fromPath, String toPath) throws RelocationErrorException, DbxException {
@@ -262,11 +255,13 @@ public class DbxUserFilesRequests {
      * the source path is a folder all its contents will be copied.
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -274,8 +269,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#copyV2(String,String)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public CopyBuilder copyBuilder(String fromPath, String toPath) {
@@ -308,19 +302,20 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Copy a file or folder to a different location in the user's Dropbox.
-     *
-     * <p> If the source path is a folder all its contents will be copied. </p>
+     * Copy a file or folder to a different location in the user's Dropbox. If
+     * the source path is a folder all its contents will be copied.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link CopyV2Builder} for more details. </p>
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -335,11 +330,13 @@ public class DbxUserFilesRequests {
      * the source path is a folder all its contents will be copied.
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -359,8 +356,8 @@ public class DbxUserFilesRequests {
     /**
      * Copy multiple files or folders to different locations at once in the
      * user's Dropbox. This route will return job ID immediately and do the
-     * async copy job in background. Please use {@code copyBatchCheck:1} to
-     * check the job status.
+     * async copy job in background. Please use {@link
+     * DbxUserFilesRequests#copyBatchCheck(String)} to check the job status.
      *
      *
      * @return Result returned by {@link DbxUserFilesRequests#copyBatch(List)}
@@ -384,11 +381,9 @@ public class DbxUserFilesRequests {
 
     /**
      * Copy multiple files or folders to different locations at once in the
-     * user's Dropbox.
-     *
-     * <p> This route will return job ID immediately and do the async copy job
-     * in background. Please use {@code copyBatchCheck:1} to check the job
-     * status. </p>
+     * user's Dropbox. This route will return job ID immediately and do the
+     * async copy job in background. Please use {@link
+     * DbxUserFilesRequests#copyBatchCheck(String)} to check the job status.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link CopyBatchBuilder} for more details. </p>
@@ -405,8 +400,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#copyBatchV2(List,boolean)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public RelocationBatchLaunch copyBatch(List<RelocationPath> entries) throws DbxApiException, DbxException {
@@ -417,8 +411,8 @@ public class DbxUserFilesRequests {
     /**
      * Copy multiple files or folders to different locations at once in the
      * user's Dropbox. This route will return job ID immediately and do the
-     * async copy job in background. Please use {@code copyBatchCheck:1} to
-     * check the job status.
+     * async copy job in background. Please use {@link
+     * DbxUserFilesRequests#copyBatchCheck(String)} to check the job status.
      *
      * @param entries  List of entries to be moved or copied. Each entry is
      *     {@link RelocationPath}. Must contain at least 1 items, contain at
@@ -431,8 +425,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#copyBatchV2(List,boolean)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public CopyBatchBuilder copyBatchBuilder(List<RelocationPath> entries) {
@@ -446,11 +439,12 @@ public class DbxUserFilesRequests {
 
     /**
      * Copy multiple files or folders to different locations at once in the
-     * user's Dropbox. This route will replace {@code copyBatch:1}. The main
-     * difference is this route will return status for each entry, while {@code
-     * copyBatch:1} raises failure if any entry fails. This route will either
-     * finish synchronously, or return a job ID and do the async copy job in
-     * background. Please use {@link
+     * user's Dropbox. This route will replace {@link
+     * DbxUserFilesRequests#copyBatch(List)}. The main difference is this route
+     * will return status for each entry, while {@link
+     * DbxUserFilesRequests#copyBatch(List)} raises failure if any entry fails.
+     * This route will either finish synchronously, or return a job ID and do
+     * the async copy job in background. Please use {@link
      * DbxUserFilesRequests#copyBatchCheckV2(String)} to check the job status.
      *
      *
@@ -476,16 +470,13 @@ public class DbxUserFilesRequests {
 
     /**
      * Copy multiple files or folders to different locations at once in the
-     * user's Dropbox.
-     *
-     * <p> This route will replace {@code copyBatch:1}. The main difference is
-     * this route will return status for each entry, while {@code copyBatch:1}
-     * raises failure if any entry fails. </p>
-     *
-     * <p> This route will either finish synchronously, or return a job ID and
-     * do the async copy job in background. Please use {@link
+     * user's Dropbox. This route will replace {@link
+     * DbxUserFilesRequests#copyBatch(List)}. The main difference is this route
+     * will return status for each entry, while {@link
+     * DbxUserFilesRequests#copyBatch(List)} raises failure if any entry fails.
+     * This route will either finish synchronously, or return a job ID and do
+     * the async copy job in background. Please use {@link
      * DbxUserFilesRequests#copyBatchCheckV2(String)} to check the job status.
-     * </p>
      *
      * <p> The {@code autorename} request parameter will default to {@code
      * false} (see {@link #copyBatchV2(List,boolean)}). </p>
@@ -510,16 +501,13 @@ public class DbxUserFilesRequests {
 
     /**
      * Copy multiple files or folders to different locations at once in the
-     * user's Dropbox.
-     *
-     * <p> This route will replace {@code copyBatch:1}. The main difference is
-     * this route will return status for each entry, while {@code copyBatch:1}
-     * raises failure if any entry fails. </p>
-     *
-     * <p> This route will either finish synchronously, or return a job ID and
-     * do the async copy job in background. Please use {@link
+     * user's Dropbox. This route will replace {@link
+     * DbxUserFilesRequests#copyBatch(List)}. The main difference is this route
+     * will return status for each entry, while {@link
+     * DbxUserFilesRequests#copyBatch(List)} raises failure if any entry fails.
+     * This route will either finish synchronously, or return a job ID and do
+     * the async copy job in background. Please use {@link
      * DbxUserFilesRequests#copyBatchCheckV2(String)} to check the job status.
-     * </p>
      *
      * @param entries  List of entries to be moved or copied. Each entry is
      *     {@link RelocationPath}. Must contain at least 1 items, contain at
@@ -578,8 +566,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#copyBatchCheckV2(String)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public RelocationBatchJobStatus copyBatchCheck(String asyncJobId) throws PollErrorException, DbxException {
@@ -673,8 +660,8 @@ public class DbxUserFilesRequests {
      *
      * @param path  The path to the file or folder you want to get a copy
      *     reference to. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -756,13 +743,13 @@ public class DbxUserFilesRequests {
      * false} (see {@link #createFolder(String,boolean)}). </p>
      *
      * @param path  Path in the user's Dropbox to create. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link
-     *     DbxUserFilesRequests#createFolderV2(String,boolean)} instead.
+     * @deprecated
      */
     @Deprecated
     public FolderMetadata createFolder(String path) throws CreateFolderErrorException, DbxException {
@@ -774,15 +761,15 @@ public class DbxUserFilesRequests {
      * Create a folder at a given path.
      *
      * @param path  Path in the user's Dropbox to create. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      * @param autorename  If there's a conflict, have the Dropbox server try to
      *     autorename the folder to avoid the conflict.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link
-     *     DbxUserFilesRequests#createFolderV2(String,boolean)} instead.
+     * @deprecated
      */
     @Deprecated
     public FolderMetadata createFolder(String path, boolean autorename) throws CreateFolderErrorException, DbxException {
@@ -820,7 +807,8 @@ public class DbxUserFilesRequests {
      * false} (see {@link #createFolderV2(String,boolean)}). </p>
      *
      * @param path  Path in the user's Dropbox to create. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -834,7 +822,8 @@ public class DbxUserFilesRequests {
      * Create a folder at a given path.
      *
      * @param path  Path in the user's Dropbox to create. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      * @param autorename  If there's a conflict, have the Dropbox server try to
      *     autorename the folder to avoid the conflict.
      *
@@ -855,9 +844,9 @@ public class DbxUserFilesRequests {
      * batches, which returns a job ID immediately and runs the create folder
      * batch asynchronously. Otherwise, creates the folders and returns the
      * result synchronously for smaller inputs. You can force asynchronous
-     * behaviour by using the {@link CreateFolderBatchArg#getForceAsync} flag.
-     * Use {@link DbxUserFilesRequests#createFolderBatchCheck(String)} to check
-     * the job status.
+     * behaviour by using the CreateFolderBatchArg.force_async flag.  Use {@link
+     * DbxUserFilesRequests#createFolderBatchCheck(String)} to check the job
+     * status.
      *
      *
      * @return Result returned by {@link
@@ -880,15 +869,13 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Create multiple folders at once.
-     *
-     * <p> This route is asynchronous for large batches, which returns a job ID
-     * immediately and runs the create folder batch asynchronously. Otherwise,
-     * creates the folders and returns the result synchronously for smaller
-     * inputs. You can force asynchronous behaviour by using the {@link
-     * CreateFolderBatchArg#getForceAsync} flag.  Use {@link
+     * Create multiple folders at once. This route is asynchronous for large
+     * batches, which returns a job ID immediately and runs the create folder
+     * batch asynchronously. Otherwise, creates the folders and returns the
+     * result synchronously for smaller inputs. You can force asynchronous
+     * behaviour by using the CreateFolderBatchArg.force_async flag.  Use {@link
      * DbxUserFilesRequests#createFolderBatchCheck(String)} to check the job
-     * status. </p>
+     * status.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link CreateFolderBatchBuilder} for more details. </p>
@@ -915,9 +902,9 @@ public class DbxUserFilesRequests {
      * batches, which returns a job ID immediately and runs the create folder
      * batch asynchronously. Otherwise, creates the folders and returns the
      * result synchronously for smaller inputs. You can force asynchronous
-     * behaviour by using the {@link CreateFolderBatchArg#getForceAsync} flag.
-     * Use {@link DbxUserFilesRequests#createFolderBatchCheck(String)} to check
-     * the job status.
+     * behaviour by using the CreateFolderBatchArg.force_async flag.  Use {@link
+     * DbxUserFilesRequests#createFolderBatchCheck(String)} to check the job
+     * status.
      *
      * @param paths  List of paths to be created in the user's Dropbox.
      *     Duplicate path arguments in the batch are considered only once. Must
@@ -987,8 +974,8 @@ public class DbxUserFilesRequests {
      * Delete the file or folder at a given path. If the path is a folder, all
      * its contents will be deleted too. A successful response indicates that
      * the file or folder was deleted. The returned metadata will be the
-     * corresponding {@link FileMetadata} or {@link FolderMetadata} for the item
-     * at time of deletion, and not a {@link DeletedMetadata} object.
+     * corresponding FileMetadata or FolderMetadata for the item at time of
+     * deletion, and not a DeletedMetadata object.
      *
      *
      * @return Metadata for a file or folder.
@@ -1009,26 +996,22 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Delete the file or folder at a given path.
-     *
-     * <p> If the path is a folder, all its contents will be deleted too. </p>
-     *
-     * <p> A successful response indicates that the file or folder was deleted.
-     * The returned metadata will be the corresponding {@link FileMetadata} or
-     * {@link FolderMetadata} for the item at time of deletion, and not a {@link
-     * DeletedMetadata} object. </p>
+     * Delete the file or folder at a given path. If the path is a folder, all
+     * its contents will be deleted too. A successful response indicates that
+     * the file or folder was deleted. The returned metadata will be the
+     * corresponding FileMetadata or FolderMetadata for the item at time of
+     * deletion, and not a DeletedMetadata object.
      *
      * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be
-     *     {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and
+     *     not be {@code null}.
      *
      * @return Metadata for a file or folder.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#deleteV2(String,String)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public Metadata delete(String path) throws DeleteErrorException, DbxException {
@@ -1037,18 +1020,15 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Delete the file or folder at a given path.
-     *
-     * <p> If the path is a folder, all its contents will be deleted too. </p>
-     *
-     * <p> A successful response indicates that the file or folder was deleted.
-     * The returned metadata will be the corresponding {@link FileMetadata} or
-     * {@link FolderMetadata} for the item at time of deletion, and not a {@link
-     * DeletedMetadata} object. </p>
+     * Delete the file or folder at a given path. If the path is a folder, all
+     * its contents will be deleted too. A successful response indicates that
+     * the file or folder was deleted. The returned metadata will be the
+     * corresponding FileMetadata or FolderMetadata for the item at time of
+     * deletion, and not a DeletedMetadata object.
      *
      * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be
-     *     {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and
+     *     not be {@code null}.
      * @param parentRev  Perform delete if given "rev" matches the existing
      *     file's latest "rev". This field does not support deleting a folder.
      *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
@@ -1058,8 +1038,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#deleteV2(String,String)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public Metadata delete(String path, String parentRev) throws DeleteErrorException, DbxException {
@@ -1083,8 +1062,8 @@ public class DbxUserFilesRequests {
      * Delete the file or folder at a given path. If the path is a folder, all
      * its contents will be deleted too. A successful response indicates that
      * the file or folder was deleted. The returned metadata will be the
-     * corresponding {@link FileMetadata} or {@link FolderMetadata} for the item
-     * at time of deletion, and not a {@link DeletedMetadata} object.
+     * corresponding FileMetadata or FolderMetadata for the item at time of
+     * deletion, and not a DeletedMetadata object.
      *
      */
     DeleteResult deleteV2(DeleteArg arg) throws DeleteErrorException, DbxException {
@@ -1103,18 +1082,15 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Delete the file or folder at a given path.
-     *
-     * <p> If the path is a folder, all its contents will be deleted too. </p>
-     *
-     * <p> A successful response indicates that the file or folder was deleted.
-     * The returned metadata will be the corresponding {@link FileMetadata} or
-     * {@link FolderMetadata} for the item at time of deletion, and not a {@link
-     * DeletedMetadata} object. </p>
+     * Delete the file or folder at a given path. If the path is a folder, all
+     * its contents will be deleted too. A successful response indicates that
+     * the file or folder was deleted. The returned metadata will be the
+     * corresponding FileMetadata or FolderMetadata for the item at time of
+     * deletion, and not a DeletedMetadata object.
      *
      * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be
-     *     {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and
+     *     not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -1125,18 +1101,15 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Delete the file or folder at a given path.
-     *
-     * <p> If the path is a folder, all its contents will be deleted too. </p>
-     *
-     * <p> A successful response indicates that the file or folder was deleted.
-     * The returned metadata will be the corresponding {@link FileMetadata} or
-     * {@link FolderMetadata} for the item at time of deletion, and not a {@link
-     * DeletedMetadata} object. </p>
+     * Delete the file or folder at a given path. If the path is a folder, all
+     * its contents will be deleted too. A successful response indicates that
+     * the file or folder was deleted. The returned metadata will be the
+     * corresponding FileMetadata or FolderMetadata for the item at time of
+     * deletion, and not a DeletedMetadata object.
      *
      * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be
-     *     {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and
+     *     not be {@code null}.
      * @param parentRev  Perform delete if given "rev" matches the existing
      *     file's latest "rev". This field does not support deleting a folder.
      *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
@@ -1187,12 +1160,10 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Delete multiple files/folders at once.
-     *
-     * <p> This route is asynchronous, which returns a job ID immediately and
-     * runs the delete batch asynchronously. Use {@link
-     * DbxUserFilesRequests#deleteBatchCheck(String)} to check the job status.
-     * </p>
+     * Delete multiple files/folders at once. This route is asynchronous, which
+     * returns a job ID immediately and runs the delete batch asynchronously.
+     * Use {@link DbxUserFilesRequests#deleteBatchCheck(String)} to check the
+     * job status.
      *
      * @param entries  Must contain at most 1000 items, not contain a {@code
      *     null} item, and not be {@code null}.
@@ -1284,8 +1255,8 @@ public class DbxUserFilesRequests {
      * Download a file from a user's Dropbox.
      *
      * @param path  The path of the file to download. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
      *
      * @return Downloader used to download the response body and view the server
      *     response.
@@ -1302,8 +1273,8 @@ public class DbxUserFilesRequests {
      * Download a file from a user's Dropbox.
      *
      * @param path  The path of the file to download. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
      * @param rev  Please specify revision in the {@code path} argument to
      *     {@link DbxUserFilesRequests#download(String,String)} instead. Must
      *     have length of at least 9 and match pattern "{@code [0-9a-f]+}".
@@ -1331,8 +1302,8 @@ public class DbxUserFilesRequests {
      * Download a file from a user's Dropbox.
      *
      * @param path  The path of the file to download. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
      *
      * @return Downloader builder for configuring the request parameters and
      *     instantiating a downloader.
@@ -1381,12 +1352,11 @@ public class DbxUserFilesRequests {
      * be less than 20 GB in size and any single file within must be less than 4
      * GB in size. The resulting zip must have fewer than 10,000 total file and
      * folder entries, including the top level folder. The input cannot be a
-     * single file.
-     *
-     * <p> Note: this endpoint does not support HTTP range requests. </p>
+     * single file. Note: this endpoint does not support HTTP range requests.
      *
      * @param path  The path of the folder to download. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @return Downloader used to download the response body and view the server
@@ -1408,7 +1378,8 @@ public class DbxUserFilesRequests {
      * single file. Note: this endpoint does not support HTTP range requests.
      *
      * @param path  The path of the folder to download. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @return Downloader builder for configuring the request parameters and
@@ -1427,9 +1398,8 @@ public class DbxUserFilesRequests {
 
     /**
      * Export a file from a user's Dropbox. This route only supports exporting
-     * files that cannot be downloaded directly  and whose {@link
-     * ExportResult#getFileMetadata} has {@link ExportInfo#getExportAs}
-     * populated.
+     * files that cannot be downloaded directly and whose
+     * ExportResult.file_metadata has ExportInfo.export_as populated.
      *
      * @param _headers  Extra headers to send with request.
      *
@@ -1454,12 +1424,12 @@ public class DbxUserFilesRequests {
 
     /**
      * Export a file from a user's Dropbox. This route only supports exporting
-     * files that cannot be downloaded directly and whose {@link
-     * ExportResult#getFileMetadata} has {@link ExportInfo#getExportAs}
-     * populated.
+     * files that cannot be downloaded directly and whose
+     * ExportResult.file_metadata has ExportInfo.export_as populated.
      *
      * @param path  The path of the file to be exported. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @return Downloader used to download the response body and view the server
@@ -1475,12 +1445,12 @@ public class DbxUserFilesRequests {
 
     /**
      * Export a file from a user's Dropbox. This route only supports exporting
-     * files that cannot be downloaded directly and whose {@link
-     * ExportResult#getFileMetadata} has {@link ExportInfo#getExportAs}
-     * populated.
+     * files that cannot be downloaded directly and whose
+     * ExportResult.file_metadata has ExportInfo.export_as populated.
      *
      * @param path  The path of the file to be exported. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      * @param exportFormat  The file format to which the file should be
      *     exported. This must be one of the formats listed in the file's
@@ -1502,12 +1472,12 @@ public class DbxUserFilesRequests {
 
     /**
      * Export a file from a user's Dropbox. This route only supports exporting
-     * files that cannot be downloaded directly  and whose {@link
-     * ExportResult#getFileMetadata} has {@link ExportInfo#getExportAs}
-     * populated.
+     * files that cannot be downloaded directly and whose
+     * ExportResult.file_metadata has ExportInfo.export_as populated.
      *
      * @param path  The path of the file to be exported. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @return Downloader builder for configuring the request parameters and
@@ -1586,15 +1556,15 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Returns the metadata for a file or folder.
-     *
-     * <p> Note: Metadata for the root folder is unsupported. </p>
+     * Returns the metadata for a file or folder. Note: Metadata for the root
+     * folder is unsupported.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link GetMetadataBuilder} for more details. </p>
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @return Metadata for a file or folder.
@@ -1612,7 +1582,8 @@ public class DbxUserFilesRequests {
      * folder is unsupported.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
@@ -1634,9 +1605,8 @@ public class DbxUserFilesRequests {
      * Get a preview for a file. Currently, PDF previews are generated for files
      * with the following extensions: .ai, .doc, .docm, .docx, .eps, .gdoc,
      * .gslides, .odp, .odt, .pps, .ppsm, .ppsx, .ppt, .pptm, .pptx, .rtf. HTML
-     * previews are generated for files with the following extensions: .csv,
-     * .ods, .xls, .xlsm, .gsheet, .xlsx. Other formats will return an
-     * unsupported extension error.
+     * previews are generated for .csv, .ods, .xls, .xlsm, .gsheet, .xlsx. Other
+     * formats will return an unsupported extension error.
      *
      * @param _headers  Extra headers to send with request.
      *
@@ -1660,20 +1630,15 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Get a preview for a file.
-     *
-     * <p> Currently, PDF previews are generated for files with the following
-     * extensions: .ai, .doc, .docm, .docx, .eps, .gdoc, .gslides, .odp, .odt,
-     * .pps, .ppsm, .ppsx, .ppt, .pptm, .pptx, .rtf. </p>
-     *
-     * <p> HTML previews are generated for files with the following extensions:
-     * .csv, .ods, .xls, .xlsm, .gsheet, .xlsx. </p>
-     *
-     * <p> Other formats will return an unsupported extension error. </p>
+     * Get a preview for a file. Currently, PDF previews are generated for files
+     * with the following extensions: .ai, .doc, .docm, .docx, .eps, .gdoc,
+     * .gslides, .odp, .odt, .pps, .ppsm, .ppsx, .ppt, .pptm, .pptx, .rtf. HTML
+     * previews are generated for .csv, .ods, .xls, .xlsm, .gsheet, .xlsx. Other
+     * formats will return an unsupported extension error.
      *
      * @param path  The path of the file to preview. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
      *
      * @return Downloader used to download the response body and view the server
      *     response.
@@ -1687,20 +1652,15 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Get a preview for a file.
-     *
-     * <p> Currently, PDF previews are generated for files with the following
-     * extensions: .ai, .doc, .docm, .docx, .eps, .gdoc, .gslides, .odp, .odt,
-     * .pps, .ppsm, .ppsx, .ppt, .pptm, .pptx, .rtf. </p>
-     *
-     * <p> HTML previews are generated for files with the following extensions:
-     * .csv, .ods, .xls, .xlsm, .gsheet, .xlsx. </p>
-     *
-     * <p> Other formats will return an unsupported extension error. </p>
+     * Get a preview for a file. Currently, PDF previews are generated for files
+     * with the following extensions: .ai, .doc, .docm, .docx, .eps, .gdoc,
+     * .gslides, .odp, .odt, .pps, .ppsm, .ppsx, .ppt, .pptm, .pptx, .rtf. HTML
+     * previews are generated for .csv, .ods, .xls, .xlsm, .gsheet, .xlsx. Other
+     * formats will return an unsupported extension error.
      *
      * @param path  The path of the file to preview. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
      * @param rev  Please specify revision in the {@code path} argument to
      *     {@link DbxUserFilesRequests#getPreview(String,String)} instead. Must
      *     have length of at least 9 and match pattern "{@code [0-9a-f]+}".
@@ -1728,13 +1688,12 @@ public class DbxUserFilesRequests {
      * Get a preview for a file. Currently, PDF previews are generated for files
      * with the following extensions: .ai, .doc, .docm, .docx, .eps, .gdoc,
      * .gslides, .odp, .odt, .pps, .ppsm, .ppsx, .ppt, .pptm, .pptx, .rtf. HTML
-     * previews are generated for files with the following extensions: .csv,
-     * .ods, .xls, .xlsm, .gsheet, .xlsx. Other formats will return an
-     * unsupported extension error.
+     * previews are generated for .csv, .ods, .xls, .xlsm, .gsheet, .xlsx. Other
+     * formats will return an unsupported extension error.
      *
      * @param path  The path of the file to preview. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
      *
      * @return Downloader builder for configuring the request parameters and
      *     instantiating a downloader.
@@ -1780,8 +1739,8 @@ public class DbxUserFilesRequests {
      *
      * @param path  The path to the file you want a temporary link to. Must
      *     match pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -1797,48 +1756,34 @@ public class DbxUserFilesRequests {
 
     /**
      * Get a one-time use temporary upload link to upload a file to a Dropbox
-     * location.
-     *
-     * <p> This endpoint acts as a delayed {@link
-     * DbxUserFilesRequests#upload(String)}. The returned temporary upload link
-     * may be used to make a POST request with the data to be uploaded. The
-     * upload will then be perfomed with the {@link CommitInfo} previously
-     * provided to {@link
-     * DbxUserFilesRequests#getTemporaryUploadLink(CommitInfo,double)} but
-     * evaluated only upon consumption. Hence, errors stemming from invalid
-     * {@link CommitInfo} with respect to the state of the user's Dropbox will
-     * only be communicated at consumption time. Additionally, these errors are
-     * surfaced as generic HTTP 409 Conflict responses, potentially hiding issue
-     * details. The maximum temporary upload link duration is 4 hours. Upon
-     * consumption or expiration, a new link will have to be generated. Multiple
-     * links may exist for a specific upload path at any given time. </p>
-     *
-     * <p> The POST request on the temporary upload link must have its
-     * Content-Type set to "application/octet-stream". </p>
-     *
-     * <p> Example temporary upload link consumption request: </p>
-     *
-     * <p> curl -X POST https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND
-     * --header "Content-Type: application/octet-stream" --data-binary
-     * @local_file.txt </p>
-     *
-     * <p> A successful temporary upload link consumption request returns the
-     * content hash of the uploaded data in JSON format. </p>
-     *
-     * <p> Example successful temporary upload link consumption response:
-     * {"content-hash": "599d71033d700ac892a0e48fa61b125d2f5994"} </p>
-     *
-     * <p> An unsuccessful temporary upload link consumption request returns any
-     * of the following status codes: </p>
-     *
-     * <p> HTTP 400 Bad Request: Content-Type is not one of
+     * location.  This endpoint acts as a delayed upload(). The returned
+     * temporary upload link may be used to make a POST request with the data to
+     * be uploaded. The upload will then be perfomed with the CommitInfo
+     * previously provided to getTemporaryUploadLink() but evaluated only upon
+     * consumption. Hence, errors stemming from invalid CommitInfo with respect
+     * to the state of the user's Dropbox will only be communicated at
+     * consumption time. Additionally, these errors are surfaced as generic HTTP
+     * 409 Conflict responses, potentially hiding issue details. The maximum
+     * temporary upload link duration is 4 hours. Upon consumption or
+     * expiration, a new link will have to be generated. Multiple links may
+     * exist for a specific upload path at any given time.  The POST request on
+     * the temporary upload link must have its Content-Type set to
+     * "application/octet-stream".  Example temporary upload link consumption
+     * request:  curl -X POST
+     * https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND --header
+     * "Content-Type: application/octet-stream" --data-binary @local_file.txt  A
+     * successful temporary upload link consumption request returns the content
+     * hash of the uploaded data in JSON format. Example successful temporary
+     * upload link consumption response: {"content-hash":
+     * "599d71033d700ac892a0e48fa61b125d2f5994"}  An unsuccessful temporary
+     * upload link consumption request returns any of the following status
+     * codes:  HTTP 400 Bad Request: Content-Type is not one of
      * application/octet-stream and text/plain or request is invalid. HTTP 409
      * Conflict: The temporary upload link does not exist or is currently
      * unavailable, the upload failed, or another error happened. HTTP 410 Gone:
-     * The temporary upload link is expired or consumed. </p>
-     *
-     * <p> Example unsuccessful temporary upload link consumption response:
-     * Temporary upload link has been recently consumed. </p>
+     * The temporary upload link is expired or consumed. Example unsuccessful
+     * temporary upload link consumption response: Temporary upload link has
+     * been recently consumed.
      *
      */
     GetTemporaryUploadLinkResult getTemporaryUploadLink(GetTemporaryUploadLinkArg arg) throws DbxApiException, DbxException {
@@ -1858,55 +1803,34 @@ public class DbxUserFilesRequests {
 
     /**
      * Get a one-time use temporary upload link to upload a file to a Dropbox
-     * location.
-     *
-     * <p> This endpoint acts as a delayed {@link
-     * DbxUserFilesRequests#upload(String)}. The returned temporary upload link
-     * may be used to make a POST request with the data to be uploaded. The
-     * upload will then be perfomed with the {@link CommitInfo} previously
-     * provided to {@link
-     * DbxUserFilesRequests#getTemporaryUploadLink(CommitInfo,double)} but
-     * evaluated only upon consumption. Hence, errors stemming from invalid
-     * {@link CommitInfo} with respect to the state of the user's Dropbox will
-     * only be communicated at consumption time. Additionally, these errors are
-     * surfaced as generic HTTP 409 Conflict responses, potentially hiding issue
-     * details. The maximum temporary upload link duration is 4 hours. Upon
-     * consumption or expiration, a new link will have to be generated. Multiple
-     * links may exist for a specific upload path at any given time. </p>
-     *
-     * <p> The POST request on the temporary upload link must have its
-     * Content-Type set to "application/octet-stream". </p>
-     *
-     * <p> Example temporary upload link consumption request: </p>
-     *
-     * <p> curl -X POST https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND
-     * </p>
-     *
-     * <p> --header "Content-Type: application/octet-stream" </p>
-     *
-     * <p> --data-binary @local_file.txt </p>
-     *
-     * <p> A successful temporary upload link consumption request returns the
-     * content hash of the uploaded data in JSON format. </p>
-     *
-     * <p> Example successful temporary upload link consumption response: </p>
-     *
-     * <p> {"content-hash": "599d71033d700ac892a0e48fa61b125d2f5994"} </p>
-     *
-     * <p> An unsuccessful temporary upload link consumption request returns any
-     * of the following status codes: </p>
-     *
-     * <p> HTTP 400 Bad Request: Content-Type is not one of
-     * application/octet-stream and text/plain or request is invalid. </p>
-     *
-     * <p> HTTP 409 Conflict: The temporary upload link does not exist or is
-     * currently unavailable, the upload failed, or another error happened. </p>
-     *
-     * <p> HTTP 410 Gone: The temporary upload link is expired or consumed. </p>
-     *
-     * <p> Example unsuccessful temporary upload link consumption response: </p>
-     *
-     * <p> Temporary upload link has been recently consumed. </p>
+     * location.  This endpoint acts as a delayed upload(). The returned
+     * temporary upload link may be used to make a POST request with the data to
+     * be uploaded. The upload will then be perfomed with the CommitInfo
+     * previously provided to getTemporaryUploadLink() but evaluated only upon
+     * consumption. Hence, errors stemming from invalid CommitInfo with respect
+     * to the state of the user's Dropbox will only be communicated at
+     * consumption time. Additionally, these errors are surfaced as generic HTTP
+     * 409 Conflict responses, potentially hiding issue details. The maximum
+     * temporary upload link duration is 4 hours. Upon consumption or
+     * expiration, a new link will have to be generated. Multiple links may
+     * exist for a specific upload path at any given time.  The POST request on
+     * the temporary upload link must have its Content-Type set to
+     * "application/octet-stream".  Example temporary upload link consumption
+     * request:  curl -X POST
+     * https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND --header
+     * "Content-Type: application/octet-stream" --data-binary @local_file.txt  A
+     * successful temporary upload link consumption request returns the content
+     * hash of the uploaded data in JSON format. Example successful temporary
+     * upload link consumption response: {"content-hash":
+     * "599d71033d700ac892a0e48fa61b125d2f5994"}  An unsuccessful temporary
+     * upload link consumption request returns any of the following status
+     * codes:  HTTP 400 Bad Request: Content-Type is not one of
+     * application/octet-stream and text/plain or request is invalid. HTTP 409
+     * Conflict: The temporary upload link does not exist or is currently
+     * unavailable, the upload failed, or another error happened. HTTP 410 Gone:
+     * The temporary upload link is expired or consumed. Example unsuccessful
+     * temporary upload link consumption response: Temporary upload link has
+     * been recently consumed.
      *
      * <p> The {@code duration} request parameter will default to {@code
      * 14400.0} (see {@link #getTemporaryUploadLink(CommitInfo,double)}). </p>
@@ -1925,55 +1849,34 @@ public class DbxUserFilesRequests {
 
     /**
      * Get a one-time use temporary upload link to upload a file to a Dropbox
-     * location.
-     *
-     * <p> This endpoint acts as a delayed {@link
-     * DbxUserFilesRequests#upload(String)}. The returned temporary upload link
-     * may be used to make a POST request with the data to be uploaded. The
-     * upload will then be perfomed with the {@link CommitInfo} previously
-     * provided to {@link
-     * DbxUserFilesRequests#getTemporaryUploadLink(CommitInfo,double)} but
-     * evaluated only upon consumption. Hence, errors stemming from invalid
-     * {@link CommitInfo} with respect to the state of the user's Dropbox will
-     * only be communicated at consumption time. Additionally, these errors are
-     * surfaced as generic HTTP 409 Conflict responses, potentially hiding issue
-     * details. The maximum temporary upload link duration is 4 hours. Upon
-     * consumption or expiration, a new link will have to be generated. Multiple
-     * links may exist for a specific upload path at any given time. </p>
-     *
-     * <p> The POST request on the temporary upload link must have its
-     * Content-Type set to "application/octet-stream". </p>
-     *
-     * <p> Example temporary upload link consumption request: </p>
-     *
-     * <p> curl -X POST https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND
-     * </p>
-     *
-     * <p> --header "Content-Type: application/octet-stream" </p>
-     *
-     * <p> --data-binary @local_file.txt </p>
-     *
-     * <p> A successful temporary upload link consumption request returns the
-     * content hash of the uploaded data in JSON format. </p>
-     *
-     * <p> Example successful temporary upload link consumption response: </p>
-     *
-     * <p> {"content-hash": "599d71033d700ac892a0e48fa61b125d2f5994"} </p>
-     *
-     * <p> An unsuccessful temporary upload link consumption request returns any
-     * of the following status codes: </p>
-     *
-     * <p> HTTP 400 Bad Request: Content-Type is not one of
-     * application/octet-stream and text/plain or request is invalid. </p>
-     *
-     * <p> HTTP 409 Conflict: The temporary upload link does not exist or is
-     * currently unavailable, the upload failed, or another error happened. </p>
-     *
-     * <p> HTTP 410 Gone: The temporary upload link is expired or consumed. </p>
-     *
-     * <p> Example unsuccessful temporary upload link consumption response: </p>
-     *
-     * <p> Temporary upload link has been recently consumed. </p>
+     * location.  This endpoint acts as a delayed upload(). The returned
+     * temporary upload link may be used to make a POST request with the data to
+     * be uploaded. The upload will then be perfomed with the CommitInfo
+     * previously provided to getTemporaryUploadLink() but evaluated only upon
+     * consumption. Hence, errors stemming from invalid CommitInfo with respect
+     * to the state of the user's Dropbox will only be communicated at
+     * consumption time. Additionally, these errors are surfaced as generic HTTP
+     * 409 Conflict responses, potentially hiding issue details. The maximum
+     * temporary upload link duration is 4 hours. Upon consumption or
+     * expiration, a new link will have to be generated. Multiple links may
+     * exist for a specific upload path at any given time.  The POST request on
+     * the temporary upload link must have its Content-Type set to
+     * "application/octet-stream".  Example temporary upload link consumption
+     * request:  curl -X POST
+     * https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND --header
+     * "Content-Type: application/octet-stream" --data-binary @local_file.txt  A
+     * successful temporary upload link consumption request returns the content
+     * hash of the uploaded data in JSON format. Example successful temporary
+     * upload link consumption response: {"content-hash":
+     * "599d71033d700ac892a0e48fa61b125d2f5994"}  An unsuccessful temporary
+     * upload link consumption request returns any of the following status
+     * codes:  HTTP 400 Bad Request: Content-Type is not one of
+     * application/octet-stream and text/plain or request is invalid. HTTP 409
+     * Conflict: The temporary upload link does not exist or is currently
+     * unavailable, the upload failed, or another error happened. HTTP 410 Gone:
+     * The temporary upload link is expired or consumed. Example unsuccessful
+     * temporary upload link consumption response: Temporary upload link has
+     * been recently consumed.
      *
      * @param commitInfo  Contains the path and other optional modifiers for the
      *     future upload commit. Equivalent to the parameters provided to {@link
@@ -2029,19 +1932,18 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Get a thumbnail for an image.
-     *
-     * <p> This method currently supports files with the following file
-     * extensions: jpg, jpeg, png, tiff, tif, gif, webp, ppm and bmp. Photos
-     * that are larger than 20MB in size won't be converted to a thumbnail. </p>
+     * Get a thumbnail for an image. This method currently supports files with
+     * the following file extensions: jpg, jpeg, png, tiff, tif, gif, webp, ppm
+     * and bmp. Photos that are larger than 20MB in size won't be converted to a
+     * thumbnail.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link GetThumbnailBuilder} for more details. </p>
      *
      * @param path  The path to the image file you want to thumbnail. Must match
      *     pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
      *
      * @return Downloader used to download the response body and view the server
      *     response.
@@ -2062,8 +1964,8 @@ public class DbxUserFilesRequests {
      *
      * @param path  The path to the image file you want to thumbnail. Must match
      *     pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
      *
      * @return Downloader builder for configuring the request parameters and
      *     instantiating a downloader.
@@ -2108,11 +2010,10 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Get a thumbnail for an image.
-     *
-     * <p> This method currently supports files with the following file
-     * extensions: jpg, jpeg, png, tiff, tif, gif, webp, ppm and bmp. Photos
-     * that are larger than 20MB in size won't be converted to a thumbnail. </p>
+     * Get a thumbnail for an image. This method currently supports files with
+     * the following file extensions: jpg, jpeg, png, tiff, tif, gif, webp, ppm
+     * and bmp. Photos that are larger than 20MB in size won't be converted to a
+     * thumbnail.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link DbxUserGetThumbnailV2Builder} for more details. </p>
@@ -2186,11 +2087,10 @@ public class DbxUserFilesRequests {
 
     /**
      * Get thumbnails for a list of images. We allow up to 25 thumbnails in a
-     * single batch.
-     *
-     * <p> This method currently supports files with the following file
-     * extensions: jpg, jpeg, png, tiff, tif, gif, webp, ppm and bmp. Photos
-     * that are larger than 20MB in size won't be converted to a thumbnail. </p>
+     * single batch. This method currently supports files with the following
+     * file extensions: jpg, jpeg, png, tiff, tif, gif, webp, ppm and bmp.
+     * Photos that are larger than 20MB in size won't be converted to a
+     * thumbnail.
      *
      * @param entries  List of files to get thumbnails. Must not contain a
      *     {@code null} item and not be {@code null}.
@@ -2209,25 +2109,24 @@ public class DbxUserFilesRequests {
 
     /**
      * Starts returning the contents of a folder. If the result's {@link
-     * ListFolderResult#getHasMore} field is {@code true}, call {@link
-     * DbxUserFilesRequests#listFolderContinue(String)} with the returned {@link
-     * ListFolderResult#getCursor} to retrieve more entries. If you're using
-     * {@link ListFolderArg#getRecursive} set to {@code true} to keep a local
-     * cache of the contents of a Dropbox account, iterate through each entry in
-     * order and process them as follows to keep your local state in sync: For
-     * each {@link FileMetadata}, store the new entry at the given path in your
+     * ListFolderResult#getHasMore} field is true, call {@link
+     * DbxUserFilesRequests#listFolderContinue(String)} with the returned
+     * ListFolderResult.cursor to retrieve more entries. If you're using
+     * ListFolderArg.recursive set to true to keep a local cache of the contents
+     * of a Dropbox account, iterate through each entry in order and process
+     * them as follows to keep your local state in sync: For each FileMetadata,
+     * store the new entry at the given path in your local state. If the
+     * required parent folders don't exist yet, create them. If there's already
+     * something else at the given path, replace it and remove all its children.
+     * For each FolderMetadata, store the new entry at the given path in your
      * local state. If the required parent folders don't exist yet, create them.
-     * If there's already something else at the given path, replace it and
-     * remove all its children. For each {@link FolderMetadata}, store the new
-     * entry at the given path in your local state. If the required parent
-     * folders don't exist yet, create them. If there's already something else
-     * at the given path, replace it but leave the children as they are. Check
-     * the new entry's {@link FolderSharingInfo#getReadOnly} and set all its
-     * children's read-only statuses to match. For each {@link DeletedMetadata},
-     * if your local state has something at the given path, remove it and all
-     * its children. If there's nothing at the given path, ignore this entry.
-     * Note: {@link com.dropbox.core.v2.auth.RateLimitError} may be returned if
-     * multiple {@link DbxUserFilesRequests#listFolder(String)} or {@link
+     * If there's already something else at the given path, replace it but leave
+     * the children as they are. Check the new entry's
+     * FolderSharingInfo.read_only and set all its children's read-only statuses
+     * to match. For each DeletedMetadata, if your local state has something at
+     * the given path, remove it and all its children. If there's nothing at the
+     * given path, ignore this entry. Note: auth.RateLimitError may be returned
+     * if multiple {@link DbxUserFilesRequests#listFolder(String)} or {@link
      * DbxUserFilesRequests#listFolderContinue(String)} calls with same
      * parameters are made simultaneously by same API app for same user. If your
      * app implements retry logic, please hold off the retry until the previous
@@ -2251,43 +2150,35 @@ public class DbxUserFilesRequests {
 
     /**
      * Starts returning the contents of a folder. If the result's {@link
-     * ListFolderResult#getHasMore} field is {@code true}, call {@link
-     * DbxUserFilesRequests#listFolderContinue(String)} with the returned {@link
-     * ListFolderResult#getCursor} to retrieve more entries.
-     *
-     * <p> If you're using {@link ListFolderArg#getRecursive} set to {@code
-     * true} to keep a local cache of the contents of a Dropbox account, iterate
-     * through each entry in order and process them as follows to keep your
-     * local state in sync: </p>
-     *
-     * <p> For each {@link FileMetadata}, store the new entry at the given path
-     * in your local state. If the required parent folders don't exist yet,
-     * create them. If there's already something else at the given path, replace
-     * it and remove all its children. </p>
-     *
-     * <p> For each {@link FolderMetadata}, store the new entry at the given
-     * path in your local state. If the required parent folders don't exist yet,
-     * create them. If there's already something else at the given path, replace
-     * it but leave the children as they are. Check the new entry's {@link
-     * FolderSharingInfo#getReadOnly} and set all its children's read-only
-     * statuses to match. </p>
-     *
-     * <p> For each {@link DeletedMetadata}, if your local state has something
-     * at the given path, remove it and all its children. If there's nothing at
-     * the given path, ignore this entry. </p>
-     *
-     * <p> Note: {@link com.dropbox.core.v2.auth.RateLimitError} may be returned
+     * ListFolderResult#getHasMore} field is true, call {@link
+     * DbxUserFilesRequests#listFolderContinue(String)} with the returned
+     * ListFolderResult.cursor to retrieve more entries. If you're using
+     * ListFolderArg.recursive set to true to keep a local cache of the contents
+     * of a Dropbox account, iterate through each entry in order and process
+     * them as follows to keep your local state in sync: For each FileMetadata,
+     * store the new entry at the given path in your local state. If the
+     * required parent folders don't exist yet, create them. If there's already
+     * something else at the given path, replace it and remove all its children.
+     * For each FolderMetadata, store the new entry at the given path in your
+     * local state. If the required parent folders don't exist yet, create them.
+     * If there's already something else at the given path, replace it but leave
+     * the children as they are. Check the new entry's
+     * FolderSharingInfo.read_only and set all its children's read-only statuses
+     * to match. For each DeletedMetadata, if your local state has something at
+     * the given path, remove it and all its children. If there's nothing at the
+     * given path, ignore this entry. Note: auth.RateLimitError may be returned
      * if multiple {@link DbxUserFilesRequests#listFolder(String)} or {@link
      * DbxUserFilesRequests#listFolderContinue(String)} calls with same
      * parameters are made simultaneously by same API app for same user. If your
      * app implements retry logic, please hold off the retry until the previous
-     * request finishes. </p>
+     * request finishes.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link DbxUserListFolderBuilder} for more details. </p>
      *
      * @param path  A unique identifier for the file. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -2299,32 +2190,32 @@ public class DbxUserFilesRequests {
 
     /**
      * Starts returning the contents of a folder. If the result's {@link
-     * ListFolderResult#getHasMore} field is {@code true}, call {@link
-     * DbxUserFilesRequests#listFolderContinue(String)} with the returned {@link
-     * ListFolderResult#getCursor} to retrieve more entries. If you're using
-     * {@link ListFolderArg#getRecursive} set to {@code true} to keep a local
-     * cache of the contents of a Dropbox account, iterate through each entry in
-     * order and process them as follows to keep your local state in sync: For
-     * each {@link FileMetadata}, store the new entry at the given path in your
+     * ListFolderResult#getHasMore} field is true, call {@link
+     * DbxUserFilesRequests#listFolderContinue(String)} with the returned
+     * ListFolderResult.cursor to retrieve more entries. If you're using
+     * ListFolderArg.recursive set to true to keep a local cache of the contents
+     * of a Dropbox account, iterate through each entry in order and process
+     * them as follows to keep your local state in sync: For each FileMetadata,
+     * store the new entry at the given path in your local state. If the
+     * required parent folders don't exist yet, create them. If there's already
+     * something else at the given path, replace it and remove all its children.
+     * For each FolderMetadata, store the new entry at the given path in your
      * local state. If the required parent folders don't exist yet, create them.
-     * If there's already something else at the given path, replace it and
-     * remove all its children. For each {@link FolderMetadata}, store the new
-     * entry at the given path in your local state. If the required parent
-     * folders don't exist yet, create them. If there's already something else
-     * at the given path, replace it but leave the children as they are. Check
-     * the new entry's {@link FolderSharingInfo#getReadOnly} and set all its
-     * children's read-only statuses to match. For each {@link DeletedMetadata},
-     * if your local state has something at the given path, remove it and all
-     * its children. If there's nothing at the given path, ignore this entry.
-     * Note: {@link com.dropbox.core.v2.auth.RateLimitError} may be returned if
-     * multiple {@link DbxUserFilesRequests#listFolder(String)} or {@link
+     * If there's already something else at the given path, replace it but leave
+     * the children as they are. Check the new entry's
+     * FolderSharingInfo.read_only and set all its children's read-only statuses
+     * to match. For each DeletedMetadata, if your local state has something at
+     * the given path, remove it and all its children. If there's nothing at the
+     * given path, ignore this entry. Note: auth.RateLimitError may be returned
+     * if multiple {@link DbxUserFilesRequests#listFolder(String)} or {@link
      * DbxUserFilesRequests#listFolderContinue(String)} calls with same
      * parameters are made simultaneously by same API app for same user. If your
      * app implements retry logic, please hold off the retry until the previous
      * request finishes.
      *
      * @param path  A unique identifier for the file. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -2422,7 +2313,8 @@ public class DbxUserFilesRequests {
      * See {@link ListFolderGetLatestCursorBuilder} for more details. </p>
      *
      * @param path  A unique identifier for the file. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -2441,7 +2333,8 @@ public class DbxUserFilesRequests {
      * exist in Dropbox.
      *
      * @param path  A unique identifier for the file. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -2463,10 +2356,7 @@ public class DbxUserFilesRequests {
      * with {@link DbxUserFilesRequests#listFolderContinue(String)}, this call
      * gives you a low-latency way to monitor an account for file changes. The
      * connection will block until there are changes available or a timeout
-     * occurs. This endpoint is useful mostly for client-side apps. If you're
-     * looking for server-side notifications, check out our <a
-     * href="https://www.dropbox.com/developers/reference/webhooks">webhooks
-     * documentation</a>.
+     * occurs. This endpoint is useful mostly for client-side apps.
      *
      */
     ListFolderLongpollResult listFolderLongpoll(ListFolderLongpollArg arg) throws ListFolderLongpollErrorException, DbxException {
@@ -2489,10 +2379,7 @@ public class DbxUserFilesRequests {
      * with {@link DbxUserFilesRequests#listFolderContinue(String)}, this call
      * gives you a low-latency way to monitor an account for file changes. The
      * connection will block until there are changes available or a timeout
-     * occurs. This endpoint is useful mostly for client-side apps. If you're
-     * looking for server-side notifications, check out our <a
-     * href="https://www.dropbox.com/developers/reference/webhooks">webhooks
-     * documentation</a>.
+     * occurs. This endpoint is useful mostly for client-side apps.
      *
      * <p> The {@code timeout} request parameter will default to {@code 30L}
      * (see {@link #listFolderLongpoll(String,long)}). </p>
@@ -2517,10 +2404,7 @@ public class DbxUserFilesRequests {
      * with {@link DbxUserFilesRequests#listFolderContinue(String)}, this call
      * gives you a low-latency way to monitor an account for file changes. The
      * connection will block until there are changes available or a timeout
-     * occurs. This endpoint is useful mostly for client-side apps. If you're
-     * looking for server-side notifications, check out our <a
-     * href="https://www.dropbox.com/developers/reference/webhooks">webhooks
-     * documentation</a>.
+     * occurs. This endpoint is useful mostly for client-side apps.
      *
      * @param cursor  A cursor as returned by {@link
      *     DbxUserFilesRequests#listFolder(String)} or {@link
@@ -2558,11 +2442,11 @@ public class DbxUserFilesRequests {
      * path or file id is identified from the latest file entry at the given
      * file path or id. This end point allows your app to query either by file
      * path or file id by setting the mode parameter appropriately. In the
-     * {@link ListRevisionsMode#PATH} (default) mode, all revisions at the same
-     * file path as the latest file entry are returned. If revisions with the
-     * same file id are desired, then mode must be set to {@link
-     * ListRevisionsMode#ID}. The {@link ListRevisionsMode#ID} mode is useful to
-     * retrieve revisions for a given file across moves or renames.
+     * ListRevisionsMode.path (default) mode, all revisions at the same file
+     * path as the latest file entry are returned. If revisions with the same
+     * file id are desired, then mode must be set to ListRevisionsMode.id. The
+     * ListRevisionsMode.id mode is useful to retrieve revisions for a given
+     * file across moves or renames.
      *
      */
     ListRevisionsResult listRevisions(ListRevisionsArg arg) throws ListRevisionsErrorException, DbxException {
@@ -2584,20 +2468,20 @@ public class DbxUserFilesRequests {
      * Returns revisions for files based on a file path or a file id. The file
      * path or file id is identified from the latest file entry at the given
      * file path or id. This end point allows your app to query either by file
-     * path or file id by setting the mode parameter appropriately.
-     *
-     * <p> In the {@link ListRevisionsMode#PATH} (default) mode, all revisions
-     * at the same file path as the latest file entry are returned. If revisions
-     * with the same file id are desired, then mode must be set to {@link
-     * ListRevisionsMode#ID}. The {@link ListRevisionsMode#ID} mode is useful to
-     * retrieve revisions for a given file across moves or renames. </p>
+     * path or file id by setting the mode parameter appropriately. In the
+     * ListRevisionsMode.path (default) mode, all revisions at the same file
+     * path as the latest file entry are returned. If revisions with the same
+     * file id are desired, then mode must be set to ListRevisionsMode.id. The
+     * ListRevisionsMode.id mode is useful to retrieve revisions for a given
+     * file across moves or renames.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link ListRevisionsBuilder} for more details. </p>
      *
      * @param path  The path to the file you want to see the revisions of. Must
-     *     match pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and
-     *     not be {@code null}.
+     *     match pattern "{@code
+     *     /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be {@code
+     *     null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -2612,15 +2496,16 @@ public class DbxUserFilesRequests {
      * path or file id is identified from the latest file entry at the given
      * file path or id. This end point allows your app to query either by file
      * path or file id by setting the mode parameter appropriately. In the
-     * {@link ListRevisionsMode#PATH} (default) mode, all revisions at the same
-     * file path as the latest file entry are returned. If revisions with the
-     * same file id are desired, then mode must be set to {@link
-     * ListRevisionsMode#ID}. The {@link ListRevisionsMode#ID} mode is useful to
-     * retrieve revisions for a given file across moves or renames.
+     * ListRevisionsMode.path (default) mode, all revisions at the same file
+     * path as the latest file entry are returned. If revisions with the same
+     * file id are desired, then mode must be set to ListRevisionsMode.id. The
+     * ListRevisionsMode.id mode is useful to retrieve revisions for a given
+     * file across moves or renames.
      *
      * @param path  The path to the file you want to see the revisions of. Must
-     *     match pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and
-     *     not be {@code null}.
+     *     match pattern "{@code
+     *     /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be {@code
+     *     null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -2705,27 +2590,27 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Move a file or folder to a different location in the user's Dropbox.
-     *
-     * <p> If the source path is a folder all its contents will be moved. </p>
+     * Move a file or folder to a different location in the user's Dropbox. If
+     * the source path is a folder all its contents will be moved.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link MoveBuilder} for more details. </p>
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return Metadata for a file or folder.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#moveV2(String,String)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public Metadata move(String fromPath, String toPath) throws RelocationErrorException, DbxException {
@@ -2738,11 +2623,13 @@ public class DbxUserFilesRequests {
      * the source path is a folder all its contents will be moved.
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -2750,8 +2637,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#moveV2(String,String)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public MoveBuilder moveBuilder(String fromPath, String toPath) {
@@ -2785,21 +2671,21 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Move a file or folder to a different location in the user's Dropbox.
-     *
-     * <p> If the source path is a folder all its contents will be moved. </p>
-     *
-     * <p> Note that we do not currently support case-only renaming. </p>
+     * Move a file or folder to a different location in the user's Dropbox. If
+     * the source path is a folder all its contents will be moved. Note that we
+     * do not currently support case-only renaming.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link MoveV2Builder} for more details. </p>
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -2815,11 +2701,13 @@ public class DbxUserFilesRequests {
      * do not currently support case-only renaming.
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return Request builder for configuring request parameters and completing
      *     the request.
@@ -2839,8 +2727,8 @@ public class DbxUserFilesRequests {
     /**
      * Move multiple files or folders to different locations at once in the
      * user's Dropbox. This route will return job ID immediately and do the
-     * async moving job in background. Please use {@code moveBatchCheck:1} to
-     * check the job status.
+     * async moving job in background. Please use {@link
+     * DbxUserFilesRequests#moveBatchCheck(String)} to check the job status.
      *
      *
      * @return Result returned by {@link DbxUserFilesRequests#copyBatch(List)}
@@ -2864,11 +2752,9 @@ public class DbxUserFilesRequests {
 
     /**
      * Move multiple files or folders to different locations at once in the
-     * user's Dropbox.
-     *
-     * <p> This route will return job ID immediately and do the async moving job
-     * in background. Please use {@code moveBatchCheck:1} to check the job
-     * status. </p>
+     * user's Dropbox. This route will return job ID immediately and do the
+     * async moving job in background. Please use {@link
+     * DbxUserFilesRequests#moveBatchCheck(String)} to check the job status.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link MoveBatchBuilder} for more details. </p>
@@ -2885,7 +2771,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#moveBatchV2(List)} instead.
+     * @deprecated
      */
     @Deprecated
     public RelocationBatchLaunch moveBatch(List<RelocationPath> entries) throws DbxApiException, DbxException {
@@ -2896,8 +2782,8 @@ public class DbxUserFilesRequests {
     /**
      * Move multiple files or folders to different locations at once in the
      * user's Dropbox. This route will return job ID immediately and do the
-     * async moving job in background. Please use {@code moveBatchCheck:1} to
-     * check the job status.
+     * async moving job in background. Please use {@link
+     * DbxUserFilesRequests#moveBatchCheck(String)} to check the job status.
      *
      * @param entries  List of entries to be moved or copied. Each entry is
      *     {@link RelocationPath}. Must contain at least 1 items, contain at
@@ -2910,7 +2796,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#moveBatchV2(List)} instead.
+     * @deprecated
      */
     @Deprecated
     public MoveBatchBuilder moveBatchBuilder(List<RelocationPath> entries) {
@@ -2925,12 +2811,12 @@ public class DbxUserFilesRequests {
     /**
      * Move multiple files or folders to different locations at once in the
      * user's Dropbox. Note that we do not currently support case-only renaming.
-     * This route will replace {@code moveBatch:1}. The main difference is this
-     * route will return status for each entry, while {@code moveBatch:1} raises
-     * failure if any entry fails. This route will either finish synchronously,
-     * or return a job ID and do the async move job in background. Please use
-     * {@link DbxUserFilesRequests#moveBatchCheckV2(String)} to check the job
-     * status.
+     * This route will replace {@link DbxUserFilesRequests#moveBatch(List)}. The
+     * main difference is this route will return status for each entry, while
+     * {@link DbxUserFilesRequests#moveBatch(List)} raises failure if any entry
+     * fails. This route will either finish synchronously, or return a job ID
+     * and do the async move job in background. Please use {@link
+     * DbxUserFilesRequests#moveBatchCheckV2(String)} to check the job status.
      *
      *
      * @return Result returned by {@link
@@ -2956,15 +2842,12 @@ public class DbxUserFilesRequests {
     /**
      * Move multiple files or folders to different locations at once in the
      * user's Dropbox. Note that we do not currently support case-only renaming.
-     *
-     * <p> This route will replace {@code moveBatch:1}. The main difference is
-     * this route will return status for each entry, while {@code moveBatch:1}
-     * raises failure if any entry fails. </p>
-     *
-     * <p> This route will either finish synchronously, or return a job ID and
-     * do the async move job in background. Please use {@link
+     * This route will replace {@link DbxUserFilesRequests#moveBatch(List)}. The
+     * main difference is this route will return status for each entry, while
+     * {@link DbxUserFilesRequests#moveBatch(List)} raises failure if any entry
+     * fails. This route will either finish synchronously, or return a job ID
+     * and do the async move job in background. Please use {@link
      * DbxUserFilesRequests#moveBatchCheckV2(String)} to check the job status.
-     * </p>
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link MoveBatchV2Builder} for more details. </p>
@@ -2990,12 +2873,12 @@ public class DbxUserFilesRequests {
     /**
      * Move multiple files or folders to different locations at once in the
      * user's Dropbox. Note that we do not currently support case-only renaming.
-     * This route will replace {@code moveBatch:1}. The main difference is this
-     * route will return status for each entry, while {@code moveBatch:1} raises
-     * failure if any entry fails. This route will either finish synchronously,
-     * or return a job ID and do the async move job in background. Please use
-     * {@link DbxUserFilesRequests#moveBatchCheckV2(String)} to check the job
-     * status.
+     * This route will replace {@link DbxUserFilesRequests#moveBatch(List)}. The
+     * main difference is this route will return status for each entry, while
+     * {@link DbxUserFilesRequests#moveBatch(List)} raises failure if any entry
+     * fails. This route will either finish synchronously, or return a job ID
+     * and do the async move job in background. Please use {@link
+     * DbxUserFilesRequests#moveBatchCheckV2(String)} to check the job status.
      *
      * @param entries  List of entries to be moved or copied. Each entry is
      *     {@link RelocationPath}. Must contain at least 1 items, contain at
@@ -3050,8 +2933,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#moveBatchCheckV2(String)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public RelocationBatchJobStatus moveBatchCheck(String asyncJobId) throws PollErrorException, DbxException {
@@ -3176,8 +3058,9 @@ public class DbxUserFilesRequests {
      *
      * @param path  Path in the user's Dropbox to update. The path must
      *     correspond to a Paper doc or an error will be returned. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param importFormat  The format of the provided data. Must not be {@code
      *     null}.
      * @param docUpdatePolicy  How the provided content should be applied to the
@@ -3198,8 +3081,9 @@ public class DbxUserFilesRequests {
      *
      * @param path  Path in the user's Dropbox to update. The path must
      *     correspond to a Paper doc or an error will be returned. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param importFormat  The format of the provided data. Must not be {@code
      *     null}.
      * @param docUpdatePolicy  How the provided content should be applied to the
@@ -3247,17 +3131,14 @@ public class DbxUserFilesRequests {
 
     /**
      * Permanently delete the file or folder at a given path (see
-     * https://www.dropbox.com/en/help/40).
-     *
-     * <p> If the given file or folder is not yet deleted, this route will first
-     * delete it. It is possible for this route to successfully delete, then
-     * fail to permanently delete. </p>
-     *
-     * <p> Note: This endpoint is only available for Dropbox Business apps. </p>
+     * https://www.dropbox.com/en/help/40). If the given file or folder is not
+     * yet deleted, this route will first delete it. It is possible for this
+     * route to successfully delete, then fail to permanently delete. Note: This
+     * endpoint is only available for Dropbox Business apps.
      *
      * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be
-     *     {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and
+     *     not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -3269,17 +3150,14 @@ public class DbxUserFilesRequests {
 
     /**
      * Permanently delete the file or folder at a given path (see
-     * https://www.dropbox.com/en/help/40).
-     *
-     * <p> If the given file or folder is not yet deleted, this route will first
-     * delete it. It is possible for this route to successfully delete, then
-     * fail to permanently delete. </p>
-     *
-     * <p> Note: This endpoint is only available for Dropbox Business apps. </p>
+     * https://www.dropbox.com/en/help/40). If the given file or folder is not
+     * yet deleted, this route will first delete it. It is possible for this
+     * route to successfully delete, then fail to permanently delete. Note: This
+     * endpoint is only available for Dropbox Business apps.
      *
      * @param path  Path in the user's Dropbox to delete. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be
-     *     {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and
+     *     not be {@code null}.
      * @param parentRev  Perform delete if given "rev" matches the existing
      *     file's latest "rev". This field does not support deleting a folder.
      *     Must have length of at least 9 and match pattern "{@code [0-9a-f]+}".
@@ -3305,6 +3183,8 @@ public class DbxUserFilesRequests {
     //
 
     /**
+     * Add property groups to a Dropbox file. See templates/add_for_user or
+     * templates/add_for_team to create new templates.
      *
      */
     void propertiesAdd(AddPropertiesArg arg) throws AddPropertiesErrorException, DbxException {
@@ -3323,12 +3203,14 @@ public class DbxUserFilesRequests {
     }
 
     /**
+     * Add property groups to a Dropbox file. See templates/add_for_user or
+     * templates/add_for_team to create new templates.
      *
      * @param path  A unique identifier for the file or folder. Must match
      *     pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and not be
      *     {@code null}.
      * @param propertyGroups  The property groups which are to be added to a
-     *     Dropbox file. No two groups in the input should  refer to the same
+     *     Dropbox file. No two groups in the input should refer to the same
      *     template. Must not contain a {@code null} item and not be {@code
      *     null}.
      *
@@ -3348,6 +3230,9 @@ public class DbxUserFilesRequests {
     //
 
     /**
+     * Overwrite property groups associated with a file. This endpoint should be
+     * used instead of properties/update when property groups are being
+     * overwritten rather than updated via a "delta".
      *
      */
     void propertiesOverwrite(OverwritePropertyGroupArg arg) throws InvalidPropertyGroupErrorException, DbxException {
@@ -3366,12 +3251,15 @@ public class DbxUserFilesRequests {
     }
 
     /**
+     * Overwrite property groups associated with a file. This endpoint should be
+     * used instead of properties/update when property groups are being
+     * overwritten rather than updated via a "delta".
      *
      * @param path  A unique identifier for the file or folder. Must match
      *     pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and not be
      *     {@code null}.
      * @param propertyGroups  The property groups "snapshot" updates to force
-     *     apply. No two groups in the input should  refer to the same template.
+     *     apply. No two groups in the input should refer to the same template.
      *     Must contain at least 1 items, not contain a {@code null} item, and
      *     not be {@code null}.
      *
@@ -3387,121 +3275,14 @@ public class DbxUserFilesRequests {
     }
 
     //
-    // route 2/files/properties/remove
-    //
-
-    /**
-     *
-     */
-    void propertiesRemove(RemovePropertiesArg arg) throws RemovePropertiesErrorException, DbxException {
-        try {
-            this.client.rpcStyle(this.client.getHost().getApi(),
-                                 "2/files/properties/remove",
-                                 arg,
-                                 false,
-                                 RemovePropertiesArg.Serializer.INSTANCE,
-                                 com.dropbox.core.stone.StoneSerializers.void_(),
-                                 RemovePropertiesError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new RemovePropertiesErrorException("2/files/properties/remove", ex.getRequestId(), ex.getUserMessage(), (RemovePropertiesError) ex.getErrorValue());
-        }
-    }
-
-    /**
-     *
-     * @param path  A unique identifier for the file or folder. Must match
-     *     pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and not be
-     *     {@code null}.
-     * @param propertyTemplateIds  A list of identifiers for a template created
-     *     by {@link
-     *     com.dropbox.core.v2.fileproperties.DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)}
-     *     or {@link
-     *     com.dropbox.core.v2.fileproperties.DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)}.
-     *     Must not contain a {@code null} item and not be {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     *
-     * @deprecated
-     */
-    @Deprecated
-    public void propertiesRemove(String path, List<String> propertyTemplateIds) throws RemovePropertiesErrorException, DbxException {
-        RemovePropertiesArg _arg = new RemovePropertiesArg(path, propertyTemplateIds);
-        propertiesRemove(_arg);
-    }
-
-    //
-    // route 2/files/properties/template/get
-    //
-
-    /**
-     *
-     */
-    GetTemplateResult propertiesTemplateGet(GetTemplateArg arg) throws TemplateErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/files/properties/template/get",
-                                        arg,
-                                        false,
-                                        GetTemplateArg.Serializer.INSTANCE,
-                                        GetTemplateResult.Serializer.INSTANCE,
-                                        TemplateError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new TemplateErrorException("2/files/properties/template/get", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue());
-        }
-    }
-
-    /**
-     *
-     * @param templateId  An identifier for template added by route  See {@link
-     *     com.dropbox.core.v2.fileproperties.DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)}
-     *     or {@link
-     *     com.dropbox.core.v2.fileproperties.DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)}.
-     *     Must have length of at least 1, match pattern "{@code (/|ptid:).*}",
-     *     and not be {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     *
-     * @deprecated
-     */
-    @Deprecated
-    public GetTemplateResult propertiesTemplateGet(String templateId) throws TemplateErrorException, DbxException {
-        GetTemplateArg _arg = new GetTemplateArg(templateId);
-        return propertiesTemplateGet(_arg);
-    }
-
-    //
-    // route 2/files/properties/template/list
-    //
-
-    /**
-     *
-     * @deprecated
-     */
-    @Deprecated
-    public ListTemplateResult propertiesTemplateList() throws TemplateErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/files/properties/template/list",
-                                        null,
-                                        false,
-                                        com.dropbox.core.stone.StoneSerializers.void_(),
-                                        ListTemplateResult.Serializer.INSTANCE,
-                                        TemplateError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new TemplateErrorException("2/files/properties/template/list", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue());
-        }
-    }
-
-    //
     // route 2/files/properties/update
     //
 
     /**
+     * Add, update or remove properties associated with the supplied file and
+     * templates. This endpoint should be used instead of properties/overwrite
+     * when property groups are being updated via a "delta" instead of
+     * overwriting all properties of a file.
      *
      */
     void propertiesUpdate(UpdatePropertiesArg arg) throws UpdatePropertiesErrorException, DbxException {
@@ -3520,6 +3301,10 @@ public class DbxUserFilesRequests {
     }
 
     /**
+     * Add, update or remove properties associated with the supplied file and
+     * templates. This endpoint should be used instead of properties/overwrite
+     * when property groups are being updated via a "delta" instead of
+     * overwriting all properties of a file.
      *
      * @param path  A unique identifier for the file or folder. Must match
      *     pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and not be
@@ -3565,7 +3350,8 @@ public class DbxUserFilesRequests {
      * Restore a specific revision of a file to the given path.
      *
      * @param path  The path to save the restored file. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      * @param rev  The revision to restore. Must have length of at least 9,
      *     match pattern "{@code [0-9a-f]+}", and not be {@code null}.
      *
@@ -3584,9 +3370,7 @@ public class DbxUserFilesRequests {
     /**
      * Save the data from a specified URL into a file in user's Dropbox. Note
      * that the transfer from the URL must complete within 15 minutes, or the
-     * operation will time out and the job will fail. If the given path already
-     * exists, the file will be renamed to avoid the conflict (e.g. myfile
-     * (1).txt).
+     * operation will time out and the job will fail.
      *
      */
     SaveUrlResult saveUrl(SaveUrlArg arg) throws SaveUrlErrorException, DbxException {
@@ -3605,13 +3389,9 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Save the data from a specified URL into a file in user's Dropbox.
-     *
-     * <p> Note that the transfer from the URL must complete within 15 minutes,
-     * or the operation will time out and the job will fail. </p>
-     *
-     * <p> If the given path already exists, the file will be renamed to avoid
-     * the conflict (e.g. myfile (1).txt). </p>
+     * Save the data from a specified URL into a file in user's Dropbox. Note
+     * that the transfer from the URL must complete within 15 minutes, or the
+     * operation will time out and the job will fail.
      *
      * @param path  The path in Dropbox where the URL will be saved to. Must
      *     match pattern "{@code /(.|[\\r\\n])*}" and not be {@code null}.
@@ -3704,7 +3484,8 @@ public class DbxUserFilesRequests {
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
      *     a folder. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      * @param query  The string to search for. Query string may be rewritten to
      *     improve relevance of results. The string is split on spaces into
      *     multiple tokens. For file name searching, the last token is used for
@@ -3729,7 +3510,8 @@ public class DbxUserFilesRequests {
      *
      * @param path  The path in the user's Dropbox to search. Should probably be
      *     a folder. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      * @param query  The string to search for. Query string may be rewritten to
      *     improve relevance of results. The string is split on spaces into
      *     multiple tokens. For file name searching, the last token is used for
@@ -4053,13 +3835,12 @@ public class DbxUserFilesRequests {
 
     /**
      * Create a new file with the contents provided in the request. Do not use
-     * this to upload a file larger than 150 MB. Instead, create an upload
+     * this to upload a file larger than 150 MiB. Instead, create an upload
      * session with {@link DbxUserFilesRequests#uploadSessionStart}. Calls to
      * this endpoint will count as data transport calls for any Dropbox Business
      * teams with a limit on the number of data transport calls allowed per
-     * month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>.
+     * month. For more information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      *
      * @return Uploader used to upload the request body and finish request.
@@ -4074,24 +3855,21 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Create a new file with the contents provided in the request.
-     *
-     * <p> Do not use this to upload a file larger than 150 MB. Instead, create
-     * an upload session with {@link DbxUserFilesRequests#uploadSessionStart}.
-     * </p>
-     *
-     * <p> Calls to this endpoint will count as data transport calls for any
-     * Dropbox Business teams with a limit on the number of data transport calls
-     * allowed per month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>. </p>
+     * Create a new file with the contents provided in the request. Do not use
+     * this to upload a file larger than 150 MiB. Instead, create an upload
+     * session with {@link DbxUserFilesRequests#uploadSessionStart}. Calls to
+     * this endpoint will count as data transport calls for any Dropbox Business
+     * teams with a limit on the number of data transport calls allowed per
+     * month. For more information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link UploadBuilder} for more details. </p>
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return Uploader used to upload the request body and finish request.
      *
@@ -4105,17 +3883,17 @@ public class DbxUserFilesRequests {
 
     /**
      * Create a new file with the contents provided in the request. Do not use
-     * this to upload a file larger than 150 MB. Instead, create an upload
+     * this to upload a file larger than 150 MiB. Instead, create an upload
      * session with {@link DbxUserFilesRequests#uploadSessionStart}. Calls to
      * this endpoint will count as data transport calls for any Dropbox Business
      * teams with a limit on the number of data transport calls allowed per
-     * month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>.
+     * month. For more information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return Uploader builder for configuring request parameters and
      *     instantiating an uploader.
@@ -4134,12 +3912,12 @@ public class DbxUserFilesRequests {
 
     /**
      * Append more data to an upload session. A single request should not upload
-     * more than 150 MB. The maximum size of a file one can upload to an upload
-     * session is 350 GB. Calls to this endpoint will count as data transport
-     * calls for any Dropbox Business teams with a limit on the number of data
-     * transport calls allowed per month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>.
+     * more than 150 MiB. The maximum size of a file one can upload to an upload
+     * session is 2^41 - 2^22 (2,199,019,061,248) bytes. Calls to this endpoint
+     * will count as data transport calls for any Dropbox Business teams with a
+     * limit on the number of data transport calls allowed per month. For more
+     * information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      *
      * @return Uploader used to upload the request body and finish request.
@@ -4154,16 +3932,13 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Append more data to an upload session.
-     *
-     * <p> A single request should not upload more than 150 MB. The maximum size
-     * of a file one can upload to an upload session is 350 GB. </p>
-     *
-     * <p> Calls to this endpoint will count as data transport calls for any
-     * Dropbox Business teams with a limit on the number of data transport calls
-     * allowed per month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>. </p>
+     * Append more data to an upload session. A single request should not upload
+     * more than 150 MiB. The maximum size of a file one can upload to an upload
+     * session is 2^41 - 2^22 (2,199,019,061,248) bytes. Calls to this endpoint
+     * will count as data transport calls for any Dropbox Business teams with a
+     * limit on the number of data transport calls allowed per month. For more
+     * information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * @param sessionId  The upload session ID (returned by {@link
      *     DbxUserFilesRequests#uploadSessionStart}). Must not be {@code null}.
@@ -4176,9 +3951,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link
-     *     DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public UploadSessionAppendUploader uploadSessionAppend(String sessionId, long offset) throws DbxException {
@@ -4193,12 +3966,12 @@ public class DbxUserFilesRequests {
     /**
      * Append more data to an upload session. When the parameter close is set,
      * this call will close the session. A single request should not upload more
-     * than 150 MB. The maximum size of a file one can upload to an upload
-     * session is 350 GB. Calls to this endpoint will count as data transport
-     * calls for any Dropbox Business teams with a limit on the number of data
-     * transport calls allowed per month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>.
+     * than 150 MiB. The maximum size of a file one can upload to an upload
+     * session is 2^41 - 2^22 (2,199,019,061,248) bytes. Calls to this endpoint
+     * will count as data transport calls for any Dropbox Business teams with a
+     * limit on the number of data transport calls allowed per month. For more
+     * information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      *
      * @return Uploader used to upload the request body and finish request.
@@ -4213,19 +3986,14 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Append more data to an upload session.
-     *
-     * <p> When the parameter close is set, this call will close the session.
-     * </p>
-     *
-     * <p> A single request should not upload more than 150 MB. The maximum size
-     * of a file one can upload to an upload session is 350 GB. </p>
-     *
-     * <p> Calls to this endpoint will count as data transport calls for any
-     * Dropbox Business teams with a limit on the number of data transport calls
-     * allowed per month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>. </p>
+     * Append more data to an upload session. When the parameter close is set,
+     * this call will close the session. A single request should not upload more
+     * than 150 MiB. The maximum size of a file one can upload to an upload
+     * session is 2^41 - 2^22 (2,199,019,061,248) bytes. Calls to this endpoint
+     * will count as data transport calls for any Dropbox Business teams with a
+     * limit on the number of data transport calls allowed per month. For more
+     * information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link UploadSessionAppendV2Builder} for more details. </p>
@@ -4246,12 +4014,12 @@ public class DbxUserFilesRequests {
     /**
      * Append more data to an upload session. When the parameter close is set,
      * this call will close the session. A single request should not upload more
-     * than 150 MB. The maximum size of a file one can upload to an upload
-     * session is 350 GB. Calls to this endpoint will count as data transport
-     * calls for any Dropbox Business teams with a limit on the number of data
-     * transport calls allowed per month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>.
+     * than 150 MiB. The maximum size of a file one can upload to an upload
+     * session is 2^41 - 2^22 (2,199,019,061,248) bytes. Calls to this endpoint
+     * will count as data transport calls for any Dropbox Business teams with a
+     * limit on the number of data transport calls allowed per month. For more
+     * information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * @param cursor  Contains the upload session ID and the offset. Must not be
      *     {@code null}.
@@ -4268,18 +4036,119 @@ public class DbxUserFilesRequests {
     }
 
     //
+    // route 2/files/upload_session/append_batch
+    //
+
+    /**
+     * Append more data to multiple upload sessions. Each piece of file content
+     * to append to each upload session should be concatenated in the request
+     * body, in the order delineated by the {@code entries} argument to {@link
+     * DbxUserFilesRequests#uploadSessionAppendBatch(List,String)} and their
+     * individual lengths indicated by {@link
+     * UploadSessionAppendBatchArgEntry#getLength}. A single request should not
+     * upload more than 150 MiB. The maximum size of a file one can upload to an
+     * upload session is 2^41 - 2^22 (2,199,019,061,248) bytes. Calls to this
+     * endpoint will count as data transport calls for any Dropbox Business
+     * teams with a limit on the number of data transport calls allowed per
+     * month. For more information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
+     *
+     *
+     * @return Uploader used to upload the request body and finish request.
+     */
+    UploadSessionAppendBatchUploader uploadSessionAppendBatch(UploadSessionAppendBatchArg arg) throws DbxException {
+        HttpRequestor.Uploader _uploader = this.client.uploadStyle(this.client.getHost().getContent(),
+                                                                   "2/files/upload_session/append_batch",
+                                                                   arg,
+                                                                   false,
+                                                                   UploadSessionAppendBatchArg.Serializer.INSTANCE);
+        return new UploadSessionAppendBatchUploader(_uploader, this.client.getUserId());
+    }
+
+    /**
+     * Append more data to multiple upload sessions. Each piece of file content
+     * to append to each upload session should be concatenated in the request
+     * body, in the order delineated by the {@code entries} argument to {@link
+     * DbxUserFilesRequests#uploadSessionAppendBatch(List,String)} and their
+     * individual lengths indicated by {@link
+     * UploadSessionAppendBatchArgEntry#getLength}. A single request should not
+     * upload more than 150 MiB. The maximum size of a file one can upload to an
+     * upload session is 2^41 - 2^22 (2,199,019,061,248) bytes. Calls to this
+     * endpoint will count as data transport calls for any Dropbox Business
+     * teams with a limit on the number of data transport calls allowed per
+     * month. For more information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
+     *
+     * @param entries  Append information for each file in the batch. Must
+     *     contain at most 1000 items, not contain a {@code null} item, and not
+     *     be {@code null}.
+     *
+     * @return Uploader used to upload the request body and finish request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public UploadSessionAppendBatchUploader uploadSessionAppendBatch(List<UploadSessionAppendBatchArgEntry> entries) throws DbxException {
+        UploadSessionAppendBatchArg _arg = new UploadSessionAppendBatchArg(entries);
+        return uploadSessionAppendBatch(_arg);
+    }
+
+    /**
+     * Append more data to multiple upload sessions. Each piece of file content
+     * to append to each upload session should be concatenated in the request
+     * body, in the order delineated by the {@code entries} argument to {@link
+     * DbxUserFilesRequests#uploadSessionAppendBatch(List,String)} and their
+     * individual lengths indicated by {@link
+     * UploadSessionAppendBatchArgEntry#getLength}. A single request should not
+     * upload more than 150 MiB. The maximum size of a file one can upload to an
+     * upload session is 2^41 - 2^22 (2,199,019,061,248) bytes. Calls to this
+     * endpoint will count as data transport calls for any Dropbox Business
+     * teams with a limit on the number of data transport calls allowed per
+     * month. For more information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
+     *
+     * @param entries  Append information for each file in the batch. Must
+     *     contain at most 1000 items, not contain a {@code null} item, and not
+     *     be {@code null}.
+     * @param contentHash  A hash of the entire request body which is all the
+     *     concatenated pieces of file content that were uploaded in this call.
+     *     If provided and the uploaded content does not match this hash, an
+     *     error will be returned. For more information see our <a
+     *     href="https://www.dropbox.com/developers/reference/content-hash">Content
+     *     hash</a> page. Must have length of at least 64 and have length of at
+     *     most 64.
+     *
+     * @return Uploader used to upload the request body and finish request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public UploadSessionAppendBatchUploader uploadSessionAppendBatch(List<UploadSessionAppendBatchArgEntry> entries, String contentHash) throws DbxException {
+        if (contentHash != null) {
+            if (contentHash.length() < 64) {
+                throw new IllegalArgumentException("String 'contentHash' is shorter than 64");
+            }
+            if (contentHash.length() > 64) {
+                throw new IllegalArgumentException("String 'contentHash' is longer than 64");
+            }
+        }
+        UploadSessionAppendBatchArg _arg = new UploadSessionAppendBatchArg(entries, contentHash);
+        return uploadSessionAppendBatch(_arg);
+    }
+
+    //
     // route 2/files/upload_session/finish
     //
 
     /**
      * Finish an upload session and save the uploaded data to the given file
-     * path. A single request should not upload more than 150 MB. The maximum
-     * size of a file one can upload to an upload session is 350 GB. Calls to
-     * this endpoint will count as data transport calls for any Dropbox Business
-     * teams with a limit on the number of data transport calls allowed per
-     * month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>.
+     * path. A single request should not upload more than 150 MiB. The maximum
+     * size of a file one can upload to an upload session is 2^41 - 2^22
+     * (2,199,019,061,248) bytes. Calls to this endpoint will count as data
+     * transport calls for any Dropbox Business teams with a limit on the number
+     * of data transport calls allowed per month. For more information, see the
+     * Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      *
      * @return Uploader used to upload the request body and finish request.
@@ -4295,16 +4164,13 @@ public class DbxUserFilesRequests {
 
     /**
      * Finish an upload session and save the uploaded data to the given file
-     * path.
-     *
-     * <p> A single request should not upload more than 150 MB. The maximum size
-     * of a file one can upload to an upload session is 350 GB. </p>
-     *
-     * <p> Calls to this endpoint will count as data transport calls for any
-     * Dropbox Business teams with a limit on the number of data transport calls
-     * allowed per month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>. </p>
+     * path. A single request should not upload more than 150 MiB. The maximum
+     * size of a file one can upload to an upload session is 2^41 - 2^22
+     * (2,199,019,061,248) bytes. Calls to this endpoint will count as data
+     * transport calls for any Dropbox Business teams with a limit on the number
+     * of data transport calls allowed per month. For more information, see the
+     * Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * @param cursor  Contains the upload session ID and the offset. Must not be
      *     {@code null}.
@@ -4323,16 +4189,13 @@ public class DbxUserFilesRequests {
 
     /**
      * Finish an upload session and save the uploaded data to the given file
-     * path.
-     *
-     * <p> A single request should not upload more than 150 MB. The maximum size
-     * of a file one can upload to an upload session is 350 GB. </p>
-     *
-     * <p> Calls to this endpoint will count as data transport calls for any
-     * Dropbox Business teams with a limit on the number of data transport calls
-     * allowed per month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>. </p>
+     * path. A single request should not upload more than 150 MiB. The maximum
+     * size of a file one can upload to an upload session is 2^41 - 2^22
+     * (2,199,019,061,248) bytes. Calls to this endpoint will count as data
+     * transport calls for any Dropbox Business teams with a limit on the number
+     * of data transport calls allowed per month. For more information, see the
+     * Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * @param cursor  Contains the upload session ID and the offset. Must not be
      *     {@code null}.
@@ -4380,18 +4243,17 @@ public class DbxUserFilesRequests {
      * UploadSessionAppendArg#getClose} needs to be true for the last {@link
      * DbxUserFilesRequests#uploadSessionStart} or {@link
      * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} call.
-     * The maximum size of a file one can upload to an upload session is 350 GB.
-     * This route will return a job_id immediately and do the async commit job
-     * in background. Use {@link
+     * The maximum size of a file one can upload to an upload session is 2^41 -
+     * 2^22 (2,199,019,061,248) bytes. This route will return a job_id
+     * immediately and do the async commit job in background. Use {@link
      * DbxUserFilesRequests#uploadSessionFinishBatchCheck(String)} to check the
      * job status. For the same account, this route should be executed serially.
      * That means you should not start the next job before current job finishes.
      * We allow up to 1000 entries in a single request. Calls to this endpoint
      * will count as data transport calls for any Dropbox Business teams with a
      * limit on the number of data transport calls allowed per month. For more
-     * information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>.
+     * information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      *
      * @return Result returned by {@link
@@ -4422,28 +4284,21 @@ public class DbxUserFilesRequests {
      * than calling {@link
      * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)},
      * use this route to finish all your upload sessions in a single request.
-     *
-     * <p> {@link UploadSessionStartArg#getClose} or {@link
+     * {@link UploadSessionStartArg#getClose} or {@link
      * UploadSessionAppendArg#getClose} needs to be true for the last {@link
      * DbxUserFilesRequests#uploadSessionStart} or {@link
      * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} call.
-     * The maximum size of a file one can upload to an upload session is 350 GB.
-     * </p>
-     *
-     * <p> This route will return a job_id immediately and do the async commit
-     * job in background. Use {@link
+     * The maximum size of a file one can upload to an upload session is 2^41 -
+     * 2^22 (2,199,019,061,248) bytes. This route will return a job_id
+     * immediately and do the async commit job in background. Use {@link
      * DbxUserFilesRequests#uploadSessionFinishBatchCheck(String)} to check the
-     * job status. </p>
-     *
-     * <p> For the same account, this route should be executed serially. That
-     * means you should not start the next job before current job finishes. We
-     * allow up to 1000 entries in a single request. </p>
-     *
-     * <p> Calls to this endpoint will count as data transport calls for any
-     * Dropbox Business teams with a limit on the number of data transport calls
-     * allowed per month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>. </p>
+     * job status. For the same account, this route should be executed serially.
+     * That means you should not start the next job before current job finishes.
+     * We allow up to 1000 entries in a single request. Calls to this endpoint
+     * will count as data transport calls for any Dropbox Business teams with a
+     * limit on the number of data transport calls allowed per month. For more
+     * information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * @param entries  Commit information for each file in the batch. Must
      *     contain at most 1000 items, not contain a {@code null} item, and not
@@ -4456,8 +4311,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link
-     *     DbxUserFilesRequests#uploadSessionFinishBatchV2(List)} instead.
+     * @deprecated
      */
     @Deprecated
     public UploadSessionFinishBatchLaunch uploadSessionFinishBatch(List<UploadSessionFinishArg> entries) throws DbxApiException, DbxException {
@@ -4483,12 +4337,12 @@ public class DbxUserFilesRequests {
      * DbxUserFilesRequests#uploadSessionStart} or {@link
      * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} call of
      * each upload session. The maximum size of a file one can upload to an
-     * upload session is 350 GB. We allow up to 1000 entries in a single
-     * request. Calls to this endpoint will count as data transport calls for
-     * any Dropbox Business teams with a limit on the number of data transport
-     * calls allowed per month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>.
+     * upload session is 2^41 - 2^22 (2,199,019,061,248) bytes. We allow up to
+     * 1000 entries in a single request. Calls to this endpoint will count as
+     * data transport calls for any Dropbox Business teams with a limit on the
+     * number of data transport calls allowed per month. For more information,
+     * see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      */
     UploadSessionFinishBatchResult uploadSessionFinishBatchV2(UploadSessionFinishBatchArg arg) throws DbxApiException, DbxException {
@@ -4515,21 +4369,17 @@ public class DbxUserFilesRequests {
      * than calling {@link
      * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)},
      * use this route to finish all your upload sessions in a single request.
-     *
-     * <p> {@link UploadSessionStartArg#getClose} or {@link
+     * {@link UploadSessionStartArg#getClose} or {@link
      * UploadSessionAppendArg#getClose} needs to be true for the last {@link
      * DbxUserFilesRequests#uploadSessionStart} or {@link
      * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} call of
      * each upload session. The maximum size of a file one can upload to an
-     * upload session is 350 GB. </p>
-     *
-     * <p> We allow up to 1000 entries in a single request. </p>
-     *
-     * <p> Calls to this endpoint will count as data transport calls for any
-     * Dropbox Business teams with a limit on the number of data transport calls
-     * allowed per month. For more information, see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>. </p>
+     * upload session is 2^41 - 2^22 (2,199,019,061,248) bytes. We allow up to
+     * 1000 entries in a single request. Calls to this endpoint will count as
+     * data transport calls for any Dropbox Business teams with a limit on the
+     * number of data transport calls allowed per month. For more information,
+     * see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * @param entries  Commit information for each file in the batch. Must
      *     contain at most 1000 items, not contain a {@code null} item, and not
@@ -4593,51 +4443,53 @@ public class DbxUserFilesRequests {
 
     /**
      * Upload sessions allow you to upload a single file in one or more
-     * requests, for example where the size of the file is greater than 150 MB.
+     * requests, for example where the size of the file is greater than 150 MiB.
      * This call starts a new upload session with the given data. You can then
      * use {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} to add
-     * more data and {@link
-     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
-     * to save all the data to a file in Dropbox. A single request should not
-     * upload more than 150 MB. The maximum size of a file one can upload to an
-     * upload session is 350 GB. An upload session can be used for a maximum of
-     * 7 days. Attempting to use an {@link
-     * UploadSessionStartResult#getSessionId} with {@link
      * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} or
+     * {@link DbxUserFilesRequests#uploadSessionAppendBatch(List,String)} to add
+     * more data, then {@link
+     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
+     * or {@link DbxUserFilesRequests#uploadSessionFinishBatchV2(List)} to save
+     * all the data to a file in Dropbox. A single request should not upload
+     * more than 150 MiB. The maximum size of a file one can upload to an upload
+     * session is 2^41 - 2^22 (2,199,019,061,248) bytes. An upload session can
+     * be used for a maximum of 7 days. Attempting to use a {@link
+     * UploadSessionStartResult#getSessionId} with {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} or other
+     * upload session routes more than 7 days after its creation will return
+     * {@link UploadSessionLookupError#NOT_FOUND}. Calls to this endpoint will
+     * count as data transport calls for any Dropbox Business teams with a limit
+     * on the number of data transport calls allowed per month. For more
+     * information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit. By
+     * default, upload sessions require you to send content of the file in
+     * sequential order via consecutive {@link
+     * DbxUserFilesRequests#uploadSessionStart}, {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}, and
      * {@link
      * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
-     * more than 7 days after its creation will return a {@link
-     * UploadSessionLookupError#NOT_FOUND}. Calls to this endpoint will count as
-     * data transport calls for any Dropbox Business teams with a limit on the
-     * number of data transport calls allowed per month. For more information,
-     * see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>. By default, upload sessions require you to send
-     * content of the file in sequential order via consecutive {@link
-     * DbxUserFilesRequests#uploadSessionStart}, {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}, {@link
-     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
-     * calls. For better performance, you can instead optionally use a {@link
-     * UploadSessionType#CONCURRENT} upload session. To start a new concurrent
-     * session, set {@link UploadSessionStartArg#getSessionType} to {@link
-     * UploadSessionType#CONCURRENT}. After that, you can send file data in
-     * concurrent {@link
+     * calls (or their batch variants). For better performance, you can
+     * optionally set {@link UploadSessionStartArg#getSessionType} to {@link
+     * UploadSessionType#CONCURRENT} to start a concurrent upload session.
+     * Concurrent upload sessions may upload file data in concurrent {@link
      * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
-     * requests. Finally finish the session with {@link
-     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}.
-     * There are couple of constraints with concurrent sessions to make them
-     * work. You can not send data with {@link
+     * requests, with a few caveats. After all of the requests are complete,
+     * finish the session with {@link
+     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
+     * as normal. You can not send data in a {@link
      * DbxUserFilesRequests#uploadSessionStart} or {@link
      * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
      * call, only with {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} call.
-     * Also data uploaded in {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} call
-     * must be multiple of 4194304 bytes (except for last {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} with
-     * {@link UploadSessionStartArg#getClose} to {@code true}, that may contain
-     * any remaining data).
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} or
+     * {@link DbxUserFilesRequests#uploadSessionAppendBatch(List,String)}. Also,
+     * the length of the uploaded data in a call to {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} or
+     * {@link DbxUserFilesRequests#uploadSessionAppendBatch(List,String)} must
+     * be a multiple of 2^22 (4,194,304) bytes, except for the final append
+     * request with {@link UploadSessionAppendArg#getClose} or {@link
+     * UploadSessionAppendBatchArgEntry#getClose} set to true that may contain
+     * any remaining data.
      *
      *
      * @return Uploader used to upload the request body and finish request.
@@ -4653,58 +4505,53 @@ public class DbxUserFilesRequests {
 
     /**
      * Upload sessions allow you to upload a single file in one or more
-     * requests, for example where the size of the file is greater than 150 MB.
+     * requests, for example where the size of the file is greater than 150 MiB.
      * This call starts a new upload session with the given data. You can then
      * use {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} to add
-     * more data and {@link
-     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
-     * to save all the data to a file in Dropbox.
-     *
-     * <p> A single request should not upload more than 150 MB. The maximum size
-     * of a file one can upload to an upload session is 350 GB. </p>
-     *
-     * <p> An upload session can be used for a maximum of 7 days. Attempting to
-     * use an {@link UploadSessionStartResult#getSessionId} with {@link
      * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} or
+     * {@link DbxUserFilesRequests#uploadSessionAppendBatch(List,String)} to add
+     * more data, then {@link
+     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
+     * or {@link DbxUserFilesRequests#uploadSessionFinishBatchV2(List)} to save
+     * all the data to a file in Dropbox. A single request should not upload
+     * more than 150 MiB. The maximum size of a file one can upload to an upload
+     * session is 2^41 - 2^22 (2,199,019,061,248) bytes. An upload session can
+     * be used for a maximum of 7 days. Attempting to use a {@link
+     * UploadSessionStartResult#getSessionId} with {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} or other
+     * upload session routes more than 7 days after its creation will return
+     * {@link UploadSessionLookupError#NOT_FOUND}. Calls to this endpoint will
+     * count as data transport calls for any Dropbox Business teams with a limit
+     * on the number of data transport calls allowed per month. For more
+     * information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit. By
+     * default, upload sessions require you to send content of the file in
+     * sequential order via consecutive {@link
+     * DbxUserFilesRequests#uploadSessionStart}, {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}, and
      * {@link
      * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
-     * more than 7 days after its creation will return a {@link
-     * UploadSessionLookupError#NOT_FOUND}. </p>
-     *
-     * <p> Calls to this endpoint will count as data transport calls for any
-     * Dropbox Business teams with a limit on the number of data transport calls
-     * allowed per month. For more information, see the :link:`Data transport
-     * limit page
-     * https://www.dropbox.com/developers/reference/data-transport-limit`. </p>
-     *
-     * <p> By default, upload sessions require you to send content of the file
-     * in sequential order via consecutive {@link
-     * DbxUserFilesRequests#uploadSessionStart}, {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}, {@link
-     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
-     * calls. For better performance, you can instead optionally use a {@link
-     * UploadSessionType#CONCURRENT} upload session. To start a new concurrent
-     * session, set {@link UploadSessionStartArg#getSessionType} to {@link
-     * UploadSessionType#CONCURRENT}. After that, you can send file data in
-     * concurrent {@link
+     * calls (or their batch variants). For better performance, you can
+     * optionally set {@link UploadSessionStartArg#getSessionType} to {@link
+     * UploadSessionType#CONCURRENT} to start a concurrent upload session.
+     * Concurrent upload sessions may upload file data in concurrent {@link
      * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
-     * requests. Finally finish the session with {@link
-     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}.
-     * </p>
-     *
-     * <p> There are couple of constraints with concurrent sessions to make them
-     * work. You can not send data with {@link
+     * requests, with a few caveats. After all of the requests are complete,
+     * finish the session with {@link
+     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
+     * as normal. You can not send data in a {@link
      * DbxUserFilesRequests#uploadSessionStart} or {@link
      * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
      * call, only with {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} call.
-     * Also data uploaded in {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} call
-     * must be multiple of 4194304 bytes (except for last {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} with
-     * {@link UploadSessionStartArg#getClose} to {@code true}, that may contain
-     * any remaining data). </p>
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} or
+     * {@link DbxUserFilesRequests#uploadSessionAppendBatch(List,String)}. Also,
+     * the length of the uploaded data in a call to {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} or
+     * {@link DbxUserFilesRequests#uploadSessionAppendBatch(List,String)} must
+     * be a multiple of 2^22 (4,194,304) bytes, except for the final append
+     * request with {@link UploadSessionAppendArg#getClose} or {@link
+     * UploadSessionAppendBatchArgEntry#getClose} set to true that may contain
+     * any remaining data.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link UploadSessionStartBuilder} for more details. </p>
@@ -4718,51 +4565,53 @@ public class DbxUserFilesRequests {
 
     /**
      * Upload sessions allow you to upload a single file in one or more
-     * requests, for example where the size of the file is greater than 150 MB.
+     * requests, for example where the size of the file is greater than 150 MiB.
      * This call starts a new upload session with the given data. You can then
      * use {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} to add
-     * more data and {@link
-     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
-     * to save all the data to a file in Dropbox. A single request should not
-     * upload more than 150 MB. The maximum size of a file one can upload to an
-     * upload session is 350 GB. An upload session can be used for a maximum of
-     * 7 days. Attempting to use an {@link
-     * UploadSessionStartResult#getSessionId} with {@link
      * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} or
+     * {@link DbxUserFilesRequests#uploadSessionAppendBatch(List,String)} to add
+     * more data, then {@link
+     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
+     * or {@link DbxUserFilesRequests#uploadSessionFinishBatchV2(List)} to save
+     * all the data to a file in Dropbox. A single request should not upload
+     * more than 150 MiB. The maximum size of a file one can upload to an upload
+     * session is 2^41 - 2^22 (2,199,019,061,248) bytes. An upload session can
+     * be used for a maximum of 7 days. Attempting to use a {@link
+     * UploadSessionStartResult#getSessionId} with {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} or other
+     * upload session routes more than 7 days after its creation will return
+     * {@link UploadSessionLookupError#NOT_FOUND}. Calls to this endpoint will
+     * count as data transport calls for any Dropbox Business teams with a limit
+     * on the number of data transport calls allowed per month. For more
+     * information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit. By
+     * default, upload sessions require you to send content of the file in
+     * sequential order via consecutive {@link
+     * DbxUserFilesRequests#uploadSessionStart}, {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}, and
      * {@link
      * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
-     * more than 7 days after its creation will return a {@link
-     * UploadSessionLookupError#NOT_FOUND}. Calls to this endpoint will count as
-     * data transport calls for any Dropbox Business teams with a limit on the
-     * number of data transport calls allowed per month. For more information,
-     * see the <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>. By default, upload sessions require you to send
-     * content of the file in sequential order via consecutive {@link
-     * DbxUserFilesRequests#uploadSessionStart}, {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}, {@link
-     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
-     * calls. For better performance, you can instead optionally use a {@link
-     * UploadSessionType#CONCURRENT} upload session. To start a new concurrent
-     * session, set {@link UploadSessionStartArg#getSessionType} to {@link
-     * UploadSessionType#CONCURRENT}. After that, you can send file data in
-     * concurrent {@link
+     * calls (or their batch variants). For better performance, you can
+     * optionally set {@link UploadSessionStartArg#getSessionType} to {@link
+     * UploadSessionType#CONCURRENT} to start a concurrent upload session.
+     * Concurrent upload sessions may upload file data in concurrent {@link
      * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)}
-     * requests. Finally finish the session with {@link
-     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}.
-     * There are couple of constraints with concurrent sessions to make them
-     * work. You can not send data with {@link
+     * requests, with a few caveats. After all of the requests are complete,
+     * finish the session with {@link
+     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
+     * as normal. You can not send data in a {@link
      * DbxUserFilesRequests#uploadSessionStart} or {@link
      * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}
      * call, only with {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} call.
-     * Also data uploaded in {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} call
-     * must be multiple of 4194304 bytes (except for last {@link
-     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} with
-     * {@link UploadSessionStartArg#getClose} to {@code true}, that may contain
-     * any remaining data).
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} or
+     * {@link DbxUserFilesRequests#uploadSessionAppendBatch(List,String)}. Also,
+     * the length of the uploaded data in a call to {@link
+     * DbxUserFilesRequests#uploadSessionAppendV2(UploadSessionCursor)} or
+     * {@link DbxUserFilesRequests#uploadSessionAppendBatch(List,String)} must
+     * be a multiple of 2^22 (4,194,304) bytes, except for the final append
+     * request with {@link UploadSessionAppendArg#getClose} or {@link
+     * UploadSessionAppendBatchArgEntry#getClose} set to true that may contain
+     * any remaining data.
      *
      * @return Uploader builder for configuring request parameters and
      *     instantiating an uploader.
@@ -4777,13 +4626,12 @@ public class DbxUserFilesRequests {
     //
 
     /**
-     * This route starts batch of upload_sessions. Please refer to
-     * `upload_session/start` usage. Calls to this endpoint will count as data
-     * transport calls for any Dropbox Business teams with a limit on the number
-     * of data transport calls allowed per month. For more information, see the
-     * <a
-     * href="https://www.dropbox.com/developers/reference/data-transport-limit">Data
-     * transport limit page</a>.
+     * Start a batch of upload sessions. See {@link
+     * DbxUserFilesRequests#uploadSessionStart}. Calls to this endpoint will
+     * count as data transport calls for any Dropbox Business teams with a limit
+     * on the number of data transport calls allowed per month. For more
+     * information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      */
     UploadSessionStartBatchResult uploadSessionStartBatch(UploadSessionStartBatchArg arg) throws DbxApiException, DbxException {
@@ -4802,14 +4650,12 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * This route starts batch of upload_sessions. Please refer to
-     * `upload_session/start` usage.
-     *
-     * <p> Calls to this endpoint will count as data transport calls for any
-     * Dropbox Business teams with a limit on the number of data transport calls
-     * allowed per month. For more information, see the :link:`Data transport
-     * limit page
-     * https://www.dropbox.com/developers/reference/data-transport-limit`. </p>
+     * Start a batch of upload sessions. See {@link
+     * DbxUserFilesRequests#uploadSessionStart}. Calls to this endpoint will
+     * count as data transport calls for any Dropbox Business teams with a limit
+     * on the number of data transport calls allowed per month. For more
+     * information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * @param numSessions  The number of upload sessions to start. Must be
      *     greater than or equal to 1 and be less than or equal to 1000.
@@ -4823,14 +4669,12 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * This route starts batch of upload_sessions. Please refer to
-     * `upload_session/start` usage.
-     *
-     * <p> Calls to this endpoint will count as data transport calls for any
-     * Dropbox Business teams with a limit on the number of data transport calls
-     * allowed per month. For more information, see the :link:`Data transport
-     * limit page
-     * https://www.dropbox.com/developers/reference/data-transport-limit`. </p>
+     * Start a batch of upload sessions. See {@link
+     * DbxUserFilesRequests#uploadSessionStart}. Calls to this endpoint will
+     * count as data transport calls for any Dropbox Business teams with a limit
+     * on the number of data transport calls allowed per month. For more
+     * information, see the Data transport limit page
+     * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * @param numSessions  The number of upload sessions to start. Must be
      *     greater than or equal to 1 and be less than or equal to 1000.

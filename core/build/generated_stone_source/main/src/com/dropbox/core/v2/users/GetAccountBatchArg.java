@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users.stone */
+/* This file was generated from users_users_types.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class GetAccountBatchArg {
-    // struct users.GetAccountBatchArg (users.stone)
+    // struct users.GetAccountBatchArg (users_users_types.stone)
 
     @Nonnull
     protected final List<String> accountIds;

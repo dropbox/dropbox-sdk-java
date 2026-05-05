@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log_stone_gen_team_log_generated.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Session's logged information.
  */
 public class SessionLogInfo {
-    // struct team_log.SessionLogInfo (team_log_generated.stone)
+    // struct team_log.SessionLogInfo (team_log_stone_gen_team_log_generated.stone)
 
     @Nullable
     protected final String sessionId;
@@ -107,16 +107,16 @@ public class SessionLogInfo {
 
         @Override
         public void serialize(SessionLogInfo value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
-            if (value instanceof WebSessionLogInfo) {
-                WebSessionLogInfo.Serializer.INSTANCE.serialize((WebSessionLogInfo) value, g, collapse);
-                return;
-            }
             if (value instanceof DesktopSessionLogInfo) {
                 DesktopSessionLogInfo.Serializer.INSTANCE.serialize((DesktopSessionLogInfo) value, g, collapse);
                 return;
             }
             if (value instanceof MobileSessionLogInfo) {
                 MobileSessionLogInfo.Serializer.INSTANCE.serialize((MobileSessionLogInfo) value, g, collapse);
+                return;
+            }
+            if (value instanceof WebSessionLogInfo) {
+                WebSessionLogInfo.Serializer.INSTANCE.serialize((WebSessionLogInfo) value, g, collapse);
                 return;
             }
             if (!collapse) {
@@ -159,14 +159,14 @@ public class SessionLogInfo {
             else if ("".equals(tag)) {
                 value = Serializer.INSTANCE.deserialize(p, true);
             }
-            else if ("web".equals(tag)) {
-                value = WebSessionLogInfo.Serializer.INSTANCE.deserialize(p, true);
-            }
             else if ("desktop".equals(tag)) {
                 value = DesktopSessionLogInfo.Serializer.INSTANCE.deserialize(p, true);
             }
             else if ("mobile".equals(tag)) {
                 value = MobileSessionLogInfo.Serializer.INSTANCE.deserialize(p, true);
+            }
+            else if ("web".equals(tag)) {
+                value = WebSessionLogInfo.Serializer.INSTANCE.deserialize(p, true);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

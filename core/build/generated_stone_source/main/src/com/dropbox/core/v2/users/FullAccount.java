@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users.stone */
+/* This file was generated from users_users_types.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Detailed information about the current user's account.
  */
 public class FullAccount extends Account {
-    // struct users.FullAccount (users.stone)
+    // struct users.FullAccount (users_users_types.stone)
 
     @Nullable
     protected final String country;

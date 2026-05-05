@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 class RelocationBatchArg extends RelocationBatchArgBase {
-    // struct files.RelocationBatchArg (files.stone)
+    // struct files.RelocationBatchArg (files_files_public_types.stone)
 
     protected final boolean allowSharedFolder;
     protected final boolean allowOwnershipTransfer;

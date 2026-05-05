@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_base.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class UploadSessionLookupError {
-    // union files.UploadSessionLookupError (files.stone)
+    // union files.UploadSessionLookupError (files_files_public_base.stone)
 
     /**
      * Discriminating tag type for {@link UploadSessionLookupError}.
@@ -57,21 +57,22 @@ public final class UploadSessionLookupError {
         NOT_CLOSED,
         /**
          * You can not append to the upload session because the size of a file
-         * should not reach the max file size limit (i.e. 350GB).
+         * should not exceed the max file size limit (i.e. 2^41 - 2^22 or
+         * 2,199,019,061,248 bytes).
          */
         TOO_LARGE,
         /**
-         * For concurrent upload sessions, offset needs to be multiple of
-         * 4194304 bytes.
+         * For concurrent upload sessions, offset needs to be multiple of 2^22
+         * (4,194,304) bytes.
          */
         CONCURRENT_SESSION_INVALID_OFFSET,
         /**
          * For concurrent upload sessions, only chunks with size multiple of
-         * 4194304 bytes can be uploaded.
+         * 2^22 (4,194,304) bytes can be uploaded.
          */
         CONCURRENT_SESSION_INVALID_DATA_SIZE,
         /**
-         * The request payload must be at most 150 MB.
+         * The request payload must be at most 150 MiB.
          */
         PAYLOAD_TOO_LARGE,
         /**
@@ -101,21 +102,22 @@ public final class UploadSessionLookupError {
     public static final UploadSessionLookupError NOT_CLOSED = new UploadSessionLookupError().withTag(Tag.NOT_CLOSED);
     /**
      * You can not append to the upload session because the size of a file
-     * should not reach the max file size limit (i.e. 350GB).
+     * should not exceed the max file size limit (i.e. 2^41 - 2^22 or
+     * 2,199,019,061,248 bytes).
      */
     public static final UploadSessionLookupError TOO_LARGE = new UploadSessionLookupError().withTag(Tag.TOO_LARGE);
     /**
-     * For concurrent upload sessions, offset needs to be multiple of 4194304
-     * bytes.
+     * For concurrent upload sessions, offset needs to be multiple of 2^22
+     * (4,194,304) bytes.
      */
     public static final UploadSessionLookupError CONCURRENT_SESSION_INVALID_OFFSET = new UploadSessionLookupError().withTag(Tag.CONCURRENT_SESSION_INVALID_OFFSET);
     /**
-     * For concurrent upload sessions, only chunks with size multiple of 4194304
-     * bytes can be uploaded.
+     * For concurrent upload sessions, only chunks with size multiple of 2^22
+     * (4,194,304) bytes can be uploaded.
      */
     public static final UploadSessionLookupError CONCURRENT_SESSION_INVALID_DATA_SIZE = new UploadSessionLookupError().withTag(Tag.CONCURRENT_SESSION_INVALID_DATA_SIZE);
     /**
-     * The request payload must be at most 150 MB.
+     * The request payload must be at most 150 MiB.
      */
     public static final UploadSessionLookupError PAYLOAD_TOO_LARGE = new UploadSessionLookupError().withTag(Tag.PAYLOAD_TOO_LARGE);
     /**

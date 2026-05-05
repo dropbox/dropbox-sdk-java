@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files.stone */
+/* This file was generated from files_files_public_types.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class CreateFolderBatchResult extends FileOpsResult {
-    // struct files.CreateFolderBatchResult (files.stone)
+    // struct files.CreateFolderBatchResult (files_files_public_types.stone)
 
     @Nonnull
     protected final List<CreateFolderBatchResultEntry> entries;

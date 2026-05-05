@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing_apiv2_shared_links_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class SharedLinkAlreadyExistsMetadata {
-    // union sharing.SharedLinkAlreadyExistsMetadata (shared_links.stone)
+    // union sharing.SharedLinkAlreadyExistsMetadata (sharing_apiv2_shared_links_types.stone)
 
     /**
      * Discriminating tag type for {@link SharedLinkAlreadyExistsMetadata}.

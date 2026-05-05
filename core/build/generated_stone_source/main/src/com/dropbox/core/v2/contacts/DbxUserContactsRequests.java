@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from contacts.stone */
+/* This file was generated from contacts_apiv2_contacts.stone */
 
 package com.dropbox.core.v2.contacts;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  * Routes in namespace "contacts".
  */
 public class DbxUserContactsRequests {
-    // namespace contacts (contacts.stone)
+    // namespace contacts (contacts_apiv2_contacts.stone)
 
     private final DbxRawClientV2 client;
 

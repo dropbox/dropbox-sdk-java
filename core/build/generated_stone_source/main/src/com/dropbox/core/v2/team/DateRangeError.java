@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports.stone */
+/* This file was generated from team_reports_apiv2_team_reports_types.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Errors that can originate from problems in input arguments to reports.
  */
 public enum DateRangeError {
-    // union team.DateRangeError (team_reports.stone)
+    // union team.DateRangeError (team_reports_apiv2_team_reports_types.stone)
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *

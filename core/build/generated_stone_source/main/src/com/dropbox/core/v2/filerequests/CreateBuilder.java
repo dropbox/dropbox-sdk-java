@@ -79,6 +79,19 @@ public class CreateBuilder {
     }
 
     /**
+     * Set value for optional field.
+     *
+     * @param videoProjectId  If this request was created from video project,
+     *     its id.
+     *
+     * @return this builder
+     */
+    public CreateBuilder withVideoProjectId(String videoProjectId) {
+        this._builder.withVideoProjectId(videoProjectId);
+        return this;
+    }
+
+    /**
      * Issues the request.
      */
     public FileRequest start() throws CreateFileRequestErrorException, DbxException {

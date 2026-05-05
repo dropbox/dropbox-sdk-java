@@ -3,7 +3,6 @@
 
 package com.dropbox.core.v2.check;
 
-import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.http.HttpRequestor;
@@ -40,7 +39,7 @@ public class DbxUserCheckRequests {
      *
      * @return EchoResult contains the result returned from the Dropbox servers.
      */
-    EchoResult user(EchoArg arg) throws DbxApiException, DbxException {
+    EchoResult user(EchoArg arg) throws EchoErrorException, DbxException {
         try {
             return this.client.rpcStyle(this.client.getHost().getApi(),
                                         "2/check/user",
@@ -48,10 +47,10 @@ public class DbxUserCheckRequests {
                                         false,
                                         EchoArg.Serializer.INSTANCE,
                                         EchoResult.Serializer.INSTANCE,
-                                        com.dropbox.core.stone.StoneSerializers.void_());
+                                        EchoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"user\":" + ex.getErrorValue());
+            throw new EchoErrorException("2/check/user", ex.getRequestId(), ex.getUserMessage(), (EchoError) ex.getErrorValue());
         }
     }
 
@@ -68,7 +67,7 @@ public class DbxUserCheckRequests {
      *
      * @return EchoResult contains the result returned from the Dropbox servers.
      */
-    public EchoResult user() throws DbxApiException, DbxException {
+    public EchoResult user() throws EchoErrorException, DbxException {
         EchoArg _arg = new EchoArg();
         return user(_arg);
     }
@@ -89,7 +88,7 @@ public class DbxUserCheckRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EchoResult user(String query) throws DbxApiException, DbxException {
+    public EchoResult user(String query) throws EchoErrorException, DbxException {
         if (query == null) {
             throw new IllegalArgumentException("Required value for 'query' is null");
         }

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_common.stone */
+/* This file was generated from team_common_team_common.stone */
 
 package com.dropbox.core.v2.teamcommon;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Time range.
  */
 public class TimeRange {
-    // struct team_common.TimeRange (team_common.stone)
+    // struct team_common.TimeRange (team_common_team_common.stone)
 
     @Nullable
     protected final Date startTime;

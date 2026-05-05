@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users.stone */
+/* This file was generated from users_users_types.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class GetAccountBatchError {
-    // union users.GetAccountBatchError (users.stone)
+    // union users.GetAccountBatchError (users_users_types.stone)
 
     /**
      * Discriminating tag type for {@link GetAccountBatchError}.

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing_apiv2_sharing_files_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 class RelinquishFileMembershipArg {
-    // struct sharing.RelinquishFileMembershipArg (sharing_files.stone)
+    // struct sharing.RelinquishFileMembershipArg (sharing_apiv2_sharing_files_types.stone)
 
     @Nonnull
     protected final String file;

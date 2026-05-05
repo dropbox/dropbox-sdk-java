@@ -44,10 +44,11 @@ public class DbxUserGetThumbnailV2Builder extends DbxDownloadStyleBuilder<Previe
      * <p> If left unset or set to {@code null}, defaults to {@code
      * ThumbnailFormat.JPEG}. </p>
      *
-     * @param format  The format for the thumbnail image, jpeg (default) or png.
-     *     For  images that are photos, jpeg should be preferred, while png is
-     *     better for screenshots and digital arts. Must not be {@code null}.
-     *     Defaults to {@code ThumbnailFormat.JPEG} when set to {@code null}.
+     * @param format  The format for the thumbnail image, jpeg (default), png,
+     *     or webp. For images that are photos, jpeg should be preferred, while
+     *     png is better for screenshots and digital arts, and web for
+     *     compression. Must not be {@code null}. Defaults to {@code
+     *     ThumbnailFormat.JPEG} when set to {@code null}.
      *
      * @return this builder
      *
@@ -95,6 +96,41 @@ public class DbxUserGetThumbnailV2Builder extends DbxDownloadStyleBuilder<Previe
      */
     public DbxUserGetThumbnailV2Builder withMode(ThumbnailMode mode) {
         this._builder.withMode(mode);
+        return this;
+    }
+
+    /**
+     * Set value for optional field.
+     *
+     * <p> If left unset or set to {@code null}, defaults to {@code
+     * ThumbnailQuality.QUALITY_80}. </p>
+     *
+     * @param quality  Quality of the thumbnail image. Must not be {@code null}.
+     *     Defaults to {@code ThumbnailQuality.QUALITY_80} when set to {@code
+     *     null}.
+     *
+     * @return this builder
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public DbxUserGetThumbnailV2Builder withQuality(ThumbnailQuality quality) {
+        this._builder.withQuality(quality);
+        return this;
+    }
+
+    /**
+     * Set value for optional field.
+     *
+     * @param excludeMediaInfo  Normally, {@link FileMetadata#getMediaInfo} is
+     *     set for photo and video. When this flag is true, {@link
+     *     FileMetadata#getMediaInfo} is not populated. This improves latency
+     *     for use cases where `media_info` is not needed.
+     *
+     * @return this builder
+     */
+    public DbxUserGetThumbnailV2Builder withExcludeMediaInfo(Boolean excludeMediaInfo) {
+        this._builder.withExcludeMediaInfo(excludeMediaInfo);
         return this;
     }
 

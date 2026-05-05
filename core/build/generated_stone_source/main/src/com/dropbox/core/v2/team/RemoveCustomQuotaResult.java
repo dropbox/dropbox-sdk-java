@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_member_space_limits.stone */
+/* This file was generated from team_apiv2_team_member_space_limits.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -29,7 +29,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class RemoveCustomQuotaResult {
-    // union team.RemoveCustomQuotaResult (team_member_space_limits.stone)
+    // union team.RemoveCustomQuotaResult (team_apiv2_team_member_space_limits.stone)
 
     /**
      * Discriminating tag type for {@link RemoveCustomQuotaResult}.

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_content_links.stone */
+/* This file was generated from sharing_apiv2_shared_content_links.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum LinkAudience {
-    // union sharing.LinkAudience (shared_content_links.stone)
+    // union sharing.LinkAudience (sharing_apiv2_shared_content_links.stone)
     /**
      * Link is accessible by anyone.
      */

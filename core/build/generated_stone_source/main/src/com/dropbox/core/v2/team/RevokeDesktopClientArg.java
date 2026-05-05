@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.stone */
+/* This file was generated from team_team_devices.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class RevokeDesktopClientArg extends DeviceSessionArg {
-    // struct team.RevokeDesktopClientArg (team_devices.stone)
+    // struct team.RevokeDesktopClientArg (team_team_devices.stone)
 
     protected final boolean deleteOnUnlink;
 

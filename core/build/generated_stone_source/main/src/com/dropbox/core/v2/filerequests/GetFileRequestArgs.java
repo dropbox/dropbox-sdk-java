@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_requests.stone */
+/* This file was generated from file_requests_apiv2_file_requests_public.stone */
 
 package com.dropbox.core.v2.filerequests;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Arguments for {@link DbxUserFileRequestsRequests#get(String)}.
  */
 class GetFileRequestArgs {
-    // struct file_requests.GetFileRequestArgs (file_requests.stone)
+    // struct file_requests.GetFileRequestArgs (file_requests_apiv2_file_requests_public.stone)
 
     @Nonnull
     protected final String id;

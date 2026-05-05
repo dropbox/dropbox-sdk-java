@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing_apiv2_shared_links_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum RequestedLinkAccessLevel {
-    // union sharing.RequestedLinkAccessLevel (shared_links.stone)
+    // union sharing.RequestedLinkAccessLevel (sharing_apiv2_shared_links_types.stone)
     /**
      * Users who use the link can view and comment on the content.
      */

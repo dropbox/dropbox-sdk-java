@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_linked_apps.stone */
+/* This file was generated from team_apiv2_team_linked_apps.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Information on linked applications of a team member.
  */
 public class MemberLinkedApps {
-    // struct team.MemberLinkedApps (team_linked_apps.stone)
+    // struct team.MemberLinkedApps (team_apiv2_team_linked_apps.stone)
 
     @Nonnull
     protected final String teamMemberId;

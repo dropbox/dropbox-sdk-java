@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_linked_apps.stone */
+/* This file was generated from team_apiv2_team_linked_apps.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * DbxTeamTeamRequests#linkedAppsRevokeLinkedAppBatch(java.util.List)}.
  */
 public enum RevokeLinkedAppBatchError {
-    // union team.RevokeLinkedAppBatchError (team_linked_apps.stone)
+    // union team.RevokeLinkedAppBatchError (team_apiv2_team_linked_apps.stone)
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *

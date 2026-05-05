@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing_apiv2_sharing_files_types.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Sharing actions that may be taken on files.
  */
 public enum FileAction {
-    // union sharing.FileAction (sharing_files.stone)
+    // union sharing.FileAction (sharing_apiv2_sharing_files_types.stone)
     /**
      * Disable viewer information on the file.
      */
