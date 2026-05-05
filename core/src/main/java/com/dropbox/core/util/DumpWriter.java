@@ -1,16 +1,16 @@
 package com.dropbox.core.util;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import com.dropbox.core.json.JsonDateReader;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 public abstract class DumpWriter
 {
-    public abstract DumpWriter recordStart(/*@Nullable*/String name);
+    public abstract DumpWriter recordStart(@Nullable String name);
     public abstract DumpWriter recordEnd();
     public abstract DumpWriter f(String name);  // Write a field name.  You should write a value after.
     public abstract DumpWriter listStart();
@@ -63,7 +63,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter recordStart(/*@Nullable*/String name)
+        public DumpWriter recordStart(@Nullable String name)
         {
             prefix();
             if (name != null) {
@@ -149,7 +149,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter recordStart(/*@Nullable*/String name)
+        public DumpWriter recordStart(@Nullable String name)
         {
             if (name != null) {
                 buf.append(name);
@@ -207,7 +207,7 @@ public abstract class DumpWriter
         return f(name).verbatim(s);
     }
 
-    public DumpWriter v(/*@Nullable*/Iterable<? extends Dumpable> list)
+    public DumpWriter v(@Nullable Iterable<? extends Dumpable> list)
     {
         if (list == null) {
             verbatim("null");
@@ -221,7 +221,7 @@ public abstract class DumpWriter
         return this;
     }
 
-    public DumpWriter v(/*@Nullable*/String v)
+    public DumpWriter v(@Nullable String v)
     {
         if (v == null) {
             verbatim("null");
@@ -236,10 +236,10 @@ public abstract class DumpWriter
     public DumpWriter v(boolean v) { return verbatim(Boolean.toString(v)); }
     public DumpWriter v(float v) { return verbatim(Float.toString(v)); }
     public DumpWriter v(double v) { return verbatim(Double.toString(v)); }
-    public DumpWriter v(/*@Nullable*/Date v) { return verbatim(toStringDate(v)); }
-    public DumpWriter v(/*@Nullable*/Long v) { return verbatim(v == null ? "null" : Long.toString(v)); }
+    public DumpWriter v(@Nullable Date v) { return verbatim(toStringDate(v)); }
+    public DumpWriter v(@Nullable Long v) { return verbatim(v == null ? "null" : Long.toString(v)); }
 
-    public DumpWriter v(/*@Nullable*/Dumpable v)
+    public DumpWriter v(@Nullable Dumpable v)
     {
         if (v == null) {
             verbatim("null");
@@ -252,7 +252,7 @@ public abstract class DumpWriter
         return this;
     }
 
-    public static String toStringDate(/*@Nullable*/Date date)
+    public static String toStringDate(@Nullable Date date)
     {
         if (date == null) {
             return "null";

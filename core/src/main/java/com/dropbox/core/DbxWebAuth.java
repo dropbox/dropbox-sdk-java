@@ -1,5 +1,6 @@
 package com.dropbox.core;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import static com.dropbox.core.util.StringUtil.jq;
 
 import java.nio.charset.Charset;
@@ -14,7 +15,6 @@ import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.StringUtil;
 import com.dropbox.core.v2.DbxRawClientV2;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * Does the OAuth 2 "authorization code" flow.  (This SDK does not support the "token" flow.)
@@ -214,7 +214,7 @@ public class DbxWebAuth {
      * instead.
      */
     @Deprecated
-    public String start(/*@Nullable*/String urlState) {
+    public String start(@Nullable String urlState) {
         if (deprecatedRequest == null) {
             throw new IllegalStateException("Must use DbxWebAuth.authorize instead.");
         }
@@ -544,7 +544,7 @@ public class DbxWebAuth {
         return stripped.isEmpty() ? null : stripped;
     }
 
-    static /*@Nullable*/String getParam(Map<String,String[]> params, String name) throws BadRequestException {
+    static @Nullable String getParam(Map<String,String[]> params, String name) throws BadRequestException {
         String[] v = params.get(name);
 
         if (v == null) {

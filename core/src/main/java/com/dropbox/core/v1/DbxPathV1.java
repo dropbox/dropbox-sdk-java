@@ -1,8 +1,8 @@
 package com.dropbox.core.v1;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import static com.dropbox.core.util.StringUtil.jq;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * Utility functions for working with Dropbox paths.  This SDK uses {@code String}s
@@ -23,7 +23,7 @@ public class DbxPathV1
         return (error == null);
     }
 
-    public static /*@Nullable*/String findError(String path)
+    public static @Nullable String findError(String path)
     {
         if (!path.startsWith("/")) return "must start with \"/\"";
         if (path.length() == 1) return null;  // Special case for "/"
@@ -97,7 +97,7 @@ public class DbxPathV1
      *     <li>{@code getParent("/Photos/Recent/Home.jpeg")} &rarr; {@code "/Photos/Recent"}</li>
      * </ul>
      */
-    public static /*@Nullable*/String getParent(String path)
+    public static @Nullable String getParent(String path)
     {
         if (path == null) throw new IllegalArgumentException("'path' can't be null");
         if (!path.startsWith("/")) throw new IllegalArgumentException("Not a valid path.  Doesn't start with a \"/\": \"" + path + "\"");

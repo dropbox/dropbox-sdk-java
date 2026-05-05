@@ -1,5 +1,6 @@
 package com.dropbox.core;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.json.JsonWriter;
@@ -11,7 +12,6 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * This is for mocking things out during testing.  Most of the time you won't have to deal with
@@ -93,7 +93,7 @@ public final class DbxHost {
     }
 
     @Override
-    public boolean equals(/*@Nullable*/Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (obj == this) {
             return true;
         } else if(obj instanceof DbxHost) {
@@ -168,7 +168,7 @@ public final class DbxHost {
         }
     };
 
-    private /*@Nullable*/String inferBaseHost() {
+    private @Nullable String inferBaseHost() {
         if (web.startsWith("meta-") && api.startsWith("api-") && content.startsWith("api-content-") && notify.startsWith("api-notify-")) {
             String webBase = web.substring("meta-".length());
             String apiBase = api.substring("api-".length());

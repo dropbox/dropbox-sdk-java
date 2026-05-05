@@ -1,5 +1,7 @@
 package com.dropbox.core.v1;
 
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
@@ -17,8 +19,6 @@ import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
-/*>>> import checkers.nullness.quals.Nullable; */
-/*>>> import checkers.nullness.quals.PolyNull; */
 
 /**
  * Holds the metadata for a Dropbox file system entry.  Can either be a regular file or a folder.
@@ -165,7 +165,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         };
 
-        public boolean equals(/*@Nullable*/Object o)
+        public boolean equals(@Nullable Object o)
         {
             return o != null && getClass().equals(o.getClass()) && equals((Folder) o);
         }
@@ -233,12 +233,12 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * If this file is a photo, this may contain additional photo-related information.  This field is
          * only populated if you use the {@code includeMediaInfo}
          */
-        public final /*@Nullable*/PhotoInfo photoInfo;
+        public final @Nullable PhotoInfo photoInfo;
 
         /**
          * Contains details about this file if it is a video
          */
-        public final /*@Nullable*/VideoInfo videoInfo;
+        public final @Nullable VideoInfo videoInfo;
 
         /**
          * @param path {@link #path}
@@ -254,7 +254,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          */
         public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize,
                     Date lastModified, Date clientMtime, String rev,
-                    /*@Nullable*/PhotoInfo photoInfo, /*@Nullable*/VideoInfo videoInfo)
+                    @Nullable PhotoInfo photoInfo, @Nullable VideoInfo videoInfo)
         {
             super(path, iconName, mightHaveThumbnail);
             this.numBytes = numBytes;
@@ -288,7 +288,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         }
 
         private static <T extends Dumpable> void nullablePendingField(
-            DumpWriter w, String fieldName, /*@Nullable*/T value, T pendingValue)
+            DumpWriter w, String fieldName, @Nullable T value, T pendingValue)
         {
             if (value == null) return;
 
@@ -322,9 +322,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         };
 
-        public static final JsonReader<DbxEntry./*@Nullable*/File> ReaderMaybeDeleted = new JsonReader<DbxEntry./*@Nullable*/File>()
+        public static final JsonReader<DbxEntry.@Nullable File> ReaderMaybeDeleted = new JsonReader<DbxEntry.@Nullable File>()
         {
-            public final DbxEntry./*@Nullable*/File read(JsonParser parser)
+            public final DbxEntry.@Nullable File read(JsonParser parser)
                 throws IOException, JsonReadException
             {
                 JsonLocation top = parser.getCurrentLocation();
@@ -339,7 +339,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         };
 
-        public boolean equals(/*@Nullable*/Object o)
+        public boolean equals(@Nullable Object o)
         {
             return o != null && getClass().equals(o.getClass()) && equals((File) o);
         }
@@ -378,14 +378,14 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             /**
              * When the photo was taken.
              */
-            public final /*@Nullable*/Date timeTaken;
+            public final @Nullable Date timeTaken;
 
             /**
              * Where the photo was taken.
              */
-            public final /*@Nullable*/Location location;
+            public final @Nullable Location location;
 
-            public PhotoInfo(/*@Nullable*/Date timeTaken, /*@Nullable*/Location location) {
+            public PhotoInfo(@Nullable Date timeTaken, @Nullable Location location) {
                 this.timeTaken = timeTaken;
                 this.location = location;
             }
@@ -425,7 +425,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
 
             @Override
-            public boolean equals(/*@Nullable*/Object o)
+            public boolean equals(@Nullable Object o)
             {
                 return o != null && getClass().equals(o.getClass()) && equals((PhotoInfo) o);
             }
@@ -457,19 +457,19 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             /**
              * When the video was recorded.
              */
-            public final /*@Nullable*/Date timeTaken;
+            public final @Nullable Date timeTaken;
 
             /**
              * Where the video was recorded.
              */
-            public final /*@Nullable*/Location location;
+            public final @Nullable Location location;
 
             /**
              * The duration of the video, in seconds.
              */
-            public final /*@Nullable*/Long duration;
+            public final @Nullable Long duration;
 
-            public VideoInfo(/*@Nullable*/Date timeTaken, /*@Nullable*/Location location, /*@Nullable*/Long duration)
+            public VideoInfo(@Nullable Date timeTaken, @Nullable Location location, @Nullable Long duration)
             {
                 this.timeTaken = timeTaken;
                 this.location = location;
@@ -518,7 +518,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
 
             @Override
-            public boolean equals(/*@Nullable*/Object o)
+            public boolean equals(@Nullable Object o)
             {
                 return o != null && getClass().equals(o.getClass()) && equals((VideoInfo) o);
             }
@@ -557,10 +557,10 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 this.longitude = longitude;
             }
 
-            public static JsonReader</*@Nullable*/Location> Reader = new JsonReader</*@Nullable*/Location>()
+            public static JsonReader<@Nullable Location> Reader = new JsonReader<@Nullable Location>()
             {
                 @Override
-                public /*@Nullable*/Location read(JsonParser parser)
+                public @Nullable Location read(JsonParser parser)
                     throws IOException, JsonReadException
                 {
                     Location location = null;
@@ -597,7 +597,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
 
             @Override
-            public boolean equals(/*@Nullable*/Object o) {
+            public boolean equals(@Nullable Object o) {
                 return o != null && getClass().equals(o.getClass()) && equals((Location) o);
             }
 
@@ -622,9 +622,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         }
     };
 
-    public static final JsonReader</*@Nullable*/DbxEntry> ReaderMaybeDeleted = new JsonReader</*@Nullable*/DbxEntry>()
+    public static final JsonReader<@Nullable DbxEntry> ReaderMaybeDeleted = new JsonReader<@Nullable DbxEntry>()
     {
-        public final /*@Nullable*/DbxEntry read(JsonParser parser)
+        public final @Nullable DbxEntry read(JsonParser parser)
             throws IOException, JsonReadException
         {
             WithChildrenC<?> wc = DbxEntry.readMaybeDeleted(parser, null);
@@ -654,20 +654,20 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * contents.  This value can be used with {@link DbxClientV1#getMetadataWithChildrenIfChanged}
          * to void downloading the folder contents if they havne't changed.
          */
-        public final /*@PolyNull*/String hash;
+        public final @PolyNull String hash;
 
         /**
          * If {@link #entry} is a folder, this will contain the metadata of the folder's
          * immediate children.  If it's not a folder, this will be {@code null}.
          */
-        public final /*@PolyNull*/List<DbxEntry> children;
+        public final @PolyNull List<DbxEntry> children;
 
         /**
          * @param entry {@link #entry}
          * @param hash {@link #hash}
          * @param children {@link #children}
          */
-        public WithChildren(DbxEntry entry, /*@PolyNull*/String hash, /*@PolyNull*/List<DbxEntry> children)
+        public WithChildren(DbxEntry entry, @PolyNull String hash, @PolyNull List<DbxEntry> children)
         {
             this.entry = entry;
             this.hash = hash;
@@ -684,9 +684,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
         };
 
-        public static final JsonReader</*@Nullable*/WithChildren> ReaderMaybeDeleted = new JsonReader</*@Nullable*/WithChildren>()
+        public static final JsonReader<@Nullable WithChildren> ReaderMaybeDeleted = new JsonReader<@Nullable WithChildren>()
         {
-            public final /*@Nullable*/WithChildren read(JsonParser parser)
+            public final @Nullable WithChildren read(JsonParser parser)
                 throws IOException, JsonReadException
             {
                 WithChildrenC<List<DbxEntry>> c = DbxEntry.<List<DbxEntry>>readMaybeDeleted(parser, new Collector.ArrayListCollector<DbxEntry>());
@@ -695,7 +695,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
         };
 
-        public boolean equals(/*@Nullable*/Object o)
+        public boolean equals(@Nullable Object o)
         {
             return o != null && getClass().equals(o.getClass()) && equals((WithChildren) o);
         }
@@ -745,20 +745,20 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * contents.  This value can be used with {@link DbxClientV1#getMetadataWithChildrenIfChanged}
          * to void downloading the folder contents if they havne't changed.
          */
-        public final /*@PolyNull*/String hash;
+        public final @PolyNull String hash;
 
         /**
          * If {@link #entry} is a folder, this will contain the metadata of the folder's
          * immediate children.  If it's not a folder, this will be {@code null}.
          */
-        public final /*@PolyNull*/C children;
+        public final @PolyNull C children;
 
         /**
          * @param entry {@link #entry}
          * @param hash {@link #hash}
          * @param children {@link #children}
          */
-        public WithChildrenC(DbxEntry entry, /*@PolyNull*/String hash, /*@PolyNull*/C children)
+        public WithChildrenC(DbxEntry entry, @PolyNull String hash, @PolyNull C children)
         {
             this.entry = entry;
             this.hash = hash;
@@ -777,12 +777,12 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
         }
 
-        public static class ReaderMaybeDeleted<C> extends JsonReader</*@Nullable*/WithChildrenC<C>>
+        public static class ReaderMaybeDeleted<C> extends JsonReader<@Nullable WithChildrenC<C>>
         {
             private final Collector<DbxEntry,? extends C> collector;
             public ReaderMaybeDeleted(Collector<DbxEntry,? extends C> collector) { this.collector = collector; }
 
-            public final /*@Nullable*/WithChildrenC<C> read(JsonParser parser)
+            public final @Nullable WithChildrenC<C> read(JsonParser parser)
                 throws IOException, JsonReadException
             {
                 return DbxEntry.readMaybeDeleted(parser, collector);
@@ -790,7 +790,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         }
 
         @Override
-        public boolean equals(/*@Nullable*/Object o)
+        public boolean equals(@Nullable Object o)
         {
             return o != null && getClass().equals(o.getClass()) && equals((WithChildrenC) o);
         }
@@ -825,13 +825,13 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         }
     }
 
-    public static <C> /*@Nullable*/WithChildrenC<C> readMaybeDeleted(JsonParser parser, /*@Nullable*/Collector<DbxEntry, ? extends C> collector)
+    public static <C> @Nullable WithChildrenC<C> readMaybeDeleted(JsonParser parser, @Nullable Collector<DbxEntry, ? extends C> collector)
             throws IOException, JsonReadException
     {
         return _read(parser, collector, true);
     }
 
-    public static <C> WithChildrenC<C> read(JsonParser parser, /*@Nullable*/Collector<DbxEntry, ? extends C> collector)
+    public static <C> WithChildrenC<C> read(JsonParser parser, @Nullable Collector<DbxEntry, ? extends C> collector)
         throws IOException, JsonReadException
     {
         WithChildrenC<C> r = _read(parser, collector, false);
@@ -843,7 +843,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
      * @return
  *     {@code null} if the entry is an 'is_deleted' entry.
      */
-    private static <C> /*@Nullable*/WithChildrenC<C> _read(JsonParser parser, /*@Nullable*/Collector<DbxEntry, ? extends C> collector, boolean allowDeleted)
+    private static <C> @Nullable WithChildrenC<C> _read(JsonParser parser, @Nullable Collector<DbxEntry, ? extends C> collector, boolean allowDeleted)
         throws IOException, JsonReadException
     {
         JsonLocation top = JsonReader.expectObjectStart(parser);

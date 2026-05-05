@@ -1,5 +1,6 @@
 package com.dropbox.core;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 
 import static com.dropbox.core.util.StringUtil.jq;
@@ -13,7 +14,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * Identifying information about your application.
@@ -125,7 +125,7 @@ public class DbxAppInfo extends Dumpable {
      * that what you passed in is an actual valid Dropbox API app key.
      * </p>
      */
-    public static /*@Nullable*/String getKeyFormatError(String key) {
+    public static @Nullable String getKeyFormatError(String key) {
         return getTokenPartError(key);
     }
 
@@ -139,7 +139,7 @@ public class DbxAppInfo extends Dumpable {
      * you passed in is an actual valid Dropbox API app key.
      * </p>
      */
-    public static /*@Nullable*/String getSecretFormatError(String key) {
+    public static @Nullable String getSecretFormatError(String key) {
         return getTokenPartError(key);
     }
 
@@ -232,7 +232,7 @@ public class DbxAppInfo extends Dumpable {
 
     };
 
-    public static /*@Nullable*/String getTokenPartError(String s)
+    public static @Nullable String getTokenPartError(String s)
     {
         if (s == null) return null;
         if (s.length() == 0) return "can't be empty";

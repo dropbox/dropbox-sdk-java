@@ -35,10 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/*>>> import checkers.nullness.quals.NonNull; */
-/*>>> import checkers.nullness.quals.Nullable; */
-/*>>> import checkers.nullness.quals.MonotonicNonNull; */
-/*>>> import checkers.initialization.quals.Initialized; */
 
 /**
  * Use this class to make remote calls to the Dropbox API.  You'll need an access token first,

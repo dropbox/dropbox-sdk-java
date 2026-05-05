@@ -1,6 +1,6 @@
 package com.dropbox.core.v2;
 
-/*>>> import checkers.nullness.quals.Nullable; */
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Utility functions for working with Dropbox paths.  This SDK uses {@code String}s
@@ -21,7 +21,7 @@ public class DbxPathV2
         return (error == null);
     }
 
-    public static /*@Nullable*/String findError(String path)
+    public static @Nullable String findError(String path)
     {
         if (path.length() == 0) return null;  // Special case for ""
 
@@ -77,7 +77,7 @@ public class DbxPathV2
      *     <li>{@code getParent("/Photos/Recent/Home.jpeg")} &rarr; {@code "/Photos/Recent"}</li>
      * </ul>
      */
-    public static /*@Nullable*/String getParent(String path)
+    public static @Nullable String getParent(String path)
     {
         if (path == null) throw new IllegalArgumentException("'path' can't be null");
         if (path.length() == 0) return null;

@@ -1,6 +1,6 @@
 package com.dropbox.core;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Base class for API-specific exceptions raised by API v2 routes.

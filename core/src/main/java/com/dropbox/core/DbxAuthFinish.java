@@ -1,5 +1,6 @@
 package com.dropbox.core;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.fasterxml.jackson.core.JsonLocation;
@@ -11,7 +12,6 @@ import java.io.IOException;
 
 import static com.dropbox.core.util.StringUtil.jq;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * When you successfully complete the authorization process, the Dropbox server returns
@@ -24,7 +24,7 @@ public final class DbxAuthFinish {
     private final String userId;
     private final String accountId;
     private final String teamId;
-    private final /*@Nullable*/String urlState;
+    private final @Nullable String urlState;
     private long issueTime;
     private final String scope;
 
@@ -35,7 +35,7 @@ public final class DbxAuthFinish {
      * was passed
      */
     @Deprecated
-    public DbxAuthFinish(String accessToken, String userId, String accountId, String teamId, /*@Nullable*/String urlState) {
+    public DbxAuthFinish(String accessToken, String userId, String accountId, String teamId, @Nullable String urlState) {
         this(accessToken, null, null, userId, teamId, accountId, urlState);
     }
 
@@ -53,7 +53,7 @@ public final class DbxAuthFinish {
      * was passed
      */
     public DbxAuthFinish(String accessToken, Long expiresIn, String refreshToken, String userId,
-                         String teamId, String accountId, /*@Nullable*/String urlState) {
+                         String teamId, String accountId, @Nullable String urlState) {
         this(accessToken, expiresIn, refreshToken, userId, teamId, accountId, urlState, null);
     }
 
@@ -74,7 +74,7 @@ public final class DbxAuthFinish {
      * will get HTTP 401.
      */
     public DbxAuthFinish(String accessToken, Long expiresIn, String refreshToken, String userId,
-                         String teamId, String accountId, /*@Nullable*/String urlState, String
+                         String teamId, String accountId, @Nullable String urlState, String
                              scope) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
@@ -175,7 +175,7 @@ public final class DbxAuthFinish {
      * @return state data passed into {@link DbxWebAuth#start}, or {@code null} if no state was
      * passed
      */
-    public /*@Nullable*/ String getUrlState() {
+    public @Nullable String getUrlState() {
         return urlState;
     }
 
@@ -192,7 +192,7 @@ public final class DbxAuthFinish {
      *
      * @param urlState Custom state passed into /oauth2/authorize
      */
-    DbxAuthFinish withUrlState(/*@Nullable*/ String urlState) {
+    DbxAuthFinish withUrlState(@Nullable String urlState) {
         if (this.urlState != null) {
             throw new IllegalStateException("Already have URL state.");
         }

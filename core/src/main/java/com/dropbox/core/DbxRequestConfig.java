@@ -1,11 +1,11 @@
 package com.dropbox.core;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Locale;
 
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.http.StandardHttpRequestor;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * A grouping of a few configuration parameters for how we should make requests to the
@@ -13,11 +13,11 @@ import com.dropbox.core.http.StandardHttpRequestor;
  */
 public class DbxRequestConfig {
     private final String clientIdentifier;
-    private final /*@Nullable*/String userLocale;
+    private final @Nullable String userLocale;
     private final HttpRequestor httpRequestor;
     private final int maxRetries;
 
-    private DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale, HttpRequestor httpRequestor, int maxRetries) {
+    private DbxRequestConfig(String clientIdentifier, @Nullable String userLocale, HttpRequestor httpRequestor, int maxRetries) {
         if (clientIdentifier == null) throw new NullPointerException("clientIdentifier");
         if (httpRequestor == null) throw new NullPointerException("httpRequestor");
         if (maxRetries < 0) throw new IllegalArgumentException("maxRetries");
@@ -46,7 +46,7 @@ public class DbxRequestConfig {
      * @deprecated Use {@link #newBuilder} to customize configuration
      */
     @Deprecated
-    public DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale) {
+    public DbxRequestConfig(String clientIdentifier, @Nullable String userLocale) {
         this(clientIdentifier, userLocale, StandardHttpRequestor.INSTANCE);
     }
 
@@ -60,7 +60,7 @@ public class DbxRequestConfig {
      * @deprecated Use {@link #newBuilder} to customize configuration
      */
     @Deprecated
-    public DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale, HttpRequestor httpRequestor) {
+    public DbxRequestConfig(String clientIdentifier, @Nullable String userLocale, HttpRequestor httpRequestor) {
         this(clientIdentifier, userLocale, httpRequestor, 0);
     }
 
@@ -228,12 +228,12 @@ public class DbxRequestConfig {
     public static final class Builder {
         private final String clientIdentifier;
 
-        private /*@Nullable*/ String userLocale;
+        private @Nullable String userLocale;
         private HttpRequestor httpRequestor;
         private int maxRetries;
 
         private Builder(String clientIdentifier,
-                        /*@Nullable*/ String userLocale,
+                        @Nullable String userLocale,
                         HttpRequestor httpRequestor,
                         int maxRetries) {
             this.clientIdentifier = clientIdentifier;
@@ -262,7 +262,7 @@ public class DbxRequestConfig {
          *
          * @return this builder
          */
-        public Builder withUserLocale(/*@Nullable*/ String userLocale) {
+        public Builder withUserLocale(@Nullable String userLocale) {
             this.userLocale = userLocale;
             return this;
         }
@@ -292,7 +292,7 @@ public class DbxRequestConfig {
          *
          * @return this builder
          */
-        public Builder withUserLocaleFrom(/*@Nullable*/ Locale userLocale) { // not named withUserLocale because of ambiguous calls when passing 'null'
+        public Builder withUserLocaleFrom(@Nullable Locale userLocale) { // not named withUserLocale because of ambiguous calls when passing 'null'
             this.userLocale = toLanguageTag(userLocale);
             return this;
         }

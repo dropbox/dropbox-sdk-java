@@ -1,5 +1,6 @@
 package com.dropbox.core.json;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import com.dropbox.core.util.IOUtil;
 import static com.dropbox.core.util.LangUtil.mkAssert;
 
@@ -17,7 +18,6 @@ import java.io.InputStream;
 
 import java.util.HashMap;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 public abstract class JsonReader<T>
 {
@@ -41,14 +41,14 @@ public abstract class JsonReader<T>
         // Base implementation does nothing.
     }
 
-    public final T readField(JsonParser parser, String fieldName, /*@Nullable*/Object v)
+    public final T readField(JsonParser parser, String fieldName, @Nullable Object v)
         throws IOException, JsonReadException
     {
         if (v != null) throw new JsonReadException("duplicate field \"" + fieldName + "\"", parser.getTokenLocation());
         return read(parser);
     }
 
-    public final /*@Nullable*/T readOptional(JsonParser parser)
+    public final @Nullable T readOptional(JsonParser parser)
         throws IOException, JsonReadException
     {
         if (parser.getCurrentToken() == JsonToken.VALUE_NULL) {
@@ -423,7 +423,7 @@ public abstract class JsonReader<T>
 
         public static final class Builder
         {
-            private /*@Nullable*/HashMap<String,Integer> fields = new HashMap<String,Integer>();
+            private @Nullable HashMap<String,Integer> fields = new HashMap<String,Integer>();
 
             public void add(String fieldName, int expectedIndex)
             {

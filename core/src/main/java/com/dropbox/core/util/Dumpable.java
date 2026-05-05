@@ -1,6 +1,6 @@
 package com.dropbox.core.util;
 
-/*>>> import checkers.nullness.quals.Nullable; */
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A common superclass for pure-data classes.  Contains a function to dump
@@ -57,6 +57,6 @@ public abstract class Dumpable
         new DumpWriter.Multiline(buf, 2, currentIndent, nl).v(this);
     }
 
-    protected /*@Nullable*/String getTypeName() { return null; }
+    protected @Nullable String getTypeName() { return null; }
     protected abstract void dumpFields(DumpWriter out);
 }

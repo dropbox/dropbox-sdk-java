@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 
 import okio.*;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * {@link HttpRequestor} implementation that uses <a href="http://square.github.io/okhttp/">OkHttp

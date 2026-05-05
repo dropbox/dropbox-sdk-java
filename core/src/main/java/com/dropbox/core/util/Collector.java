@@ -1,8 +1,8 @@
 package com.dropbox.core.util;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.ArrayList;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 public abstract class Collector<E,L>
 {
@@ -11,7 +11,7 @@ public abstract class Collector<E,L>
 
     public static final class ArrayListCollector<E> extends Collector<E,ArrayList<E>>
     {
-        private /*@Nullable*/ArrayList<E> list = new ArrayList<E>();
+        private @Nullable ArrayList<E> list = new ArrayList<E>();
 
         public void add(E element)
         {
@@ -28,7 +28,7 @@ public abstract class Collector<E,L>
         }
     }
 
-    public static final class NullSkipper<E,L> extends Collector</*@Nullable*/E,L>
+    public static final class NullSkipper<E,L> extends Collector<@Nullable E,L>
     {
         private final Collector<E,L> underlying;
 
@@ -37,12 +37,12 @@ public abstract class Collector<E,L>
             this.underlying = underlying;
         }
 
-        public static <E,L> Collector</*@Nullable*/E,L> mk(Collector<E,L> underlying)
+        public static <E,L> Collector<@Nullable E,L> mk(Collector<E,L> underlying)
         {
             return new NullSkipper<E,L>(underlying);
         }
 
-        public void add(/*@Nullable*/E element)
+        public void add(@Nullable E element)
         {
             if (element != null) {
                 underlying.add(element);

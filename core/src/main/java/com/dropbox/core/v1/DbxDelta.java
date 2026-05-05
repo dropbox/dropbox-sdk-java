@@ -1,5 +1,6 @@
 package com.dropbox.core.v1;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
@@ -14,7 +15,6 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.List;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * Represents a single "page" of results from a delta-style API call.
@@ -213,13 +213,13 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
          * </li>
          * </ul>
          */
-        public final /*@Nullable*/MD metadata;
+        public final @Nullable MD metadata;
 
         /**
          * @param lcPath {@link #lcPath}
          * @param metadata {@link #metadata}
          */
-        public Entry(String lcPath, /*@Nullable*/MD metadata)
+        public Entry(String lcPath, @Nullable MD metadata)
         {
             this.lcPath = lcPath;
             this.metadata = metadata;
@@ -269,7 +269,7 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
                     throw new JsonReadException("expecting a two-element array of [path, metadata], found a one-element array: " + jq(lcPath), arrayStart);
                 }
 
-                /*@Nullable*/MD metadata;
+                @Nullable MD metadata;
                 try {
                     metadata = metadataReader.readOptional(parser);
                 }

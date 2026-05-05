@@ -1,5 +1,6 @@
 package com.dropbox.core;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -32,7 +33,6 @@ import com.dropbox.core.v2.common.PathRootError.Serializer;
 import static com.dropbox.core.util.StringUtil.jq;
 import static com.dropbox.core.util.LangUtil.mkAssert;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 public final class DbxRequestUtil {
     private static final Random RAND = new Random();
@@ -47,10 +47,10 @@ public final class DbxRequestUtil {
         }
     }
 
-    public static String buildUrlWithParams(/*@Nullable*/String userLocale,
+    public static String buildUrlWithParams(@Nullable String userLocale,
                                             String host,
                                             String path,
-                                            /*@Nullable*/String/*@Nullable*/[] params) {
+                                            @Nullable String @Nullable [] params) {
         return buildUri(host, path) + "?" + encodeUrlParams(userLocale, params);
     }
 
@@ -74,8 +74,8 @@ public final class DbxRequestUtil {
         }
     }
 
-    private static String encodeUrlParams(/*@Nullable*/String userLocale,
-                                          /*@Nullable*/String/*@Nullable*/[] params) {
+    private static String encodeUrlParams(@Nullable String userLocale,
+                                          @Nullable String @Nullable [] params) {
         StringBuilder buf = new StringBuilder();
         String sep = "";
         if (userLocale != null) {
@@ -104,7 +104,7 @@ public final class DbxRequestUtil {
         return buf.toString();
     }
 
-    public static List<HttpRequestor.Header> addAuthHeader(/*@Nullable*/List<HttpRequestor.Header> headers, String accessToken) {
+    public static List<HttpRequestor.Header> addAuthHeader(@Nullable List<HttpRequestor.Header> headers, String accessToken) {
         if (accessToken == null) throw new NullPointerException("accessToken");
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
 
@@ -112,7 +112,7 @@ public final class DbxRequestUtil {
         return headers;
     }
 
-    public static List<HttpRequestor.Header> addSelectUserHeader(/*@Nullable*/List<HttpRequestor.Header> headers, String memberId) {
+    public static List<HttpRequestor.Header> addSelectUserHeader(@Nullable List<HttpRequestor.Header> headers, String memberId) {
         if (memberId == null) throw new NullPointerException("memberId");
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
 
@@ -120,7 +120,7 @@ public final class DbxRequestUtil {
         return headers;
     }
 
-    public static List<HttpRequestor.Header> addSelectAdminHeader(/*@Nullable*/List<HttpRequestor.Header> headers, String adminId) {
+    public static List<HttpRequestor.Header> addSelectAdminHeader(@Nullable List<HttpRequestor.Header> headers, String adminId) {
         if (adminId == null) throw new NullPointerException("adminId");
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
 
@@ -128,7 +128,7 @@ public final class DbxRequestUtil {
         return headers;
     }
 
-    public static List<HttpRequestor.Header> addBasicAuthHeader(/*@Nullable*/List<HttpRequestor.Header> headers, String username, String password) {
+    public static List<HttpRequestor.Header> addBasicAuthHeader(@Nullable List<HttpRequestor.Header> headers, String username, String password) {
         if (username == null) throw new NullPointerException("username");
         if (password == null) throw new NullPointerException("password");
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
@@ -140,7 +140,7 @@ public final class DbxRequestUtil {
     }
 
     public static List<HttpRequestor.Header> addUserAgentHeader(
-        /*@Nullable*/List<HttpRequestor.Header> headers,
+        @Nullable List<HttpRequestor.Header> headers,
         DbxRequestConfig requestConfig,
         String sdkUserAgentIdentifier
     ) {
@@ -149,7 +149,7 @@ public final class DbxRequestUtil {
         return headers;
     }
 
-    public static List<HttpRequestor.Header> addUserLocaleHeader(/*@Nullable*/List<HttpRequestor.Header> headers, DbxRequestConfig requestConfig) {
+    public static List<HttpRequestor.Header> addUserLocaleHeader(@Nullable List<HttpRequestor.Header> headers, DbxRequestConfig requestConfig) {
         if (requestConfig.getUserLocale() == null) {
             return headers;
         }
@@ -163,7 +163,7 @@ public final class DbxRequestUtil {
         return new HttpRequestor.Header("User-Agent",  requestConfig.getClientIdentifier() + " " + sdkUserAgentIdentifier + "/" + DbxSdkVersion.Version);
     }
 
-    public static List<HttpRequestor.Header> addPathRootHeader(/*@Nullable*/List<HttpRequestor.Header> headers, PathRoot pathRoot) {
+    public static List<HttpRequestor.Header> addPathRootHeader(@Nullable List<HttpRequestor.Header> headers, PathRoot pathRoot) {
         if (pathRoot == null) {
             return headers;
         }
@@ -173,7 +173,7 @@ public final class DbxRequestUtil {
         return headers;
     }
 
-    public static List<HttpRequestor.Header> removeAuthHeader(/*@Nullable*/List<HttpRequestor.Header> headers) {
+    public static List<HttpRequestor.Header> removeAuthHeader(@Nullable List<HttpRequestor.Header> headers) {
         if (headers == null) {
             return new ArrayList<HttpRequestor.Header>();
         }
@@ -198,8 +198,8 @@ public final class DbxRequestUtil {
                                                   String sdkUserAgentIdentifier,
                                                   String host,
                                                   String path,
-                                                  /*@Nullable*/String/*@Nullable*/[] params,
-                                                  /*@Nullable*/List<HttpRequestor.Header> headers)
+                                                  @Nullable String @Nullable [] params,
+                                                  @Nullable List<HttpRequestor.Header> headers)
         throws NetworkIOException {
         headers = copyHeaders(headers);
         headers = addUserAgentHeader(headers, requestConfig, sdkUserAgentIdentifier);
@@ -221,8 +221,8 @@ public final class DbxRequestUtil {
                                                   String accessToken,
                                                   String sdkUserAgentIdentifier,
                                                   String host, String path,
-                                                  /*@Nullable*/String/*@Nullable*/[] params,
-                                                  /*@Nullable*/List<HttpRequestor.Header> headers)
+                                                  @Nullable String @Nullable [] params,
+                                                  @Nullable List<HttpRequestor.Header> headers)
         throws NetworkIOException {
         headers = copyHeaders(headers);
         headers = addUserAgentHeader(headers, requestConfig, sdkUserAgentIdentifier);
@@ -244,8 +244,8 @@ public final class DbxRequestUtil {
                                                          String sdkUserAgentIdentifier,
                                                          String host,
                                                          String path,
-                                                         /*@Nullable*/String/*@Nullable*/[] params,
-                                                         /*@Nullable*/List<HttpRequestor.Header> headers)
+                                                         @Nullable String @Nullable [] params,
+                                                         @Nullable List<HttpRequestor.Header> headers)
         throws NetworkIOException {
         byte[] encodedParams = StringUtil.stringToUtf8(encodeUrlParams(requestConfig.getUserLocale(), params));
 
@@ -264,7 +264,7 @@ public final class DbxRequestUtil {
                                                       String host,
                                                       String path,
                                                       byte[] body,
-                                                      /*@Nullable*/List<HttpRequestor.Header> headers)
+                                                      @Nullable List<HttpRequestor.Header> headers)
         throws NetworkIOException {
         String uri = buildUri(host, path);
 
@@ -459,8 +459,8 @@ public final class DbxRequestUtil {
                               final String sdkUserAgentIdentifier,
                               final String host,
                               final String path,
-                              final /*@Nullable*/String/*@Nullable*/[] params,
-                              final /*@Nullable*/List<HttpRequestor.Header> headers,
+                              final @Nullable String @Nullable [] params,
+                              final @Nullable List<HttpRequestor.Header> headers,
                               final ResponseHandler<T> handler)
         throws DbxException {
         return runAndRetry(requestConfig.getMaxRetries(), new RequestMaker<T, DbxException>() {
@@ -486,8 +486,8 @@ public final class DbxRequestUtil {
                                String sdkUserAgentIdentifier,
                                String host,
                                String path,
-                               /*@Nullable*/String/*@Nullable*/[] params,
-                               /*@Nullable*/List<HttpRequestor.Header> headers,
+                               @Nullable String @Nullable [] params,
+                               @Nullable List<HttpRequestor.Header> headers,
                                ResponseHandler<T> handler)
         throws DbxException {
         headers = copyHeaders(headers);
@@ -499,8 +499,8 @@ public final class DbxRequestUtil {
                                      final String sdkUserAgentIdentifier,
                                      final String host,
                                      final String path,
-                                     final /*@Nullable*/String/*@Nullable*/[] params,
-                                     final /*@Nullable*/List<HttpRequestor.Header> headers,
+                                     final @Nullable String @Nullable [] params,
+                                     final @Nullable List<HttpRequestor.Header> headers,
                                      final ResponseHandler<T> handler)
         throws DbxException {
         return runAndRetry(requestConfig.getMaxRetries(), new RequestMaker<T, DbxException>() {
@@ -530,7 +530,7 @@ public final class DbxRequestUtil {
         return values.get(0);
     }
 
-    public static /*@Nullable*/String getFirstHeaderMaybe(HttpRequestor.Response response, String name) {
+    public static @Nullable String getFirstHeaderMaybe(HttpRequestor.Response response, String name) {
         List<String> values = response.getHeaders().get(name);
         if (values == null || values.isEmpty()) {
             return null;
@@ -538,11 +538,11 @@ public final class DbxRequestUtil {
         return values.get(0);
     }
 
-    public static /*@Nullable*/ String getRequestId(HttpRequestor.Response response) {
+    public static @Nullable String getRequestId(HttpRequestor.Response response) {
         return DbxRequestUtil.getFirstHeaderMaybe(response, "X-Dropbox-Request-Id");
     }
 
-    public static /*@Nullable*/ String getContentType(HttpRequestor.Response response) {
+    public static @Nullable String getContentType(HttpRequestor.Response response) {
         return DbxRequestUtil.getFirstHeaderMaybe(response, "Content-Type");
     }
 

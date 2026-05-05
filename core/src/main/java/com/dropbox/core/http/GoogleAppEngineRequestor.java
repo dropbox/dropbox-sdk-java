@@ -19,7 +19,6 @@ import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * {@link HttpRequestor} implementation that uses Google App Engine URL fetch service.

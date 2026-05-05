@@ -9,14 +9,13 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
 
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.ProgressOutputStream;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * {@link HttpRequestor} implementation that uses Java's standard library
