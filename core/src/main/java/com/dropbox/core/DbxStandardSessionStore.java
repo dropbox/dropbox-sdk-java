@@ -1,5 +1,6 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import jakarta.servlet.http.HttpSession;
 
@@ -20,19 +21,19 @@ import jakarta.servlet.http.HttpSession;
  * </pre>
  */
 public final class DbxStandardSessionStore implements DbxSessionStore {
-    private final HttpSession session;
-    private final String key;
+    private final @Nonnull HttpSession session;
+    private final @Nonnull String key;
 
-    public DbxStandardSessionStore(HttpSession session, String key) {
+    public DbxStandardSessionStore(@Nonnull HttpSession session, @Nonnull String key) {
         this.session = session;
         this.key = key;
     }
 
-    public HttpSession getSession() {
+    public @Nonnull HttpSession getSession() {
         return session;
     }
 
-    public String getKey() {
+    public @Nonnull String getKey() {
         return key;
     }
 
@@ -44,7 +45,7 @@ public final class DbxStandardSessionStore implements DbxSessionStore {
     }
 
     @Override
-    public void set(String value) {
+    public void set(@Nonnull String value) {
         session.setAttribute(key, value);
     }
 

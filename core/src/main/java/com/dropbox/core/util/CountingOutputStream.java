@@ -3,12 +3,14 @@ package com.dropbox.core.util;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
+
 public class CountingOutputStream extends OutputStream
 {
-    private final OutputStream out;
+    private final @Nonnull OutputStream out;
     private long bytesWritten = 0;
 
-    public CountingOutputStream(OutputStream out)
+    public CountingOutputStream(@Nonnull OutputStream out)
     {
         this.out = out;
     }
@@ -26,14 +28,14 @@ public class CountingOutputStream extends OutputStream
     }
 
     @Override
-    public void write(byte[] b) throws IOException
+    public void write(@Nonnull byte[] b) throws IOException
     {
         bytesWritten += b.length;
         out.write(b);
     }
 
     @Override
-    public void write(byte[] b, int off, int len) throws IOException
+    public void write(@Nonnull byte[] b, int off, int len) throws IOException
     {
         bytesWritten += len;
         out.write(b, off, len);

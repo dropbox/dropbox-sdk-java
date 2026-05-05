@@ -2,6 +2,9 @@ package com.dropbox.core;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The base exception thrown by Dropbox API calls.  Normally, you'll need to do something specific
  * for {@link InvalidAccessTokenException} and possibly for {@link RetryException}.  The rest you
@@ -10,22 +13,22 @@ import java.io.IOException;
 public class DbxException extends Exception {
     private static final long serialVersionUID = 0L;
 
-    private final String requestId;
+    private final @Nullable String requestId;
 
-    public DbxException(String message) {
+    public DbxException(@Nullable String message) {
         this(null, message);
     }
 
-    public DbxException(String requestId, String message) {
+    public DbxException(@Nullable String requestId, @Nullable String message) {
         super(message);
         this.requestId = requestId;
     }
 
-    public DbxException(String message, Throwable cause) {
+    public DbxException(@Nullable String message, @Nonnull Throwable cause) {
         this(null, message, cause);
     }
 
-    public DbxException(String requestId, String message, Throwable cause) {
+    public DbxException(@Nullable String requestId, @Nullable String message, @Nonnull Throwable cause) {
         super(message, cause);
         this.requestId = requestId;
     }
@@ -41,7 +44,7 @@ public class DbxException extends Exception {
      * @return unique ID associated with the request that caused this exception, or {@code null} if
      * one is not available.
      */
-    public String getRequestId() {
+    public @Nullable String getRequestId() {
         return requestId;
     }
 }

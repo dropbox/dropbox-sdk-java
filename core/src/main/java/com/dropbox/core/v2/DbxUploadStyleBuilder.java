@@ -6,6 +6,9 @@ import com.dropbox.core.util.IOUtil;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The common interface for all builders associated with upload style methods. After setting any
  * optional request parameters, use {@link #start} or {@link #uploadAndFinish} to initiate the
@@ -70,7 +73,7 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
      *
      * @throws DbxException if an error occursing initializing the request
      */
-    public abstract DbxUploader<R, E, X> start() throws DbxException;
+    public abstract @Nonnull DbxUploader<R, E, X> start() throws DbxException;
 
     /**
      * Convenience method for {@link DbxUploader#uploadAndFinish(InputStream)}:
@@ -87,7 +90,7 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
      * @throws DbxException if an error occurs uploading the data or reading the response
      * @throws IOException if an error occurs reading the input stream.
      */
-    public R uploadAndFinish(InputStream in) throws X, DbxException, IOException
+    public @Nullable R uploadAndFinish(@Nonnull InputStream in) throws X, DbxException, IOException
     {
         return start().uploadAndFinish(in);
     }
@@ -108,7 +111,7 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
      * @throws DbxException if an error occurs uploading the data or reading the response
      * @throws IOException if an error occurs reading the input stream.
      */
-    public R uploadAndFinish(InputStream in, long limit) throws X, DbxException, IOException
+    public @Nullable R uploadAndFinish(@Nonnull InputStream in, long limit) throws X, DbxException, IOException
     {
         return start().uploadAndFinish(in, limit);
     }
@@ -131,7 +134,9 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
      * @throws DbxException if an error occurs uploading the data or reading the response
      * @throws IOException if an error occurs reading the input stream.
      */
-    public R uploadAndFinish(InputStream in, long limit, IOUtil.ProgressListener progressListener)
+    public @Nullable R uploadAndFinish(@Nonnull InputStream in,
+                                       long limit,
+                                       @Nullable IOUtil.ProgressListener progressListener)
             throws X, DbxException, IOException
     {
         return start().uploadAndFinish(in, limit, progressListener);
@@ -154,7 +159,7 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
      * @throws DbxException if an error occurs uploading the data or reading the response
      * @throws IOException if an error occurs reading the input stream.
      */
-    public R uploadAndFinish(InputStream in, IOUtil.ProgressListener progressListener)
+    public @Nullable R uploadAndFinish(@Nonnull InputStream in, @Nullable IOUtil.ProgressListener progressListener)
             throws X, DbxException, IOException
     {
         return start().uploadAndFinish(in, progressListener);

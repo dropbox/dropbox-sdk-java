@@ -11,35 +11,42 @@ import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.v2.callbacks.DbxGlobalCallbackFactory;
 import com.dropbox.core.v2.callbacks.DbxRouteErrorCallback;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * For internal use only.
  */
 public final class DbxWrappedException extends Exception {
     private static final long serialVersionUID = 0L;
 
-    private final Object errValue;  // Really an ErrT instance, but Throwable does not allow generic subclasses.
-    private final String requestId;
-    private final LocalizedText userMessage;
+    private final @Nonnull Object errValue;  // Really an ErrT instance, but Throwable does not allow generic subclasses.
+    private final @Nullable String requestId;
+    private final @Nullable LocalizedText userMessage;
 
-    public DbxWrappedException(Object errValue, String requestId, LocalizedText userMessage) {
+    public DbxWrappedException(@Nonnull Object errValue,
+                               @Nullable String requestId,
+                               @Nullable LocalizedText userMessage) {
         this.errValue = errValue;
         this.requestId = requestId;
         this.userMessage = userMessage;
     }
 
-    public Object getErrorValue() {
+    public @Nonnull Object getErrorValue() {
         return errValue;
     }
 
-    public String getRequestId() {
+    public @Nullable String getRequestId() {
         return requestId;
     }
 
-    public LocalizedText getUserMessage() {
+    public @Nullable LocalizedText getUserMessage() {
         return userMessage;
     }
 
-    public static <T> DbxWrappedException fromResponse(StoneSerializer<T> errSerializer, HttpRequestor.Response response, String userId)
+    public static <T> @Nonnull DbxWrappedException fromResponse(@Nonnull StoneSerializer<T> errSerializer,
+                                                                @Nonnull HttpRequestor.Response response,
+                                                                @Nullable String userId)
         throws IOException, JsonParseException {
         String requestId = DbxRequestUtil.getRequestId(response);
 
@@ -55,7 +62,9 @@ public final class DbxWrappedException extends Exception {
         return new DbxWrappedException(routeError, requestId, apiResponse.getUserMessage());
     }
 
-    public static void executeOtherBlocks(DbxGlobalCallbackFactory factory, String userId, Object routeError) {
+    public static void executeOtherBlocks(@Nullable DbxGlobalCallbackFactory factory,
+                                          @Nullable String userId,
+                                          @Nullable Object routeError) {
         try {
             // Recursively looks at union errors and the union's current tag type. If there is a handler
             // for the current tag type, it is executed.
@@ -75,7 +84,9 @@ public final class DbxWrappedException extends Exception {
         }
     }
 
-    public static <T> void executeBlockForObject(DbxGlobalCallbackFactory factory, String userId, T routeError) {
+    public static <T> void executeBlockForObject(@Nullable DbxGlobalCallbackFactory factory,
+                                                 @Nullable String userId,
+                                                 @Nullable T routeError) {
         if (factory != null) {
             DbxRouteErrorCallback<T> callback = factory.createRouteErrorCallback(userId, routeError);
             if (callback != null) {

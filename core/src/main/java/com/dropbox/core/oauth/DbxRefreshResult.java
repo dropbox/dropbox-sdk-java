@@ -1,6 +1,7 @@
 package com.dropbox.core.oauth;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.dropbox.core.DbxAuthFinish;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.json.JsonReadException;
@@ -18,10 +19,10 @@ import java.io.IOException;
  * access token and expiration time.
  */
 public class DbxRefreshResult {
-    private final String accessToken;
+    private final @Nonnull String accessToken;
     private final long expiresIn; /* in seconds */
     private long issueTime; /* in milliseconds */
-    private String scope;
+    private @Nullable String scope;
 
     /**
      * @param accessToken OAuth access token.
@@ -37,7 +38,7 @@ public class DbxRefreshResult {
      * @param expiresIn Duration time of accessToken in second.
      * was passed
      */
-    public DbxRefreshResult(@Nonnull String accessToken, long expiresIn, String scope) {
+    public DbxRefreshResult(@Nonnull String accessToken, long expiresIn, @Nullable String scope) {
         if (accessToken == null) {
             throw new IllegalArgumentException("access token can't be null.");
         }
@@ -53,7 +54,7 @@ public class DbxRefreshResult {
      *
      * @return OAuth access token used for authorization with Dropbox servers
      */
-    public String getAccessToken() {
+    public @Nonnull String getAccessToken() {
         return accessToken;
     }
 
@@ -63,7 +64,7 @@ public class DbxRefreshResult {
      *
      * @return OAuth access token used for authorization with Dropbox servers
      */
-    public Long getExpiresAt() {
+    public @Nonnull Long getExpiresAt() {
         return issueTime + expiresIn * 1000;
     }
 
@@ -71,7 +72,7 @@ public class DbxRefreshResult {
      * @return If you specified a subset of original scope in refresh call, this value shows what
      * permissions the new short lived token has.
      */
-    public String getScope() {
+    public @Nullable String getScope() {
         return scope;
     }
 
@@ -85,8 +86,8 @@ public class DbxRefreshResult {
     /**
      * For JSON parsing.
      */
-    public static final JsonReader<DbxRefreshResult> Reader = new JsonReader<DbxRefreshResult>() {
-        public DbxRefreshResult read(JsonParser parser) throws IOException, JsonReadException {
+    public static final @Nonnull JsonReader<DbxRefreshResult> Reader = new JsonReader<DbxRefreshResult>() {
+        public @Nonnull DbxRefreshResult read(@Nonnull JsonParser parser) throws IOException, JsonReadException {
             JsonLocation top = JsonReader.expectObjectStart(parser);
 
             String tokenType = null;

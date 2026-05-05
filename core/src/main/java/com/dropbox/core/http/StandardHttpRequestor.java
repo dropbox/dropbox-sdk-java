@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
@@ -34,7 +35,7 @@ public class StandardHttpRequestor extends HttpRequestor {
      * A thread-safe instance of {@code StandardHttpRequestor} that connects directly
      * (as opposed to using a proxy).
      */
-    public static final StandardHttpRequestor INSTANCE = new StandardHttpRequestor(Config.DEFAULT_INSTANCE);
+    public static final @Nonnull StandardHttpRequestor INSTANCE = new StandardHttpRequestor(Config.DEFAULT_INSTANCE);
 
     private static volatile boolean certPinningWarningLogged = false;
 
@@ -43,11 +44,11 @@ public class StandardHttpRequestor extends HttpRequestor {
     /**
      * Creates an instance that connects through the given proxy.
      */
-    public StandardHttpRequestor(Config config) {
+    public StandardHttpRequestor(@Nonnull Config config) {
         this.config = config;
     }
 
-    private Response toResponse(HttpURLConnection conn) throws IOException {
+    private @Nonnull Response toResponse(@Nonnull HttpURLConnection conn) throws IOException {
         int responseCode = conn.getResponseCode();
         InputStream bodyStream;
         if (responseCode >= 400 || responseCode == -1) {
@@ -60,7 +61,7 @@ public class StandardHttpRequestor extends HttpRequestor {
     }
 
     @Override
-    public Response doGet(String url, Iterable<Header> headers) throws IOException {
+    public @Nonnull Response doGet(@Nonnull String url, @Nonnull Iterable<Header> headers) throws IOException {
         HttpURLConnection conn = prepRequest(url, headers, false);
         conn.setRequestMethod("GET");
         conn.connect();
@@ -68,14 +69,14 @@ public class StandardHttpRequestor extends HttpRequestor {
     }
 
     @Override
-    public Uploader startPost(String url, Iterable<Header> headers) throws IOException {
+    public @Nonnull Uploader startPost(@Nonnull String url, @Nonnull Iterable<Header> headers) throws IOException {
         HttpURLConnection conn = prepRequest(url, headers, false);
         conn.setRequestMethod("POST");
         return new Uploader(conn);
     }
 
     @Override
-    public Uploader startPostInStreamingMode(String url, Iterable<Header> headers) throws
+    public @Nonnull Uploader startPostInStreamingMode(@Nonnull String url, @Nonnull Iterable<Header> headers) throws
         IOException {
         HttpURLConnection conn = prepRequest(url, headers, true);
         conn.setRequestMethod("POST");
@@ -83,7 +84,7 @@ public class StandardHttpRequestor extends HttpRequestor {
     }
 
     @Override
-    public Uploader startPut(String url, Iterable<Header> headers) throws IOException {
+    public @Nonnull Uploader startPut(@Nonnull String url, @Nonnull Iterable<Header> headers) throws IOException {
         HttpURLConnection conn = prepRequest(url, headers, false);
         conn.setRequestMethod("PUT");
         return new Uploader(conn);
@@ -97,7 +98,7 @@ public class StandardHttpRequestor extends HttpRequestor {
      * @deprecated use {@link #configure} instead.
      */
     @Deprecated
-    protected void configureConnection(HttpsURLConnection conn) throws IOException { }
+    protected void configureConnection(@Nonnull HttpsURLConnection conn) throws IOException { }
 
     /**
      * Can be overriden to configure the underlying {@link HttpURLConnection} used to make network
@@ -112,7 +113,7 @@ public class StandardHttpRequestor extends HttpRequestor {
      *
      * @param conn URL connection object returned after creating an https network request.
      */
-    protected void configure(HttpURLConnection conn) throws IOException { }
+    protected void configure(@Nonnull HttpURLConnection conn) throws IOException { }
 
     /**
      * Called before returning {@link Response} from a request.
@@ -126,9 +127,9 @@ public class StandardHttpRequestor extends HttpRequestor {
      *
      * @param conn HTTP URL connection
      */
-    protected void interceptResponse(HttpURLConnection conn) throws IOException { }
+    protected void interceptResponse(@Nonnull HttpURLConnection conn) throws IOException { }
 
-    private static OutputStream getOutputStream(HttpURLConnection conn) throws IOException {
+    private static @Nonnull OutputStream getOutputStream(@Nonnull HttpURLConnection conn) throws IOException {
         conn.setDoOutput(true);
         return conn.getOutputStream();
     }
@@ -137,7 +138,7 @@ public class StandardHttpRequestor extends HttpRequestor {
         private final ProgressOutputStream out;
         private HttpURLConnection conn;
 
-        public Uploader(HttpURLConnection conn) throws IOException {
+        public Uploader(@Nonnull HttpURLConnection conn) throws IOException {
             this.conn = conn;
             this.out = new ProgressOutputStream(getOutputStream(conn));
 
@@ -145,7 +146,7 @@ public class StandardHttpRequestor extends HttpRequestor {
         }
 
         @Override
-        public OutputStream getBody() {
+        public @Nonnull OutputStream getBody() {
             return out;
         }
 
@@ -178,7 +179,7 @@ public class StandardHttpRequestor extends HttpRequestor {
         }
 
         @Override
-        public Response finish() throws IOException {
+        public @Nonnull Response finish() throws IOException {
             if (conn == null) {
                 throw new IllegalStateException("Can't finish().  Uploader already closed.");
             }
@@ -190,13 +191,16 @@ public class StandardHttpRequestor extends HttpRequestor {
             }
         }
 
-        public void setProgressListener(IOUtil.ProgressListener progressListener) {
+        @Override
+        public void setProgressListener(@Nullable IOUtil.ProgressListener progressListener) {
             out.setListener(progressListener);
         }
     }
 
 
-    protected HttpURLConnection prepRequest(String url, Iterable<Header> headers, boolean streaming) throws IOException {
+    protected @Nonnull HttpURLConnection prepRequest(@Nonnull String url,
+                                                     @Nonnull Iterable<Header> headers,
+                                                     boolean streaming) throws IOException {
         URL urlObject = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) urlObject.openConnection(config.getProxy());
 
@@ -261,17 +265,17 @@ public class StandardHttpRequestor extends HttpRequestor {
          * {@link Config} with all its attributes set to their default
          * values.
          */
-        public static final Config DEFAULT_INSTANCE = builder().build();
+        public static final @Nonnull Config DEFAULT_INSTANCE = builder().build();
 
         private final Proxy proxy;
         private final long connectTimeoutMillis;
         private final long readTimeoutMillis;
         private final SSLSocketFactory sslSocketFactory;
 
-        private Config(Proxy proxy,
+        private Config(@Nonnull Proxy proxy,
                        long connectTimeoutMillis,
                        long readTimeoutMillis,
-                       SSLSocketFactory sslSocketFactory) {
+                       @Nullable SSLSocketFactory sslSocketFactory) {
             this.proxy = proxy;
             this.connectTimeoutMillis = connectTimeoutMillis;
             this.readTimeoutMillis = readTimeoutMillis;
@@ -283,7 +287,7 @@ public class StandardHttpRequestor extends HttpRequestor {
          *
          * @return proxy configuration to use for network connections.
          */
-        public Proxy getProxy() {
+        public @Nonnull Proxy getProxy() {
             return proxy;
         }
 
@@ -319,8 +323,7 @@ public class StandardHttpRequestor extends HttpRequestor {
          *
          * @return SSLSocketFactory or null.
          */
-        @Nullable
-        public SSLSocketFactory getSslSocketFactory() {
+        public @Nullable SSLSocketFactory getSslSocketFactory() {
             return sslSocketFactory;
         }
 
@@ -331,7 +334,7 @@ public class StandardHttpRequestor extends HttpRequestor {
          *
          * @return builder for creating a copy of this config.
          */
-        public Builder copy() {
+        public @Nonnull Builder copy() {
             return new Builder(proxy, connectTimeoutMillis, readTimeoutMillis, sslSocketFactory);
         }
 
@@ -340,7 +343,7 @@ public class StandardHttpRequestor extends HttpRequestor {
          *
          * @return builder for creating an instance of this class
          */
-        public static Builder builder() {
+        public static @Nonnull Builder builder() {
             return new Builder();
         }
 
@@ -357,7 +360,10 @@ public class StandardHttpRequestor extends HttpRequestor {
                 this(Proxy.NO_PROXY, DEFAULT_CONNECT_TIMEOUT_MILLIS, DEFAULT_READ_TIMEOUT_MILLIS, null);
             }
 
-            private Builder(Proxy proxy, long connectTimeoutMillis, long readTimeoutMillis, SSLSocketFactory sslSocketFactory) {
+            private Builder(@Nonnull Proxy proxy,
+                            long connectTimeoutMillis,
+                            long readTimeoutMillis,
+                            @Nullable SSLSocketFactory sslSocketFactory) {
                 this.proxy = proxy;
                 this.connectTimeoutMillis = connectTimeoutMillis;
                 this.readTimeoutMillis = readTimeoutMillis;
@@ -373,7 +379,7 @@ public class StandardHttpRequestor extends HttpRequestor {
              *
              * @throws NullPointerException if {@code proxy} is {@code null}
              */
-            public Builder withProxy(Proxy proxy) {
+            public @Nonnull Builder withProxy(@Nonnull Proxy proxy) {
                 if (proxy == null) {
                     throw new NullPointerException("proxy");
                 }
@@ -387,7 +393,7 @@ public class StandardHttpRequestor extends HttpRequestor {
              *
              * @return this builder
              */
-            public Builder withNoConnectTimeout() {
+            public @Nonnull Builder withNoConnectTimeout() {
                 return withConnectTimeout(0L, TimeUnit.MILLISECONDS);
             }
 
@@ -404,7 +410,7 @@ public class StandardHttpRequestor extends HttpRequestor {
              * @throws IllegalArgumentException if {@code timeout} is negative
              * @throws NullPointerException if {@code unit} is {@code null}
              */
-            public Builder withConnectTimeout(long timeout, TimeUnit unit) {
+            public @Nonnull Builder withConnectTimeout(long timeout, @Nonnull TimeUnit unit) {
                 this.connectTimeoutMillis = checkTimeoutMillis(timeout, unit);
                 return this;
             }
@@ -414,7 +420,7 @@ public class StandardHttpRequestor extends HttpRequestor {
              *
              * @return this builder
              */
-            public Builder withNoReadTimeout() {
+            public @Nonnull Builder withNoReadTimeout() {
                 return withReadTimeout(0L, TimeUnit.MILLISECONDS);
             }
 
@@ -436,7 +442,7 @@ public class StandardHttpRequestor extends HttpRequestor {
              * @throws IllegalArgumentException if {@code timeout} is negative
              * @throws NullPointerException if {@code unit} is {@code null}
              */
-            public Builder withReadTimeout(long timeout, TimeUnit unit) {
+            public @Nonnull Builder withReadTimeout(long timeout, @Nonnull TimeUnit unit) {
                 this.readTimeoutMillis = checkTimeoutMillis(timeout, unit);
                 return this;
             }
@@ -451,7 +457,7 @@ public class StandardHttpRequestor extends HttpRequestor {
              *
              * @return this builder
              */
-            public Builder withSslSocketFactory(SSLSocketFactory sslSocketFactory) {
+            public @Nonnull Builder withSslSocketFactory(@Nullable SSLSocketFactory sslSocketFactory) {
                 this.sslSocketFactory = sslSocketFactory;
                 return this;
             }
@@ -461,7 +467,7 @@ public class StandardHttpRequestor extends HttpRequestor {
              *
              * @return {@link Config} with this builder's values
              */
-            public Config build() {
+            public @Nonnull Config build() {
                 return new Config(
                     proxy,
                     connectTimeoutMillis,
@@ -470,7 +476,7 @@ public class StandardHttpRequestor extends HttpRequestor {
                 );
             }
 
-            private static long checkTimeoutMillis(long timeout, TimeUnit unit) {
+            private static long checkTimeoutMillis(long timeout, @Nonnull TimeUnit unit) {
                 if (unit == null) {
                     throw new NullPointerException("unit");
                 }

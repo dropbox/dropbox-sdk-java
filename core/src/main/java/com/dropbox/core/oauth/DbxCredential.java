@@ -1,5 +1,6 @@
 package com.dropbox.core.oauth;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxHost;
@@ -43,18 +44,18 @@ public class DbxCredential {
      */
     public final static long EXPIRE_MARGIN = 5 * 60 * 1000; // 5 minutes
 
-    private String accessToken;
+    private @Nonnull String accessToken;
     private @Nullable Long expiresAt;
-    private final String refreshToken;
-    private final String appKey;
-    private final String appSecret;
+    private final @Nullable String refreshToken;
+    private final @Nullable String appKey;
+    private final @Nullable String appSecret;
 
     /**
      * Create a DbxCredential object that doesn't support refreshing.
      *
      * @param accessToken Short live token or legacty long live token.
      */
-    public DbxCredential(String accessToken) {
+    public DbxCredential(@Nonnull String accessToken) {
         this(accessToken, null, null, null, null);
     }
 
@@ -67,8 +68,10 @@ public class DbxCredential {
      * @param refreshToken Refresh token from OAuth flow.
      * @param appKey You app's client id.
      */
-    public DbxCredential(String accessToken, Long expiresAt, String refreshToken, String
-        appKey) {
+    public DbxCredential(@Nonnull String accessToken,
+                         @Nullable Long expiresAt,
+                         @Nullable String refreshToken,
+                         @Nullable String appKey) {
         this(accessToken, expiresAt, refreshToken, appKey, null);
     }
 
@@ -81,7 +84,11 @@ public class DbxCredential {
      * @param appKey You app's client id.
      * @param appSecret You app's client secret.
      */
-    public DbxCredential(String accessToken, Long expiresAt, String refreshToken, String appKey, String appSecret) {
+    public DbxCredential(@Nonnull String accessToken,
+                         @Nullable Long expiresAt,
+                         @Nullable String refreshToken,
+                         @Nullable String appKey,
+                         @Nullable String appSecret) {
         if (accessToken == null) {
             throw new IllegalArgumentException("Missing access token.");
         }
@@ -106,7 +113,7 @@ public class DbxCredential {
      *
      * @return OAuth access token
      */
-    public String getAccessToken() {
+    public @Nonnull String getAccessToken() {
         return this.accessToken;
     }
 
@@ -116,15 +123,15 @@ public class DbxCredential {
      *
      * @return ExpiresAt in millisecond.
      */
-    public Long getExpiresAt() {
+    public @Nullable Long getExpiresAt() {
         return this.expiresAt;
     }
 
-    public String getAppKey() {
+    public @Nullable String getAppKey() {
         return this.appKey;
     }
 
-    public String getAppSecret() {
+    public @Nullable String getAppSecret() {
         return this.appSecret;
     }
 
@@ -134,7 +141,7 @@ public class DbxCredential {
      *
      * @return Refresh Token.
      */
-    public String getRefreshToken() {
+    public @Nullable String getRefreshToken() {
         return this.refreshToken;
     }
 
@@ -161,8 +168,9 @@ public class DbxCredential {
      * refresh token is revoked.
      * @throws DbxException If refresh failed for general errors.
      */
-    public DbxRefreshResult refresh(DbxRequestConfig requestConfig, DbxHost host,
-                                    Collection<String> scope)
+    public @Nonnull DbxRefreshResult refresh(@Nonnull DbxRequestConfig requestConfig,
+                                    @Nonnull DbxHost host,
+                                    @Nullable Collection<String> scope)
         throws DbxException {
         if (this.refreshToken == null) {
             throw new DbxOAuthException(null, new DbxOAuthError(INVALID_REQUEST, "Cannot refresh becasue there is no refresh token"));
@@ -201,7 +209,7 @@ public class DbxCredential {
             headers,
             new DbxRequestUtil.ResponseHandler<DbxRefreshResult>() {
                 @Override
-                public DbxRefreshResult handle(HttpRequestor.Response response) throws DbxException {
+                public @Nonnull DbxRefreshResult handle(@Nonnull HttpRequestor.Response response) throws DbxException {
                     if (response.getStatusCode() != 200) {
                         String requestId = DbxRequestUtil.getRequestId(response);
                         DbxOAuthError dbxOAuthError = DbxRequestUtil.readJsonFromResponse(
@@ -231,7 +239,7 @@ public class DbxCredential {
      * refresh token is invalid or revoked.
      * @throws DbxException If refresh failed for general errors.
      */
-    public DbxRefreshResult refresh(DbxRequestConfig requestConfig) throws DbxException {
+    public @Nonnull DbxRefreshResult refresh(@Nonnull DbxRequestConfig requestConfig) throws DbxException {
         return refresh(requestConfig, DbxHost.DEFAULT, null);
     }
 
@@ -248,7 +256,8 @@ public class DbxCredential {
      * refresh token is invalid or revoked.
      * @throws DbxException If refresh failed for general errors.
      */
-    public DbxRefreshResult refresh(DbxRequestConfig requestConfig, Collection<String> scope) throws
+    public @Nonnull DbxRefreshResult refresh(@Nonnull DbxRequestConfig requestConfig,
+                                             @Nullable Collection<String> scope) throws
         DbxException {
         return refresh(requestConfig, DbxHost.DEFAULT, scope);
     }
@@ -257,14 +266,14 @@ public class DbxCredential {
      * @return The json string containing all fields.
      */
     @Override
-    public String toString() {
+    public @Nonnull String toString() {
         return Writer.writeToString(this);
     }
 
-    public static final JsonReader<DbxCredential> Reader = new JsonReader<DbxCredential>()
+    public static final @Nonnull JsonReader<DbxCredential> Reader = new JsonReader<DbxCredential>()
     {
         @Override
-        public final DbxCredential read(JsonParser parser)
+        public final @Nonnull DbxCredential read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             JsonLocation top = JsonReader.expectObjectStart(parser);
@@ -313,10 +322,10 @@ public class DbxCredential {
         }
     };
 
-    public static final JsonWriter<DbxCredential> Writer = new JsonWriter<DbxCredential>()
+    public static final @Nonnull JsonWriter<DbxCredential> Writer = new JsonWriter<DbxCredential>()
     {
         @Override
-        public void write(DbxCredential credential, JsonGenerator g) throws IOException
+        public void write(@Nonnull DbxCredential credential, @Nonnull JsonGenerator g) throws IOException
         {
             g.writeStartObject();
             g.writeStringField("access_token", credential.accessToken);

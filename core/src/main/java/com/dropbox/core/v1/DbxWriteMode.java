@@ -1,5 +1,7 @@
 package com.dropbox.core.v1;
 
+import javax.annotation.Nonnull;
+
 /**
  * Describes how a file should be saved when it is written to Dropbox.  Do not call
  * the constructor.  Instead, call one of the three static functions: {@link #add},
@@ -10,8 +12,8 @@ public final class DbxWriteMode
     // NOTE: The current implementation just holds the URL parameters that we pass
     // to /files_put.  If the upload mode becomes used in other calls, we may need
     // to switch the implementation over to be less tied to that specific endpoint.
-    final String[] params;
-    DbxWriteMode(String... params)
+    final @Nonnull String[] params;
+    DbxWriteMode(@Nonnull String... params)
     {
         this.params = params;
     }
@@ -30,7 +32,7 @@ public final class DbxWriteMode
      * returned by the API call.
      * </p>
      */
-    public static DbxWriteMode add() { return AddInstance; }
+    public static @Nonnull DbxWriteMode add() { return AddInstance; }
     private static final DbxWriteMode AddInstance = new DbxWriteMode("overwrite", "false");
 
     /**
@@ -39,7 +41,7 @@ public final class DbxWriteMode
      * If there's a folder at that path, however, it will not be overwritten and the
      * API call will fail.
      */
-    public static DbxWriteMode force() { return ForceInstance; }
+    public static @Nonnull DbxWriteMode force() { return ForceInstance; }
     private static final DbxWriteMode ForceInstance = new DbxWriteMode("overwrite", "true");
 
     /**
@@ -66,7 +68,7 @@ public final class DbxWriteMode
      * returned by the API call.
      * </p>
      */
-    public static DbxWriteMode update(String revisionToReplace)
+    public static @Nonnull DbxWriteMode update(@Nonnull String revisionToReplace)
     {
         return new DbxWriteMode("parent_rev", revisionToReplace);
     }

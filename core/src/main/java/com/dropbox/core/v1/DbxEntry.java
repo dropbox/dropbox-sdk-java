@@ -1,5 +1,6 @@
 package com.dropbox.core.v1;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Serializable;
@@ -31,7 +32,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
      *
      * @see DbxPathV1#getName
      */
-    public final String name;
+    public final @Nonnull String name;
 
     /**
      * The path to the file or folder, relative to your application's root.
@@ -43,7 +44,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
      * is relative to your application's App Folder within the user's Dropbox.
      * </p>
      */
-    public final String path;
+    public final @Nonnull String path;
 
     /**
      * The name of the icon to use for this file.  The set of names returned by this call match up
@@ -51,7 +52,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
      * field in <a href="https://www.dropbox.com/developers/reference/api#metadata">
      * Dropbox's documentation for the {@code /metadata} HTTP endpoint</a>.
      */
-    public final String iconName;
+    public final @Nonnull String iconName;
 
     /**
      * Whether this file or folder might have a thumbnail image you can retrieve via
@@ -66,7 +67,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
      * @param iconName {@link #iconName}
      * @param mightHaveThumbnail {@link #mightHaveThumbnail}
      */
-    private DbxEntry(String path, String iconName, boolean mightHaveThumbnail)
+    private DbxEntry(@Nonnull String path, @Nonnull String iconName, boolean mightHaveThumbnail)
     {
         this.name = DbxPathV1.getName(path);
         this.path = path;
@@ -74,7 +75,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         this.mightHaveThumbnail = mightHaveThumbnail;
     }
 
-    protected void dumpFields(DumpWriter w)
+    protected void dumpFields(@Nonnull DumpWriter w)
     {
         w.v(path);
         w.f("iconName").v(iconName);
@@ -97,15 +98,15 @@ public abstract class DbxEntry extends Dumpable implements Serializable
      * If this metadata entry is a folder, return it as a {@code DbxEntry.Folder}
      * instance.  If it's not a folder, return {@code null}.
      */
-    public abstract Folder asFolder();
+    public abstract @Nonnull Folder asFolder();
 
     /**
      * If this metadata entry is a file, return it as a {@code DbxEntry.File}
      * instance.  If it's not a file, return {@code null}.
      */
-    public abstract File asFile();
+    public abstract @Nonnull File asFile();
 
-    protected boolean partialEquals(DbxEntry o)
+    protected boolean partialEquals(@Nonnull DbxEntry o)
     {
         if (!name.equals(o.name)) return false;
         if (!path.equals(o.path)) return false;
@@ -137,21 +138,21 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * @param iconName {@link #iconName}
          * @param mightHaveThumbnail {@link #mightHaveThumbnail}
          */
-        public Folder(String path, String iconName, boolean mightHaveThumbnail)
+        public Folder(@Nonnull String path, @Nonnull String iconName, boolean mightHaveThumbnail)
         {
             super(path, iconName, mightHaveThumbnail);
         }
 
-        protected String getTypeName() { return "Folder"; }
+        protected @Nonnull String getTypeName() { return "Folder"; }
 
         public boolean isFolder() { return true; }
         public boolean isFile() { return false; }
-        public Folder asFolder() { return this; }
-        public File asFile() { throw new RuntimeException("not a file"); }
+        public @Nonnull Folder asFolder() { return this; }
+        public @Nonnull File asFile() { throw new RuntimeException("not a file"); }
 
-        public static final JsonReader<DbxEntry.Folder> Reader = new JsonReader<DbxEntry.Folder>()
+        public static final @Nonnull JsonReader<DbxEntry.Folder> Reader = new JsonReader<DbxEntry.Folder>()
         {
-            public final DbxEntry.Folder read(JsonParser parser)
+            public final @Nonnull DbxEntry.Folder read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
             {
                 JsonLocation top = parser.getCurrentLocation();
@@ -169,7 +170,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             return o != null && getClass().equals(o.getClass()) && equals((Folder) o);
         }
 
-        public boolean equals(Folder o)
+        public boolean equals(@Nonnull Folder o)
         {
             if (!partialEquals(o)) return false;
             return true;
@@ -199,7 +200,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * be localized based on the {@link java.util.Locale Locale} in {@link DbxRequestConfig#userLocale}
          * (passed in to the {@link DbxClientV1} constructor).
          */
-        public final String humanSize;
+        public final @Nonnull String humanSize;
 
         /**
          * The time the file was added, moved, or last had it's contents changed on the Dropbox
@@ -207,7 +208,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * the {@link #clientMtime} is a better estimate.)
          *
          */
-        public final Date lastModified;
+        public final @Nonnull Date lastModified;
 
         /**
          * The modification time sent up by the Dropbox desktop client when the file was added
@@ -219,14 +220,14 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * a way to sort files by date (when displaying a list of files to the user).
          * </p>
          */
-        public final Date clientMtime;
+        public final @Nonnull Date clientMtime;
 
         /**
          * The revision of the file at this path.  This can be used with {@link DbxClientV1#uploadFile}
          * and the {@link DbxWriteMode#update} mode to make sure you're overwriting the revision of
          * the file you think you're overwriting.
          */
-        public final String rev;
+        public final @Nonnull String rev;
 
         /**
          * If this file is a photo, this may contain additional photo-related information.  This field is
@@ -251,8 +252,8 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * @param photoInfo {@link #photoInfo}
          * @param videoInfo {@link #videoInfo}
          */
-        public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize,
-                    Date lastModified, Date clientMtime, String rev,
+        public File(@Nonnull String path, @Nonnull String iconName, boolean mightHaveThumbnail, long numBytes, @Nonnull String humanSize,
+                    @Nonnull Date lastModified, @Nonnull Date clientMtime, @Nonnull String rev,
                     @Nullable PhotoInfo photoInfo, @Nullable VideoInfo videoInfo)
         {
             super(path, iconName, mightHaveThumbnail);
@@ -268,13 +269,13 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         /**
          * Same as the other constructor except {@link #photoInfo} and {@link #videoInfo} are set to {@code null}.
          */
-        public File(String path, String iconName, boolean mightHaveThumbnail, long numBytes, String humanSize,
-                    Date lastModified, Date clientMtime, String rev)
+        public File(@Nonnull String path, @Nonnull String iconName, boolean mightHaveThumbnail, long numBytes, @Nonnull String humanSize,
+                    @Nonnull Date lastModified, @Nonnull Date clientMtime, @Nonnull String rev)
         {
             this(path, iconName, mightHaveThumbnail, numBytes, humanSize, lastModified, clientMtime, rev, null, null);
         }
 
-        protected void dumpFields(DumpWriter w)
+        protected void dumpFields(@Nonnull DumpWriter w)
         {
             super.dumpFields(w);
             w.f("numBytes").v(numBytes);
@@ -287,7 +288,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         }
 
         private static <T extends Dumpable> void nullablePendingField(
-            DumpWriter w, String fieldName, @Nullable T value, T pendingValue)
+            @Nonnull DumpWriter w, @Nonnull String fieldName, @Nullable T value, @Nonnull T pendingValue)
         {
             if (value == null) return;
 
@@ -299,16 +300,16 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
         }
 
-        protected String getTypeName() { return "File"; }
+        protected @Nonnull String getTypeName() { return "File"; }
 
         public boolean isFolder() { return false; }
         public boolean isFile() { return true; }
-        public Folder asFolder() { throw new RuntimeException("not a folder"); }
-        public File asFile() { return this; }
+        public @Nonnull Folder asFolder() { throw new RuntimeException("not a folder"); }
+        public @Nonnull File asFile() { return this; }
 
-        public static final JsonReader<DbxEntry.File> Reader = new JsonReader<DbxEntry.File>()
+        public static final @Nonnull JsonReader<DbxEntry.File> Reader = new JsonReader<DbxEntry.File>()
         {
-            public final DbxEntry.File read(JsonParser parser)
+            public final @Nonnull DbxEntry.File read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
             {
                 JsonLocation top = parser.getCurrentLocation();
@@ -321,9 +322,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
         };
 
-        public static final JsonReader<DbxEntry.File> ReaderMaybeDeleted = new JsonReader<DbxEntry.File>()
+        public static final @Nonnull JsonReader<DbxEntry.File> ReaderMaybeDeleted = new JsonReader<DbxEntry.File>()
         {
-            public final @Nullable DbxEntry.File read(JsonParser parser)
+            public final @Nullable DbxEntry.File read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
             {
                 JsonLocation top = parser.getCurrentLocation();
@@ -343,7 +344,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             return o != null && getClass().equals(o.getClass()) && equals((File) o);
         }
 
-        public boolean equals(File o)
+        public boolean equals(@Nonnull File o)
         {
             if (!partialEquals(o)) return false;
             if (numBytes != o.numBytes) return false;
@@ -389,10 +390,10 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 this.location = location;
             }
 
-            public static JsonReader<PhotoInfo> Reader = new JsonReader<PhotoInfo>()
+            public static @Nonnull JsonReader<PhotoInfo> Reader = new JsonReader<PhotoInfo>()
             {
                 @Override
-                public PhotoInfo read(JsonParser parser)
+                public @Nonnull PhotoInfo read(@Nonnull JsonParser parser)
                     throws IOException, JsonReadException
                 {
                     JsonReader.expectObjectStart(parser);
@@ -414,10 +415,10 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 }
             };
 
-            public static final PhotoInfo PENDING = new PhotoInfo(null, null);
+            public static final @Nonnull PhotoInfo PENDING = new PhotoInfo(null, null);
 
             @Override
-            protected void dumpFields(DumpWriter w)
+            protected void dumpFields(@Nonnull DumpWriter w)
             {
                 w.f("timeTaken").v(timeTaken);
                 w.f("location").v(location);
@@ -429,7 +430,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 return o != null && getClass().equals(o.getClass()) && equals((PhotoInfo) o);
             }
 
-            public boolean equals(PhotoInfo o)
+            public boolean equals(@Nonnull PhotoInfo o)
             {
                 // For "pending" values, it must be an exact match.
                 if (o == PENDING || this == PENDING) return o == this;
@@ -475,10 +476,10 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 this.duration = duration;
             }
 
-            public static JsonReader<VideoInfo> Reader = new JsonReader<VideoInfo>()
+            public static @Nonnull JsonReader<VideoInfo> Reader = new JsonReader<VideoInfo>()
             {
                 @Override
-                public VideoInfo read(JsonParser parser)
+                public @Nonnull VideoInfo read(@Nonnull JsonParser parser)
                     throws IOException, JsonReadException
                 {
                     JsonReader.expectObjectStart(parser);
@@ -506,10 +507,10 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             /**
              * The singleton value used when the Dropbox server returns "pending" for
              */
-            public static final VideoInfo PENDING = new VideoInfo(null, null, null);
+            public static final @Nonnull VideoInfo PENDING = new VideoInfo(null, null, null);
 
             @Override
-            protected void dumpFields(DumpWriter w)
+            protected void dumpFields(@Nonnull DumpWriter w)
             {
                 w.f("timeTaken").v(timeTaken);
                 w.f("location").v(location);
@@ -522,7 +523,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 return o != null && getClass().equals(o.getClass()) && equals((VideoInfo) o);
             }
 
-            public boolean equals(VideoInfo o)
+            public boolean equals(@Nonnull VideoInfo o)
             {
                 // For "pending" values, it must be an exact match.
                 if (o == PENDING || this == PENDING) return o == this;
@@ -556,10 +557,10 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 this.longitude = longitude;
             }
 
-            public static JsonReader<Location> Reader = new JsonReader<Location>()
+            public static @Nonnull JsonReader<Location> Reader = new JsonReader<Location>()
             {
                 @Override
-                public @Nullable Location read(JsonParser parser)
+                public @Nullable Location read(@Nonnull JsonParser parser)
                     throws IOException, JsonReadException
                 {
                     Location location = null;
@@ -578,7 +579,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             };
 
             @Override
-            protected void dumpFields(DumpWriter w)
+            protected void dumpFields(@Nonnull DumpWriter w)
             {
                 w.f("latitude").v(latitude);
                 w.f("longitude").v(longitude);
@@ -600,7 +601,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
                 return o != null && getClass().equals(o.getClass()) && equals((Location) o);
             }
 
-            public boolean equals(Location o)
+            public boolean equals(@Nonnull Location o)
             {
                 if (latitude != o.latitude) return false;
                 if (longitude != o.longitude) return false;
@@ -612,18 +613,18 @@ public abstract class DbxEntry extends Dumpable implements Serializable
     // ------------------------------------------------------
     // JSON parsing
 
-    public static final JsonReader<DbxEntry> Reader = new JsonReader<DbxEntry>()
+    public static final @Nonnull JsonReader<DbxEntry> Reader = new JsonReader<DbxEntry>()
     {
-        public final DbxEntry read(JsonParser parser)
+        public final @Nonnull DbxEntry read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             return DbxEntry.read(parser, null).entry;
         }
     };
 
-    public static final JsonReader<DbxEntry> ReaderMaybeDeleted = new JsonReader<DbxEntry>()
+    public static final @Nonnull JsonReader<DbxEntry> ReaderMaybeDeleted = new JsonReader<DbxEntry>()
     {
-        public final @Nullable DbxEntry read(JsonParser parser)
+        public final @Nullable DbxEntry read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             WithChildrenC<?> wc = DbxEntry.readMaybeDeleted(parser, null);
@@ -646,7 +647,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         /**
          * The metadata for the base file or folder.
          */
-        public final DbxEntry entry;
+        public final @Nonnull DbxEntry entry;
 
         /**
          * If {@link #entry} is a folder, this will contain a hash that identifies the folder's
@@ -666,16 +667,16 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * @param hash {@link #hash}
          * @param children {@link #children}
          */
-        public WithChildren(DbxEntry entry, @Nullable String hash, @Nullable List<DbxEntry> children)
+        public WithChildren(@Nonnull DbxEntry entry, @Nullable String hash, @Nullable List<DbxEntry> children)
         {
             this.entry = entry;
             this.hash = hash;
             this.children = children;
         }
 
-        public static final JsonReader<WithChildren> Reader = new JsonReader<WithChildren>()
+        public static final @Nonnull JsonReader<WithChildren> Reader = new JsonReader<WithChildren>()
         {
-            public final WithChildren read(JsonParser parser)
+            public final @Nonnull WithChildren read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
             {
                 WithChildrenC<List<DbxEntry>> c = DbxEntry.<List<DbxEntry>>read(parser, new Collector.ArrayListCollector<DbxEntry>());
@@ -683,9 +684,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             }
         };
 
-        public static final JsonReader<WithChildren> ReaderMaybeDeleted = new JsonReader<WithChildren>()
+        public static final @Nonnull JsonReader<WithChildren> ReaderMaybeDeleted = new JsonReader<WithChildren>()
         {
-            public final @Nullable WithChildren read(JsonParser parser)
+            public final @Nullable WithChildren read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
             {
                 WithChildrenC<List<DbxEntry>> c = DbxEntry.<List<DbxEntry>>readMaybeDeleted(parser, new Collector.ArrayListCollector<DbxEntry>());
@@ -699,7 +700,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             return o != null && getClass().equals(o.getClass()) && equals((WithChildren) o);
         }
 
-        public boolean equals(WithChildren o)
+        public boolean equals(@Nonnull WithChildren o)
         {
             if (children != null ? !children.equals(o.children) : o.children != null)
                 return false;
@@ -719,7 +720,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         }
 
         @Override
-        protected void dumpFields(DumpWriter w)
+        protected void dumpFields(@Nonnull DumpWriter w)
         {
             w.v(entry);
             w.f("hash").v(hash);
@@ -737,7 +738,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
     {
         public static final long serialVersionUID = 0;
 
-        public final DbxEntry entry;
+        public final @Nonnull DbxEntry entry;
 
         /**
          * If {@link #entry} is a folder, this will contain a hash that identifies the folder's
@@ -757,7 +758,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
          * @param hash {@link #hash}
          * @param children {@link #children}
          */
-        public WithChildrenC(DbxEntry entry, @Nullable String hash, @Nullable C children)
+        public WithChildrenC(@Nonnull DbxEntry entry, @Nullable String hash, @Nullable C children)
         {
             this.entry = entry;
             this.hash = hash;
@@ -767,9 +768,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         public static class Reader<C> extends JsonReader<WithChildrenC<C>>
         {
             private final Collector<DbxEntry,? extends C> collector;
-            public Reader(Collector<DbxEntry,? extends C> collector) { this.collector = collector; }
+            public Reader(@Nonnull Collector<DbxEntry,? extends C> collector) { this.collector = collector; }
 
-            public final WithChildrenC<C> read(JsonParser parser)
+            public final @Nonnull WithChildrenC<C> read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
             {
                 return DbxEntry.read(parser, collector);
@@ -779,9 +780,9 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         public static class ReaderMaybeDeleted<C> extends JsonReader<WithChildrenC<C>>
         {
             private final Collector<DbxEntry,? extends C> collector;
-            public ReaderMaybeDeleted(Collector<DbxEntry,? extends C> collector) { this.collector = collector; }
+            public ReaderMaybeDeleted(@Nonnull Collector<DbxEntry,? extends C> collector) { this.collector = collector; }
 
-            public final @Nullable WithChildrenC<C> read(JsonParser parser)
+            public final @Nullable WithChildrenC<C> read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
             {
                 return DbxEntry.readMaybeDeleted(parser, collector);
@@ -794,7 +795,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
             return o != null && getClass().equals(o.getClass()) && equals((WithChildrenC) o);
         }
 
-        public boolean equals(WithChildrenC<?> o)
+        public boolean equals(@Nonnull WithChildrenC<?> o)
         {
             if (children != null ? !children.equals(o.children) : o.children != null)
                 return false;
@@ -814,7 +815,7 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         }
 
         @Override
-        protected void dumpFields(DumpWriter w)
+        protected void dumpFields(@Nonnull DumpWriter w)
         {
             w.v(entry);
             w.f("hash").v(hash);
@@ -824,13 +825,13 @@ public abstract class DbxEntry extends Dumpable implements Serializable
         }
     }
 
-    public static <C> @Nullable WithChildrenC<C> readMaybeDeleted(JsonParser parser, @Nullable Collector<DbxEntry, ? extends C> collector)
+    public static <C> @Nullable WithChildrenC<C> readMaybeDeleted(@Nonnull JsonParser parser, @Nullable Collector<DbxEntry, ? extends C> collector)
             throws IOException, JsonReadException
     {
         return _read(parser, collector, true);
     }
 
-    public static <C> WithChildrenC<C> read(JsonParser parser, @Nullable Collector<DbxEntry, ? extends C> collector)
+    public static <C> @Nonnull WithChildrenC<C> read(@Nonnull JsonParser parser, @Nullable Collector<DbxEntry, ? extends C> collector)
         throws IOException, JsonReadException
     {
         WithChildrenC<C> r = _read(parser, collector, false);
@@ -940,19 +941,19 @@ public abstract class DbxEntry extends Dumpable implements Serializable
 
     private static final class PendingReader<T> extends JsonReader<T>
     {
-        private final JsonReader<T> reader;
-        private final T pendingValue;
+        private final @Nonnull JsonReader<T> reader;
+        private final @Nonnull T pendingValue;
 
-        public PendingReader(JsonReader<T> reader, T pendingValue)
+        public PendingReader(@Nonnull JsonReader<T> reader, @Nonnull T pendingValue)
         {
             this.reader = reader;
             this.pendingValue = pendingValue;
         }
 
-        public static <T> PendingReader<T> mk(JsonReader<T> reader, T pendingValue) { return new PendingReader<T>(reader, pendingValue); }
+        public static <T> @Nonnull PendingReader<T> mk(@Nonnull JsonReader<T> reader, @Nonnull T pendingValue) { return new PendingReader<T>(reader, pendingValue); }
 
         @Override
-        public T read(JsonParser parser)
+        public @Nonnull T read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             JsonToken token = parser.getCurrentToken();

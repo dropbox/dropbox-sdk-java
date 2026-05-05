@@ -8,6 +8,9 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Class for handling download requests.
  *
@@ -38,13 +41,13 @@ import java.io.OutputStream;
  *</code></pre>
  */
 public class DbxDownloader<R> implements Closeable {
-    private final R result;
-    private final InputStream body;
-    private final String contentType;
+    private final @Nullable R result;
+    private final @Nonnull InputStream body;
+    private final @Nullable String contentType;
 
     private boolean closed;
 
-    public DbxDownloader(R result, InputStream body, String contentType) {
+    public DbxDownloader(@Nullable R result, @Nonnull InputStream body, @Nullable String contentType) {
         this.result = result;
         this.body = body;
         this.contentType = contentType;
@@ -52,7 +55,7 @@ public class DbxDownloader<R> implements Closeable {
         this.closed = false;
     }
 
-    public DbxDownloader(R result, InputStream body) {
+    public DbxDownloader(@Nullable R result, @Nonnull InputStream body) {
         this(result, body, null);
     }
 
@@ -64,7 +67,7 @@ public class DbxDownloader<R> implements Closeable {
      *
      * @return Response from server
      */
-    public R getResult() {
+    public @Nullable R getResult() {
         return result;
     }
 
@@ -73,7 +76,7 @@ public class DbxDownloader<R> implements Closeable {
      *
      * @return the content type, or null if not known.
      */
-    public String getContentType() {
+    public @Nullable String getContentType() {
         return contentType;
     }
 
@@ -87,7 +90,7 @@ public class DbxDownloader<R> implements Closeable {
      *
      * @throws IllegalStateException if this downloader has already been closed (see {@link #close})
      */
-    public InputStream getInputStream() {
+    public @Nonnull InputStream getInputStream() {
         assertOpen();
         return body;
     }
@@ -120,7 +123,7 @@ public class DbxDownloader<R> implements Closeable {
      * @throws IOException if an error occurs writing the response body to the output stream.
      * @throws IllegalStateException if this downloader has already been closed (see {@link #close})
      */
-    public R download(OutputStream out) throws DbxException,  IOException {
+    public @Nullable R download(@Nonnull OutputStream out) throws DbxException,  IOException {
         try {
             IOUtil.copyStreamToStream(getInputStream(), out);
         } catch (IOUtil.WriteException ex) {
@@ -146,7 +149,7 @@ public class DbxDownloader<R> implements Closeable {
      * @throws DbxException if an error occurs reading the response or response body.
      * @throws IOException if an error occurs writing the response body to the output stream.
      */
-    public R download(OutputStream out, IOUtil.ProgressListener progressListener)
+    public @Nullable R download(@Nonnull OutputStream out, @Nullable IOUtil.ProgressListener progressListener)
             throws DbxException,  IOException {
         return download(new ProgressOutputStream(out, progressListener));
     }

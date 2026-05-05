@@ -10,20 +10,22 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+
 public final class DbxUrlWithExpiration
 {
-    public final String url;
-    public final Date expires;
+    public final @Nonnull String url;
+    public final @Nonnull Date expires;
 
-    public DbxUrlWithExpiration(String url, Date expires)
+    public DbxUrlWithExpiration(@Nonnull String url, @Nonnull Date expires)
     {
         this.url = url;
         this.expires = expires;
     }
 
-    public static final JsonReader<DbxUrlWithExpiration> Reader = new JsonReader<DbxUrlWithExpiration>() {
+    public static final @Nonnull JsonReader<DbxUrlWithExpiration> Reader = new JsonReader<DbxUrlWithExpiration>() {
         @Override
-        public DbxUrlWithExpiration read(JsonParser parser)
+        public @Nonnull DbxUrlWithExpiration read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             JsonLocation top = JsonReader.expectObjectStart(parser);

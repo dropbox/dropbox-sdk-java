@@ -1,5 +1,8 @@
 package com.dropbox.core.v2.callbacks;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Client should implement methods in this class to allow for consistent, global handling of route-specific error types,
  * as well as general network errors. Normally, error handling is done on a request-by-request basis.
@@ -10,8 +13,8 @@ package com.dropbox.core.v2.callbacks;
  */
 public interface DbxGlobalCallbackFactory {
     // Should instantiate separate callback object on each method invocation
-    <T> DbxRouteErrorCallback<T> createRouteErrorCallback(String userId, T routeError);
+    <T> @Nullable DbxRouteErrorCallback<T> createRouteErrorCallback(@Nullable String userId, @Nullable T routeError);
 
     // Should instantiate separate callback object on each method invocation
-    DbxNetworkErrorCallback createNetworkErrorCallback(String userId);
+    @Nonnull DbxNetworkErrorCallback createNetworkErrorCallback(@Nullable String userId);
 }

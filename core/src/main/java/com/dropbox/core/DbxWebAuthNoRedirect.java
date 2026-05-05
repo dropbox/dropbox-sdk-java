@@ -2,6 +2,8 @@ package com.dropbox.core;
 
 import com.dropbox.core.v2.DbxClientV2;
 
+import javax.annotation.Nonnull;
+
 /**
  * Does the OAuth web-based authorization flow for apps that can't provide a redirect URI (such as
  * the command-line example apps that come with this SDK).  If you're a normal website, use the
@@ -47,13 +49,13 @@ import com.dropbox.core.v2.DbxClientV2;
  */
 @Deprecated
 public class DbxWebAuthNoRedirect {
-    private final DbxWebAuth auth;
+    private final @Nonnull DbxWebAuth auth;
 
     /**
      * @param appInfo
      *     Your application's Dropbox API information (the app key and secret).
      */
-    public DbxWebAuthNoRedirect(DbxRequestConfig requestConfig, DbxAppInfo appInfo) {
+    public DbxWebAuthNoRedirect(@Nonnull DbxRequestConfig requestConfig, @Nonnull DbxAppInfo appInfo) {
         this.auth = new DbxWebAuth(requestConfig, appInfo);
     }
 
@@ -67,7 +69,7 @@ public class DbxWebAuthNoRedirect {
      * access token.
      * </p>
      */
-    public String start() {
+    public @Nonnull String start() {
         DbxWebAuth.Request request = DbxWebAuth.newRequestBuilder()
             .withNoRedirect()
             .build();
@@ -82,7 +84,7 @@ public class DbxWebAuthNoRedirect {
      *    The authorization code shown to the user when they clicked "Allow" on the authorization
      *    page on the Dropbox website.
      */
-    public DbxAuthFinish finish(String code) throws DbxException {
+    public @Nonnull DbxAuthFinish finish(@Nonnull String code) throws DbxException {
         return auth.finishFromCode(code);
     }
 }

@@ -1,5 +1,8 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Thrown when the Dropbox server responds with an HTTP status code we didn't expect.
  */
@@ -8,12 +11,15 @@ public class BadResponseCodeException extends BadResponseException {
 
     private final int statusCode;
 
-    public BadResponseCodeException(String requestId, String message, int statusCode) {
+    public BadResponseCodeException(@Nullable String requestId, @Nullable String message, int statusCode) {
         super(requestId, message);
         this.statusCode = statusCode;
     }
 
-    public BadResponseCodeException(String requestId, String message, int statusCode, Throwable cause) {
+    public BadResponseCodeException(@Nullable String requestId,
+                                    @Nullable String message,
+                                    int statusCode,
+                                    @Nonnull Throwable cause) {
         super(requestId, message, cause);
         this.statusCode = statusCode;
     }
@@ -27,4 +33,3 @@ public class BadResponseCodeException extends BadResponseException {
         return statusCode;
     }
 }
-

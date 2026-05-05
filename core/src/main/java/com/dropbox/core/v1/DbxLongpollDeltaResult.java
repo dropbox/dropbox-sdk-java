@@ -8,6 +8,8 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+
 /**
  * The response from a longpoll_delta request.
  */
@@ -31,10 +33,10 @@ public class DbxLongpollDeltaResult
         this.backoff = backoff;
     }
 
-    public static final JsonReader<DbxLongpollDeltaResult> Reader = new JsonReader<DbxLongpollDeltaResult>()
+    public static final @Nonnull JsonReader<DbxLongpollDeltaResult> Reader = new JsonReader<DbxLongpollDeltaResult>()
     {
         @Override
-        public DbxLongpollDeltaResult read(JsonParser parser) throws IOException, JsonReadException
+        public @Nonnull DbxLongpollDeltaResult read(@Nonnull JsonParser parser) throws IOException, JsonReadException
         {
             JsonLocation top = JsonReader.expectObjectStart(parser);
 

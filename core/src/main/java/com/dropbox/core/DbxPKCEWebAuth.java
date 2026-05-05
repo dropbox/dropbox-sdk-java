@@ -11,6 +11,9 @@ import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import static com.dropbox.core.util.StringUtil.urlSafeBase64Encode;
 
 /**
@@ -38,10 +41,10 @@ import static com.dropbox.core.util.StringUtil.urlSafeBase64Encode;
  * new <a href="https://www.dropbox.com/lp/developers/reference/oauth-guide.html">dropbox oauth guide</a>
  */
 public class DbxPKCEWebAuth {
-    private final DbxRequestConfig requestConfig;
-    private final DbxAppInfo appInfo;
-    private final DbxWebAuth dbxWebAuth;
-    private final DbxPKCEManager dbxPKCEManager;
+    private final @Nonnull DbxRequestConfig requestConfig;
+    private final @Nonnull DbxAppInfo appInfo;
+    private final @Nonnull DbxWebAuth dbxWebAuth;
+    private final @Nonnull DbxPKCEManager dbxPKCEManager;
     private boolean started;
     private boolean consumed;
 
@@ -54,7 +57,7 @@ public class DbxPKCEWebAuth {
      *
      * @throws IllegalStateException if appInfo contains app secret.
      */
-    public DbxPKCEWebAuth(DbxRequestConfig requestConfig, DbxAppInfo appInfo) {
+    public DbxPKCEWebAuth(@Nonnull DbxRequestConfig requestConfig, @Nonnull DbxAppInfo appInfo) {
         if (appInfo.hasSecret()) {
             throw new IllegalStateException("PKCE cdoe flow doesn't require app secret, if you " +
                 "decide to embed it in your app, please use regular DbxWebAuth instead.");
@@ -88,7 +91,7 @@ public class DbxPKCEWebAuth {
      * @return Authorization URL of website user can use to authorize your app.
      *
      */
-    public String authorize(DbxWebAuth.Request request) {
+    public @Nonnull String authorize(@Nonnull DbxWebAuth.Request request) {
         if (consumed) {
             throw new IllegalStateException("This DbxPKCEWebAuth instance has been consumed " +
                 "already. To start a new PKCE OAuth flow, please create a new instance.");
@@ -112,7 +115,7 @@ public class DbxPKCEWebAuth {
      * URL, or if an error occurs communicating with Dropbox.
      * @see DbxWebAuth#finishFromCode(String)
      */
-    public DbxAuthFinish finishFromCode(String code) throws DbxException {
+    public @Nonnull DbxAuthFinish finishFromCode(@Nonnull String code) throws DbxException {
         return finish(code, null, null);
     }
 
@@ -134,18 +137,22 @@ public class DbxPKCEWebAuth {
      * @throws DbxException if the instance is not the same one used to generate authorization
      * URL, or if an error occurs communicating with Dropbox.
      */
-    public DbxAuthFinish finishFromRedirect(String redirectUri,
-                                            DbxSessionStore sessionStore,
-                                            Map<String, String[]> params)
+    public @Nonnull DbxAuthFinish finishFromRedirect(@Nonnull String redirectUri,
+                                            @Nonnull DbxSessionStore sessionStore,
+                                            @Nonnull Map<String, String[]> params)
         throws DbxException, DbxWebAuth.BadRequestException, DbxWebAuth.BadStateException,
         DbxWebAuth.CsrfException, DbxWebAuth.NotApprovedException, DbxWebAuth.ProviderException {
 
-        String strippedState = DbxWebAuth.validateRedirectUri(redirectUri, sessionStore, params);
+        @Nullable String strippedState = DbxWebAuth.validateRedirectUri(redirectUri, sessionStore, params);
         String code = DbxWebAuth.getParam(params, "code");
+        if (code == null) {
+            throw new DbxWebAuth.BadRequestException("Missing required parameter: \"code\".");
+        }
         return finish(code, redirectUri, strippedState);
     }
 
-    DbxAuthFinish finish(String code, String redirectUri, final String state) throws DbxException {
+    @Nonnull
+    DbxAuthFinish finish(@Nonnull String code, @Nullable String redirectUri, final @Nullable String state) throws DbxException {
         if (code == null) throw new NullPointerException("code");
         if (!this.started) {
             throw new IllegalStateException("Must initialize the PKCE flow by calling authorize " +

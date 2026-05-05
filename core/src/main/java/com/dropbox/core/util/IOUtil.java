@@ -16,20 +16,23 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.CharacterCodingException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class IOUtil {
     public static final int DEFAULT_COPY_BUFFER_SIZE = 16 << 10; // 16 KiB
 
-    public static Reader utf8Reader(InputStream in) {
+    public static @Nonnull Reader utf8Reader(@Nonnull InputStream in) {
         // NOTE: Just passing StringUtil.UTF8 instead of StringUtil.UTF8.newDecoder() would be wrong.
         // The former will cause the InputStreamReader to ignore UTF-8 errors in the input.
         return new InputStreamReader(in, StringUtil.UTF8.newDecoder());
     }
 
-    public static Writer utf8Writer(OutputStream out) {
+    public static @Nonnull Writer utf8Writer(@Nonnull OutputStream out) {
         return new OutputStreamWriter(out, StringUtil.UTF8.newEncoder());
     }
 
-    public static String toUtf8String(InputStream in) throws ReadException, CharacterCodingException {
+    public static @Nonnull String toUtf8String(@Nonnull InputStream in) throws ReadException, CharacterCodingException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             copyStreamToStream(in, out);
@@ -39,11 +42,11 @@ public class IOUtil {
         return StringUtil.utf8ToString(out.toByteArray());
     }
 
-    public static void copyStreamToStream(InputStream in, OutputStream out) throws ReadException, WriteException {
+    public static void copyStreamToStream(@Nonnull InputStream in, @Nonnull OutputStream out) throws ReadException, WriteException {
         copyStreamToStream(in, out, DEFAULT_COPY_BUFFER_SIZE);
     }
 
-    public static void copyStreamToStream(InputStream in, OutputStream out, byte[] copyBuffer)
+    public static void copyStreamToStream(@Nonnull InputStream in, @Nonnull OutputStream out, @Nonnull byte[] copyBuffer)
         throws ReadException, WriteException {
         while (true) {
             int count;
@@ -63,16 +66,16 @@ public class IOUtil {
         }
     }
 
-    public static void copyStreamToStream(InputStream in, OutputStream out, int copyBufferSize)
+    public static void copyStreamToStream(@Nonnull InputStream in, @Nonnull OutputStream out, int copyBufferSize)
         throws ReadException, WriteException {
         copyStreamToStream(in, out, new byte[copyBufferSize]);
     }
 
-    public static byte[] slurp(InputStream in, int byteLimit) throws IOException {
+    public static @Nonnull byte[] slurp(@Nonnull InputStream in, int byteLimit) throws IOException {
         return slurp(in, byteLimit, new byte[DEFAULT_COPY_BUFFER_SIZE]);
     }
 
-    public static byte[] slurp(InputStream in, int byteLimit, byte[] slurpBuffer) throws IOException {
+    public static @Nonnull byte[] slurp(@Nonnull InputStream in, int byteLimit, @Nonnull byte[] slurpBuffer) throws IOException {
         if (byteLimit < 0) throw new RuntimeException("'byteLimit' must be non-negative: " + byteLimit);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -80,11 +83,11 @@ public class IOUtil {
         return baos.toByteArray();
     }
 
-    public void copyFileToStream(File fin, OutputStream out) throws ReadException, WriteException {
+    public void copyFileToStream(@Nonnull File fin, @Nonnull OutputStream out) throws ReadException, WriteException {
         copyFileToStream(fin, out, DEFAULT_COPY_BUFFER_SIZE);
     }
 
-    public void copyFileToStream(File fin, OutputStream out, int copyBufferSize) throws ReadException, WriteException {
+    public void copyFileToStream(@Nonnull File fin, @Nonnull OutputStream out, int copyBufferSize) throws ReadException, WriteException {
         FileInputStream in;
         try {
             in = new FileInputStream(fin);
@@ -99,11 +102,11 @@ public class IOUtil {
         }
     }
 
-    public void copyStreamToFile(InputStream in, File fout) throws ReadException, WriteException {
+    public void copyStreamToFile(@Nonnull InputStream in, @Nonnull File fout) throws ReadException, WriteException {
         copyStreamToFile(in, fout, DEFAULT_COPY_BUFFER_SIZE);
     }
 
-    public void copyStreamToFile(InputStream in, File fout, int copyBufferSize) throws ReadException, WriteException {
+    public void copyStreamToFile(@Nonnull InputStream in, @Nonnull File fout, int copyBufferSize) throws ReadException, WriteException {
         FileOutputStream out;
         try {
             out = new FileOutputStream(fout);
@@ -124,7 +127,7 @@ public class IOUtil {
     /**
      * Closes the given input stream and ignores the IOException.
      */
-    public static void closeInput(InputStream in) {
+    public static void closeInput(@Nullable InputStream in) {
         try {
             if (in != null) {
                 in.close();
@@ -137,7 +140,7 @@ public class IOUtil {
     /**
      * Closes the given Reader and ignores the IOException.
      */
-    public static void closeInput(Reader in) {
+    public static void closeInput(@Nullable Reader in) {
         try {
             if (in != null) {
                 in.close();
@@ -147,7 +150,7 @@ public class IOUtil {
         }
     }
 
-    public static void closeQuietly(Closeable obj) {
+    public static void closeQuietly(@Nullable Closeable obj) {
         if (obj != null) {
             try {
                 obj.close();
@@ -157,28 +160,28 @@ public class IOUtil {
         }
     }
 
-    public static InputStream limit(InputStream in, long limit) {
+    public static @Nonnull InputStream limit(@Nonnull InputStream in, long limit) {
         return new LimitInputStream(in, limit);
     }
 
     public static abstract class WrappedException extends IOException {
         private static final long serialVersionUID = 0;
 
-        public WrappedException(String message, IOException underlying) {
+        public WrappedException(@Nullable String message, @Nonnull IOException underlying) {
             super(message + ": " + underlying.getMessage(), underlying);
         }
 
-        public WrappedException(IOException underlying) {
+        public WrappedException(@Nonnull IOException underlying) {
             super(underlying);
         }
 
         @Override
-        public IOException getCause() {
+        public @Nonnull IOException getCause() {
             return (IOException) super.getCause();
         }
 
         @Override
-        public String getMessage() {
+        public @Nonnull String getMessage() {
             String m = super.getCause().getMessage();
             if (m == null) return "";
             else return m;
@@ -188,11 +191,11 @@ public class IOUtil {
     public static final class ReadException extends WrappedException {
         private static final long serialVersionUID = 0;
 
-        public ReadException(String message, IOException underlying) {
+        public ReadException(@Nullable String message, @Nonnull IOException underlying) {
             super(message, underlying);
         }
 
-        public ReadException(IOException underlying) {
+        public ReadException(@Nonnull IOException underlying) {
             super(underlying);
         }
     }
@@ -200,25 +203,25 @@ public class IOUtil {
     public static final class WriteException extends WrappedException {
         private static final long serialVersionUID = 0;
 
-        public WriteException(String message, IOException underlying) {
+        public WriteException(@Nullable String message, @Nonnull IOException underlying) {
             super(message, underlying);
         }
 
-        public WriteException(IOException underlying) {
+        public WriteException(@Nonnull IOException underlying) {
             super(underlying);
         }
     }
 
-    public static final InputStream EmptyInputStream = new InputStream() {
+    public static final @Nonnull InputStream EmptyInputStream = new InputStream() {
         public int read() { return -1; }
-        public int read(byte[] data) { return -1; }
-        public int read(byte[] data, int off, int len) { return -1; }
+        public int read(@Nonnull byte[] data) { return -1; }
+        public int read(@Nonnull byte[] data, int off, int len) { return -1; }
     };
 
-    public static final OutputStream BlackHoleOutputStream = new OutputStream() {
+    public static final @Nonnull OutputStream BlackHoleOutputStream = new OutputStream() {
         public void write(int b) {}
-        public void write(byte[] data) {}
-        public void write(byte[] data, int off, int len) {}
+        public void write(@Nonnull byte[] data) {}
+        public void write(@Nonnull byte[] data, int off, int len) {}
     };
 
     /**
@@ -228,7 +231,7 @@ public class IOUtil {
     private static final class LimitInputStream extends FilterInputStream {
         private long left;
 
-        public LimitInputStream(InputStream in, long limit) {
+        public LimitInputStream(@Nonnull InputStream in, long limit) {
             super(in);
 
             if (in == null) {

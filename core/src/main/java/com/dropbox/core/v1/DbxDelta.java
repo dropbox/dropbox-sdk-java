@@ -1,5 +1,6 @@
 package com.dropbox.core.v1;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
@@ -42,7 +43,7 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
     /**
      * Apply these entries to your local state to catch up with the Dropbox server's state.
      */
-    public final List<Entry<MD>> entries;
+    public final @Nonnull List<Entry<MD>> entries;
 
     /**
      * A string that is used by the server to keep track of which entries have already been
@@ -54,7 +55,7 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
      * (such as a database) so you can resume continue you left off.
      * </p>
      */
-    public final String cursor;
+    public final @Nonnull String cursor;
 
     /**
      * If {@code true}, then there are more entries available.  You can retrieve
@@ -69,7 +70,7 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
      * @param cursor {@link #cursor}
      * @param hasMore {@link #hasMore}
      */
-    public DbxDelta(boolean reset, List<Entry<MD>> entries, String cursor, boolean hasMore)
+    public DbxDelta(boolean reset, @Nonnull List<Entry<MD>> entries, @Nonnull String cursor, boolean hasMore)
     {
         this.reset = reset;
         this.entries = entries;
@@ -77,7 +78,7 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
         this.hasMore = hasMore;
     }
 
-    protected void dumpFields(DumpWriter out)
+    protected void dumpFields(@Nonnull DumpWriter out)
     {
         out.f("reset").v(reset);
         out.f("hasMore").v(hasMore);
@@ -90,19 +91,19 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
      */
     public static final class Reader<MD extends Dumpable> extends JsonReader<DbxDelta<MD>>
     {
-        public final JsonReader<MD> metadataReader;
+        public final @Nonnull JsonReader<MD> metadataReader;
 
-        public Reader(JsonReader<MD> metadataReader)
+        public Reader(@Nonnull JsonReader<MD> metadataReader)
         {
             this.metadataReader = metadataReader;
         }
 
-        public DbxDelta<MD> read(JsonParser parser) throws IOException, JsonReadException
+        public @Nonnull DbxDelta<MD> read(@Nonnull JsonParser parser) throws IOException, JsonReadException
         {
             return read(parser, metadataReader);
         }
 
-        public static <MD extends Dumpable> DbxDelta<MD> read(JsonParser parser, JsonReader<MD> metadataReader)
+        public static <MD extends Dumpable> @Nonnull DbxDelta<MD> read(@Nonnull JsonParser parser, @Nonnull JsonReader<MD> metadataReader)
             throws IOException, JsonReadException
         {
             JsonLocation top = JsonReader.expectObjectStart(parser);
@@ -183,7 +184,7 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
          * To get the original case-preserved path, look in the {@link #metadata} field.
          * </p>
          */
-        public final String lcPath;
+        public final @Nonnull String lcPath;
 
         /**
          * If this is {@code null}, it means that this path doesn't exist on
@@ -219,13 +220,13 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
          * @param lcPath {@link #lcPath}
          * @param metadata {@link #metadata}
          */
-        public Entry(String lcPath, @Nullable MD metadata)
+        public Entry(@Nonnull String lcPath, @Nullable MD metadata)
         {
             this.lcPath = lcPath;
             this.metadata = metadata;
         }
 
-        protected void dumpFields(DumpWriter out)
+        protected void dumpFields(@Nonnull DumpWriter out)
         {
             out.f("lcPath").v(lcPath);
             out.f("metadata").v(metadata);
@@ -236,19 +237,19 @@ public final class DbxDelta<MD extends Dumpable> extends Dumpable
          */
         public static final class Reader<MD extends Dumpable> extends JsonReader<Entry<MD>>
         {
-            public final JsonReader<MD> metadataReader;
+            public final @Nonnull JsonReader<MD> metadataReader;
 
-            public Reader(JsonReader<MD> metadataReader)
+            public Reader(@Nonnull JsonReader<MD> metadataReader)
             {
                 this.metadataReader = metadataReader;
             }
 
-            public Entry<MD> read(JsonParser parser) throws IOException, JsonReadException
+            public @Nonnull Entry<MD> read(@Nonnull JsonParser parser) throws IOException, JsonReadException
             {
                 return read(parser, metadataReader);
             }
 
-            public static <MD extends Dumpable> Entry<MD> read(JsonParser parser, JsonReader<MD> metadataReader)
+            public static <MD extends Dumpable> @Nonnull Entry<MD> read(@Nonnull JsonParser parser, @Nonnull JsonReader<MD> metadataReader)
                 throws IOException, JsonReadException
             {
                 JsonLocation arrayStart = JsonReader.expectArrayStart(parser);

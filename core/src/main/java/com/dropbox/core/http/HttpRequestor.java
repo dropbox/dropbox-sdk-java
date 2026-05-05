@@ -14,6 +14,9 @@ import java.util.concurrent.TimeUnit;
 
 import com.dropbox.core.util.IOUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * An interface that the Dropbox client library uses to make HTTP requests.
  * If you're fine with the standard Java {@link java.net.HttpURLConnection}
@@ -36,12 +39,12 @@ public abstract class HttpRequestor
     // server.
     public static final long DEFAULT_READ_TIMEOUT_MILLIS = TimeUnit.MINUTES.toMillis(2);
 
-    public abstract Response doGet(String url, Iterable<Header> headers) throws IOException;
-    public abstract Uploader startPost(String url, Iterable<Header> headers) throws IOException;
-    public Uploader startPostInStreamingMode(String url, Iterable<Header> headers) throws IOException {
+    public abstract @Nonnull Response doGet(@Nonnull String url, @Nonnull Iterable<Header> headers) throws IOException;
+    public abstract @Nonnull Uploader startPost(@Nonnull String url, @Nonnull Iterable<Header> headers) throws IOException;
+    public @Nonnull Uploader startPostInStreamingMode(@Nonnull String url, @Nonnull Iterable<Header> headers) throws IOException {
         return startPost(url, headers);
     }
-    public abstract Uploader startPut(String url, Iterable<Header> headers) throws IOException;
+    public abstract @Nonnull Uploader startPut(@Nonnull String url, @Nonnull Iterable<Header> headers) throws IOException;
 
     /**
      * A simple structure holding an HTTP header, which is key/value pair.
@@ -51,7 +54,7 @@ public abstract class HttpRequestor
         private final String key;
         private final String value;
 
-        public Header(String key, String value) {
+        public Header(@Nonnull String key, @Nonnull String value) {
             this.key = key;
             this.value = value;
         }
@@ -61,7 +64,7 @@ public abstract class HttpRequestor
          *
          * @return header name
          */
-        public String getKey() {
+        public @Nonnull String getKey() {
             return key;
         }
 
@@ -70,20 +73,20 @@ public abstract class HttpRequestor
          *
          * @return header value
          */
-        public String getValue() {
+        public @Nonnull String getValue() {
             return value;
         }
     }
 
     public static abstract class Uploader {
-        protected IOUtil.ProgressListener progressListener;
+        protected @Nullable IOUtil.ProgressListener progressListener;
 
-        public abstract OutputStream getBody();
+        public abstract @Nonnull OutputStream getBody();
         public abstract void close();
         public abstract void abort();
-        public abstract Response finish() throws IOException;
+        public abstract @Nonnull Response finish() throws IOException;
 
-        public void upload(File file) throws IOException {
+        public void upload(@Nonnull File file) throws IOException {
             try {
                 upload(new FileInputStream(file));
             } catch (IOUtil.ReadException ex) {
@@ -93,11 +96,11 @@ public abstract class HttpRequestor
             }
         }
 
-        public void upload(InputStream in, long limit) throws IOException {
+        public void upload(@Nonnull InputStream in, long limit) throws IOException {
             upload(IOUtil.limit(in, limit));
         }
 
-        public void upload(InputStream in) throws IOException {
+        public void upload(@Nonnull InputStream in) throws IOException {
             OutputStream out = getBody();
             try {
                 IOUtil.copyStreamToStream(in, out);
@@ -106,7 +109,7 @@ public abstract class HttpRequestor
             }
         }
 
-        public void upload(byte [] body) throws IOException {
+        public void upload(@Nonnull byte [] body) throws IOException {
             OutputStream out = getBody();
             try {
                 out.write(body);
@@ -115,17 +118,17 @@ public abstract class HttpRequestor
             }
         }
 
-        public void setProgressListener(IOUtil.ProgressListener progressListener) {
+        public void setProgressListener(@Nullable IOUtil.ProgressListener progressListener) {
             this.progressListener = progressListener;
         }
     }
 
     public static final class Response {
         private final int statusCode;
-        private final InputStream body;
+        private final @Nullable InputStream body;
         private final Map<String, List<String>> headers;
 
-        public Response(int statusCode, InputStream body, Map<String, ? extends List<String>> headers) {
+        public Response(int statusCode, @Nullable InputStream body, @Nonnull Map<String, ? extends List<String>> headers) {
             this.statusCode = statusCode;
             this.body = body;
             this.headers = asUnmodifiableCaseInsensitiveMap(headers);
@@ -147,7 +150,7 @@ public abstract class HttpRequestor
          *
          * @return HTTP response body
          */
-        public InputStream getBody() {
+        public @Nullable InputStream getBody() {
             return body;
         }
 
@@ -156,11 +159,12 @@ public abstract class HttpRequestor
          *
          * @return case-insensitive, unmodifiable headers
          */
-        public Map<String, List<String>> getHeaders() {
+        public @Nonnull Map<String, List<String>> getHeaders() {
             return headers;
         }
 
-        private static final Map<String, List<String>> asUnmodifiableCaseInsensitiveMap(Map<String, ? extends List<String>> original) {
+        private static @Nonnull Map<String, List<String>> asUnmodifiableCaseInsensitiveMap(
+            @Nonnull Map<String, ? extends List<String>> original) {
             Map<String, List<String>> insensitive = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
             for (Map.Entry<String, ? extends List<String>> entry : original.entrySet()) {
                 // Java HttpURLConnection puts status line as the 'null' key, e.g.:

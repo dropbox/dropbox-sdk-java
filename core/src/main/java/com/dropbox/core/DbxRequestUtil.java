@@ -1,5 +1,6 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -37,9 +38,9 @@ import static com.dropbox.core.util.LangUtil.mkAssert;
 public final class DbxRequestUtil {
     private static final Random RAND = new Random();
 
-    public static DbxGlobalCallbackFactory sharedCallbackFactory;
+    public static @Nullable DbxGlobalCallbackFactory sharedCallbackFactory;
 
-    public static String encodeUrlParam(String s) {
+    public static @Nonnull String encodeUrlParam(@Nonnull String s) {
         try {
             return URLEncoder.encode(s, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
@@ -47,14 +48,14 @@ public final class DbxRequestUtil {
         }
     }
 
-    public static String buildUrlWithParams(@Nullable String userLocale,
-                                            String host,
-                                            String path,
+    public static @Nonnull String buildUrlWithParams(@Nullable String userLocale,
+                                            @Nonnull String host,
+                                            @Nonnull String path,
                                             @Nullable String[] params) {
         return buildUri(host, path) + "?" + encodeUrlParams(userLocale, params);
     }
 
-    public static String [] toParamsArray(Map<String, String> params) {
+    public static @Nonnull String [] toParamsArray(@Nonnull Map<String, String> params) {
         String [] arr = new String[2 * params.size()];
         int i = 0;
         for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -65,7 +66,7 @@ public final class DbxRequestUtil {
         return arr;
     }
 
-    public static String buildUri(String host, String path) {
+    public static @Nonnull String buildUri(@Nonnull String host, @Nonnull String path) {
         try {
             return new URI("https", host, "/" + path, null).toASCIIString();
         }
@@ -74,7 +75,7 @@ public final class DbxRequestUtil {
         }
     }
 
-    private static String encodeUrlParams(@Nullable String userLocale,
+    private static @Nonnull String encodeUrlParams(@Nullable String userLocale,
                                           @Nullable String[] params) {
         StringBuilder buf = new StringBuilder();
         String sep = "";
@@ -104,7 +105,8 @@ public final class DbxRequestUtil {
         return buf.toString();
     }
 
-    public static List<HttpRequestor.Header> addAuthHeader(@Nullable List<HttpRequestor.Header> headers, String accessToken) {
+    public static @Nonnull List<HttpRequestor.Header> addAuthHeader(@Nullable List<HttpRequestor.Header> headers,
+                                                                    @Nonnull String accessToken) {
         if (accessToken == null) throw new NullPointerException("accessToken");
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
 
@@ -112,7 +114,8 @@ public final class DbxRequestUtil {
         return headers;
     }
 
-    public static List<HttpRequestor.Header> addSelectUserHeader(@Nullable List<HttpRequestor.Header> headers, String memberId) {
+    public static @Nonnull List<HttpRequestor.Header> addSelectUserHeader(@Nullable List<HttpRequestor.Header> headers,
+                                                                          @Nonnull String memberId) {
         if (memberId == null) throw new NullPointerException("memberId");
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
 
@@ -120,7 +123,8 @@ public final class DbxRequestUtil {
         return headers;
     }
 
-    public static List<HttpRequestor.Header> addSelectAdminHeader(@Nullable List<HttpRequestor.Header> headers, String adminId) {
+    public static @Nonnull List<HttpRequestor.Header> addSelectAdminHeader(@Nullable List<HttpRequestor.Header> headers,
+                                                                           @Nonnull String adminId) {
         if (adminId == null) throw new NullPointerException("adminId");
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
 
@@ -128,7 +132,9 @@ public final class DbxRequestUtil {
         return headers;
     }
 
-    public static List<HttpRequestor.Header> addBasicAuthHeader(@Nullable List<HttpRequestor.Header> headers, String username, String password) {
+    public static @Nonnull List<HttpRequestor.Header> addBasicAuthHeader(@Nullable List<HttpRequestor.Header> headers,
+                                                                         @Nonnull String username,
+                                                                         @Nonnull String password) {
         if (username == null) throw new NullPointerException("username");
         if (password == null) throw new NullPointerException("password");
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
@@ -139,17 +145,18 @@ public final class DbxRequestUtil {
         return headers;
     }
 
-    public static List<HttpRequestor.Header> addUserAgentHeader(
+    public static @Nonnull List<HttpRequestor.Header> addUserAgentHeader(
         @Nullable List<HttpRequestor.Header> headers,
-        DbxRequestConfig requestConfig,
-        String sdkUserAgentIdentifier
+        @Nonnull DbxRequestConfig requestConfig,
+        @Nonnull String sdkUserAgentIdentifier
     ) {
         if (headers == null) headers = new ArrayList<HttpRequestor.Header>();
         headers.add(buildUserAgentHeader(requestConfig, sdkUserAgentIdentifier));
         return headers;
     }
 
-    public static List<HttpRequestor.Header> addUserLocaleHeader(@Nullable List<HttpRequestor.Header> headers, DbxRequestConfig requestConfig) {
+    public static @Nullable List<HttpRequestor.Header> addUserLocaleHeader(@Nullable List<HttpRequestor.Header> headers,
+                                                                           @Nonnull DbxRequestConfig requestConfig) {
         if (requestConfig.getUserLocale() == null) {
             return headers;
         }
@@ -159,11 +166,13 @@ public final class DbxRequestUtil {
         return headers;
     }
 
-    public static HttpRequestor.Header buildUserAgentHeader(DbxRequestConfig requestConfig, String sdkUserAgentIdentifier) {
+    public static @Nonnull HttpRequestor.Header buildUserAgentHeader(@Nonnull DbxRequestConfig requestConfig,
+                                                                     @Nonnull String sdkUserAgentIdentifier) {
         return new HttpRequestor.Header("User-Agent",  requestConfig.getClientIdentifier() + " " + sdkUserAgentIdentifier + "/" + DbxSdkVersion.Version);
     }
 
-    public static List<HttpRequestor.Header> addPathRootHeader(@Nullable List<HttpRequestor.Header> headers, PathRoot pathRoot) {
+    public static @Nullable List<HttpRequestor.Header> addPathRootHeader(@Nullable List<HttpRequestor.Header> headers,
+                                                                         @Nullable PathRoot pathRoot) {
         if (pathRoot == null) {
             return headers;
         }
@@ -173,7 +182,7 @@ public final class DbxRequestUtil {
         return headers;
     }
 
-    public static List<HttpRequestor.Header> removeAuthHeader(@Nullable List<HttpRequestor.Header> headers) {
+    public static @Nonnull List<HttpRequestor.Header> removeAuthHeader(@Nullable List<HttpRequestor.Header> headers) {
         if (headers == null) {
             return new ArrayList<HttpRequestor.Header>();
         }
@@ -193,11 +202,11 @@ public final class DbxRequestUtil {
     /**
      * Convenience function for making HTTP GET requests.
      */
-    public static HttpRequestor.Response startGet(DbxRequestConfig requestConfig,
-                                                  String accessToken,
-                                                  String sdkUserAgentIdentifier,
-                                                  String host,
-                                                  String path,
+    public static @Nonnull HttpRequestor.Response startGet(@Nonnull DbxRequestConfig requestConfig,
+                                                  @Nonnull String accessToken,
+                                                  @Nonnull String sdkUserAgentIdentifier,
+                                                  @Nonnull String host,
+                                                  @Nonnull String path,
                                                   @Nullable String[] params,
                                                   @Nullable List<HttpRequestor.Header> headers)
         throws NetworkIOException {
@@ -217,10 +226,10 @@ public final class DbxRequestUtil {
     /**
      * Convenience function for making HTTP PUT requests.
      */
-    public static HttpRequestor.Uploader startPut(DbxRequestConfig requestConfig,
-                                                  String accessToken,
-                                                  String sdkUserAgentIdentifier,
-                                                  String host, String path,
+    public static @Nonnull HttpRequestor.Uploader startPut(@Nonnull DbxRequestConfig requestConfig,
+                                                  @Nonnull String accessToken,
+                                                  @Nonnull String sdkUserAgentIdentifier,
+                                                  @Nonnull String host, @Nonnull String path,
                                                   @Nullable String[] params,
                                                   @Nullable List<HttpRequestor.Header> headers)
         throws NetworkIOException {
@@ -240,10 +249,10 @@ public final class DbxRequestUtil {
     /**
      * Convenience function for making HTTP POST requests.
      */
-    public static HttpRequestor.Response startPostNoAuth(DbxRequestConfig requestConfig,
-                                                         String sdkUserAgentIdentifier,
-                                                         String host,
-                                                         String path,
+    public static @Nonnull HttpRequestor.Response startPostNoAuth(@Nonnull DbxRequestConfig requestConfig,
+                                                         @Nonnull String sdkUserAgentIdentifier,
+                                                         @Nonnull String host,
+                                                         @Nonnull String path,
                                                          @Nullable String[] params,
                                                          @Nullable List<HttpRequestor.Header> headers)
         throws NetworkIOException {
@@ -259,11 +268,11 @@ public final class DbxRequestUtil {
     /**
      * Convenience function for making HTTP POST requests.  Like startPostNoAuth but takes byte[] instead of params.
      */
-    public static HttpRequestor.Response startPostRaw(DbxRequestConfig requestConfig,
-                                                      String sdkUserAgentIdentifier,
-                                                      String host,
-                                                      String path,
-                                                      byte[] body,
+    public static @Nonnull HttpRequestor.Response startPostRaw(@Nonnull DbxRequestConfig requestConfig,
+                                                      @Nonnull String sdkUserAgentIdentifier,
+                                                      @Nonnull String host,
+                                                      @Nonnull String path,
+                                                      @Nonnull byte[] body,
                                                       @Nullable List<HttpRequestor.Header> headers)
         throws NetworkIOException {
         String uri = buildUri(host, path);
@@ -285,7 +294,7 @@ public final class DbxRequestUtil {
         }
     }
 
-    private static List<HttpRequestor.Header> copyHeaders(List<HttpRequestor.Header> headers) {
+    private static @Nonnull List<HttpRequestor.Header> copyHeaders(@Nullable List<HttpRequestor.Header> headers) {
         if (headers == null) {
             return new ArrayList<HttpRequestor.Header>();
         } else {
@@ -293,7 +302,7 @@ public final class DbxRequestUtil {
         }
     }
 
-    public static byte[] loadErrorBody(HttpRequestor.Response response)
+    public static @Nonnull byte[] loadErrorBody(@Nonnull HttpRequestor.Response response)
         throws NetworkIOException {
         if (response.getBody() == null) {
             return new byte[0];
@@ -308,7 +317,7 @@ public final class DbxRequestUtil {
 
     }
 
-    public static String parseErrorBody(String requestId, int statusCode, byte[] body)
+    public static @Nonnull String parseErrorBody(@Nullable String requestId, int statusCode, @Nonnull byte[] body)
         throws BadResponseException {
         // Read the error message from the body.
         // TODO: Get charset from the HTTP Content-Type header.  It's wrong to just assume UTF-8.
@@ -320,11 +329,11 @@ public final class DbxRequestUtil {
         }
     }
 
-    public static DbxException unexpectedStatus(HttpRequestor.Response response) throws NetworkIOException, BadResponseException {
+    public static @Nonnull DbxException unexpectedStatus(@Nonnull HttpRequestor.Response response) throws NetworkIOException, BadResponseException {
         return DbxRequestUtil.unexpectedStatus(response, null);
     }
 
-    public static DbxException unexpectedStatus(HttpRequestor.Response response, String userId)
+    public static @Nonnull DbxException unexpectedStatus(@Nonnull HttpRequestor.Response response, @Nullable String userId)
         throws NetworkIOException, BadResponseException {
 
         String requestId = getRequestId(response);
@@ -426,13 +435,15 @@ public final class DbxRequestUtil {
         return networkError;
     }
 
-    private static String messageFromResponse(HttpRequestor.Response response, String requestId) throws NetworkIOException, BadResponseException {
+    private static @Nonnull String messageFromResponse(@Nonnull HttpRequestor.Response response,
+                                                       @Nullable String requestId) throws NetworkIOException, BadResponseException {
         byte[] body = loadErrorBody(response);
         String message = parseErrorBody(requestId, response.getStatusCode(), body);
         return message;
     }
 
-    public static <T> T readJsonFromResponse(JsonReader<T> reader, HttpRequestor.Response response)
+    public static <T> @Nullable T readJsonFromResponse(@Nonnull JsonReader<T> reader,
+                                                       @Nonnull HttpRequestor.Response response)
         throws BadResponseException, NetworkIOException {
         try {
             return reader.readFully(response.getBody());
@@ -444,75 +455,73 @@ public final class DbxRequestUtil {
         }
     }
 
-    public static <T> T readJsonFromErrorMessage(StoneSerializer<T> serializer, String message, String requestId)
+    public static <T> @Nonnull T readJsonFromErrorMessage(@Nonnull StoneSerializer<T> serializer,
+                                                          @Nonnull String message,
+                                                          @Nullable String requestId)
         throws JsonParseException {
         ApiErrorResponse<T> errorResponse = new ApiErrorResponse.Serializer<T>(serializer).deserialize(message);
         return errorResponse.getError();
     }
 
     public static abstract class ResponseHandler<T> {
-        public abstract T handle(HttpRequestor.Response response) throws DbxException;
+        public abstract @Nullable T handle(@Nonnull HttpRequestor.Response response) throws DbxException;
     }
 
-    public static <T> T doGet(final DbxRequestConfig requestConfig,
-                              final String accessToken,
-                              final String sdkUserAgentIdentifier,
-                              final String host,
-                              final String path,
+    public static <T> @Nullable T doGet(final @Nonnull DbxRequestConfig requestConfig,
+                              final @Nonnull String accessToken,
+                              final @Nonnull String sdkUserAgentIdentifier,
+                              final @Nonnull String host,
+                              final @Nonnull String path,
                               final @Nullable String[] params,
                               final @Nullable List<HttpRequestor.Header> headers,
-                              final ResponseHandler<T> handler)
+                              final @Nonnull ResponseHandler<T> handler)
         throws DbxException {
         return runAndRetry(requestConfig.getMaxRetries(), new RequestMaker<T, DbxException>() {
             @Override
-            public T run() throws DbxException {
+            public @Nullable T run() throws DbxException {
                 HttpRequestor.Response response = startGet(requestConfig, accessToken, sdkUserAgentIdentifier, host, path, params, headers);
                 try {
                     return handler.handle(response);
                 } finally {
-                    try {
-                        response.getBody().close();
-                    } catch (IOException ex) {
-                        //noinspection ThrowFromFinallyBlock
-                        throw new NetworkIOException(ex);
-                    }
+                    IOUtil.closeInput(response.getBody());
                 }
             }
         });
     }
 
-    public static <T> T doPost(DbxRequestConfig requestConfig,
-                               String accessToken,
-                               String sdkUserAgentIdentifier,
-                               String host,
-                               String path,
+    public static <T> @Nullable T doPost(@Nonnull DbxRequestConfig requestConfig,
+                               @Nonnull String accessToken,
+                               @Nonnull String sdkUserAgentIdentifier,
+                               @Nonnull String host,
+                               @Nonnull String path,
                                @Nullable String[] params,
                                @Nullable List<HttpRequestor.Header> headers,
-                               ResponseHandler<T> handler)
+                               @Nonnull ResponseHandler<T> handler)
         throws DbxException {
         headers = copyHeaders(headers);
         headers = addAuthHeader(headers, accessToken);
         return doPostNoAuth(requestConfig, sdkUserAgentIdentifier, host, path, params, headers, handler);
     }
 
-    public static <T> T doPostNoAuth(final DbxRequestConfig requestConfig,
-                                     final String sdkUserAgentIdentifier,
-                                     final String host,
-                                     final String path,
+    public static <T> @Nullable T doPostNoAuth(final @Nonnull DbxRequestConfig requestConfig,
+                                     final @Nonnull String sdkUserAgentIdentifier,
+                                     final @Nonnull String host,
+                                     final @Nonnull String path,
                                      final @Nullable String[] params,
                                      final @Nullable List<HttpRequestor.Header> headers,
-                                     final ResponseHandler<T> handler)
+                                     final @Nonnull ResponseHandler<T> handler)
         throws DbxException {
         return runAndRetry(requestConfig.getMaxRetries(), new RequestMaker<T, DbxException>() {
             @Override
-            public T run() throws DbxException {
+            public @Nullable T run() throws DbxException {
                 HttpRequestor.Response response = startPostNoAuth(requestConfig, sdkUserAgentIdentifier, host, path, params, headers);
                 return finishResponse(response, handler);
             }
         });
     }
 
-    public static <T> T finishResponse(HttpRequestor.Response response, ResponseHandler<T> handler) throws DbxException {
+    public static <T> @Nullable T finishResponse(@Nonnull HttpRequestor.Response response,
+                                                 @Nonnull ResponseHandler<T> handler) throws DbxException {
         try {
             return handler.handle(response);
         } finally {
@@ -522,7 +531,8 @@ public final class DbxRequestUtil {
         }
     }
 
-    public static String getFirstHeader(HttpRequestor.Response response, String name) throws BadResponseException {
+    public static @Nonnull String getFirstHeader(@Nonnull HttpRequestor.Response response,
+                                                 @Nonnull String name) throws BadResponseException {
         List<String> values = response.getHeaders().get(name);
         if (values == null || values.isEmpty()) {
             throw new BadResponseException(getRequestId(response), "missing HTTP header \"" + name + "\"");
@@ -530,7 +540,7 @@ public final class DbxRequestUtil {
         return values.get(0);
     }
 
-    public static @Nullable String getFirstHeaderMaybe(HttpRequestor.Response response, String name) {
+    public static @Nullable String getFirstHeaderMaybe(@Nonnull HttpRequestor.Response response, @Nonnull String name) {
         List<String> values = response.getHeaders().get(name);
         if (values == null || values.isEmpty()) {
             return null;
@@ -538,19 +548,20 @@ public final class DbxRequestUtil {
         return values.get(0);
     }
 
-    public static @Nullable String getRequestId(HttpRequestor.Response response) {
+    public static @Nullable String getRequestId(@Nonnull HttpRequestor.Response response) {
         return DbxRequestUtil.getFirstHeaderMaybe(response, "X-Dropbox-Request-Id");
     }
 
-    public static @Nullable String getContentType(HttpRequestor.Response response) {
+    public static @Nullable String getContentType(@Nonnull HttpRequestor.Response response) {
         return DbxRequestUtil.getFirstHeaderMaybe(response, "Content-Type");
     }
 
     public static abstract class RequestMaker<T, E extends Throwable> {
-        public abstract T run() throws DbxException, E;
+        public abstract @Nullable T run() throws DbxException, E;
     }
 
-    public static <T, E extends Throwable> T runAndRetry(int maxRetries, RequestMaker<T,E> requestMaker)
+    public static <T, E extends Throwable> @Nullable T runAndRetry(int maxRetries,
+                                                                   @Nonnull RequestMaker<T,E> requestMaker)
         throws DbxException, E {
         int numRetries = 0;
         while (true) {

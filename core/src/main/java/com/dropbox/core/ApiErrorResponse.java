@@ -10,11 +10,14 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import com.dropbox.core.stone.StoneSerializer;
 
-final class ApiErrorResponse<T> {
-    private final T error;
-    private LocalizedText userMessage;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-    public ApiErrorResponse(T error, LocalizedText userMessage) {
+final class ApiErrorResponse<T> {
+    private final @Nonnull T error;
+    private @Nullable LocalizedText userMessage;
+
+    public ApiErrorResponse(@Nonnull T error, @Nullable LocalizedText userMessage) {
         if (error == null) {
             throw new NullPointerException("error");
         }
@@ -22,11 +25,11 @@ final class ApiErrorResponse<T> {
         this.userMessage = userMessage;
     }
 
-    public T getError() {
+    public @Nonnull T getError() {
         return error;
     }
 
-    public LocalizedText getUserMessage() {
+    public @Nullable LocalizedText getUserMessage() {
         return userMessage;
     }
 
@@ -34,19 +37,19 @@ final class ApiErrorResponse<T> {
      * For internal use only.
      */
     static final class Serializer<T> extends StoneSerializer<ApiErrorResponse<T>> {
-        private StoneSerializer<T> errSerializer;
+        private @Nonnull StoneSerializer<T> errSerializer;
 
-        public Serializer(StoneSerializer<T> errSerializer) {
+        public Serializer(@Nonnull StoneSerializer<T> errSerializer) {
             this.errSerializer = errSerializer;
         }
 
         @Override
-        public void serialize(ApiErrorResponse<T> value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(@Nonnull ApiErrorResponse<T> value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
             throw new UnsupportedOperationException("Error wrapper serialization not supported.");
         }
 
         @Override
-        public ApiErrorResponse<T> deserialize(JsonParser p) throws IOException, JsonParseException {
+        public @Nonnull ApiErrorResponse<T> deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
             T error = null;
             LocalizedText userMessage = null;
 
@@ -73,4 +76,3 @@ final class ApiErrorResponse<T> {
         }
     }
 }
-

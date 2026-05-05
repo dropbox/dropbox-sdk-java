@@ -12,6 +12,9 @@ import com.dropbox.core.v2.common.PathRoot;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Use this class to make remote calls to the Dropbox API user endpoints.  User
  * endpoints expose actions you can perform as a Dropbox user.  You'll need an
@@ -32,7 +35,7 @@ public class DbxClientV2 extends DbxClientV2Base {
      *     gives your app the ability to make Dropbox API calls. Typically
      *     acquired through {@link com.dropbox.core.DbxWebAuth}
      */
-    public DbxClientV2(DbxRequestConfig requestConfig, String accessToken) {
+    public DbxClientV2(@Nonnull DbxRequestConfig requestConfig, @Nonnull String accessToken) {
         this(requestConfig, accessToken, DbxHost.DEFAULT, null);
     }
 
@@ -47,7 +50,7 @@ public class DbxClientV2 extends DbxClientV2Base {
      * @param userId The user ID of the current Dropbox account. Used for
      *               multi-Dropbox account use-case.
      */
-    public DbxClientV2(DbxRequestConfig requestConfig, String accessToken, String userId) {
+    public DbxClientV2(@Nonnull DbxRequestConfig requestConfig, @Nonnull String accessToken, @Nullable String userId) {
         this(requestConfig, accessToken, DbxHost.DEFAULT, userId);
     }
 
@@ -62,7 +65,7 @@ public class DbxClientV2 extends DbxClientV2Base {
      * @param requestConfig Default attributes to use for each request
      * @param credential The credential object containing all the information for authentication.
      */
-    public DbxClientV2(DbxRequestConfig requestConfig, DbxCredential credential) {
+    public DbxClientV2(@Nonnull DbxRequestConfig requestConfig, @Nonnull DbxCredential credential) {
         this(requestConfig, credential, DbxHost.DEFAULT, null, null);
     }
 
@@ -78,7 +81,7 @@ public class DbxClientV2 extends DbxClientV2Base {
      * @param host  Dropbox hosts to send requests to (used for mocking and
      *     testing)
      */
-    public DbxClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host) {
+    public DbxClientV2(@Nonnull DbxRequestConfig requestConfig, @Nonnull String accessToken, @Nonnull DbxHost host) {
         this(requestConfig, accessToken, host, null);
     }
 
@@ -95,16 +98,19 @@ public class DbxClientV2 extends DbxClientV2Base {
      * @param userId The user ID of the current Dropbox account. Used for multi-Dropbox
      *               account use-case.
      */
-    public DbxClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId) {
+    public DbxClientV2(@Nonnull DbxRequestConfig requestConfig,
+                       @Nonnull String accessToken,
+                       @Nonnull DbxHost host,
+                       @Nullable String userId) {
         this(requestConfig, new DbxCredential(accessToken), host, userId, null);
     }
 
     private DbxClientV2(
-        DbxRequestConfig requestConfig,
-        DbxCredential credential,
-        DbxHost host,
-        String userId,
-        PathRoot pathRoot) {
+        @Nonnull DbxRequestConfig requestConfig,
+        @Nonnull DbxCredential credential,
+        @Nonnull DbxHost host,
+        @Nullable String userId,
+        @Nullable PathRoot pathRoot) {
         super(new DbxUserRawClientV2(requestConfig, credential, host, userId, pathRoot));
     }
 
@@ -115,7 +121,7 @@ public class DbxClientV2 extends DbxClientV2Base {
      *
      * @param client Raw v2 client ot use for issuing requests
      */
-    DbxClientV2(DbxRawClientV2 client) {
+    DbxClientV2(@Nonnull DbxRawClientV2 client) {
         super(client);
     }
 
@@ -133,7 +139,7 @@ public class DbxClientV2 extends DbxClientV2Base {
      *
      * @throws IllegalArgumentException  If {@code pathRoot} is {@code null}
      */
-    public DbxClientV2 withPathRoot(PathRoot pathRoot) {
+    public @Nonnull DbxClientV2 withPathRoot(@Nonnull PathRoot pathRoot) {
         if (pathRoot == null) {
             throw new IllegalArgumentException("'pathRoot' should not be null");
         }
@@ -150,7 +156,7 @@ public class DbxClientV2 extends DbxClientV2Base {
      * token.
      * @throws DbxException If refresh failed before of general problems like network issue.
      */
-    public DbxRefreshResult refreshAccessToken() throws DbxException {
+    public @Nonnull DbxRefreshResult refreshAccessToken() throws DbxException {
         return this._client.refreshAccessToken();
     }
 
@@ -158,10 +164,13 @@ public class DbxClientV2 extends DbxClientV2Base {
      * {@link DbxRawClientV2} raw client that adds user OAuth2 auth headers to all requests.
      */
     private static final class DbxUserRawClientV2 extends DbxRawClientV2 {
-        private final DbxCredential credential;
+        private final @Nonnull DbxCredential credential;
 
-        DbxUserRawClientV2(DbxRequestConfig requestConfig, DbxCredential credential, DbxHost host,
-                           String userId, PathRoot pathRoot) {
+        DbxUserRawClientV2(@Nonnull DbxRequestConfig requestConfig,
+                           @Nonnull DbxCredential credential,
+                           @Nonnull DbxHost host,
+                           @Nullable String userId,
+                           @Nullable PathRoot pathRoot) {
             super(requestConfig, host, userId, pathRoot);
 
             if (credential == null) throw new NullPointerException("credential");
@@ -169,7 +178,7 @@ public class DbxClientV2 extends DbxClientV2Base {
         }
 
         @Override
-        public DbxRefreshResult refreshAccessToken() throws DbxException {
+        public @Nonnull DbxRefreshResult refreshAccessToken() throws DbxException {
             credential.refresh(this.getRequestConfig());
             return new DbxRefreshResult(credential.getAccessToken(), (credential.getExpiresAt() - System.currentTimeMillis())/1000);
         }
@@ -185,13 +194,13 @@ public class DbxClientV2 extends DbxClientV2Base {
         }
 
         @Override
-        protected void addAuthHeaders(List<HttpRequestor.Header> headers) {
+        protected void addAuthHeaders(@Nonnull List<HttpRequestor.Header> headers) {
             DbxRequestUtil.removeAuthHeader(headers);
             DbxRequestUtil.addAuthHeader(headers, credential.getAccessToken());
         }
 
         @Override
-        protected DbxRawClientV2 withPathRoot(PathRoot pathRoot) {
+        protected @Nonnull DbxRawClientV2 withPathRoot(@Nonnull PathRoot pathRoot) {
             return new DbxUserRawClientV2(
                 this.getRequestConfig(),
                 this.credential,

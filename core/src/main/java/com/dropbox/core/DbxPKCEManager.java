@@ -13,6 +13,9 @@ import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import static com.dropbox.core.util.StringUtil.urlSafeBase64Encode;
 
 /**
@@ -23,15 +26,15 @@ import static com.dropbox.core.util.StringUtil.urlSafeBase64Encode;
  * @see <a href="https://tools.ietf.org/html/rfc7636">https://tools.ietf.org/html/rfc7636</a>
  */
 public class DbxPKCEManager {
-    public static final String CODE_CHALLENGE_METHODS = "S256";
+    public static final @Nonnull String CODE_CHALLENGE_METHODS = "S256";
     public static final int CODE_VERIFIER_SIZE = 128;
 
     private static final SecureRandom RAND = new SecureRandom();
-    private static final String CODE_VERIFIER_CHAR_SET =
+    private static final @Nonnull String CODE_VERIFIER_CHAR_SET =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~";
 
-    private String codeVerifier;
-    private String codeChallenge;
+    private @Nonnull String codeVerifier;
+    private @Nonnull String codeChallenge;
 
     /**
      *  This class has state. Each instance has a randomly generated codeVerifier in it. Just
@@ -43,11 +46,12 @@ public class DbxPKCEManager {
         this.codeChallenge = generateCodeChallenge(this.codeVerifier);
     }
 
-    public DbxPKCEManager(String codeVerifier) {
+    public DbxPKCEManager(@Nonnull String codeVerifier) {
         this.codeVerifier = codeVerifier;
         this.codeChallenge = generateCodeChallenge(this.codeVerifier);
     }
 
+    @Nonnull
     String generateCodeVerifier() {
         StringBuilder sb = new StringBuilder();
 
@@ -58,7 +62,7 @@ public class DbxPKCEManager {
         return sb.toString();
     }
 
-    static String generateCodeChallenge(String codeVerifier) {
+    static @Nonnull String generateCodeChallenge(@Nonnull String codeVerifier) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] signiture = digest.digest(codeVerifier.getBytes("US-ASCII"));
@@ -73,14 +77,14 @@ public class DbxPKCEManager {
     /**
      * @return The randomly generate code verifier in this instance.
      */
-    public String getCodeVerifier() {
+    public @Nonnull String getCodeVerifier() {
         return this.codeVerifier;
     }
 
     /**
      * @return The code challenge, which is a hashed code verifier.
      */
-    public String getCodeChallenge() {
+    public @Nonnull String getCodeChallenge() {
         return this.codeChallenge;
     }
 
@@ -96,11 +100,11 @@ public class DbxPKCEManager {
      * refresh token.
      * @throws DbxException If reqeust is invalid, or code expired, or server error.
      */
-    public DbxAuthFinish makeTokenRequest(DbxRequestConfig requestConfig,
-                                   String oauth2Code,
-                                   String appKey,
-                                   String redirectUri,
-                                   DbxHost host) throws DbxException {
+    public @Nonnull DbxAuthFinish makeTokenRequest(@Nonnull DbxRequestConfig requestConfig,
+                                   @Nonnull String oauth2Code,
+                                   @Nonnull String appKey,
+                                   @Nullable String redirectUri,
+                                   @Nonnull DbxHost host) throws DbxException {
         Map<String, String> params = new HashMap<String, String>();
         params.put("grant_type", "authorization_code");
         params.put("code", oauth2Code);
@@ -121,7 +125,7 @@ public class DbxPKCEManager {
             null,
             new DbxRequestUtil.ResponseHandler<DbxAuthFinish>() {
                 @Override
-                public DbxAuthFinish handle(HttpRequestor.Response response) throws DbxException {
+                public @Nonnull DbxAuthFinish handle(@Nonnull HttpRequestor.Response response) throws DbxException {
                     if (response.getStatusCode() != 200) {
                         throw DbxRequestUtil.unexpectedStatus(response);
                     }

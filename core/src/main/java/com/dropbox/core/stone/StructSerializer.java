@@ -7,19 +7,22 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public abstract class StructSerializer<T> extends CompositeSerializer<T> {
 
     @Override
-    public void serialize(T value, JsonGenerator g) throws IOException, JsonGenerationException {
+    public void serialize(@Nullable T value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
         serialize(value, g, false);
     }
 
-    public abstract void serialize(T value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException;
+    public abstract void serialize(@Nullable T value, @Nonnull JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException;
 
     @Override
-    public T deserialize(JsonParser p) throws IOException, JsonParseException {
+    public @Nullable T deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
         return deserialize(p, false);
     }
 
-    public abstract T deserialize(JsonParser p, boolean collapsed) throws IOException, JsonParseException;
+    public abstract @Nullable T deserialize(@Nonnull JsonParser p, boolean collapsed) throws IOException, JsonParseException;
 }

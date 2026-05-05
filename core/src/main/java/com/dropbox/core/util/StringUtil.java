@@ -11,20 +11,22 @@ import java.nio.charset.CharsetDecoder;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+
 public class StringUtil
 {
-    public static final Charset UTF8 = Charset.forName("UTF-8");
+    public static final @Nonnull Charset UTF8 = Charset.forName("UTF-8");
 
-    private static final char[] HexDigits = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f',};
+    private static final @Nonnull char[] HexDigits = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f',};
     public static char hexDigit(int i) { return HexDigits[i]; }
 
-    public static String utf8ToString(byte[] utf8Data)
+    public static @Nonnull String utf8ToString(@Nonnull byte[] utf8Data)
         throws CharacterCodingException
     {
         return utf8ToString(utf8Data, 0, utf8Data.length);
     }
 
-    public static String utf8ToString(byte[] utf8Data, int offset, int length)
+    public static @Nonnull String utf8ToString(@Nonnull byte[] utf8Data, int offset, int length)
         throws CharacterCodingException
     {
         // NOTE: Using the String(..., UTF8) constructor would be wrong.  That method will
@@ -34,7 +36,7 @@ public class StringUtil
         return result.toString();
     }
 
-    public static byte[] stringToUtf8(String s)
+    public static @Nonnull byte[] stringToUtf8(@Nonnull String s)
     {
         try {
             // Java 1.5 doesn't have the version of getBytes that takes a Charset object, so we
@@ -50,7 +52,7 @@ public class StringUtil
      * Given a string, returns the representation of that string
      * as a Java string literal.
      */
-    public static String javaQuotedLiteral(String value)
+    public static @Nonnull String javaQuotedLiteral(@Nonnull String value)
     {
         StringBuilder b = new StringBuilder(value.length() * 2);
         b.append('"');
@@ -84,11 +86,11 @@ public class StringUtil
         return b.toString();
     }
 
-    public static String javaQuotedLiterals(String[] value) {
+    public static @Nonnull String javaQuotedLiterals(@Nonnull String[] value) {
         return javaQuotedLiterals(Arrays.asList(value));
     }
 
-    public static String javaQuotedLiterals(Iterable<String> value) {
+    public static @Nonnull String javaQuotedLiterals(@Nonnull Iterable<String> value) {
         StringBuilder b = new StringBuilder();
         String sep = "";
         for (String element : value) {
@@ -100,13 +102,13 @@ public class StringUtil
     }
 
     /** Shorthand for {@link #javaQuotedLiteral}. */
-    public static String jq(String value) { return javaQuotedLiteral(value); }
+    public static @Nonnull String jq(@Nonnull String value) { return javaQuotedLiteral(value); }
     /** Shorthand for {@link #javaQuotedLiterals}. */
-    public static String jq(String[] value) { return javaQuotedLiterals(value); }
+    public static @Nonnull String jq(@Nonnull String[] value) { return javaQuotedLiterals(value); }
     /** Shorthand for {@link #javaQuotedLiterals}. */
-    public static String jq(Iterable<String> value) { return javaQuotedLiterals(value); }
+    public static @Nonnull String jq(@Nonnull Iterable<String> value) { return javaQuotedLiterals(value); }
 
-    public static String binaryToHex(byte[] data)
+    public static @Nonnull String binaryToHex(@Nonnull byte[] data)
     {
         return binaryToHex(data, 0, data.length);
     }
@@ -116,7 +118,7 @@ public class StringUtil
      * The resulting String will have two characters for every byte in the
      * input.
      */
-    public static String binaryToHex(byte[] data, int offset, int length)
+    public static @Nonnull String binaryToHex(@Nonnull byte[] data, int offset, int length)
     {
         assert offset < data.length && offset >= 0 : offset + ", " + data.length;
         int end = offset + length;
@@ -139,7 +141,7 @@ public class StringUtil
      * this function to check for equality.  Using regular {@code String.equals} is not
      * secure.
      */
-    public static boolean secureStringEquals(String a, String b)
+    public static boolean secureStringEquals(@Nonnull String a, @Nonnull String b)
     {
         if (a.length() != b.length()) return false;
 
@@ -154,24 +156,24 @@ public class StringUtil
         return result == 0;
     }
 
-    public static final String Base64Digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    public static final String UrlSafeBase64Digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+    public static final @Nonnull String Base64Digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    public static final @Nonnull String UrlSafeBase64Digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
     static {
         assert Base64Digits.length() == 64 : Base64Digits.length();
         assert UrlSafeBase64Digits.length() == 64 : UrlSafeBase64Digits.length();
     }
 
-    public static String base64Encode(byte[] data)
+    public static @Nonnull String base64Encode(@Nonnull byte[] data)
     {
         return base64EncodeGeneric(Base64Digits, data);
     }
 
-    public static String urlSafeBase64Encode(byte[] data)
+    public static @Nonnull String urlSafeBase64Encode(@Nonnull byte[] data)
     {
         return base64EncodeGeneric(UrlSafeBase64Digits, data);
     }
 
-    public static String base64EncodeGeneric(String digits, byte[] data)
+    public static @Nonnull String base64EncodeGeneric(@Nonnull String digits, @Nonnull byte[] data)
     {
         if (data == null) throw new IllegalArgumentException("'data' can't be null");
         if (digits == null) throw new IllegalArgumentException("'digits' can't be null");
@@ -234,7 +236,7 @@ public class StringUtil
         return buf.toString();
     }
 
-    public static String join(Collection<String> strings, String delimiter) {
+    public static @Nonnull String join(@Nonnull Collection<String> strings, @Nonnull String delimiter) {
         StringBuilder sb = new StringBuilder();
         int i = 0;
         for (String s: strings) {

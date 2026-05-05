@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import okio.*;
 
 
@@ -30,14 +33,14 @@ public class OkHttp3Requestor extends HttpRequestor {
     /**
      * Returns an {@code OkHttpClient} instance with the default settings for this SDK.
      */
-    public static OkHttpClient defaultOkHttpClient() {
+    public static @Nonnull OkHttpClient defaultOkHttpClient() {
         return defaultOkHttpClientBuilder().build();
     }
 
     /**
      * Returns an {@code OkHttpClient.Builder} instance with the default settings for this SDK.
      */
-    public static OkHttpClient.Builder defaultOkHttpClientBuilder() {
+    public static @Nonnull OkHttpClient.Builder defaultOkHttpClientBuilder() {
         return new OkHttpClient.Builder()
             .connectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
             .readTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
@@ -66,7 +69,7 @@ public class OkHttp3Requestor extends HttpRequestor {
      * </pre>
      *
      */
-    public OkHttp3Requestor(OkHttpClient client) {
+    public OkHttp3Requestor(@Nonnull OkHttpClient client) {
         if (client == null) throw new NullPointerException("client");
         OkHttpUtil.assertNotSameThreadExecutor(client.dispatcher().executorService());
         this.client = client;
@@ -80,7 +83,7 @@ public class OkHttp3Requestor extends HttpRequestor {
      *
      * @return underlying {@code OkHttpClient} used by this requestor.
      */
-    public OkHttpClient getClient() {
+    public @Nonnull OkHttpClient getClient() {
         return client;
     }
 
@@ -92,7 +95,7 @@ public class OkHttp3Requestor extends HttpRequestor {
      *
      * @param request Builder of request to be executed
      */
-    protected void configureRequest(Request.Builder request) { }
+    protected void configureRequest(@Nonnull Request.Builder request) { }
 
     /**
      * Called before returning {@link Response} from a request.
@@ -106,12 +109,12 @@ public class OkHttp3Requestor extends HttpRequestor {
      *
      * @return OkHttp response
      */
-    protected okhttp3.Response interceptResponse(okhttp3.Response response) {
+    protected @Nonnull okhttp3.Response interceptResponse(@Nonnull okhttp3.Response response) {
         return response;
     }
 
     @Override
-    public Response doGet(String url, Iterable<Header> headers) throws IOException {
+    public @Nonnull Response doGet(@Nonnull String url, @Nonnull Iterable<Header> headers) throws IOException {
         Request.Builder builder = new Request.Builder().get().url(url);
         toOkHttpHeaders(headers, builder);
         configureRequest(builder);
@@ -122,29 +125,33 @@ public class OkHttp3Requestor extends HttpRequestor {
     }
 
     @Override
-    public HttpRequestor.Uploader startPost(String url, Iterable<Header> headers) throws IOException {
+    public @Nonnull HttpRequestor.Uploader startPost(@Nonnull String url,
+                                                     @Nonnull Iterable<Header> headers) throws IOException {
         return startUpload(url, headers, "POST");
     }
 
     @Override
-    public HttpRequestor.Uploader startPut(String url, Iterable<Header> headers) throws IOException {
+    public @Nonnull HttpRequestor.Uploader startPut(@Nonnull String url,
+                                                    @Nonnull Iterable<Header> headers) throws IOException {
         return startUpload(url, headers, "PUT");
     }
 
-    private BufferedUploader startUpload(String url, Iterable<Header> headers, String method) {
+    private @Nonnull BufferedUploader startUpload(@Nonnull String url,
+                                                  @Nonnull Iterable<Header> headers,
+                                                  @Nonnull String method) {
         Request.Builder builder = new Request.Builder()
             .url(url);
         toOkHttpHeaders(headers, builder);
         return new BufferedUploader(method, builder);
     }
 
-    private static void toOkHttpHeaders(Iterable<Header> headers, Request.Builder builder) {
+    private static void toOkHttpHeaders(@Nonnull Iterable<Header> headers, @Nonnull Request.Builder builder) {
         for (Header header : headers) {
             builder.addHeader(header.getKey(), header.getValue());
         }
     }
 
-    private static Map<String, List<String>> fromOkHttpHeaders(Headers headers) {
+    private static @Nonnull Map<String, List<String>> fromOkHttpHeaders(@Nonnull Headers headers) {
         Map<String, List<String>> responseHeaders = new HashMap<String, List<String>>(headers.size());
         for (String name : headers.names()) {
             responseHeaders.put(name, headers.values(name));
@@ -173,7 +180,7 @@ public class OkHttp3Requestor extends HttpRequestor {
         private boolean closed;
         private boolean cancelled;
 
-        public BufferedUploader(String method, Request.Builder request) {
+        public BufferedUploader(@Nonnull String method, @Nonnull Request.Builder request) {
             this.method = method;
             this.request = request;
 
@@ -192,7 +199,7 @@ public class OkHttp3Requestor extends HttpRequestor {
         }
 
         @Override
-        public OutputStream getBody() {
+        public @Nonnull OutputStream getBody() {
             // getBody() can be called multiple times to get access to the output stream. Don't
             // error if this is the case.
             if (body instanceof PipedRequestBody) {
@@ -213,7 +220,7 @@ public class OkHttp3Requestor extends HttpRequestor {
             }
         }
 
-        private void setBody(RequestBody body) {
+        private void setBody(@Nonnull RequestBody body) {
             assertNoBody();
             this.body = body;
             this.request.method(method, body);
@@ -221,12 +228,12 @@ public class OkHttp3Requestor extends HttpRequestor {
         }
 
         @Override
-        public void upload(File file) {
+        public void upload(@Nonnull File file) {
             setBody(RequestBody.Companion.create(file, null));
         }
 
         @Override
-        public void upload(byte [] body) {
+        public void upload(@Nonnull byte [] body) {
             setBody(RequestBody.Companion.create(body, null));
         }
 
@@ -252,7 +259,7 @@ public class OkHttp3Requestor extends HttpRequestor {
         }
 
         @Override
-        public Response finish() throws IOException {
+        public @Nonnull Response finish() throws IOException {
             if (cancelled) {
                 throw new IllegalStateException("Already aborted");
             }
@@ -279,17 +286,17 @@ public class OkHttp3Requestor extends HttpRequestor {
     }
 
     public static final class AsyncCallback implements Callback {
-        private PipedRequestBody body;
-        private IOException error;
-        private okhttp3.Response response;
+        private @Nonnull PipedRequestBody body;
+        private @Nullable IOException error;
+        private @Nullable okhttp3.Response response;
 
-        private AsyncCallback(PipedRequestBody body) {
+        private AsyncCallback(@Nonnull PipedRequestBody body) {
             this.body = body;
             this.error = null;
             this.response = null;
         }
 
-        public synchronized okhttp3.Response getResponse() throws IOException {
+        public synchronized @Nonnull okhttp3.Response getResponse() throws IOException {
             while (error == null && response == null) {
                 try {
                     wait();
@@ -305,14 +312,14 @@ public class OkHttp3Requestor extends HttpRequestor {
         }
 
         @Override
-        public synchronized void onFailure(Call call, IOException ex) {
+        public synchronized void onFailure(@Nonnull Call call, @Nonnull IOException ex) {
             this.error = ex;
             this.body.close();
             notifyAll();
         }
 
         @Override
-        public synchronized void onResponse(Call call, okhttp3.Response response) throws IOException {
+        public synchronized void onResponse(@Nonnull Call call, @Nonnull okhttp3.Response response) throws IOException {
             this.response = response;
             notifyAll();
         }
@@ -321,15 +328,15 @@ public class OkHttp3Requestor extends HttpRequestor {
     private static class PipedRequestBody extends RequestBody implements Closeable {
         private final OkHttpUtil.PipedStream stream;
 
-        private IOUtil.ProgressListener listener;
+        private @Nullable IOUtil.ProgressListener listener;
 
         public PipedRequestBody() {
             this.stream = new OkHttpUtil.PipedStream();
         }
 
-        public void setListener(IOUtil.ProgressListener listener) { this.listener = listener; }
+        public void setListener(@Nullable IOUtil.ProgressListener listener) { this.listener = listener; }
 
-        public OutputStream getOutputStream() {
+        public @Nonnull OutputStream getOutputStream() {
             return stream.getOutputStream();
         }
 
@@ -344,7 +351,7 @@ public class OkHttp3Requestor extends HttpRequestor {
         }
 
         @Override
-        public MediaType contentType() {
+        public @Nullable MediaType contentType() {
             return null;
         }
 
@@ -354,7 +361,7 @@ public class OkHttp3Requestor extends HttpRequestor {
         }
 
         @Override
-        public void writeTo(BufferedSink sink) throws IOException {
+        public void writeTo(@Nonnull BufferedSink sink) throws IOException {
             CountingSink countingSink = new CountingSink(sink);
             BufferedSink bufferedSink = Okio.buffer(countingSink);
             stream.writeTo(bufferedSink);
@@ -365,12 +372,12 @@ public class OkHttp3Requestor extends HttpRequestor {
         private final class CountingSink extends ForwardingSink {
             private long bytesWritten = 0;
 
-            public CountingSink(Sink delegate) {
+            public CountingSink(@Nonnull Sink delegate) {
                 super(delegate);
             }
 
             @Override
-            public void write(Buffer source, long byteCount) throws IOException {
+            public void write(@Nonnull Buffer source, long byteCount) throws IOException {
                 super.write(source, byteCount);
 
                 bytesWritten += byteCount;

@@ -1,5 +1,7 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
+
 /**
  *  If this field is present, Dropbox server will return a token with all scopes user previously
  *  granted your app.
@@ -17,7 +19,7 @@ public enum IncludeGrantedScopes {
     TEAM;
 
     @Override
-    public String toString() {
+    public @Nonnull String toString() {
         return this.name().toLowerCase();
     }
 }

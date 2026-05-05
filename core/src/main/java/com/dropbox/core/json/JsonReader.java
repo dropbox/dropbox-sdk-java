@@ -1,5 +1,6 @@
 package com.dropbox.core.json;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import com.dropbox.core.util.IOUtil;
 import static com.dropbox.core.util.LangUtil.mkAssert;
@@ -21,34 +22,34 @@ import java.util.HashMap;
 
 public abstract class JsonReader<T>
 {
-    public abstract T read(JsonParser parser)
+    public abstract @Nullable T read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException;
 
-    public T readFromTags(String[] tags, JsonParser parser)
+    public @Nullable T readFromTags(@Nonnull String[] tags, @Nonnull JsonParser parser)
             throws IOException, JsonReadException
     {
         return null;  // Must override for struct
     }
 
-    public T readFields(JsonParser parser)
+    public @Nullable T readFields(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
     {
         return null;  // Must override for struct
     }
 
-    public void validate(T value)
+    public void validate(@Nullable T value)
     {
         // Base implementation does nothing.
     }
 
-    public final T readField(JsonParser parser, String fieldName, Object v)
+    public final @Nullable T readField(@Nonnull JsonParser parser, @Nonnull String fieldName, @Nullable Object v)
         throws IOException, JsonReadException
     {
         if (v != null) throw new JsonReadException("duplicate field \"" + fieldName + "\"", parser.getTokenLocation());
         return read(parser);
     }
 
-    public final @Nullable T readOptional(JsonParser parser)
+    public final @Nullable T readOptional(@Nonnull JsonParser parser)
         throws IOException, JsonReadException
     {
         if (parser.getCurrentToken() == JsonToken.VALUE_NULL) {
@@ -65,7 +66,7 @@ public abstract class JsonReader<T>
      * Returns null if there isn't a ".tag" field; otherwise an array of strings (the tags).
      * Initially the parser must be positioned right after the opening brace.
      */
-    public static String[] readTags(JsonParser parser)
+    public static @Nullable String[] readTags(@Nonnull JsonParser parser)
         throws IOException, JsonReadException
     {
         if (parser.getCurrentToken() != JsonToken.FIELD_NAME) {
@@ -92,7 +93,7 @@ public abstract class JsonReader<T>
      * logical location information (see {@link JsonReadException#addFieldContext} and
      * {@link JsonReadException#addArrayContext}).
      */
-    public static JsonToken nextToken(JsonParser parser)
+    public static @Nullable JsonToken nextToken(@Nonnull JsonParser parser)
         throws IOException, JsonReadException
     {
         try {
@@ -106,7 +107,7 @@ public abstract class JsonReader<T>
     // ------------------------------------------------------------------
     // Delimiter checking helpers.
 
-    public static JsonLocation expectObjectStart(JsonParser parser)
+    public static @Nonnull JsonLocation expectObjectStart(@Nonnull JsonParser parser)
         throws IOException, JsonReadException
     {
         if (parser.getCurrentToken() != JsonToken.START_OBJECT) {
@@ -117,7 +118,7 @@ public abstract class JsonReader<T>
         return loc;
     }
 
-    public static void expectObjectEnd(JsonParser parser)
+    public static void expectObjectEnd(@Nonnull JsonParser parser)
         throws IOException, JsonReadException
     {
         if (parser.getCurrentToken() != JsonToken.END_OBJECT) {
@@ -126,7 +127,7 @@ public abstract class JsonReader<T>
         nextToken(parser);
     }
 
-    public static JsonLocation expectArrayStart(JsonParser parser)
+    public static @Nonnull JsonLocation expectArrayStart(@Nonnull JsonParser parser)
         throws IOException, JsonReadException
     {
         if (parser.getCurrentToken() != JsonToken.START_ARRAY) {
@@ -137,7 +138,7 @@ public abstract class JsonReader<T>
         return loc;
     }
 
-    public static JsonLocation expectArrayEnd(JsonParser parser)
+    public static @Nonnull JsonLocation expectArrayEnd(@Nonnull JsonParser parser)
         throws IOException, JsonReadException
     {
         if (parser.getCurrentToken() != JsonToken.END_ARRAY) {
@@ -148,17 +149,17 @@ public abstract class JsonReader<T>
         return loc;
     }
 
-    public static boolean isArrayEnd(JsonParser parser)
+    public static boolean isArrayEnd(@Nonnull JsonParser parser)
     {
         return (parser.getCurrentToken() == JsonToken.END_ARRAY);
     }
 
-    public static boolean isArrayStart(JsonParser parser)
+    public static boolean isArrayStart(@Nonnull JsonParser parser)
     {
         return (parser.getCurrentToken() == JsonToken.START_ARRAY);
     }
 
-    public static void skipValue(JsonParser parser)
+    public static void skipValue(@Nonnull JsonParser parser)
         throws IOException, JsonReadException
     {
         try {
@@ -173,16 +174,16 @@ public abstract class JsonReader<T>
     // ------------------------------------------------------------------
     // Helpers for various types.
 
-    public static final JsonReader<Long> UnsignedLongReader = new JsonReader<Long>() {
+    public static final @Nonnull JsonReader<Long> UnsignedLongReader = new JsonReader<Long>() {
         @Override
-        public Long read(JsonParser parser)
+        public @Nonnull Long read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             return readUnsignedLong(parser);
         }
     };
 
-    public static long readUnsignedLong(JsonParser parser)
+    public static long readUnsignedLong(@Nonnull JsonParser parser)
         throws IOException, JsonReadException
     {
         try {
@@ -198,16 +199,16 @@ public abstract class JsonReader<T>
         }
     }
 
-    public static long readUnsignedLongField(JsonParser parser, String fieldName, long v)
+    public static long readUnsignedLongField(@Nonnull JsonParser parser, @Nonnull String fieldName, long v)
         throws IOException, JsonReadException
     {
         if (v >= 0) throw new JsonReadException("duplicate field \"" + fieldName + "\"", parser.getCurrentLocation());
         return JsonReader.readUnsignedLong(parser);
     }
 
-    public static final JsonReader<Long> Int64Reader = new JsonReader<Long>()
+    public static final @Nonnull JsonReader<Long> Int64Reader = new JsonReader<Long>()
     {
-        public Long read(JsonParser parser)
+        public @Nonnull Long read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
         {
             long v = parser.getLongValue();
@@ -216,9 +217,9 @@ public abstract class JsonReader<T>
         }
     };
 
-    public static final JsonReader<Integer> Int32Reader = new JsonReader<Integer>()
+    public static final @Nonnull JsonReader<Integer> Int32Reader = new JsonReader<Integer>()
     {
-        public Integer read(JsonParser parser)
+        public @Nonnull Integer read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
         {
             int v = parser.getIntValue();
@@ -228,9 +229,9 @@ public abstract class JsonReader<T>
     };
 
     // NOTE: This can't read values >= 2**63.
-    public static final JsonReader<Long> UInt64Reader = new JsonReader<Long>()
+    public static final @Nonnull JsonReader<Long> UInt64Reader = new JsonReader<Long>()
     {
-        public Long read(JsonParser parser)
+        public @Nonnull Long read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
         {
             return readUnsignedLong(parser);
@@ -238,9 +239,9 @@ public abstract class JsonReader<T>
     };
 
     // NOTE: This stores the value in a Long.
-    public static final JsonReader<Long> UInt32Reader = new JsonReader<Long>()
+    public static final @Nonnull JsonReader<Long> UInt32Reader = new JsonReader<Long>()
     {
-        public Long read(JsonParser parser)
+        public @Nonnull Long read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
         {
             long v = readUnsignedLong(parser);
@@ -251,9 +252,9 @@ public abstract class JsonReader<T>
         }
     };
 
-    public static final JsonReader<Double> Float64Reader = new JsonReader<Double>()
+    public static final @Nonnull JsonReader<Double> Float64Reader = new JsonReader<Double>()
     {
-        public Double read(JsonParser parser)
+        public @Nonnull Double read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
         {
             double v = parser.getDoubleValue();
@@ -262,9 +263,9 @@ public abstract class JsonReader<T>
         }
     };
 
-    public static final JsonReader<Float> Float32Reader = new JsonReader<Float>()
+    public static final @Nonnull JsonReader<Float> Float32Reader = new JsonReader<Float>()
     {
-        public Float read(JsonParser parser)
+        public @Nonnull Float read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
         {
             float v = parser.getFloatValue();
@@ -273,9 +274,9 @@ public abstract class JsonReader<T>
         }
     };
 
-    public static final JsonReader<String> StringReader = new JsonReader<String>()
+    public static final @Nonnull JsonReader<String> StringReader = new JsonReader<String>()
     {
-        public String read(JsonParser parser)
+        public @Nonnull String read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             try {
@@ -289,9 +290,9 @@ public abstract class JsonReader<T>
         }
     };
 
-    public static final JsonReader<byte[]> BinaryReader = new JsonReader<byte[]>()
+    public static final @Nonnull JsonReader<byte[]> BinaryReader = new JsonReader<byte[]>()
     {
-        public byte[] read(JsonParser parser)
+        public @Nonnull byte[] read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             try {
@@ -307,16 +308,16 @@ public abstract class JsonReader<T>
         }
     };
 
-    public static final JsonReader<Boolean> BooleanReader = new JsonReader<Boolean>()
+    public static final @Nonnull JsonReader<Boolean> BooleanReader = new JsonReader<Boolean>()
     {
-        public Boolean read(JsonParser parser)
+        public @Nonnull Boolean read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             return readBoolean(parser);
         }
     };
 
-    public static boolean readBoolean(JsonParser parser)
+    public static boolean readBoolean(@Nonnull JsonParser parser)
         throws IOException, JsonReadException
     {
         try {
@@ -329,7 +330,7 @@ public abstract class JsonReader<T>
         }
     }
 
-    public static double readDouble(JsonParser parser)
+    public static double readDouble(@Nonnull JsonParser parser)
         throws  IOException, JsonReadException
     {
         try {
@@ -341,9 +342,9 @@ public abstract class JsonReader<T>
         }
     }
 
-    public static final JsonReader<Object> VoidReader = new JsonReader<Object>()
+    public static final @Nonnull JsonReader<Object> VoidReader = new JsonReader<Object>()
     {
-        public Object read(JsonParser parser)
+        public @Nullable Object read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             skipValue(parser);
@@ -351,7 +352,7 @@ public abstract class JsonReader<T>
         }
     };
 
-    public static <T> T readEnum(JsonParser parser, HashMap<String,T> values, T catch_all)
+    public static <T> @Nonnull T readEnum(@Nonnull JsonParser parser, @Nonnull HashMap<String,T> values, @Nullable T catch_all)
         throws IOException, JsonReadException
     {
         if (parser.getCurrentToken() == JsonToken.START_OBJECT) {
@@ -406,15 +407,15 @@ public abstract class JsonReader<T>
         // - The get() could take (char[], offset, length) instead of String, which we can
         //   provide straight from JsonParser's internal buffer.  This makes error reporting
         //   tricky, though, because we won't have a string for addFieldContext.
-        public final HashMap<String,Integer> fields;
+        public final @Nonnull HashMap<String,Integer> fields;
 
-        private FieldMapping(HashMap<String,Integer> fields)
+        private FieldMapping(@Nonnull HashMap<String,Integer> fields)
         {
             assert fields != null;
             this.fields = fields;
         }
 
-        public int get(String fieldName)
+        public int get(@Nonnull String fieldName)
         {
             Integer i = fields.get(fieldName);
             if (i == null) return -1;
@@ -425,7 +426,7 @@ public abstract class JsonReader<T>
         {
             private @Nullable HashMap<String,Integer> fields = new HashMap<String,Integer>();
 
-            public void add(String fieldName, int expectedIndex)
+            public void add(@Nonnull String fieldName, int expectedIndex)
             {
                 if (fields == null) throw new IllegalStateException("already called build(); can't call add() anymore");
                 int i = fields.size();
@@ -438,7 +439,7 @@ public abstract class JsonReader<T>
                 }
             }
 
-            public FieldMapping build()
+            public @Nonnull FieldMapping build()
             {
                 if (fields == null) throw new IllegalStateException("already called build(); can't call build() again");
                 HashMap<String,Integer> f = fields;
@@ -450,7 +451,7 @@ public abstract class JsonReader<T>
 
     static final JsonFactory jsonFactory = new JsonFactory();
 
-    public T readFully(InputStream utf8Body)
+    public @Nullable T readFully(@Nonnull InputStream utf8Body)
         throws IOException, JsonReadException
     {
         try {
@@ -462,7 +463,7 @@ public abstract class JsonReader<T>
         }
     }
 
-    public T readFully(String body)
+    public @Nullable T readFully(@Nonnull String body)
         throws JsonReadException
     {
         try {
@@ -482,7 +483,7 @@ public abstract class JsonReader<T>
         }
     }
 
-    public T readFully(byte[] utf8Body)
+    public @Nullable T readFully(@Nonnull byte[] utf8Body)
         throws JsonReadException
     {
         try {
@@ -502,13 +503,13 @@ public abstract class JsonReader<T>
         }
     }
 
-    public T readFromFile(String filePath)
+    public @Nullable T readFromFile(@Nonnull String filePath)
         throws FileLoadException
     {
         return readFromFile(new File(filePath));
     }
 
-    public T readFromFile(File file)
+    public @Nullable T readFromFile(@Nonnull File file)
         throws FileLoadException
     {
         try {
@@ -531,7 +532,7 @@ public abstract class JsonReader<T>
     public static abstract class FileLoadException extends Exception {
         private static final long serialVersionUID = 0L;
 
-        protected FileLoadException(String message)
+        protected FileLoadException(@Nonnull String message)
         {
             super(message);
         }
@@ -539,9 +540,9 @@ public abstract class JsonReader<T>
         public static final class IOError extends FileLoadException {
             private static final long serialVersionUID = 0L;
 
-            public final IOException reason;
+            public final @Nonnull IOException reason;
 
-            public IOError(File file, IOException reason)
+            public IOError(@Nonnull File file, @Nonnull IOException reason)
             {
                 super("unable to read file \"" + file.getPath() + "\": " + reason.getMessage());
                 this.reason = reason;
@@ -551,9 +552,9 @@ public abstract class JsonReader<T>
         public static final class JsonError extends FileLoadException {
             private static final long serialVersionUID = 0L;
 
-            public final JsonReadException reason;
+            public final @Nonnull JsonReadException reason;
 
-            public JsonError(File file, JsonReadException reason)
+            public JsonError(@Nonnull File file, @Nonnull JsonReadException reason)
             {
                 super(file.getPath() + ": " + reason.getMessage());
                 this.reason = reason;
@@ -561,7 +562,7 @@ public abstract class JsonReader<T>
         }
     }
 
-    public T readFully(JsonParser parser)
+    public @Nullable T readFully(@Nonnull JsonParser parser)
         throws IOException, JsonReadException
     {
         parser.nextToken();

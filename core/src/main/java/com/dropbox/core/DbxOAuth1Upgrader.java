@@ -15,6 +15,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import javax.annotation.Nonnull;
+
 /**
  * Lets you convert OAuth 1 access tokens to OAuth 2 access tokens. First call {@link
  * #createOAuth2AccessToken} to get an OAuth 2 access token.  If that succeeds, call {@link
@@ -22,14 +24,14 @@ import java.util.ArrayList;
  */
 public final class DbxOAuth1Upgrader
 {
-    private final DbxRequestConfig requestConfig;
-    private final DbxAppInfo appInfo;
+    private final @Nonnull DbxRequestConfig requestConfig;
+    private final @Nonnull DbxAppInfo appInfo;
 
     /**
      * @param appInfo
      *     Your application's Dropbox API information (the app key and secret).
      */
-    public DbxOAuth1Upgrader(DbxRequestConfig requestConfig, DbxAppInfo appInfo)
+    public DbxOAuth1Upgrader(@Nonnull DbxRequestConfig requestConfig, @Nonnull DbxAppInfo appInfo)
     {
         if (requestConfig == null) throw new IllegalArgumentException("'requestConfig' is null");
         if (appInfo == null) throw new IllegalArgumentException("'appInfo' is null");
@@ -42,7 +44,7 @@ public final class DbxOAuth1Upgrader
      * Given an existing active OAuth 1 access token, make a Dropbox API call to get a new OAuth 2
      * access token that represents the same user and app.
      */
-    public String createOAuth2AccessToken(DbxOAuth1AccessToken token)
+    public @Nonnull String createOAuth2AccessToken(@Nonnull DbxOAuth1AccessToken token)
         throws DbxException
     {
         if (token == null) throw new IllegalArgumentException("'token' can't be null");
@@ -55,7 +57,7 @@ public final class DbxOAuth1Upgrader
             getHeaders(token),
             new DbxRequestUtil.ResponseHandler<String>() {
                 @Override
-                public String handle(HttpRequestor.Response response) throws DbxException {
+                public @Nonnull String handle(@Nonnull HttpRequestor.Response response) throws DbxException {
                     if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                     return DbxRequestUtil.readJsonFromResponse(ResponseReader, response);
                 }
@@ -66,7 +68,7 @@ public final class DbxOAuth1Upgrader
     /**
      * Tell the Dropbox API server to disable an OAuth 1 access token.
      */
-    public void disableOAuth1AccessToken(DbxOAuth1AccessToken token)
+    public void disableOAuth1AccessToken(@Nonnull DbxOAuth1AccessToken token)
         throws DbxException
     {
         if (token == null) throw new IllegalArgumentException("'token' can't be null");
@@ -79,7 +81,7 @@ public final class DbxOAuth1Upgrader
             getHeaders(token),
             new DbxRequestUtil.ResponseHandler<Void>() {
                 @Override
-                public Void handle(HttpRequestor.Response response) throws DbxException {
+                public Void handle(@Nonnull HttpRequestor.Response response) throws DbxException {
                     if (response.getStatusCode() != 200) throw DbxRequestUtil.unexpectedStatus(response);
                     return null;
                 }
@@ -87,24 +89,29 @@ public final class DbxOAuth1Upgrader
         );
     }
 
-    private ArrayList<HttpRequestor.Header> getHeaders(DbxOAuth1AccessToken token)
+    private @Nonnull ArrayList<HttpRequestor.Header> getHeaders(@Nonnull DbxOAuth1AccessToken token)
     {
         ArrayList<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>(1);
         headers.add(new HttpRequestor.Header("Authorization", buildOAuth1Header(token)));
         return headers;
     }
 
-    private String buildOAuth1Header(DbxOAuth1AccessToken token)
+    private @Nonnull String buildOAuth1Header(@Nonnull DbxOAuth1AccessToken token)
     {
+        String appSecret = this.appInfo.getSecret();
+        if (appSecret == null) {
+            throw new IllegalStateException("OAuth 1 token upgrade requires an app secret.");
+        }
+
         StringBuilder buf = new StringBuilder();
         buf.append("OAuth oauth_version=\"1.0\", oauth_signature_method=\"PLAINTEXT\"");
         buf.append(", oauth_consumer_key=\"").append(encode(this.appInfo.getKey())).append("\"");
         buf.append(", oauth_token=\"").append(encode(token.getKey())).append("\"");
-        buf.append(", oauth_signature=\"").append(encode(this.appInfo.getSecret())).append("&").append(encode(token.getSecret())).append("\"");
+        buf.append(", oauth_signature=\"").append(encode(appSecret)).append("&").append(encode(token.getSecret())).append("\"");
         return buf.toString();
     }
 
-    private static String encode(String s)
+    private static @Nonnull String encode(@Nonnull String s)
     {
         try {
             return URLEncoder.encode(s, "UTF-8");
@@ -117,9 +124,9 @@ public final class DbxOAuth1Upgrader
     /**
      * For JSON parsing.
      */
-    public static final JsonReader<String> ResponseReader = new JsonReader<String>()
+    public static final @Nonnull JsonReader<String> ResponseReader = new JsonReader<String>()
     {
-        public String read(JsonParser parser) throws IOException, JsonReadException
+        public @Nonnull String read(@Nonnull JsonParser parser) throws IOException, JsonReadException
         {
             JsonLocation top = JsonReader.expectObjectStart(parser);
 

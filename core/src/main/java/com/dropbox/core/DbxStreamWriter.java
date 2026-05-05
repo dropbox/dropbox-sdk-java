@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
+
 /**
  * A callback for streaming data to an {@link OutputStream}.
  *
@@ -21,7 +23,7 @@ public abstract class DbxStreamWriter<E extends Throwable>
      * call {@link OutputStream#close close()} on the stream (the stream will
      * be closed automatically).
      */
-    public abstract void write(NoThrowOutputStream out) throws E;
+    public abstract void write(@Nonnull NoThrowOutputStream out) throws E;
 
     /**
      * A {@link DbxStreamWriter} that gets its source data from the given {@code InputStream}.
@@ -29,14 +31,14 @@ public abstract class DbxStreamWriter<E extends Throwable>
      */
     public static final class InputStreamCopier extends DbxStreamWriter<IOException>
     {
-        private final InputStream source;
+        private final @Nonnull InputStream source;
 
-        public InputStreamCopier(InputStream source)
+        public InputStreamCopier(@Nonnull InputStream source)
         {
             this.source = source;
         }
 
-        public void write(NoThrowOutputStream out) throws IOException
+        public void write(@Nonnull NoThrowOutputStream out) throws IOException
         {
             IOUtil.copyStreamToStream(source, out);
         }
@@ -44,11 +46,11 @@ public abstract class DbxStreamWriter<E extends Throwable>
 
     public static final class ByteArrayCopier extends DbxStreamWriter<RuntimeException>
     {
-        private final byte[] data;
+        private final @Nonnull byte[] data;
         private final int offset;
         private final int length;
 
-        public ByteArrayCopier(byte[] data, int offset, int length)
+        public ByteArrayCopier(@Nonnull byte[] data, int offset, int length)
         {
             if (data == null) throw new IllegalArgumentException("'data' can't be null");
             if (offset < 0 || offset >= data.length) throw new IllegalArgumentException("'offset' is out of bounds");
@@ -58,13 +60,13 @@ public abstract class DbxStreamWriter<E extends Throwable>
             this.length = length;
         }
 
-        public ByteArrayCopier(byte[] data)
+        public ByteArrayCopier(@Nonnull byte[] data)
         {
             this(data, 0, data.length);
         }
 
         @Override
-        public void write(NoThrowOutputStream out)
+        public void write(@Nonnull NoThrowOutputStream out)
         {
             out.write(this.data, this.offset, this.length);
         }

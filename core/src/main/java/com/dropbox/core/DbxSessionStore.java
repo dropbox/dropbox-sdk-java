@@ -1,5 +1,6 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -13,6 +14,6 @@ import javax.annotation.Nullable;
  */
 public interface DbxSessionStore {
     public @Nullable String get();
-    public void set(String value);
+    public void set(@Nonnull String value);
     public void clear();
 }

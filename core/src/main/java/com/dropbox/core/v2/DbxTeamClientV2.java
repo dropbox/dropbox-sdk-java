@@ -12,6 +12,9 @@ import com.dropbox.core.v2.common.PathRoot;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Use this class to make remote calls to the Dropbox API team endpoints.  Team
  * endpoints expose actions you can perform on or for a Dropbox team.  You'll
@@ -27,7 +30,7 @@ import java.util.List;
  * in a thread safe {@link HttpRequestor} implementation. </p>
  */
 public class DbxTeamClientV2 extends DbxTeamClientV2Base {
-    private final DbxCredential credential;
+    private final @Nonnull DbxCredential credential;
 
     /**
      * Creates a client that uses the given OAuth 2 access token as
@@ -38,7 +41,7 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      *     gives your app the ability to make Dropbox API calls. Typically
      *     acquired through {@link com.dropbox.core.DbxWebAuth}
      */
-    public DbxTeamClientV2(DbxRequestConfig requestConfig, String accessToken) {
+    public DbxTeamClientV2(@Nonnull DbxRequestConfig requestConfig, @Nonnull String accessToken) {
         this(requestConfig, accessToken, DbxHost.DEFAULT);
     }
 
@@ -54,7 +57,7 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      * @param host  Dropbox hosts to send requests to (used for mocking and
      *     testing)
      */
-    public DbxTeamClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host) {
+    public DbxTeamClientV2(@Nonnull DbxRequestConfig requestConfig, @Nonnull String accessToken, @Nonnull DbxHost host) {
         this(requestConfig, accessToken, host, null);
     }
 
@@ -69,7 +72,7 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      * @param requestConfig Default attributes to use for each request
      * @param credential The credential object containing all the information for authentication.
      */
-    public DbxTeamClientV2(DbxRequestConfig requestConfig, DbxCredential credential) {
+    public DbxTeamClientV2(@Nonnull DbxRequestConfig requestConfig, @Nonnull DbxCredential credential) {
         this(requestConfig, credential, DbxHost.DEFAULT, null);
     }
 
@@ -86,7 +89,10 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      * @param userId The user ID of the current Dropbox account. Used for
      *               multi-Dropbox account use-case.
      */
-    public DbxTeamClientV2(DbxRequestConfig requestConfig, String accessToken, DbxHost host, String userId) {
+    public DbxTeamClientV2(@Nonnull DbxRequestConfig requestConfig,
+                           @Nonnull String accessToken,
+                           @Nonnull DbxHost host,
+                           @Nullable String userId) {
         this(requestConfig, new DbxCredential(accessToken), host, userId);
     }
 
@@ -102,8 +108,10 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      * @param userId The user ID of the current Dropbox account. Used for
      *               multi-Dropbox account use-case.
      */
-    public DbxTeamClientV2(DbxRequestConfig requestConfig, DbxCredential credential, DbxHost host,
-                           String userId) {
+    public DbxTeamClientV2(@Nonnull DbxRequestConfig requestConfig,
+                           @Nonnull DbxCredential credential,
+                           @Nonnull DbxHost host,
+                           @Nullable String userId) {
         super(new DbxTeamRawClientV2(requestConfig, credential, host, userId, null, null, null));
         this.credential = credential;
     }
@@ -118,7 +126,7 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      * token.
      * @throws DbxException If refresh failed before of general problems like network issue.
      */
-    public DbxRefreshResult refreshAccessToken() throws DbxException {
+    public @Nonnull DbxRefreshResult refreshAccessToken() throws DbxException {
         return this._client.refreshAccessToken();
     }
 
@@ -136,7 +144,7 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      *
      * @throws IllegalArgumentException  If {@code memberId} is {@code null}
      */
-    public DbxClientV2 asMember(String memberId) {
+    public @Nonnull DbxClientV2 asMember(@Nonnull String memberId) {
         if (memberId == null) {
             throw new IllegalArgumentException("'memberId' should not be null");
         }
@@ -167,7 +175,7 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      *
      * @throws IllegalArgumentException  If {@code adminId} is {@code null}
      */
-    public DbxClientV2 asAdmin(String adminId) {
+    public @Nonnull DbxClientV2 asAdmin(@Nonnull String adminId) {
         if (adminId == null) {
             throw new IllegalArgumentException("'adminId' should not be null");
         }
@@ -190,18 +198,18 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
      * to perform requests as a particular team member).
      */
     private static final class DbxTeamRawClientV2 extends DbxRawClientV2 {
-        private final DbxCredential credential;
-        private final String memberId;
-        private final String adminId;
+        private final @Nonnull DbxCredential credential;
+        private final @Nullable String memberId;
+        private final @Nullable String adminId;
 
         private DbxTeamRawClientV2(
-            DbxRequestConfig requestConfig,
-            DbxCredential credential,
-            DbxHost host,
-            String userId,
-            String memberId,
-            String adminId,
-            PathRoot pathRoot) {
+            @Nonnull DbxRequestConfig requestConfig,
+            @Nonnull DbxCredential credential,
+            @Nonnull DbxHost host,
+            @Nullable String userId,
+            @Nullable String memberId,
+            @Nullable String adminId,
+            @Nullable PathRoot pathRoot) {
             super(requestConfig, host, userId, pathRoot);
 
             if (credential == null) throw new NullPointerException("credential");
@@ -212,7 +220,7 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
         }
 
         @Override
-        public DbxRefreshResult refreshAccessToken() throws DbxException {
+        public @Nonnull DbxRefreshResult refreshAccessToken() throws DbxException {
             credential.refresh(this.getRequestConfig());
             return new DbxRefreshResult(credential.getAccessToken(), (credential.getExpiresAt() - System.currentTimeMillis())/1000);
         }
@@ -228,7 +236,7 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
         }
 
         @Override
-        protected void addAuthHeaders(List<HttpRequestor.Header> headers) {
+        protected void addAuthHeaders(@Nonnull List<HttpRequestor.Header> headers) {
             DbxRequestUtil.removeAuthHeader(headers);
             DbxRequestUtil.addAuthHeader(headers, credential.getAccessToken());
             if (memberId != null) {
@@ -240,7 +248,7 @@ public class DbxTeamClientV2 extends DbxTeamClientV2Base {
         }
 
         @Override
-        protected DbxRawClientV2 withPathRoot(PathRoot pathRoot) {
+        protected @Nonnull DbxRawClientV2 withPathRoot(@Nonnull PathRoot pathRoot) {
             return new DbxTeamRawClientV2(
                 this.getRequestConfig(),
                 this.credential,

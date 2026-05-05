@@ -1,5 +1,6 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import static com.dropbox.core.util.StringUtil.jq;
 
@@ -141,13 +142,13 @@ public class DbxWebAuth {
     private static final int CSRF_STRING_SIZE = StringUtil.urlSafeBase64Encode(new byte[CSRF_BYTES_SIZE]).length();
 
     /** Role representing the team account associated with a user. Used by {@link Request.Builder#withRequireRole}. */
-    public static final String ROLE_WORK = "work";
+    public static final @Nonnull String ROLE_WORK = "work";
     /** Role representing the personal account associated with a user. Used by {@link Request.Builder#withRequireRole}. */
-    public static final String ROLE_PERSONAL = "personal";
+    public static final @Nonnull String ROLE_PERSONAL = "personal";
 
-    final DbxRequestConfig requestConfig;
-    final DbxAppInfo appInfo;
-    final Request deprecatedRequest;
+    final @Nonnull DbxRequestConfig requestConfig;
+    final @Nonnull DbxAppInfo appInfo;
+    final @Nullable Request deprecatedRequest;
 
     /**
      * Creates a new instance that will perform the OAuth2 authorization flow using a redirect URI.
@@ -162,7 +163,10 @@ public class DbxWebAuth {
      * instead
      */
     @Deprecated
-    public DbxWebAuth(DbxRequestConfig requestConfig, DbxAppInfo appInfo, String redirectUri, DbxSessionStore sessionStore) {
+    public DbxWebAuth(@Nonnull DbxRequestConfig requestConfig,
+                      @Nonnull DbxAppInfo appInfo,
+                      @Nonnull String redirectUri,
+                      @Nonnull DbxSessionStore sessionStore) {
         if (requestConfig == null) throw new NullPointerException("requestConfig");
         if (appInfo == null) throw new NullPointerException("appInfo");
 
@@ -182,7 +186,7 @@ public class DbxWebAuth {
      * @param appInfo Your application's Dropbox API information (the app key and secret), never
      * {@code null}.
      */
-    public DbxWebAuth(DbxRequestConfig requestConfig, DbxAppInfo appInfo) {
+    public DbxWebAuth(@Nonnull DbxRequestConfig requestConfig, @Nonnull DbxAppInfo appInfo) {
         if (requestConfig == null) throw new NullPointerException("requestConfig");
         if (appInfo == null) throw new NullPointerException("appInfo");
 
@@ -214,7 +218,7 @@ public class DbxWebAuth {
      * instead.
      */
     @Deprecated
-    public String start(@Nullable String urlState) {
+    public @Nonnull String start(@Nullable String urlState) {
         if (deprecatedRequest == null) {
             throw new IllegalStateException("Must use DbxWebAuth.authorize instead.");
         }
@@ -248,7 +252,7 @@ public class DbxWebAuth {
      * constructor, or if this (@link DbxWebAuth} instance was created with {@link DbxAppInfo}
      * without app secret.
      */
-    public String authorize(Request request) {
+    public @Nonnull String authorize(@Nonnull Request request) {
         if (deprecatedRequest != null) {
             throw new IllegalStateException("Must create this instance using DbxWebAuth(DbxRequestConfig,DbxAppInfo) to call this method.");
         }
@@ -260,11 +264,12 @@ public class DbxWebAuth {
         return authorizeImpl(request);
     }
 
-    private String authorizeImpl(Request request) {
+    private @Nonnull String authorizeImpl(@Nonnull Request request) {
         return authorizeImpl(request, null);
     }
 
-    String authorizeImpl(Request request, Map<String, String> pkceParams) {
+    @Nonnull
+    String authorizeImpl(@Nonnull Request request, @Nullable Map<String, String> pkceParams) {
         Map<String, String> params = new HashMap<String, String>();
 
         params.put("client_id", appInfo.getKey());
@@ -319,7 +324,7 @@ public class DbxWebAuth {
      *
      * @throws DbxException if an error occurs communicating with Dropbox.
      */
-    public DbxAuthFinish finishFromCode(String code) throws DbxException {
+    public @Nonnull DbxAuthFinish finishFromCode(@Nonnull String code) throws DbxException {
         return finish(code);
     }
 
@@ -333,7 +338,7 @@ public class DbxWebAuth {
      *
      * @throws DbxException if an error occurs communicating with Dropbox.
      */
-    public DbxAuthFinish finishFromCode(String code, String redirectUri) throws DbxException {
+    public @Nonnull DbxAuthFinish finishFromCode(@Nonnull String code, @Nonnull String redirectUri) throws DbxException {
         return finish(code, redirectUri, null);
     }
 
@@ -359,17 +364,19 @@ public class DbxWebAuth {
      * set.
      * @throws DbxException If an error occurs communicating with Dropbox.
      */
-    public DbxAuthFinish finishFromRedirect(String redirectUri,
-                                            DbxSessionStore sessionStore,
-                                            Map<String, String[]> params)
+    public @Nonnull DbxAuthFinish finishFromRedirect(@Nonnull String redirectUri,
+                                            @Nonnull DbxSessionStore sessionStore,
+                                            @Nonnull Map<String, String[]> params)
         throws DbxException, BadRequestException, BadStateException, CsrfException, NotApprovedException, ProviderException {
 
-        String strippedState = validateRedirectUri(redirectUri, sessionStore, params);
+        @Nullable String strippedState = validateRedirectUri(redirectUri, sessionStore, params);
         String code = getParam(params, "code");
         return finish(code, redirectUri, strippedState);
     }
 
-    static String validateRedirectUri(String redirectUri, DbxSessionStore sessionStore, Map<String, String[]> params)
+    static @Nullable String validateRedirectUri(@Nonnull String redirectUri,
+                                                @Nonnull DbxSessionStore sessionStore,
+                                                @Nonnull Map<String, String[]> params)
         throws BadRequestException, BadStateException, CsrfException, NotApprovedException, ProviderException
     {
         if (redirectUri == null) throw new NullPointerException("redirectUri");
@@ -416,11 +423,12 @@ public class DbxWebAuth {
         return state;
     }
 
-    private DbxAuthFinish finish(String code) throws DbxException {
+    private @Nonnull DbxAuthFinish finish(@Nonnull String code) throws DbxException {
         return finish(code, null, null);
     }
 
-    DbxAuthFinish finish(String code, String redirectUri, final String state) throws
+    @Nonnull
+    DbxAuthFinish finish(@Nonnull String code, @Nullable String redirectUri, final @Nullable String state) throws
             DbxException {
         if (code == null) throw new NullPointerException("code");
         if (!appInfo.hasSecret()) {
@@ -437,7 +445,11 @@ public class DbxWebAuth {
         }
 
         List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
-        DbxRequestUtil.addBasicAuthHeader(headers, appInfo.getKey(), appInfo.getSecret());
+        String appSecret = appInfo.getSecret();
+        if (appSecret == null) {
+            throw new IllegalStateException("App secret is required for non-PKCE OAuth.");
+        }
+        DbxRequestUtil.addBasicAuthHeader(headers, appInfo.getKey(), appSecret);
 
         return DbxRequestUtil.doPostNoAuth(
             requestConfig,
@@ -448,7 +460,7 @@ public class DbxWebAuth {
             headers,
             new DbxRequestUtil.ResponseHandler<DbxAuthFinish>() {
                 @Override
-                public DbxAuthFinish handle(HttpRequestor.Response response) throws DbxException {
+                public @Nonnull DbxAuthFinish handle(@Nonnull HttpRequestor.Response response) throws DbxException {
                     if (response.getStatusCode() != 200) {
                         throw DbxRequestUtil.unexpectedStatus(response);
                     }
@@ -481,7 +493,7 @@ public class DbxWebAuth {
      * @deprecated use {@link #finishFromRedirect finishFromRedirect(..)} instead.
      */
     @Deprecated
-    public DbxAuthFinish finish(Map<String, String[]> queryParams)
+    public @Nonnull DbxAuthFinish finish(@Nonnull Map<String, String[]> queryParams)
         throws DbxException, BadRequestException, BadStateException, CsrfException, NotApprovedException, ProviderException {
         if (deprecatedRequest == null) {
             throw new IllegalStateException("Must use DbxWebAuth.finishFromRedirect(..) instead.");
@@ -493,7 +505,7 @@ public class DbxWebAuth {
         );
     }
 
-    private static String appendCsrfToken(Request request) {
+    private static @Nonnull String appendCsrfToken(@Nonnull Request request) {
         // add a CSRF nonce for security
         byte[] csrf = new byte[CSRF_BYTES_SIZE];
         RAND.nextBytes(csrf);
@@ -518,7 +530,7 @@ public class DbxWebAuth {
         }
     }
 
-    private static String verifyAndStripCsrfToken(String state, DbxSessionStore sessionStore)
+    private static @Nullable String verifyAndStripCsrfToken(@Nonnull String state, @Nonnull DbxSessionStore sessionStore)
         throws CsrfException, BadStateException {
         String expected = sessionStore.get();
         if (expected == null) {
@@ -544,7 +556,7 @@ public class DbxWebAuth {
         return stripped.isEmpty() ? null : stripped;
     }
 
-    static @Nullable String getParam(Map<String,String[]> params, String name) throws BadRequestException {
+    static @Nullable String getParam(@Nonnull Map<String,String[]> params, @Nonnull String name) throws BadRequestException {
         String[] v = params.get(name);
 
         if (v == null) {
@@ -564,7 +576,7 @@ public class DbxWebAuth {
      */
     public static abstract class Exception extends java.lang.Exception {
         private static final long serialVersionUID = 0L;
-        public Exception(String message) { super(message); }
+        public Exception(@Nonnull String message) { super(message); }
     }
 
     /**
@@ -580,7 +592,7 @@ public class DbxWebAuth {
      */
     public static final class BadRequestException extends Exception {
         private static final long serialVersionUID = 0L;
-        public BadRequestException(String message) { super(message); }
+        public BadRequestException(@Nonnull String message) { super(message); }
     }
 
     /**
@@ -598,7 +610,7 @@ public class DbxWebAuth {
      */
     public static final class BadStateException extends Exception {
         private static final long serialVersionUID = 0L;
-        public BadStateException(String message) { super(message); }
+        public BadStateException(@Nonnull String message) { super(message); }
     }
 
     /**
@@ -615,7 +627,7 @@ public class DbxWebAuth {
      */
     public static final class CsrfException extends Exception {
         private static final long serialVersionUID = 0L;
-        public CsrfException(String message) { super(message); }
+        public CsrfException(@Nonnull String message) { super(message); }
     }
 
     /**
@@ -628,7 +640,7 @@ public class DbxWebAuth {
      */
     public static final class NotApprovedException extends Exception {
         private static final long serialVersionUID = 0L;
-        public NotApprovedException(String message) { super(message); }
+        public NotApprovedException(@Nonnull String message) { super(message); }
     }
 
     /**
@@ -640,7 +652,7 @@ public class DbxWebAuth {
      */
     public static final class ProviderException extends Exception {
         private static final long serialVersionUID = 0L;
-        public ProviderException(String message) { super(message); }
+        public ProviderException(@Nonnull String message) { super(message); }
     }
 
     /**
@@ -648,7 +660,7 @@ public class DbxWebAuth {
      *
      * @return new request builder with default values
      */
-    public static Request.Builder newRequestBuilder() {
+    public static @Nonnull Request.Builder newRequestBuilder() {
         return Request.newBuilder();
     }
 
@@ -661,26 +673,26 @@ public class DbxWebAuth {
         private static final Charset UTF8 = Charset.forName("UTF-8");
         private static final int MAX_STATE_SIZE = 500;
 
-        private final String redirectUri;
-        private final String state;
-        private final String requireRole;
-        private final Boolean forceReapprove;
-        private final Boolean disableSignup;
-        private final DbxSessionStore sessionStore;
-        private final TokenAccessType tokenAccessType;
-        private final String scope;
-        private final IncludeGrantedScopes includeGrantedScopes;
+        private final @Nullable String redirectUri;
+        private final @Nullable String state;
+        private final @Nullable String requireRole;
+        private final @Nullable Boolean forceReapprove;
+        private final @Nullable Boolean disableSignup;
+        private final @Nullable DbxSessionStore sessionStore;
+        private final @Nullable TokenAccessType tokenAccessType;
+        private final @Nullable String scope;
+        private final @Nullable IncludeGrantedScopes includeGrantedScopes;
 
 
-        private Request(String redirectUri,
-                        String state,
-                        String requireRole,
-                        Boolean forceReapprove,
-                        Boolean disableSignup,
-                        DbxSessionStore sessionStore,
-                        TokenAccessType tokenAccessType,
-                        String scope,
-                        IncludeGrantedScopes includeGrantedScopes) {
+        private Request(@Nullable String redirectUri,
+                        @Nullable String state,
+                        @Nullable String requireRole,
+                        @Nullable Boolean forceReapprove,
+                        @Nullable Boolean disableSignup,
+                        @Nullable DbxSessionStore sessionStore,
+                        @Nullable TokenAccessType tokenAccessType,
+                        @Nullable String scope,
+                        @Nullable IncludeGrantedScopes includeGrantedScopes) {
             this.redirectUri = redirectUri;
             this.state = state;
             this.requireRole = requireRole;
@@ -697,7 +709,7 @@ public class DbxWebAuth {
          *
          * @return copy of this request
          */
-        public Builder copy() {
+        public @Nonnull Builder copy() {
             return new Builder(
                     redirectUri,
                     state,
@@ -716,7 +728,7 @@ public class DbxWebAuth {
          *
          * @return new request builder with default values
          */
-        public static Builder newBuilder() {
+        public static @Nonnull Builder newBuilder() {
             return new Builder();
         }
 
@@ -724,29 +736,29 @@ public class DbxWebAuth {
          * Builder for OAuth2 requests. Use this builder to configure the OAuth authorization flow.
          */
         public static final class Builder {
-            private String redirectUri;
-            private String state;
-            private String requireRole;
-            private Boolean forceReapprove;
-            private Boolean disableSignup;
-            private DbxSessionStore sessionStore;
-            private TokenAccessType tokenAccessType;
-            private String scope;
-            private IncludeGrantedScopes includeGrantedScopes;
+            private @Nullable String redirectUri;
+            private @Nullable String state;
+            private @Nullable String requireRole;
+            private @Nullable Boolean forceReapprove;
+            private @Nullable Boolean disableSignup;
+            private @Nullable DbxSessionStore sessionStore;
+            private @Nullable TokenAccessType tokenAccessType;
+            private @Nullable String scope;
+            private @Nullable IncludeGrantedScopes includeGrantedScopes;
 
             private Builder() {
                 this(null, null, null, null, null, null, null, null, null);
             }
 
-            private Builder(String redirectUri,
-                            String state,
-                            String requireRole,
-                            Boolean forceReapprove,
-                            Boolean disableSignup,
-                            DbxSessionStore sessionStore,
-                            TokenAccessType tokenAccessType,
-                            String scope,
-                            IncludeGrantedScopes includeGrantedScopes) {
+            private Builder(@Nullable String redirectUri,
+                            @Nullable String state,
+                            @Nullable String requireRole,
+                            @Nullable Boolean forceReapprove,
+                            @Nullable Boolean disableSignup,
+                            @Nullable DbxSessionStore sessionStore,
+                            @Nullable TokenAccessType tokenAccessType,
+                            @Nullable String scope,
+                            @Nullable IncludeGrantedScopes includeGrantedScopes) {
                 this.redirectUri = redirectUri;
                 this.state = state;
                 this.requireRole = requireRole;
@@ -768,7 +780,7 @@ public class DbxWebAuth {
              *
              * @return this builder
              */
-            public Builder withNoRedirect() {
+            public @Nonnull Builder withNoRedirect() {
                 this.redirectUri = null;
                 this.sessionStore = null;
                 return this;
@@ -797,7 +809,7 @@ public class DbxWebAuth {
              *
              * @throws NullPointerException if either redirectUri or sessionStore is {@code null}
              */
-            public Builder withRedirectUri(String redirectUri, DbxSessionStore sessionStore) {
+            public @Nonnull Builder withRedirectUri(@Nonnull String redirectUri, @Nonnull DbxSessionStore sessionStore) {
                 if (redirectUri == null) throw new NullPointerException("redirectUri");
                 if (sessionStore == null) throw new NullPointerException("sessionStore");
 
@@ -824,7 +836,7 @@ public class DbxWebAuth {
              *
              * @throws IllegalArgumentException if state is greater than 476 bytes
              */
-            public Builder withState(String state) {
+            public @Nonnull Builder withState(@Nullable String state) {
                 if (state != null && (state.getBytes(UTF8).length + CSRF_STRING_SIZE) > MAX_STATE_SIZE) {
                     throw new IllegalArgumentException("UTF-8 encoded state cannot be greater than " + (MAX_STATE_SIZE - CSRF_STRING_SIZE) + " bytes.");
                 }
@@ -846,7 +858,7 @@ public class DbxWebAuth {
              * @see DbxWebAuth#ROLE_WORK
              * @see DbxWebAuth#ROLE_PERSONAL
              */
-            public Builder withRequireRole(String requireRole) {
+            public @Nonnull Builder withRequireRole(@Nullable String requireRole) {
                 this.requireRole = requireRole;
                 return this;
             }
@@ -864,7 +876,7 @@ public class DbxWebAuth {
              * @param forceReapprove whether to force a user to re-approve this app, or {@code null}
              * for default behavior
              */
-            public Builder withForceReapprove(Boolean forceReapprove) {
+            public @Nonnull Builder withForceReapprove(@Nullable Boolean forceReapprove) {
                 this.forceReapprove = forceReapprove;
                 return this;
             }
@@ -882,7 +894,7 @@ public class DbxWebAuth {
              *
              * @return this builder
              */
-            public Builder withDisableSignup(Boolean disableSignup) {
+            public @Nonnull Builder withDisableSignup(@Nullable Boolean disableSignup) {
                 this.disableSignup = disableSignup;
                 return this;
             }
@@ -902,7 +914,7 @@ public class DbxWebAuth {
              *
              * @return this builder
              */
-            public Builder withTokenAccessType(TokenAccessType tokenAccessType) {
+            public @Nonnull Builder withTokenAccessType(@Nullable TokenAccessType tokenAccessType) {
                 this.tokenAccessType = tokenAccessType;
                 return this;
             }
@@ -914,7 +926,7 @@ public class DbxWebAuth {
              * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
              * will get HTTP 401. Example: "account_info.read files.content.read"
              */
-            public Builder withScope(Collection<String> scope) {
+            public @Nonnull Builder withScope(@Nullable Collection<String> scope) {
                 if (scope != null) {
                     this.scope = StringUtil.join(scope, " ");
                 }
@@ -931,7 +943,7 @@ public class DbxWebAuth {
              *                            scopes user previously granted your app together with
              *                             the new scopes.
              */
-            public Builder withIncludeGrantedScopes(IncludeGrantedScopes includeGrantedScopes) {
+            public @Nonnull Builder withIncludeGrantedScopes(@Nullable IncludeGrantedScopes includeGrantedScopes) {
                 this.includeGrantedScopes = includeGrantedScopes;
                 return this;
             }
@@ -945,7 +957,7 @@ public class DbxWebAuth {
              * @throws IllegalStateException if {@link #withState} was called with a non-{@code
              * null} value, but no redirect URI was specified.
              */
-            public Request build() {
+            public @Nonnull Request build() {
                 if (redirectUri == null && state != null) {
                     throw new IllegalStateException("Cannot specify a state without a redirect URI.");
                 }

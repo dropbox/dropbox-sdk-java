@@ -14,78 +14,81 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public final class StoneSerializers {
 
-    public static StoneSerializer<Long> uInt64() {
+    public static @Nonnull StoneSerializer<Long> uInt64() {
         return LongSerializer.INSTANCE;
     }
 
-    public static StoneSerializer<Long> int64() {
+    public static @Nonnull StoneSerializer<Long> int64() {
         return LongSerializer.INSTANCE;
     }
 
-    public static StoneSerializer<Long> uInt32() {
+    public static @Nonnull StoneSerializer<Long> uInt32() {
         return LongSerializer.INSTANCE;
     }
 
-    public static StoneSerializer<Integer> int32() {
+    public static @Nonnull StoneSerializer<Integer> int32() {
         return IntSerializer.INSTANCE;
     }
 
-    public static StoneSerializer<Double> float64() {
+    public static @Nonnull StoneSerializer<Double> float64() {
         return DoubleSerializer.INSTANCE;
     }
 
-    public static StoneSerializer<Float> float32() {
+    public static @Nonnull StoneSerializer<Float> float32() {
         return FloatSerializer.INSTANCE;
     }
 
-    public static StoneSerializer<Boolean> boolean_() {
+    public static @Nonnull StoneSerializer<Boolean> boolean_() {
         return BooleanSerializer.INSTANCE;
     }
 
-    public static StoneSerializer<byte []> bytes() {
+    public static @Nonnull StoneSerializer<byte []> bytes() {
         return ByteArraySerializer.INSTANCE;
     }
 
-    public static StoneSerializer<String> string() {
+    public static @Nonnull StoneSerializer<String> string() {
         return StringSerializer.INSTANCE;
     }
 
-    public static StoneSerializer<Date> timestamp() {
+    public static @Nonnull StoneSerializer<Date> timestamp() {
         return DateSerializer.INSTANCE;
     }
 
-    public static StoneSerializer<Void> void_() {
+    public static @Nonnull StoneSerializer<Void> void_() {
         return VoidSerializer.INSTANCE;
     }
 
-    public static <T> StoneSerializer<T> nullable(StoneSerializer<T> underlying) {
+    public static <T> @Nonnull StoneSerializer<T> nullable(@Nonnull StoneSerializer<T> underlying) {
         return new NullableSerializer<T>(underlying);
     }
 
-    public static <T> StructSerializer<T> nullableStruct(StructSerializer<T> underlying) {
+    public static <T> @Nonnull StructSerializer<T> nullableStruct(@Nonnull StructSerializer<T> underlying) {
         return new NullableStructSerializer<T>(underlying);
     }
 
-    public static <T> StoneSerializer<List<T>> list(StoneSerializer<T> underlying) {
+    public static <T> @Nonnull StoneSerializer<List<T>> list(@Nonnull StoneSerializer<T> underlying) {
         return new ListSerializer<T>(underlying);
     }
 
-    public static <T> StoneSerializer<Map<String, T>> map(StoneSerializer<T> underlying) {
+    public static <T> @Nonnull StoneSerializer<Map<String, T>> map(@Nonnull StoneSerializer<T> underlying) {
         return new MapSerializer<T>(underlying);
     }
 
     private static final class LongSerializer extends StoneSerializer<Long> {
-        public static final LongSerializer INSTANCE = new LongSerializer();
+        public static final @Nonnull LongSerializer INSTANCE = new LongSerializer();
 
         @Override
-        public void serialize(Long value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(@Nullable Long value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
             g.writeNumber(value);
         }
 
         @Override
-        public Long deserialize(JsonParser p) throws IOException, JsonParseException {
+        public @Nonnull Long deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
             Long value = p.getLongValue();
             p.nextToken();
             return value;
@@ -93,15 +96,15 @@ public final class StoneSerializers {
     }
 
     private static final class IntSerializer extends StoneSerializer<Integer> {
-        public static final IntSerializer INSTANCE = new IntSerializer();
+        public static final @Nonnull IntSerializer INSTANCE = new IntSerializer();
 
         @Override
-        public void serialize(Integer value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(@Nullable Integer value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
             g.writeNumber(value);
         }
 
         @Override
-        public Integer deserialize(JsonParser p) throws IOException, JsonParseException {
+        public @Nonnull Integer deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
             Integer value = p.getIntValue();
             p.nextToken();
             return value;
@@ -109,15 +112,15 @@ public final class StoneSerializers {
     }
 
     private static final class DoubleSerializer extends StoneSerializer<Double> {
-        public static final DoubleSerializer INSTANCE = new DoubleSerializer();
+        public static final @Nonnull DoubleSerializer INSTANCE = new DoubleSerializer();
 
         @Override
-        public void serialize(Double value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(@Nullable Double value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
             g.writeNumber(value);
         }
 
         @Override
-        public Double deserialize(JsonParser p) throws IOException, JsonParseException {
+        public @Nonnull Double deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
             Double value = p.getDoubleValue();
             p.nextToken();
             return value;
@@ -125,15 +128,15 @@ public final class StoneSerializers {
     }
 
     private static final class FloatSerializer extends StoneSerializer<Float> {
-        public static final FloatSerializer INSTANCE = new FloatSerializer();
+        public static final @Nonnull FloatSerializer INSTANCE = new FloatSerializer();
 
         @Override
-        public void serialize(Float value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(@Nullable Float value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
             g.writeNumber(value);
         }
 
         @Override
-        public Float deserialize(JsonParser p) throws IOException, JsonParseException {
+        public @Nonnull Float deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
             Float value = p.getFloatValue();
             p.nextToken();
             return value;
@@ -141,15 +144,15 @@ public final class StoneSerializers {
     }
 
     private static final class BooleanSerializer extends StoneSerializer<Boolean> {
-        public static final BooleanSerializer INSTANCE = new BooleanSerializer();
+        public static final @Nonnull BooleanSerializer INSTANCE = new BooleanSerializer();
 
         @Override
-        public void serialize(Boolean value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(@Nullable Boolean value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
             g.writeBoolean(value);
         }
 
         @Override
-        public Boolean deserialize(JsonParser p) throws IOException, JsonParseException {
+        public @Nonnull Boolean deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
             Boolean value = p.getBooleanValue();
             p.nextToken();
             return value;
@@ -157,15 +160,15 @@ public final class StoneSerializers {
     }
 
     private static final class ByteArraySerializer extends StoneSerializer<byte []> {
-        public static final ByteArraySerializer INSTANCE = new ByteArraySerializer();
+        public static final @Nonnull ByteArraySerializer INSTANCE = new ByteArraySerializer();
 
         @Override
-        public void serialize(byte [] value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(@Nullable byte [] value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
             g.writeBinary(value);
         }
 
         @Override
-        public byte [] deserialize(JsonParser p) throws IOException, JsonParseException {
+        public @Nonnull byte [] deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
             byte [] value = p.getBinaryValue();
             p.nextToken();
             return value;
@@ -173,15 +176,15 @@ public final class StoneSerializers {
     }
 
     private static final class StringSerializer extends StoneSerializer<String> {
-        public static final StringSerializer INSTANCE = new StringSerializer();
+        public static final @Nonnull StringSerializer INSTANCE = new StringSerializer();
 
         @Override
-        public void serialize(String value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(@Nullable String value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
             g.writeString(value);
         }
 
         @Override
-        public String deserialize(JsonParser p) throws IOException, JsonParseException {
+        public @Nonnull String deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
             String value = getStringValue(p);
             p.nextToken();
             return value;
@@ -189,15 +192,15 @@ public final class StoneSerializers {
     }
 
     private static final class DateSerializer extends StoneSerializer<Date> {
-        public static final DateSerializer INSTANCE = new DateSerializer();
+        public static final @Nonnull DateSerializer INSTANCE = new DateSerializer();
 
         @Override
-        public void serialize(Date value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(@Nullable Date value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
             g.writeString(Util.formatTimestamp(value));
         }
 
         @Override
-        public Date deserialize(JsonParser p) throws IOException, JsonParseException {
+        public @Nonnull Date deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
             String text = getStringValue(p);
             p.nextToken();
             try {
@@ -209,29 +212,29 @@ public final class StoneSerializers {
     }
 
     private static final class VoidSerializer extends StoneSerializer<Void> {
-        public static final VoidSerializer INSTANCE = new VoidSerializer();
+        public static final @Nonnull VoidSerializer INSTANCE = new VoidSerializer();
 
         @Override
-        public void serialize(Void value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(@Nullable Void value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
             g.writeNull();
         }
 
         @Override
-        public Void deserialize(JsonParser p) throws IOException, JsonParseException {
+        public @Nullable Void deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
             skipValue(p);
             return null;
         }
     }
 
     private static final class NullableSerializer<T> extends StoneSerializer<T> {
-        private final StoneSerializer<T> underlying;
+        private final @Nonnull StoneSerializer<T> underlying;
 
-        public NullableSerializer(StoneSerializer<T> underlying) {
+        public NullableSerializer(@Nonnull StoneSerializer<T> underlying) {
             this.underlying = underlying;
         }
 
         @Override
-        public void serialize(T value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(@Nullable T value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
             if (value == null) {
                 g.writeNull();
             } else {
@@ -240,7 +243,7 @@ public final class StoneSerializers {
         }
 
         @Override
-        public T deserialize(JsonParser p) throws IOException, JsonParseException {
+        public @Nullable T deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
             if (p.getCurrentToken() == JsonToken.VALUE_NULL) {
                 p.nextToken();
                 return null;
@@ -251,14 +254,14 @@ public final class StoneSerializers {
     }
 
     private static final class NullableStructSerializer<T> extends StructSerializer<T> {
-        private final StructSerializer<T> underlying;
+        private final @Nonnull StructSerializer<T> underlying;
 
-        public NullableStructSerializer(StructSerializer<T> underlying) {
+        public NullableStructSerializer(@Nonnull StructSerializer<T> underlying) {
             this.underlying = underlying;
         }
 
         @Override
-        public void serialize(T value, JsonGenerator g) throws IOException {
+        public void serialize(@Nullable T value, @Nonnull JsonGenerator g) throws IOException {
             if (value == null) {
                 g.writeNull();
             } else {
@@ -267,7 +270,7 @@ public final class StoneSerializers {
         }
 
         @Override
-        public void serialize(T value, JsonGenerator g, boolean collapsed) throws IOException {
+        public void serialize(@Nullable T value, @Nonnull JsonGenerator g, boolean collapsed) throws IOException {
             if (value == null) {
                 g.writeNull();
             } else {
@@ -276,7 +279,7 @@ public final class StoneSerializers {
         }
 
         @Override
-        public T deserialize(JsonParser p) throws IOException {
+        public @Nullable T deserialize(@Nonnull JsonParser p) throws IOException {
             if (p.getCurrentToken() == JsonToken.VALUE_NULL) {
                 p.nextToken();
                 return null;
@@ -286,7 +289,7 @@ public final class StoneSerializers {
         }
 
         @Override
-        public T deserialize(JsonParser p, boolean collapsed) throws IOException {
+        public @Nullable T deserialize(@Nonnull JsonParser p, boolean collapsed) throws IOException {
             if (p.getCurrentToken() == JsonToken.VALUE_NULL) {
                 p.nextToken();
                 return null;
@@ -297,14 +300,14 @@ public final class StoneSerializers {
     }
 
     private static final class ListSerializer<T> extends StoneSerializer<List<T>> {
-        private final StoneSerializer<T> underlying;
+        private final @Nonnull StoneSerializer<T> underlying;
 
-        public ListSerializer(StoneSerializer<T> underlying) {
+        public ListSerializer(@Nonnull StoneSerializer<T> underlying) {
             this.underlying = underlying;
         }
 
         @Override
-        public void serialize(List<T> value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(@Nullable List<T> value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
             g.writeStartArray(value.size());
             for (T elem : value) {
                 underlying.serialize(elem, g);
@@ -313,7 +316,7 @@ public final class StoneSerializers {
         }
 
         @Override
-        public List<T> deserialize(JsonParser p) throws IOException, JsonParseException {
+        public @Nonnull List<T> deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
             expectStartArray(p);
             List<T> list = new ArrayList<T>();
             while (p.getCurrentToken() != JsonToken.END_ARRAY) {
@@ -326,14 +329,14 @@ public final class StoneSerializers {
     }
 
     private static final class MapSerializer<T> extends StoneSerializer<Map<String, T>> {
-        private final StoneSerializer<T> underlying;
+        private final @Nonnull StoneSerializer<T> underlying;
 
-        public MapSerializer(StoneSerializer<T> underlying) {
+        public MapSerializer(@Nonnull StoneSerializer<T> underlying) {
             this.underlying = underlying;
         }
 
         @Override
-        public void serialize(Map<String, T> value, JsonGenerator g) throws IOException, JsonGenerationException {
+        public void serialize(@Nullable Map<String, T> value, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
             g.writeStartObject();
             for (Map.Entry<String, T> e : value.entrySet()) {
                 g.writeFieldName(e.getKey());
@@ -343,7 +346,7 @@ public final class StoneSerializers {
         }
 
         @Override
-        public Map<String, T> deserialize(JsonParser p) throws IOException, JsonParseException {
+        public @Nonnull Map<String, T> deserialize(@Nonnull JsonParser p) throws IOException, JsonParseException {
             Map<String, T> map = new HashMap<String, T>();
 
             expectStartObject(p);

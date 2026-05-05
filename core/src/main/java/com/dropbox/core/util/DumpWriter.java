@@ -1,5 +1,6 @@
 package com.dropbox.core.util;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import com.dropbox.core.json.JsonDateReader;
 
@@ -10,12 +11,12 @@ import java.util.GregorianCalendar;
 
 public abstract class DumpWriter
 {
-    public abstract DumpWriter recordStart(@Nullable String name);
-    public abstract DumpWriter recordEnd();
-    public abstract DumpWriter f(String name);  // Write a field name.  You should write a value after.
-    public abstract DumpWriter listStart();
-    public abstract DumpWriter listEnd();
-    public abstract DumpWriter verbatim(String s);
+    public abstract @Nonnull DumpWriter recordStart(@Nullable String name);
+    public abstract @Nonnull DumpWriter recordEnd();
+    public abstract @Nonnull DumpWriter f(@Nonnull String name);  // Write a field name.  You should write a value after.
+    public abstract @Nonnull DumpWriter listStart();
+    public abstract @Nonnull DumpWriter listEnd();
+    public abstract @Nonnull DumpWriter verbatim(@Nonnull String s);
 
     public static final class Multiline extends DumpWriter
     {
@@ -23,7 +24,7 @@ public abstract class DumpWriter
         private final int indentAmount;
         private int currentIndent;
 
-        public Multiline(StringBuilder buf, int indentAmount, int currentIndent, boolean nl)
+        public Multiline(@Nonnull StringBuilder buf, int indentAmount, int currentIndent, boolean nl)
         {
             if (buf == null) throw new IllegalArgumentException("'buf' must not be null");
             if (indentAmount < 0) throw new IllegalArgumentException("'indentAmount' must be non-negative");
@@ -34,7 +35,7 @@ public abstract class DumpWriter
             this.nl = nl;
         }
 
-        public Multiline(StringBuilder buf, int indentAmount, boolean nl)
+        public Multiline(@Nonnull StringBuilder buf, int indentAmount, boolean nl)
         {
             this(buf, indentAmount, 0, nl);
         }
@@ -63,7 +64,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter recordStart(@Nullable String name)
+        public @Nonnull DumpWriter recordStart(@Nullable String name)
         {
             prefix();
             if (name != null) {
@@ -76,7 +77,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter recordEnd()
+        public @Nonnull DumpWriter recordEnd()
         {
             if (!nl) throw new AssertionError("called recordEnd() in a bad state");
             indentLess();
@@ -87,7 +88,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter f(String name)
+        public @Nonnull DumpWriter f(@Nonnull String name)
         {
             if (!nl) throw new AssertionError("called fieldStart() in a bad state");
             prefix();
@@ -97,7 +98,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter listStart()
+        public @Nonnull DumpWriter listStart()
         {
             prefix();
             buf.append("[\n");
@@ -107,7 +108,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter listEnd()
+        public @Nonnull DumpWriter listEnd()
         {
             if (!nl) throw new AssertionError("called listEnd() in a bad state");
             indentLess();
@@ -118,7 +119,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter verbatim(String s)
+        public @Nonnull DumpWriter verbatim(@Nonnull String s)
         {
             prefix();
             buf.append(s);
@@ -132,7 +133,7 @@ public abstract class DumpWriter
     {
         private StringBuilder buf;
 
-        public Plain(StringBuilder buf)
+        public Plain(@Nonnull StringBuilder buf)
         {
             this.buf = buf;
         }
@@ -149,7 +150,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter recordStart(@Nullable String name)
+        public @Nonnull DumpWriter recordStart(@Nullable String name)
         {
             if (name != null) {
                 buf.append(name);
@@ -160,7 +161,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter recordEnd()
+        public @Nonnull DumpWriter recordEnd()
         {
             buf.append(")");
             needSep = true;
@@ -168,7 +169,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter f(String name)
+        public @Nonnull DumpWriter f(@Nonnull String name)
         {
             sep();
             buf.append(name).append('=');
@@ -177,7 +178,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter listStart()
+        public @Nonnull DumpWriter listStart()
         {
             sep();
             buf.append("[");
@@ -186,7 +187,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter listEnd()
+        public @Nonnull DumpWriter listEnd()
         {
             buf.append("]");
             needSep = true;
@@ -194,7 +195,7 @@ public abstract class DumpWriter
         }
 
         @Override
-        public DumpWriter verbatim(String s)
+        public @Nonnull DumpWriter verbatim(@Nonnull String s)
         {
             sep();
             buf.append(s);
@@ -202,12 +203,12 @@ public abstract class DumpWriter
         }
     }
 
-    public DumpWriter fieldVerbatim(String name, String s)
+    public @Nonnull DumpWriter fieldVerbatim(@Nonnull String name, @Nonnull String s)
     {
         return f(name).verbatim(s);
     }
 
-    public DumpWriter v(@Nullable Iterable<? extends Dumpable> list)
+    public @Nonnull DumpWriter v(@Nullable Iterable<? extends Dumpable> list)
     {
         if (list == null) {
             verbatim("null");
@@ -221,7 +222,7 @@ public abstract class DumpWriter
         return this;
     }
 
-    public DumpWriter v(@Nullable String v)
+    public @Nonnull DumpWriter v(@Nullable String v)
     {
         if (v == null) {
             verbatim("null");
@@ -231,15 +232,15 @@ public abstract class DumpWriter
         return this;
     }
 
-    public DumpWriter v(int v) { return verbatim(Integer.toString(v)); }
-    public DumpWriter v(long v) { return verbatim(Long.toString(v)); }
-    public DumpWriter v(boolean v) { return verbatim(Boolean.toString(v)); }
-    public DumpWriter v(float v) { return verbatim(Float.toString(v)); }
-    public DumpWriter v(double v) { return verbatim(Double.toString(v)); }
-    public DumpWriter v(@Nullable Date v) { return verbatim(toStringDate(v)); }
-    public DumpWriter v(@Nullable Long v) { return verbatim(v == null ? "null" : Long.toString(v)); }
+    public @Nonnull DumpWriter v(int v) { return verbatim(Integer.toString(v)); }
+    public @Nonnull DumpWriter v(long v) { return verbatim(Long.toString(v)); }
+    public @Nonnull DumpWriter v(boolean v) { return verbatim(Boolean.toString(v)); }
+    public @Nonnull DumpWriter v(float v) { return verbatim(Float.toString(v)); }
+    public @Nonnull DumpWriter v(double v) { return verbatim(Double.toString(v)); }
+    public @Nonnull DumpWriter v(@Nullable Date v) { return verbatim(toStringDate(v)); }
+    public @Nonnull DumpWriter v(@Nullable Long v) { return verbatim(v == null ? "null" : Long.toString(v)); }
 
-    public DumpWriter v(@Nullable Dumpable v)
+    public @Nonnull DumpWriter v(@Nullable Dumpable v)
     {
         if (v == null) {
             verbatim("null");
@@ -252,7 +253,7 @@ public abstract class DumpWriter
         return this;
     }
 
-    public static String toStringDate(@Nullable Date date)
+    public static @Nonnull String toStringDate(@Nullable Date date)
     {
         if (date == null) {
             return "null";
