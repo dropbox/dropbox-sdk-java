@@ -87,7 +87,7 @@ public class DbxTestTestRequests {
      * @param breed  Must not be {@code null}.
      *
      * @return A {@link DbxRequest} that can be executed later to obtain the
-     *     result.
+     *     {@code DbxDownloader&lt;Fish&gt;}.
      */
     public DbxRequest<DbxDownloader<Fish>> testDownloadRequest(String name, String breed) {
         return () -> testDownload(name, breed);
@@ -162,7 +162,7 @@ public class DbxTestTestRequests {
      * @param sessionId  Must not be {@code null}.
      *
      * @return A {@link DbxRequest} that can be executed later to obtain the
-     *     result.
+     *     {@code DbxDownloader&lt;Fish&gt;}.
      */
     public DbxRequest<DbxDownloader<Fish>> testDownloadV2Request(UninitializedReason reason, String sessionId) {
         return () -> testDownloadV2(reason, sessionId);
@@ -208,8 +208,7 @@ public class DbxTestTestRequests {
     /**
      * See {@link DbxTestTestRequests#testRoute}.
      *
-     * @return A {@link DbxRequest} that can be executed later to obtain the
-     *     result.
+     * @return A {@link DbxRequest} that can be executed later.
      */
     public DbxRequest<java.lang.Void> testRouteRequest() {
         return () -> { testRoute(); return null; };
@@ -258,8 +257,7 @@ public class DbxTestTestRequests {
      *     DbxTestTestRequests#testRouteV2(String,Date)}. Must not be {@code
      *     null}.
      *
-     * @return A {@link DbxRequest} that can be executed later to obtain the
-     *     result.
+     * @return A {@link DbxRequest} that can be executed later.
      */
     public DbxRequest<java.lang.Void> testRouteV2Request(String name) {
         return () -> { testRouteV2(name); return null; };
@@ -286,8 +284,7 @@ public class DbxTestTestRequests {
      *     DbxTestTestRequests#testRouteV2(String,Date)}. Must not be {@code
      *     null}.
      *
-     * @return A {@link DbxRequest} that can be executed later to obtain the
-     *     result.
+     * @return A {@link DbxRequest} that can be executed later.
      */
     public DbxRequest<java.lang.Void> testRouteV2Request(String name, Date born) {
         return () -> { testRouteV2(name, born); return null; };
@@ -333,7 +330,7 @@ public class DbxTestTestRequests {
      * @param sessionId  Must not be {@code null}.
      *
      * @return A {@link DbxRequest} that can be executed later to obtain the
-     *     result.
+     *     {@code TestUploadUploader}.
      */
     public DbxRequest<TestUploadUploader> testUploadRequest(UninitializedReason reason, String sessionId) {
         return () -> testUpload(reason, sessionId);
@@ -383,7 +380,7 @@ public class DbxTestTestRequests {
      * @param breed  Must not be {@code null}.
      *
      * @return A {@link DbxRequest} that can be executed later to obtain the
-     *     result.
+     *     {@code TestUploadV2Uploader}.
      */
     public DbxRequest<TestUploadV2Uploader> testUploadV2Request(String name, String breed) {
         return () -> testUploadV2(name, breed);
@@ -451,7 +448,7 @@ public class DbxTestTestRequests {
      * @param breed  Must not be {@code null}.
      *
      * @return A {@link DbxRequest} that can be executed later to obtain the
-     *     result.
+     *     {@code TestUploadV3Uploader}.
      */
     public DbxRequest<TestUploadV3Uploader> testUploadV3Request(String name, String breed) {
         return () -> testUploadV3(name, breed);

@@ -2986,9 +2986,14 @@ class JavaCodeGenerationInstance:
         method_name = j.route_method(route) + 'Request'
 
         w.out('')
-        returns_doc = "A %s that can be executed later to obtain the result." % (
-            w.javadoc_ref(JavaClass('com.dropbox.core.DbxRequest')),
-        )
+        dbx_request_ref = w.javadoc_ref(JavaClass('com.dropbox.core.DbxRequest'))
+        if return_class == JavaClass('void'):
+            returns_doc = "A %s that can be executed later." % dbx_request_ref
+        else:
+            result_type = w.resolved_class(boxed_return, generics=True)
+            returns_doc = "A %s that can be executed later to obtain the {@code %s}." % (
+                dbx_request_ref, result_type,
+            )
         doc = "See %s." % w.javadoc_ref(route)
         w.javadoc(doc, params=params, returns=returns_doc)
         with w.block('public %s %s(%s)', request_class, method_name, args):

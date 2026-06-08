@@ -1,7 +1,7 @@
 package com.dropbox.core;
 
 /**
- * A functional interface representing a request that produces a result and may throw a checked
+ * A functional interface representing a request that produces a result {@code <T>} and may throw a checked
  * exception. Similar to {@link java.util.concurrent.Callable}, but intended for use in contexts
  * where the operation represents an API request.
  *
