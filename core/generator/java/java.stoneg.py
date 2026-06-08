@@ -2975,7 +2975,8 @@ class JavaCodeGenerationInstance:
             else:
                 w.out('return new %s(this, %s);', return_class, builder_args)
 
-    def _emit_request_method_body(self, route, args, arg_names, return_class, fields=(), params=()):
+    def _emit_request_method_body(self, route, args, arg_names, return_class,
+                                   fields=(), params=(), method_name=None, delegate=None):
         """Emit the request method signature and body."""
         w = self.w
         j = self.j
@@ -2986,7 +2987,10 @@ class JavaCodeGenerationInstance:
             boxed_return = return_class
 
         request_class = JavaClass('com.dropbox.core.DbxRequest', generics=(boxed_return,))
-        method_name = j.route_method(route) + 'Request'
+        if method_name is None:
+            method_name = j.route_method(route) + 'Request'
+        if delegate is None:
+            delegate = '%s(%s)' % (j.route_method(route), arg_names)
 
         w.out('')
         dbx_request_ref = w.javadoc_ref(JavaClass('com.dropbox.core.DbxRequest'))
@@ -3001,9 +3005,9 @@ class JavaCodeGenerationInstance:
         w.javadoc(doc, params=params, returns=returns_doc)
         with w.block('public %s %s(%s)', request_class, method_name, args):
             if return_class == JavaClass('void'):
-                w.out('return () -> { %s(%s); return null; };', j.route_method(route), arg_names)
+                w.out('return () -> { %s; return null; };', delegate)
             else:
-                w.out('return () -> %s(%s);', j.route_method(route), arg_names)
+                w.out('return () -> %s;', delegate)
 
     def translate_error_wrapper(self, route, error_wrapper_var):
         assert isinstance(route, ApiRoute), repr(route)
@@ -3901,27 +3905,8 @@ class JavaCodeGenerationInstance:
                         w.out('_client.%s(%s);', j.route_method(route), ', '.join(args))
 
                 if self.g.args.call_request:
-                    if return_class == JavaClass('void'):
-                        boxed_return = JavaClass('java.lang.Void')
-                    else:
-                        boxed_return = return_class
-                    request_class = JavaClass('com.dropbox.core.DbxRequest', generics=(boxed_return,))
-
-                    w.out('')
-                    dbx_request_ref = w.javadoc_ref(JavaClass('com.dropbox.core.DbxRequest'))
-                    if return_class == JavaClass('void'):
-                        returns_doc = "A %s that can be executed later." % dbx_request_ref
-                    else:
-                        result_type = w.resolved_class(boxed_return, generics=True)
-                        returns_doc = "A %s that can be executed later to obtain the {@code %s}." % (
-                            dbx_request_ref, result_type,
-                        )
-                    w.javadoc("See %s." % w.javadoc_ref(route), returns=returns_doc)
-                    with w.block('public %s startRequest()', request_class):
-                        if return_class == JavaClass('void'):
-                            w.out('return () -> { start(); return null; };')
-                        else:
-                            w.out('return () -> start();')
+                    self._emit_request_method_body(route, '', '', return_class,
+                                                   method_name='startRequest', delegate='start()')
 
     def generate_field_assignment(self, field, lhs=None, rhs=None, allow_default=True):
         assert isinstance(field, Field), repr(field)
