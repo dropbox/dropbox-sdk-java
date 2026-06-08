@@ -4,6 +4,7 @@
 package com.dropbox.core.stone.test;
 
 import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequest;
 import com.dropbox.core.util.LangUtil;
 import com.dropbox.core.v2.DbxUploadStyleBuilder;
 
@@ -64,5 +65,15 @@ public class TestUploadV2Builder extends DbxUploadStyleBuilder<Void, ParentUnion
     public TestUploadV2Uploader start() throws ParentUnionException, DbxException {
         Dog arg_ = this._builder.build();
         return _client.testUploadV2(arg_);
+    }
+
+    /**
+     * See {@link DbxTestTestRequests#testUploadV2(String,String)}.
+     *
+     * @return A {@link DbxRequest} that can be executed later to obtain the
+     *     {@code TestUploadV2Uploader}.
+     */
+    public DbxRequest<TestUploadV2Uploader> startRequest() {
+        return () -> start();
     }
 }

@@ -5,6 +5,7 @@ package com.dropbox.core.stone.test;
 
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequest;
 import com.dropbox.core.v2.DbxDownloadStyleBuilder;
 
 /**
@@ -45,5 +46,16 @@ public class TestDownloadV2Builder extends DbxDownloadStyleBuilder<Fish> {
     public DbxDownloader<Fish> start() throws ParentUnionException, DbxException {
         Uninitialized arg_ = new Uninitialized(reason, sessionId);
         return _client.testDownloadV2(arg_, getHeaders());
+    }
+
+    /**
+     * See {@link
+     * DbxTestTestRequests#testDownloadV2(UninitializedReason,String)}.
+     *
+     * @return A {@link DbxRequest} that can be executed later to obtain the
+     *     {@code DbxDownloader&lt;Fish&gt;}.
+     */
+    public DbxRequest<DbxDownloader<Fish>> startRequest() {
+        return () -> start();
     }
 }

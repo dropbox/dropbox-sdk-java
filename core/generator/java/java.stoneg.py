@@ -799,6 +799,9 @@ class JavaImporter:
         elif j.request_style(route) == 'upload':
             self.add_imports('com.dropbox.core.v2.DbxUploadStyleBuilder')
 
+        if self._j._args.call_request:
+            self.add_imports('com.dropbox.core.DbxRequest')
+
     def add_imports_for_route_uploader(self, route):
         self.add_imports(
             'com.dropbox.core.DbxWrappedException',
@@ -3896,6 +3899,29 @@ class JavaCodeGenerationInstance:
                         w.out('return _client.%s(%s);', j.route_method(route), ', '.join(args))
                     else:
                         w.out('_client.%s(%s);', j.route_method(route), ', '.join(args))
+
+                if self.g.args.call_request:
+                    if return_class == JavaClass('void'):
+                        boxed_return = JavaClass('java.lang.Void')
+                    else:
+                        boxed_return = return_class
+                    request_class = JavaClass('com.dropbox.core.DbxRequest', generics=(boxed_return,))
+
+                    w.out('')
+                    dbx_request_ref = w.javadoc_ref(JavaClass('com.dropbox.core.DbxRequest'))
+                    if return_class == JavaClass('void'):
+                        returns_doc = "A %s that can be executed later." % dbx_request_ref
+                    else:
+                        result_type = w.resolved_class(boxed_return, generics=True)
+                        returns_doc = "A %s that can be executed later to obtain the {@code %s}." % (
+                            dbx_request_ref, result_type,
+                        )
+                    w.javadoc("See %s." % w.javadoc_ref(route), returns=returns_doc)
+                    with w.block('public %s startRequest()', request_class):
+                        if return_class == JavaClass('void'):
+                            w.out('return () -> { start(); return null; };')
+                        else:
+                            w.out('return () -> start();')
 
     def generate_field_assignment(self, field, lhs=None, rhs=None, allow_default=True):
         assert isinstance(field, Field), repr(field)
