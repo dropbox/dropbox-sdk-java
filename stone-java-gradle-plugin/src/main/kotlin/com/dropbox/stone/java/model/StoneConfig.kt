@@ -6,7 +6,7 @@ class StoneConfig(
     var packageName: String = "com.dropbox.stone",
     var globalRouteFilter: String? = null,
     var dataTypesOnly: Boolean = false,
-    var callRequest: Boolean = false,
+    var generateRequest: Boolean = false,
     var client: ClientSpec? = null,
     var routeWhitelistFilter: String? = null,
 ) : Serializable

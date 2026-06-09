@@ -621,7 +621,7 @@ _CMDLINE_PARSER.add_argument('--javadoc-refs', type=str, default=None,
                                   'exist.')
 _CMDLINE_PARSER.add_argument('--unused-classes-to-generate', default=None, help='Specify types ' +
                                                                                 'that we want to generate regardless of whether they are used.')
-_CMDLINE_PARSER.add_argument('--call-request', action="store_true", default=False,
+_CMDLINE_PARSER.add_argument('--generate-request', action="store_true", default=False,
                              help='Generate additional *Request methods that return DbxRequest<T>.')
 
 
@@ -731,7 +731,7 @@ class JavaImporter:
             'java.util.HashMap',
             'java.util.Map',
         )
-        if self._j._args.call_request:
+        if self._j._args.generate_request:
             self.add_imports('com.dropbox.core.DbxRequest')
         for route in namespace.routes:
             self.add_imports_for_route(route)
@@ -799,7 +799,7 @@ class JavaImporter:
         elif j.request_style(route) == 'upload':
             self.add_imports('com.dropbox.core.v2.DbxUploadStyleBuilder')
 
-        if self._j._args.call_request:
+        if self._j._args.generate_request:
             self.add_imports('com.dropbox.core.DbxRequest')
 
     def add_imports_for_route_uploader(self, route):
@@ -2807,7 +2807,7 @@ class JavaCodeGenerationInstance:
             else:
                 assert False, "unrecognized route request style: %s" % j.request_style(route)
 
-        if is_public and self.g.args.call_request:
+        if is_public and self.g.args.generate_request:
             request_args = w.fmt('%s arg', j.java_class(route.arg_data_type)) if j.has_arg(route) else ''
             request_arg_names = 'arg' if j.has_arg(route) else ''
             self._emit_request_method_body(route, request_args, request_arg_names, return_class,
@@ -2927,7 +2927,7 @@ class JavaCodeGenerationInstance:
             else:
                 w.out('%s(_arg);', j.route_method(route))
 
-        if self.g.args.call_request:
+        if self.g.args.generate_request:
             request_args = ', '.join(
                 w.fmt('%s %s', j.java_class(f), j.param_name(f)) for f in fields
             )
@@ -3904,7 +3904,7 @@ class JavaCodeGenerationInstance:
                     else:
                         w.out('_client.%s(%s);', j.route_method(route), ', '.join(args))
 
-                if self.g.args.call_request:
+                if self.g.args.generate_request:
                     self._emit_request_method_body(route, '', '', return_class,
                                                    method_name='startRequest', delegate='start()')
 
