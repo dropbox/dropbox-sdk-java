@@ -6,6 +6,7 @@ package com.dropbox.core.stone.test;
 import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequest;
 import com.dropbox.core.DbxUploader;
 import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.http.HttpRequestor;
@@ -78,6 +79,21 @@ public class DbxTestTestRequests {
     }
 
     /**
+     * See {@link DbxTestTestRequests#testDownload(String,String)}.
+     *
+     * @param name  Used in {@link
+     *     DbxTestTestRequests#testRouteV2(String,Date)}. Must not be {@code
+     *     null}.
+     * @param breed  Must not be {@code null}.
+     *
+     * @return A {@link DbxRequest} that can be executed later to obtain the
+     *     {@code DbxDownloader&lt;Fish&gt;}.
+     */
+    public DbxRequest<DbxDownloader<Fish>> testDownloadRequest(String name, String breed) {
+        return () -> testDownload(name, breed);
+    }
+
+    /**
      *
      * @param name  Used in {@link
      *     DbxTestTestRequests#testRouteV2(String,Date)}. Must not be {@code
@@ -139,6 +155,20 @@ public class DbxTestTestRequests {
     }
 
     /**
+     * See {@link
+     * DbxTestTestRequests#testDownloadV2(UninitializedReason,String)}.
+     *
+     * @param reason  Must not be {@code null}.
+     * @param sessionId  Must not be {@code null}.
+     *
+     * @return A {@link DbxRequest} that can be executed later to obtain the
+     *     {@code DbxDownloader&lt;Fish&gt;}.
+     */
+    public DbxRequest<DbxDownloader<Fish>> testDownloadV2Request(UninitializedReason reason, String sessionId) {
+        return () -> testDownloadV2(reason, sessionId);
+    }
+
+    /**
      *
      * @param reason  Must not be {@code null}.
      * @param sessionId  Must not be {@code null}.
@@ -173,6 +203,15 @@ public class DbxTestTestRequests {
         catch (DbxWrappedException ex) {
             throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"test_route\":" + ex.getErrorValue());
         }
+    }
+
+    /**
+     * See {@link DbxTestTestRequests#testRoute}.
+     *
+     * @return A {@link DbxRequest} that can be executed later.
+     */
+    public DbxRequest<java.lang.Void> testRouteRequest() {
+        return () -> { testRoute(); return null; };
     }
 
     //
@@ -212,6 +251,19 @@ public class DbxTestTestRequests {
     }
 
     /**
+     * See {@link DbxTestTestRequests#testRouteV2(String,Date)}.
+     *
+     * @param name  Used in {@link
+     *     DbxTestTestRequests#testRouteV2(String,Date)}. Must not be {@code
+     *     null}.
+     *
+     * @return A {@link DbxRequest} that can be executed later.
+     */
+    public DbxRequest<java.lang.Void> testRouteV2Request(String name) {
+        return () -> { testRouteV2(name); return null; };
+    }
+
+    /**
      *
      * @param name  Used in {@link
      *     DbxTestTestRequests#testRouteV2(String,Date)}. Must not be {@code
@@ -223,6 +275,19 @@ public class DbxTestTestRequests {
     public void testRouteV2(String name, Date born) throws ParentUnionException, DbxException {
         Pet _arg = new Pet(name, born);
         testRouteV2(_arg);
+    }
+
+    /**
+     * See {@link DbxTestTestRequests#testRouteV2(String,Date)}.
+     *
+     * @param name  Used in {@link
+     *     DbxTestTestRequests#testRouteV2(String,Date)}. Must not be {@code
+     *     null}.
+     *
+     * @return A {@link DbxRequest} that can be executed later.
+     */
+    public DbxRequest<java.lang.Void> testRouteV2Request(String name, Date born) {
+        return () -> { testRouteV2(name, born); return null; };
     }
 
     //
@@ -258,6 +323,19 @@ public class DbxTestTestRequests {
         return testUpload(_arg);
     }
 
+    /**
+     * See {@link DbxTestTestRequests#testUpload(UninitializedReason,String)}.
+     *
+     * @param reason  Must not be {@code null}.
+     * @param sessionId  Must not be {@code null}.
+     *
+     * @return A {@link DbxRequest} that can be executed later to obtain the
+     *     {@code TestUploadUploader}.
+     */
+    public DbxRequest<TestUploadUploader> testUploadRequest(UninitializedReason reason, String sessionId) {
+        return () -> testUpload(reason, sessionId);
+    }
+
     //
     // route 2/test/test_upload_v2
     //
@@ -291,6 +369,21 @@ public class DbxTestTestRequests {
     public TestUploadV2Uploader testUploadV2(String name, String breed) throws DbxException {
         Dog _arg = new Dog(name, breed);
         return testUploadV2(_arg);
+    }
+
+    /**
+     * See {@link DbxTestTestRequests#testUploadV2(String,String)}.
+     *
+     * @param name  Used in {@link
+     *     DbxTestTestRequests#testRouteV2(String,Date)}. Must not be {@code
+     *     null}.
+     * @param breed  Must not be {@code null}.
+     *
+     * @return A {@link DbxRequest} that can be executed later to obtain the
+     *     {@code TestUploadV2Uploader}.
+     */
+    public DbxRequest<TestUploadV2Uploader> testUploadV2Request(String name, String breed) {
+        return () -> testUploadV2(name, breed);
     }
 
     /**
@@ -344,6 +437,21 @@ public class DbxTestTestRequests {
     public TestUploadV3Uploader testUploadV3(String name, String breed) throws DbxException {
         Dog _arg = new Dog(name, breed);
         return testUploadV3(_arg);
+    }
+
+    /**
+     * See {@link DbxTestTestRequests#testUploadV3(String,String)}.
+     *
+     * @param name  Used in {@link
+     *     DbxTestTestRequests#testRouteV2(String,Date)}. Must not be {@code
+     *     null}.
+     * @param breed  Must not be {@code null}.
+     *
+     * @return A {@link DbxRequest} that can be executed later to obtain the
+     *     {@code TestUploadV3Uploader}.
+     */
+    public DbxRequest<TestUploadV3Uploader> testUploadV3Request(String name, String breed) {
+        return () -> testUploadV3(name, breed);
     }
 
     /**

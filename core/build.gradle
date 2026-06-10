@@ -306,6 +306,7 @@ tasks.named("generateTestStone", StoneTask) {
             ),
             new StoneConfig(
                     packageName: packageName,
+                    generateRequest: true,
                     client: new ClientSpec(
                             name: 'DbxClientV2Base',
                             javadoc: 'TestClass.',

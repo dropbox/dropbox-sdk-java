@@ -125,6 +125,10 @@ abstract class StoneTask : DefaultTask() {
                 generatorArgs.addAll(generatorArgs.indexOf(":all") + 1, listOf("--filter-by-route-attr", buildRouteFilter(stoneConfig)))
             }
 
+            if (stoneConfig.generateRequest) {
+                generatorArgs += "--generate-request"
+            }
+
             if (stoneConfig.dataTypesOnly) {
                 generatorArgs += "--data-types-only"
             } else {

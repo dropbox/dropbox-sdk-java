@@ -621,6 +621,8 @@ _CMDLINE_PARSER.add_argument('--javadoc-refs', type=str, default=None,
                                   'exist.')
 _CMDLINE_PARSER.add_argument('--unused-classes-to-generate', default=None, help='Specify types ' +
                                                                                 'that we want to generate regardless of whether they are used.')
+_CMDLINE_PARSER.add_argument('--generate-request', action="store_true", default=False,
+                             help='Generate additional *Request methods that return DbxRequest<T>.')
 
 
 class JavaCodeGenerator(CodeBackend):
@@ -729,6 +731,8 @@ class JavaImporter:
             'java.util.HashMap',
             'java.util.Map',
         )
+        if self._j._args.generate_request:
+            self.add_imports('com.dropbox.core.DbxRequest')
         for route in namespace.routes:
             self.add_imports_for_route(route)
 
@@ -794,6 +798,9 @@ class JavaImporter:
             )
         elif j.request_style(route) == 'upload':
             self.add_imports('com.dropbox.core.v2.DbxUploadStyleBuilder')
+
+        if self._j._args.generate_request:
+            self.add_imports('com.dropbox.core.DbxRequest')
 
     def add_imports_for_route_uploader(self, route):
         self.add_imports(
@@ -2800,6 +2807,12 @@ class JavaCodeGenerationInstance:
             else:
                 assert False, "unrecognized route request style: %s" % j.request_style(route)
 
+        if is_public and self.g.args.generate_request:
+            request_args = w.fmt('%s arg', j.java_class(route.arg_data_type)) if j.has_arg(route) else ''
+            request_arg_names = 'arg' if j.has_arg(route) else ''
+            self._emit_request_method_body(route, request_args, request_arg_names, return_class,
+                                           params=params)
+
     def generate_route(self, route, required_only=True):
         assert isinstance(route, ApiRoute), repr(route)
 
@@ -2914,6 +2927,15 @@ class JavaCodeGenerationInstance:
             else:
                 w.out('%s(_arg);', j.route_method(route))
 
+        if self.g.args.generate_request:
+            request_args = ', '.join(
+                w.fmt('%s %s', j.java_class(f), j.param_name(f)) for f in fields
+            )
+            request_arg_names = ', '.join(j.param_name(f) for f in fields)
+            request_params = w._javadoc_fields(fields, route, allow_defaults=False)
+            self._emit_request_method_body(route, request_args, request_arg_names, return_class,
+                                           params=request_params)
+
     def generate_route_builder_method(self, route):
         assert isinstance(route, ApiRoute), repr(route)
 
@@ -2952,6 +2974,40 @@ class JavaCodeGenerationInstance:
                 w.out('return new %s(this, argBuilder_);', return_class)
             else:
                 w.out('return new %s(this, %s);', return_class, builder_args)
+
+    def _emit_request_method_body(self, route, args, arg_names, return_class,
+                                   fields=(), params=(), method_name=None, delegate=None):
+        """Emit the request method signature and body."""
+        w = self.w
+        j = self.j
+
+        if return_class == JavaClass('void'):
+            boxed_return = JavaClass('java.lang.Void')
+        else:
+            boxed_return = return_class
+
+        request_class = JavaClass('com.dropbox.core.DbxRequest', generics=(boxed_return,))
+        if method_name is None:
+            method_name = j.route_method(route) + 'Request'
+        if delegate is None:
+            delegate = '%s(%s)' % (j.route_method(route), arg_names)
+
+        w.out('')
+        dbx_request_ref = w.javadoc_ref(JavaClass('com.dropbox.core.DbxRequest'))
+        if return_class == JavaClass('void'):
+            returns_doc = "A %s that can be executed later." % dbx_request_ref
+        else:
+            result_type = w.resolved_class(boxed_return, generics=True)
+            returns_doc = "A %s that can be executed later to obtain the {@code %s}." % (
+                dbx_request_ref, result_type,
+            )
+        doc = "See %s." % w.javadoc_ref(route)
+        w.javadoc(doc, params=params, returns=returns_doc)
+        with w.block('public %s %s(%s)', request_class, method_name, args):
+            if return_class == JavaClass('void'):
+                w.out('return () -> { %s; return null; };', delegate)
+            else:
+                w.out('return () -> %s;', delegate)
 
     def translate_error_wrapper(self, route, error_wrapper_var):
         assert isinstance(route, ApiRoute), repr(route)
@@ -3847,6 +3903,10 @@ class JavaCodeGenerationInstance:
                         w.out('return _client.%s(%s);', j.route_method(route), ', '.join(args))
                     else:
                         w.out('_client.%s(%s);', j.route_method(route), ', '.join(args))
+
+                if self.g.args.generate_request:
+                    self._emit_request_method_body(route, '', '', return_class,
+                                                   method_name='startRequest', delegate='start()')
 
     def generate_field_assignment(self, field, lhs=None, rhs=None, allow_default=True):
         assert isinstance(field, Field), repr(field)

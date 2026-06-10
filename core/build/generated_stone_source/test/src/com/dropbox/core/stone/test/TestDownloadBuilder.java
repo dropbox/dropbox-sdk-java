@@ -6,6 +6,7 @@ package com.dropbox.core.stone.test;
 import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequest;
 import com.dropbox.core.util.LangUtil;
 import com.dropbox.core.v2.DbxDownloadStyleBuilder;
 
@@ -66,5 +67,15 @@ public class TestDownloadBuilder extends DbxDownloadStyleBuilder<Fish> {
     public DbxDownloader<Fish> start() throws DbxApiException, DbxException {
         Dog arg_ = this._builder.build();
         return _client.testDownload(arg_, getHeaders());
+    }
+
+    /**
+     * See {@link DbxTestTestRequests#testDownload(String,String)}.
+     *
+     * @return A {@link DbxRequest} that can be executed later to obtain the
+     *     {@code DbxDownloader&lt;Fish&gt;}.
+     */
+    public DbxRequest<DbxDownloader<Fish>> startRequest() {
+        return () -> start();
     }
 }
