@@ -135,8 +135,7 @@ public class com/dropbox/core/DbxPKCEWebAuth {
 	public fun finishFromRedirect (Ljava/lang/String;Lcom/dropbox/core/DbxSessionStore;Ljava/util/Map;)Lcom/dropbox/core/DbxAuthFinish;
 }
 
-public abstract interface class com/dropbox/core/DbxRequest {
-	public abstract fun call ()Ljava/lang/Object;
+public abstract interface class com/dropbox/core/DbxRequest : java/util/concurrent/Callable {
 }
 
 public class com/dropbox/core/DbxRequestConfig {
