@@ -1,3 +1,13 @@
+7.1.0 (2026-06-16)
+---------------------------------------------
+- Update generated SDK code from the latest Dropbox API spec.
+- [#565](https://github.com/dropbox/dropbox-sdk-java/pull/565) Add `DbxRequest` API support.
+- [#557](https://github.com/dropbox/dropbox-sdk-java/pull/557) Mark `getUserMessage` as nullable.
+- [#556](https://github.com/dropbox/dropbox-sdk-java/pull/556) Raise the minimum Android version to Android 8 (SDK 26).
+- [#545](https://github.com/dropbox/dropbox-sdk-java/pull/545) Support Android SDK 35.
+- [#547](https://github.com/dropbox/dropbox-sdk-java/pull/547) Fix Stone task output stability across machines.
+- Fix ProGuard metadata assertions.
+
 7.0.0 (2024-04-29)
 ---------------------------------------------
 - [#537](https://github.com/dropbox/dropbox-sdk-java/pull/537) Remove cert pinning from the SDK
