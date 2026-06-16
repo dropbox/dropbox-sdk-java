@@ -135,6 +135,7 @@ public class DbxClientV2IT {
         assertFileMetadataEquivalent((FileMetadata) actual, expected);
     }
 
+    @SuppressWarnings("deprecation")
     private static void assertFileMetadataEquivalent(FileMetadata actual, FileMetadata expected) {
         assertThat(actual).isNotNull();
         assertThat(actual.getName()).isEqualTo(expected.getName());

@@ -3,6 +3,7 @@ package com.dropbox.core.test.proguard;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
@@ -16,6 +17,7 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuth;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.fileproperties.PropertyGroup;
 import com.dropbox.core.v2.files.CreateFolderErrorException;
 import com.dropbox.core.v2.files.DeleteErrorException;
 import com.dropbox.core.v2.files.DeletedMetadata;
@@ -90,7 +92,7 @@ public class Main {
                 assertEquals(file.getSize(), data.length);
 
                 Metadata metadata = client.files().getMetadata(path);
-                assertEquals(metadata, file);
+                assertFileMetadataEquivalent(metadata, file);
             }
 
             for (String path : files.keySet()) {
@@ -196,6 +198,50 @@ public class Main {
         byte [] data = new byte[num];
         RAND.nextBytes(data);
         return data;
+    }
+
+    private static void assertFileMetadataEquivalent(Metadata actual, FileMetadata expected) {
+        assertNotNull(actual);
+        assertTrue(actual instanceof FileMetadata, actual.getClass().toString());
+        assertFileMetadataEquivalent((FileMetadata) actual, expected);
+    }
+
+    @SuppressWarnings("deprecation")
+    private static void assertFileMetadataEquivalent(FileMetadata actual, FileMetadata expected) {
+        assertNotNull(actual);
+        assertEquals(actual.getName(), expected.getName());
+        assertEquals(actual.getId(), expected.getId());
+        assertEquals(actual.getClientModified(), expected.getClientModified());
+        assertEquals(actual.getServerModified(), expected.getServerModified());
+        assertEquals(actual.getRev(), expected.getRev());
+        assertEquals(actual.getSize(), expected.getSize());
+        assertEquals(actual.getPathLower(), expected.getPathLower());
+        assertEquals(actual.getPathDisplay(), expected.getPathDisplay());
+        assertEquals(actual.getParentSharedFolderId(), expected.getParentSharedFolderId());
+        assertEquals(actual.getPreviewUrl(), expected.getPreviewUrl());
+        assertEquals(actual.getMediaInfo(), expected.getMediaInfo());
+        assertEquals(actual.getSymlinkInfo(), expected.getSymlinkInfo());
+        assertEquals(actual.getSharingInfo(), expected.getSharingInfo());
+        assertEquals(actual.getIsDownloadable(), expected.getIsDownloadable());
+        assertEquals(actual.getExportInfo(), expected.getExportInfo());
+        assertPropertyGroupsEquivalent(actual.getPropertyGroups(), expected.getPropertyGroups());
+        assertEquals(actual.getHasExplicitSharedMembers(), expected.getHasExplicitSharedMembers());
+        assertEquals(actual.getContentHash(), expected.getContentHash());
+        assertEquals(actual.getFileLockInfo(), expected.getFileLockInfo());
+    }
+
+    private static void assertPropertyGroupsEquivalent(
+        List<PropertyGroup> actual,
+        List<PropertyGroup> expected
+    ) {
+        if (isNullOrEmpty(actual) && isNullOrEmpty(expected)) {
+            return;
+        }
+        assertEquals(actual, expected);
+    }
+
+    private static boolean isNullOrEmpty(List<?> values) {
+        return values == null || values.isEmpty();
     }
 
     @FunctionalInterface
