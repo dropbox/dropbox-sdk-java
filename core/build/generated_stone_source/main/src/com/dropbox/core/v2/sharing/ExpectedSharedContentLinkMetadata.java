@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_content_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
  * first created for the content. Absent if the link already exists.
  */
 public class ExpectedSharedContentLinkMetadata extends SharedContentLinkMetadataBase {
-    // struct sharing.ExpectedSharedContentLinkMetadata (sharing_apiv2_shared_content_links.stone)
+    // struct sharing.ExpectedSharedContentLinkMetadata (sharing.stone)
 
 
     /**

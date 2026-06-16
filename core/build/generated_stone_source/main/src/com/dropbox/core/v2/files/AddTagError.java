@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_tagging_file_tagging.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -23,7 +23,7 @@ import java.util.Arrays;
  * associated with this instance.
  */
 public final class AddTagError {
-    // union files.AddTagError (file_tagging_file_tagging.stone)
+    // union files.AddTagError (files.stone)
 
     /**
      * Discriminating tag type for {@link AddTagError}.

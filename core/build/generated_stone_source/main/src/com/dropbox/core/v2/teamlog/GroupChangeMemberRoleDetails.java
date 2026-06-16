@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Changed manager permissions of group member.
  */
 public class GroupChangeMemberRoleDetails {
-    // struct team_log.GroupChangeMemberRoleDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.GroupChangeMemberRoleDetails (team_log.stone)
 
     protected final boolean isGroupOwner;
 

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_apiv2_team_log.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class GetTeamEventsArg {
-    // struct team_log.GetTeamEventsArg (team_log_apiv2_team_log.stone)
+    // struct team_log.GetTeamEventsArg (team_log.stone)
 
     protected final long limit;
     @Nullable

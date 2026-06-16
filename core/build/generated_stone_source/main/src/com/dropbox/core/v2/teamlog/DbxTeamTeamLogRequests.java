@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone, team_log_apiv2_team_log.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -15,7 +15,7 @@ import java.util.Map;
  * Routes in namespace "team_log".
  */
 public class DbxTeamTeamLogRequests {
-    // namespace team_log (team_log_stone_gen_team_log_generated.stone, team_log_apiv2_team_log.stone)
+    // namespace team_log (team_log.stone)
 
     private final DbxRawClientV2 client;
 

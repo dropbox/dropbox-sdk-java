@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_policies_team_policies.stone */
+/* This file was generated from team_policies.stone */
 
 package com.dropbox.core.v2.teampolicies;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Policies governing team members.
  */
 public class TeamMemberPolicies {
-    // struct team_policies.TeamMemberPolicies (team_policies_team_policies.stone)
+    // struct team_policies.TeamMemberPolicies (team_policies.stone)
 
     @Nonnull
     protected final TeamSharingPolicies sharing;

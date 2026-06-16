@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_base.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Export information for a file.
  */
 public class ExportInfo {
-    // struct files.ExportInfo (files_files_public_base.stone)
+    // struct files.ExportInfo (files.stone)
 
     @Nullable
     protected final String exportAs;

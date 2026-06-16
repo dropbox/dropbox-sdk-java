@@ -41,10 +41,14 @@ public class CreateSharedLinkBuilder {
      *
      * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
      *
-     * @param shortUrl  Defaults to {@code false} when set to {@code null}.
+     * @param shortUrl  Field is deprecated. None. Defaults to {@code false}
+     *     when set to {@code null}.
      *
      * @return this builder
+     *
+     * @deprecated
      */
+    @Deprecated
     public CreateSharedLinkBuilder withShortUrl(Boolean shortUrl) {
         this._builder.withShortUrl(shortUrl);
         return this;

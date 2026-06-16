@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper_apiv2_paper_types.stone */
+/* This file was generated from paper.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class ListDocsCursorError {
-    // union paper.ListDocsCursorError (paper_apiv2_paper_types.stone)
+    // union paper.ListDocsCursorError (paper.stone)
 
     /**
      * Discriminating tag type for {@link ListDocsCursorError}.

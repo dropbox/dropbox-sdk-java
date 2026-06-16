@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class AddFolderMemberError {
-    // union sharing.AddFolderMemberError (sharing_apiv2_sharing_folders_types.stone)
+    // union sharing.AddFolderMemberError (sharing.stone)
 
     /**
      * Discriminating tag type for {@link AddFolderMemberError}.
@@ -89,7 +89,8 @@ public final class AddFolderMemberError {
          */
         NO_PERMISSION,
         /**
-         * Invalid shared folder error will be returned as an access_error.
+         * Field is deprecated. Invalid shared folder error will be returned as
+         * an access_error.
          */
         INVALID_SHARED_FOLDER,
         /**
@@ -141,7 +142,8 @@ public final class AddFolderMemberError {
      */
     public static final AddFolderMemberError NO_PERMISSION = new AddFolderMemberError().withTag(Tag.NO_PERMISSION);
     /**
-     * Invalid shared folder error will be returned as an access_error.
+     * Field is deprecated. Invalid shared folder error will be returned as an
+     * access_error.
      */
     public static final AddFolderMemberError INVALID_SHARED_FOLDER = new AddFolderMemberError().withTag(Tag.INVALID_SHARED_FOLDER);
     /**

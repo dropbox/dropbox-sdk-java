@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_linked_apps.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 class RevokeLinkedApiAppBatchArg {
-    // struct team.RevokeLinkedApiAppBatchArg (team_apiv2_team_linked_apps.stone)
+    // struct team.RevokeLinkedApiAppBatchArg (team.stone)
 
     @Nonnull
     protected final List<RevokeLinkedApiAppArg> revokeLinkedApp;

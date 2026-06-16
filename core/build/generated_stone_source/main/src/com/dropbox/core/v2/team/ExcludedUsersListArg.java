@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_member_space_limits.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Excluded users list argument.
  */
 class ExcludedUsersListArg {
-    // struct team.ExcludedUsersListArg (team_apiv2_team_member_space_limits.stone)
+    // struct team.ExcludedUsersListArg (team.stone)
 
     protected final long limit;
 

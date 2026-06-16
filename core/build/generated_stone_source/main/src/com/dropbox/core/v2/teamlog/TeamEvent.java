@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
  * An audit log event.
  */
 public class TeamEvent {
-    // struct team_log.TeamEvent (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.TeamEvent (team_log.stone)
 
     @Nonnull
     protected final Date timestamp;

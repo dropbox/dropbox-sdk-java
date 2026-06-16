@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_base.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class FileLockMetadata {
-    // struct files.FileLockMetadata (files_files_public_base.stone)
+    // struct files.FileLockMetadata (files.stone)
 
     @Nullable
     protected final Boolean isLockholder;

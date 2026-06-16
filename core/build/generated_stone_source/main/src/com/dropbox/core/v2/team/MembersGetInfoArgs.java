@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_members_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 class MembersGetInfoArgs {
-    // struct team.MembersGetInfoArgs (team_team_members_types.stone)
+    // struct team.MembersGetInfoArgs (team.stone)
 
     @Nonnull
     protected final List<UserSelectorArg> members;

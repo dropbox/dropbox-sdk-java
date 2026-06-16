@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
  * need same access permission to the shared folder.
  */
 public class GroupInfo extends GroupSummary {
-    // struct sharing.GroupInfo (sharing_apiv2_sharing_folders_types.stone)
+    // struct sharing.GroupInfo (sharing.stone)
 
     @Nonnull
     protected final GroupType groupType;
@@ -46,7 +46,8 @@ public class GroupInfo extends GroupSummary {
      * @param groupId  Must not be {@code null}.
      * @param groupManagementType  Who is allowed to manage the group. Must not
      *     be {@code null}.
-     * @param groupType  The type of group. Must not be {@code null}.
+     * @param groupType  Field is deprecated. The type of group. Must not be
+     *     {@code null}.
      * @param isMember  If the current user is a member of the group.
      * @param isOwner  If the current user is an owner of the group.
      * @param sameTeam  If the group is owned by the current user's team.
@@ -78,7 +79,8 @@ public class GroupInfo extends GroupSummary {
      * @param groupId  Must not be {@code null}.
      * @param groupManagementType  Who is allowed to manage the group. Must not
      *     be {@code null}.
-     * @param groupType  The type of group. Must not be {@code null}.
+     * @param groupType  Field is deprecated. The type of group. Must not be
+     *     {@code null}.
      * @param isMember  If the current user is a member of the group.
      * @param isOwner  If the current user is an owner of the group.
      * @param sameTeam  If the group is owned by the current user's team.
@@ -119,10 +121,13 @@ public class GroupInfo extends GroupSummary {
     }
 
     /**
-     * The type of group.
+     * Field is deprecated. The type of group.
      *
      * @return value for this field, never {@code null}.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nonnull
     public GroupType getGroupType() {
         return groupType;
@@ -183,7 +188,8 @@ public class GroupInfo extends GroupSummary {
      * @param groupId  Must not be {@code null}.
      * @param groupManagementType  Who is allowed to manage the group. Must not
      *     be {@code null}.
-     * @param groupType  The type of group. Must not be {@code null}.
+     * @param groupType  Field is deprecated. The type of group. Must not be
+     *     {@code null}.
      * @param isMember  If the current user is a member of the group.
      * @param isOwner  If the current user is an owner of the group.
      * @param sameTeam  If the group is owned by the current user's team.

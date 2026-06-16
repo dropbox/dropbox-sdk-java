@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class UploadSessionStartArg {
-    // struct files.UploadSessionStartArg (files_files_public_types.stone)
+    // struct files.UploadSessionStartArg (files.stone)
 
     protected final boolean close;
     @Nullable

@@ -3,29 +3,7 @@
 
 /**
  * This namespace contains endpoints and data types for creating and managing
- * shared links and shared folders. This namespace contains endpoints and data
- * types for creating and managing shared links and shared folders. This
- * namespace contains endpoints and data types for creating and managing shared
- * links and shared folders. This namespace contains endpoints and data types
- * for creating and managing shared links and shared folders. This namespace
- * contains endpoints and data types for creating and managing shared links and
- * shared folders. This namespace contains endpoints and data types for creating
- * and managing shared links and shared folders. This namespace contains
- * endpoints and data types for creating and managing shared links and shared
- * folders. This namespace contains endpoints and data types for creating and
- * managing shared links and shared folders. This namespace contains endpoints
- * and data types for creating and managing shared links and shared folders.
- * This namespace contains endpoints and data types for creating and managing
- * shared links and shared folders. This namespace contains endpoints and data
- * types for creating and managing shared links and shared folders. This
- * namespace contains endpoints and data types for creating and managing shared
- * links and shared folders. This namespace contains endpoints and data types
- * for creating and managing shared links and shared folders. This namespace
- * contains endpoints and data types for creating and managing shared links and
- * shared folders. This namespace contains endpoints and data types for creating
- * and managing shared links and shared folders. This namespace contains
- * endpoints and data types for creating and managing shared links and shared
- * folders.
+ * shared links and shared folders.
  *
  * <p> See {@link com.dropbox.core.v2.sharing.DbxAppSharingRequests}, {@link
  * com.dropbox.core.v2.sharing.DbxUserSharingRequests} for a list of possible

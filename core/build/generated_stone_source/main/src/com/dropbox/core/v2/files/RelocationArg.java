@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 class RelocationArg extends RelocationPath {
-    // struct files.RelocationArg (files_files_public_types.stone)
+    // struct files.RelocationArg (files.stone)
 
     protected final boolean allowSharedFolder;
     protected final boolean autorename;
@@ -38,7 +38,7 @@ class RelocationArg extends RelocationPath {
      *     match pattern "{@code
      *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
      *     {@code null}.
-     * @param allowSharedFolder  This flag has no effect.
+     * @param allowSharedFolder  Field is deprecated. This flag has no effect.
      * @param autorename  If there's a conflict, have the Dropbox server try to
      *     autorename the file to avoid the conflict.
      * @param allowOwnershipTransfer  Allow moves by owner even if it would
@@ -97,11 +97,14 @@ class RelocationArg extends RelocationPath {
     }
 
     /**
-     * This flag has no effect.
+     * Field is deprecated. This flag has no effect.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
+     *
+     * @deprecated
      */
+    @Deprecated
     public boolean getAllowSharedFolder() {
         return allowSharedFolder;
     }
@@ -186,11 +189,14 @@ class RelocationArg extends RelocationPath {
          * <p> If left unset or set to {@code null}, defaults to {@code false}.
          * </p>
          *
-         * @param allowSharedFolder  This flag has no effect. Defaults to {@code
-         *     false} when set to {@code null}.
+         * @param allowSharedFolder  Field is deprecated. This flag has no
+         *     effect. Defaults to {@code false} when set to {@code null}.
          *
          * @return this builder
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withAllowSharedFolder(Boolean allowSharedFolder) {
             if (allowSharedFolder != null) {
                 this.allowSharedFolder = allowSharedFolder;

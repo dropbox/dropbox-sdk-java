@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class RelocationBatchV2Result extends FileOpsResult {
-    // struct files.RelocationBatchV2Result (files_files_public_types.stone)
+    // struct files.RelocationBatchV2Result (files.stone)
 
     @Nonnull
     protected final List<RelocationBatchResultEntry> entries;

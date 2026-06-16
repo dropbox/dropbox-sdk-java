@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class SearchV2Arg {
-    // struct files.SearchV2Arg (files_files_public_types.stone)
+    // struct files.SearchV2Arg (files.stone)
 
     @Nonnull
     protected final String query;
@@ -40,8 +40,8 @@ class SearchV2Arg {
      *     not be {@code null}.
      * @param options  Options for more targeted search results.
      * @param matchFieldOptions  Options for search results match fields.
-     * @param includeHighlights  Deprecated and moved this option to
-     *     SearchMatchFieldOptions.
+     * @param includeHighlights  Field is deprecated. Deprecated and moved this
+     *     option to SearchMatchFieldOptions.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -107,10 +107,14 @@ class SearchV2Arg {
     }
 
     /**
-     * Deprecated and moved this option to SearchMatchFieldOptions.
+     * Field is deprecated. Deprecated and moved this option to
+     * SearchMatchFieldOptions.
      *
      * @return value for this field, or {@code null} if not present.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nullable
     public Boolean getIncludeHighlights() {
         return includeHighlights;
@@ -182,11 +186,14 @@ class SearchV2Arg {
         /**
          * Set value for optional field.
          *
-         * @param includeHighlights  Deprecated and moved this option to
-         *     SearchMatchFieldOptions.
+         * @param includeHighlights  Field is deprecated. Deprecated and moved
+         *     this option to SearchMatchFieldOptions.
          *
          * @return this builder
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withIncludeHighlights(Boolean includeHighlights) {
             this.includeHighlights = includeHighlights;
             return this;

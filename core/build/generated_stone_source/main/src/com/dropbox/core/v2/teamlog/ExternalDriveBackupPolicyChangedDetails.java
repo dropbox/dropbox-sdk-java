@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Changed external drive backup policy for team.
  */
 public class ExternalDriveBackupPolicyChangedDetails {
-    // struct team_log.ExternalDriveBackupPolicyChangedDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.ExternalDriveBackupPolicyChangedDetails (team_log.stone)
 
     @Nonnull
     protected final ExternalDriveBackupPolicy newValue;

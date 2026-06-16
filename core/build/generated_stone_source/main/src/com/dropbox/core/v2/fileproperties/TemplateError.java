@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties_apiv2_file_properties_types.stone */
+/* This file was generated from file_properties.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * will be used. </p>
  */
 public final class TemplateError {
-    // union file_properties.TemplateError (file_properties_apiv2_file_properties_types.stone)
+    // union file_properties.TemplateError (file_properties.stone)
 
     /**
      * Discriminating tag type for {@link TemplateError}.

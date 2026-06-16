@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Enabled/disabled file requests.
  */
 public class FileRequestsChangePolicyDetails {
-    // struct team_log.FileRequestsChangePolicyDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.FileRequestsChangePolicyDetails (team_log.stone)
 
     @Nonnull
     protected final FileRequestsPolicy newValue;

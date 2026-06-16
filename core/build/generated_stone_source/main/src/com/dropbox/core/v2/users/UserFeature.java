@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users_users_types.stone */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * A set of features that a Dropbox User account may have configured.
  */
 public enum UserFeature {
-    // union users.UserFeature (users_users_types.stone)
+    // union users.UserFeature (users.stone)
     /**
      * This feature contains information about how the user's Paper files are
      * stored.

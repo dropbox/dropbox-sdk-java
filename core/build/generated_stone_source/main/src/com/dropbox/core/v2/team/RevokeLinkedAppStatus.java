@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_linked_apps.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class RevokeLinkedAppStatus {
-    // struct team.RevokeLinkedAppStatus (team_apiv2_team_linked_apps.stone)
+    // struct team.RevokeLinkedAppStatus (team.stone)
 
     protected final boolean success;
     @Nullable

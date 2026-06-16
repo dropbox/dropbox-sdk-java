@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_common_team_common.stone */
+/* This file was generated from team_common.stone */
 
 package com.dropbox.core.v2.teamcommon;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * The type of the space limit imposed on a team member.
  */
 public enum MemberSpaceLimitType {
-    // union team_common.MemberSpaceLimitType (team_common_team_common.stone)
+    // union team_common.MemberSpaceLimitType (team_common.stone)
     /**
      * The team member does not have imposed space limit.
      */

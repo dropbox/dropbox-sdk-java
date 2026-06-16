@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone, sharing_apiv2_sharing_common_types.stone, sharing_apiv2_sharing_folders_base.stone, sharing_apiv2_sharing_files_types.stone, sharing_apiv2_shared_links_types.stone, sharing_apiv2_shared_content_links.stone, sharing_apiv2_shared_link_file_api_v2.stone, sharing_apiv2_shared_links_api_v2.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -19,7 +19,7 @@ import java.util.Map;
  * Routes in namespace "sharing".
  */
 public class DbxAppSharingRequests {
-    // namespace sharing (sharing_apiv2_sharing_folders_types.stone, sharing_apiv2_sharing_common_types.stone, sharing_apiv2_sharing_folders_base.stone, sharing_apiv2_sharing_files_types.stone, sharing_apiv2_shared_links_types.stone, sharing_apiv2_shared_content_links.stone, sharing_apiv2_shared_link_file_api_v2.stone, sharing_apiv2_shared_links_api_v2.stone)
+    // namespace sharing (sharing.stone)
 
     private final DbxRawClientV2 client;
 

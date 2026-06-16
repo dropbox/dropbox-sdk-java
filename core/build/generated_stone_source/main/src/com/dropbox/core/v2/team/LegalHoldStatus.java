@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_legal_holds.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum LegalHoldStatus {
-    // union team.LegalHoldStatus (team_team_legal_holds.stone)
+    // union team.LegalHoldStatus (team.stone)
     /**
      * The legal hold policy is active.
      */

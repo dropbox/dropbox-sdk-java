@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_requests_apiv2_file_requests_public.stone */
+/* This file was generated from file_requests.stone */
 
 package com.dropbox.core.v2.filerequests;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum GracePeriod {
-    // union file_requests.GracePeriod (file_requests_apiv2_file_requests_public.stone)
+    // union file_requests.GracePeriod (file_requests.stone)
     ONE_DAY,
     TWO_DAYS,
     SEVEN_DAYS,

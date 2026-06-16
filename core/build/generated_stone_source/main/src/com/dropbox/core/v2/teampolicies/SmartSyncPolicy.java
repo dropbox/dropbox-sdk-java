@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_policies_team_policies.stone */
+/* This file was generated from team_policies.stone */
 
 package com.dropbox.core.v2.teampolicies;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum SmartSyncPolicy {
-    // union team_policies.SmartSyncPolicy (team_policies_team_policies.stone)
+    // union team_policies.SmartSyncPolicy (team_policies.stone)
     /**
      * The specified content will be synced as local files by default.
      */

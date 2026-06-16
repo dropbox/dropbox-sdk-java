@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class SaveCopyReferenceError {
-    // union files.SaveCopyReferenceError (files_files_public_types.stone)
+    // union files.SaveCopyReferenceError (files.stone)
 
     /**
      * Discriminating tag type for {@link SaveCopyReferenceError}.

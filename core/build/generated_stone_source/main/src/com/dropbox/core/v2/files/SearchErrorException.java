@@ -9,23 +9,22 @@ import com.dropbox.core.LocalizedText;
 /**
  * Exception thrown when the server responds with a {@link SearchError} error.
  *
- * <p> This exception is raised by {@link
- * DbxUserFilesRequests#search(String,String)}, {@link
- * DbxUserFilesRequests#searchV2(String)}, and {@link
- * DbxUserFilesRequests#searchContinueV2(String)}. </p>
+ * <p> This exception is raised by {@link DbxAppFilesRequests#searchV2(String)},
+ * {@link DbxAppFilesRequests#searchContinueV2(String)}, and {@link
+ * DbxUserFilesRequests#search(String,String)}. </p>
  */
 public class SearchErrorException extends DbxApiException {
     // exception for routes:
-    //     2/files/search
     //     2/files/search_v2
     //     2/files/search/continue_v2
+    //     2/files/search
 
     private static final long serialVersionUID = 0L;
 
     /**
-     * The error reported by {@link DbxUserFilesRequests#search(String,String)},
-     * {@link DbxUserFilesRequests#searchV2(String)}, and {@link
-     * DbxUserFilesRequests#searchContinueV2(String)}.
+     * The error reported by {@link DbxAppFilesRequests#searchV2(String)},
+     * {@link DbxAppFilesRequests#searchContinueV2(String)}, and {@link
+     * DbxUserFilesRequests#search(String,String)}.
      */
     public final SearchError errorValue;
 

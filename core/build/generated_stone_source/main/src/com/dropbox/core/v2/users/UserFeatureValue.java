@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users_users_types.stone */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -29,7 +29,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class UserFeatureValue {
-    // union users.UserFeatureValue (users_users_types.stone)
+    // union users.UserFeatureValue (users.stone)
 
     /**
      * Discriminating tag type for {@link UserFeatureValue}.

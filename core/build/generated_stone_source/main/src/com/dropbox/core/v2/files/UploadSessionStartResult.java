@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class UploadSessionStartResult {
-    // struct files.UploadSessionStartResult (files_files_public_types.stone)
+    // struct files.UploadSessionStartResult (files.stone)
 
     @Nonnull
     protected final String sessionId;

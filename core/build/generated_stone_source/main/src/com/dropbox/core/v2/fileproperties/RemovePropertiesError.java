@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties_apiv2_file_properties_types.stone */
+/* This file was generated from file_properties.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  * associated with this instance.
  */
 public final class RemovePropertiesError {
-    // union file_properties.RemovePropertiesError (file_properties_apiv2_file_properties_types.stone)
+    // union file_properties.RemovePropertiesError (file_properties.stone)
 
     /**
      * Discriminating tag type for {@link RemovePropertiesError}.

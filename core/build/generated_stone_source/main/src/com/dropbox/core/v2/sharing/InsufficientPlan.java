@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_common_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class InsufficientPlan {
-    // struct sharing.InsufficientPlan (sharing_apiv2_sharing_common_types.stone)
+    // struct sharing.InsufficientPlan (sharing.stone)
 
     @Nonnull
     protected final String message;

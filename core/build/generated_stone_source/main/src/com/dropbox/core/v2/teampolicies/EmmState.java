@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_policies_team_policies.stone */
+/* This file was generated from team_policies.stone */
 
 package com.dropbox.core.v2.teampolicies;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum EmmState {
-    // union team_policies.EmmState (team_policies_team_policies.stone)
+    // union team_policies.EmmState (team_policies.stone)
     /**
      * Emm token is disabled.
      */

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_groups.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
  * Full description of a group.
  */
 public class GroupFullInfo extends GroupSummary {
-    // struct team.GroupFullInfo (team_apiv2_team_groups.stone)
+    // struct team.GroupFullInfo (team.stone)
 
     @Nullable
     protected final List<GroupMemberInfo> members;

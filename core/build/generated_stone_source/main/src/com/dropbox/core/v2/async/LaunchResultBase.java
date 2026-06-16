@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from async_common_async.stone */
+/* This file was generated from async.stone */
 
 package com.dropbox.core.v2.async;
 
@@ -28,7 +28,7 @@ import java.util.Arrays;
  * tag associated with this instance. </p>
  */
 public final class LaunchResultBase {
-    // union async.LaunchResultBase (async_common_async.stone)
+    // union async.LaunchResultBase (async.stone)
 
     /**
      * Discriminating tag type for {@link LaunchResultBase}.

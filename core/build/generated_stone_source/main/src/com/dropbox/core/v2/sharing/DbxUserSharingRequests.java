@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone, sharing_apiv2_sharing_common_types.stone, sharing_apiv2_sharing_folders_base.stone, sharing_apiv2_sharing_files_types.stone, sharing_apiv2_shared_links_types.stone, sharing_apiv2_shared_content_links.stone, sharing_apiv2_sharing_files_service.stone, sharing_folders_apiv2_sharing_folders.stone, sharing_apiv2_shared_links_sharing_api_v2.stone, sharing_apiv2_shared_links_api_v2.stone, sharing_apiv2_file_metadata_service.stone, sharing_folders_apiv2_sharing_folders_members.stone, sharing_apiv2_shared_link_file_api_v2.stone, sharing_apiv2_list_file_member_service.stone, sharing_apiv2_sharing_files_async_service.stone, sharing_apiv2_list_shared_links_api_v2.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -25,7 +25,7 @@ import java.util.Map;
  * Routes in namespace "sharing".
  */
 public class DbxUserSharingRequests {
-    // namespace sharing (sharing_apiv2_sharing_folders_types.stone, sharing_apiv2_sharing_common_types.stone, sharing_apiv2_sharing_folders_base.stone, sharing_apiv2_sharing_files_types.stone, sharing_apiv2_shared_links_types.stone, sharing_apiv2_shared_content_links.stone, sharing_apiv2_sharing_files_service.stone, sharing_folders_apiv2_sharing_folders.stone, sharing_apiv2_shared_links_sharing_api_v2.stone, sharing_apiv2_shared_links_api_v2.stone, sharing_apiv2_file_metadata_service.stone, sharing_folders_apiv2_sharing_folders_members.stone, sharing_apiv2_shared_link_file_api_v2.stone, sharing_apiv2_list_file_member_service.stone, sharing_apiv2_sharing_files_async_service.stone, sharing_apiv2_list_shared_links_api_v2.stone)
+    // namespace sharing (sharing.stone)
 
     private final DbxRawClientV2 client;
 
@@ -2448,6 +2448,70 @@ public class DbxUserSharingRequests {
     public MemberAccessLevelResult updateFileMember(String file, MemberSelector member, AccessLevel accessLevel) throws FileMemberActionErrorException, DbxException {
         UpdateFileMemberArgs _arg = new UpdateFileMemberArgs(file, member, accessLevel);
         return updateFileMember(_arg);
+    }
+
+    //
+    // route 2/sharing/update_file_policy
+    //
+
+    /**
+     * Update the viewer info policy of a file.
+     *
+     * @param arg  Arguments for {@link
+     *     DbxUserSharingRequests#updateFilePolicy(String)}.
+     *
+     * @return Properties of the shared file.
+     */
+    SharedFileMetadata updateFilePolicy(UpdateFilePolicyArg arg) throws UpdateFilePolicyErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/sharing/update_file_policy",
+                                        arg,
+                                        false,
+                                        UpdateFilePolicyArg.Serializer.INSTANCE,
+                                        SharedFileMetadata.Serializer.INSTANCE,
+                                        UpdateFilePolicyError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new UpdateFilePolicyErrorException("2/sharing/update_file_policy", ex.getRequestId(), ex.getUserMessage(), (UpdateFilePolicyError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Update the viewer info policy of a file.
+     *
+     * @param file  File that we are changing the policy for. Must have length
+     *     of at least 1, match pattern "{@code
+     *     ((/|id:).*|nspath:[0-9]+:.*)|ns:[0-9]+(/.*)?}", and not be {@code
+     *     null}.
+     *
+     * @return Properties of the shared file.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SharedFileMetadata updateFilePolicy(String file) throws UpdateFilePolicyErrorException, DbxException {
+        UpdateFilePolicyArg _arg = new UpdateFilePolicyArg(file);
+        return updateFilePolicy(_arg);
+    }
+
+    /**
+     * Update the viewer info policy of a file.
+     *
+     * @param file  File that we are changing the policy for. Must have length
+     *     of at least 1, match pattern "{@code
+     *     ((/|id:).*|nspath:[0-9]+:.*)|ns:[0-9]+(/.*)?}", and not be {@code
+     *     null}.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public UpdateFilePolicyBuilder updateFilePolicyBuilder(String file) {
+        UpdateFilePolicyArg.Builder argBuilder_ = UpdateFilePolicyArg.newBuilder(file);
+        return new UpdateFilePolicyBuilder(this, argBuilder_);
     }
 
     //

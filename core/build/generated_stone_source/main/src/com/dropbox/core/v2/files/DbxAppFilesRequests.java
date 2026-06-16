@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_tagging_file_tagging.stone, files_files_public_types.stone, files_files_public_base.stone, files_files_public_primitives.stone, files_apiv2_files_previews_apiv2.stone, files_apiv2_files_metadata_apiv2.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -19,7 +19,7 @@ import java.util.Map;
  * Routes in namespace "files".
  */
 public class DbxAppFilesRequests {
-    // namespace files (file_tagging_file_tagging.stone, files_files_public_types.stone, files_files_public_base.stone, files_files_public_primitives.stone, files_apiv2_files_previews_apiv2.stone, files_apiv2_files_metadata_apiv2.stone)
+    // namespace files (files.stone)
 
     private final DbxRawClientV2 client;
 
@@ -273,5 +273,131 @@ public class DbxAppFilesRequests {
     public ListFolderResult listFolderContinue(String cursor) throws ListFolderContinueErrorException, DbxException {
         ListFolderContinueArg _arg = new ListFolderContinueArg(cursor);
         return listFolderContinue(_arg);
+    }
+
+    //
+    // route 2/files/search_v2
+    //
+
+    /**
+     * Searches for files and folders. Note: {@link
+     * DbxAppFilesRequests#searchV2(String)} along with {@link
+     * DbxAppFilesRequests#searchContinueV2(String)} can only be used to
+     * retrieve a maximum of 10,000 matches. Recent changes may not immediately
+     * be reflected in search results due to a short delay in indexing.
+     * Duplicate results may be returned across pages. Some results may not be
+     * returned.
+     *
+     */
+    SearchV2Result searchV2(SearchV2Arg arg) throws SearchErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/files/search_v2",
+                                        arg,
+                                        false,
+                                        SearchV2Arg.Serializer.INSTANCE,
+                                        SearchV2Result.Serializer.INSTANCE,
+                                        SearchError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new SearchErrorException("2/files/search_v2", ex.getRequestId(), ex.getUserMessage(), (SearchError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Searches for files and folders. Note: {@link
+     * DbxAppFilesRequests#searchV2(String)} along with {@link
+     * DbxAppFilesRequests#searchContinueV2(String)} can only be used to
+     * retrieve a maximum of 10,000 matches. Recent changes may not immediately
+     * be reflected in search results due to a short delay in indexing.
+     * Duplicate results may be returned across pages. Some results may not be
+     * returned.
+     *
+     * @param query  The string to search for. May match across multiple fields
+     *     based on the request arguments. Must have length of at most 1000 and
+     *     not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SearchV2Result searchV2(String query) throws SearchErrorException, DbxException {
+        SearchV2Arg _arg = new SearchV2Arg(query);
+        return searchV2(_arg);
+    }
+
+    /**
+     * Searches for files and folders. Note: {@link
+     * DbxAppFilesRequests#searchV2(String)} along with {@link
+     * DbxAppFilesRequests#searchContinueV2(String)} can only be used to
+     * retrieve a maximum of 10,000 matches. Recent changes may not immediately
+     * be reflected in search results due to a short delay in indexing.
+     * Duplicate results may be returned across pages. Some results may not be
+     * returned.
+     *
+     * @param query  The string to search for. May match across multiple fields
+     *     based on the request arguments. Must have length of at most 1000 and
+     *     not be {@code null}.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public DbxAppSearchV2Builder searchV2Builder(String query) {
+        SearchV2Arg.Builder argBuilder_ = SearchV2Arg.newBuilder(query);
+        return new DbxAppSearchV2Builder(this, argBuilder_);
+    }
+
+    //
+    // route 2/files/search/continue_v2
+    //
+
+    /**
+     * Fetches the next page of search results returned from {@link
+     * DbxAppFilesRequests#searchV2(String)}. Note: {@link
+     * DbxAppFilesRequests#searchV2(String)} along with {@link
+     * DbxAppFilesRequests#searchContinueV2(String)} can only be used to
+     * retrieve a maximum of 10,000 matches. Recent changes may not immediately
+     * be reflected in search results due to a short delay in indexing.
+     * Duplicate results may be returned across pages. Some results may not be
+     * returned.
+     *
+     */
+    SearchV2Result searchContinueV2(SearchV2ContinueArg arg) throws SearchErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/files/search/continue_v2",
+                                        arg,
+                                        false,
+                                        SearchV2ContinueArg.Serializer.INSTANCE,
+                                        SearchV2Result.Serializer.INSTANCE,
+                                        SearchError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new SearchErrorException("2/files/search/continue_v2", ex.getRequestId(), ex.getUserMessage(), (SearchError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Fetches the next page of search results returned from {@link
+     * DbxAppFilesRequests#searchV2(String)}. Note: {@link
+     * DbxAppFilesRequests#searchV2(String)} along with {@link
+     * DbxAppFilesRequests#searchContinueV2(String)} can only be used to
+     * retrieve a maximum of 10,000 matches. Recent changes may not immediately
+     * be reflected in search results due to a short delay in indexing.
+     * Duplicate results may be returned across pages. Some results may not be
+     * returned.
+     *
+     * @param cursor  The cursor returned by your last call to {@link
+     *     DbxAppFilesRequests#searchV2(String)}. Used to fetch the next page of
+     *     results. Must have length of at least 1 and not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SearchV2Result searchContinueV2(String cursor) throws SearchErrorException, DbxException {
+        SearchV2ContinueArg _arg = new SearchV2ContinueArg(cursor);
+        return searchContinueV2(_arg);
     }
 }

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_requests_apiv2_file_requests_public.stone */
+/* This file was generated from file_requests.stone */
 
 package com.dropbox.core.v2.filerequests;
 
@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
  * files into the user's Dropbox account.
  */
 public class FileRequest {
-    // struct file_requests.FileRequest (file_requests_apiv2_file_requests_public.stone)
+    // struct file_requests.FileRequest (file_requests.stone)
 
     @Nonnull
     protected final String id;

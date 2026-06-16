@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper_apiv2_paper_types.stone */
+/* This file was generated from paper.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * The import format of the incoming data.
  */
 public enum ImportFormat {
-    // union paper.ImportFormat (paper_apiv2_paper_types.stone)
+    // union paper.ImportFormat (paper.stone)
     /**
      * The provided data is interpreted as standard HTML.
      */

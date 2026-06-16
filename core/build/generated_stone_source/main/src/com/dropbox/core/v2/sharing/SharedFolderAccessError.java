@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * There is an error accessing the shared folder.
  */
 public enum SharedFolderAccessError {
-    // union sharing.SharedFolderAccessError (sharing_apiv2_sharing_folders_types.stone)
+    // union sharing.SharedFolderAccessError (sharing.stone)
     /**
      * This shared folder ID is invalid.
      */
@@ -34,7 +34,7 @@ public enum SharedFolderAccessError {
      */
     INVALID_MEMBER,
     /**
-     * Never set.
+     * Field is deprecated. Never set.
      */
     EMAIL_UNVERIFIED,
     /**

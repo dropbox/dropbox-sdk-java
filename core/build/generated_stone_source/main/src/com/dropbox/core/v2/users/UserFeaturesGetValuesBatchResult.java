@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users_users_types.stone */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class UserFeaturesGetValuesBatchResult {
-    // struct users.UserFeaturesGetValuesBatchResult (users_users_types.stone)
+    // struct users.UserFeaturesGetValuesBatchResult (users.stone)
 
     @Nonnull
     protected final List<UserFeatureValue> values;

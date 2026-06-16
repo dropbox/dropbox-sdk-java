@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_base.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * folders owned by a user on a team.
  */
 public enum MemberPolicy {
-    // union sharing.MemberPolicy (sharing_apiv2_sharing_folders_base.stone)
+    // union sharing.MemberPolicy (sharing.stone)
     /**
      * Only a teammate can become a member.
      */

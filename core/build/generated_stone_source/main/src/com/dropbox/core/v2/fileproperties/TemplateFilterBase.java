@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties_apiv2_file_properties_types.stone */
+/* This file was generated from file_properties.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -28,7 +28,7 @@ import java.util.List;
  * will be used. </p>
  */
 public final class TemplateFilterBase {
-    // union file_properties.TemplateFilterBase (file_properties_apiv2_file_properties_types.stone)
+    // union file_properties.TemplateFilterBase (file_properties.stone)
 
     /**
      * Discriminating tag type for {@link TemplateFilterBase}.

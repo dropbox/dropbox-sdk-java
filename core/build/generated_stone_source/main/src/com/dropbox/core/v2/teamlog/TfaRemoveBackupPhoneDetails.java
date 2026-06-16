@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
  * Removed backup phone for two-factor authentication.
  */
 public class TfaRemoveBackupPhoneDetails {
-    // struct team_log.TfaRemoveBackupPhoneDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.TfaRemoveBackupPhoneDetails (team_log.stone)
 
 
     /**

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users_users_base.stone */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Representations for a person's name to assist with internationalization.
  */
 public class Name {
-    // struct users.Name (users_users_base.stone)
+    // struct users.Name (users.stone)
 
     @Nonnull
     protected final String givenName;

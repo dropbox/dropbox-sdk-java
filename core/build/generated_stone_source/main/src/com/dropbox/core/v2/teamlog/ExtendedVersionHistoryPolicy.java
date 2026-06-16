@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum ExtendedVersionHistoryPolicy {
-    // union team_log.ExtendedVersionHistoryPolicy (team_log_stone_gen_team_log_generated.stone)
+    // union team_log.ExtendedVersionHistoryPolicy (team_log.stone)
     EXPLICITLY_LIMITED,
     EXPLICITLY_UNLIMITED,
     IMPLICITLY_LIMITED,

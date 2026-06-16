@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users_users_types.stone */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Basic information about any account.
  */
 public class BasicAccount extends Account {
-    // struct users.BasicAccount (users_users_types.stone)
+    // struct users.BasicAccount (users.stone)
 
     protected final boolean isTeammate;
     @Nullable

@@ -6,12 +6,9 @@
  * folders in Dropbox Paper. New Paper users will see docs they create in their
  * filesystem as '.paper' files alongside their other Dropbox content. The
  * /paper endpoints are being deprecated and you'll need to use /files and
- * /sharing endpoints to interact with their Paper content. This namespace
- * contains endpoints and data types for managing docs and folders in Dropbox
- * Paper. New Paper users will see docs they create in their filesystem as
- * '.paper' files alongside their other Dropbox content. The /paper endpoints
- * are being deprecated and you'll need to use /files and /sharing endpoints to
- * interact with their Paper content.
+ * /sharing endpoints to interact with their Paper content. Read more in the <a
+ * href="https://www.dropbox.com/lp/developers/reference/paper-migration-guide">Paper
+ * Migration Guide</a>.
  *
  * <p> See {@link com.dropbox.core.v2.paper.DbxUserPaperRequests} for a list of
  * possible requests for this namespace. </p>

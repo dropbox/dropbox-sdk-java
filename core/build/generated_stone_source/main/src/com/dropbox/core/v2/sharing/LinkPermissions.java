@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_links_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class LinkPermissions {
-    // struct sharing.LinkPermissions (sharing_apiv2_shared_links_types.stone)
+    // struct sharing.LinkPermissions (sharing.stone)
 
     @Nullable
     protected final ResolvedVisibility resolvedVisibility;
@@ -86,10 +86,11 @@ public class LinkPermissions {
      * @param canDisallowDownload  Whether the user can disallow downloads via
      *     the link. This refers to the ability to impose a no-download
      *     restriction on the link.
-     * @param allowComments  Whether comments are enabled for the linked file.
-     *     This takes the team commenting policy into account.
-     * @param teamRestrictsComments  Whether the team has disabled commenting
-     *     globally.
+     * @param allowComments  Field is deprecated. Whether comments are enabled
+     *     for the linked file. This takes the team commenting policy into
+     *     account.
+     * @param teamRestrictsComments  Field is deprecated. Whether the team has
+     *     disabled commenting globally.
      * @param resolvedVisibility  The current visibility of the link after
      *     considering the shared links policies of the the team (in case the
      *     link's owner is part of a team) and the shared folder (in case the
@@ -211,10 +212,11 @@ public class LinkPermissions {
      * @param canDisallowDownload  Whether the user can disallow downloads via
      *     the link. This refers to the ability to impose a no-download
      *     restriction on the link.
-     * @param allowComments  Whether comments are enabled for the linked file.
-     *     This takes the team commenting policy into account.
-     * @param teamRestrictsComments  Whether the team has disabled commenting
-     *     globally.
+     * @param allowComments  Field is deprecated. Whether comments are enabled
+     *     for the linked file. This takes the team commenting policy into
+     *     account.
+     * @param teamRestrictsComments  Field is deprecated. Whether the team has
+     *     disabled commenting globally.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -291,20 +293,26 @@ public class LinkPermissions {
     }
 
     /**
-     * Whether comments are enabled for the linked file. This takes the team
-     * commenting policy into account.
+     * Field is deprecated. Whether comments are enabled for the linked file.
+     * This takes the team commenting policy into account.
      *
      * @return value for this field.
+     *
+     * @deprecated
      */
+    @Deprecated
     public boolean getAllowComments() {
         return allowComments;
     }
 
     /**
-     * Whether the team has disabled commenting globally.
+     * Field is deprecated. Whether the team has disabled commenting globally.
      *
      * @return value for this field.
+     *
+     * @deprecated
      */
+    @Deprecated
     public boolean getTeamRestrictsComments() {
         return teamRestrictsComments;
     }
@@ -507,10 +515,11 @@ public class LinkPermissions {
      * @param canDisallowDownload  Whether the user can disallow downloads via
      *     the link. This refers to the ability to impose a no-download
      *     restriction on the link.
-     * @param allowComments  Whether comments are enabled for the linked file.
-     *     This takes the team commenting policy into account.
-     * @param teamRestrictsComments  Whether the team has disabled commenting
-     *     globally.
+     * @param allowComments  Field is deprecated. Whether comments are enabled
+     *     for the linked file. This takes the team commenting policy into
+     *     account.
+     * @param teamRestrictsComments  Field is deprecated. Whether the team has
+     *     disabled commenting globally.
      *
      * @return builder for this class.
      *

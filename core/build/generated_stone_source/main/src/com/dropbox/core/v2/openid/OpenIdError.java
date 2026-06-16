@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from openid_openid_types.stone */
+/* This file was generated from openid.stone */
 
 package com.dropbox.core.v2.openid;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum OpenIdError {
-    // union openid.OpenIdError (openid_openid_types.stone)
+    // union openid.OpenIdError (openid.stone)
     /**
      * Missing openid claims for the associated access token.
      */

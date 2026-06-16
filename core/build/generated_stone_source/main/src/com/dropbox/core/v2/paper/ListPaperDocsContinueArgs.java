@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper_apiv2_paper_types.stone */
+/* This file was generated from paper.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class ListPaperDocsContinueArgs {
-    // struct paper.ListPaperDocsContinueArgs (paper_apiv2_paper_types.stone)
+    // struct paper.ListPaperDocsContinueArgs (paper.stone)
 
     @Nonnull
     protected final String cursor;

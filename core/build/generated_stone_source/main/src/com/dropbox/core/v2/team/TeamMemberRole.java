@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_members_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  * AdminTier corresponds to a new TeamMemberRole with a matching name.
  */
 public class TeamMemberRole {
-    // struct team.TeamMemberRole (team_team_members_types.stone)
+    // struct team.TeamMemberRole (team.stone)
 
     @Nonnull
     protected final String roleId;

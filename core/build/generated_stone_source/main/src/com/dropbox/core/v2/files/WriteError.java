@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_base.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class WriteError {
-    // union files.WriteError (files_files_public_base.stone)
+    // union files.WriteError (files.stone)
 
     /**
      * Discriminating tag type for {@link WriteError}.

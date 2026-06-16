@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_sharing_allowlist.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class SharingAllowlistAddError {
-    // union team.SharingAllowlistAddError (team_apiv2_team_sharing_allowlist.stone)
+    // union team.SharingAllowlistAddError (team.stone)
 
     /**
      * Discriminating tag type for {@link SharingAllowlistAddError}.

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper_apiv2_paper_types.stone */
+/* This file was generated from paper.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class RemovePaperDocUser extends RefPaperDoc {
-    // struct paper.RemovePaperDocUser (paper_apiv2_paper_types.stone)
+    // struct paper.RemovePaperDocUser (paper.stone)
 
     @Nonnull
     protected final MemberSelector member;

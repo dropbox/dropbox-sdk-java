@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Changed the external ID for team member.
  */
 public class MemberChangeExternalIdDetails {
-    // struct team_log.MemberChangeExternalIdDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.MemberChangeExternalIdDetails (team_log.stone)
 
     @Nonnull
     protected final String newValue;

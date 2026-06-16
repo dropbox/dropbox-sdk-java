@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_links_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import java.util.Arrays;
  * associated with this instance.
  */
 public final class CreateSharedLinkWithSettingsError {
-    // union sharing.CreateSharedLinkWithSettingsError (sharing_apiv2_shared_links_types.stone)
+    // union sharing.CreateSharedLinkWithSettingsError (sharing.stone)
 
     /**
      * Discriminating tag type for {@link CreateSharedLinkWithSettingsError}.

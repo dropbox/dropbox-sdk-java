@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -29,7 +29,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class EventDetails {
-    // union team_log.EventDetails (team_log_stone_gen_team_log_generated.stone)
+    // union team_log.EventDetails (team_log.stone)
 
     /**
      * Discriminating tag type for {@link EventDetails}.
@@ -66,6 +66,7 @@ public final class EventDetails {
         DASH_ARCHIVED_STACK_DETAILS, // DashArchivedStackDetails
         DASH_CHANGED_AUDIENCE_OF_SHARED_LINK_TO_STACK_DETAILS, // DashChangedAudienceOfSharedLinkToStackDetails
         DASH_CLONED_STACK_DETAILS, // DashClonedStackDetails
+        DASH_CONNECTOR_TOOLS_CALL_DETAILS, // DashConnectorToolsCallDetails
         DASH_CREATED_STACK_DETAILS, // DashCreatedStackDetails
         DASH_DELETED_COMMENT_FROM_STACK_DETAILS, // DashDeletedCommentFromStackDetails
         DASH_DELETED_STACK_DETAILS, // DashDeletedStackDetails
@@ -482,6 +483,9 @@ public final class EventDetails {
         TEAM_FOLDER_DOWNGRADE_DETAILS, // TeamFolderDowngradeDetails
         TEAM_FOLDER_PERMANENTLY_DELETE_DETAILS, // TeamFolderPermanentlyDeleteDetails
         TEAM_FOLDER_RENAME_DETAILS, // TeamFolderRenameDetails
+        TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE_DETAILS, // TeamFolderSpaceLimitsChangeCapsTypeDetails
+        TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT_DETAILS, // TeamFolderSpaceLimitsChangeLimitDetails
+        TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET_DETAILS, // TeamFolderSpaceLimitsChangeNotificationTargetDetails
         TEAM_SELECTIVE_SYNC_SETTINGS_CHANGED_DETAILS, // TeamSelectiveSyncSettingsChangedDetails
         ACCOUNT_CAPTURE_CHANGE_POLICY_DETAILS, // AccountCaptureChangePolicyDetails
         ADMIN_EMAIL_REMINDERS_CHANGED_DETAILS, // AdminEmailRemindersChangedDetails
@@ -693,6 +697,7 @@ public final class EventDetails {
     private DashArchivedStackDetails dashArchivedStackDetailsValue;
     private DashChangedAudienceOfSharedLinkToStackDetails dashChangedAudienceOfSharedLinkToStackDetailsValue;
     private DashClonedStackDetails dashClonedStackDetailsValue;
+    private DashConnectorToolsCallDetails dashConnectorToolsCallDetailsValue;
     private DashCreatedStackDetails dashCreatedStackDetailsValue;
     private DashDeletedCommentFromStackDetails dashDeletedCommentFromStackDetailsValue;
     private DashDeletedStackDetails dashDeletedStackDetailsValue;
@@ -1109,6 +1114,9 @@ public final class EventDetails {
     private TeamFolderDowngradeDetails teamFolderDowngradeDetailsValue;
     private TeamFolderPermanentlyDeleteDetails teamFolderPermanentlyDeleteDetailsValue;
     private TeamFolderRenameDetails teamFolderRenameDetailsValue;
+    private TeamFolderSpaceLimitsChangeCapsTypeDetails teamFolderSpaceLimitsChangeCapsTypeDetailsValue;
+    private TeamFolderSpaceLimitsChangeLimitDetails teamFolderSpaceLimitsChangeLimitDetailsValue;
+    private TeamFolderSpaceLimitsChangeNotificationTargetDetails teamFolderSpaceLimitsChangeNotificationTargetDetailsValue;
     private TeamSelectiveSyncSettingsChangedDetails teamSelectiveSyncSettingsChangedDetailsValue;
     private AccountCaptureChangePolicyDetails accountCaptureChangePolicyDetailsValue;
     private AdminEmailRemindersChangedDetails adminEmailRemindersChangedDetailsValue;
@@ -1785,6 +1793,22 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.dashClonedStackDetailsValue = dashClonedStackDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param dashConnectorToolsCallDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndDashConnectorToolsCallDetails(Tag _tag, DashConnectorToolsCallDetails dashConnectorToolsCallDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.dashConnectorToolsCallDetailsValue = dashConnectorToolsCallDetailsValue;
         return result;
     }
 
@@ -8558,6 +8582,57 @@ public final class EventDetails {
     /**
      * Additional fields depending on the event type.
      *
+     * @param teamFolderSpaceLimitsChangeCapsTypeDetailsValue  Must not be
+     *     {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndTeamFolderSpaceLimitsChangeCapsTypeDetails(Tag _tag, TeamFolderSpaceLimitsChangeCapsTypeDetails teamFolderSpaceLimitsChangeCapsTypeDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.teamFolderSpaceLimitsChangeCapsTypeDetailsValue = teamFolderSpaceLimitsChangeCapsTypeDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param teamFolderSpaceLimitsChangeLimitDetailsValue  Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndTeamFolderSpaceLimitsChangeLimitDetails(Tag _tag, TeamFolderSpaceLimitsChangeLimitDetails teamFolderSpaceLimitsChangeLimitDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.teamFolderSpaceLimitsChangeLimitDetailsValue = teamFolderSpaceLimitsChangeLimitDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param teamFolderSpaceLimitsChangeNotificationTargetDetailsValue  Must
+     *     not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndTeamFolderSpaceLimitsChangeNotificationTargetDetails(Tag _tag, TeamFolderSpaceLimitsChangeNotificationTargetDetails teamFolderSpaceLimitsChangeNotificationTargetDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.teamFolderSpaceLimitsChangeNotificationTargetDetailsValue = teamFolderSpaceLimitsChangeNotificationTargetDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
      * @param teamSelectiveSyncSettingsChangedDetailsValue  Must not be {@code
      *     null}.
      * @param _tag  Discriminating tag for this instance.
@@ -12636,6 +12711,55 @@ public final class EventDetails {
             throw new IllegalStateException("Invalid tag: required Tag.DASH_CLONED_STACK_DETAILS, but was Tag." + this._tag.name());
         }
         return dashClonedStackDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_CONNECTOR_TOOLS_CALL_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_CONNECTOR_TOOLS_CALL_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isDashConnectorToolsCallDetails() {
+        return this._tag == Tag.DASH_CONNECTOR_TOOLS_CALL_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#DASH_CONNECTOR_TOOLS_CALL_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#DASH_CONNECTOR_TOOLS_CALL_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails dashConnectorToolsCallDetails(DashConnectorToolsCallDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndDashConnectorToolsCallDetails(Tag.DASH_CONNECTOR_TOOLS_CALL_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#DASH_CONNECTOR_TOOLS_CALL_DETAILS}.
+     *
+     * @return The {@link DashConnectorToolsCallDetails} value associated with
+     *     this instance if {@link #isDashConnectorToolsCallDetails} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isDashConnectorToolsCallDetails} is {@code false}.
+     */
+    public DashConnectorToolsCallDetails getDashConnectorToolsCallDetailsValue() {
+        if (this._tag != Tag.DASH_CONNECTOR_TOOLS_CALL_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_CONNECTOR_TOOLS_CALL_DETAILS, but was Tag." + this._tag.name());
+        }
+        return dashConnectorToolsCallDetailsValue;
     }
 
     /**
@@ -32954,6 +33078,161 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE_DETAILS}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isTeamFolderSpaceLimitsChangeCapsTypeDetails() {
+        return this._tag == Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails teamFolderSpaceLimitsChangeCapsTypeDetails(TeamFolderSpaceLimitsChangeCapsTypeDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndTeamFolderSpaceLimitsChangeCapsTypeDetails(Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE_DETAILS}.
+     *
+     * @return The {@link TeamFolderSpaceLimitsChangeCapsTypeDetails} value
+     *     associated with this instance if {@link
+     *     #isTeamFolderSpaceLimitsChangeCapsTypeDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamFolderSpaceLimitsChangeCapsTypeDetails} is {@code false}.
+     */
+    public TeamFolderSpaceLimitsChangeCapsTypeDetails getTeamFolderSpaceLimitsChangeCapsTypeDetailsValue() {
+        if (this._tag != Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE_DETAILS, but was Tag." + this._tag.name());
+        }
+        return teamFolderSpaceLimitsChangeCapsTypeDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT_DETAILS}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isTeamFolderSpaceLimitsChangeLimitDetails() {
+        return this._tag == Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails teamFolderSpaceLimitsChangeLimitDetails(TeamFolderSpaceLimitsChangeLimitDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndTeamFolderSpaceLimitsChangeLimitDetails(Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT_DETAILS}.
+     *
+     * @return The {@link TeamFolderSpaceLimitsChangeLimitDetails} value
+     *     associated with this instance if {@link
+     *     #isTeamFolderSpaceLimitsChangeLimitDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamFolderSpaceLimitsChangeLimitDetails} is {@code false}.
+     */
+    public TeamFolderSpaceLimitsChangeLimitDetails getTeamFolderSpaceLimitsChangeLimitDetailsValue() {
+        if (this._tag != Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT_DETAILS, but was Tag." + this._tag.name());
+        }
+        return teamFolderSpaceLimitsChangeLimitDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET_DETAILS}, {@code
+     * false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET_DETAILS},
+     *     {@code false} otherwise.
+     */
+    public boolean isTeamFolderSpaceLimitsChangeNotificationTargetDetails() {
+        return this._tag == Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails teamFolderSpaceLimitsChangeNotificationTargetDetails(TeamFolderSpaceLimitsChangeNotificationTargetDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndTeamFolderSpaceLimitsChangeNotificationTargetDetails(Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET_DETAILS}.
+     *
+     * @return The {@link TeamFolderSpaceLimitsChangeNotificationTargetDetails}
+     *     value associated with this instance if {@link
+     *     #isTeamFolderSpaceLimitsChangeNotificationTargetDetails} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamFolderSpaceLimitsChangeNotificationTargetDetails} is {@code
+     *     false}.
+     */
+    public TeamFolderSpaceLimitsChangeNotificationTargetDetails getTeamFolderSpaceLimitsChangeNotificationTargetDetailsValue() {
+        if (this._tag != Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET_DETAILS, but was Tag." + this._tag.name());
+        }
+        return teamFolderSpaceLimitsChangeNotificationTargetDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#TEAM_SELECTIVE_SYNC_SETTINGS_CHANGED_DETAILS}, {@code false}
      * otherwise.
      *
@@ -40716,6 +40995,7 @@ public final class EventDetails {
             this.dashArchivedStackDetailsValue,
             this.dashChangedAudienceOfSharedLinkToStackDetailsValue,
             this.dashClonedStackDetailsValue,
+            this.dashConnectorToolsCallDetailsValue,
             this.dashCreatedStackDetailsValue,
             this.dashDeletedCommentFromStackDetailsValue,
             this.dashDeletedStackDetailsValue,
@@ -41132,6 +41412,9 @@ public final class EventDetails {
             this.teamFolderDowngradeDetailsValue,
             this.teamFolderPermanentlyDeleteDetailsValue,
             this.teamFolderRenameDetailsValue,
+            this.teamFolderSpaceLimitsChangeCapsTypeDetailsValue,
+            this.teamFolderSpaceLimitsChangeLimitDetailsValue,
+            this.teamFolderSpaceLimitsChangeNotificationTargetDetailsValue,
             this.teamSelectiveSyncSettingsChangedDetailsValue,
             this.accountCaptureChangePolicyDetailsValue,
             this.adminEmailRemindersChangedDetailsValue,
@@ -41367,6 +41650,8 @@ public final class EventDetails {
                     return (this.dashChangedAudienceOfSharedLinkToStackDetailsValue == other.dashChangedAudienceOfSharedLinkToStackDetailsValue) || (this.dashChangedAudienceOfSharedLinkToStackDetailsValue.equals(other.dashChangedAudienceOfSharedLinkToStackDetailsValue));
                 case DASH_CLONED_STACK_DETAILS:
                     return (this.dashClonedStackDetailsValue == other.dashClonedStackDetailsValue) || (this.dashClonedStackDetailsValue.equals(other.dashClonedStackDetailsValue));
+                case DASH_CONNECTOR_TOOLS_CALL_DETAILS:
+                    return (this.dashConnectorToolsCallDetailsValue == other.dashConnectorToolsCallDetailsValue) || (this.dashConnectorToolsCallDetailsValue.equals(other.dashConnectorToolsCallDetailsValue));
                 case DASH_CREATED_STACK_DETAILS:
                     return (this.dashCreatedStackDetailsValue == other.dashCreatedStackDetailsValue) || (this.dashCreatedStackDetailsValue.equals(other.dashCreatedStackDetailsValue));
                 case DASH_DELETED_COMMENT_FROM_STACK_DETAILS:
@@ -42199,6 +42484,12 @@ public final class EventDetails {
                     return (this.teamFolderPermanentlyDeleteDetailsValue == other.teamFolderPermanentlyDeleteDetailsValue) || (this.teamFolderPermanentlyDeleteDetailsValue.equals(other.teamFolderPermanentlyDeleteDetailsValue));
                 case TEAM_FOLDER_RENAME_DETAILS:
                     return (this.teamFolderRenameDetailsValue == other.teamFolderRenameDetailsValue) || (this.teamFolderRenameDetailsValue.equals(other.teamFolderRenameDetailsValue));
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE_DETAILS:
+                    return (this.teamFolderSpaceLimitsChangeCapsTypeDetailsValue == other.teamFolderSpaceLimitsChangeCapsTypeDetailsValue) || (this.teamFolderSpaceLimitsChangeCapsTypeDetailsValue.equals(other.teamFolderSpaceLimitsChangeCapsTypeDetailsValue));
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT_DETAILS:
+                    return (this.teamFolderSpaceLimitsChangeLimitDetailsValue == other.teamFolderSpaceLimitsChangeLimitDetailsValue) || (this.teamFolderSpaceLimitsChangeLimitDetailsValue.equals(other.teamFolderSpaceLimitsChangeLimitDetailsValue));
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET_DETAILS:
+                    return (this.teamFolderSpaceLimitsChangeNotificationTargetDetailsValue == other.teamFolderSpaceLimitsChangeNotificationTargetDetailsValue) || (this.teamFolderSpaceLimitsChangeNotificationTargetDetailsValue.equals(other.teamFolderSpaceLimitsChangeNotificationTargetDetailsValue));
                 case TEAM_SELECTIVE_SYNC_SETTINGS_CHANGED_DETAILS:
                     return (this.teamSelectiveSyncSettingsChangedDetailsValue == other.teamSelectiveSyncSettingsChangedDetailsValue) || (this.teamSelectiveSyncSettingsChangedDetailsValue.equals(other.teamSelectiveSyncSettingsChangedDetailsValue));
                 case ACCOUNT_CAPTURE_CHANGE_POLICY_DETAILS:
@@ -42760,6 +43051,13 @@ public final class EventDetails {
                     g.writeStartObject();
                     writeTag("dash_cloned_stack_details", g);
                     DashClonedStackDetails.Serializer.INSTANCE.serialize(value.dashClonedStackDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_CONNECTOR_TOOLS_CALL_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("dash_connector_tools_call_details", g);
+                    DashConnectorToolsCallDetails.Serializer.INSTANCE.serialize(value.dashConnectorToolsCallDetailsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -45675,6 +45973,27 @@ public final class EventDetails {
                     g.writeEndObject();
                     break;
                 }
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("team_folder_space_limits_change_caps_type_details", g);
+                    TeamFolderSpaceLimitsChangeCapsTypeDetails.Serializer.INSTANCE.serialize(value.teamFolderSpaceLimitsChangeCapsTypeDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("team_folder_space_limits_change_limit_details", g);
+                    TeamFolderSpaceLimitsChangeLimitDetails.Serializer.INSTANCE.serialize(value.teamFolderSpaceLimitsChangeLimitDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("team_folder_space_limits_change_notification_target_details", g);
+                    TeamFolderSpaceLimitsChangeNotificationTargetDetails.Serializer.INSTANCE.serialize(value.teamFolderSpaceLimitsChangeNotificationTargetDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case TEAM_SELECTIVE_SYNC_SETTINGS_CHANGED_DETAILS: {
                     g.writeStartObject();
                     writeTag("team_selective_sync_settings_changed_details", g);
@@ -46938,6 +47257,11 @@ public final class EventDetails {
                 DashClonedStackDetails fieldValue = null;
                 fieldValue = DashClonedStackDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.dashClonedStackDetails(fieldValue);
+            }
+            else if ("dash_connector_tools_call_details".equals(tag)) {
+                DashConnectorToolsCallDetails fieldValue = null;
+                fieldValue = DashConnectorToolsCallDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.dashConnectorToolsCallDetails(fieldValue);
             }
             else if ("dash_created_stack_details".equals(tag)) {
                 DashCreatedStackDetails fieldValue = null;
@@ -49018,6 +49342,21 @@ public final class EventDetails {
                 TeamFolderRenameDetails fieldValue = null;
                 fieldValue = TeamFolderRenameDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.teamFolderRenameDetails(fieldValue);
+            }
+            else if ("team_folder_space_limits_change_caps_type_details".equals(tag)) {
+                TeamFolderSpaceLimitsChangeCapsTypeDetails fieldValue = null;
+                fieldValue = TeamFolderSpaceLimitsChangeCapsTypeDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.teamFolderSpaceLimitsChangeCapsTypeDetails(fieldValue);
+            }
+            else if ("team_folder_space_limits_change_limit_details".equals(tag)) {
+                TeamFolderSpaceLimitsChangeLimitDetails fieldValue = null;
+                fieldValue = TeamFolderSpaceLimitsChangeLimitDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.teamFolderSpaceLimitsChangeLimitDetails(fieldValue);
+            }
+            else if ("team_folder_space_limits_change_notification_target_details".equals(tag)) {
+                TeamFolderSpaceLimitsChangeNotificationTargetDetails fieldValue = null;
+                fieldValue = TeamFolderSpaceLimitsChangeNotificationTargetDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.teamFolderSpaceLimitsChangeNotificationTargetDetails(fieldValue);
             }
             else if ("team_selective_sync_settings_changed_details".equals(tag)) {
                 TeamSelectiveSyncSettingsChangedDetails fieldValue = null;

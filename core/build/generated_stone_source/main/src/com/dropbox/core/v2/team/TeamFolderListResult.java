@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_folders.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  * DbxTeamTeamRequests#teamFolderListContinue(String)}.
  */
 public class TeamFolderListResult {
-    // struct team.TeamFolderListResult (team_team_folders.stone)
+    // struct team.TeamFolderListResult (team.stone)
 
     @Nonnull
     protected final List<TeamFolderMetadata> teamFolders;

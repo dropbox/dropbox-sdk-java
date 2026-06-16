@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_common.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class RemovedStatus {
-    // struct team.RemovedStatus (team_team_common.stone)
+    // struct team.RemovedStatus (team.stone)
 
     protected final boolean isRecoverable;
     protected final boolean isDisconnected;

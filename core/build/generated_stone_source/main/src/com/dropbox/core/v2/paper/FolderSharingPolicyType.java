@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper_apiv2_paper_types.stone */
+/* This file was generated from paper.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * inherited from the root folder.
  */
 public enum FolderSharingPolicyType {
-    // union paper.FolderSharingPolicyType (paper_apiv2_paper_types.stone)
+    // union paper.FolderSharingPolicyType (paper.stone)
     /**
      * Everyone in your team and anyone directly invited can access this folder.
      */

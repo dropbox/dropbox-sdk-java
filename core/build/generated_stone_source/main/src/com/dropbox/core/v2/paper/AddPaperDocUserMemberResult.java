@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper_apiv2_paper_types.stone */
+/* This file was generated from paper.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  * DbxUserPaperRequests#docsUsersAdd(String,java.util.List)}.
  */
 public class AddPaperDocUserMemberResult {
-    // struct paper.AddPaperDocUserMemberResult (paper_apiv2_paper_types.stone)
+    // struct paper.AddPaperDocUserMemberResult (paper.stone)
 
     @Nonnull
     protected final MemberSelector member;

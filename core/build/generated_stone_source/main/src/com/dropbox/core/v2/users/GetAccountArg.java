@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users_users_types.stone */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class GetAccountArg {
-    // struct users.GetAccountArg (users_users_types.stone)
+    // struct users.GetAccountArg (users.stone)
 
     @Nonnull
     protected final String accountId;

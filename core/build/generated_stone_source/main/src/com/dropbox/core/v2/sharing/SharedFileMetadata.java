@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_files_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
  * Properties of the shared file.
  */
 public class SharedFileMetadata {
-    // struct sharing.SharedFileMetadata (sharing_apiv2_sharing_files_types.stone)
+    // struct sharing.SharedFileMetadata (sharing.stone)
 
     @Nullable
     protected final AccessLevel accessType;

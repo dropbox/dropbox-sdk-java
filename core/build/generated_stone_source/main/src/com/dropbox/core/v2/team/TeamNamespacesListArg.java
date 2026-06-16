@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_namespaces_apiv2_team_namespaces.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,14 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 
 class TeamNamespacesListArg {
-    // struct team.TeamNamespacesListArg (team_namespaces_apiv2_team_namespaces.stone)
+    // struct team.TeamNamespacesListArg (team.stone)
 
     protected final long limit;
 
     /**
      *
-     * @param limit  Specifying a value here has no effect. Must be greater than
-     *     or equal to 1 and be less than or equal to 1000.
+     * @param limit  Field is deprecated. Specifying a value here has no effect.
+     *     Must be greater than or equal to 1 and be less than or equal to 1000.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -49,11 +49,14 @@ class TeamNamespacesListArg {
     }
 
     /**
-     * Specifying a value here has no effect.
+     * Field is deprecated. Specifying a value here has no effect.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     1000L.
+     *
+     * @deprecated
      */
+    @Deprecated
     public long getLimit() {
         return limit;
     }

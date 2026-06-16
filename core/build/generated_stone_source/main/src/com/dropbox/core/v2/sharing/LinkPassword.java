@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_content_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class LinkPassword {
-    // union sharing.LinkPassword (sharing_apiv2_shared_content_links.stone)
+    // union sharing.LinkPassword (sharing.stone)
 
     /**
      * Discriminating tag type for {@link LinkPassword}.

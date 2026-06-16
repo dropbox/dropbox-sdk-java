@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper_apiv2_paper_types.stone */
+/* This file was generated from paper.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * The sharing policy type of the Paper doc.
  */
 public enum SharingTeamPolicyType {
-    // union paper.SharingTeamPolicyType (paper_apiv2_paper_types.stone)
+    // union paper.SharingTeamPolicyType (paper.stone)
     /**
      * Users who have a link to this doc can edit it.
      */

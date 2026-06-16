@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_links_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum SharedLinkAccessFailureReason {
-    // union sharing.SharedLinkAccessFailureReason (sharing_apiv2_shared_links_types.stone)
+    // union sharing.SharedLinkAccessFailureReason (sharing.stone)
     /**
      * User is not logged in.
      */

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Additional information relevant when a new member joins the team.
  */
 public class JoinTeamDetails {
-    // struct team_log.JoinTeamDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.JoinTeamDetails (team_log.stone)
 
     @Nonnull
     protected final List<UserLinkedAppLogInfo> linkedApps;
@@ -51,22 +51,25 @@ public class JoinTeamDetails {
      * <p> Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields. </p>
      *
-     * @param linkedApps  Linked applications. (Deprecated) Please use
-     *     has_linked_apps boolean field instead. Must not contain a {@code
-     *     null} item and not be {@code null}.
-     * @param linkedDevices  Linked devices. (Deprecated) Please use
-     *     has_linked_devices boolean field instead. Must not contain a {@code
-     *     null} item and not be {@code null}.
-     * @param linkedSharedFolders  Linked shared folders. (Deprecated) Please
-     *     use has_linked_shared_folders boolean field instead. Must not contain
+     * @param linkedApps  Field is deprecated. Linked applications. (Deprecated)
+     *     Please use has_linked_apps boolean field instead. Must not contain a
+     *     {@code null} item and not be {@code null}.
+     * @param linkedDevices  Field is deprecated. Linked devices. (Deprecated)
+     *     Please use has_linked_devices boolean field instead. Must not contain
      *     a {@code null} item and not be {@code null}.
-     * @param wasLinkedAppsTruncated  (Deprecated) True if the linked_apps list
-     *     was truncated to the maximum supported length (50).
-     * @param wasLinkedDevicesTruncated  (Deprecated) True if the linked_devices
-     *     list was truncated to the maximum supported length (50).
-     * @param wasLinkedSharedFoldersTruncated  (Deprecated) True if the
-     *     linked_shared_folders list was truncated to the maximum supported
+     * @param linkedSharedFolders  Field is deprecated. Linked shared folders.
+     *     (Deprecated) Please use has_linked_shared_folders boolean field
+     *     instead. Must not contain a {@code null} item and not be {@code
+     *     null}.
+     * @param wasLinkedAppsTruncated  Field is deprecated. (Deprecated) True if
+     *     the linked_apps list was truncated to the maximum supported length
+     *     (50).
+     * @param wasLinkedDevicesTruncated  Field is deprecated. (Deprecated) True
+     *     if the linked_devices list was truncated to the maximum supported
      *     length (50).
+     * @param wasLinkedSharedFoldersTruncated  Field is deprecated. (Deprecated)
+     *     True if the linked_shared_folders list was truncated to the maximum
+     *     supported length (50).
      * @param hasLinkedApps  True if the user had linked apps at event time.
      * @param hasLinkedDevices  True if the user had linked apps at event time.
      * @param hasLinkedSharedFolders  True if the user had linked shared folders
@@ -116,15 +119,16 @@ public class JoinTeamDetails {
      *
      * <p> The default values for unset fields will be used. </p>
      *
-     * @param linkedApps  Linked applications. (Deprecated) Please use
-     *     has_linked_apps boolean field instead. Must not contain a {@code
-     *     null} item and not be {@code null}.
-     * @param linkedDevices  Linked devices. (Deprecated) Please use
-     *     has_linked_devices boolean field instead. Must not contain a {@code
-     *     null} item and not be {@code null}.
-     * @param linkedSharedFolders  Linked shared folders. (Deprecated) Please
-     *     use has_linked_shared_folders boolean field instead. Must not contain
+     * @param linkedApps  Field is deprecated. Linked applications. (Deprecated)
+     *     Please use has_linked_apps boolean field instead. Must not contain a
+     *     {@code null} item and not be {@code null}.
+     * @param linkedDevices  Field is deprecated. Linked devices. (Deprecated)
+     *     Please use has_linked_devices boolean field instead. Must not contain
      *     a {@code null} item and not be {@code null}.
+     * @param linkedSharedFolders  Field is deprecated. Linked shared folders.
+     *     (Deprecated) Please use has_linked_shared_folders boolean field
+     *     instead. Must not contain a {@code null} item and not be {@code
+     *     null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -134,66 +138,84 @@ public class JoinTeamDetails {
     }
 
     /**
-     * Linked applications. (Deprecated) Please use has_linked_apps boolean
-     * field instead.
+     * Field is deprecated. Linked applications. (Deprecated) Please use
+     * has_linked_apps boolean field instead.
      *
      * @return value for this field, never {@code null}.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nonnull
     public List<UserLinkedAppLogInfo> getLinkedApps() {
         return linkedApps;
     }
 
     /**
-     * Linked devices. (Deprecated) Please use has_linked_devices boolean field
-     * instead.
+     * Field is deprecated. Linked devices. (Deprecated) Please use
+     * has_linked_devices boolean field instead.
      *
      * @return value for this field, never {@code null}.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nonnull
     public List<LinkedDeviceLogInfo> getLinkedDevices() {
         return linkedDevices;
     }
 
     /**
-     * Linked shared folders. (Deprecated) Please use has_linked_shared_folders
-     * boolean field instead.
+     * Field is deprecated. Linked shared folders. (Deprecated) Please use
+     * has_linked_shared_folders boolean field instead.
      *
      * @return value for this field, never {@code null}.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nonnull
     public List<FolderLogInfo> getLinkedSharedFolders() {
         return linkedSharedFolders;
     }
 
     /**
-     * (Deprecated) True if the linked_apps list was truncated to the maximum
-     * supported length (50).
+     * Field is deprecated. (Deprecated) True if the linked_apps list was
+     * truncated to the maximum supported length (50).
      *
      * @return value for this field, or {@code null} if not present.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nullable
     public Boolean getWasLinkedAppsTruncated() {
         return wasLinkedAppsTruncated;
     }
 
     /**
-     * (Deprecated) True if the linked_devices list was truncated to the maximum
-     * supported length (50).
+     * Field is deprecated. (Deprecated) True if the linked_devices list was
+     * truncated to the maximum supported length (50).
      *
      * @return value for this field, or {@code null} if not present.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nullable
     public Boolean getWasLinkedDevicesTruncated() {
         return wasLinkedDevicesTruncated;
     }
 
     /**
-     * (Deprecated) True if the linked_shared_folders list was truncated to the
-     * maximum supported length (50).
+     * Field is deprecated. (Deprecated) True if the linked_shared_folders list
+     * was truncated to the maximum supported length (50).
      *
      * @return value for this field, or {@code null} if not present.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nullable
     public Boolean getWasLinkedSharedFoldersTruncated() {
         return wasLinkedSharedFoldersTruncated;
@@ -232,15 +254,16 @@ public class JoinTeamDetails {
     /**
      * Returns a new builder for creating an instance of this class.
      *
-     * @param linkedApps  Linked applications. (Deprecated) Please use
-     *     has_linked_apps boolean field instead. Must not contain a {@code
-     *     null} item and not be {@code null}.
-     * @param linkedDevices  Linked devices. (Deprecated) Please use
-     *     has_linked_devices boolean field instead. Must not contain a {@code
-     *     null} item and not be {@code null}.
-     * @param linkedSharedFolders  Linked shared folders. (Deprecated) Please
-     *     use has_linked_shared_folders boolean field instead. Must not contain
+     * @param linkedApps  Field is deprecated. Linked applications. (Deprecated)
+     *     Please use has_linked_apps boolean field instead. Must not contain a
+     *     {@code null} item and not be {@code null}.
+     * @param linkedDevices  Field is deprecated. Linked devices. (Deprecated)
+     *     Please use has_linked_devices boolean field instead. Must not contain
      *     a {@code null} item and not be {@code null}.
+     * @param linkedSharedFolders  Field is deprecated. Linked shared folders.
+     *     (Deprecated) Please use has_linked_shared_folders boolean field
+     *     instead. Must not contain a {@code null} item and not be {@code
+     *     null}.
      *
      * @return builder for this class.
      *
@@ -305,11 +328,15 @@ public class JoinTeamDetails {
         /**
          * Set value for optional field.
          *
-         * @param wasLinkedAppsTruncated  (Deprecated) True if the linked_apps
-         *     list was truncated to the maximum supported length (50).
+         * @param wasLinkedAppsTruncated  Field is deprecated. (Deprecated) True
+         *     if the linked_apps list was truncated to the maximum supported
+         *     length (50).
          *
          * @return this builder
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withWasLinkedAppsTruncated(Boolean wasLinkedAppsTruncated) {
             this.wasLinkedAppsTruncated = wasLinkedAppsTruncated;
             return this;
@@ -318,12 +345,15 @@ public class JoinTeamDetails {
         /**
          * Set value for optional field.
          *
-         * @param wasLinkedDevicesTruncated  (Deprecated) True if the
-         *     linked_devices list was truncated to the maximum supported length
-         *     (50).
+         * @param wasLinkedDevicesTruncated  Field is deprecated. (Deprecated)
+         *     True if the linked_devices list was truncated to the maximum
+         *     supported length (50).
          *
          * @return this builder
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withWasLinkedDevicesTruncated(Boolean wasLinkedDevicesTruncated) {
             this.wasLinkedDevicesTruncated = wasLinkedDevicesTruncated;
             return this;
@@ -332,12 +362,15 @@ public class JoinTeamDetails {
         /**
          * Set value for optional field.
          *
-         * @param wasLinkedSharedFoldersTruncated  (Deprecated) True if the
-         *     linked_shared_folders list was truncated to the maximum supported
-         *     length (50).
+         * @param wasLinkedSharedFoldersTruncated  Field is deprecated.
+         *     (Deprecated) True if the linked_shared_folders list was truncated
+         *     to the maximum supported length (50).
          *
          * @return this builder
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withWasLinkedSharedFoldersTruncated(Boolean wasLinkedSharedFoldersTruncated) {
             this.wasLinkedSharedFoldersTruncated = wasLinkedSharedFoldersTruncated;
             return this;

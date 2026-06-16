@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_files_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Arguments for {@link DbxUserSharingRequests#listFileMembersBatch(List,long)}.
  */
 class ListFileMembersBatchArg {
-    // struct sharing.ListFileMembersBatchArg (sharing_apiv2_sharing_files_types.stone)
+    // struct sharing.ListFileMembersBatchArg (sharing.stone)
 
     @Nonnull
     protected final List<String> files;

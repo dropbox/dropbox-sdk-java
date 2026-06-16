@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_primitives.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class HighlightSpan {
-    // struct files.HighlightSpan (files_files_public_primitives.stone)
+    // struct files.HighlightSpan (files.stone)
 
     @Nonnull
     protected final String highlightStr;

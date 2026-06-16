@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper_apiv2_paper_types.stone */
+/* This file was generated from paper.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class ListPaperDocsArgs {
-    // struct paper.ListPaperDocsArgs (paper_apiv2_paper_types.stone)
+    // struct paper.ListPaperDocsArgs (paper.stone)
 
     @Nonnull
     protected final ListPaperDocsFilterBy filterBy;

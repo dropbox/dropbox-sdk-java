@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_groups.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
  * DbxTeamTeamRequests#groupsMembersRemove(GroupSelector,java.util.List,boolean)}.
  */
 public class GroupMembersChangeResult {
-    // struct team.GroupMembersChangeResult (team_apiv2_team_groups.stone)
+    // struct team.GroupMembersChangeResult (team.stone)
 
     @Nonnull
     protected final GroupFullInfo groupInfo;
@@ -40,11 +40,12 @@ public class GroupMembersChangeResult {
      *
      * @param groupInfo  The group info after member change operation has been
      *     performed. Must not be {@code null}.
-     * @param asyncJobId  For legacy purposes async_job_id will always return
-     *     one space ' '. Formerly, it was an ID that was used to obtain the
-     *     status of granting/revoking group-owned resources. It's no longer
-     *     necessary because the async processing now happens automatically.
-     *     Must have length of at least 1 and not be {@code null}.
+     * @param asyncJobId  Field is deprecated. For legacy purposes async_job_id
+     *     will always return one space ' '. Formerly, it was an ID that was
+     *     used to obtain the status of granting/revoking group-owned resources.
+     *     It's no longer necessary because the async processing now happens
+     *     automatically. Must have length of at least 1 and not be {@code
+     *     null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -74,13 +75,16 @@ public class GroupMembersChangeResult {
     }
 
     /**
-     * For legacy purposes async_job_id will always return one space ' '.
-     * Formerly, it was an ID that was used to obtain the status of
-     * granting/revoking group-owned resources. It's no longer necessary because
-     * the async processing now happens automatically.
+     * Field is deprecated. For legacy purposes async_job_id will always return
+     * one space ' '. Formerly, it was an ID that was used to obtain the status
+     * of granting/revoking group-owned resources. It's no longer necessary
+     * because the async processing now happens automatically.
      *
      * @return value for this field, never {@code null}.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nonnull
     public String getAsyncJobId() {
         return asyncJobId;

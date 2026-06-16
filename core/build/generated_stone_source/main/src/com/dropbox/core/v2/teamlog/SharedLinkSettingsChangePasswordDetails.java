@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Changed the password of the shared link.
  */
 public class SharedLinkSettingsChangePasswordDetails {
-    // struct team_log.SharedLinkSettingsChangePasswordDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.SharedLinkSettingsChangePasswordDetails (team_log.stone)
 
     @Nonnull
     protected final AccessLevel sharedContentAccessLevel;

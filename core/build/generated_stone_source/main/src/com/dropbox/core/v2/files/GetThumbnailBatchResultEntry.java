@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class GetThumbnailBatchResultEntry {
-    // union files.GetThumbnailBatchResultEntry (files_files_public_types.stone)
+    // union files.GetThumbnailBatchResultEntry (files.stone)
 
     /**
      * Discriminating tag type for {@link GetThumbnailBatchResultEntry}.

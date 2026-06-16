@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 class UploadSessionFinishBatchArg {
-    // struct files.UploadSessionFinishBatchArg (files_files_public_types.stone)
+    // struct files.UploadSessionFinishBatchArg (files.stone)
 
     @Nonnull
     protected final List<UploadSessionFinishArg> entries;

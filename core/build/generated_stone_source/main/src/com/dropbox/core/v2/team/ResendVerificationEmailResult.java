@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_members_secondary_emails.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * List of users and resend results.
  */
 public class ResendVerificationEmailResult {
-    // struct team.ResendVerificationEmailResult (team_apiv2_team_members_secondary_emails.stone)
+    // struct team.ResendVerificationEmailResult (team.stone)
 
     @Nonnull
     protected final List<UserResendResult> results;

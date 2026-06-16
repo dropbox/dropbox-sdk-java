@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class DownloadArg {
-    // struct files.DownloadArg (files_files_public_types.stone)
+    // struct files.DownloadArg (files.stone)
 
     @Nonnull
     protected final String path;
@@ -33,9 +33,10 @@ class DownloadArg {
      * @param path  The path of the file to download. Must match pattern "{@code
      *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
-     * @param rev  Please specify revision in the {@code path} argument to
-     *     {@link DbxUserFilesRequests#download(String,String)} instead. Must
-     *     have length of at least 9 and match pattern "{@code [0-9a-f]+}".
+     * @param rev  Field is deprecated. Please specify revision in the {@code
+     *     path} argument to {@link
+     *     DbxUserFilesRequests#download(String,String)} instead. Must have
+     *     length of at least 9 and match pattern "{@code [0-9a-f]+}".
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -86,11 +87,14 @@ class DownloadArg {
     }
 
     /**
-     * Please specify revision in the {@code path} argument to {@link
-     * DbxUserFilesRequests#download(String,String)} instead.
+     * Field is deprecated. Please specify revision in the {@code path} argument
+     * to {@link DbxUserFilesRequests#download(String,String)} instead.
      *
      * @return value for this field, or {@code null} if not present.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nullable
     public String getRev() {
         return rev;

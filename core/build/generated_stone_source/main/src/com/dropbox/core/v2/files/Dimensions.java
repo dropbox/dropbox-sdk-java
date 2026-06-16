@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_base.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Dimensions for a photo or video.
  */
 public class Dimensions {
-    // struct files.Dimensions (files_files_public_base.stone)
+    // struct files.Dimensions (files.stone)
 
     protected final long height;
     protected final long width;

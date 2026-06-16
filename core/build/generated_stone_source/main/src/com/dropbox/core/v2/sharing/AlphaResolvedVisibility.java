@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_links_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
  * check documentation for ResolvedVisibility.
  */
 public enum AlphaResolvedVisibility {
-    // union sharing.AlphaResolvedVisibility (sharing_apiv2_shared_links_types.stone)
+    // union sharing.AlphaResolvedVisibility (sharing.stone)
     /**
      * Anyone who has received the link can access it. No login required.
      */

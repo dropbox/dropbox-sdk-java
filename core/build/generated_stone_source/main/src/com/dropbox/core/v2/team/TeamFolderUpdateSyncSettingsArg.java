@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_folders.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class TeamFolderUpdateSyncSettingsArg extends TeamFolderIdArg {
-    // struct team.TeamFolderUpdateSyncSettingsArg (team_team_folders.stone)
+    // struct team.TeamFolderUpdateSyncSettingsArg (team.stone)
 
     @Nullable
     protected final SyncSettingArg syncSetting;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 class MountFolderArg {
-    // struct sharing.MountFolderArg (sharing_apiv2_sharing_folders_types.stone)
+    // struct sharing.MountFolderArg (sharing.stone)
 
     @Nonnull
     protected final String sharedFolderId;

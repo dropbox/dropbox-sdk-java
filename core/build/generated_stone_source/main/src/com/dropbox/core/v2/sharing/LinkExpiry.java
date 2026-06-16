@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_content_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -29,7 +29,7 @@ import java.util.Date;
  * will be used. </p>
  */
 public final class LinkExpiry {
-    // union sharing.LinkExpiry (sharing_apiv2_shared_content_links.stone)
+    // union sharing.LinkExpiry (sharing.stone)
 
     /**
      * Discriminating tag type for {@link LinkExpiry}.

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class CreateFolderEntryResult {
-    // struct files.CreateFolderEntryResult (files_files_public_types.stone)
+    // struct files.CreateFolderEntryResult (files.stone)
 
     @Nonnull
     protected final FolderMetadata metadata;

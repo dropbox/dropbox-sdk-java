@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_links_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class ModifySharedLinkSettingsArgs {
-    // struct sharing.ModifySharedLinkSettingsArgs (sharing_apiv2_shared_links_types.stone)
+    // struct sharing.ModifySharedLinkSettingsArgs (sharing.stone)
 
     @Nonnull
     protected final String url;

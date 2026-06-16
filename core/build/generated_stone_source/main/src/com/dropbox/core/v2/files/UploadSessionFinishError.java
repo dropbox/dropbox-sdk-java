@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_base.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -28,7 +28,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class UploadSessionFinishError {
-    // union files.UploadSessionFinishError (files_files_public_base.stone)
+    // union files.UploadSessionFinishError (files.stone)
 
     /**
      * Discriminating tag type for {@link UploadSessionFinishError}.
@@ -50,9 +50,9 @@ public final class UploadSessionFinishError {
          */
         PROPERTIES_ERROR, // InvalidPropertyGroupError
         /**
-         * The batch request commits files into too many different shared
-         * folders. Please limit your batch request to files contained in a
-         * single shared folder.
+         * Field is deprecated. The batch request commits files into too many
+         * different shared folders. Please limit your batch request to files
+         * contained in a single shared folder.
          */
         TOO_MANY_SHARED_FOLDER_TARGETS,
         /**
@@ -99,9 +99,9 @@ public final class UploadSessionFinishError {
     }
 
     /**
-     * The batch request commits files into too many different shared folders.
-     * Please limit your batch request to files contained in a single shared
-     * folder.
+     * Field is deprecated. The batch request commits files into too many
+     * different shared folders. Please limit your batch request to files
+     * contained in a single shared folder.
      */
     public static final UploadSessionFinishError TOO_MANY_SHARED_FOLDER_TARGETS = new UploadSessionFinishError().withTag(Tag.TOO_MANY_SHARED_FOLDER_TARGETS);
     /**

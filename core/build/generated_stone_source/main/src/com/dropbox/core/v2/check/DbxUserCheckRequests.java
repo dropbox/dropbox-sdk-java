@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from check_api_v2_types.stone, check_api_v2_service.stone */
+/* This file was generated from check.stone */
 
 package com.dropbox.core.v2.check;
 
@@ -15,7 +15,7 @@ import java.util.Map;
  * Routes in namespace "check".
  */
 public class DbxUserCheckRequests {
-    // namespace check (check_api_v2_types.stone, check_api_v2_service.stone)
+    // namespace check (check.stone)
 
     private final DbxRawClientV2 client;
 

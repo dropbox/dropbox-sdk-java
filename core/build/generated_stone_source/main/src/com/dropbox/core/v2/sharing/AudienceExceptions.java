@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_content_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
  * only returned for folders.
  */
 public class AudienceExceptions {
-    // struct sharing.AudienceExceptions (sharing_apiv2_shared_content_links.stone)
+    // struct sharing.AudienceExceptions (sharing.stone)
 
     protected final long count;
     @Nonnull

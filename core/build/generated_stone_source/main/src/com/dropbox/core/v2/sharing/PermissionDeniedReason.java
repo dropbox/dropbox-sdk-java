@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_common_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -29,7 +29,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class PermissionDeniedReason {
-    // union sharing.PermissionDeniedReason (sharing_apiv2_sharing_common_types.stone)
+    // union sharing.PermissionDeniedReason (sharing.stone)
 
     /**
      * Discriminating tag type for {@link PermissionDeniedReason}.

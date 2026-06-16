@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from async_common_async.stone */
+/* This file was generated from async.stone */
 
 package com.dropbox.core.v2.async;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Arguments for methods that poll the status of an asynchronous job.
  */
 public class PollArg {
-    // struct async.PollArg (async_common_async.stone)
+    // struct async.PollArg (async.stone)
 
     @Nonnull
     protected final String asyncJobId;

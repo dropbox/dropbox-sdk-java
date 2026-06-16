@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Added shared link expiration date.
  */
 public class SharedLinkAddExpiryDetails {
-    // struct team_log.SharedLinkAddExpiryDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.SharedLinkAddExpiryDetails (team_log.stone)
 
     @Nonnull
     protected final Date newValue;

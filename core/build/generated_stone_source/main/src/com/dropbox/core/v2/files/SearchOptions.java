@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class SearchOptions {
-    // struct files.SearchOptions (files_files_public_types.stone)
+    // struct files.SearchOptions (files.stone)
 
     @Nullable
     protected final String path;

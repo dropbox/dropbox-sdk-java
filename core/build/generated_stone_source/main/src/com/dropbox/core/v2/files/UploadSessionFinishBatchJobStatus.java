@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -23,7 +23,7 @@ import java.util.Arrays;
  * associated with this instance.
  */
 public final class UploadSessionFinishBatchJobStatus {
-    // union files.UploadSessionFinishBatchJobStatus (files_files_public_types.stone)
+    // union files.UploadSessionFinishBatchJobStatus (files.stone)
 
     /**
      * Discriminating tag type for {@link UploadSessionFinishBatchJobStatus}.

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Shared folder user and group membership.
  */
 public class SharedFolderMembers {
-    // struct sharing.SharedFolderMembers (sharing_apiv2_sharing_folders_types.stone)
+    // struct sharing.SharedFolderMembers (sharing.stone)
 
     @Nonnull
     protected final List<UserMembershipInfo> users;

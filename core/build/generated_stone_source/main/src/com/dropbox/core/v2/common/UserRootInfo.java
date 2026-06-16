@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from common_common.stone */
+/* This file was generated from common.stone */
 
 package com.dropbox.core.v2.common;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * and the team does not have a separate root namespace.
  */
 public class UserRootInfo extends RootInfo {
-    // struct common.UserRootInfo (common_common.stone)
+    // struct common.UserRootInfo (common.stone)
 
     @Nullable
     protected final String homePath;

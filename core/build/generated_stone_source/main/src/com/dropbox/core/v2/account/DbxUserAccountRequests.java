@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from account_account_photo.stone, account_account_photo_block.stone */
+/* This file was generated from account.stone */
 
 package com.dropbox.core.v2.account;
 
@@ -19,12 +19,51 @@ import java.util.Map;
  * Routes in namespace "account".
  */
 public class DbxUserAccountRequests {
-    // namespace account (account_account_photo.stone, account_account_photo_block.stone)
+    // namespace account (account.stone)
 
     private final DbxRawClientV2 client;
 
     public DbxUserAccountRequests(DbxRawClientV2 client) {
         this.client = client;
+    }
+
+    //
+    // route 2/account/delete_profile_photo
+    //
+
+    /**
+     * Deletes the current user's profile photo.
+     *
+     * @param arg  This struct is empty. The comment here is intentionally
+     *     emitted to avoid indentation issues with Stone.
+     *
+     * @return This struct is empty. The comment here is intentionally emitted
+     *     to avoid indentation issues with Stone.
+     */
+    DeleteProfilePhotoResult deleteProfilePhoto(DeleteProfilePhotoArg arg) throws DeleteProfilePhotoErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/account/delete_profile_photo",
+                                        arg,
+                                        false,
+                                        DeleteProfilePhotoArg.Serializer.INSTANCE,
+                                        DeleteProfilePhotoResult.Serializer.INSTANCE,
+                                        DeleteProfilePhotoError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new DeleteProfilePhotoErrorException("2/account/delete_profile_photo", ex.getRequestId(), ex.getUserMessage(), (DeleteProfilePhotoError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Deletes the current user's profile photo.
+     *
+     * @return This struct is empty. The comment here is intentionally emitted
+     *     to avoid indentation issues with Stone.
+     */
+    public DeleteProfilePhotoResult deleteProfilePhoto() throws DeleteProfilePhotoErrorException, DbxException {
+        DeleteProfilePhotoArg _arg = new DeleteProfilePhotoArg();
+        return deleteProfilePhoto(_arg);
     }
 
     //

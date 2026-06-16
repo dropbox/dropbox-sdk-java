@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from auth_apiv2_auth.stone */
+/* This file was generated from auth.stone */
 
 package com.dropbox.core.v2.auth;
 
@@ -30,7 +30,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class AccessError {
-    // union auth.AccessError (auth_apiv2_auth.stone)
+    // union auth.AccessError (auth.stone)
 
     /**
      * Discriminating tag type for {@link AccessError}.

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_base.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * longer exists.
  */
 public class DeletedMetadata extends Metadata {
-    // struct files.DeletedMetadata (files_files_public_base.stone)
+    // struct files.DeletedMetadata (files.stone)
 
 
     /**
@@ -45,7 +45,7 @@ public class DeletedMetadata extends Metadata {
      *     correct casing. Changes to only the casing of paths won't be returned
      *     by {@link DbxAppFilesRequests#listFolderContinue(String)}. This field
      *     will be null if the file or folder is not mounted.
-     * @param parentSharedFolderId  Please use {@link
+     * @param parentSharedFolderId  Field is deprecated. Please use {@link
      *     FileSharingInfo#getParentSharedFolderId} or {@link
      *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
      *     pattern "{@code [-_0-9a-zA-Z:]+}".
@@ -113,11 +113,15 @@ public class DeletedMetadata extends Metadata {
     }
 
     /**
-     * Please use {@link FileSharingInfo#getParentSharedFolderId} or {@link
+     * Field is deprecated. Please use {@link
+     * FileSharingInfo#getParentSharedFolderId} or {@link
      * FolderSharingInfo#getParentSharedFolderId} instead.
      *
      * @return value for this field, or {@code null} if not present.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
@@ -193,7 +197,7 @@ public class DeletedMetadata extends Metadata {
         /**
          * Set value for optional field.
          *
-         * @param parentSharedFolderId  Please use {@link
+         * @param parentSharedFolderId  Field is deprecated. Please use {@link
          *     FileSharingInfo#getParentSharedFolderId} or {@link
          *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
          *     pattern "{@code [-_0-9a-zA-Z:]+}".
@@ -202,7 +206,10 @@ public class DeletedMetadata extends Metadata {
          *
          * @throws IllegalArgumentException  If any argument does not meet its
          *     preconditions.
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withParentSharedFolderId(String parentSharedFolderId) {
             super.withParentSharedFolderId(parentSharedFolderId);
             return this;

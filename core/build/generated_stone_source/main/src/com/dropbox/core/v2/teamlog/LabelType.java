@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Label type
  */
 public enum LabelType {
-    // union team_log.LabelType (team_log_stone_gen_team_log_generated.stone)
+    // union team_log.LabelType (team_log.stone)
     PERSONAL_INFORMATION,
     TEST_ONLY,
     USER_DEFINED_TAG,

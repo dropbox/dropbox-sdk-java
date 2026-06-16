@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_base.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum ThumbnailSize {
-    // union files.ThumbnailSize (files_files_public_base.stone)
+    // union files.ThumbnailSize (files.stone)
     /**
      * 32 by 32 px.
      */

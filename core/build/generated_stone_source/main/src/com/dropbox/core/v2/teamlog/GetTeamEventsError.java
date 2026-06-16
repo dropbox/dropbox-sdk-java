@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_apiv2_team_log.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * DbxTeamTeamLogRequests#getEvents}.
  */
 public enum GetTeamEventsError {
-    // union team_log.GetTeamEventsError (team_log_apiv2_team_log.stone)
+    // union team_log.GetTeamEventsError (team_log.stone)
     /**
      * No user found matching the provided account_id.
      */

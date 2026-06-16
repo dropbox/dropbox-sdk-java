@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from common_common.stone */
+/* This file was generated from common.stone */
 
 package com.dropbox.core.v2.common;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Root info when user is member of a team with a separate root namespace ID.
  */
 public class TeamRootInfo extends RootInfo {
-    // struct common.TeamRootInfo (common_common.stone)
+    // struct common.TeamRootInfo (common.stone)
 
     @Nonnull
     protected final String homePath;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Set team members to see warning before sharing folders outside team.
  */
 public class SfExternalInviteWarnDetails {
-    // struct team_log.SfExternalInviteWarnDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.SfExternalInviteWarnDetails (team_log.stone)
 
     protected final long targetAssetIndex;
     @Nonnull

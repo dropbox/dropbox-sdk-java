@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Details about team invites
  */
 public class TeamInviteDetails {
-    // struct team_log.TeamInviteDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.TeamInviteDetails (team_log.stone)
 
     @Nonnull
     protected final InviteMethod inviteMethod;

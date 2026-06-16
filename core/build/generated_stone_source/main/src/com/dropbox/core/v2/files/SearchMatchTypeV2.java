@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Indicates what type of match was found for a given item.
  */
 public enum SearchMatchTypeV2 {
-    // union files.SearchMatchTypeV2 (files_files_public_types.stone)
+    // union files.SearchMatchTypeV2 (files.stone)
     /**
      * This item was matched on its file or folder name.
      */

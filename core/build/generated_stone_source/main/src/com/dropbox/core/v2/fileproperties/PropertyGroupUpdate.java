@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties_apiv2_file_properties_types.stone */
+/* This file was generated from file_properties.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Property routes
  */
 public class PropertyGroupUpdate {
-    // struct file_properties.PropertyGroupUpdate (file_properties_apiv2_file_properties_types.stone)
+    // struct file_properties.PropertyGroupUpdate (file_properties.stone)
 
     @Nonnull
     protected final String templateId;

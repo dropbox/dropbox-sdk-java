@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum GetThumbnailBatchError {
-    // union files.GetThumbnailBatchError (files_files_public_types.stone)
+    // union files.GetThumbnailBatchError (files.stone)
     /**
      * The operation involves more than 25 files.
      */

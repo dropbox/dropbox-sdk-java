@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_linked_apps.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class ListMemberAppsArg {
-    // struct team.ListMemberAppsArg (team_apiv2_team_linked_apps.stone)
+    // struct team.ListMemberAppsArg (team.stone)
 
     @Nonnull
     protected final String teamMemberId;

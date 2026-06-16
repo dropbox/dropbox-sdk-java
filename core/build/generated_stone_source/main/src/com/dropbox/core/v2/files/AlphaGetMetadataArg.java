@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class AlphaGetMetadataArg extends GetMetadataArg {
-    // struct files.AlphaGetMetadataArg (files_files_public_types.stone)
+    // struct files.AlphaGetMetadataArg (files.stone)
 
     @Nullable
     protected final List<String> includePropertyTemplates;
@@ -48,9 +48,10 @@ class AlphaGetMetadataArg extends GetMetadataArg {
      *     {@link FileMetadata#getPropertyGroups} is set if there exists
      *     property data associated with the file and each of the listed
      *     templates.
-     * @param includePropertyTemplates  If set to a valid list of template IDs,
-     *     {@link FileMetadata#getPropertyGroups} is set for files with custom
-     *     properties. Must not contain a {@code null} item.
+     * @param includePropertyTemplates  Field is deprecated. If set to a valid
+     *     list of template IDs, {@link FileMetadata#getPropertyGroups} is set
+     *     for files with custom properties. Must not contain a {@code null}
+     *     item.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -145,11 +146,14 @@ class AlphaGetMetadataArg extends GetMetadataArg {
     }
 
     /**
-     * If set to a valid list of template IDs, {@link
+     * Field is deprecated. If set to a valid list of template IDs, {@link
      * FileMetadata#getPropertyGroups} is set for files with custom properties.
      *
      * @return value for this field, or {@code null} if not present.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nullable
     public List<String> getIncludePropertyTemplates() {
         return includePropertyTemplates;
@@ -187,15 +191,19 @@ class AlphaGetMetadataArg extends GetMetadataArg {
         /**
          * Set value for optional field.
          *
-         * @param includePropertyTemplates  If set to a valid list of template
-         *     IDs, {@link FileMetadata#getPropertyGroups} is set for files with
-         *     custom properties. Must not contain a {@code null} item.
+         * @param includePropertyTemplates  Field is deprecated. If set to a
+         *     valid list of template IDs, {@link
+         *     FileMetadata#getPropertyGroups} is set for files with custom
+         *     properties. Must not contain a {@code null} item.
          *
          * @return this builder
          *
          * @throws IllegalArgumentException  If any argument does not meet its
          *     preconditions.
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withIncludePropertyTemplates(List<String> includePropertyTemplates) {
             if (includePropertyTemplates != null) {
                 for (String x : includePropertyTemplates) {

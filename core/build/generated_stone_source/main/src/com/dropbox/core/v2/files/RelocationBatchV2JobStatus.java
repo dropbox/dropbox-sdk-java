@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * tag associated with this instance. </p>
  */
 public final class RelocationBatchV2JobStatus {
-    // union files.RelocationBatchV2JobStatus (files_files_public_types.stone)
+    // union files.RelocationBatchV2JobStatus (files.stone)
 
     /**
      * Discriminating tag type for {@link RelocationBatchV2JobStatus}.

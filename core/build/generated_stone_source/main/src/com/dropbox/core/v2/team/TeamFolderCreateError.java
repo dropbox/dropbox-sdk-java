@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_folders.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -28,7 +28,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class TeamFolderCreateError {
-    // union team.TeamFolderCreateError (team_team_folders.stone)
+    // union team.TeamFolderCreateError (team.stone)
 
     /**
      * Discriminating tag type for {@link TeamFolderCreateError}.

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_base.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Actions that may be taken on shared folders.
  */
 public enum FolderAction {
-    // union sharing.FolderAction (sharing_apiv2_sharing_folders_base.stone)
+    // union sharing.FolderAction (sharing.stone)
     /**
      * Change folder options, such as who can be invited to join the folder.
      */
@@ -67,11 +67,11 @@ public enum FolderAction {
      */
     LEAVE_A_COPY,
     /**
-     * Use create_view_link and create_edit_link instead.
+     * Field is deprecated. Use create_view_link and create_edit_link instead.
      */
     SHARE_LINK,
     /**
-     * Use create_view_link and create_edit_link instead.
+     * Field is deprecated. Use create_view_link and create_edit_link instead.
      */
     CREATE_LINK,
     /**

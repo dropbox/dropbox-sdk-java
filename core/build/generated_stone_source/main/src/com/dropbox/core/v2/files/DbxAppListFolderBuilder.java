@@ -63,13 +63,16 @@ public class DbxAppListFolderBuilder {
      *
      * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
      *
-     * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo} is
-     *     set for photo and video. This parameter will no longer have an effect
-     *     starting December 2, 2019. Defaults to {@code false} when set to
-     *     {@code null}.
+     * @param includeMediaInfo  Field is deprecated. If true, {@link
+     *     FileMetadata#getMediaInfo} is set for photo and video. This parameter
+     *     will no longer have an effect starting December 2, 2019. Defaults to
+     *     {@code false} when set to {@code null}.
      *
      * @return this builder
+     *
+     * @deprecated
      */
+    @Deprecated
     public DbxAppListFolderBuilder withIncludeMediaInfo(Boolean includeMediaInfo) {
         this._builder.withIncludeMediaInfo(includeMediaInfo);
         return this;

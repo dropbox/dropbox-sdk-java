@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper_apiv2_paper_types.stone */
+/* This file was generated from paper.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum UserOnPaperDocFilter {
-    // union paper.UserOnPaperDocFilter (paper_apiv2_paper_types.stone)
+    // union paper.UserOnPaperDocFilter (paper.stone)
     /**
      * all users who have visited the Paper doc.
      */

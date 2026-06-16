@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper_apiv2_paper_types.stone, paper_apiv2_paper.stone */
+/* This file was generated from paper.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -22,7 +22,7 @@ import java.util.Map;
  * Routes in namespace "paper".
  */
 public class DbxUserPaperRequests {
-    // namespace paper (paper_apiv2_paper_types.stone, paper_apiv2_paper.stone)
+    // namespace paper (paper.stone)
 
     private final DbxRawClientV2 client;
 

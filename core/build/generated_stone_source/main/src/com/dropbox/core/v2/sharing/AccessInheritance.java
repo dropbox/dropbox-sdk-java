@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Information about the inheritance policy of a shared folder.
  */
 public enum AccessInheritance {
-    // union sharing.AccessInheritance (sharing_apiv2_sharing_folders_types.stone)
+    // union sharing.AccessInheritance (sharing.stone)
     /**
      * The shared folder inherits its members from the parent folder.
      */

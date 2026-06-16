@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_base.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * A set of policies governing membership and privileges for a shared folder.
  */
 public class FolderPolicy {
-    // struct sharing.FolderPolicy (sharing_apiv2_sharing_folders_base.stone)
+    // struct sharing.FolderPolicy (sharing.stone)
 
     @Nullable
     protected final MemberPolicy memberPolicy;

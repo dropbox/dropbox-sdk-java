@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Specifies if a shared folder inherits its members from the parent folder.
  */
 public enum SharedFolderMembersInheritancePolicy {
-    // union team_log.SharedFolderMembersInheritancePolicy (team_log_stone_gen_team_log_generated.stone)
+    // union team_log.SharedFolderMembersInheritancePolicy (team_log.stone)
     DONT_INHERIT_MEMBERS,
     INHERIT_MEMBERS,
     /**

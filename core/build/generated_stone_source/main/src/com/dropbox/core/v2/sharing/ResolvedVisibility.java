@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_links_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import java.util.Arrays;
  * that can be set by the shared link's owner.
  */
 public enum ResolvedVisibility {
-    // union sharing.ResolvedVisibility (sharing_apiv2_shared_links_types.stone)
+    // union sharing.ResolvedVisibility (sharing.stone)
     /**
      * Anyone who has received the link can access it. No login required.
      */

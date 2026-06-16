@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_legal_holds.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class MembersInfo {
-    // struct team.MembersInfo (team_team_legal_holds.stone)
+    // struct team.MembersInfo (team.stone)
 
     @Nonnull
     protected final List<String> teamMemberIds;

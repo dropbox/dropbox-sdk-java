@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from contacts_apiv2_contacts.stone */
+/* This file was generated from contacts.stone */
 
 package com.dropbox.core.v2.contacts;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 class DeleteManualContactsArg {
-    // struct contacts.DeleteManualContactsArg (contacts_apiv2_contacts.stone)
+    // struct contacts.DeleteManualContactsArg (contacts.stone)
 
     @Nonnull
     protected final List<String> emailAddresses;

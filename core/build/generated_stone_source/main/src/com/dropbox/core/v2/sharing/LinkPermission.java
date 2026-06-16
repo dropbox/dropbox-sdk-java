@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_content_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Permissions for actions that can be performed on a link.
  */
 public class LinkPermission {
-    // struct sharing.LinkPermission (sharing_apiv2_shared_content_links.stone)
+    // struct sharing.LinkPermission (sharing.stone)
 
     @Nonnull
     protected final LinkAction action;

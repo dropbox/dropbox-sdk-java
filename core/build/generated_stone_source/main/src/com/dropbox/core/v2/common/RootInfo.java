@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from common_common.stone */
+/* This file was generated from common.stone */
 
 package com.dropbox.core.v2.common;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Information about current user's root.
  */
 public class RootInfo {
-    // struct common.RootInfo (common_common.stone)
+    // struct common.RootInfo (common.stone)
 
     @Nonnull
     protected final String rootNamespaceId;

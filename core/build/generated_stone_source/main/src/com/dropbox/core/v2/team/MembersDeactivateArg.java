@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_members_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class MembersDeactivateArg extends MembersDeactivateBaseArg {
-    // struct team.MembersDeactivateArg (team_team_members_types.stone)
+    // struct team.MembersDeactivateArg (team.stone)
 
     protected final boolean wipeData;
 

@@ -44,15 +44,19 @@ public class DownloadBuilder extends DbxDownloadStyleBuilder<FileMetadata> {
     /**
      * Set value for optional field.
      *
-     * @param rev  Please specify revision in the {@code path} argument to
-     *     {@link DbxUserFilesRequests#download(String,String)} instead. Must
-     *     have length of at least 9 and match pattern "{@code [0-9a-f]+}".
+     * @param rev  Field is deprecated. Please specify revision in the {@code
+     *     path} argument to {@link
+     *     DbxUserFilesRequests#download(String,String)} instead. Must have
+     *     length of at least 9 and match pattern "{@code [0-9a-f]+}".
      *
      * @return this builder
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
+     *
+     * @deprecated
      */
+    @Deprecated
     public DownloadBuilder withRev(String rev) {
         if (rev != null) {
             if (rev.length() < 9) {

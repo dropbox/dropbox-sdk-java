@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from check_api_v2_types.stone */
+/* This file was generated from check.stone */
 
 package com.dropbox.core.v2.check;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Contains the arguments to be sent to the Dropbox servers.
  */
 class EchoArg {
-    // struct check.EchoArg (check_api_v2_types.stone)
+    // struct check.EchoArg (check.stone)
 
     @Nonnull
     protected final String query;

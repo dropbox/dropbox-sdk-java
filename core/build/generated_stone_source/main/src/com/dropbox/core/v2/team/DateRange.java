@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports_apiv2_team_reports_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Input arguments that can be provided for most reports.
  */
 class DateRange {
-    // struct team.DateRange (team_reports_apiv2_team_reports_types.stone)
+    // struct team.DateRange (team.stone)
 
     @Nullable
     protected final Date startDate;

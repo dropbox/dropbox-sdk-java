@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from auth_apiv2_auth.stone */
+/* This file was generated from auth.stone */
 
 package com.dropbox.core.v2.auth;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum RateLimitReason {
-    // union auth.RateLimitReason (auth_apiv2_auth.stone)
+    // union auth.RateLimitReason (auth.stone)
     /**
      * You are making too many requests in the past few minutes.
      */

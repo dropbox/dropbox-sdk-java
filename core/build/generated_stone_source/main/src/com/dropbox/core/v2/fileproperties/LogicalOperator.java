@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties_apiv2_file_properties_types.stone */
+/* This file was generated from file_properties.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Logical operator to join search queries together.
  */
 public enum LogicalOperator {
-    // union file_properties.LogicalOperator (file_properties_apiv2_file_properties_types.stone)
+    // union file_properties.LogicalOperator (file_properties.stone)
     /**
      * Append a query with an "or" operator.
      */

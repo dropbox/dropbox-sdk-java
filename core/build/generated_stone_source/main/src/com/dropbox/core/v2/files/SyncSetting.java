@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_base.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum SyncSetting {
-    // union files.SyncSetting (files_files_public_base.stone)
+    // union files.SyncSetting (files.stone)
     /**
      * On first sync to members' computers, the specified folder will follow its
      * parent folder's setting or otherwise follow default sync behavior.

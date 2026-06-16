@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users_users_types.stone */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * queried and the user making the query.
  */
 public class Account {
-    // struct users.Account (users_users_types.stone)
+    // struct users.Account (users.stone)
 
     @Nonnull
     protected final String accountId;

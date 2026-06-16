@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from paper_apiv2_paper_types.stone */
+/* This file was generated from paper.stone */
 
 package com.dropbox.core.v2.paper;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class PaperDocUpdateArgs extends RefPaperDoc {
-    // struct paper.PaperDocUpdateArgs (paper_apiv2_paper_types.stone)
+    // struct paper.PaperDocUpdateArgs (paper.stone)
 
     @Nonnull
     protected final PaperDocUpdatePolicy docUpdatePolicy;

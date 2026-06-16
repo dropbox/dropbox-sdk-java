@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_common.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
  * Profile of a user as a member of a team.
  */
 public class TeamMemberProfile extends MemberProfile {
-    // struct team.TeamMemberProfile (team_team_common.stone)
+    // struct team.TeamMemberProfile (team.stone)
 
     @Nonnull
     protected final List<String> groups;

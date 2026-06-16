@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_requests_apiv2_file_requests_public.stone */
+/* This file was generated from file_requests.stone */
 
 package com.dropbox.core.v2.filerequests;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class FileRequestDeadline {
-    // struct file_requests.FileRequestDeadline (file_requests_apiv2_file_requests_public.stone)
+    // struct file_requests.FileRequestDeadline (file_requests.stone)
 
     @Nonnull
     protected final Date deadline;

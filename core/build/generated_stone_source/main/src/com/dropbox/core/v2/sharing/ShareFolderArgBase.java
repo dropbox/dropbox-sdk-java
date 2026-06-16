@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class ShareFolderArgBase {
-    // struct sharing.ShareFolderArgBase (sharing_apiv2_sharing_folders_types.stone)
+    // struct sharing.ShareFolderArgBase (sharing.stone)
 
     @Nullable
     protected final AclUpdatePolicy aclUpdatePolicy;

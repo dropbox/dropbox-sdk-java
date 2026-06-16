@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_policies_team_policies.stone */
+/* This file was generated from team_policies.stone */
 
 package com.dropbox.core.v2.teampolicies;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * newly created shared links, or all shared links.
  */
 public enum SharedLinkCreatePolicy {
-    // union team_policies.SharedLinkCreatePolicy (team_policies_team_policies.stone)
+    // union team_policies.SharedLinkCreatePolicy (team_policies.stone)
     /**
      * By default, anyone can access newly created shared links. No login will
      * be required to access the shared links unless overridden.

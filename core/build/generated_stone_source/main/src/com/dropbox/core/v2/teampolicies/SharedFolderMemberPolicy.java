@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_policies_team_policies.stone */
+/* This file was generated from team_policies.stone */
 
 package com.dropbox.core.v2.teampolicies;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Policy governing who can be a member of a folder shared by a team member.
  */
 public enum SharedFolderMemberPolicy {
-    // union team_policies.SharedFolderMemberPolicy (team_policies_team_policies.stone)
+    // union team_policies.SharedFolderMemberPolicy (team_policies.stone)
     /**
      * Only a teammate can be a member of a folder shared by a team member.
      */

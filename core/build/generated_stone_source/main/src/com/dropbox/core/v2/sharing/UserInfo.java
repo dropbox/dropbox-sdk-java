@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
  * to obtain more detailed information.
  */
 public class UserInfo {
-    // struct sharing.UserInfo (sharing_apiv2_sharing_folders_types.stone)
+    // struct sharing.UserInfo (sharing.stone)
 
     @Nonnull
     protected final String accountId;

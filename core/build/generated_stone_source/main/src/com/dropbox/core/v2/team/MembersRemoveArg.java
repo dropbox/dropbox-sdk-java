@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_members_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class MembersRemoveArg extends MembersDeactivateArg {
-    // struct team.MembersRemoveArg (team_team_members_types.stone)
+    // struct team.MembersRemoveArg (team.stone)
 
     @Nullable
     protected final UserSelectorArg transferDestId;

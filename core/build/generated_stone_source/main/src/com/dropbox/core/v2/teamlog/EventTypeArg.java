@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * The type of the event.
  */
 public enum EventTypeArg {
-    // union team_log.EventTypeArg (team_log_stone_gen_team_log_generated.stone)
+    // union team_log.EventTypeArg (team_log.stone)
     /**
      * (admin_alerting) Changed an alert state
      */
@@ -146,6 +146,10 @@ public enum EventTypeArg {
      * (dash) Cloned stack
      */
     DASH_CLONED_STACK,
+    /**
+     * (dash) Called a tool on a connector
+     */
+    DASH_CONNECTOR_TOOLS_CALL,
     /**
      * (dash) Created a stack
      */
@@ -1852,6 +1856,18 @@ public enum EventTypeArg {
      */
     TEAM_FOLDER_RENAME,
     /**
+     * (team_folders) Changed team folder space limit enforcement type
+     */
+    TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE,
+    /**
+     * (team_folders) Changed team folder space limit
+     */
+    TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT,
+    /**
+     * (team_folders) Changed team folder space limit notification target
+     */
+    TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET,
+    /**
      * (team_folders) Changed sync default
      */
     TEAM_SELECTIVE_SYNC_SETTINGS_CHANGED,
@@ -2647,6 +2663,10 @@ public enum EventTypeArg {
                 }
                 case DASH_CLONED_STACK: {
                     g.writeString("dash_cloned_stack");
+                    break;
+                }
+                case DASH_CONNECTOR_TOOLS_CALL: {
+                    g.writeString("dash_connector_tools_call");
                     break;
                 }
                 case DASH_CREATED_STACK: {
@@ -4313,6 +4333,18 @@ public enum EventTypeArg {
                     g.writeString("team_folder_rename");
                     break;
                 }
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE: {
+                    g.writeString("team_folder_space_limits_change_caps_type");
+                    break;
+                }
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT: {
+                    g.writeString("team_folder_space_limits_change_limit");
+                    break;
+                }
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET: {
+                    g.writeString("team_folder_space_limits_change_notification_target");
+                    break;
+                }
                 case TEAM_SELECTIVE_SYNC_SETTINGS_CHANGED: {
                     g.writeString("team_selective_sync_settings_changed");
                     break;
@@ -5045,6 +5077,9 @@ public enum EventTypeArg {
             }
             else if ("dash_cloned_stack".equals(tag)) {
                 value = EventTypeArg.DASH_CLONED_STACK;
+            }
+            else if ("dash_connector_tools_call".equals(tag)) {
+                value = EventTypeArg.DASH_CONNECTOR_TOOLS_CALL;
             }
             else if ("dash_created_stack".equals(tag)) {
                 value = EventTypeArg.DASH_CREATED_STACK;
@@ -6293,6 +6328,15 @@ public enum EventTypeArg {
             }
             else if ("team_folder_rename".equals(tag)) {
                 value = EventTypeArg.TEAM_FOLDER_RENAME;
+            }
+            else if ("team_folder_space_limits_change_caps_type".equals(tag)) {
+                value = EventTypeArg.TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE;
+            }
+            else if ("team_folder_space_limits_change_limit".equals(tag)) {
+                value = EventTypeArg.TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT;
+            }
+            else if ("team_folder_space_limits_change_notification_target".equals(tag)) {
+                value = EventTypeArg.TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET;
             }
             else if ("team_selective_sync_settings_changed".equals(tag)) {
                 value = EventTypeArg.TEAM_SELECTIVE_SYNC_SETTINGS_CHANGED;

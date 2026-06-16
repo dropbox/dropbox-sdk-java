@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_folders.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class TeamFolderListError {
-    // struct team.TeamFolderListError (team_team_folders.stone)
+    // struct team.TeamFolderListError (team.stone)
 
     @Nonnull
     protected final TeamFolderAccessError accessError;

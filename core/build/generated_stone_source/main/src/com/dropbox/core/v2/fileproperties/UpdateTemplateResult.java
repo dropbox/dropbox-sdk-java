@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties_apiv2_file_properties_types.stone */
+/* This file was generated from file_properties.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 public class UpdateTemplateResult {
-    // struct file_properties.UpdateTemplateResult (file_properties_apiv2_file_properties_types.stone)
+    // struct file_properties.UpdateTemplateResult (file_properties.stone)
 
     @Nonnull
     protected final String templateId;

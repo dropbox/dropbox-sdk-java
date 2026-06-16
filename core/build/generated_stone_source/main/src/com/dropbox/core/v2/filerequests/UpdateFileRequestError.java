@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_requests_apiv2_file_requests_public.stone */
+/* This file was generated from file_requests.stone */
 
 package com.dropbox.core.v2.filerequests;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
  * There is an error updating the file request.
  */
 public enum UpdateFileRequestError {
-    // union file_requests.UpdateFileRequestError (file_requests_apiv2_file_requests_public.stone)
+    // union file_requests.UpdateFileRequestError (file_requests.stone)
     /**
      * This user's Dropbox Business team doesn't allow file requests.
      */

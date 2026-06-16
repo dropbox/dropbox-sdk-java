@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_links_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * paths).
  */
 public enum PendingUploadMode {
-    // union sharing.PendingUploadMode (sharing_apiv2_shared_links_types.stone)
+    // union sharing.PendingUploadMode (sharing.stone)
     /**
      * Assume pending uploads are files.
      */

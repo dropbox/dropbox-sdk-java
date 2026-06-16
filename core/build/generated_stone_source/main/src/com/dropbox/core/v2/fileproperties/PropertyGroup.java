@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties_apiv2_file_properties_types.stone */
+/* This file was generated from file_properties.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -27,7 +27,7 @@ import javax.annotation.Nonnull;
  * are defined by the corresponding {@link PropertyGroupTemplate}.
  */
 public class PropertyGroup {
-    // struct file_properties.PropertyGroup (file_properties_apiv2_file_properties_types.stone)
+    // struct file_properties.PropertyGroup (file_properties.stone)
 
     @Nonnull
     protected final String templateId;

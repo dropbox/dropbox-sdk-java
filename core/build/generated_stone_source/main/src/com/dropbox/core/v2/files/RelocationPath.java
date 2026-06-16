@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_base.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 public class RelocationPath {
-    // struct files.RelocationPath (files_files_public_base.stone)
+    // struct files.RelocationPath (files.stone)
 
     @Nonnull
     protected final String fromPath;

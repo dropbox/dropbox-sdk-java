@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum UploadSessionType {
-    // union files.UploadSessionType (files_files_public_types.stone)
+    // union files.UploadSessionType (files.stone)
     /**
      * Pieces of data are uploaded sequentially one after another. This is the
      * default behavior.

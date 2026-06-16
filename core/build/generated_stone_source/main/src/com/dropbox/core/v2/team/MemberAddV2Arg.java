@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_members_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class MemberAddV2Arg extends MemberAddArgBase {
-    // struct team.MemberAddV2Arg (team_team_members_types.stone)
+    // struct team.MemberAddV2Arg (team.stone)
 
     @Nullable
     protected final List<String> roleIds;

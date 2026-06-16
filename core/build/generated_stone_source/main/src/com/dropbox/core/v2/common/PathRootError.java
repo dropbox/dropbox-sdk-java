@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from common_common.stone */
+/* This file was generated from common.stone */
 
 package com.dropbox.core.v2.common;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class PathRootError {
-    // union common.PathRootError (common_common.stone)
+    // union common.PathRootError (common.stone)
 
     /**
      * Discriminating tag type for {@link PathRootError}.

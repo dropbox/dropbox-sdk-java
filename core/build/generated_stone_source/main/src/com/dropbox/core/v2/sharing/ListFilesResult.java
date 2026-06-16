@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_files_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Success results for {@link DbxUserSharingRequests#listReceivedFiles}.
  */
 public class ListFilesResult {
-    // struct sharing.ListFilesResult (sharing_apiv2_sharing_files_types.stone)
+    // struct sharing.ListFilesResult (sharing.stone)
 
     @Nonnull
     protected final List<SharedFileMetadata> entries;

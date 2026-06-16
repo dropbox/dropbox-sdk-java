@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_members_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * new_given_name, and/or new_surname must be provided.
  */
 class MembersSetProfileArg {
-    // struct team.MembersSetProfileArg (team_team_members_types.stone)
+    // struct team.MembersSetProfileArg (team.stone)
 
     @Nonnull
     protected final UserSelectorArg user;

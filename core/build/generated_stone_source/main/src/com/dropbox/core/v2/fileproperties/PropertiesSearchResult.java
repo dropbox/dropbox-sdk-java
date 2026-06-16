@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties_apiv2_file_properties_types.stone */
+/* This file was generated from file_properties.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class PropertiesSearchResult {
-    // struct file_properties.PropertiesSearchResult (file_properties_apiv2_file_properties_types.stone)
+    // struct file_properties.PropertiesSearchResult (file_properties.stone)
 
     @Nonnull
     protected final List<PropertiesSearchMatch> matches;

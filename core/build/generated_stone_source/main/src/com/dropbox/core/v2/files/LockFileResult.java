@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_base.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class LockFileResult {
-    // struct files.LockFileResult (files_files_public_base.stone)
+    // struct files.LockFileResult (files.stone)
 
     @Nonnull
     protected final Metadata metadata;
@@ -29,8 +29,8 @@ public class LockFileResult {
     /**
      *
      * @param metadata  Metadata of the file. Must not be {@code null}.
-     * @param lock  The file lock state after the operation. Must not be {@code
-     *     null}.
+     * @param lock  Field is deprecated. The file lock state after the
+     *     operation. Must not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -57,10 +57,13 @@ public class LockFileResult {
     }
 
     /**
-     * The file lock state after the operation.
+     * Field is deprecated. The file lock state after the operation.
      *
      * @return value for this field, never {@code null}.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nonnull
     public FileLock getLock() {
         return lock;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users_users_types.stone */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Information about a team.
  */
 public class Team {
-    // struct users.Team (users_users_types.stone)
+    // struct users.Team (users.stone)
 
     @Nonnull
     protected final String id;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Changed automatic Smart Sync setting for team.
  */
 public class SmarterSmartSyncPolicyChangedDetails {
-    // struct team_log.SmarterSmartSyncPolicyChangedDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.SmarterSmartSyncPolicyChangedDetails (team_log.stone)
 
     @Nonnull
     protected final SmarterSmartSyncPolicyState previousValue;

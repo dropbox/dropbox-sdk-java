@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports_apiv2_team_reports_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Describes the number of users in a specific storage bucket.
  */
 public class StorageBucket {
-    // struct team.StorageBucket (team_reports_apiv2_team_reports_types.stone)
+    // struct team.StorageBucket (team.stone)
 
     @Nonnull
     protected final String bucket;

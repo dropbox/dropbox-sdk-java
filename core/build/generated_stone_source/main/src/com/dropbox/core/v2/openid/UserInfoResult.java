@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from openid_openid_types.stone */
+/* This file was generated from openid.stone */
 
 package com.dropbox.core.v2.openid;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class UserInfoResult {
-    // struct openid.UserInfoResult (openid_openid_types.stone)
+    // struct openid.UserInfoResult (openid.stone)
 
     @Nullable
     protected final String familyName;

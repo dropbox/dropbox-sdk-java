@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_requests_apiv2_file_requests_public.stone */
+/* This file was generated from file_requests.stone */
 
 package com.dropbox.core.v2.filerequests;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * There was an error creating the file request.
  */
 public enum CreateFileRequestError {
-    // union file_requests.CreateFileRequestError (file_requests_apiv2_file_requests_public.stone)
+    // union file_requests.CreateFileRequestError (file_requests.stone)
     /**
      * This user's Dropbox Business team doesn't allow file requests.
      */

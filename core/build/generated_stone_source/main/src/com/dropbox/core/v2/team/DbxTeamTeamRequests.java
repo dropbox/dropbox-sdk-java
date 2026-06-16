@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_devices.stone, team_apiv2_team_members_secondary_emails.stone, team_team_members_types.stone, team_apiv2_team_linked_apps.stone, team_reports_apiv2_team_reports_types.stone, team_team_folders.stone, team_apiv2_team_member_space_limits.stone, team_team_types.stone, team_apiv2_team_groups.stone, team_team_legal_holds.stone, team_team_common.stone, team_namespaces_apiv2_team_namespaces.stone, team_apiv2_team_sharing_allowlist.stone, team_apiv2_team_dfb_features.stone, team_apiv2_team_dfb_get_info.stone, team_team_members_team_bip.stone, team_team_members.stone, team_team_members_identity.stone, team_team_members_super_admin.stone, team_apiv2_team_file_properties_deprecated.stone, team_reports_apiv2_activity_page_team_reports.stone, team_reports_apiv2_super_admin_team_reports.stone, team_reports_apiv2_team_lifecycle_team_reports.stone, team_reports_apiv2_identity_team_reports.stone, team_apiv2_team_dfb_token.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -33,7 +33,7 @@ import java.util.Map;
  * Routes in namespace "team".
  */
 public class DbxTeamTeamRequests {
-    // namespace team (team_team_devices.stone, team_apiv2_team_members_secondary_emails.stone, team_team_members_types.stone, team_apiv2_team_linked_apps.stone, team_reports_apiv2_team_reports_types.stone, team_team_folders.stone, team_apiv2_team_member_space_limits.stone, team_team_types.stone, team_apiv2_team_groups.stone, team_team_legal_holds.stone, team_team_common.stone, team_namespaces_apiv2_team_namespaces.stone, team_apiv2_team_sharing_allowlist.stone, team_apiv2_team_dfb_features.stone, team_apiv2_team_dfb_get_info.stone, team_team_members_team_bip.stone, team_team_members.stone, team_team_members_identity.stone, team_team_members_super_admin.stone, team_apiv2_team_file_properties_deprecated.stone, team_reports_apiv2_activity_page_team_reports.stone, team_reports_apiv2_super_admin_team_reports.stone, team_reports_apiv2_team_lifecycle_team_reports.stone, team_reports_apiv2_identity_team_reports.stone, team_apiv2_team_dfb_token.stone)
+    // namespace team (team.stone)
 
     private final DbxRawClientV2 client;
 
@@ -1565,8 +1565,9 @@ public class DbxTeamTeamRequests {
      * @param appId  The application's unique id. Must not be {@code null}.
      * @param teamMemberId  The unique id of the member owning the device. Must
      *     not be {@code null}.
-     * @param keepAppFolder  This flag is not longer supported, the application
-     *     dedicated folder (in case the application uses one) will be kept.
+     * @param keepAppFolder  Field is deprecated. This flag is not longer
+     *     supported, the application dedicated folder (in case the application
+     *     uses one) will be kept.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -3601,8 +3602,8 @@ public class DbxTeamTeamRequests {
      * folders may be owned by other users or other teams. Duplicates may occur
      * in the list.
      *
-     * @param limit  Specifying a value here has no effect. Must be greater than
-     *     or equal to 1 and be less than or equal to 1000.
+     * @param limit  Field is deprecated. Specifying a value here has no effect.
+     *     Must be greater than or equal to 1 and be less than or equal to 1000.
      *
      * @return Result for {@link DbxTeamTeamRequests#namespacesList(long)}.
      *

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * If any of the policies are unset, then they retain their current setting.
  */
 class UpdateFolderPolicyArg {
-    // struct sharing.UpdateFolderPolicyArg (sharing_apiv2_sharing_folders_types.stone)
+    // struct sharing.UpdateFolderPolicyArg (sharing.stone)
 
     @Nonnull
     protected final String sharedFolderId;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_links_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * The metadata of a folder shared link.
  */
 public class FolderLinkMetadata extends SharedLinkMetadata {
-    // struct sharing.FolderLinkMetadata (sharing_apiv2_shared_links_types.stone)
+    // struct sharing.FolderLinkMetadata (sharing.stone)
 
 
     /**

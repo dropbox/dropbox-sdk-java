@@ -105,15 +105,19 @@ public class AlphaGetMetadataBuilder {
     /**
      * Set value for optional field.
      *
-     * @param includePropertyTemplates  If set to a valid list of template IDs,
-     *     {@link FileMetadata#getPropertyGroups} is set for files with custom
-     *     properties. Must not contain a {@code null} item.
+     * @param includePropertyTemplates  Field is deprecated. If set to a valid
+     *     list of template IDs, {@link FileMetadata#getPropertyGroups} is set
+     *     for files with custom properties. Must not contain a {@code null}
+     *     item.
      *
      * @return this builder
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
+     *
+     * @deprecated
      */
+    @Deprecated
     public AlphaGetMetadataBuilder withIncludePropertyTemplates(List<String> includePropertyTemplates) {
         this._builder.withIncludePropertyTemplates(includePropertyTemplates);
         return this;

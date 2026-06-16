@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ListRevisionsResult {
-    // struct files.ListRevisionsResult (files_files_public_types.stone)
+    // struct files.ListRevisionsResult (files.stone)
 
     protected final boolean isDeleted;
     @Nullable

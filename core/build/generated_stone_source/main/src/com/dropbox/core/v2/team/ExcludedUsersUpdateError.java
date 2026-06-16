@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_member_space_limits.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Excluded users update error.
  */
 public enum ExcludedUsersUpdateError {
-    // union team.ExcludedUsersUpdateError (team_apiv2_team_member_space_limits.stone)
+    // union team.ExcludedUsersUpdateError (team.stone)
     /**
      * At least one of the users is not part of your team.
      */

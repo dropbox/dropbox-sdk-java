@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_tagging_file_tagging.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -29,7 +29,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class TagObject {
-    // union files.Tag (file_tagging_file_tagging.stone)
+    // union files.Tag (files.stone)
 
     /**
      * Discriminating tag type for {@link TagObject}.

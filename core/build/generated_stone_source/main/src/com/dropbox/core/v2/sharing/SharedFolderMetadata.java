@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
  * The metadata which includes basic information about the shared folder.
  */
 public class SharedFolderMetadata extends SharedFolderMetadataBase {
-    // struct sharing.SharedFolderMetadata (sharing_apiv2_sharing_folders_types.stone)
+    // struct sharing.SharedFolderMetadata (sharing.stone)
 
     @Nullable
     protected final SharedContentLinkMetadata linkMetadata;

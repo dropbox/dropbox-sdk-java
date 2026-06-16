@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Device's session logged information.
  */
 public class DeviceSessionLogInfo {
-    // struct team_log.DeviceSessionLogInfo (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.DeviceSessionLogInfo (team_log.stone)
 
     @Nullable
     protected final String ipAddress;

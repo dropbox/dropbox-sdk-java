@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_members_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Describes which team-related admin permissions a user has.
  */
 public enum AdminTier {
-    // union team.AdminTier (team_team_members_types.stone)
+    // union team.AdminTier (team.stone)
     /**
      * User is an administrator of the team - has all permissions.
      */

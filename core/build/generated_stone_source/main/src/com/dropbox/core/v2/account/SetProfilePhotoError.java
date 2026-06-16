@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from account_account_photo.stone */
+/* This file was generated from account.stone */
 
 package com.dropbox.core.v2.account;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum SetProfilePhotoError {
-    // union account.SetProfilePhotoError (account_account_photo.stone)
+    // union account.SetProfilePhotoError (account.stone)
     /**
      * File cannot be set as profile photo.
      */

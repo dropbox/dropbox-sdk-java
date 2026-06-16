@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties_apiv2_file_properties_types.stone */
+/* This file was generated from file_properties.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum PropertiesSearchContinueError {
-    // union file_properties.PropertiesSearchContinueError (file_properties_apiv2_file_properties_types.stone)
+    // union file_properties.PropertiesSearchContinueError (file_properties.stone)
     /**
      * Indicates that the cursor has been invalidated. Call {@link
      * DbxUserFilePropertiesRequests#propertiesSearch(java.util.List,TemplateFilter)}

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_member_space_limits.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * User and their required custom quota in GB (1 TB = 1024 GB).
  */
 public class UserCustomQuotaArg {
-    // struct team.UserCustomQuotaArg (team_apiv2_team_member_space_limits.stone)
+    // struct team.UserCustomQuotaArg (team.stone)
 
     @Nonnull
     protected final UserSelectorArg user;

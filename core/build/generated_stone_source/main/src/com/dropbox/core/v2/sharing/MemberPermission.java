@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Whether the user is allowed to take the action on the associated member.
  */
 public class MemberPermission {
-    // struct sharing.MemberPermission (sharing_apiv2_sharing_folders_types.stone)
+    // struct sharing.MemberPermission (sharing.stone)
 
     @Nonnull
     protected final MemberAction action;

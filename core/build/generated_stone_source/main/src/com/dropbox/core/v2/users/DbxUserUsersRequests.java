@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users_users_types.stone, users_users_base.stone, users_apiv2_users_features.stone, users_apiv2_users_api_auth.stone, users_apiv2_users_identity.stone */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  * Routes in namespace "users".
  */
 public class DbxUserUsersRequests {
-    // namespace users (users_users_types.stone, users_users_base.stone, users_apiv2_users_features.stone, users_apiv2_users_api_auth.stone, users_apiv2_users_identity.stone)
+    // namespace users (users.stone)
 
     private final DbxRawClientV2 client;
 

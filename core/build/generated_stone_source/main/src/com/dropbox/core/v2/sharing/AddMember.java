@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * folder.
  */
 public class AddMember {
-    // struct sharing.AddMember (sharing_apiv2_sharing_folders_types.stone)
+    // struct sharing.AddMember (sharing.stone)
 
     @Nonnull
     protected final MemberSelector member;

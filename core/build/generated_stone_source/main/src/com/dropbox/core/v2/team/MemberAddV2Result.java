@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_members_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  * will be used. </p>
  */
 public final class MemberAddV2Result {
-    // union team.MemberAddV2Result (team_team_members_types.stone)
+    // union team.MemberAddV2Result (team.stone)
 
     /**
      * Discriminating tag type for {@link MemberAddV2Result}.

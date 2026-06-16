@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from check_api_v2_types.stone */
+/* This file was generated from check.stone */
 
 package com.dropbox.core.v2.check;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * EchoResult contains the result returned from the Dropbox servers.
  */
 public class EchoResult {
-    // struct check.EchoResult (check_api_v2_types.stone)
+    // struct check.EchoResult (check.stone)
 
     @Nonnull
     protected final String result;

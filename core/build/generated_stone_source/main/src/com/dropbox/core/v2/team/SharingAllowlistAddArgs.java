@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_sharing_allowlist.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * At least one entry of any supported type is required.
  */
 class SharingAllowlistAddArgs {
-    // struct team.SharingAllowlistAddArgs (team_apiv2_team_sharing_allowlist.stone)
+    // struct team.SharingAllowlistAddArgs (team.stone)
 
     @Nullable
     protected final List<String> domains;

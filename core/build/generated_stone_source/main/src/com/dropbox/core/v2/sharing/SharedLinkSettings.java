@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_links_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class SharedLinkSettings {
-    // struct sharing.SharedLinkSettings (sharing_apiv2_shared_links_types.stone)
+    // struct sharing.SharedLinkSettings (sharing.stone)
 
     @Nullable
     protected final Boolean requirePassword;
@@ -58,8 +58,9 @@ public class SharedLinkSettings {
      * @param access  Requested access level you want the audience to gain from
      *     this link. Note, modifying access level for an existing link is not
      *     supported.
-     * @param requestedVisibility  Use {@link SharedLinkSettings#getAudience}
-     *     instead.  The requested access for this shared link.
+     * @param requestedVisibility  Field is deprecated. Use {@link
+     *     SharedLinkSettings#getAudience} instead.  The requested access for
+     *     this shared link.
      * @param allowDownload  Boolean flag to allow or not download capabilities
      *     for shared links.
      */
@@ -139,11 +140,14 @@ public class SharedLinkSettings {
     }
 
     /**
-     * Use {@link SharedLinkSettings#getAudience} instead.  The requested access
-     * for this shared link.
+     * Field is deprecated. Use {@link SharedLinkSettings#getAudience} instead.
+     * The requested access for this shared link.
      *
      * @return value for this field, or {@code null} if not present.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nullable
     public RequestedVisibility getRequestedVisibility() {
         return requestedVisibility;
@@ -265,12 +269,15 @@ public class SharedLinkSettings {
         /**
          * Set value for optional field.
          *
-         * @param requestedVisibility  Use {@link
+         * @param requestedVisibility  Field is deprecated. Use {@link
          *     SharedLinkSettings#getAudience} instead.  The requested access
          *     for this shared link.
          *
          * @return this builder
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withRequestedVisibility(RequestedVisibility requestedVisibility) {
             this.requestedVisibility = requestedVisibility;
             return this;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class GetMetadataArg {
-    // struct files.GetMetadataArg (files_files_public_types.stone)
+    // struct files.GetMetadataArg (files.stone)
 
     @Nonnull
     protected final String path;

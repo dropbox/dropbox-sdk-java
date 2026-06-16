@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Changed member status (invited, joined, suspended, etc.).
  */
 public class MemberChangeStatusDetails {
-    // struct team_log.MemberChangeStatusDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.MemberChangeStatusDetails (team_log.stone)
 
     @Nullable
     protected final MemberStatus previousValue;

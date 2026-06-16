@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_tagging_file_tagging.stone, files_files_public_types.stone, files_files_public_base.stone, files_files_public_primitives.stone, files_apiv2_files_metadata_apiv2.stone, files_apiv2_files_upload_apiv2.stone, files_apiv2_fileops_apiv2.stone, files_apiv2_files_copyref_apiv2.stone, files_apiv2_fileops_cdm_apiv2.stone, files_apiv2_files_download_apiv2.stone, files_apiv2_files_download_zip_apiv2.stone, files_apiv2_files_export_apiv2.stone, files_apiv2_files_locking_apiv2.stone, files_apiv2_files_previews_apiv2.stone, files_apiv2_files_content_apiv2.stone, files_apiv2_files_extensions_apiv2.stone, files_apiv2_revisions_apiv2.stone, files_apiv2_files_paper_apiv2.stone, files_apiv2_files_properties_deprecated_apiv2.stone, files_apiv2_files_saveurl_apiv2.stone, files_search.stone, files_apiv2_files_upload_batch_apiv2.stone, files_apiv2_files_upload_async_apiv2.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -36,7 +36,7 @@ import java.util.Map;
  * Routes in namespace "files".
  */
 public class DbxUserFilesRequests {
-    // namespace files (file_tagging_file_tagging.stone, files_files_public_types.stone, files_files_public_base.stone, files_files_public_primitives.stone, files_apiv2_files_metadata_apiv2.stone, files_apiv2_files_upload_apiv2.stone, files_apiv2_fileops_apiv2.stone, files_apiv2_files_copyref_apiv2.stone, files_apiv2_fileops_cdm_apiv2.stone, files_apiv2_files_download_apiv2.stone, files_apiv2_files_download_zip_apiv2.stone, files_apiv2_files_export_apiv2.stone, files_apiv2_files_locking_apiv2.stone, files_apiv2_files_previews_apiv2.stone, files_apiv2_files_content_apiv2.stone, files_apiv2_files_extensions_apiv2.stone, files_apiv2_revisions_apiv2.stone, files_apiv2_files_paper_apiv2.stone, files_apiv2_files_properties_deprecated_apiv2.stone, files_apiv2_files_saveurl_apiv2.stone, files_search.stone, files_apiv2_files_upload_batch_apiv2.stone, files_apiv2_files_upload_async_apiv2.stone)
+    // namespace files (files.stone)
 
     private final DbxRawClientV2 client;
 
@@ -1275,9 +1275,10 @@ public class DbxUserFilesRequests {
      * @param path  The path of the file to download. Must match pattern "{@code
      *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
-     * @param rev  Please specify revision in the {@code path} argument to
-     *     {@link DbxUserFilesRequests#download(String,String)} instead. Must
-     *     have length of at least 9 and match pattern "{@code [0-9a-f]+}".
+     * @param rev  Field is deprecated. Please specify revision in the {@code
+     *     path} argument to {@link
+     *     DbxUserFilesRequests#download(String,String)} instead. Must have
+     *     length of at least 9 and match pattern "{@code [0-9a-f]+}".
      *
      * @return Downloader used to download the response body and view the server
      *     response.
@@ -1661,9 +1662,10 @@ public class DbxUserFilesRequests {
      * @param path  The path of the file to preview. Must match pattern "{@code
      *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
-     * @param rev  Please specify revision in the {@code path} argument to
-     *     {@link DbxUserFilesRequests#getPreview(String,String)} instead. Must
-     *     have length of at least 9 and match pattern "{@code [0-9a-f]+}".
+     * @param rev  Field is deprecated. Please specify revision in the {@code
+     *     path} argument to {@link
+     *     DbxUserFilesRequests#getPreview(String,String)} instead. Must have
+     *     length of at least 9 and match pattern "{@code [0-9a-f]+}".
      *
      * @return Downloader used to download the response body and view the server
      *     response.
@@ -3473,11 +3475,9 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Searches for files and folders.
-     *
-     * <p> Note: Recent changes will be reflected in search results within a few
-     * seconds and older revisions of existing files may still match your query
-     * for up to a few days. </p>
+     * Searches for files and folders. Note: Recent changes will be reflected in
+     * search results within a few seconds and older revisions of existing files
+     * may still match your query for up to a few days.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link SearchBuilder} for more details. </p>
@@ -3495,7 +3495,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#searchV2(String)} instead.
+     * @deprecated
      */
     @Deprecated
     public SearchResult search(String path, String query) throws SearchErrorException, DbxException {
@@ -3524,7 +3524,7 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      *
-     * @deprecated use {@link DbxUserFilesRequests#searchV2(String)} instead.
+     * @deprecated
      */
     @Deprecated
     public SearchBuilder searchBuilder(String path, String query) {
@@ -3562,15 +3562,13 @@ public class DbxUserFilesRequests {
     }
 
     /**
-     * Searches for files and folders.
-     *
-     * <p> Note: {@link DbxUserFilesRequests#searchV2(String)} along with {@link
+     * Searches for files and folders. Note: {@link
+     * DbxUserFilesRequests#searchV2(String)} along with {@link
      * DbxUserFilesRequests#searchContinueV2(String)} can only be used to
-     * retrieve a maximum of 10,000 matches. </p>
-     *
-     * <p> Recent changes may not immediately be reflected in search results due
-     * to a short delay in indexing. Duplicate results may be returned across
-     * pages. Some results may not be returned. </p>
+     * retrieve a maximum of 10,000 matches. Recent changes may not immediately
+     * be reflected in search results due to a short delay in indexing.
+     * Duplicate results may be returned across pages. Some results may not be
+     * returned.
      *
      * @param query  The string to search for. May match across multiple fields
      *     based on the request arguments. Must have length of at most 1000 and
@@ -3603,9 +3601,9 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SearchV2Builder searchV2Builder(String query) {
+    public DbxUserSearchV2Builder searchV2Builder(String query) {
         SearchV2Arg.Builder argBuilder_ = SearchV2Arg.newBuilder(query);
-        return new SearchV2Builder(this, argBuilder_);
+        return new DbxUserSearchV2Builder(this, argBuilder_);
     }
 
     //
@@ -3640,15 +3638,13 @@ public class DbxUserFilesRequests {
 
     /**
      * Fetches the next page of search results returned from {@link
-     * DbxUserFilesRequests#searchV2(String)}.
-     *
-     * <p> Note: {@link DbxUserFilesRequests#searchV2(String)} along with {@link
+     * DbxUserFilesRequests#searchV2(String)}. Note: {@link
+     * DbxUserFilesRequests#searchV2(String)} along with {@link
      * DbxUserFilesRequests#searchContinueV2(String)} can only be used to
-     * retrieve a maximum of 10,000 matches. </p>
-     *
-     * <p> Recent changes may not immediately be reflected in search results due
-     * to a short delay in indexing. Duplicate results may be returned across
-     * pages. Some results may not be returned. </p>
+     * retrieve a maximum of 10,000 matches. Recent changes may not immediately
+     * be reflected in search results due to a short delay in indexing.
+     * Duplicate results may be returned across pages. Some results may not be
+     * returned.
      *
      * @param cursor  The cursor returned by your last call to {@link
      *     DbxUserFilesRequests#searchV2(String)}. Used to fetch the next page

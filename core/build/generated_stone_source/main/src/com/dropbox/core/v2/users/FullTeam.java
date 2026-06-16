@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users_users_types.stone */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
  * Detailed information about a team.
  */
 public class FullTeam extends Team {
-    // struct users.FullTeam (users_users_types.stone)
+    // struct users.FullTeam (users.stone)
 
     @Nonnull
     protected final TeamSharingPolicies sharingPolicies;

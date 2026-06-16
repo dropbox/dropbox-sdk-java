@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_sharing_allowlist.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class SharingAllowlistListContinueArg {
-    // struct team.SharingAllowlistListContinueArg (team_apiv2_team_sharing_allowlist.stone)
+    // struct team.SharingAllowlistListContinueArg (team.stone)
 
     @Nonnull
     protected final String cursor;

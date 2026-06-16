@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_shared_content_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class SharedContentLinkMetadataBase {
-    // struct sharing.SharedContentLinkMetadataBase (sharing_apiv2_shared_content_links.stone)
+    // struct sharing.SharedContentLinkMetadataBase (sharing.stone)
 
     @Nullable
     protected final AccessLevel accessLevel;

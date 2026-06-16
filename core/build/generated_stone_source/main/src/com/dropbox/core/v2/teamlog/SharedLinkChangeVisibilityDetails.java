@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Changed visibility of shared link.
  */
 public class SharedLinkChangeVisibilityDetails {
-    // struct team_log.SharedLinkChangeVisibilityDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.SharedLinkChangeVisibilityDetails (team_log.stone)
 
     @Nonnull
     protected final SharedLinkVisibility newValue;

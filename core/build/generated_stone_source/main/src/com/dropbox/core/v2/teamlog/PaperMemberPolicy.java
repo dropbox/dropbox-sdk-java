@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Policy for controlling if team members can share Paper documents externally.
  */
 public enum PaperMemberPolicy {
-    // union team_log.PaperMemberPolicy (team_log_stone_gen_team_log_generated.stone)
+    // union team_log.PaperMemberPolicy (team_log.stone)
     ANYONE_WITH_LINK,
     ONLY_TEAM,
     TEAM_AND_EXPLICITLY_SHARED,

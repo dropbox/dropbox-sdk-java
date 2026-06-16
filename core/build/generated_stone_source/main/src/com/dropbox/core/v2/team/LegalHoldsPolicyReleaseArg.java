@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_legal_holds.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 class LegalHoldsPolicyReleaseArg {
-    // struct team.LegalHoldsPolicyReleaseArg (team_team_legal_holds.stone)
+    // struct team.LegalHoldsPolicyReleaseArg (team.stone)
 
     @Nonnull
     protected final String id;

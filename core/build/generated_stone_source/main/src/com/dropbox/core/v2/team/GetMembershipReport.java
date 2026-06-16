@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports_apiv2_team_reports_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
  * will be None.
  */
 public class GetMembershipReport extends BaseDfbReport {
-    // struct team.GetMembershipReport (team_reports_apiv2_team_reports_types.stone)
+    // struct team.GetMembershipReport (team.stone)
 
     @Nonnull
     protected final List<Long> teamSize;

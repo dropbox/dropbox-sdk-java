@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -30,7 +30,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class FeatureValue {
-    // union team.FeatureValue (team_team_types.stone)
+    // union team.FeatureValue (team.stone)
 
     /**
      * Discriminating tag type for {@link FeatureValue}.

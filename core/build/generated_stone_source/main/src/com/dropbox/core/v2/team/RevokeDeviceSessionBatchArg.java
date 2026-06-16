@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_devices.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 class RevokeDeviceSessionBatchArg {
-    // struct team.RevokeDeviceSessionBatchArg (team_team_devices.stone)
+    // struct team.RevokeDeviceSessionBatchArg (team.stone)
 
     @Nonnull
     protected final List<RevokeDeviceSessionArg> revokeDevices;

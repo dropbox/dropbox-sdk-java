@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Results for {@link DbxTeamTeamRequests#tokenGetAuthenticatedAdmin}.
  */
 public class TokenGetAuthenticatedAdminResult {
-    // struct team.TokenGetAuthenticatedAdminResult (team_team_types.stone)
+    // struct team.TokenGetAuthenticatedAdminResult (team.stone)
 
     @Nonnull
     protected final TeamMemberProfile adminProfile;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Changed who can update a setting.
  */
 public class EnterpriseSettingsLockingDetails {
-    // struct team_log.EnterpriseSettingsLockingDetails (team_log_stone_gen_team_log_generated.stone)
+    // struct team_log.EnterpriseSettingsLockingDetails (team_log.stone)
 
     @Nonnull
     protected final String teamName;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_stone_gen_team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum PaperAccessType {
-    // union team_log.PaperAccessType (team_log_stone_gen_team_log_generated.stone)
+    // union team_log.PaperAccessType (team_log.stone)
     COMMENTER,
     EDITOR,
     VIEWER,

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_requests_apiv2_file_requests_public.stone */
+/* This file was generated from file_requests.stone */
 
 package com.dropbox.core.v2.filerequests;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Arguments for {@link DbxUserFileRequestsRequests#delete(List)}.
  */
 class DeleteFileRequestArgs {
-    // struct file_requests.DeleteFileRequestArgs (file_requests_apiv2_file_requests_public.stone)
+    // struct file_requests.DeleteFileRequestArgs (file_requests.stone)
 
     @Nonnull
     protected final List<String> ids;

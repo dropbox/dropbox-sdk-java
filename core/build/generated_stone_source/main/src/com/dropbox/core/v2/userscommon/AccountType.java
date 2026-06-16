@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users_common_users_common.stone */
+/* This file was generated from users_common.stone */
 
 package com.dropbox.core.v2.userscommon;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * What type of account this user has.
  */
 public enum AccountType {
-    // union users_common.AccountType (users_common_users_common.stone)
+    // union users_common.AccountType (users_common.stone)
     /**
      * The basic account type.
      */

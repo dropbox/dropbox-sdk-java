@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_members_secondary_emails.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  * will be used. </p>
  */
 public final class AddSecondaryEmailResult {
-    // union team.AddSecondaryEmailResult (team_apiv2_team_members_secondary_emails.stone)
+    // union team.AddSecondaryEmailResult (team.stone)
 
     /**
      * Discriminating tag type for {@link AddSecondaryEmailResult}.
@@ -61,7 +61,8 @@ public final class AddSecondaryEmailResult {
          */
         REACHED_LIMIT, // String
         /**
-         * A transient error occurred. Please try again later.
+         * Field is deprecated. A transient error occurred. Please try again
+         * later.
          */
         TRANSIENT_ERROR, // String
         /**
@@ -245,8 +246,9 @@ public final class AddSecondaryEmailResult {
      * user. The other values explain the type of error that occurred, and
      * include the email for which the error occurred.
      *
-     * @param transientErrorValue  A transient error occurred. Please try again
-     *     later. Must have length of at most 255, match pattern "{@code
+     * @param transientErrorValue  Field is deprecated. A transient error
+     *     occurred. Please try again later. Must have length of at most 255,
+     *     match pattern "{@code
      *     ^['#&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*\\.[A-Za-z]{2,15}$}",
      *     and not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -644,7 +646,8 @@ public final class AddSecondaryEmailResult {
      * Returns an instance of {@code AddSecondaryEmailResult} that has its tag
      * set to {@link Tag#TRANSIENT_ERROR}.
      *
-     * <p> A transient error occurred. Please try again later. </p>
+     * <p> Field is deprecated. A transient error occurred. Please try again
+     * later. </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -670,7 +673,7 @@ public final class AddSecondaryEmailResult {
     }
 
     /**
-     * A transient error occurred. Please try again later.
+     * Field is deprecated. A transient error occurred. Please try again later.
      *
      * <p> This instance must be tagged as {@link Tag#TRANSIENT_ERROR}. </p>
      *

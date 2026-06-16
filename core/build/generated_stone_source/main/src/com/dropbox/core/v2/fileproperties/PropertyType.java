@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_properties_apiv2_file_properties_types.stone */
+/* This file was generated from file_properties.stone */
 
 package com.dropbox.core.v2.fileproperties;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Data type of the given property field added.
  */
 public enum PropertyType {
-    // union file_properties.PropertyType (file_properties_apiv2_file_properties_types.stone)
+    // union file_properties.PropertyType (file_properties.stone)
     /**
      * The associated property field will be of type string. Unicode is
      * supported.

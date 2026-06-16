@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_apiv2_sharing_folders_types.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * The information about a member of the shared content.
  */
 public class MembershipInfo {
-    // struct sharing.MembershipInfo (sharing_apiv2_sharing_folders_types.stone)
+    // struct sharing.MembershipInfo (sharing.stone)
 
     @Nonnull
     protected final AccessLevel accessType;
@@ -46,7 +46,7 @@ public class MembershipInfo {
      * @param permissions  The permissions that requesting user has on this
      *     member. The set of permissions corresponds to the MemberActions in
      *     the request. Must not contain a {@code null} item.
-     * @param initials  Never set.
+     * @param initials  Field is deprecated. Never set.
      * @param isInherited  True if the member has access on a parent folder.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -108,10 +108,13 @@ public class MembershipInfo {
     }
 
     /**
-     * Never set.
+     * Field is deprecated. Never set.
      *
      * @return value for this field, or {@code null} if not present.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nullable
     public String getInitials() {
         return initials;
@@ -190,10 +193,13 @@ public class MembershipInfo {
         /**
          * Set value for optional field.
          *
-         * @param initials  Never set.
+         * @param initials  Field is deprecated. Never set.
          *
          * @return this builder
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withInitials(String initials) {
             this.initials = initials;
             return this;

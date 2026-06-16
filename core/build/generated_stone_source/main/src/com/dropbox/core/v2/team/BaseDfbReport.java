@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports_apiv2_team_reports_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Base report structure.
  */
 public class BaseDfbReport {
-    // struct team.BaseDfbReport (team_reports_apiv2_team_reports_types.stone)
+    // struct team.BaseDfbReport (team.stone)
 
     @Nonnull
     protected final String startDate;

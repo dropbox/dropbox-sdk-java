@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from account_account_photo.stone */
+/* This file was generated from account.stone */
 
 package com.dropbox.core.v2.account;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class SetProfilePhotoArg {
-    // struct account.SetProfilePhotoArg (account_account_photo.stone)
+    // struct account.SetProfilePhotoArg (account.stone)
 
     @Nonnull
     protected final PhotoSourceArg photo;

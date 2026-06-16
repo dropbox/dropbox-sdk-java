@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class SearchMatchFieldOptions {
-    // struct files.SearchMatchFieldOptions (files_files_public_types.stone)
+    // struct files.SearchMatchFieldOptions (files.stone)
 
     protected final boolean includeHighlights;
 

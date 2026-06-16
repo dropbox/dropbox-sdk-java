@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from users_users_types.stone */
+/* This file was generated from users.stone */
 
 package com.dropbox.core.v2.users;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum UserFeaturesGetValuesBatchError {
-    // union users.UserFeaturesGetValuesBatchError (users_users_types.stone)
+    // union users.UserFeaturesGetValuesBatchError (users.stone)
     /**
      * At least one {@link UserFeature} must be included in the {@link
      * UserFeaturesGetValuesBatchArg}.features list.

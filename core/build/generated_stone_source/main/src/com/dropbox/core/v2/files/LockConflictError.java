@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_base.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class LockConflictError {
-    // struct files.LockConflictError (files_files_public_base.stone)
+    // struct files.LockConflictError (files.stone)
 
     @Nonnull
     protected final FileLock lock;

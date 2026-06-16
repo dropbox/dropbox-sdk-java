@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_apiv2_team_groups.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 class GroupMembersRemoveArg extends IncludeMembersArg {
-    // struct team.GroupMembersRemoveArg (team_apiv2_team_groups.stone)
+    // struct team.GroupMembersRemoveArg (team.stone)
 
     @Nonnull
     protected final GroupSelector group;

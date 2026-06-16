@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from files_files_public_types.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class ListFolderArg {
-    // struct files.ListFolderArg (files_files_public_types.stone)
+    // struct files.ListFolderArg (files.stone)
 
     @Nonnull
     protected final String path;
@@ -54,9 +54,9 @@ class ListFolderArg {
      *     large number of items. A workaround for such cases is to set {@link
      *     ListFolderArg#getRecursive} to {@code false} and traverse subfolders
      *     one at a time.
-     * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo} is
-     *     set for photo and video. This parameter will no longer have an effect
-     *     starting December 2, 2019.
+     * @param includeMediaInfo  Field is deprecated. If true, {@link
+     *     FileMetadata#getMediaInfo} is set for photo and video. This parameter
+     *     will no longer have an effect starting December 2, 2019.
      * @param includeDeleted  If true, the results will include entries for
      *     files and folders that used to exist but were deleted.
      * @param includeHasExplicitSharedMembers  If true, the results will include
@@ -154,12 +154,16 @@ class ListFolderArg {
     }
 
     /**
-     * If true, {@link FileMetadata#getMediaInfo} is set for photo and video.
-     * This parameter will no longer have an effect starting December 2, 2019.
+     * Field is deprecated. If true, {@link FileMetadata#getMediaInfo} is set
+     * for photo and video. This parameter will no longer have an effect
+     * starting December 2, 2019.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
+     *
+     * @deprecated
      */
+    @Deprecated
     public boolean getIncludeMediaInfo() {
         return includeMediaInfo;
     }
@@ -329,13 +333,16 @@ class ListFolderArg {
          * <p> If left unset or set to {@code null}, defaults to {@code false}.
          * </p>
          *
-         * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo}
-         *     is set for photo and video. This parameter will no longer have an
-         *     effect starting December 2, 2019. Defaults to {@code false} when
-         *     set to {@code null}.
+         * @param includeMediaInfo  Field is deprecated. If true, {@link
+         *     FileMetadata#getMediaInfo} is set for photo and video. This
+         *     parameter will no longer have an effect starting December 2,
+         *     2019. Defaults to {@code false} when set to {@code null}.
          *
          * @return this builder
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withIncludeMediaInfo(Boolean includeMediaInfo) {
             if (includeMediaInfo != null) {
                 this.includeMediaInfo = includeMediaInfo;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_team_types.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * A set of features that a Dropbox Business account may support.
  */
 public enum Feature {
-    // union team.Feature (team_team_types.stone)
+    // union team.Feature (team.stone)
     /**
      * The number of upload API calls allowed per month.
      */
