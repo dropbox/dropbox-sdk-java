@@ -15,10 +15,16 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+/**
+ * Result for File Operations
+ */
 public class FileOpsResult {
     // struct files.FileOpsResult (files.stone)
 
 
+    /**
+     * Result for File Operations
+     */
     public FileOpsResult() {
     }
 

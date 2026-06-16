@@ -38,6 +38,10 @@ public enum Feature {
      */
     HAS_TEAM_SELECTIVE_SYNC,
     /**
+     * Does this team have team member folder.
+     */
+    HAS_DISTINCT_MEMBER_HOMES,
+    /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
      * <p> Receiving a catch-all value typically indicates this SDK version is
@@ -69,6 +73,10 @@ public enum Feature {
                 }
                 case HAS_TEAM_SELECTIVE_SYNC: {
                     g.writeString("has_team_selective_sync");
+                    break;
+                }
+                case HAS_DISTINCT_MEMBER_HOMES: {
+                    g.writeString("has_distinct_member_homes");
                     break;
                 }
                 default: {
@@ -106,6 +114,9 @@ public enum Feature {
             }
             else if ("has_team_selective_sync".equals(tag)) {
                 value = Feature.HAS_TEAM_SELECTIVE_SYNC;
+            }
+            else if ("has_distinct_member_homes".equals(tag)) {
+                value = Feature.HAS_DISTINCT_MEMBER_HOMES;
             }
             else {
                 value = Feature.OTHER;

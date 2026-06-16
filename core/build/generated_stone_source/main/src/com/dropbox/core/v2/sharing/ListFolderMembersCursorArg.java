@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class ListFolderMembersCursorArg {
-    // struct sharing.ListFolderMembersCursorArg (sharing_folders.stone)
+    // struct sharing.ListFolderMembersCursorArg (sharing.stone)
 
     @Nullable
     protected final List<MemberAction> actions;

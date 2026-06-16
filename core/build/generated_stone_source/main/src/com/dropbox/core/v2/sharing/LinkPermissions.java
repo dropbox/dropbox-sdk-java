@@ -1,11 +1,13 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
 import com.dropbox.core.stone.StoneDeserializerLogger;
 import com.dropbox.core.stone.StoneSerializers;
 import com.dropbox.core.stone.StructSerializer;
+import com.dropbox.core.v2.teampolicies.DefaultLinkExpirationDaysPolicy;
+import com.dropbox.core.v2.teampolicies.EnforceLinkPasswordPolicy;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -21,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class LinkPermissions {
-    // struct sharing.LinkPermissions (shared_links.stone)
+    // struct sharing.LinkPermissions (sharing.stone)
 
     @Nullable
     protected final ResolvedVisibility resolvedVisibility;
@@ -53,6 +55,16 @@ public class LinkPermissions {
     protected final Boolean requirePassword;
     @Nullable
     protected final Boolean canUseExtendedSharingControls;
+    @Nullable
+    protected final Boolean canSync;
+    @Nullable
+    protected final Boolean canRequestAccess;
+    @Nullable
+    protected final EnforceLinkPasswordPolicy enforceSharedLinkPasswordPolicy;
+    @Nullable
+    protected final DefaultLinkExpirationDaysPolicy daysToExpirePolicy;
+    @Nullable
+    protected final ChangeLinkExpirationPolicy changeSharedLinkExpirationPolicy;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -74,10 +86,11 @@ public class LinkPermissions {
      * @param canDisallowDownload  Whether the user can disallow downloads via
      *     the link. This refers to the ability to impose a no-download
      *     restriction on the link.
-     * @param allowComments  Whether comments are enabled for the linked file.
-     *     This takes the team commenting policy into account.
-     * @param teamRestrictsComments  Whether the team has disabled commenting
-     *     globally.
+     * @param allowComments  Field is deprecated. Whether comments are enabled
+     *     for the linked file. This takes the team commenting policy into
+     *     account.
+     * @param teamRestrictsComments  Field is deprecated. Whether the team has
+     *     disabled commenting globally.
      * @param resolvedVisibility  The current visibility of the link after
      *     considering the shared links policies of the the team (in case the
      *     link's owner is part of a team) and the shared folder (in case the
@@ -115,11 +128,28 @@ public class LinkPermissions {
      *     password to view the link.
      * @param canUseExtendedSharingControls  Whether the user can use extended
      *     sharing controls, based on their account type.
+     * @param canSync  Whether a user can save the content to their Dropbox
+     *     account.
+     * @param canRequestAccess  Whether the user can request access to the
+     *     content.
+     * @param enforceSharedLinkPasswordPolicy  Whether the updated externally
+     *     available shared link must have password set. Not provided if the
+     *     link is not team owned.
+     * @param daysToExpirePolicy  Existing owning team's policy for default
+     *     number of days from today to link's expiration. Not provided if the
+     *     link is not team owned.
+     * @param changeSharedLinkExpirationPolicy  When owning team's policy {@link
+     *     LinkPermissions#getChangeSharedLinkExpirationPolicy} is {@link
+     *     ChangeLinkExpirationPolicy#NOT_ALLOWED}, the updated externally
+     *     available shared link expiration value cannot be less strict than
+     *     {@link LinkPermissions#getDaysToExpirePolicy}. In this case {@link
+     *     LinkPermissions#getDaysToExpirePolicy} is expected to be different
+     *     from `none`. Not provided if the link is not team owned.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public LinkPermissions(boolean canRevoke, @Nonnull List<VisibilityPolicy> visibilityPolicies, boolean canSetExpiry, boolean canRemoveExpiry, boolean allowDownload, boolean canAllowDownload, boolean canDisallowDownload, boolean allowComments, boolean teamRestrictsComments, @Nullable ResolvedVisibility resolvedVisibility, @Nullable RequestedVisibility requestedVisibility, @Nullable SharedLinkAccessFailureReason revokeFailureReason, @Nullable LinkAudience effectiveAudience, @Nullable LinkAccessLevel linkAccessLevel, @Nullable List<LinkAudienceOption> audienceOptions, @Nullable Boolean canSetPassword, @Nullable Boolean canRemovePassword, @Nullable Boolean requirePassword, @Nullable Boolean canUseExtendedSharingControls) {
+    public LinkPermissions(boolean canRevoke, @Nonnull List<VisibilityPolicy> visibilityPolicies, boolean canSetExpiry, boolean canRemoveExpiry, boolean allowDownload, boolean canAllowDownload, boolean canDisallowDownload, boolean allowComments, boolean teamRestrictsComments, @Nullable ResolvedVisibility resolvedVisibility, @Nullable RequestedVisibility requestedVisibility, @Nullable SharedLinkAccessFailureReason revokeFailureReason, @Nullable LinkAudience effectiveAudience, @Nullable LinkAccessLevel linkAccessLevel, @Nullable List<LinkAudienceOption> audienceOptions, @Nullable Boolean canSetPassword, @Nullable Boolean canRemovePassword, @Nullable Boolean requirePassword, @Nullable Boolean canUseExtendedSharingControls, @Nullable Boolean canSync, @Nullable Boolean canRequestAccess, @Nullable EnforceLinkPasswordPolicy enforceSharedLinkPasswordPolicy, @Nullable DefaultLinkExpirationDaysPolicy daysToExpirePolicy, @Nullable ChangeLinkExpirationPolicy changeSharedLinkExpirationPolicy) {
         this.resolvedVisibility = resolvedVisibility;
         this.requestedVisibility = requestedVisibility;
         this.canRevoke = canRevoke;
@@ -154,6 +184,11 @@ public class LinkPermissions {
         this.canRemovePassword = canRemovePassword;
         this.requirePassword = requirePassword;
         this.canUseExtendedSharingControls = canUseExtendedSharingControls;
+        this.canSync = canSync;
+        this.canRequestAccess = canRequestAccess;
+        this.enforceSharedLinkPasswordPolicy = enforceSharedLinkPasswordPolicy;
+        this.daysToExpirePolicy = daysToExpirePolicy;
+        this.changeSharedLinkExpirationPolicy = changeSharedLinkExpirationPolicy;
     }
 
     /**
@@ -177,16 +212,17 @@ public class LinkPermissions {
      * @param canDisallowDownload  Whether the user can disallow downloads via
      *     the link. This refers to the ability to impose a no-download
      *     restriction on the link.
-     * @param allowComments  Whether comments are enabled for the linked file.
-     *     This takes the team commenting policy into account.
-     * @param teamRestrictsComments  Whether the team has disabled commenting
-     *     globally.
+     * @param allowComments  Field is deprecated. Whether comments are enabled
+     *     for the linked file. This takes the team commenting policy into
+     *     account.
+     * @param teamRestrictsComments  Field is deprecated. Whether the team has
+     *     disabled commenting globally.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
     public LinkPermissions(boolean canRevoke, @Nonnull List<VisibilityPolicy> visibilityPolicies, boolean canSetExpiry, boolean canRemoveExpiry, boolean allowDownload, boolean canAllowDownload, boolean canDisallowDownload, boolean allowComments, boolean teamRestrictsComments) {
-        this(canRevoke, visibilityPolicies, canSetExpiry, canRemoveExpiry, allowDownload, canAllowDownload, canDisallowDownload, allowComments, teamRestrictsComments, null, null, null, null, null, null, null, null, null, null);
+        this(canRevoke, visibilityPolicies, canSetExpiry, canRemoveExpiry, allowDownload, canAllowDownload, canDisallowDownload, allowComments, teamRestrictsComments, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
 
     /**
@@ -257,20 +293,26 @@ public class LinkPermissions {
     }
 
     /**
-     * Whether comments are enabled for the linked file. This takes the team
-     * commenting policy into account.
+     * Field is deprecated. Whether comments are enabled for the linked file.
+     * This takes the team commenting policy into account.
      *
      * @return value for this field.
+     *
+     * @deprecated
      */
+    @Deprecated
     public boolean getAllowComments() {
         return allowComments;
     }
 
     /**
-     * Whether the team has disabled commenting globally.
+     * Field is deprecated. Whether the team has disabled commenting globally.
      *
      * @return value for this field.
+     *
+     * @deprecated
      */
+    @Deprecated
     public boolean getTeamRestrictsComments() {
         return teamRestrictsComments;
     }
@@ -397,6 +439,64 @@ public class LinkPermissions {
     }
 
     /**
+     * Whether a user can save the content to their Dropbox account.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public Boolean getCanSync() {
+        return canSync;
+    }
+
+    /**
+     * Whether the user can request access to the content.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public Boolean getCanRequestAccess() {
+        return canRequestAccess;
+    }
+
+    /**
+     * Whether the updated externally available shared link must have password
+     * set. Not provided if the link is not team owned.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public EnforceLinkPasswordPolicy getEnforceSharedLinkPasswordPolicy() {
+        return enforceSharedLinkPasswordPolicy;
+    }
+
+    /**
+     * Existing owning team's policy for default number of days from today to
+     * link's expiration. Not provided if the link is not team owned.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public DefaultLinkExpirationDaysPolicy getDaysToExpirePolicy() {
+        return daysToExpirePolicy;
+    }
+
+    /**
+     * When owning team's policy {@link
+     * LinkPermissions#getChangeSharedLinkExpirationPolicy} is {@link
+     * ChangeLinkExpirationPolicy#NOT_ALLOWED}, the updated externally available
+     * shared link expiration value cannot be less strict than {@link
+     * LinkPermissions#getDaysToExpirePolicy}. In this case {@link
+     * LinkPermissions#getDaysToExpirePolicy} is expected to be different from
+     * `none`. Not provided if the link is not team owned.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public ChangeLinkExpirationPolicy getChangeSharedLinkExpirationPolicy() {
+        return changeSharedLinkExpirationPolicy;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param canRevoke  Whether the caller can revoke the shared link.
@@ -415,10 +515,11 @@ public class LinkPermissions {
      * @param canDisallowDownload  Whether the user can disallow downloads via
      *     the link. This refers to the ability to impose a no-download
      *     restriction on the link.
-     * @param allowComments  Whether comments are enabled for the linked file.
-     *     This takes the team commenting policy into account.
-     * @param teamRestrictsComments  Whether the team has disabled commenting
-     *     globally.
+     * @param allowComments  Field is deprecated. Whether comments are enabled
+     *     for the linked file. This takes the team commenting policy into
+     *     account.
+     * @param teamRestrictsComments  Field is deprecated. Whether the team has
+     *     disabled commenting globally.
      *
      * @return builder for this class.
      *
@@ -453,6 +554,11 @@ public class LinkPermissions {
         protected Boolean canRemovePassword;
         protected Boolean requirePassword;
         protected Boolean canUseExtendedSharingControls;
+        protected Boolean canSync;
+        protected Boolean canRequestAccess;
+        protected EnforceLinkPasswordPolicy enforceSharedLinkPasswordPolicy;
+        protected DefaultLinkExpirationDaysPolicy daysToExpirePolicy;
+        protected ChangeLinkExpirationPolicy changeSharedLinkExpirationPolicy;
 
         protected Builder(boolean canRevoke, List<VisibilityPolicy> visibilityPolicies, boolean canSetExpiry, boolean canRemoveExpiry, boolean allowDownload, boolean canAllowDownload, boolean canDisallowDownload, boolean allowComments, boolean teamRestrictsComments) {
             this.canRevoke = canRevoke;
@@ -482,6 +588,11 @@ public class LinkPermissions {
             this.canRemovePassword = null;
             this.requirePassword = null;
             this.canUseExtendedSharingControls = null;
+            this.canSync = null;
+            this.canRequestAccess = null;
+            this.enforceSharedLinkPasswordPolicy = null;
+            this.daysToExpirePolicy = null;
+            this.changeSharedLinkExpirationPolicy = null;
         }
 
         /**
@@ -643,13 +754,86 @@ public class LinkPermissions {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param canSync  Whether a user can save the content to their Dropbox
+         *     account.
+         *
+         * @return this builder
+         */
+        public Builder withCanSync(Boolean canSync) {
+            this.canSync = canSync;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param canRequestAccess  Whether the user can request access to the
+         *     content.
+         *
+         * @return this builder
+         */
+        public Builder withCanRequestAccess(Boolean canRequestAccess) {
+            this.canRequestAccess = canRequestAccess;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param enforceSharedLinkPasswordPolicy  Whether the updated
+         *     externally available shared link must have password set. Not
+         *     provided if the link is not team owned.
+         *
+         * @return this builder
+         */
+        public Builder withEnforceSharedLinkPasswordPolicy(EnforceLinkPasswordPolicy enforceSharedLinkPasswordPolicy) {
+            this.enforceSharedLinkPasswordPolicy = enforceSharedLinkPasswordPolicy;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param daysToExpirePolicy  Existing owning team's policy for default
+         *     number of days from today to link's expiration. Not provided if
+         *     the link is not team owned.
+         *
+         * @return this builder
+         */
+        public Builder withDaysToExpirePolicy(DefaultLinkExpirationDaysPolicy daysToExpirePolicy) {
+            this.daysToExpirePolicy = daysToExpirePolicy;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param changeSharedLinkExpirationPolicy  When owning team's policy
+         *     {@link LinkPermissions#getChangeSharedLinkExpirationPolicy} is
+         *     {@link ChangeLinkExpirationPolicy#NOT_ALLOWED}, the updated
+         *     externally available shared link expiration value cannot be less
+         *     strict than {@link LinkPermissions#getDaysToExpirePolicy}. In
+         *     this case {@link LinkPermissions#getDaysToExpirePolicy} is
+         *     expected to be different from `none`. Not provided if the link is
+         *     not team owned.
+         *
+         * @return this builder
+         */
+        public Builder withChangeSharedLinkExpirationPolicy(ChangeLinkExpirationPolicy changeSharedLinkExpirationPolicy) {
+            this.changeSharedLinkExpirationPolicy = changeSharedLinkExpirationPolicy;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link LinkPermissions} configured with this
          * builder's values
          *
          * @return new instance of {@link LinkPermissions}
          */
         public LinkPermissions build() {
-            return new LinkPermissions(canRevoke, visibilityPolicies, canSetExpiry, canRemoveExpiry, allowDownload, canAllowDownload, canDisallowDownload, allowComments, teamRestrictsComments, resolvedVisibility, requestedVisibility, revokeFailureReason, effectiveAudience, linkAccessLevel, audienceOptions, canSetPassword, canRemovePassword, requirePassword, canUseExtendedSharingControls);
+            return new LinkPermissions(canRevoke, visibilityPolicies, canSetExpiry, canRemoveExpiry, allowDownload, canAllowDownload, canDisallowDownload, allowComments, teamRestrictsComments, resolvedVisibility, requestedVisibility, revokeFailureReason, effectiveAudience, linkAccessLevel, audienceOptions, canSetPassword, canRemovePassword, requirePassword, canUseExtendedSharingControls, canSync, canRequestAccess, enforceSharedLinkPasswordPolicy, daysToExpirePolicy, changeSharedLinkExpirationPolicy);
         }
     }
 
@@ -674,7 +858,12 @@ public class LinkPermissions {
             this.canSetPassword,
             this.canRemovePassword,
             this.requirePassword,
-            this.canUseExtendedSharingControls
+            this.canUseExtendedSharingControls,
+            this.canSync,
+            this.canRequestAccess,
+            this.enforceSharedLinkPasswordPolicy,
+            this.daysToExpirePolicy,
+            this.changeSharedLinkExpirationPolicy
         });
         return hash;
     }
@@ -709,6 +898,11 @@ public class LinkPermissions {
                 && ((this.canRemovePassword == other.canRemovePassword) || (this.canRemovePassword != null && this.canRemovePassword.equals(other.canRemovePassword)))
                 && ((this.requirePassword == other.requirePassword) || (this.requirePassword != null && this.requirePassword.equals(other.requirePassword)))
                 && ((this.canUseExtendedSharingControls == other.canUseExtendedSharingControls) || (this.canUseExtendedSharingControls != null && this.canUseExtendedSharingControls.equals(other.canUseExtendedSharingControls)))
+                && ((this.canSync == other.canSync) || (this.canSync != null && this.canSync.equals(other.canSync)))
+                && ((this.canRequestAccess == other.canRequestAccess) || (this.canRequestAccess != null && this.canRequestAccess.equals(other.canRequestAccess)))
+                && ((this.enforceSharedLinkPasswordPolicy == other.enforceSharedLinkPasswordPolicy) || (this.enforceSharedLinkPasswordPolicy != null && this.enforceSharedLinkPasswordPolicy.equals(other.enforceSharedLinkPasswordPolicy)))
+                && ((this.daysToExpirePolicy == other.daysToExpirePolicy) || (this.daysToExpirePolicy != null && this.daysToExpirePolicy.equals(other.daysToExpirePolicy)))
+                && ((this.changeSharedLinkExpirationPolicy == other.changeSharedLinkExpirationPolicy) || (this.changeSharedLinkExpirationPolicy != null && this.changeSharedLinkExpirationPolicy.equals(other.changeSharedLinkExpirationPolicy)))
                 ;
         }
         else {
@@ -802,6 +996,26 @@ public class LinkPermissions {
                 g.writeFieldName("can_use_extended_sharing_controls");
                 StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.canUseExtendedSharingControls, g);
             }
+            if (value.canSync != null) {
+                g.writeFieldName("can_sync");
+                StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.canSync, g);
+            }
+            if (value.canRequestAccess != null) {
+                g.writeFieldName("can_request_access");
+                StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.canRequestAccess, g);
+            }
+            if (value.enforceSharedLinkPasswordPolicy != null) {
+                g.writeFieldName("enforce_shared_link_password_policy");
+                StoneSerializers.nullable(EnforceLinkPasswordPolicy.Serializer.INSTANCE).serialize(value.enforceSharedLinkPasswordPolicy, g);
+            }
+            if (value.daysToExpirePolicy != null) {
+                g.writeFieldName("days_to_expire_policy");
+                StoneSerializers.nullable(DefaultLinkExpirationDaysPolicy.Serializer.INSTANCE).serialize(value.daysToExpirePolicy, g);
+            }
+            if (value.changeSharedLinkExpirationPolicy != null) {
+                g.writeFieldName("change_shared_link_expiration_policy");
+                StoneSerializers.nullable(ChangeLinkExpirationPolicy.Serializer.INSTANCE).serialize(value.changeSharedLinkExpirationPolicy, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -835,6 +1049,11 @@ public class LinkPermissions {
                 Boolean f_canRemovePassword = null;
                 Boolean f_requirePassword = null;
                 Boolean f_canUseExtendedSharingControls = null;
+                Boolean f_canSync = null;
+                Boolean f_canRequestAccess = null;
+                EnforceLinkPasswordPolicy f_enforceSharedLinkPasswordPolicy = null;
+                DefaultLinkExpirationDaysPolicy f_daysToExpirePolicy = null;
+                ChangeLinkExpirationPolicy f_changeSharedLinkExpirationPolicy = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -895,6 +1114,21 @@ public class LinkPermissions {
                     else if ("can_use_extended_sharing_controls".equals(field)) {
                         f_canUseExtendedSharingControls = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
                     }
+                    else if ("can_sync".equals(field)) {
+                        f_canSync = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
+                    }
+                    else if ("can_request_access".equals(field)) {
+                        f_canRequestAccess = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
+                    }
+                    else if ("enforce_shared_link_password_policy".equals(field)) {
+                        f_enforceSharedLinkPasswordPolicy = StoneSerializers.nullable(EnforceLinkPasswordPolicy.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("days_to_expire_policy".equals(field)) {
+                        f_daysToExpirePolicy = StoneSerializers.nullable(DefaultLinkExpirationDaysPolicy.Serializer.INSTANCE).deserialize(p);
+                    }
+                    else if ("change_shared_link_expiration_policy".equals(field)) {
+                        f_changeSharedLinkExpirationPolicy = StoneSerializers.nullable(ChangeLinkExpirationPolicy.Serializer.INSTANCE).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -926,7 +1160,7 @@ public class LinkPermissions {
                 if (f_teamRestrictsComments == null) {
                     throw new JsonParseException(p, "Required field \"team_restricts_comments\" missing.");
                 }
-                value = new LinkPermissions(f_canRevoke, f_visibilityPolicies, f_canSetExpiry, f_canRemoveExpiry, f_allowDownload, f_canAllowDownload, f_canDisallowDownload, f_allowComments, f_teamRestrictsComments, f_resolvedVisibility, f_requestedVisibility, f_revokeFailureReason, f_effectiveAudience, f_linkAccessLevel, f_audienceOptions, f_canSetPassword, f_canRemovePassword, f_requirePassword, f_canUseExtendedSharingControls);
+                value = new LinkPermissions(f_canRevoke, f_visibilityPolicies, f_canSetExpiry, f_canRemoveExpiry, f_allowDownload, f_canAllowDownload, f_canDisallowDownload, f_allowComments, f_teamRestrictsComments, f_resolvedVisibility, f_requestedVisibility, f_revokeFailureReason, f_effectiveAudience, f_linkAccessLevel, f_audienceOptions, f_canSetPassword, f_canRemovePassword, f_requirePassword, f_canUseExtendedSharingControls, f_canSync, f_canRequestAccess, f_enforceSharedLinkPasswordPolicy, f_daysToExpirePolicy, f_changeSharedLinkExpirationPolicy);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

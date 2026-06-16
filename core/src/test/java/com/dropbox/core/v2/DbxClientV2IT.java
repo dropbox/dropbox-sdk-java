@@ -6,6 +6,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import com.dropbox.core.util.IOUtil.ProgressListener;
@@ -15,6 +16,7 @@ import com.dropbox.core.BadRequestException;
 import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.ITUtil;
+import com.dropbox.core.v2.fileproperties.PropertyGroup;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.GetMetadataError;
 import com.dropbox.core.v2.files.GetMetadataErrorException;
@@ -99,10 +101,9 @@ public class DbxClientV2IT {
         assertThat(metadata.getSize()).isEqualTo(contents.length);
 
         Metadata actual = client.files().getMetadata(path);
-        assertWithMessage(actual.getClass().getCanonicalName()).that(actual instanceof FileMetadata).isTrue();
 
         try {
-            assertThat(actual).isEqualTo(metadata);
+            assertFileMetadataEquivalent(actual, metadata);
 
             if (trackProgress) {
                 progressListener = createTestListener(contents.length);
@@ -115,7 +116,7 @@ public class DbxClientV2IT {
             byte[] actualContents = out.toByteArray();
             FileMetadata actualResult = downloader.getResult();
 
-            assertThat(actualResult).isEqualTo(metadata);
+            assertFileMetadataEquivalent(actualResult, metadata);
             assertThat(actualContents).isEqualTo(contents);
             assertThat(downloader.getContentType()).isEqualTo("application/octet-stream");
         } catch (AssertionError e) {
@@ -125,7 +126,51 @@ public class DbxClientV2IT {
         }
 
         Metadata deleted = client.files().deleteV2(path).getMetadata();
-        assertThat(deleted).isEqualTo(metadata);
+        assertFileMetadataEquivalent(deleted, metadata);
+    }
+
+    private static void assertFileMetadataEquivalent(Metadata actual, FileMetadata expected) {
+        assertThat(actual).isNotNull();
+        assertWithMessage(actual.getClass().getCanonicalName()).that(actual instanceof FileMetadata).isTrue();
+        assertFileMetadataEquivalent((FileMetadata) actual, expected);
+    }
+
+    @SuppressWarnings("deprecation")
+    private static void assertFileMetadataEquivalent(FileMetadata actual, FileMetadata expected) {
+        assertThat(actual).isNotNull();
+        assertThat(actual.getName()).isEqualTo(expected.getName());
+        assertThat(actual.getId()).isEqualTo(expected.getId());
+        assertThat(actual.getClientModified()).isEqualTo(expected.getClientModified());
+        assertThat(actual.getServerModified()).isEqualTo(expected.getServerModified());
+        assertThat(actual.getRev()).isEqualTo(expected.getRev());
+        assertThat(actual.getSize()).isEqualTo(expected.getSize());
+        assertThat(actual.getPathLower()).isEqualTo(expected.getPathLower());
+        assertThat(actual.getPathDisplay()).isEqualTo(expected.getPathDisplay());
+        assertThat(actual.getParentSharedFolderId()).isEqualTo(expected.getParentSharedFolderId());
+        assertThat(actual.getPreviewUrl()).isEqualTo(expected.getPreviewUrl());
+        assertThat(actual.getMediaInfo()).isEqualTo(expected.getMediaInfo());
+        assertThat(actual.getSymlinkInfo()).isEqualTo(expected.getSymlinkInfo());
+        assertThat(actual.getSharingInfo()).isEqualTo(expected.getSharingInfo());
+        assertThat(actual.getIsDownloadable()).isEqualTo(expected.getIsDownloadable());
+        assertThat(actual.getExportInfo()).isEqualTo(expected.getExportInfo());
+        assertPropertyGroupsEquivalent(actual.getPropertyGroups(), expected.getPropertyGroups());
+        assertThat(actual.getHasExplicitSharedMembers()).isEqualTo(expected.getHasExplicitSharedMembers());
+        assertThat(actual.getContentHash()).isEqualTo(expected.getContentHash());
+        assertThat(actual.getFileLockInfo()).isEqualTo(expected.getFileLockInfo());
+    }
+
+    private static void assertPropertyGroupsEquivalent(
+        List<PropertyGroup> actual,
+        List<PropertyGroup> expected
+    ) {
+        if (isNullOrEmpty(actual) && isNullOrEmpty(expected)) {
+            return;
+        }
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    private static boolean isNullOrEmpty(List<?> values) {
+        return values == null || values.isEmpty();
     }
 
     @Test

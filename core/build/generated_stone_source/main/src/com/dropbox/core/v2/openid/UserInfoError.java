@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from openid_openid_types.stone */
+/* This file was generated from openid.stone */
 
 package com.dropbox.core.v2.openid;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class UserInfoError {
-    // union openid.UserInfoError (openid_openid_types.stone)
+    // union openid.UserInfoError (openid.stone)
 
     /**
      * Discriminating tag type for {@link UserInfoError}.

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Information on active web sessions.
  */
 public class ActiveWebSession extends DeviceSession {
-    // struct team.ActiveWebSession (team_devices.stone)
+    // struct team.ActiveWebSession (team.stone)
 
     @Nonnull
     protected final String userAgent;

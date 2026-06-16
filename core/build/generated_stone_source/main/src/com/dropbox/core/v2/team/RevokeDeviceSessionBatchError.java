@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum RevokeDeviceSessionBatchError {
-    // union team.RevokeDeviceSessionBatchError (team_devices.stone)
+    // union team.RevokeDeviceSessionBatchError (team.stone)
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *

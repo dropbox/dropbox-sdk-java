@@ -77,7 +77,7 @@ public class AlphaGetMetadataBuilder {
      * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
      *
      * @param includeHasExplicitSharedMembers  If true, the results will include
-     *     a flag for each file indicating whether or not  that file has any
+     *     a flag for each file indicating whether or not that file has any
      *     explicit members. Defaults to {@code false} when set to {@code null}.
      *
      * @return this builder
@@ -105,15 +105,19 @@ public class AlphaGetMetadataBuilder {
     /**
      * Set value for optional field.
      *
-     * @param includePropertyTemplates  If set to a valid list of template IDs,
-     *     {@link FileMetadata#getPropertyGroups} is set for files with custom
-     *     properties. Must not contain a {@code null} item.
+     * @param includePropertyTemplates  Field is deprecated. If set to a valid
+     *     list of template IDs, {@link FileMetadata#getPropertyGroups} is set
+     *     for files with custom properties. Must not contain a {@code null}
+     *     item.
      *
      * @return this builder
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
+     *
+     * @deprecated
      */
+    @Deprecated
     public AlphaGetMetadataBuilder withIncludePropertyTemplates(List<String> includePropertyTemplates) {
         this._builder.withIncludePropertyTemplates(includePropertyTemplates);
         return this;

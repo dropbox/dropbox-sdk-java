@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum MembersGetInfoError {
-    // union team.MembersGetInfoError (team_members.stone)
+    // union team.MembersGetInfoError (team.stone)
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *

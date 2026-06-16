@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Changed IP address associated with active mobile session.
  */
 public class DeviceChangeIpMobileDetails {
-    // struct team_log.DeviceChangeIpMobileDetails (team_log_generated.stone)
+    // struct team_log.DeviceChangeIpMobileDetails (team_log.stone)
 
     @Nullable
     protected final DeviceSessionLogInfo deviceSessionInfo;

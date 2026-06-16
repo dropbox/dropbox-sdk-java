@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Arguments for {@link DbxUserSharingRequests#listReceivedFiles}.
  */
 class ListFilesArg {
-    // struct sharing.ListFilesArg (sharing_files.stone)
+    // struct sharing.ListFilesArg (sharing.stone)
 
     protected final long limit;
     @Nullable
@@ -40,7 +40,7 @@ class ListFilesArg {
      *     no limit is specified. Must be greater than or equal to 1 and be less
      *     than or equal to 300.
      * @param actions  A list of `FileAction`s corresponding to
-     *     `FilePermission`s that should appear in the  response's {@link
+     *     `FilePermission`s that should appear in the response's {@link
      *     SharedFileMetadata#getPermissions} field describing the actions the
      *     authenticated user can perform on the file. Must not contain a {@code
      *     null} item.
@@ -88,8 +88,8 @@ class ListFilesArg {
 
     /**
      * A list of `FileAction`s corresponding to `FilePermission`s that should
-     * appear in the  response's {@link SharedFileMetadata#getPermissions} field
-     * describing the actions the  authenticated user can perform on the file.
+     * appear in the response's {@link SharedFileMetadata#getPermissions} field
+     * describing the actions the authenticated user can perform on the file.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -156,9 +156,9 @@ class ListFilesArg {
          * Set value for optional field.
          *
          * @param actions  A list of `FileAction`s corresponding to
-         *     `FilePermission`s that should appear in the  response's {@link
+         *     `FilePermission`s that should appear in the response's {@link
          *     SharedFileMetadata#getPermissions} field describing the actions
-         *     the  authenticated user can perform on the file. Must not contain
+         *     the authenticated user can perform on the file. Must not contain
          *     a {@code null} item.
          *
          * @return this builder

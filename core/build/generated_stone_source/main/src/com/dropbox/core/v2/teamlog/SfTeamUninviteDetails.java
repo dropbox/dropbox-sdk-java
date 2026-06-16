@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Unshared folder with team member.
  */
 public class SfTeamUninviteDetails {
-    // struct team_log.SfTeamUninviteDetails (team_log_generated.stone)
+    // struct team_log.SfTeamUninviteDetails (team_log.stone)
 
     protected final long targetAssetIndex;
     @Nonnull

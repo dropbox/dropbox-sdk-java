@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Alert recipients setting type
  */
 public enum AlertRecipientsSettingType {
-    // union team_log.AlertRecipientsSettingType (team_log_generated.stone)
+    // union team_log.AlertRecipientsSettingType (team_log.stone)
     CUSTOM_LIST,
     INVALID,
     NONE,

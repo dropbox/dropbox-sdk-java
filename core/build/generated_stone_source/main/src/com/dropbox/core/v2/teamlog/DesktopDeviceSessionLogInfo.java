@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
  * Information about linked Dropbox desktop client sessions
  */
 public class DesktopDeviceSessionLogInfo extends DeviceSessionLogInfo {
-    // struct team_log.DesktopDeviceSessionLogInfo (team_log_generated.stone)
+    // struct team_log.DesktopDeviceSessionLogInfo (team_log.stone)
 
     @Nullable
     protected final DesktopSessionLogInfo sessionInfo;

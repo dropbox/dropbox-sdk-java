@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Joined team member's shared folder from link.
  */
 public class SfTeamJoinFromOobLinkDetails {
-    // struct team_log.SfTeamJoinFromOobLinkDetails (team_log_generated.stone)
+    // struct team_log.SfTeamJoinFromOobLinkDetails (team_log.stone)
 
     protected final long targetAssetIndex;
     @Nonnull

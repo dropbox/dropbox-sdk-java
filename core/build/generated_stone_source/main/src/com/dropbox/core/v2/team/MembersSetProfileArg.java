@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * new_given_name, and/or new_surname must be provided.
  */
 class MembersSetProfileArg {
-    // struct team.MembersSetProfileArg (team_members.stone)
+    // struct team.MembersSetProfileArg (team.stone)
 
     @Nonnull
     protected final UserSelectorArg user;
@@ -58,9 +58,9 @@ class MembersSetProfileArg {
      * @param newExternalId  New external ID for member. Must have length of at
      *     most 64.
      * @param newGivenName  New given name for member. Must have length of at
-     *     most 100 and match pattern "{@code [^/:?*<>\"|]*}".
-     * @param newSurname  New surname for member. Must have length of at most
-     *     100 and match pattern "{@code [^/:?*<>\"|]*}".
+     *     most 50 and match pattern "{@code [^/:?*<>\"|]*}".
+     * @param newSurname  New surname for member. Must have length of at most 50
+     *     and match pattern "{@code [^/:?*<>\"|]*}".
      * @param newPersistentId  New persistent ID. This field only available to
      *     teams using persistent ID SAML configuration.
      * @param newIsDirectoryRestricted  New value for whether the user is a
@@ -90,8 +90,8 @@ class MembersSetProfileArg {
         }
         this.newExternalId = newExternalId;
         if (newGivenName != null) {
-            if (newGivenName.length() > 100) {
-                throw new IllegalArgumentException("String 'newGivenName' is longer than 100");
+            if (newGivenName.length() > 50) {
+                throw new IllegalArgumentException("String 'newGivenName' is longer than 50");
             }
             if (!java.util.regex.Pattern.matches("[^/:?*<>\"|]*", newGivenName)) {
                 throw new IllegalArgumentException("String 'newGivenName' does not match pattern");
@@ -99,8 +99,8 @@ class MembersSetProfileArg {
         }
         this.newGivenName = newGivenName;
         if (newSurname != null) {
-            if (newSurname.length() > 100) {
-                throw new IllegalArgumentException("String 'newSurname' is longer than 100");
+            if (newSurname.length() > 50) {
+                throw new IllegalArgumentException("String 'newSurname' is longer than 50");
             }
             if (!java.util.regex.Pattern.matches("[^/:?*<>\"|]*", newSurname)) {
                 throw new IllegalArgumentException("String 'newSurname' does not match pattern");
@@ -290,7 +290,7 @@ class MembersSetProfileArg {
          * Set value for optional field.
          *
          * @param newGivenName  New given name for member. Must have length of
-         *     at most 100 and match pattern "{@code [^/:?*<>\"|]*}".
+         *     at most 50 and match pattern "{@code [^/:?*<>\"|]*}".
          *
          * @return this builder
          *
@@ -299,8 +299,8 @@ class MembersSetProfileArg {
          */
         public Builder withNewGivenName(String newGivenName) {
             if (newGivenName != null) {
-                if (newGivenName.length() > 100) {
-                    throw new IllegalArgumentException("String 'newGivenName' is longer than 100");
+                if (newGivenName.length() > 50) {
+                    throw new IllegalArgumentException("String 'newGivenName' is longer than 50");
                 }
                 if (!java.util.regex.Pattern.matches("[^/:?*<>\"|]*", newGivenName)) {
                     throw new IllegalArgumentException("String 'newGivenName' does not match pattern");
@@ -314,7 +314,7 @@ class MembersSetProfileArg {
          * Set value for optional field.
          *
          * @param newSurname  New surname for member. Must have length of at
-         *     most 100 and match pattern "{@code [^/:?*<>\"|]*}".
+         *     most 50 and match pattern "{@code [^/:?*<>\"|]*}".
          *
          * @return this builder
          *
@@ -323,8 +323,8 @@ class MembersSetProfileArg {
          */
         public Builder withNewSurname(String newSurname) {
             if (newSurname != null) {
-                if (newSurname.length() > 100) {
-                    throw new IllegalArgumentException("String 'newSurname' is longer than 100");
+                if (newSurname.length() > 50) {
+                    throw new IllegalArgumentException("String 'newSurname' is longer than 50");
                 }
                 if (!java.util.regex.Pattern.matches("[^/:?*<>\"|]*", newSurname)) {
                     throw new IllegalArgumentException("String 'newSurname' does not match pattern");

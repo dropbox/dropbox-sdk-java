@@ -5,6 +5,9 @@ package com.dropbox.core.v2.paper;
 
 import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxException;
+import com.dropbox.core.util.LangUtil;
+
+import java.util.Date;
 
 /**
  * The request builder returned by {@link DbxUserPaperRequests#docsListBuilder}.
@@ -113,6 +116,19 @@ public class DocsListBuilder {
      */
     public DocsListBuilder withLimit(Integer limit) {
         this._builder.withLimit(limit);
+        return this;
+    }
+
+    /**
+     * Set value for optional field.
+     *
+     * @param stopAtDate  Do not return results beyond this date. Behavior
+     *     depends on sort order.
+     *
+     * @return this builder
+     */
+    public DocsListBuilder withStopAtDate(Date stopAtDate) {
+        this._builder.withStopAtDate(stopAtDate);
         return this;
     }
 

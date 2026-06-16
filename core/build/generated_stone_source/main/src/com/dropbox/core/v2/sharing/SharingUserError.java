@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * User account had a problem preventing this action.
  */
 public enum SharingUserError {
-    // union sharing.SharingUserError (sharing_files.stone)
+    // union sharing.SharingUserError (sharing.stone)
     /**
      * This user's email address is not verified. This functionality is only
      * available on accounts with a verified email address. Users can verify

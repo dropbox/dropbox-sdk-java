@@ -112,8 +112,8 @@ public class DbxUserUsersRequests {
     //
 
     /**
-     * Get information about multiple user accounts.  At most 300 accounts may
-     * be queried per request.
+     * Get information about multiple user accounts. At most 300 accounts may be
+     * queried per request.
      *
      */
     List<BasicAccount> getAccountBatch(GetAccountBatchArg arg) throws GetAccountBatchErrorException, DbxException {
@@ -132,8 +132,8 @@ public class DbxUserUsersRequests {
     }
 
     /**
-     * Get information about multiple user accounts.  At most 300 accounts may
-     * be queried per request.
+     * Get information about multiple user accounts. At most 300 accounts may be
+     * queried per request.
      *
      * @param accountIds  List of user account identifiers.  Should not contain
      *     any duplicate account IDs. Must contain at least 1 items, not contain

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -29,7 +29,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class ListFileMembersContinueError {
-    // union sharing.ListFileMembersContinueError (sharing_files.stone)
+    // union sharing.ListFileMembersContinueError (sharing.stone)
 
     /**
      * Discriminating tag type for {@link ListFileMembersContinueError}.

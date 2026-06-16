@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Team merge request acceptance details shown to the primary team
  */
 public class PrimaryTeamRequestAcceptedDetails {
-    // struct team_log.PrimaryTeamRequestAcceptedDetails (team_log_generated.stone)
+    // struct team_log.PrimaryTeamRequestAcceptedDetails (team_log.stone)
 
     @Nonnull
     protected final String secondaryTeam;

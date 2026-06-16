@@ -81,9 +81,9 @@ class GetTemporaryUploadLinkArg {
     }
 
     /**
-     * How long before this link expires, in seconds.  Attempting to start an
-     * upload with this link longer than this period  of time after link
-     * creation will result in an error.
+     * How long before this link expires, in seconds. Attempting to start an
+     * upload with this link longer than this period of time after link creation
+     * will result in an error.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     14400.0.

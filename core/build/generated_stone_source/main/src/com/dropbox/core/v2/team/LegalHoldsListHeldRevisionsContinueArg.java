@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_legal_holds.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class LegalHoldsListHeldRevisionsContinueArg {
-    // struct team.LegalHoldsListHeldRevisionsContinueArg (team_legal_holds.stone)
+    // struct team.LegalHoldsListHeldRevisionsContinueArg (team.stone)
 
     @Nonnull
     protected final String id;

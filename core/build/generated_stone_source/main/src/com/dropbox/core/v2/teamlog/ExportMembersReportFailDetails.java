@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Failed to create members data report.
  */
 public class ExportMembersReportFailDetails {
-    // struct team_log.ExportMembersReportFailDetails (team_log_generated.stone)
+    // struct team_log.ExportMembersReportFailDetails (team_log.stone)
 
     @Nonnull
     protected final TeamReportFailureReason failureReason;

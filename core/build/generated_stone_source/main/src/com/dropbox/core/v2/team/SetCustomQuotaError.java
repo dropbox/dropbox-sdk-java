@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_member_space_limits.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Error returned when setting member custom quota.
  */
 public enum SetCustomQuotaError {
-    // union team.SetCustomQuotaError (team_member_space_limits.stone)
+    // union team.SetCustomQuotaError (team.stone)
     /**
      * A maximum of 1000 users can be set for a single call.
      */

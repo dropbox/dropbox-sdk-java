@@ -53,9 +53,8 @@ public class DbxTeamFilePropertiesRequests {
     /**
      * Add a template associated with a team. See {@link
      * DbxUserFilePropertiesRequests#propertiesAdd(String,List)} to add
-     * properties to a file or folder.
-     *
-     * <p> Note: this endpoint will create team-owned templates. </p>
+     * properties to a file or folder. Note: this endpoint will create
+     * team-owned templates.
      *
      * @param name  Display name for the template. Template names can be up to
      *     256 bytes. Must not be {@code null}.

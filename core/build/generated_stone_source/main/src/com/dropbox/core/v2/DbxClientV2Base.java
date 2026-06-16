@@ -12,6 +12,7 @@ import com.dropbox.core.v2.filerequests.DbxUserFileRequestsRequests;
 import com.dropbox.core.v2.files.DbxUserFilesRequests;
 import com.dropbox.core.v2.openid.DbxUserOpenidRequests;
 import com.dropbox.core.v2.paper.DbxUserPaperRequests;
+import com.dropbox.core.v2.riviera.DbxUserRivieraRequests;
 import com.dropbox.core.v2.sharing.DbxUserSharingRequests;
 import com.dropbox.core.v2.users.DbxUserUsersRequests;
 
@@ -30,6 +31,7 @@ public class DbxClientV2Base {
     private final DbxUserFilesRequests files;
     private final DbxUserOpenidRequests openid;
     private final DbxUserPaperRequests paper;
+    private final DbxUserRivieraRequests riviera;
     private final DbxUserSharingRequests sharing;
     private final DbxUserUsersRequests users;
 
@@ -49,6 +51,7 @@ public class DbxClientV2Base {
         this.files = new DbxUserFilesRequests(_client);
         this.openid = new DbxUserOpenidRequests(_client);
         this.paper = new DbxUserPaperRequests(_client);
+        this.riviera = new DbxUserRivieraRequests(_client);
         this.sharing = new DbxUserSharingRequests(_client);
         this.users = new DbxUserUsersRequests(_client);
     }
@@ -134,6 +137,15 @@ public class DbxClientV2Base {
      */
     public DbxUserPaperRequests paper() {
         return paper;
+    }
+
+    /**
+     * Returns client for issuing requests in the {@code "riviera"} namespace.
+     *
+     * @return Dropbox riviera client
+     */
+    public DbxUserRivieraRequests riviera() {
+        return riviera;
     }
 
     /**

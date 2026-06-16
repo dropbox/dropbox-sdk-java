@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -25,12 +25,14 @@ import javax.annotation.Nullable;
  * Changed shared link expiration date.
  */
 public class SharedLinkChangeExpiryDetails {
-    // struct team_log.SharedLinkChangeExpiryDetails (team_log_generated.stone)
+    // struct team_log.SharedLinkChangeExpiryDetails (team_log.stone)
 
     @Nullable
     protected final Date newValue;
     @Nullable
     protected final Date previousValue;
+    @Nullable
+    protected final Boolean isConsolidationAction;
 
     /**
      * Changed shared link expiration date.
@@ -42,10 +44,13 @@ public class SharedLinkChangeExpiryDetails {
      *     historical data gap.
      * @param previousValue  Previous shared link expiration date. Might be
      *     missing due to historical data gap.
+     * @param isConsolidationAction  Indicates whether this was a consolidation
+     *     action by system.
      */
-    public SharedLinkChangeExpiryDetails(@Nullable Date newValue, @Nullable Date previousValue) {
+    public SharedLinkChangeExpiryDetails(@Nullable Date newValue, @Nullable Date previousValue, @Nullable Boolean isConsolidationAction) {
         this.newValue = LangUtil.truncateMillis(newValue);
         this.previousValue = LangUtil.truncateMillis(previousValue);
+        this.isConsolidationAction = isConsolidationAction;
     }
 
     /**
@@ -54,7 +59,7 @@ public class SharedLinkChangeExpiryDetails {
      * <p> The default values for unset fields will be used. </p>
      */
     public SharedLinkChangeExpiryDetails() {
-        this(null, null);
+        this(null, null, null);
     }
 
     /**
@@ -80,6 +85,16 @@ public class SharedLinkChangeExpiryDetails {
     }
 
     /**
+     * Indicates whether this was a consolidation action by system.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public Boolean getIsConsolidationAction() {
+        return isConsolidationAction;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @return builder for this class.
@@ -95,10 +110,12 @@ public class SharedLinkChangeExpiryDetails {
 
         protected Date newValue;
         protected Date previousValue;
+        protected Boolean isConsolidationAction;
 
         protected Builder() {
             this.newValue = null;
             this.previousValue = null;
+            this.isConsolidationAction = null;
         }
 
         /**
@@ -128,13 +145,26 @@ public class SharedLinkChangeExpiryDetails {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param isConsolidationAction  Indicates whether this was a
+         *     consolidation action by system.
+         *
+         * @return this builder
+         */
+        public Builder withIsConsolidationAction(Boolean isConsolidationAction) {
+            this.isConsolidationAction = isConsolidationAction;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link SharedLinkChangeExpiryDetails}
          * configured with this builder's values
          *
          * @return new instance of {@link SharedLinkChangeExpiryDetails}
          */
         public SharedLinkChangeExpiryDetails build() {
-            return new SharedLinkChangeExpiryDetails(newValue, previousValue);
+            return new SharedLinkChangeExpiryDetails(newValue, previousValue, isConsolidationAction);
         }
     }
 
@@ -142,7 +172,8 @@ public class SharedLinkChangeExpiryDetails {
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
             this.newValue,
-            this.previousValue
+            this.previousValue,
+            this.isConsolidationAction
         });
         return hash;
     }
@@ -160,6 +191,7 @@ public class SharedLinkChangeExpiryDetails {
             SharedLinkChangeExpiryDetails other = (SharedLinkChangeExpiryDetails) obj;
             return ((this.newValue == other.newValue) || (this.newValue != null && this.newValue.equals(other.newValue)))
                 && ((this.previousValue == other.previousValue) || (this.previousValue != null && this.previousValue.equals(other.previousValue)))
+                && ((this.isConsolidationAction == other.isConsolidationAction) || (this.isConsolidationAction != null && this.isConsolidationAction.equals(other.isConsolidationAction)))
                 ;
         }
         else {
@@ -203,6 +235,10 @@ public class SharedLinkChangeExpiryDetails {
                 g.writeFieldName("previous_value");
                 StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.previousValue, g);
             }
+            if (value.isConsolidationAction != null) {
+                g.writeFieldName("is_consolidation_action");
+                StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.isConsolidationAction, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -219,6 +255,7 @@ public class SharedLinkChangeExpiryDetails {
             if (tag == null) {
                 Date f_newValue = null;
                 Date f_previousValue = null;
+                Boolean f_isConsolidationAction = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -228,11 +265,14 @@ public class SharedLinkChangeExpiryDetails {
                     else if ("previous_value".equals(field)) {
                         f_previousValue = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
                     }
+                    else if ("is_consolidation_action".equals(field)) {
+                        f_isConsolidationAction = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
                 }
-                value = new SharedLinkChangeExpiryDetails(f_newValue, f_previousValue);
+                value = new SharedLinkChangeExpiryDetails(f_newValue, f_previousValue, f_isConsolidationAction);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

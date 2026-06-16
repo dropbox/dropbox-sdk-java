@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Information about a team member.
  */
 public class TeamMemberInfo {
-    // struct team.TeamMemberInfo (team_members.stone)
+    // struct team.TeamMemberInfo (team.stone)
 
     @Nonnull
     protected final TeamMemberProfile profile;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum MembersListContinueError {
-    // union team.MembersListContinueError (team_members.stone)
+    // union team.MembersListContinueError (team.stone)
     /**
      * The cursor is invalid.
      */

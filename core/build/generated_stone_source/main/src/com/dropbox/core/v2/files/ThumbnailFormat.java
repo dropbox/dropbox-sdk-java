@@ -19,7 +19,8 @@ import java.util.Arrays;
 public enum ThumbnailFormat {
     // union files.ThumbnailFormat (files.stone)
     JPEG,
-    PNG;
+    PNG,
+    WEBP;
 
     /**
      * For internal use only.
@@ -36,6 +37,10 @@ public enum ThumbnailFormat {
                 }
                 case PNG: {
                     g.writeString("png");
+                    break;
+                }
+                case WEBP: {
+                    g.writeString("webp");
                     break;
                 }
                 default: {
@@ -67,6 +72,9 @@ public enum ThumbnailFormat {
             }
             else if ("png".equals(tag)) {
                 value = ThumbnailFormat.PNG;
+            }
+            else if ("webp".equals(tag)) {
+                value = ThumbnailFormat.WEBP;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

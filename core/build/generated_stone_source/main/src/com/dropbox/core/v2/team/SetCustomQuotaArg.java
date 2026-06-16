@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_member_space_limits.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 class SetCustomQuotaArg {
-    // struct team.SetCustomQuotaArg (team_member_space_limits.stone)
+    // struct team.SetCustomQuotaArg (team.stone)
 
     @Nonnull
     protected final List<UserCustomQuotaArg> usersAndQuotas;

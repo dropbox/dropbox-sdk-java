@@ -62,6 +62,10 @@ public enum DeleteFileRequestError {
      */
     VALIDATION_ERROR,
     /**
+     * This user doesn't have permission to edit files in a destination folder
+     */
+    NO_WRITE_PERMISSION,
+    /**
      * One or more file requests currently open.
      */
     FILE_REQUEST_OPEN;
@@ -105,6 +109,10 @@ public enum DeleteFileRequestError {
                 }
                 case VALIDATION_ERROR: {
                     g.writeString("validation_error");
+                    break;
+                }
+                case NO_WRITE_PERMISSION: {
+                    g.writeString("no_write_permission");
                     break;
                 }
                 case FILE_REQUEST_OPEN: {
@@ -158,6 +166,9 @@ public enum DeleteFileRequestError {
             }
             else if ("validation_error".equals(tag)) {
                 value = DeleteFileRequestError.VALIDATION_ERROR;
+            }
+            else if ("no_write_permission".equals(tag)) {
+                value = DeleteFileRequestError.NO_WRITE_PERMISSION;
             }
             else if ("file_request_open".equals(tag)) {
                 value = DeleteFileRequestError.FILE_REQUEST_OPEN;

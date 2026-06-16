@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Removed user/group from shared file/folder.
  */
 public class SharedContentRemoveMemberDetails {
-    // struct team_log.SharedContentRemoveMemberDetails (team_log_generated.stone)
+    // struct team_log.SharedContentRemoveMemberDetails (team_log.stone)
 
     @Nullable
     protected final AccessLevel sharedContentAccessLevel;

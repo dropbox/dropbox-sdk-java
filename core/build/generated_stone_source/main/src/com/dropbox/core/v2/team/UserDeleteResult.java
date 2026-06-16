@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_secondary_mails.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -32,7 +32,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class UserDeleteResult {
-    // union team.UserDeleteResult (team_secondary_mails.stone)
+    // union team.UserDeleteResult (team.stone)
 
     /**
      * Discriminating tag type for {@link UserDeleteResult}.

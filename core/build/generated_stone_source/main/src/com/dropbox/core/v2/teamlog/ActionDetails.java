@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -29,7 +29,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class ActionDetails {
-    // union team_log.ActionDetails (team_log_generated.stone)
+    // union team_log.ActionDetails (team_log.stone)
 
     /**
      * Discriminating tag type for {@link ActionDetails}.
@@ -40,7 +40,7 @@ public final class ActionDetails {
          */
         REMOVE_ACTION, // MemberRemoveActionType
         /**
-         * Additional information relevant when someone is invited to the team.
+         * Additional information relevant when someone is invited to the team
          */
         TEAM_INVITE_DETAILS, // TeamInviteDetails
         /**
@@ -227,7 +227,7 @@ public final class ActionDetails {
      * Returns an instance of {@code ActionDetails} that has its tag set to
      * {@link Tag#TEAM_INVITE_DETAILS}.
      *
-     * <p> Additional information relevant when someone is invited to the team.
+     * <p> Additional information relevant when someone is invited to the team
      * </p>
      *
      * @param value  value to assign to this instance.
@@ -245,7 +245,7 @@ public final class ActionDetails {
     }
 
     /**
-     * Additional information relevant when someone is invited to the team.
+     * Additional information relevant when someone is invited to the team
      *
      * <p> This instance must be tagged as {@link Tag#TEAM_INVITE_DETAILS}. </p>
      *

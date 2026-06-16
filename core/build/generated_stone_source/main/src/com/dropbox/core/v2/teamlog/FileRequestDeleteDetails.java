@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Delete file request.
  */
 public class FileRequestDeleteDetails {
-    // struct team_log.FileRequestDeleteDetails (team_log_generated.stone)
+    // struct team_log.FileRequestDeleteDetails (team_log.stone)
 
     @Nullable
     protected final String fileRequestId;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class CreateSharedLinkArg {
-    // struct sharing.CreateSharedLinkArg (shared_links.stone)
+    // struct sharing.CreateSharedLinkArg (sharing.stone)
 
     @Nonnull
     protected final String path;
@@ -33,6 +33,7 @@ class CreateSharedLinkArg {
      * specifying values for all optional fields.
      *
      * @param path  The path to share. Must not be {@code null}.
+     * @param shortUrl  Field is deprecated. None.
      * @param pendingUpload  If it's okay to share a path that does not yet
      *     exist, set this to either {@link PendingUploadMode#FILE} or {@link
      *     PendingUploadMode#FOLDER} to indicate whether to assume it's a file
@@ -75,10 +76,14 @@ class CreateSharedLinkArg {
     }
 
     /**
+     * Field is deprecated. None
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
+     *
+     * @deprecated
      */
+    @Deprecated
     public boolean getShortUrl() {
         return shortUrl;
     }
@@ -133,10 +138,14 @@ class CreateSharedLinkArg {
          * <p> If left unset or set to {@code null}, defaults to {@code false}.
          * </p>
          *
-         * @param shortUrl  Defaults to {@code false} when set to {@code null}.
+         * @param shortUrl  Field is deprecated. None. Defaults to {@code false}
+         *     when set to {@code null}.
          *
          * @return this builder
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withShortUrl(Boolean shortUrl) {
             if (shortUrl != null) {
                 this.shortUrl = shortUrl;

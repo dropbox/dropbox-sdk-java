@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_folders.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 class TeamFolderIdArg {
-    // struct team.TeamFolderIdArg (team_folders.stone)
+    // struct team.TeamFolderIdArg (team.stone)
 
     @Nonnull
     protected final String teamFolderId;

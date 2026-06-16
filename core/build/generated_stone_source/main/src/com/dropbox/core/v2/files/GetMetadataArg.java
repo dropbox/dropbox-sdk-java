@@ -37,7 +37,8 @@ class GetMetadataArg {
      * specifying values for all optional fields.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo} is
      *     set for photo and video.
@@ -45,7 +46,7 @@ class GetMetadataArg {
      *     for deleted file or folder, otherwise {@link LookupError#NOT_FOUND}
      *     will be returned.
      * @param includeHasExplicitSharedMembers  If true, the results will include
-     *     a flag for each file indicating whether or not  that file has any
+     *     a flag for each file indicating whether or not that file has any
      *     explicit members.
      * @param includePropertyGroups  If set to a valid list of template IDs,
      *     {@link FileMetadata#getPropertyGroups} is set if there exists
@@ -59,7 +60,7 @@ class GetMetadataArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -75,7 +76,8 @@ class GetMetadataArg {
      * <p> The default values for unset fields will be used. </p>
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -118,7 +120,7 @@ class GetMetadataArg {
 
     /**
      * If true, the results will include a flag for each file indicating whether
-     * or not  that file has any explicit members.
+     * or not that file has any explicit members.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
@@ -143,7 +145,8 @@ class GetMetadataArg {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path of a file or folder on Dropbox. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @return builder for this class.
@@ -170,7 +173,7 @@ class GetMetadataArg {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
+            if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;
@@ -232,7 +235,7 @@ class GetMetadataArg {
          * </p>
          *
          * @param includeHasExplicitSharedMembers  If true, the results will
-         *     include a flag for each file indicating whether or not  that file
+         *     include a flag for each file indicating whether or not that file
          *     has any explicit members. Defaults to {@code false} when set to
          *     {@code null}.
          *

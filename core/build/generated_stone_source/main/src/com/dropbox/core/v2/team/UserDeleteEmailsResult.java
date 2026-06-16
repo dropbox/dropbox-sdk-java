@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_secondary_mails.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class UserDeleteEmailsResult {
-    // struct team.UserDeleteEmailsResult (team_secondary_mails.stone)
+    // struct team.UserDeleteEmailsResult (team.stone)
 
     @Nonnull
     protected final UserSelectorArg user;

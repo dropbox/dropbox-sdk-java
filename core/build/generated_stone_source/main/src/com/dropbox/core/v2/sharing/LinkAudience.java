@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_content_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum LinkAudience {
-    // union sharing.LinkAudience (shared_content_links.stone)
+    // union sharing.LinkAudience (sharing.stone)
     /**
      * Link is accessible by anyone.
      */
@@ -34,12 +34,12 @@ public enum LinkAudience {
      */
     NO_ONE,
     /**
-     * Use `require_password` instead. A link-specific password is required to
-     * access the link. Login is not required.
+     * Field is deprecated. Use `require_password` instead. A link-specific
+     * password is required to access the link. Login is not required.
      */
     PASSWORD,
     /**
-     * Link is accessible only by members of the content.
+     * Field is deprecated. Link is accessible only by members of the content.
      */
     MEMBERS,
     /**

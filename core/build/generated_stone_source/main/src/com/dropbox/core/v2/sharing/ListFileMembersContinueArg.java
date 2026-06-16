@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Arguments for {@link DbxUserSharingRequests#listFileMembersContinue(String)}.
  */
 class ListFileMembersContinueArg {
-    // struct sharing.ListFileMembersContinueArg (sharing_files.stone)
+    // struct sharing.ListFileMembersContinueArg (sharing.stone)
 
     @Nonnull
     protected final String cursor;

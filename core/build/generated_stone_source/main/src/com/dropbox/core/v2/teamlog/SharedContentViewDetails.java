@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Previewed shared file/folder.
  */
 public class SharedContentViewDetails {
-    // struct team_log.SharedContentViewDetails (team_log_generated.stone)
+    // struct team_log.SharedContentViewDetails (team_log.stone)
 
     @Nonnull
     protected final String sharedContentLink;

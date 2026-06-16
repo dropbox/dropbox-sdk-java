@@ -43,7 +43,7 @@ public class ReportsGetActivityBuilder {
      * Set value for optional field.
      *
      * @param startDate  Optional starting date (inclusive). If start_date is
-     *     None or too long ago, this field will  be set to 6 months ago.
+     *     None or too long ago, this field will be set to 6 months ago.
      *
      * @return this builder
      */

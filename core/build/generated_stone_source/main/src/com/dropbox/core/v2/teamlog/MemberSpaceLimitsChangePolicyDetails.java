@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Changed team default member space limit.
  */
 public class MemberSpaceLimitsChangePolicyDetails {
-    // struct team_log.MemberSpaceLimitsChangePolicyDetails (team_log_generated.stone)
+    // struct team_log.MemberSpaceLimitsChangePolicyDetails (team_log.stone)
 
     @Nullable
     protected final Long previousValue;

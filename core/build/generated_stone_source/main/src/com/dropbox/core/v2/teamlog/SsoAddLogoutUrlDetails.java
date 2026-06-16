@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Added sign-out URL for SSO.
  */
 public class SsoAddLogoutUrlDetails {
-    // struct team_log.SsoAddLogoutUrlDetails (team_log_generated.stone)
+    // struct team_log.SsoAddLogoutUrlDetails (team_log.stone)
 
     @Nullable
     protected final String newValue;

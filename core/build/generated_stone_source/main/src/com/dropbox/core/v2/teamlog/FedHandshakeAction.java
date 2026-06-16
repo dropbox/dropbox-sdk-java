@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum FedHandshakeAction {
-    // union team_log.FedHandshakeAction (team_log_generated.stone)
+    // union team_log.FedHandshakeAction (team_log.stone)
     ACCEPTED_INVITE,
     CANCELED_INVITE,
     INVITE_EXPIRED,

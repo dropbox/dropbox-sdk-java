@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class ListFoldersArgs {
-    // struct sharing.ListFoldersArgs (sharing_folders.stone)
+    // struct sharing.ListFoldersArgs (sharing.stone)
 
     protected final long limit;
     @Nullable
@@ -34,7 +34,7 @@ class ListFoldersArgs {
      * @param limit  The maximum number of results to return per request. Must
      *     be greater than or equal to 1 and be less than or equal to 1000.
      * @param actions  A list of `FolderAction`s corresponding to
-     *     `FolderPermission`s that should appear in the  response's {@link
+     *     `FolderPermission`s that should appear in the response's {@link
      *     SharedFolderMetadata#getPermissions} field describing the actions the
      *     authenticated user can perform on the folder. Must not contain a
      *     {@code null} item.
@@ -81,7 +81,7 @@ class ListFoldersArgs {
 
     /**
      * A list of `FolderAction`s corresponding to `FolderPermission`s that
-     * should appear in the  response's {@link
+     * should appear in the response's {@link
      * SharedFolderMetadata#getPermissions} field describing the actions the
      * authenticated user can perform on the folder.
      *
@@ -149,9 +149,9 @@ class ListFoldersArgs {
          * Set value for optional field.
          *
          * @param actions  A list of `FolderAction`s corresponding to
-         *     `FolderPermission`s that should appear in the  response's {@link
+         *     `FolderPermission`s that should appear in the response's {@link
          *     SharedFolderMetadata#getPermissions} field describing the actions
-         *     the  authenticated user can perform on the folder. Must not
+         *     the authenticated user can perform on the folder. Must not
          *     contain a {@code null} item.
          *
          * @return this builder

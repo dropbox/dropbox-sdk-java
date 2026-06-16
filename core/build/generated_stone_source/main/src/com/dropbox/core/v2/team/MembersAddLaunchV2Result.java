@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -28,7 +28,7 @@ import java.util.List;
  * will be used. </p>
  */
 public final class MembersAddLaunchV2Result {
-    // union team.MembersAddLaunchV2Result (team_members.stone)
+    // union team.MembersAddLaunchV2Result (team.stone)
 
     /**
      * Discriminating tag type for {@link MembersAddLaunchV2Result}.

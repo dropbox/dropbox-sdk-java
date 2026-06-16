@@ -40,8 +40,8 @@ public class SharedLinkFileInfo {
      * @param path  The path corresponding to a file in a shared link to a
      *     folder. Required for shared links to folders.
      * @param password  Password for the shared link. Required for
-     *     password-protected shared links to files  unless it can be read from
-     *     a cookie.
+     *     password-protected shared links to files unless it can be read from a
+     *     cookie.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -97,7 +97,7 @@ public class SharedLinkFileInfo {
 
     /**
      * Password for the shared link. Required for password-protected shared
-     * links to files  unless it can be read from a cookie.
+     * links to files unless it can be read from a cookie.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -158,7 +158,7 @@ public class SharedLinkFileInfo {
          * Set value for optional field.
          *
          * @param password  Password for the shared link. Required for
-         *     password-protected shared links to files  unless it can be read
+         *     password-protected shared links to files unless it can be read
          *     from a cookie.
          *
          * @return this builder

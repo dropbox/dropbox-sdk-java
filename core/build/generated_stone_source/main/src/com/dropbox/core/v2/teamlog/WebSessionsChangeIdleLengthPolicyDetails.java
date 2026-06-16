@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Changed how long team members can be idle while signed in to Dropbox.com.
  */
 public class WebSessionsChangeIdleLengthPolicyDetails {
-    // struct team_log.WebSessionsChangeIdleLengthPolicyDetails (team_log_generated.stone)
+    // struct team_log.WebSessionsChangeIdleLengthPolicyDetails (team_log.stone)
 
     @Nullable
     protected final WebSessionsIdleLengthPolicy newValue;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import java.util.Arrays;
  * associated with this instance.
  */
 public final class ModifySharedLinkSettingsError {
-    // union sharing.ModifySharedLinkSettingsError (shared_links.stone)
+    // union sharing.ModifySharedLinkSettingsError (sharing.stone)
 
     /**
      * Discriminating tag type for {@link ModifySharedLinkSettingsError}.
@@ -43,6 +43,11 @@ public final class ModifySharedLinkSettingsError {
          * instead.
          */
         UNSUPPORTED_LINK_TYPE,
+        /**
+         * Private shared links do not support `path` or `link_password`
+         * parameter fields.
+         */
+        UNSUPPORTED_PARAMETER_FIELD,
         /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
@@ -79,6 +84,11 @@ public final class ModifySharedLinkSettingsError {
      * instead.
      */
     public static final ModifySharedLinkSettingsError UNSUPPORTED_LINK_TYPE = new ModifySharedLinkSettingsError().withTag(Tag.UNSUPPORTED_LINK_TYPE);
+    /**
+     * Private shared links do not support `path` or `link_password` parameter
+     * fields.
+     */
+    public static final ModifySharedLinkSettingsError UNSUPPORTED_PARAMETER_FIELD = new ModifySharedLinkSettingsError().withTag(Tag.UNSUPPORTED_PARAMETER_FIELD);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -176,6 +186,17 @@ public final class ModifySharedLinkSettingsError {
      */
     public boolean isUnsupportedLinkType() {
         return this._tag == Tag.UNSUPPORTED_LINK_TYPE;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#UNSUPPORTED_PARAMETER_FIELD}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#UNSUPPORTED_PARAMETER_FIELD}, {@code false} otherwise.
+     */
+    public boolean isUnsupportedParameterField() {
+        return this._tag == Tag.UNSUPPORTED_PARAMETER_FIELD;
     }
 
     /**
@@ -279,6 +300,8 @@ public final class ModifySharedLinkSettingsError {
                     return true;
                 case UNSUPPORTED_LINK_TYPE:
                     return true;
+                case UNSUPPORTED_PARAMETER_FIELD:
+                    return true;
                 case OTHER:
                     return true;
                 case SETTINGS_ERROR:
@@ -332,6 +355,10 @@ public final class ModifySharedLinkSettingsError {
                     g.writeString("unsupported_link_type");
                     break;
                 }
+                case UNSUPPORTED_PARAMETER_FIELD: {
+                    g.writeString("unsupported_parameter_field");
+                    break;
+                }
                 case OTHER: {
                     g.writeString("other");
                     break;
@@ -380,6 +407,9 @@ public final class ModifySharedLinkSettingsError {
             }
             else if ("unsupported_link_type".equals(tag)) {
                 value = ModifySharedLinkSettingsError.UNSUPPORTED_LINK_TYPE;
+            }
+            else if ("unsupported_parameter_field".equals(tag)) {
+                value = ModifySharedLinkSettingsError.UNSUPPORTED_PARAMETER_FIELD;
             }
             else if ("other".equals(tag)) {
                 value = ModifySharedLinkSettingsError.OTHER;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Granted access to shared folder.
  */
 public class SfTeamGrantAccessDetails {
-    // struct team_log.SfTeamGrantAccessDetails (team_log_generated.stone)
+    // struct team_log.SfTeamGrantAccessDetails (team_log.stone)
 
     protected final long targetAssetIndex;
     @Nonnull

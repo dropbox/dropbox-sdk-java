@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Secondary mails policy changed.
  */
 public class SecondaryMailsPolicyChangedDetails {
-    // struct team_log.SecondaryMailsPolicyChangedDetails (team_log_generated.stone)
+    // struct team_log.SecondaryMailsPolicyChangedDetails (team_log.stone)
 
     @Nonnull
     protected final SecondaryMailsPolicy previousValue;

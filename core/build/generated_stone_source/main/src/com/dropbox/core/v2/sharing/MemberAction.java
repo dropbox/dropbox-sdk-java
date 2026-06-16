@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Actions that may be taken on members of a shared folder.
  */
 public enum MemberAction {
-    // union sharing.MemberAction (sharing_folders.stone)
+    // union sharing.MemberAction (sharing.stone)
     /**
      * Allow the member to keep a copy of the folder when removing.
      */

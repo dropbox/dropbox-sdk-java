@@ -53,7 +53,11 @@ public enum ThumbnailSize {
     /**
      * 2048 by 1536 px.
      */
-    W2048H1536;
+    W2048H1536,
+    /**
+     * 3200 by 2400 px.
+     */
+    W3200H2400;
 
     /**
      * For internal use only.
@@ -98,6 +102,10 @@ public enum ThumbnailSize {
                 }
                 case W2048H1536: {
                     g.writeString("w2048h1536");
+                    break;
+                }
+                case W3200H2400: {
+                    g.writeString("w3200h2400");
                     break;
                 }
                 default: {
@@ -150,6 +158,9 @@ public enum ThumbnailSize {
             }
             else if ("w2048h1536".equals(tag)) {
                 value = ThumbnailSize.W2048H1536;
+            }
+            else if ("w3200h2400".equals(tag)) {
+                value = ThumbnailSize.W3200H2400;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

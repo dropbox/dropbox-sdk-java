@@ -35,7 +35,7 @@ public final class PreviewError {
         PATH, // LookupError
         /**
          * This preview generation is still in progress and the file is not
-         * ready  for preview yet.
+         * ready for preview yet.
          */
         IN_PROGRESS,
         /**

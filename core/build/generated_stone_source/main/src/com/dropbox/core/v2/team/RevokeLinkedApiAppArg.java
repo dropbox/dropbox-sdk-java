@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_linked_apps.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 public class RevokeLinkedApiAppArg {
-    // struct team.RevokeLinkedApiAppArg (team_linked_apps.stone)
+    // struct team.RevokeLinkedApiAppArg (team.stone)
 
     @Nonnull
     protected final String appId;
@@ -32,8 +32,9 @@ public class RevokeLinkedApiAppArg {
      * @param appId  The application's unique id. Must not be {@code null}.
      * @param teamMemberId  The unique id of the member owning the device. Must
      *     not be {@code null}.
-     * @param keepAppFolder  This flag is not longer supported, the application
-     *     dedicated folder (in case the application uses  one) will be kept.
+     * @param keepAppFolder  Field is deprecated. This flag is not longer
+     *     supported, the application dedicated folder (in case the application
+     *     uses one) will be kept.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -87,12 +88,15 @@ public class RevokeLinkedApiAppArg {
     }
 
     /**
-     * This flag is not longer supported, the application dedicated folder (in
-     * case the application uses  one) will be kept.
+     * Field is deprecated. This flag is not longer supported, the application
+     * dedicated folder (in case the application uses one) will be kept.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     true.
+     *
+     * @deprecated
      */
+    @Deprecated
     public boolean getKeepAppFolder() {
         return keepAppFolder;
     }

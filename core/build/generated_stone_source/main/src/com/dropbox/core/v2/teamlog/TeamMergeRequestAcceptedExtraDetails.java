@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -29,18 +29,18 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class TeamMergeRequestAcceptedExtraDetails {
-    // union team_log.TeamMergeRequestAcceptedExtraDetails (team_log_generated.stone)
+    // union team_log.TeamMergeRequestAcceptedExtraDetails (team_log.stone)
 
     /**
      * Discriminating tag type for {@link TeamMergeRequestAcceptedExtraDetails}.
      */
     public enum Tag {
         /**
-         * Team merge request accepted details shown to the primary team.
+         * Team merge request accepted details shown to the primary team
          */
         PRIMARY_TEAM, // PrimaryTeamRequestAcceptedDetails
         /**
-         * Team merge request accepted details shown to the secondary team.
+         * Team merge request accepted details shown to the secondary team
          */
         SECONDARY_TEAM, // SecondaryTeamRequestAcceptedDetails
         /**
@@ -152,7 +152,7 @@ public final class TeamMergeRequestAcceptedExtraDetails {
      * Returns an instance of {@code TeamMergeRequestAcceptedExtraDetails} that
      * has its tag set to {@link Tag#PRIMARY_TEAM}.
      *
-     * <p> Team merge request accepted details shown to the primary team. </p>
+     * <p> Team merge request accepted details shown to the primary team </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -169,7 +169,7 @@ public final class TeamMergeRequestAcceptedExtraDetails {
     }
 
     /**
-     * Team merge request accepted details shown to the primary team.
+     * Team merge request accepted details shown to the primary team
      *
      * <p> This instance must be tagged as {@link Tag#PRIMARY_TEAM}. </p>
      *
@@ -201,7 +201,7 @@ public final class TeamMergeRequestAcceptedExtraDetails {
      * Returns an instance of {@code TeamMergeRequestAcceptedExtraDetails} that
      * has its tag set to {@link Tag#SECONDARY_TEAM}.
      *
-     * <p> Team merge request accepted details shown to the secondary team. </p>
+     * <p> Team merge request accepted details shown to the secondary team </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -218,7 +218,7 @@ public final class TeamMergeRequestAcceptedExtraDetails {
     }
 
     /**
-     * Team merge request accepted details shown to the secondary team.
+     * Team merge request accepted details shown to the secondary team
      *
      * <p> This instance must be tagged as {@link Tag#SECONDARY_TEAM}. </p>
      *

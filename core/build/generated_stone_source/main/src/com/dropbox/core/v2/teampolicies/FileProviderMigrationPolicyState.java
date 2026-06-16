@@ -31,6 +31,11 @@ public enum FileProviderMigrationPolicyState {
      */
     DEFAULT,
     /**
+     * Team admin has chosen to do File Provider Migration immediately for the
+     * team.
+     */
+    IMMEDIATE,
+    /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
      * <p> Receiving a catch-all value typically indicates this SDK version is
@@ -58,6 +63,10 @@ public enum FileProviderMigrationPolicyState {
                 }
                 case DEFAULT: {
                     g.writeString("default");
+                    break;
+                }
+                case IMMEDIATE: {
+                    g.writeString("immediate");
                     break;
                 }
                 default: {
@@ -92,6 +101,9 @@ public enum FileProviderMigrationPolicyState {
             }
             else if ("default".equals(tag)) {
                 value = FileProviderMigrationPolicyState.DEFAULT;
+            }
+            else if ("immediate".equals(tag)) {
+                value = FileProviderMigrationPolicyState.IMMEDIATE;
             }
             else {
                 value = FileProviderMigrationPolicyState.OTHER;

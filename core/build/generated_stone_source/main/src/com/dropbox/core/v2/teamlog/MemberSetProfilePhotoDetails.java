@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
  * Set team member profile photo.
  */
 public class MemberSetProfilePhotoDetails {
-    // struct team_log.MemberSetProfilePhotoDetails (team_log_generated.stone)
+    // struct team_log.MemberSetProfilePhotoDetails (team_log.stone)
 
 
     /**

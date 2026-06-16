@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum ViewerInfoPolicy {
-    // union sharing.ViewerInfoPolicy (sharing_files.stone)
+    // union sharing.ViewerInfoPolicy (sharing.stone)
     /**
      * Viewer information is available on this file.
      */

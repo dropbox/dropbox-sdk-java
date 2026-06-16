@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_folders.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class TeamFolderListContinueArg {
-    // struct team.TeamFolderListContinueArg (team_folders.stone)
+    // struct team.TeamFolderListContinueArg (team.stone)
 
     @Nonnull
     protected final String cursor;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
  * check documentation for VisibilityPolicyDisallowedReason.
  */
 public enum LinkAudienceDisallowedReason {
-    // union sharing.LinkAudienceDisallowedReason (shared_links.stone)
+    // union sharing.LinkAudienceDisallowedReason (sharing.stone)
     /**
      * The user needs to delete and recreate the link to change the visibility
      * policy.

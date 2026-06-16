@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 class GroupsListArg {
-    // struct team.GroupsListArg (team_groups.stone)
+    // struct team.GroupsListArg (team.stone)
 
     protected final long limit;
 

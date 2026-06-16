@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Failed to verify team domain.
  */
 public class DomainVerificationAddDomainFailDetails {
-    // struct team_log.DomainVerificationAddDomainFailDetails (team_log_generated.stone)
+    // struct team_log.DomainVerificationAddDomainFailDetails (team_log.stone)
 
     @Nonnull
     protected final String domainName;

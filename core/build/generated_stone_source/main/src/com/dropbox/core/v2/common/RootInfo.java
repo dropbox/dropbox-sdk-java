@@ -35,9 +35,10 @@ public class RootInfo {
      *
      * @param rootNamespaceId  The namespace ID for user's root namespace. It
      *     will be the namespace ID of the shared team root if the user is
-     *     member of a team with a separate team root. Otherwise it will be same
-     *     as {@link RootInfo#getHomeNamespaceId}. Must match pattern "{@code
-     *     [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     *     member of a team with a separate team root, or the user root if user
+     *     is member of a team with separate distinct roots for users. Otherwise
+     *     it will be the same as {@link RootInfo#getHomeNamespaceId}. Must
+     *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      * @param homeNamespaceId  The namespace ID for user's home namespace. Must
      *     match pattern "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
      *
@@ -64,7 +65,8 @@ public class RootInfo {
     /**
      * The namespace ID for user's root namespace. It will be the namespace ID
      * of the shared team root if the user is member of a team with a separate
-     * team root. Otherwise it will be same as {@link
+     * team root, or the user root if user is member of a team with separate
+     * distinct roots for users. Otherwise it will be the same as {@link
      * RootInfo#getHomeNamespaceId}.
      *
      * @return value for this field, never {@code null}.

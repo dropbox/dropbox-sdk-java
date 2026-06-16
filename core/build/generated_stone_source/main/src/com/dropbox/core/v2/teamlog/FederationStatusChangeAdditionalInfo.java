@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -29,22 +29,22 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class FederationStatusChangeAdditionalInfo {
-    // union team_log.FederationStatusChangeAdditionalInfo (team_log_generated.stone)
+    // union team_log.FederationStatusChangeAdditionalInfo (team_log.stone)
 
     /**
      * Discriminating tag type for {@link FederationStatusChangeAdditionalInfo}.
      */
     public enum Tag {
         /**
-         * The name of the team.
+         * The name of the team
          */
         CONNECTED_TEAM_NAME, // ConnectedTeamName
         /**
-         * The email to which the request was sent.
+         * The email to which the request was sent
          */
         NON_TRUSTED_TEAM_DETAILS, // NonTrustedTeamDetails
         /**
-         * The name of the organization.
+         * The name of the organization
          */
         ORGANIZATION_NAME, // OrganizationName
         /**
@@ -174,7 +174,7 @@ public final class FederationStatusChangeAdditionalInfo {
      * Returns an instance of {@code FederationStatusChangeAdditionalInfo} that
      * has its tag set to {@link Tag#CONNECTED_TEAM_NAME}.
      *
-     * <p> The name of the team. </p>
+     * <p> The name of the team </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -191,7 +191,7 @@ public final class FederationStatusChangeAdditionalInfo {
     }
 
     /**
-     * The name of the team.
+     * The name of the team
      *
      * <p> This instance must be tagged as {@link Tag#CONNECTED_TEAM_NAME}. </p>
      *
@@ -223,7 +223,7 @@ public final class FederationStatusChangeAdditionalInfo {
      * Returns an instance of {@code FederationStatusChangeAdditionalInfo} that
      * has its tag set to {@link Tag#NON_TRUSTED_TEAM_DETAILS}.
      *
-     * <p> The email to which the request was sent. </p>
+     * <p> The email to which the request was sent </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -240,7 +240,7 @@ public final class FederationStatusChangeAdditionalInfo {
     }
 
     /**
-     * The email to which the request was sent.
+     * The email to which the request was sent
      *
      * <p> This instance must be tagged as {@link Tag#NON_TRUSTED_TEAM_DETAILS}.
      * </p>
@@ -273,7 +273,7 @@ public final class FederationStatusChangeAdditionalInfo {
      * Returns an instance of {@code FederationStatusChangeAdditionalInfo} that
      * has its tag set to {@link Tag#ORGANIZATION_NAME}.
      *
-     * <p> The name of the organization. </p>
+     * <p> The name of the organization </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -290,7 +290,7 @@ public final class FederationStatusChangeAdditionalInfo {
     }
 
     /**
-     * The name of the organization.
+     * The name of the organization
      *
      * <p> This instance must be tagged as {@link Tag#ORGANIZATION_NAME}. </p>
      *

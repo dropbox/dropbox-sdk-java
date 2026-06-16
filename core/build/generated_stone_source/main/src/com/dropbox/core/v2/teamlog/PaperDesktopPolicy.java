@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Policy for controlling if team members can use Paper Desktop
  */
 public enum PaperDesktopPolicy {
-    // union team_log.PaperDesktopPolicy (team_log_generated.stone)
+    // union team_log.PaperDesktopPolicy (team_log.stone)
     DISABLED,
     ENABLED,
     /**

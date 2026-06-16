@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Alert configurations
  */
 public class AdminAlertingAlertConfiguration {
-    // struct team_log.AdminAlertingAlertConfiguration (team_log_generated.stone)
+    // struct team_log.AdminAlertingAlertConfiguration (team_log.stone)
 
     @Nullable
     protected final AdminAlertingAlertStatePolicy alertState;
@@ -35,6 +35,8 @@ public class AdminAlertingAlertConfiguration {
     protected final String text;
     @Nullable
     protected final String excludedFileExtensions;
+    @Nullable
+    protected final MalwareExclusionState malwareExclusionState;
 
     /**
      * Alert configurations
@@ -47,13 +49,15 @@ public class AdminAlertingAlertConfiguration {
      * @param recipientsSettings  Recipient settings.
      * @param text  Text.
      * @param excludedFileExtensions  Excluded file extensions.
+     * @param malwareExclusionState  Malware exclusion list state.
      */
-    public AdminAlertingAlertConfiguration(@Nullable AdminAlertingAlertStatePolicy alertState, @Nullable AdminAlertingAlertSensitivity sensitivityLevel, @Nullable RecipientsConfiguration recipientsSettings, @Nullable String text, @Nullable String excludedFileExtensions) {
+    public AdminAlertingAlertConfiguration(@Nullable AdminAlertingAlertStatePolicy alertState, @Nullable AdminAlertingAlertSensitivity sensitivityLevel, @Nullable RecipientsConfiguration recipientsSettings, @Nullable String text, @Nullable String excludedFileExtensions, @Nullable MalwareExclusionState malwareExclusionState) {
         this.alertState = alertState;
         this.sensitivityLevel = sensitivityLevel;
         this.recipientsSettings = recipientsSettings;
         this.text = text;
         this.excludedFileExtensions = excludedFileExtensions;
+        this.malwareExclusionState = malwareExclusionState;
     }
 
     /**
@@ -62,7 +66,7 @@ public class AdminAlertingAlertConfiguration {
      * <p> The default values for unset fields will be used. </p>
      */
     public AdminAlertingAlertConfiguration() {
-        this(null, null, null, null, null);
+        this(null, null, null, null, null, null);
     }
 
     /**
@@ -116,6 +120,16 @@ public class AdminAlertingAlertConfiguration {
     }
 
     /**
+     * Malware exclusion list state.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public MalwareExclusionState getMalwareExclusionState() {
+        return malwareExclusionState;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @return builder for this class.
@@ -134,6 +148,7 @@ public class AdminAlertingAlertConfiguration {
         protected RecipientsConfiguration recipientsSettings;
         protected String text;
         protected String excludedFileExtensions;
+        protected MalwareExclusionState malwareExclusionState;
 
         protected Builder() {
             this.alertState = null;
@@ -141,6 +156,7 @@ public class AdminAlertingAlertConfiguration {
             this.recipientsSettings = null;
             this.text = null;
             this.excludedFileExtensions = null;
+            this.malwareExclusionState = null;
         }
 
         /**
@@ -204,13 +220,25 @@ public class AdminAlertingAlertConfiguration {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param malwareExclusionState  Malware exclusion list state.
+         *
+         * @return this builder
+         */
+        public Builder withMalwareExclusionState(MalwareExclusionState malwareExclusionState) {
+            this.malwareExclusionState = malwareExclusionState;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link AdminAlertingAlertConfiguration}
          * configured with this builder's values
          *
          * @return new instance of {@link AdminAlertingAlertConfiguration}
          */
         public AdminAlertingAlertConfiguration build() {
-            return new AdminAlertingAlertConfiguration(alertState, sensitivityLevel, recipientsSettings, text, excludedFileExtensions);
+            return new AdminAlertingAlertConfiguration(alertState, sensitivityLevel, recipientsSettings, text, excludedFileExtensions, malwareExclusionState);
         }
     }
 
@@ -221,7 +249,8 @@ public class AdminAlertingAlertConfiguration {
             this.sensitivityLevel,
             this.recipientsSettings,
             this.text,
-            this.excludedFileExtensions
+            this.excludedFileExtensions,
+            this.malwareExclusionState
         });
         return hash;
     }
@@ -242,6 +271,7 @@ public class AdminAlertingAlertConfiguration {
                 && ((this.recipientsSettings == other.recipientsSettings) || (this.recipientsSettings != null && this.recipientsSettings.equals(other.recipientsSettings)))
                 && ((this.text == other.text) || (this.text != null && this.text.equals(other.text)))
                 && ((this.excludedFileExtensions == other.excludedFileExtensions) || (this.excludedFileExtensions != null && this.excludedFileExtensions.equals(other.excludedFileExtensions)))
+                && ((this.malwareExclusionState == other.malwareExclusionState) || (this.malwareExclusionState != null && this.malwareExclusionState.equals(other.malwareExclusionState)))
                 ;
         }
         else {
@@ -297,6 +327,10 @@ public class AdminAlertingAlertConfiguration {
                 g.writeFieldName("excluded_file_extensions");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.excludedFileExtensions, g);
             }
+            if (value.malwareExclusionState != null) {
+                g.writeFieldName("malware_exclusion_state");
+                StoneSerializers.nullableStruct(MalwareExclusionState.Serializer.INSTANCE).serialize(value.malwareExclusionState, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -316,6 +350,7 @@ public class AdminAlertingAlertConfiguration {
                 RecipientsConfiguration f_recipientsSettings = null;
                 String f_text = null;
                 String f_excludedFileExtensions = null;
+                MalwareExclusionState f_malwareExclusionState = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -334,11 +369,14 @@ public class AdminAlertingAlertConfiguration {
                     else if ("excluded_file_extensions".equals(field)) {
                         f_excludedFileExtensions = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
+                    else if ("malware_exclusion_state".equals(field)) {
+                        f_malwareExclusionState = StoneSerializers.nullableStruct(MalwareExclusionState.Serializer.INSTANCE).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
                 }
-                value = new AdminAlertingAlertConfiguration(f_alertState, f_sensitivityLevel, f_recipientsSettings, f_text, f_excludedFileExtensions);
+                value = new AdminAlertingAlertConfiguration(f_alertState, f_sensitivityLevel, f_recipientsSettings, f_text, f_excludedFileExtensions, f_malwareExclusionState);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

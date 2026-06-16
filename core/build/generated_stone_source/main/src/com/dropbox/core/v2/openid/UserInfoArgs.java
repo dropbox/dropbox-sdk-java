@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from openid_openid_types.stone */
+/* This file was generated from openid.stone */
 
 package com.dropbox.core.v2.openid;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
  * No Parameters
  */
 class UserInfoArgs {
-    // struct openid.UserInfoArgs (openid_openid_types.stone)
+    // struct openid.UserInfoArgs (openid.stone)
 
 
     /**

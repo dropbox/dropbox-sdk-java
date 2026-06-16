@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum SharedLinkSettingsError {
-    // union sharing.SharedLinkSettingsError (shared_links.stone)
+    // union sharing.SharedLinkSettingsError (sharing.stone)
     /**
      * The given settings are invalid (for example, all attributes of the {@link
      * SharedLinkSettings} are empty, the requested visibility is {@link

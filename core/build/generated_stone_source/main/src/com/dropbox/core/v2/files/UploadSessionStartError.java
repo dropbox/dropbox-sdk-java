@@ -27,7 +27,7 @@ public enum UploadSessionStartError {
      */
     CONCURRENT_SESSION_CLOSE_NOT_ALLOWED,
     /**
-     * The request payload must be at most 150 MB.
+     * The request payload must be at most 150 MiB.
      */
     PAYLOAD_TOO_LARGE,
     /**

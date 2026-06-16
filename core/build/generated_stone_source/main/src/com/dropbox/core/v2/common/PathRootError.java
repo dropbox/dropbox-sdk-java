@@ -40,7 +40,7 @@ public final class PathRootError {
         INVALID_ROOT, // RootInfo
         /**
          * You don't have permission to access the namespace id in
-         * Dropbox-API-Path-Root  header.
+         * Dropbox-API-Path-Root header.
          */
         NO_PERMISSION,
         /**
@@ -56,7 +56,7 @@ public final class PathRootError {
 
     /**
      * You don't have permission to access the namespace id in
-     * Dropbox-API-Path-Root  header.
+     * Dropbox-API-Path-Root header.
      */
     public static final PathRootError NO_PERMISSION = new PathRootError().withTag(Tag.NO_PERMISSION);
     /**

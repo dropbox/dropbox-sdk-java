@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
  * is no data for a day, then the value will be None.
  */
 public class DevicesActive {
-    // struct team.DevicesActive (team_reports.stone)
+    // struct team.DevicesActive (team.stone)
 
     @Nonnull
     protected final List<Long> windows;
@@ -61,7 +61,7 @@ public class DevicesActive {
      * @param android  Array of number of linked android devices with activity.
      *     Must not contain a {@code null} item and not be {@code null}.
      * @param other  Array of number of other linked devices (blackberry,
-     *     windows phone, etc)  with activity. Must not contain a {@code null}
+     *     windows phone, etc) with activity. Must not contain a {@code null}
      *     item and not be {@code null}.
      * @param total  Array of total number of linked clients with activity. Must
      *     not contain a {@code null} item and not be {@code null}.

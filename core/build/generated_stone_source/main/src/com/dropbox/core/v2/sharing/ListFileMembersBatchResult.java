@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  * DbxUserSharingRequests#listFileMembersBatch(java.util.List,long)}.
  */
 public class ListFileMembersBatchResult {
-    // struct sharing.ListFileMembersBatchResult (sharing_files.stone)
+    // struct sharing.ListFileMembersBatchResult (sharing.stone)
 
     @Nonnull
     protected final String file;

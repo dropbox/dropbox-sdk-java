@@ -44,17 +44,23 @@ class ListFolderArg {
      * specifying values for all optional fields.
      *
      * @param path  A unique identifier for the file. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      * @param recursive  If true, the list folder operation will be applied
      *     recursively to all subfolders and the response will contain contents
-     *     of all subfolders.
-     * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo} is
-     *     set for photo and video. This parameter will no longer have an effect
-     *     starting December 2, 2019.
+     *     of all subfolders. In some cases, setting {@link
+     *     ListFolderArg#getRecursive} to {@code true} may lead to performance
+     *     issues or errors, especially when traversing folder structures with a
+     *     large number of items. A workaround for such cases is to set {@link
+     *     ListFolderArg#getRecursive} to {@code false} and traverse subfolders
+     *     one at a time.
+     * @param includeMediaInfo  Field is deprecated. If true, {@link
+     *     FileMetadata#getMediaInfo} is set for photo and video. This parameter
+     *     will no longer have an effect starting December 2, 2019.
      * @param includeDeleted  If true, the results will include entries for
      *     files and folders that used to exist but were deleted.
      * @param includeHasExplicitSharedMembers  If true, the results will include
-     *     a flag for each file indicating whether or not  that file has any
+     *     a flag for each file indicating whether or not that file has any
      *     explicit members.
      * @param includeMountedFolders  If true, the results will include entries
      *     under mounted folders which includes app folder, shared folder and
@@ -82,7 +88,7 @@ class ListFolderArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)", path)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -111,7 +117,8 @@ class ListFolderArg {
      * <p> The default values for unset fields will be used. </p>
      *
      * @param path  A unique identifier for the file. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -132,7 +139,12 @@ class ListFolderArg {
 
     /**
      * If true, the list folder operation will be applied recursively to all
-     * subfolders and the response will contain contents of all subfolders.
+     * subfolders and the response will contain contents of all subfolders. In
+     * some cases, setting {@link ListFolderArg#getRecursive} to {@code true}
+     * may lead to performance issues or errors, especially when traversing
+     * folder structures with a large number of items. A workaround for such
+     * cases is to set {@link ListFolderArg#getRecursive} to {@code false} and
+     * traverse subfolders one at a time.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
@@ -142,12 +154,16 @@ class ListFolderArg {
     }
 
     /**
-     * If true, {@link FileMetadata#getMediaInfo} is set for photo and video.
-     * This parameter will no longer have an effect starting December 2, 2019.
+     * Field is deprecated. If true, {@link FileMetadata#getMediaInfo} is set
+     * for photo and video. This parameter will no longer have an effect
+     * starting December 2, 2019.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
+     *
+     * @deprecated
      */
+    @Deprecated
     public boolean getIncludeMediaInfo() {
         return includeMediaInfo;
     }
@@ -165,7 +181,7 @@ class ListFolderArg {
 
     /**
      * If true, the results will include a flag for each file indicating whether
-     * or not  that file has any explicit members.
+     * or not that file has any explicit members.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
@@ -236,7 +252,8 @@ class ListFolderArg {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  A unique identifier for the file. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)}" and not be
+     *     {@code null}.
      *
      * @return builder for this class.
      *
@@ -267,7 +284,7 @@ class ListFolderArg {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/.*)?)", path)) {
+            if (!Pattern.matches("(/(.|[\\r\\n])*)?|id:.*|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;
@@ -290,8 +307,13 @@ class ListFolderArg {
          *
          * @param recursive  If true, the list folder operation will be applied
          *     recursively to all subfolders and the response will contain
-         *     contents of all subfolders. Defaults to {@code false} when set to
-         *     {@code null}.
+         *     contents of all subfolders. In some cases, setting {@link
+         *     ListFolderArg#getRecursive} to {@code true} may lead to
+         *     performance issues or errors, especially when traversing folder
+         *     structures with a large number of items. A workaround for such
+         *     cases is to set {@link ListFolderArg#getRecursive} to {@code
+         *     false} and traverse subfolders one at a time. Defaults to {@code
+         *     false} when set to {@code null}.
          *
          * @return this builder
          */
@@ -311,13 +333,16 @@ class ListFolderArg {
          * <p> If left unset or set to {@code null}, defaults to {@code false}.
          * </p>
          *
-         * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo}
-         *     is set for photo and video. This parameter will no longer have an
-         *     effect starting December 2, 2019. Defaults to {@code false} when
-         *     set to {@code null}.
+         * @param includeMediaInfo  Field is deprecated. If true, {@link
+         *     FileMetadata#getMediaInfo} is set for photo and video. This
+         *     parameter will no longer have an effect starting December 2,
+         *     2019. Defaults to {@code false} when set to {@code null}.
          *
          * @return this builder
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withIncludeMediaInfo(Boolean includeMediaInfo) {
             if (includeMediaInfo != null) {
                 this.includeMediaInfo = includeMediaInfo;
@@ -357,7 +382,7 @@ class ListFolderArg {
          * </p>
          *
          * @param includeHasExplicitSharedMembers  If true, the results will
-         *     include a flag for each file indicating whether or not  that file
+         *     include a flag for each file indicating whether or not that file
          *     has any explicit members. Defaults to {@code false} when set to
          *     {@code null}.
          *

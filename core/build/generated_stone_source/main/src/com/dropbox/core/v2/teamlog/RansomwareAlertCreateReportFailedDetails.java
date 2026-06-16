@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Couldn't generate ransomware report.
  */
 public class RansomwareAlertCreateReportFailedDetails {
-    // struct team_log.RansomwareAlertCreateReportFailedDetails (team_log_generated.stone)
+    // struct team_log.RansomwareAlertCreateReportFailedDetails (team_log.stone)
 
     @Nonnull
     protected final TeamReportFailureReason failureReason;

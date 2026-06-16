@@ -62,6 +62,10 @@ public enum CreateFileRequestError {
      */
     VALIDATION_ERROR,
     /**
+     * This user doesn't have permission to edit files in a destination folder
+     */
+    NO_WRITE_PERMISSION,
+    /**
      * File requests are not available on the specified folder.
      */
     INVALID_LOCATION,
@@ -110,6 +114,10 @@ public enum CreateFileRequestError {
                 }
                 case VALIDATION_ERROR: {
                     g.writeString("validation_error");
+                    break;
+                }
+                case NO_WRITE_PERMISSION: {
+                    g.writeString("no_write_permission");
                     break;
                 }
                 case INVALID_LOCATION: {
@@ -167,6 +175,9 @@ public enum CreateFileRequestError {
             }
             else if ("validation_error".equals(tag)) {
                 value = CreateFileRequestError.VALIDATION_ERROR;
+            }
+            else if ("no_write_permission".equals(tag)) {
+                value = CreateFileRequestError.NO_WRITE_PERMISSION;
             }
             else if ("invalid_location".equals(tag)) {
                 value = CreateFileRequestError.INVALID_LOCATION;

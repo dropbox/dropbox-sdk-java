@@ -45,6 +45,14 @@ public final class AccessError {
          */
         PAPER_ACCESS_DENIED, // PaperAccessError
         /**
+         * Team doesn't have permission to access.
+         */
+        TEAM_ACCESS_DENIED,
+        /**
+         * Caller does not have permission to access the resource.
+         */
+        NO_PERMISSION, // NoPermissionError
+        /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
          *
@@ -55,6 +63,10 @@ public final class AccessError {
         OTHER; // *catch_all
     }
 
+    /**
+     * Team doesn't have permission to access.
+     */
+    public static final AccessError TEAM_ACCESS_DENIED = new AccessError().withTag(Tag.TEAM_ACCESS_DENIED);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -67,6 +79,7 @@ public final class AccessError {
     private Tag _tag;
     private InvalidAccountTypeError invalidAccountTypeValue;
     private PaperAccessError paperAccessDeniedValue;
+    private NoPermissionError noPermissionValue;
 
     /**
      * Private default constructor, so that object is uninitializable publicly.
@@ -120,6 +133,24 @@ public final class AccessError {
         AccessError result = new AccessError();
         result._tag = _tag;
         result.paperAccessDeniedValue = paperAccessDeniedValue;
+        return result;
+    }
+
+    /**
+     * Error occurred because the account doesn't have permission to access the
+     * resource.
+     *
+     * @param noPermissionValue  Caller does not have permission to access the
+     *     resource. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private AccessError withTagAndNoPermission(Tag _tag, NoPermissionError noPermissionValue) {
+        AccessError result = new AccessError();
+        result._tag = _tag;
+        result.noPermissionValue = noPermissionValue;
         return result;
     }
 
@@ -241,6 +272,66 @@ public final class AccessError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_ACCESS_DENIED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_ACCESS_DENIED}, {@code false} otherwise.
+     */
+    public boolean isTeamAccessDenied() {
+        return this._tag == Tag.TEAM_ACCESS_DENIED;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#NO_PERMISSION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#NO_PERMISSION}, {@code false} otherwise.
+     */
+    public boolean isNoPermission() {
+        return this._tag == Tag.NO_PERMISSION;
+    }
+
+    /**
+     * Returns an instance of {@code AccessError} that has its tag set to {@link
+     * Tag#NO_PERMISSION}.
+     *
+     * <p> Caller does not have permission to access the resource. </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code AccessError} with its tag set to {@link
+     *     Tag#NO_PERMISSION}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static AccessError noPermission(NoPermissionError value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new AccessError().withTagAndNoPermission(Tag.NO_PERMISSION, value);
+    }
+
+    /**
+     * Caller does not have permission to access the resource.
+     *
+     * <p> This instance must be tagged as {@link Tag#NO_PERMISSION}. </p>
+     *
+     * @return The {@link NoPermissionError} value associated with this instance
+     *     if {@link #isNoPermission} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isNoPermission} is {@code
+     *     false}.
+     */
+    public NoPermissionError getNoPermissionValue() {
+        if (this._tag != Tag.NO_PERMISSION) {
+            throw new IllegalStateException("Invalid tag: required Tag.NO_PERMISSION, but was Tag." + this._tag.name());
+        }
+        return noPermissionValue;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -256,7 +347,8 @@ public final class AccessError {
         int hash = Arrays.hashCode(new Object [] {
             this._tag,
             this.invalidAccountTypeValue,
-            this.paperAccessDeniedValue
+            this.paperAccessDeniedValue,
+            this.noPermissionValue
         });
         return hash;
     }
@@ -279,6 +371,10 @@ public final class AccessError {
                     return (this.invalidAccountTypeValue == other.invalidAccountTypeValue) || (this.invalidAccountTypeValue.equals(other.invalidAccountTypeValue));
                 case PAPER_ACCESS_DENIED:
                     return (this.paperAccessDeniedValue == other.paperAccessDeniedValue) || (this.paperAccessDeniedValue.equals(other.paperAccessDeniedValue));
+                case TEAM_ACCESS_DENIED:
+                    return true;
+                case NO_PERMISSION:
+                    return (this.noPermissionValue == other.noPermissionValue) || (this.noPermissionValue.equals(other.noPermissionValue));
                 case OTHER:
                     return true;
                 default:
@@ -332,6 +428,18 @@ public final class AccessError {
                     g.writeEndObject();
                     break;
                 }
+                case TEAM_ACCESS_DENIED: {
+                    g.writeString("team_access_denied");
+                    break;
+                }
+                case NO_PERMISSION: {
+                    g.writeStartObject();
+                    writeTag("no_permission", g);
+                    g.writeFieldName("no_permission");
+                    NoPermissionError.Serializer.INSTANCE.serialize(value.noPermissionValue, g);
+                    g.writeEndObject();
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -367,6 +475,15 @@ public final class AccessError {
                 expectField("paper_access_denied", p);
                 fieldValue = PaperAccessError.Serializer.INSTANCE.deserialize(p);
                 value = AccessError.paperAccessDenied(fieldValue);
+            }
+            else if ("team_access_denied".equals(tag)) {
+                value = AccessError.TEAM_ACCESS_DENIED;
+            }
+            else if ("no_permission".equals(tag)) {
+                NoPermissionError fieldValue = null;
+                expectField("no_permission", p);
+                fieldValue = NoPermissionError.Serializer.INSTANCE.deserialize(p);
+                value = AccessError.noPermission(fieldValue);
             }
             else {
                 value = AccessError.OTHER;

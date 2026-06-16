@@ -54,7 +54,7 @@ public class Metadata {
      *     correct casing. Changes to only the casing of paths won't be returned
      *     by {@link DbxAppFilesRequests#listFolderContinue(String)}. This field
      *     will be null if the file or folder is not mounted.
-     * @param parentSharedFolderId  Please use {@link
+     * @param parentSharedFolderId  Field is deprecated. Please use {@link
      *     FileSharingInfo#getParentSharedFolderId} or {@link
      *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
      *     pattern "{@code [-_0-9a-zA-Z:]+}".
@@ -133,11 +133,15 @@ public class Metadata {
     }
 
     /**
-     * Please use {@link FileSharingInfo#getParentSharedFolderId} or {@link
+     * Field is deprecated. Please use {@link
+     * FileSharingInfo#getParentSharedFolderId} or {@link
      * FolderSharingInfo#getParentSharedFolderId} instead.
      *
      * @return value for this field, or {@code null} if not present.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nullable
     public String getParentSharedFolderId() {
         return parentSharedFolderId;
@@ -226,7 +230,7 @@ public class Metadata {
         /**
          * Set value for optional field.
          *
-         * @param parentSharedFolderId  Please use {@link
+         * @param parentSharedFolderId  Field is deprecated. Please use {@link
          *     FileSharingInfo#getParentSharedFolderId} or {@link
          *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
          *     pattern "{@code [-_0-9a-zA-Z:]+}".
@@ -235,7 +239,10 @@ public class Metadata {
          *
          * @throws IllegalArgumentException  If any argument does not meet its
          *     preconditions.
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withParentSharedFolderId(String parentSharedFolderId) {
             if (parentSharedFolderId != null) {
                 if (!java.util.regex.Pattern.matches("[-_0-9a-zA-Z:]+", parentSharedFolderId)) {

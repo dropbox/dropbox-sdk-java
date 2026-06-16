@@ -35,7 +35,7 @@ class RelocationBatchArg extends RelocationBatchArgBase {
      *     null}.
      * @param autorename  If there's a conflict with any file, have the Dropbox
      *     server try to autorename that file to avoid the conflict.
-     * @param allowSharedFolder  This flag has no effect.
+     * @param allowSharedFolder  Field is deprecated. This flag has no effect.
      * @param allowOwnershipTransfer  Allow moves by owner even if it would
      *     result in an ownership transfer for the content being moved. This
      *     does not apply to copies.
@@ -89,11 +89,14 @@ class RelocationBatchArg extends RelocationBatchArgBase {
     }
 
     /**
-     * This flag has no effect.
+     * Field is deprecated. This flag has no effect.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
+     *
+     * @deprecated
      */
+    @Deprecated
     public boolean getAllowSharedFolder() {
         return allowSharedFolder;
     }
@@ -185,11 +188,14 @@ class RelocationBatchArg extends RelocationBatchArgBase {
          * <p> If left unset or set to {@code null}, defaults to {@code false}.
          * </p>
          *
-         * @param allowSharedFolder  This flag has no effect. Defaults to {@code
-         *     false} when set to {@code null}.
+         * @param allowSharedFolder  Field is deprecated. This flag has no
+         *     effect. Defaults to {@code false} when set to {@code null}.
          *
          * @return this builder
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withAllowSharedFolder(Boolean allowSharedFolder) {
             if (allowSharedFolder != null) {
                 this.allowSharedFolder = allowSharedFolder;

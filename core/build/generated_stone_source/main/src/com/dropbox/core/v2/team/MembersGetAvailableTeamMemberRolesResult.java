@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  * DbxTeamTeamRequests#membersSetAdminPermissionsV2(UserSelectorArg,List)}.
  */
 public class MembersGetAvailableTeamMemberRolesResult {
-    // struct team.MembersGetAvailableTeamMemberRolesResult (team_members.stone)
+    // struct team.MembersGetAvailableTeamMemberRolesResult (team.stone)
 
     @Nonnull
     protected final List<TeamMemberRole> roles;

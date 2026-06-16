@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class GroupUpdateArgs extends IncludeMembersArg {
-    // struct team.GroupUpdateArgs (team_groups.stone)
+    // struct team.GroupUpdateArgs (team.stone)
 
     @Nonnull
     protected final GroupSelector group;
@@ -38,7 +38,7 @@ class GroupUpdateArgs extends IncludeMembersArg {
      *
      * @param group  Specify a group. Must not be {@code null}.
      * @param returnMembers  Whether to return the list of members in the group.
-     *     Note that the default value will cause all the group members  to be
+     *     Note that the default value will cause all the group members to be
      *     returned in the response. This may take a long time for large groups.
      * @param newGroupName  Optional argument. Set group name to this if
      *     provided.
@@ -88,9 +88,9 @@ class GroupUpdateArgs extends IncludeMembersArg {
     }
 
     /**
-     * Whether to return the list of members in the group.  Note that the
-     * default value will cause all the group members  to be returned in the
-     * response. This may take a long time for large groups.
+     * Whether to return the list of members in the group. Note that the default
+     * value will cause all the group members to be returned in the response.
+     * This may take a long time for large groups.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     true.
@@ -174,10 +174,10 @@ class GroupUpdateArgs extends IncludeMembersArg {
          * </p>
          *
          * @param returnMembers  Whether to return the list of members in the
-         *     group.  Note that the default value will cause all the group
-         *     members  to be returned in the response. This may take a long
-         *     time for large groups. Defaults to {@code true} when set to
-         *     {@code null}.
+         *     group. Note that the default value will cause all the group
+         *     members to be returned in the response. This may take a long time
+         *     for large groups. Defaults to {@code true} when set to {@code
+         *     null}.
          *
          * @return this builder
          */

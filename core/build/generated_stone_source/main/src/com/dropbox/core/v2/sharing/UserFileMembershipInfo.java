@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
  * last seen timestamp.
  */
 public class UserFileMembershipInfo extends UserMembershipInfo {
-    // struct sharing.UserFileMembershipInfo (sharing_files.stone)
+    // struct sharing.UserFileMembershipInfo (sharing.stone)
 
     @Nullable
     protected final Date timeLastSeen;
@@ -50,8 +50,8 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      * @param permissions  The permissions that requesting user has on this
      *     member. The set of permissions corresponds to the MemberActions in
      *     the request. Must not contain a {@code null} item.
-     * @param initials  Never set.
-     * @param isInherited  True if the member has access from a parent folder.
+     * @param initials  Field is deprecated. Never set.
+     * @param isInherited  True if the member has access on a parent folder.
      * @param timeLastSeen  The UTC timestamp of when the user has last seen the
      *     content. Only populated if the user has seen the content and the
      *     caller has a plan that includes viewer history.
@@ -119,17 +119,20 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
     }
 
     /**
-     * Never set.
+     * Field is deprecated. Never set.
      *
      * @return value for this field, or {@code null} if not present.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nullable
     public String getInitials() {
         return initials;
     }
 
     /**
-     * True if the member has access from a parent folder.
+     * True if the member has access on a parent folder.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
@@ -239,10 +242,13 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
         /**
          * Set value for optional field.
          *
-         * @param initials  Never set.
+         * @param initials  Field is deprecated. Never set.
          *
          * @return this builder
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withInitials(String initials) {
             super.withInitials(initials);
             return this;
@@ -254,8 +260,8 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
          * <p> If left unset or set to {@code null}, defaults to {@code false}.
          * </p>
          *
-         * @param isInherited  True if the member has access from a parent
-         *     folder. Defaults to {@code false} when set to {@code null}.
+         * @param isInherited  True if the member has access on a parent folder.
+         *     Defaults to {@code false} when set to {@code null}.
          *
          * @return this builder
          */

@@ -34,7 +34,7 @@ public class OverwritePropertyGroupArg {
      *     pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and not be
      *     {@code null}.
      * @param propertyGroups  The property groups "snapshot" updates to force
-     *     apply. No two groups in the input should  refer to the same template.
+     *     apply. No two groups in the input should refer to the same template.
      *     Must contain at least 1 items, not contain a {@code null} item, and
      *     not be {@code null}.
      *
@@ -75,7 +75,7 @@ public class OverwritePropertyGroupArg {
 
     /**
      * The property groups "snapshot" updates to force apply. No two groups in
-     * the input should  refer to the same template.
+     * the input should refer to the same template.
      *
      * @return value for this field, never {@code null}.
      */

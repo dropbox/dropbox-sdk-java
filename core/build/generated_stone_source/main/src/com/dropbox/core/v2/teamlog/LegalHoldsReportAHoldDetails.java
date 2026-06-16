@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Created a summary report for a hold.
  */
 public class LegalHoldsReportAHoldDetails {
-    // struct team_log.LegalHoldsReportAHoldDetails (team_log_generated.stone)
+    // struct team_log.LegalHoldsReportAHoldDetails (team_log.stone)
 
     @Nonnull
     protected final String legalHoldId;

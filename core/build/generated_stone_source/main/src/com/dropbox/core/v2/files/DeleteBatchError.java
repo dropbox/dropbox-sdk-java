@@ -19,9 +19,9 @@ import java.util.Arrays;
 public enum DeleteBatchError {
     // union files.DeleteBatchError (files.stone)
     /**
-     * Use {@link DeleteError#TOO_MANY_WRITE_OPERATIONS}. {@link
-     * DbxUserFilesRequests#deleteBatch(java.util.List)} now provides smaller
-     * granularity about which entry has failed because of this.
+     * Field is deprecated. Use {@link DeleteError#TOO_MANY_WRITE_OPERATIONS}.
+     * {@link DbxUserFilesRequests#deleteBatch(java.util.List)} now provides
+     * smaller granularity about which entry has failed because of this.
      */
     TOO_MANY_WRITE_OPERATIONS,
     /**

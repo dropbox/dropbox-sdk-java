@@ -42,6 +42,10 @@ public final class ThumbnailError {
          */
         UNSUPPORTED_IMAGE,
         /**
+         * Encrypted content cannot be converted to a thumbnail.
+         */
+        ENCRYPTED_CONTENT,
+        /**
          * An error occurs during thumbnail conversion.
          */
         CONVERSION_ERROR;
@@ -55,6 +59,10 @@ public final class ThumbnailError {
      * The image cannot be converted to a thumbnail.
      */
     public static final ThumbnailError UNSUPPORTED_IMAGE = new ThumbnailError().withTag(Tag.UNSUPPORTED_IMAGE);
+    /**
+     * Encrypted content cannot be converted to a thumbnail.
+     */
+    public static final ThumbnailError ENCRYPTED_CONTENT = new ThumbnailError().withTag(Tag.ENCRYPTED_CONTENT);
     /**
      * An error occurs during thumbnail conversion.
      */
@@ -183,6 +191,17 @@ public final class ThumbnailError {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENCRYPTED_CONTENT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENCRYPTED_CONTENT}, {@code false} otherwise.
+     */
+    public boolean isEncryptedContent() {
+        return this._tag == Tag.ENCRYPTED_CONTENT;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#CONVERSION_ERROR}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -220,6 +239,8 @@ public final class ThumbnailError {
                 case UNSUPPORTED_EXTENSION:
                     return true;
                 case UNSUPPORTED_IMAGE:
+                    return true;
+                case ENCRYPTED_CONTENT:
                     return true;
                 case CONVERSION_ERROR:
                     return true;
@@ -274,6 +295,10 @@ public final class ThumbnailError {
                     g.writeString("unsupported_image");
                     break;
                 }
+                case ENCRYPTED_CONTENT: {
+                    g.writeString("encrypted_content");
+                    break;
+                }
                 case CONVERSION_ERROR: {
                     g.writeString("conversion_error");
                     break;
@@ -313,6 +338,9 @@ public final class ThumbnailError {
             }
             else if ("unsupported_image".equals(tag)) {
                 value = ThumbnailError.UNSUPPORTED_IMAGE;
+            }
+            else if ("encrypted_content".equals(tag)) {
+                value = ThumbnailError.ENCRYPTED_CONTENT;
             }
             else if ("conversion_error".equals(tag)) {
                 value = ThumbnailError.CONVERSION_ERROR;

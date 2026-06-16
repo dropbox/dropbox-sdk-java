@@ -18,6 +18,7 @@ public class DocsDownloadBuilder extends DbxDownloadStyleBuilder<PaperDocExportR
     private final DbxUserPaperRequests _client;
     private final String docId;
     private final ExportFormat exportFormat;
+    private boolean includeComments;
 
     /**
      * Creates a new instance of this builder.
@@ -39,12 +40,36 @@ public class DocsDownloadBuilder extends DbxDownloadStyleBuilder<PaperDocExportR
         this._client = _client;
         this.docId = docId;
         this.exportFormat = exportFormat;
+        this.includeComments = false;
+    }
+
+    /**
+     * Set value for optional field.
+     *
+     * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
+     *
+     * @param includeComments  When true, export includes comment threads (e.g.
+     *     markdown footnotes). When false or omitted, body only. Other formats
+     *     may adopt this later; currently only markdown uses it. Plain bool
+     *     (not optional): protoc-gen-godbx does not support proto3 optional
+     *     yet. Defaults to {@code false} when set to {@code null}.
+     *
+     * @return this builder
+     */
+    public DocsDownloadBuilder withIncludeComments(Boolean includeComments) {
+        if (includeComments != null) {
+            this.includeComments = includeComments;
+        }
+        else {
+            this.includeComments = false;
+        }
+        return this;
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public DbxDownloader<PaperDocExportResult> start() throws DocLookupErrorException, DbxException {
-        PaperDocExport arg_ = new PaperDocExport(docId, exportFormat);
+        PaperDocExport arg_ = new PaperDocExport(docId, exportFormat, includeComments);
         return _client.docsDownload(arg_, getHeaders());
     }
 }

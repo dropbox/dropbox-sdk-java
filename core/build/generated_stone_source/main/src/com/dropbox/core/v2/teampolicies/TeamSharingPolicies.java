@@ -34,6 +34,12 @@ public class TeamSharingPolicies {
     protected final GroupCreation groupCreationPolicy;
     @Nonnull
     protected final SharedFolderBlanketLinkRestrictionPolicy sharedFolderLinkRestrictionPolicy;
+    @Nonnull
+    protected final EnforceLinkPasswordPolicy enforceLinkPasswordPolicy;
+    @Nonnull
+    protected final DefaultLinkExpirationDaysPolicy defaultLinkExpirationDaysPolicy;
+    @Nonnull
+    protected final SharedLinkDefaultPermissionsPolicy sharedLinkDefaultPermissionsPolicy;
 
     /**
      * Policies governing sharing within and outside of the team.
@@ -48,11 +54,17 @@ public class TeamSharingPolicies {
      *     null}.
      * @param sharedFolderLinkRestrictionPolicy  Who can view links to content
      *     in shared folders. Must not be {@code null}.
+     * @param enforceLinkPasswordPolicy  If passwords are required for new links
+     *     shared outside the team. Must not be {@code null}.
+     * @param defaultLinkExpirationDaysPolicy  Default expiration date for new
+     *     links shared outside the team. Must not be {@code null}.
+     * @param sharedLinkDefaultPermissionsPolicy  Default access level for new
+     *     links shared by team members. Must not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public TeamSharingPolicies(@Nonnull SharedFolderMemberPolicy sharedFolderMemberPolicy, @Nonnull SharedFolderJoinPolicy sharedFolderJoinPolicy, @Nonnull SharedLinkCreatePolicy sharedLinkCreatePolicy, @Nonnull GroupCreation groupCreationPolicy, @Nonnull SharedFolderBlanketLinkRestrictionPolicy sharedFolderLinkRestrictionPolicy) {
+    public TeamSharingPolicies(@Nonnull SharedFolderMemberPolicy sharedFolderMemberPolicy, @Nonnull SharedFolderJoinPolicy sharedFolderJoinPolicy, @Nonnull SharedLinkCreatePolicy sharedLinkCreatePolicy, @Nonnull GroupCreation groupCreationPolicy, @Nonnull SharedFolderBlanketLinkRestrictionPolicy sharedFolderLinkRestrictionPolicy, @Nonnull EnforceLinkPasswordPolicy enforceLinkPasswordPolicy, @Nonnull DefaultLinkExpirationDaysPolicy defaultLinkExpirationDaysPolicy, @Nonnull SharedLinkDefaultPermissionsPolicy sharedLinkDefaultPermissionsPolicy) {
         if (sharedFolderMemberPolicy == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderMemberPolicy' is null");
         }
@@ -73,6 +85,18 @@ public class TeamSharingPolicies {
             throw new IllegalArgumentException("Required value for 'sharedFolderLinkRestrictionPolicy' is null");
         }
         this.sharedFolderLinkRestrictionPolicy = sharedFolderLinkRestrictionPolicy;
+        if (enforceLinkPasswordPolicy == null) {
+            throw new IllegalArgumentException("Required value for 'enforceLinkPasswordPolicy' is null");
+        }
+        this.enforceLinkPasswordPolicy = enforceLinkPasswordPolicy;
+        if (defaultLinkExpirationDaysPolicy == null) {
+            throw new IllegalArgumentException("Required value for 'defaultLinkExpirationDaysPolicy' is null");
+        }
+        this.defaultLinkExpirationDaysPolicy = defaultLinkExpirationDaysPolicy;
+        if (sharedLinkDefaultPermissionsPolicy == null) {
+            throw new IllegalArgumentException("Required value for 'sharedLinkDefaultPermissionsPolicy' is null");
+        }
+        this.sharedLinkDefaultPermissionsPolicy = sharedLinkDefaultPermissionsPolicy;
     }
 
     /**
@@ -125,6 +149,36 @@ public class TeamSharingPolicies {
         return sharedFolderLinkRestrictionPolicy;
     }
 
+    /**
+     * If passwords are required for new links shared outside the team.
+     *
+     * @return value for this field, never {@code null}.
+     */
+    @Nonnull
+    public EnforceLinkPasswordPolicy getEnforceLinkPasswordPolicy() {
+        return enforceLinkPasswordPolicy;
+    }
+
+    /**
+     * Default expiration date for new links shared outside the team.
+     *
+     * @return value for this field, never {@code null}.
+     */
+    @Nonnull
+    public DefaultLinkExpirationDaysPolicy getDefaultLinkExpirationDaysPolicy() {
+        return defaultLinkExpirationDaysPolicy;
+    }
+
+    /**
+     * Default access level for new links shared by team members.
+     *
+     * @return value for this field, never {@code null}.
+     */
+    @Nonnull
+    public SharedLinkDefaultPermissionsPolicy getSharedLinkDefaultPermissionsPolicy() {
+        return sharedLinkDefaultPermissionsPolicy;
+    }
+
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
@@ -132,7 +186,10 @@ public class TeamSharingPolicies {
             this.sharedFolderJoinPolicy,
             this.sharedLinkCreatePolicy,
             this.groupCreationPolicy,
-            this.sharedFolderLinkRestrictionPolicy
+            this.sharedFolderLinkRestrictionPolicy,
+            this.enforceLinkPasswordPolicy,
+            this.defaultLinkExpirationDaysPolicy,
+            this.sharedLinkDefaultPermissionsPolicy
         });
         return hash;
     }
@@ -153,6 +210,9 @@ public class TeamSharingPolicies {
                 && ((this.sharedLinkCreatePolicy == other.sharedLinkCreatePolicy) || (this.sharedLinkCreatePolicy.equals(other.sharedLinkCreatePolicy)))
                 && ((this.groupCreationPolicy == other.groupCreationPolicy) || (this.groupCreationPolicy.equals(other.groupCreationPolicy)))
                 && ((this.sharedFolderLinkRestrictionPolicy == other.sharedFolderLinkRestrictionPolicy) || (this.sharedFolderLinkRestrictionPolicy.equals(other.sharedFolderLinkRestrictionPolicy)))
+                && ((this.enforceLinkPasswordPolicy == other.enforceLinkPasswordPolicy) || (this.enforceLinkPasswordPolicy.equals(other.enforceLinkPasswordPolicy)))
+                && ((this.defaultLinkExpirationDaysPolicy == other.defaultLinkExpirationDaysPolicy) || (this.defaultLinkExpirationDaysPolicy.equals(other.defaultLinkExpirationDaysPolicy)))
+                && ((this.sharedLinkDefaultPermissionsPolicy == other.sharedLinkDefaultPermissionsPolicy) || (this.sharedLinkDefaultPermissionsPolicy.equals(other.sharedLinkDefaultPermissionsPolicy)))
                 ;
         }
         else {
@@ -198,6 +258,12 @@ public class TeamSharingPolicies {
             GroupCreation.Serializer.INSTANCE.serialize(value.groupCreationPolicy, g);
             g.writeFieldName("shared_folder_link_restriction_policy");
             SharedFolderBlanketLinkRestrictionPolicy.Serializer.INSTANCE.serialize(value.sharedFolderLinkRestrictionPolicy, g);
+            g.writeFieldName("enforce_link_password_policy");
+            EnforceLinkPasswordPolicy.Serializer.INSTANCE.serialize(value.enforceLinkPasswordPolicy, g);
+            g.writeFieldName("default_link_expiration_days_policy");
+            DefaultLinkExpirationDaysPolicy.Serializer.INSTANCE.serialize(value.defaultLinkExpirationDaysPolicy, g);
+            g.writeFieldName("shared_link_default_permissions_policy");
+            SharedLinkDefaultPermissionsPolicy.Serializer.INSTANCE.serialize(value.sharedLinkDefaultPermissionsPolicy, g);
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -217,6 +283,9 @@ public class TeamSharingPolicies {
                 SharedLinkCreatePolicy f_sharedLinkCreatePolicy = null;
                 GroupCreation f_groupCreationPolicy = null;
                 SharedFolderBlanketLinkRestrictionPolicy f_sharedFolderLinkRestrictionPolicy = null;
+                EnforceLinkPasswordPolicy f_enforceLinkPasswordPolicy = null;
+                DefaultLinkExpirationDaysPolicy f_defaultLinkExpirationDaysPolicy = null;
+                SharedLinkDefaultPermissionsPolicy f_sharedLinkDefaultPermissionsPolicy = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -234,6 +303,15 @@ public class TeamSharingPolicies {
                     }
                     else if ("shared_folder_link_restriction_policy".equals(field)) {
                         f_sharedFolderLinkRestrictionPolicy = SharedFolderBlanketLinkRestrictionPolicy.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("enforce_link_password_policy".equals(field)) {
+                        f_enforceLinkPasswordPolicy = EnforceLinkPasswordPolicy.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("default_link_expiration_days_policy".equals(field)) {
+                        f_defaultLinkExpirationDaysPolicy = DefaultLinkExpirationDaysPolicy.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("shared_link_default_permissions_policy".equals(field)) {
+                        f_sharedLinkDefaultPermissionsPolicy = SharedLinkDefaultPermissionsPolicy.Serializer.INSTANCE.deserialize(p);
                     }
                     else {
                         skipValue(p);
@@ -254,7 +332,16 @@ public class TeamSharingPolicies {
                 if (f_sharedFolderLinkRestrictionPolicy == null) {
                     throw new JsonParseException(p, "Required field \"shared_folder_link_restriction_policy\" missing.");
                 }
-                value = new TeamSharingPolicies(f_sharedFolderMemberPolicy, f_sharedFolderJoinPolicy, f_sharedLinkCreatePolicy, f_groupCreationPolicy, f_sharedFolderLinkRestrictionPolicy);
+                if (f_enforceLinkPasswordPolicy == null) {
+                    throw new JsonParseException(p, "Required field \"enforce_link_password_policy\" missing.");
+                }
+                if (f_defaultLinkExpirationDaysPolicy == null) {
+                    throw new JsonParseException(p, "Required field \"default_link_expiration_days_policy\" missing.");
+                }
+                if (f_sharedLinkDefaultPermissionsPolicy == null) {
+                    throw new JsonParseException(p, "Required field \"shared_link_default_permissions_policy\" missing.");
+                }
+                value = new TeamSharingPolicies(f_sharedFolderMemberPolicy, f_sharedFolderJoinPolicy, f_sharedLinkCreatePolicy, f_groupCreationPolicy, f_sharedFolderLinkRestrictionPolicy, f_enforceLinkPasswordPolicy, f_defaultLinkExpirationDaysPolicy, f_sharedLinkDefaultPermissionsPolicy);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

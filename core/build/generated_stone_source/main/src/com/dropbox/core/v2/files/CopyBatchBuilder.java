@@ -58,11 +58,14 @@ public class CopyBatchBuilder {
      *
      * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
      *
-     * @param allowSharedFolder  This flag has no effect. Defaults to {@code
-     *     false} when set to {@code null}.
+     * @param allowSharedFolder  Field is deprecated. This flag has no effect.
+     *     Defaults to {@code false} when set to {@code null}.
      *
      * @return this builder
+     *
+     * @deprecated
      */
+    @Deprecated
     public CopyBatchBuilder withAllowSharedFolder(Boolean allowSharedFolder) {
         this._builder.withAllowSharedFolder(allowSharedFolder);
         return this;

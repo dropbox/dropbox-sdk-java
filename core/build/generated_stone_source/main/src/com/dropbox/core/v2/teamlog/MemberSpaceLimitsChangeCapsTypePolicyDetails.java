@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Changed member space limit type for team.
  */
 public class MemberSpaceLimitsChangeCapsTypePolicyDetails {
-    // struct team_log.MemberSpaceLimitsChangeCapsTypePolicyDetails (team_log_generated.stone)
+    // struct team_log.MemberSpaceLimitsChangeCapsTypePolicyDetails (team_log.stone)
 
     @Nonnull
     protected final SpaceCapsType previousValue;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * join the team is accepted
  */
 public enum InviteAcceptanceEmailPolicy {
-    // union team_log.InviteAcceptanceEmailPolicy (team_log_generated.stone)
+    // union team_log.InviteAcceptanceEmailPolicy (team_log.stone)
     DISABLED,
     ENABLED,
     /**

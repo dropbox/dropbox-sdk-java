@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Network control policy
  */
 public enum NetworkControlPolicy {
-    // union team_log.NetworkControlPolicy (team_log_generated.stone)
+    // union team_log.NetworkControlPolicy (team_log.stone)
     DISABLED,
     ENABLED,
     /**

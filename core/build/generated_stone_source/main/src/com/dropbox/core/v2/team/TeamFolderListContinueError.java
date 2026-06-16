@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_folders.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum TeamFolderListContinueError {
-    // union team.TeamFolderListContinueError (team_folders.stone)
+    // union team.TeamFolderListContinueError (team.stone)
     /**
      * The cursor is invalid.
      */

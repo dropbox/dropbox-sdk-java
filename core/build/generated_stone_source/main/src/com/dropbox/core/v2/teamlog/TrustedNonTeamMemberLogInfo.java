@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * User that is not a member of the team but considered trusted.
  */
 public class TrustedNonTeamMemberLogInfo extends UserLogInfo {
-    // struct team_log.TrustedNonTeamMemberLogInfo (team_log_generated.stone)
+    // struct team_log.TrustedNonTeamMemberLogInfo (team_log.stone)
 
     @Nonnull
     protected final TrustedNonTeamMemberType trustedNonTeamMemberType;

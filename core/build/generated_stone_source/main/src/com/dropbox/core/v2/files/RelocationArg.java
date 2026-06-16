@@ -31,12 +31,14 @@ class RelocationArg extends RelocationPath {
      * specifying values for all optional fields.
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
-     * @param allowSharedFolder  This flag has no effect.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
+     * @param allowSharedFolder  Field is deprecated. This flag has no effect.
      * @param autorename  If there's a conflict, have the Dropbox server try to
      *     autorename the file to avoid the conflict.
      * @param allowOwnershipTransfer  Allow moves by owner even if it would
@@ -59,11 +61,13 @@ class RelocationArg extends RelocationPath {
      * <p> The default values for unset fields will be used. </p>
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -93,11 +97,14 @@ class RelocationArg extends RelocationPath {
     }
 
     /**
-     * This flag has no effect.
+     * Field is deprecated. This flag has no effect.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     false.
+     *
+     * @deprecated
      */
+    @Deprecated
     public boolean getAllowSharedFolder() {
         return allowSharedFolder;
     }
@@ -128,11 +135,13 @@ class RelocationArg extends RelocationPath {
      * Returns a new builder for creating an instance of this class.
      *
      * @param fromPath  Path in the user's Dropbox to be copied or moved. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param toPath  Path in the user's Dropbox that is the destination. Must
-     *     match pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}"
-     *     and not be {@code null}.
+     *     match pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return builder for this class.
      *
@@ -158,14 +167,14 @@ class RelocationArg extends RelocationPath {
             if (fromPath == null) {
                 throw new IllegalArgumentException("Required value for 'fromPath' is null");
             }
-            if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)", fromPath)) {
+            if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)", fromPath)) {
                 throw new IllegalArgumentException("String 'fromPath' does not match pattern");
             }
             this.fromPath = fromPath;
             if (toPath == null) {
                 throw new IllegalArgumentException("Required value for 'toPath' is null");
             }
-            if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)", toPath)) {
+            if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)", toPath)) {
                 throw new IllegalArgumentException("String 'toPath' does not match pattern");
             }
             this.toPath = toPath;
@@ -180,11 +189,14 @@ class RelocationArg extends RelocationPath {
          * <p> If left unset or set to {@code null}, defaults to {@code false}.
          * </p>
          *
-         * @param allowSharedFolder  This flag has no effect. Defaults to {@code
-         *     false} when set to {@code null}.
+         * @param allowSharedFolder  Field is deprecated. This flag has no
+         *     effect. Defaults to {@code false} when set to {@code null}.
          *
          * @return this builder
+         *
+         * @deprecated
          */
+        @Deprecated
         public Builder withAllowSharedFolder(Boolean allowSharedFolder) {
             if (allowSharedFolder != null) {
                 this.allowSharedFolder = allowSharedFolder;

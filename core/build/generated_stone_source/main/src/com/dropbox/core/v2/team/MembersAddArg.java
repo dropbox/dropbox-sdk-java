@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 class MembersAddArg extends MembersAddArgBase {
-    // struct team.MembersAddArg (team_members.stone)
+    // struct team.MembersAddArg (team.stone)
 
     @Nonnull
     protected final List<MemberAddArg> newMembers;

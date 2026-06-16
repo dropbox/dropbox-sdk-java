@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  * DbxUserSharingRequests#updateFileMember(String,MemberSelector,AccessLevel)}.
  */
 class UpdateFileMemberArgs {
-    // struct sharing.UpdateFileMemberArgs (sharing_files.stone)
+    // struct sharing.UpdateFileMemberArgs (sharing.stone)
 
     @Nonnull
     protected final String file;

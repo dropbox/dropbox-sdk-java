@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * will be used. </p>
  */
 public final class AddMemberSelectorError {
-    // union sharing.AddMemberSelectorError (sharing_folders.stone)
+    // union sharing.AddMemberSelectorError (sharing.stone)
 
     /**
      * Discriminating tag type for {@link AddMemberSelectorError}.
@@ -46,6 +46,10 @@ public final class AddMemberSelectorError {
          * The value is the e-email address that is malformed.
          */
         INVALID_EMAIL, // String
+        /**
+         * Provided group is invalid.
+         */
+        INVALID_GROUP,
         /**
          * The value is the ID of the Dropbox user with an unverified email
          * address. Invite unverified users by email address instead of by their
@@ -76,6 +80,10 @@ public final class AddMemberSelectorError {
      * Automatically created groups can only be added to team folders.
      */
     public static final AddMemberSelectorError AUTOMATIC_GROUP = new AddMemberSelectorError().withTag(Tag.AUTOMATIC_GROUP);
+    /**
+     * Provided group is invalid.
+     */
+    public static final AddMemberSelectorError INVALID_GROUP = new AddMemberSelectorError().withTag(Tag.INVALID_GROUP);
     /**
      * At least one of the specified groups in {@link
      * AddFolderMemberArg#getMembers} is deleted.
@@ -310,6 +318,17 @@ public final class AddMemberSelectorError {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#INVALID_GROUP}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#INVALID_GROUP}, {@code false} otherwise.
+     */
+    public boolean isInvalidGroup() {
+        return this._tag == Tag.INVALID_GROUP;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#UNVERIFIED_DROPBOX_ID}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -429,6 +448,8 @@ public final class AddMemberSelectorError {
                     return (this.invalidDropboxIdValue == other.invalidDropboxIdValue) || (this.invalidDropboxIdValue.equals(other.invalidDropboxIdValue));
                 case INVALID_EMAIL:
                     return (this.invalidEmailValue == other.invalidEmailValue) || (this.invalidEmailValue.equals(other.invalidEmailValue));
+                case INVALID_GROUP:
+                    return true;
                 case UNVERIFIED_DROPBOX_ID:
                     return (this.unverifiedDropboxIdValue == other.unverifiedDropboxIdValue) || (this.unverifiedDropboxIdValue.equals(other.unverifiedDropboxIdValue));
                 case GROUP_DELETED:
@@ -492,6 +513,10 @@ public final class AddMemberSelectorError {
                     g.writeEndObject();
                     break;
                 }
+                case INVALID_GROUP: {
+                    g.writeString("invalid_group");
+                    break;
+                }
                 case UNVERIFIED_DROPBOX_ID: {
                     g.writeStartObject();
                     writeTag("unverified_dropbox_id", g);
@@ -546,6 +571,9 @@ public final class AddMemberSelectorError {
                 expectField("invalid_email", p);
                 fieldValue = StoneSerializers.string().deserialize(p);
                 value = AddMemberSelectorError.invalidEmail(fieldValue);
+            }
+            else if ("invalid_group".equals(tag)) {
+                value = AddMemberSelectorError.INVALID_GROUP;
             }
             else if ("unverified_dropbox_id".equals(tag)) {
                 String fieldValue = null;

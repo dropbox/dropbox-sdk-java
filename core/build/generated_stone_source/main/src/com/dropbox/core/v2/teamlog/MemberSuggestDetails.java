@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Suggested person to add to team.
  */
 public class MemberSuggestDetails {
-    // struct team_log.MemberSuggestDetails (team_log_generated.stone)
+    // struct team_log.MemberSuggestDetails (team_log.stone)
 
     @Nonnull
     protected final List<String> suggestedMembers;

@@ -30,10 +30,10 @@
  * owner of the template (either a user or team). </p>
  *
  * <p> User-owned templates are accessed via the user-auth
- * file_properties/templates/*_for_user endpoints, while team-owned templates
- * are accessed via the team-auth file_properties/templates/*_for_team
+ * `file_properties/templates/*_for_user` endpoints, while team-owned templates
+ * are accessed via the team-auth `file_properties/templates/*_for_team`
  * endpoints. Properties associated with either type of template can be accessed
- * via the user-auth properties/* endpoints. </p>
+ * via the user-auth `properties/*` endpoints. </p>
  *
  * <p> Finally, properties can be accessed from a number of endpoints that
  * return metadata, including `files/get_metadata`, and `files/list_folder`.

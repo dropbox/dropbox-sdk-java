@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * folders owned by a user on a team.
  */
 public enum MemberPolicy {
-    // union sharing.MemberPolicy (sharing_folders.stone)
+    // union sharing.MemberPolicy (sharing.stone)
     /**
      * Only a teammate can become a member.
      */
@@ -30,6 +30,10 @@ public enum MemberPolicy {
      * Anyone can become a member.
      */
     ANYONE,
+    /**
+     * Only a teammate and approved people can become a member.
+     */
+    TEAM_AND_APPROVED,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -54,6 +58,10 @@ public enum MemberPolicy {
                 }
                 case ANYONE: {
                     g.writeString("anyone");
+                    break;
+                }
+                case TEAM_AND_APPROVED: {
+                    g.writeString("team_and_approved");
                     break;
                 }
                 default: {
@@ -85,6 +93,9 @@ public enum MemberPolicy {
             }
             else if ("anyone".equals(tag)) {
                 value = MemberPolicy.ANYONE;
+            }
+            else if ("team_and_approved".equals(tag)) {
+                value = MemberPolicy.TEAM_AND_APPROVED;
             }
             else {
                 value = MemberPolicy.OTHER;

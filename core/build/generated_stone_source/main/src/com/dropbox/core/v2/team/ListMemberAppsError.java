@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_linked_apps.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * DbxTeamTeamRequests#linkedAppsListMemberLinkedApps(String)}.
  */
 public enum ListMemberAppsError {
-    // union team.ListMemberAppsError (team_linked_apps.stone)
+    // union team.ListMemberAppsError (team.stone)
     /**
      * Member not found.
      */

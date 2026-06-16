@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class GetSharedLinkMetadataArg {
-    // struct sharing.GetSharedLinkMetadataArg (shared_links.stone)
+    // struct sharing.GetSharedLinkMetadataArg (sharing.stone)
 
     @Nonnull
     protected final String url;

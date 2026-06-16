@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class InsufficientQuotaAmounts {
-    // struct sharing.InsufficientQuotaAmounts (sharing_folders.stone)
+    // struct sharing.InsufficientQuotaAmounts (sharing.stone)
 
     protected final long spaceNeeded;
     protected final long spaceShortage;

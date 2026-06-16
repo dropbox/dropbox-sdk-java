@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Pinned item to folder overview.
  */
 public class FolderOverviewItemPinnedDetails {
-    // struct team_log.FolderOverviewItemPinnedDetails (team_log_generated.stone)
+    // struct team_log.FolderOverviewItemPinnedDetails (team_log.stone)
 
     protected final long folderOverviewLocationAsset;
     @Nonnull

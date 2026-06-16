@@ -38,6 +38,10 @@ public enum SearchMatchTypeV2 {
      */
     IMAGE_CONTENT,
     /**
+     * This item was matched based on its metadata.
+     */
+    METADATA,
+    /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
      * <p> Receiving a catch-all value typically indicates this SDK version is
@@ -69,6 +73,10 @@ public enum SearchMatchTypeV2 {
                 }
                 case IMAGE_CONTENT: {
                     g.writeString("image_content");
+                    break;
+                }
+                case METADATA: {
+                    g.writeString("metadata");
                     break;
                 }
                 default: {
@@ -106,6 +114,9 @@ public enum SearchMatchTypeV2 {
             }
             else if ("image_content".equals(tag)) {
                 value = SearchMatchTypeV2.IMAGE_CONTENT;
+            }
+            else if ("metadata".equals(tag)) {
+                value = SearchMatchTypeV2.METADATA;
             }
             else {
                 value = SearchMatchTypeV2.OTHER;

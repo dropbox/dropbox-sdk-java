@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * This class is a tagged union.  Tagged unions instances are always associated
- * to a specific tag.  This means only one of the {@code isAbc()} methods will
- * return {@code true}. You can use {@link #tag()} to determine the tag
- * associated with this instance.
+ * This class is an open tagged union.  Tagged unions instances are always
+ * associated to a specific tag.  This means only one of the {@code isAbc()}
+ * methods will return {@code true}. You can use {@link #tag()} to determine the
+ * tag associated with this instance.
+ *
+ * <p> Open unions may be extended in the future with additional tags. If a new
+ * tag is introduced that this SDK does not recognized, the {@link #OTHER} value
+ * will be used. </p>
  */
 public final class UploadSessionAppendError {
     // union files.UploadSessionAppendError (files.stone)
@@ -47,29 +51,30 @@ public final class UploadSessionAppendError {
          */
         CLOSED,
         /**
-         * The session must be closed before calling
-         * upload_session/finish_batch.
-         */
-        NOT_CLOSED,
-        /**
          * You can not append to the upload session because the size of a file
-         * should not reach the max file size limit (i.e. 350GB).
+         * should not exceed the max file size limit (i.e. 2^41 - 2^22 or
+         * 2,199,019,061,248 bytes).
          */
         TOO_LARGE,
         /**
-         * For concurrent upload sessions, offset needs to be multiple of
-         * 4194304 bytes.
+         * For concurrent upload sessions, offset needs to be multiple of 2^22
+         * (4,194,304) bytes.
          */
         CONCURRENT_SESSION_INVALID_OFFSET,
         /**
          * For concurrent upload sessions, only chunks with size multiple of
-         * 4194304 bytes can be uploaded.
+         * 2^22 (4,194,304) bytes can be uploaded.
          */
         CONCURRENT_SESSION_INVALID_DATA_SIZE,
         /**
-         * The request payload must be at most 150 MB.
+         * The request payload must be at most 150 MiB.
          */
         PAYLOAD_TOO_LARGE,
+        /**
+         * The content received by the Dropbox server in this call does not
+         * match the provided content hash.
+         */
+        CONTENT_HASH_MISMATCH,
         /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
@@ -78,12 +83,7 @@ public final class UploadSessionAppendError {
          * is not up to date. Consider updating your SDK version to handle the
          * new tags. </p>
          */
-        OTHER,
-        /**
-         * The content received by the Dropbox server in this call does not
-         * match the provided content hash.
-         */
-        CONTENT_HASH_MISMATCH;
+        OTHER; // *catch_all
     }
 
     /**
@@ -97,28 +97,30 @@ public final class UploadSessionAppendError {
      */
     public static final UploadSessionAppendError CLOSED = new UploadSessionAppendError().withTag(Tag.CLOSED);
     /**
-     * The session must be closed before calling upload_session/finish_batch.
-     */
-    public static final UploadSessionAppendError NOT_CLOSED = new UploadSessionAppendError().withTag(Tag.NOT_CLOSED);
-    /**
      * You can not append to the upload session because the size of a file
-     * should not reach the max file size limit (i.e. 350GB).
+     * should not exceed the max file size limit (i.e. 2^41 - 2^22 or
+     * 2,199,019,061,248 bytes).
      */
     public static final UploadSessionAppendError TOO_LARGE = new UploadSessionAppendError().withTag(Tag.TOO_LARGE);
     /**
-     * For concurrent upload sessions, offset needs to be multiple of 4194304
-     * bytes.
+     * For concurrent upload sessions, offset needs to be multiple of 2^22
+     * (4,194,304) bytes.
      */
     public static final UploadSessionAppendError CONCURRENT_SESSION_INVALID_OFFSET = new UploadSessionAppendError().withTag(Tag.CONCURRENT_SESSION_INVALID_OFFSET);
     /**
-     * For concurrent upload sessions, only chunks with size multiple of 4194304
-     * bytes can be uploaded.
+     * For concurrent upload sessions, only chunks with size multiple of 2^22
+     * (4,194,304) bytes can be uploaded.
      */
     public static final UploadSessionAppendError CONCURRENT_SESSION_INVALID_DATA_SIZE = new UploadSessionAppendError().withTag(Tag.CONCURRENT_SESSION_INVALID_DATA_SIZE);
     /**
-     * The request payload must be at most 150 MB.
+     * The request payload must be at most 150 MiB.
      */
     public static final UploadSessionAppendError PAYLOAD_TOO_LARGE = new UploadSessionAppendError().withTag(Tag.PAYLOAD_TOO_LARGE);
+    /**
+     * The content received by the Dropbox server in this call does not match
+     * the provided content hash.
+     */
+    public static final UploadSessionAppendError CONTENT_HASH_MISMATCH = new UploadSessionAppendError().withTag(Tag.CONTENT_HASH_MISMATCH);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -127,11 +129,6 @@ public final class UploadSessionAppendError {
      * tags. </p>
      */
     public static final UploadSessionAppendError OTHER = new UploadSessionAppendError().withTag(Tag.OTHER);
-    /**
-     * The content received by the Dropbox server in this call does not match
-     * the provided content hash.
-     */
-    public static final UploadSessionAppendError CONTENT_HASH_MISMATCH = new UploadSessionAppendError().withTag(Tag.CONTENT_HASH_MISMATCH);
 
     private Tag _tag;
     private UploadSessionOffsetError incorrectOffsetValue;
@@ -180,6 +177,9 @@ public final class UploadSessionAppendError {
      * methods will return {@code true}. Callers are recommended to use the tag
      * value in a {@code switch} statement to properly handle the different
      * values for this {@code UploadSessionAppendError}. </p>
+     *
+     * <p> If a tag returned by the server is unrecognized by this SDK, the
+     * {@link Tag#OTHER} value will be used. </p>
      *
      * @return the tag for this instance.
      */
@@ -265,17 +265,6 @@ public final class UploadSessionAppendError {
     }
 
     /**
-     * Returns {@code true} if this instance has the tag {@link Tag#NOT_CLOSED},
-     * {@code false} otherwise.
-     *
-     * @return {@code true} if this instance is tagged as {@link
-     *     Tag#NOT_CLOSED}, {@code false} otherwise.
-     */
-    public boolean isNotClosed() {
-        return this._tag == Tag.NOT_CLOSED;
-    }
-
-    /**
      * Returns {@code true} if this instance has the tag {@link Tag#TOO_LARGE},
      * {@code false} otherwise.
      *
@@ -320,17 +309,6 @@ public final class UploadSessionAppendError {
     }
 
     /**
-     * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
-     * {@code false} otherwise.
-     *
-     * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
-     *     {@code false} otherwise.
-     */
-    public boolean isOther() {
-        return this._tag == Tag.OTHER;
-    }
-
-    /**
      * Returns {@code true} if this instance has the tag {@link
      * Tag#CONTENT_HASH_MISMATCH}, {@code false} otherwise.
      *
@@ -341,13 +319,23 @@ public final class UploadSessionAppendError {
         return this._tag == Tag.CONTENT_HASH_MISMATCH;
     }
 
+    /**
+     * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
+     * {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link Tag#OTHER},
+     *     {@code false} otherwise.
+     */
+    public boolean isOther() {
+        return this._tag == Tag.OTHER;
+    }
+
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
             this._tag,
             this.incorrectOffsetValue
         });
-        hash = (31 * super.hashCode()) + hash;
         return hash;
     }
 
@@ -371,8 +359,6 @@ public final class UploadSessionAppendError {
                     return (this.incorrectOffsetValue == other.incorrectOffsetValue) || (this.incorrectOffsetValue.equals(other.incorrectOffsetValue));
                 case CLOSED:
                     return true;
-                case NOT_CLOSED:
-                    return true;
                 case TOO_LARGE:
                     return true;
                 case CONCURRENT_SESSION_INVALID_OFFSET:
@@ -381,9 +367,9 @@ public final class UploadSessionAppendError {
                     return true;
                 case PAYLOAD_TOO_LARGE:
                     return true;
-                case OTHER:
-                    return true;
                 case CONTENT_HASH_MISMATCH:
+                    return true;
+                case OTHER:
                     return true;
                 default:
                     return false;
@@ -435,10 +421,6 @@ public final class UploadSessionAppendError {
                     g.writeString("closed");
                     break;
                 }
-                case NOT_CLOSED: {
-                    g.writeString("not_closed");
-                    break;
-                }
                 case TOO_LARGE: {
                     g.writeString("too_large");
                     break;
@@ -455,16 +437,12 @@ public final class UploadSessionAppendError {
                     g.writeString("payload_too_large");
                     break;
                 }
-                case OTHER: {
-                    g.writeString("other");
-                    break;
-                }
                 case CONTENT_HASH_MISMATCH: {
                     g.writeString("content_hash_mismatch");
                     break;
                 }
                 default: {
-                    throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
+                    g.writeString("other");
                 }
             }
         }
@@ -498,9 +476,6 @@ public final class UploadSessionAppendError {
             else if ("closed".equals(tag)) {
                 value = UploadSessionAppendError.CLOSED;
             }
-            else if ("not_closed".equals(tag)) {
-                value = UploadSessionAppendError.NOT_CLOSED;
-            }
             else if ("too_large".equals(tag)) {
                 value = UploadSessionAppendError.TOO_LARGE;
             }
@@ -513,14 +488,11 @@ public final class UploadSessionAppendError {
             else if ("payload_too_large".equals(tag)) {
                 value = UploadSessionAppendError.PAYLOAD_TOO_LARGE;
             }
-            else if ("other".equals(tag)) {
-                value = UploadSessionAppendError.OTHER;
-            }
             else if ("content_hash_mismatch".equals(tag)) {
                 value = UploadSessionAppendError.CONTENT_HASH_MISMATCH;
             }
             else {
-                throw new JsonParseException(p, "Unknown tag: " + tag);
+                value = UploadSessionAppendError.OTHER;
             }
             if (!collapsed) {
                 skipFields(p);

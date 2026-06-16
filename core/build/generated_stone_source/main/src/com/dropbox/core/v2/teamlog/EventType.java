@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -29,7 +29,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class EventType {
-    // union team_log.EventType (team_log_generated.stone)
+    // union team_log.EventType (team_log.stone)
 
     /**
      * Discriminating tag type for {@link EventType}.
@@ -116,6 +116,134 @@ public final class EventType {
          * (comments) Unresolved file comment
          */
         FILE_UNRESOLVE_COMMENT, // FileUnresolveCommentType
+        /**
+         * (dash) Added a comment to a stack
+         */
+        DASH_ADDED_COMMENT_TO_STACK, // DashAddedCommentToStackType
+        /**
+         * (dash) Connected to a user connector
+         */
+        DASH_ADDED_CONNECTOR, // DashAddedConnectorType
+        /**
+         * (dash) Added a link to a stack
+         */
+        DASH_ADDED_LINK_TO_STACK, // DashAddedLinkToStackType
+        /**
+         * (dash) Admin added an email domain to the team allowlist
+         */
+        DASH_ADDED_TEAM_EMAIL_DOMAIN_ALLOWLIST, // DashAddedTeamEmailDomainAllowlistType
+        /**
+         * (dash) Admin added an admin connector
+         */
+        DASH_ADMIN_ADDED_ORG_WIDE_CONNECTOR, // DashAdminAddedOrgWideConnectorType
+        /**
+         * (dash) Admin disabled a user connector
+         */
+        DASH_ADMIN_DISABLED_CONNECTOR, // DashAdminDisabledConnectorType
+        /**
+         * (dash) Admin enabled a user connector
+         */
+        DASH_ADMIN_ENABLED_CONNECTOR, // DashAdminEnabledConnectorType
+        /**
+         * (dash) Admin removed an admin connector
+         */
+        DASH_ADMIN_REMOVED_ORG_WIDE_CONNECTOR, // DashAdminRemovedOrgWideConnectorType
+        /**
+         * (dash) Archived a stack
+         */
+        DASH_ARCHIVED_STACK, // DashArchivedStackType
+        /**
+         * (dash) Changed the audience of a shared link to a stack
+         */
+        DASH_CHANGED_AUDIENCE_OF_SHARED_LINK_TO_STACK, // DashChangedAudienceOfSharedLinkToStackType
+        /**
+         * (dash) Cloned stack
+         */
+        DASH_CLONED_STACK, // DashClonedStackType
+        /**
+         * (dash) Called a tool on a connector
+         */
+        DASH_CONNECTOR_TOOLS_CALL, // DashConnectorToolsCallType
+        /**
+         * (dash) Created a stack
+         */
+        DASH_CREATED_STACK, // DashCreatedStackType
+        /**
+         * (dash) Deleted a comment from a stack
+         */
+        DASH_DELETED_COMMENT_FROM_STACK, // DashDeletedCommentFromStackType
+        /**
+         * (dash) Deleted a stack
+         */
+        DASH_DELETED_STACK, // DashDeletedStackType
+        /**
+         * (dash) Edited a comment in a stack
+         */
+        DASH_EDITED_COMMENT_IN_STACK, // DashEditedCommentInStackType
+        /**
+         * (dash) External user opened a stack
+         */
+        DASH_EXTERNAL_USER_OPENED_STACK, // DashExternalUserOpenedStackType
+        /**
+         * (dash) Opened the desktop app for the first time
+         */
+        DASH_FIRST_LAUNCHED_DESKTOP, // DashFirstLaunchedDesktopType
+        /**
+         * (dash) Opened the extension for the first time
+         */
+        DASH_FIRST_LAUNCHED_EXTENSION, // DashFirstLaunchedExtensionType
+        /**
+         * (dash) Opened the web Start Page for the first time
+         */
+        DASH_FIRST_LAUNCHED_WEB_START_PAGE, // DashFirstLaunchedWebStartPageType
+        /**
+         * (dash) Checked access permissions to a stack
+         */
+        DASH_OPENED_SHARED_LINK_TO_STACK, // DashOpenedSharedLinkToStackType
+        /**
+         * (dash) Opened a stack
+         */
+        DASH_OPENED_STACK, // DashOpenedStackType
+        /**
+         * (dash) Changed the preview opt-out status
+         */
+        DASH_PREVIEW_OPT_OUT_STATUS_CHANGED, // DashPreviewOptOutStatusChangedType
+        /**
+         * (dash) Disconnected a user connector
+         */
+        DASH_REMOVED_CONNECTOR, // DashRemovedConnectorType
+        /**
+         * (dash) Removed a link from a stack
+         */
+        DASH_REMOVED_LINK_FROM_STACK, // DashRemovedLinkFromStackType
+        /**
+         * (dash) Removed a shared link to a stack
+         */
+        DASH_REMOVED_SHARED_LINK_TO_STACK, // DashRemovedSharedLinkToStackType
+        /**
+         * (dash) Admin removed an email domain from the team allowlist
+         */
+        DASH_REMOVED_TEAM_EMAIL_DOMAIN_ALLOWLIST, // DashRemovedTeamEmailDomainAllowlistType
+        /**
+         * (dash) Renamed a stack
+         */
+        DASH_RENAMED_STACK, // DashRenamedStackType
+        /**
+         * (dash) Shared a link to a stack
+         */
+        DASH_SHARED_LINK_TO_STACK, // DashSharedLinkToStackType
+        /**
+         * (dash) Unarchived a stack
+         */
+        DASH_UNARCHIVED_STACK, // DashUnarchivedStackType
+        /**
+         * (dash) Member viewed a company stack
+         */
+        DASH_VIEWED_COMPANY_STACK, // DashViewedCompanyStackType
+        /**
+         * (dash) Admin viewed the external AI activity report
+         */
+        DASH_VIEWED_EXTERNAL_AI_ACTIVITY_REPORT, // DashViewedExternalAiActivityReportType
         /**
          * (data_governance) Added folders to policy
          */
@@ -338,6 +466,50 @@ public final class EventType {
          */
         ENABLED_DOMAIN_INVITES, // EnabledDomainInvitesType
         /**
+         * (encryption) Canceled team key rotation
+         */
+        ENCRYPTED_FOLDER_CANCEL_TEAM_KEY_ROTATION, // EncryptedFolderCancelTeamKeyRotationType
+        /**
+         * (encryption) Added recovery key
+         */
+        ENCRYPTED_FOLDER_ENROLL_BACKUP_KEY, // EncryptedFolderEnrollBackupKeyType
+        /**
+         * (encryption) Enrolled device
+         */
+        ENCRYPTED_FOLDER_ENROLL_CLIENT, // EncryptedFolderEnrollClientType
+        /**
+         * (encryption) Activated team folder encryption
+         */
+        ENCRYPTED_FOLDER_ENROLL_TEAM, // EncryptedFolderEnrollTeamType
+        /**
+         * (encryption) Deactivated team folder encryption
+         */
+        ENCRYPTED_FOLDER_FINISH_TEAM_UNENROLLMENT, // EncryptedFolderFinishTeamUnenrollmentType
+        /**
+         * (encryption) Initiated team key rotation
+         */
+        ENCRYPTED_FOLDER_INIT_TEAM_KEY_ROTATION, // EncryptedFolderInitTeamKeyRotationType
+        /**
+         * (encryption) Initiated deactivation of team folder encryption
+         */
+        ENCRYPTED_FOLDER_INIT_TEAM_UNENROLLMENT, // EncryptedFolderInitTeamUnenrollmentType
+        /**
+         * (encryption) Removed recovery key
+         */
+        ENCRYPTED_FOLDER_REMOVE_BACKUP_KEY, // EncryptedFolderRemoveBackupKeyType
+        /**
+         * (encryption) Rotated team key
+         */
+        ENCRYPTED_FOLDER_ROTATE_TEAM_KEY, // EncryptedFolderRotateTeamKeyType
+        /**
+         * (encryption) Unenrolled device
+         */
+        ENCRYPTED_FOLDER_UNENROLL_CLIENT, // EncryptedFolderUnenrollClientType
+        /**
+         * (encryption) Activated team encryption key
+         */
+        TEAM_ENCRYPTION_KEY_ACTIVATE_KEY, // TeamEncryptionKeyActivateKeyType
+        /**
          * (encryption) Canceled team encryption key deletion
          */
         TEAM_ENCRYPTION_KEY_CANCEL_KEY_DELETION, // TeamEncryptionKeyCancelKeyDeletionType
@@ -345,6 +517,10 @@ public final class EventType {
          * (encryption) Created team encryption key
          */
         TEAM_ENCRYPTION_KEY_CREATE_KEY, // TeamEncryptionKeyCreateKeyType
+        /**
+         * (encryption) Deactivated team encryption key
+         */
+        TEAM_ENCRYPTION_KEY_DEACTIVATE_KEY, // TeamEncryptionKeyDeactivateKeyType
         /**
          * (encryption) Deleted team encryption key
          */
@@ -471,6 +647,14 @@ public final class EventType {
          */
         REPLAY_FILE_DELETE, // ReplayFileDeleteType
         /**
+         * (file_operations) Downloaded files in Replay
+         */
+        REPLAY_FILE_DOWNLOADED, // ReplayFileDownloadedType
+        /**
+         * (file_operations) Created a team project in Replay
+         */
+        REPLAY_TEAM_PROJECT_CREATED, // ReplayTeamProjectCreatedType
+        /**
          * (file_operations) Rewound a folder
          */
         REWIND_FOLDER, // RewindFolderType
@@ -494,6 +678,10 @@ public final class EventType {
          * (file_requests) Received files via Email to Dropbox
          */
         EMAIL_INGEST_RECEIVE_FILE, // EmailIngestReceiveFileType
+        /**
+         * (file_requests) Auto closed file request
+         */
+        FILE_REQUEST_AUTO_CLOSE, // FileRequestAutoCloseType
         /**
          * (file_requests) Changed file request
          */
@@ -546,6 +734,10 @@ public final class EventType {
          * (groups) Updated group (deprecated, no longer logged)
          */
         GROUP_DESCRIPTION_UPDATED, // GroupDescriptionUpdatedType
+        /**
+         * (groups) Changed group's external sharing setting
+         */
+        GROUP_EXTERNAL_SHARING_SETTING_OVERRIDE_CHANGED, // GroupExternalSharingSettingOverrideChangedType
         /**
          * (groups) Updated group join policy (deprecated, no longer logged)
          */
@@ -616,6 +808,14 @@ public final class EventType {
          * to sign in')
          */
         SSO_ERROR, // SsoErrorType
+        /**
+         * (members) Add-on Assigned
+         */
+        ADDON_ASSIGNED, // AddonAssignedType
+        /**
+         * (members) Add-on Removed
+         */
+        ADDON_REMOVED, // AddonRemovedType
         /**
          * (members) Invited members to activate Backup
          */
@@ -718,6 +918,14 @@ public final class EventType {
          * (members) Added pending secondary email
          */
         PENDING_SECONDARY_EMAIL_ADDED, // PendingSecondaryEmailAddedType
+        /**
+         * (members) Product assigned to team member
+         */
+        PRODUCT_ASSIGNED_TO_MEMBER, // ProductAssignedToMemberType
+        /**
+         * (members) Product removed from team member
+         */
+        PRODUCT_REMOVED_FROM_MEMBER, // ProductRemovedFromMemberType
         /**
          * (members) Deleted secondary email
          */
@@ -982,6 +1190,14 @@ public final class EventType {
          */
         EXTERNAL_SHARING_REPORT_FAILED, // ExternalSharingReportFailedType
         /**
+         * (reports) Created member access report
+         */
+        MEMBER_ACCESS_DETAILS_CREATE_REPORT, // MemberAccessDetailsCreateReportType
+        /**
+         * (reports) Couldn't generate member access report
+         */
+        MEMBER_ACCESS_DETAILS_CREATE_REPORT_FAILED, // MemberAccessDetailsCreateReportFailedType
+        /**
          * (reports) Report created: Links created with no expiration
          */
         NO_EXPIRATION_LINK_GEN_CREATE_REPORT, // NoExpirationLinkGenCreateReportType
@@ -1026,6 +1242,14 @@ public final class EventType {
          */
         RANSOMWARE_ALERT_CREATE_REPORT_FAILED, // RansomwareAlertCreateReportFailedType
         /**
+         * (reports) Created shared folders report
+         */
+        SHARED_FOLDERS_CREATE_REPORT, // SharedFoldersCreateReportType
+        /**
+         * (reports) Couldn't generate shared folders report
+         */
+        SHARED_FOLDERS_CREATE_REPORT_FAILED, // SharedFoldersCreateReportFailedType
+        /**
          * (reports) Created Smart Sync non-admin devices report
          */
         SMART_SYNC_CREATE_ADMIN_PRIVILEGE_REPORT, // SmartSyncCreateAdminPrivilegeReportType
@@ -1037,6 +1261,22 @@ public final class EventType {
          * (reports) Couldn't generate team activity report
          */
         TEAM_ACTIVITY_CREATE_REPORT_FAIL, // TeamActivityCreateReportFailType
+        /**
+         * (reports) Created team folders report
+         */
+        TEAM_FOLDERS_CREATE_REPORT, // TeamFoldersCreateReportType
+        /**
+         * (reports) Couldn't generate team folders report
+         */
+        TEAM_FOLDERS_CREATE_REPORT_FAILED, // TeamFoldersCreateReportFailedType
+        /**
+         * (reports) Created team storage report
+         */
+        TEAM_STORAGE_CREATE_REPORT, // TeamStorageCreateReportType
+        /**
+         * (reports) Couldn't generate team storage report
+         */
+        TEAM_STORAGE_CREATE_REPORT_FAILED, // TeamStorageCreateReportFailedType
         /**
          * (sharing) Shared album
          */
@@ -1093,7 +1333,7 @@ public final class EventType {
          */
         REPLAY_FILE_SHARED_LINK_CREATED, // ReplayFileSharedLinkCreatedType
         /**
-         * (sharing) Modified shared link in Replay
+         * (sharing) Changed shared link in Replay
          */
         REPLAY_FILE_SHARED_LINK_MODIFIED, // ReplayFileSharedLinkModifiedType
         /**
@@ -1104,6 +1344,38 @@ public final class EventType {
          * (sharing) Removed member from Replay Project
          */
         REPLAY_PROJECT_TEAM_DELETE, // ReplayProjectTeamDeleteType
+        /**
+         * (sharing) File added to Send and Track
+         */
+        SEND_AND_TRACK_FILE_ADDED, // SendAndTrackFileAddedType
+        /**
+         * (sharing) File renamed in Send and Track
+         */
+        SEND_AND_TRACK_FILE_RENAMED, // SendAndTrackFileRenamedType
+        /**
+         * (sharing) File updated in Send and Track
+         */
+        SEND_AND_TRACK_FILE_UPDATED, // SendAndTrackFileUpdatedType
+        /**
+         * (sharing) Link created in Send and Track
+         */
+        SEND_AND_TRACK_LINK_CREATED, // SendAndTrackLinkCreatedType
+        /**
+         * (sharing) Link deleted in Send and Track
+         */
+        SEND_AND_TRACK_LINK_DELETED, // SendAndTrackLinkDeletedType
+        /**
+         * (sharing) Send and Track Link Updated
+         */
+        SEND_AND_TRACK_LINK_UPDATED, // SendAndTrackLinkUpdatedType
+        /**
+         * (sharing) Send and Track Link Visited
+         */
+        SEND_AND_TRACK_LINK_VIEWED, // SendAndTrackLinkViewedType
+        /**
+         * (sharing) Send and Track file and associated links deleted
+         */
+        SEND_AND_TRACK_REMOVED_FILE_AND_ASSOCIATED_LINKS, // SendAndTrackRemovedFileAndAssociatedLinksType
         /**
          * (sharing) Added team to shared folder (deprecated, no longer logged)
          */
@@ -1352,6 +1624,10 @@ public final class EventType {
          */
         SHARED_LINK_REMOVE_EXPIRY, // SharedLinkRemoveExpiryType
         /**
+         * (sharing) Removed link visitor
+         */
+        SHARED_LINK_REMOVE_VISITOR, // SharedLinkRemoveVisitorType
+        /**
          * (sharing) Added an expiration date to the shared link
          */
         SHARED_LINK_SETTINGS_ADD_EXPIRATION, // SharedLinkSettingsAddExpirationType
@@ -1510,6 +1786,42 @@ public final class EventType {
          */
         SHOWCASE_VIEW, // ShowcaseViewType
         /**
+         * (signatures) Canceled signature request
+         */
+        SIGN_SIGNATURE_REQUEST_CANCELED, // SignSignatureRequestCanceledType
+        /**
+         * (signatures) Completed signature request
+         */
+        SIGN_SIGNATURE_REQUEST_COMPLETED, // SignSignatureRequestCompletedType
+        /**
+         * (signatures) Declined signature request
+         */
+        SIGN_SIGNATURE_REQUEST_DECLINED, // SignSignatureRequestDeclinedType
+        /**
+         * (signatures) Opened signature request
+         */
+        SIGN_SIGNATURE_REQUEST_OPENED, // SignSignatureRequestOpenedType
+        /**
+         * (signatures) Sent signature request reminder
+         */
+        SIGN_SIGNATURE_REQUEST_REMINDER_SENT, // SignSignatureRequestReminderSentType
+        /**
+         * (signatures) Sent signature request
+         */
+        SIGN_SIGNATURE_REQUEST_SENT, // SignSignatureRequestSentType
+        /**
+         * (signatures) Created template
+         */
+        SIGN_TEMPLATE_CREATED, // SignTemplateCreatedType
+        /**
+         * (signatures) Shared template
+         */
+        SIGN_TEMPLATE_SHARED, // SignTemplateSharedType
+        /**
+         * (sso) RISC security event received from external provider
+         */
+        RISC_SECURITY_EVENT, // RiscSecurityEventType
+        /**
          * (sso) Added X.509 certificate for SSO
          */
         SSO_ADD_CERT, // SsoAddCertType
@@ -1570,6 +1882,18 @@ public final class EventType {
          */
         TEAM_FOLDER_RENAME, // TeamFolderRenameType
         /**
+         * (team_folders) Changed team folder space limit enforcement type
+         */
+        TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE, // TeamFolderSpaceLimitsChangeCapsTypeType
+        /**
+         * (team_folders) Changed team folder space limit
+         */
+        TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT, // TeamFolderSpaceLimitsChangeLimitType
+        /**
+         * (team_folders) Changed team folder space limit notification target
+         */
+        TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET, // TeamFolderSpaceLimitsChangeNotificationTargetType
+        /**
          * (team_folders) Changed sync default
          */
         TEAM_SELECTIVE_SYNC_SETTINGS_CHANGED, // TeamSelectiveSyncSettingsChangedType
@@ -1583,6 +1907,10 @@ public final class EventType {
          */
         ADMIN_EMAIL_REMINDERS_CHANGED, // AdminEmailRemindersChangedType
         /**
+         * (team_policies) Changed AI third party sharing policy for team
+         */
+        AI_THIRD_PARTY_SHARING_DROPBOX_BASE_POLICY_CHANGED, // AiThirdPartySharingDropboxBasePolicyChangedType
+        /**
          * (team_policies) Disabled downloads (deprecated, no longer logged)
          */
         ALLOW_DOWNLOAD_DISABLED, // AllowDownloadDisabledType
@@ -1591,6 +1919,10 @@ public final class EventType {
          */
         ALLOW_DOWNLOAD_ENABLED, // AllowDownloadEnabledType
         /**
+         * (team_policies) Enabled/disabled Apple login for team
+         */
+        APPLE_LOGIN_CHANGE_POLICY, // AppleLoginChangePolicyType
+        /**
          * (team_policies) Changed app permissions
          */
         APP_PERMISSIONS_CHANGED, // AppPermissionsChangedType
@@ -1598,6 +1930,10 @@ public final class EventType {
          * (team_policies) Changed camera uploads setting for team
          */
         CAMERA_UPLOADS_POLICY_CHANGED, // CameraUploadsPolicyChangedType
+        /**
+         * (team_policies) Changed Capture team space policy for team
+         */
+        CAPTURE_TEAM_SPACE_POLICY_CHANGED, // CaptureTeamSpacePolicyChangedType
         /**
          * (team_policies) Changed Capture transcription policy for team
          */
@@ -1614,6 +1950,14 @@ public final class EventType {
          * (team_policies) Changed content management setting
          */
         CONTENT_ADMINISTRATION_POLICY_CHANGED, // ContentAdministrationPolicyChangedType
+        /**
+         * (team_policies) Changed content deletion protection policy for team
+         */
+        CONTENT_DELETION_PROTECTION_CHANGE_POLICY, // ContentDeletionProtectionChangePolicyType
+        /**
+         * (team_policies) Changed Dash external sharing policy for team
+         */
+        DASH_EXTERNAL_SHARING_POLICY_CHANGED, // DashExternalSharingPolicyChangedType
         /**
          * (team_policies) Set restrictions on data center locations where team
          * data resides
@@ -1720,6 +2064,10 @@ public final class EventType {
          */
         FILE_TRANSFERS_POLICY_CHANGED, // FileTransfersPolicyChangedType
         /**
+         * (team_policies) Changed flexible file names policy for team
+         */
+        FLEXIBLE_FILE_NAMES_POLICY_CHANGED, // FlexibleFileNamesPolicyChangedType
+        /**
          * (team_policies) Changed folder link restrictions policy for team
          */
         FOLDER_LINK_RESTRICTION_POLICY_CHANGED, // FolderLinkRestrictionPolicyChangedType
@@ -1770,6 +2118,10 @@ public final class EventType {
          */
         MEMBER_SUGGESTIONS_CHANGE_POLICY, // MemberSuggestionsChangePolicyType
         /**
+         * (team_policies) Enabled/disabled Microsoft login for team
+         */
+        MICROSOFT_LOGIN_CHANGE_POLICY, // MicrosoftLoginChangePolicyType
+        /**
          * (team_policies) Enabled/disabled Microsoft Office add-in
          */
         MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY, // MicrosoftOfficeAddinChangePolicyType
@@ -1814,6 +2166,10 @@ public final class EventType {
          */
         PAPER_ENABLED_USERS_GROUP_REMOVAL, // PaperEnabledUsersGroupRemovalType
         /**
+         * (team_policies) Changed passkey login policy for team
+         */
+        PASSKEY_LOGIN_POLICY_CHANGED, // PasskeyLoginPolicyChangedType
+        /**
          * (team_policies) Changed team password strength requirements
          */
         PASSWORD_STRENGTH_REQUIREMENTS_CHANGE_POLICY, // PasswordStrengthRequirementsChangePolicyType
@@ -1823,6 +2179,19 @@ public final class EventType {
          */
         PERMANENT_DELETE_CHANGE_POLICY, // PermanentDeleteChangePolicyType
         /**
+         * (team_policies) Changed Dropbox AI policy for team
+         */
+        PREVIEWS_AI_POLICY_CHANGED, // PreviewsAiPolicyChangedType
+        /**
+         * (team_policies) Changed the policy for adding people to Replay
+         * content
+         */
+        REPLAY_ADDING_PEOPLE_POLICY_CHANGED, // ReplayAddingPeoplePolicyChangedType
+        /**
+         * (team_policies) Changed the policy for sharing Replay content
+         */
+        REPLAY_SHARING_POLICY_CHANGED, // ReplaySharingPolicyChangedType
+        /**
          * (team_policies) Enabled/disabled reseller support
          */
         RESELLER_SUPPORT_CHANGE_POLICY, // ResellerSupportChangePolicyType
@@ -1831,9 +2200,23 @@ public final class EventType {
          */
         REWIND_POLICY_CHANGED, // RewindPolicyChangedType
         /**
+         * (team_policies) Changed “Send and track” policy for team
+         */
+        SEND_AND_TRACK_POLICY_CHANGED, // SendAndTrackPolicyChangedType
+        /**
+         * (team_policies) Changed “Send and track” external sharing policy for
+         * team
+         */
+        SEND_EXTERNAL_SHARING_POLICY_CHANGED, // SendExternalSharingPolicyChangedType
+        /**
          * (team_policies) Changed send for signature policy for team
          */
         SEND_FOR_SIGNATURE_POLICY_CHANGED, // SendForSignaturePolicyChangedType
+        /**
+         * (team_policies) Changed shared link default permissions policy for
+         * team
+         */
+        SHARED_LINK_DEFAULT_PERMISSIONS_POLICY_CHANGED, // SharedLinkDefaultPermissionsPolicyChangedType
         /**
          * (team_policies) Changed whether team members can join shared folders
          * owned outside team
@@ -1879,6 +2262,14 @@ public final class EventType {
          */
         SHOWCASE_CHANGE_EXTERNAL_SHARING_POLICY, // ShowcaseChangeExternalSharingPolicyType
         /**
+         * (team_policies) Changed Signatures external sharing policy for team
+         */
+        SIGN_EXTERNAL_SHARING_POLICY_CHANGED, // SignExternalSharingPolicyChangedType
+        /**
+         * (team_policies) Changed template creation permission
+         */
+        SIGN_TEMPLATE_CREATION_PERMISSION_CHANGED, // SignTemplateCreationPermissionChangedType
+        /**
          * (team_policies) Changed automatic Smart Sync setting for team
          */
         SMARTER_SMART_SYNC_POLICY_CHANGED, // SmarterSmartSyncPolicyChangedType
@@ -1899,6 +2290,10 @@ public final class EventType {
          */
         SSO_CHANGE_POLICY, // SsoChangePolicyType
         /**
+         * (team_policies) Changed cross-team Stack access policy for team
+         */
+        STACK_CROSS_TEAM_ACCESS_POLICY_CHANGED, // StackCrossTeamAccessPolicyChangedType
+        /**
          * (team_policies) Changed team branding policy for team
          */
         TEAM_BRANDING_POLICY_CHANGED, // TeamBrandingPolicyChangedType
@@ -1906,6 +2301,10 @@ public final class EventType {
          * (team_policies) Changed App Integrations setting for team
          */
         TEAM_EXTENSIONS_POLICY_CHANGED, // TeamExtensionsPolicyChangedType
+        /**
+         * (team_policies) Changed team member storage request policy for team
+         */
+        TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED, // TeamMemberStorageRequestPolicyChangedType
         /**
          * (team_policies) Enabled/disabled Team Selective Sync for team
          */
@@ -1920,7 +2319,7 @@ public final class EventType {
          */
         TFA_ADD_EXCEPTION, // TfaAddExceptionType
         /**
-         * (team_policies) Changed two-step verification setting for team
+         * (team_policies) Changed two-factor authentication setting for team
          */
         TFA_CHANGE_POLICY, // TfaChangePolicyType
         /**
@@ -1928,6 +2327,10 @@ public final class EventType {
          * exception list
          */
         TFA_REMOVE_EXCEPTION, // TfaRemoveExceptionType
+        /**
+         * (team_policies) Changed top level content setting for team
+         */
+        TOP_LEVEL_CONTENT_POLICY_CHANGED, // TopLevelContentPolicyChangedType
         /**
          * (team_policies) Enabled/disabled option for members to link personal
          * Dropbox account and team account to same computer
@@ -2008,31 +2411,39 @@ public final class EventType {
          */
         TEAM_PROFILE_REMOVE_LOGO, // TeamProfileRemoveLogoType
         /**
-         * (tfa) Added backup phone for two-step verification
+         * (tfa) Added passkey for login
+         */
+        PASSKEY_ADD, // PasskeyAddType
+        /**
+         * (tfa) Removed passkey for login
+         */
+        PASSKEY_REMOVE, // PasskeyRemoveType
+        /**
+         * (tfa) Added backup phone for two-factor authentication
          */
         TFA_ADD_BACKUP_PHONE, // TfaAddBackupPhoneType
         /**
-         * (tfa) Added security key for two-step verification
+         * (tfa) Added security key for two-factor authentication
          */
         TFA_ADD_SECURITY_KEY, // TfaAddSecurityKeyType
         /**
-         * (tfa) Changed backup phone for two-step verification
+         * (tfa) Changed backup phone for two-factor authentication
          */
         TFA_CHANGE_BACKUP_PHONE, // TfaChangeBackupPhoneType
         /**
-         * (tfa) Enabled/disabled/changed two-step verification setting
+         * (tfa) Enabled/disabled/changed two-factor authentication setting
          */
         TFA_CHANGE_STATUS, // TfaChangeStatusType
         /**
-         * (tfa) Removed backup phone for two-step verification
+         * (tfa) Removed backup phone for two-factor authentication
          */
         TFA_REMOVE_BACKUP_PHONE, // TfaRemoveBackupPhoneType
         /**
-         * (tfa) Removed security key for two-step verification
+         * (tfa) Removed security key for two-factor authentication
          */
         TFA_REMOVE_SECURITY_KEY, // TfaRemoveSecurityKeyType
         /**
-         * (tfa) Reset two-step verification for team member
+         * (tfa) Reset two-factor authentication for team member
          */
         TFA_RESET, // TfaResetType
         /**
@@ -2188,6 +2599,38 @@ public final class EventType {
     private FileResolveCommentType fileResolveCommentValue;
     private FileUnlikeCommentType fileUnlikeCommentValue;
     private FileUnresolveCommentType fileUnresolveCommentValue;
+    private DashAddedCommentToStackType dashAddedCommentToStackValue;
+    private DashAddedConnectorType dashAddedConnectorValue;
+    private DashAddedLinkToStackType dashAddedLinkToStackValue;
+    private DashAddedTeamEmailDomainAllowlistType dashAddedTeamEmailDomainAllowlistValue;
+    private DashAdminAddedOrgWideConnectorType dashAdminAddedOrgWideConnectorValue;
+    private DashAdminDisabledConnectorType dashAdminDisabledConnectorValue;
+    private DashAdminEnabledConnectorType dashAdminEnabledConnectorValue;
+    private DashAdminRemovedOrgWideConnectorType dashAdminRemovedOrgWideConnectorValue;
+    private DashArchivedStackType dashArchivedStackValue;
+    private DashChangedAudienceOfSharedLinkToStackType dashChangedAudienceOfSharedLinkToStackValue;
+    private DashClonedStackType dashClonedStackValue;
+    private DashConnectorToolsCallType dashConnectorToolsCallValue;
+    private DashCreatedStackType dashCreatedStackValue;
+    private DashDeletedCommentFromStackType dashDeletedCommentFromStackValue;
+    private DashDeletedStackType dashDeletedStackValue;
+    private DashEditedCommentInStackType dashEditedCommentInStackValue;
+    private DashExternalUserOpenedStackType dashExternalUserOpenedStackValue;
+    private DashFirstLaunchedDesktopType dashFirstLaunchedDesktopValue;
+    private DashFirstLaunchedExtensionType dashFirstLaunchedExtensionValue;
+    private DashFirstLaunchedWebStartPageType dashFirstLaunchedWebStartPageValue;
+    private DashOpenedSharedLinkToStackType dashOpenedSharedLinkToStackValue;
+    private DashOpenedStackType dashOpenedStackValue;
+    private DashPreviewOptOutStatusChangedType dashPreviewOptOutStatusChangedValue;
+    private DashRemovedConnectorType dashRemovedConnectorValue;
+    private DashRemovedLinkFromStackType dashRemovedLinkFromStackValue;
+    private DashRemovedSharedLinkToStackType dashRemovedSharedLinkToStackValue;
+    private DashRemovedTeamEmailDomainAllowlistType dashRemovedTeamEmailDomainAllowlistValue;
+    private DashRenamedStackType dashRenamedStackValue;
+    private DashSharedLinkToStackType dashSharedLinkToStackValue;
+    private DashUnarchivedStackType dashUnarchivedStackValue;
+    private DashViewedCompanyStackType dashViewedCompanyStackValue;
+    private DashViewedExternalAiActivityReportType dashViewedExternalAiActivityReportValue;
     private GovernancePolicyAddFoldersType governancePolicyAddFoldersValue;
     private GovernancePolicyAddFolderFailedType governancePolicyAddFolderFailedValue;
     private GovernancePolicyContentDisposedType governancePolicyContentDisposedValue;
@@ -2242,8 +2685,20 @@ public final class EventType {
     private DomainVerificationAddDomainSuccessType domainVerificationAddDomainSuccessValue;
     private DomainVerificationRemoveDomainType domainVerificationRemoveDomainValue;
     private EnabledDomainInvitesType enabledDomainInvitesValue;
+    private EncryptedFolderCancelTeamKeyRotationType encryptedFolderCancelTeamKeyRotationValue;
+    private EncryptedFolderEnrollBackupKeyType encryptedFolderEnrollBackupKeyValue;
+    private EncryptedFolderEnrollClientType encryptedFolderEnrollClientValue;
+    private EncryptedFolderEnrollTeamType encryptedFolderEnrollTeamValue;
+    private EncryptedFolderFinishTeamUnenrollmentType encryptedFolderFinishTeamUnenrollmentValue;
+    private EncryptedFolderInitTeamKeyRotationType encryptedFolderInitTeamKeyRotationValue;
+    private EncryptedFolderInitTeamUnenrollmentType encryptedFolderInitTeamUnenrollmentValue;
+    private EncryptedFolderRemoveBackupKeyType encryptedFolderRemoveBackupKeyValue;
+    private EncryptedFolderRotateTeamKeyType encryptedFolderRotateTeamKeyValue;
+    private EncryptedFolderUnenrollClientType encryptedFolderUnenrollClientValue;
+    private TeamEncryptionKeyActivateKeyType teamEncryptionKeyActivateKeyValue;
     private TeamEncryptionKeyCancelKeyDeletionType teamEncryptionKeyCancelKeyDeletionValue;
     private TeamEncryptionKeyCreateKeyType teamEncryptionKeyCreateKeyValue;
+    private TeamEncryptionKeyDeactivateKeyType teamEncryptionKeyDeactivateKeyValue;
     private TeamEncryptionKeyDeleteKeyType teamEncryptionKeyDeleteKeyValue;
     private TeamEncryptionKeyDisableKeyType teamEncryptionKeyDisableKeyValue;
     private TeamEncryptionKeyEnableKeyType teamEncryptionKeyEnableKeyValue;
@@ -2275,12 +2730,15 @@ public final class EventType {
     private ObjectLabelUpdatedValueType objectLabelUpdatedValueValue;
     private OrganizeFolderWithTidyType organizeFolderWithTidyValue;
     private ReplayFileDeleteType replayFileDeleteValue;
+    private ReplayFileDownloadedType replayFileDownloadedValue;
+    private ReplayTeamProjectCreatedType replayTeamProjectCreatedValue;
     private RewindFolderType rewindFolderValue;
     private UndoNamingConventionType undoNamingConventionValue;
     private UndoOrganizeFolderWithTidyType undoOrganizeFolderWithTidyValue;
     private UserTagsAddedType userTagsAddedValue;
     private UserTagsRemovedType userTagsRemovedValue;
     private EmailIngestReceiveFileType emailIngestReceiveFileValue;
+    private FileRequestAutoCloseType fileRequestAutoCloseValue;
     private FileRequestChangeType fileRequestChangeValue;
     private FileRequestCloseType fileRequestCloseValue;
     private FileRequestCreateType fileRequestCreateValue;
@@ -2294,6 +2752,7 @@ public final class EventType {
     private GroupCreateType groupCreateValue;
     private GroupDeleteType groupDeleteValue;
     private GroupDescriptionUpdatedType groupDescriptionUpdatedValue;
+    private GroupExternalSharingSettingOverrideChangedType groupExternalSharingSettingOverrideChangedValue;
     private GroupJoinPolicyUpdatedType groupJoinPolicyUpdatedValue;
     private GroupMovedType groupMovedValue;
     private GroupRemoveExternalIdType groupRemoveExternalIdValue;
@@ -2311,6 +2770,8 @@ public final class EventType {
     private SignInAsSessionEndType signInAsSessionEndValue;
     private SignInAsSessionStartType signInAsSessionStartValue;
     private SsoErrorType ssoErrorValue;
+    private AddonAssignedType addonAssignedValue;
+    private AddonRemovedType addonRemovedValue;
     private BackupAdminInvitationSentType backupAdminInvitationSentValue;
     private BackupInvitationOpenedType backupInvitationOpenedValue;
     private CreateTeamInviteLinkType createTeamInviteLinkValue;
@@ -2336,6 +2797,8 @@ public final class EventType {
     private MemberSuggestType memberSuggestValue;
     private MemberTransferAccountContentsType memberTransferAccountContentsValue;
     private PendingSecondaryEmailAddedType pendingSecondaryEmailAddedValue;
+    private ProductAssignedToMemberType productAssignedToMemberValue;
+    private ProductRemovedFromMemberType productRemovedFromMemberValue;
     private SecondaryEmailDeletedType secondaryEmailDeletedValue;
     private SecondaryEmailVerifiedType secondaryEmailVerifiedValue;
     private SecondaryMailsPolicyChangedType secondaryMailsPolicyChangedValue;
@@ -2399,6 +2862,8 @@ public final class EventType {
     private ExportMembersReportFailType exportMembersReportFailValue;
     private ExternalSharingCreateReportType externalSharingCreateReportValue;
     private ExternalSharingReportFailedType externalSharingReportFailedValue;
+    private MemberAccessDetailsCreateReportType memberAccessDetailsCreateReportValue;
+    private MemberAccessDetailsCreateReportFailedType memberAccessDetailsCreateReportFailedValue;
     private NoExpirationLinkGenCreateReportType noExpirationLinkGenCreateReportValue;
     private NoExpirationLinkGenReportFailedType noExpirationLinkGenReportFailedValue;
     private NoPasswordLinkGenCreateReportType noPasswordLinkGenCreateReportValue;
@@ -2410,9 +2875,15 @@ public final class EventType {
     private PaperAdminExportStartType paperAdminExportStartValue;
     private RansomwareAlertCreateReportType ransomwareAlertCreateReportValue;
     private RansomwareAlertCreateReportFailedType ransomwareAlertCreateReportFailedValue;
+    private SharedFoldersCreateReportType sharedFoldersCreateReportValue;
+    private SharedFoldersCreateReportFailedType sharedFoldersCreateReportFailedValue;
     private SmartSyncCreateAdminPrivilegeReportType smartSyncCreateAdminPrivilegeReportValue;
     private TeamActivityCreateReportType teamActivityCreateReportValue;
     private TeamActivityCreateReportFailType teamActivityCreateReportFailValue;
+    private TeamFoldersCreateReportType teamFoldersCreateReportValue;
+    private TeamFoldersCreateReportFailedType teamFoldersCreateReportFailedValue;
+    private TeamStorageCreateReportType teamStorageCreateReportValue;
+    private TeamStorageCreateReportFailedType teamStorageCreateReportFailedValue;
     private CollectionShareType collectionShareValue;
     private FileTransfersFileAddType fileTransfersFileAddValue;
     private FileTransfersTransferDeleteType fileTransfersTransferDeleteValue;
@@ -2429,6 +2900,14 @@ public final class EventType {
     private ReplayFileSharedLinkModifiedType replayFileSharedLinkModifiedValue;
     private ReplayProjectTeamAddType replayProjectTeamAddValue;
     private ReplayProjectTeamDeleteType replayProjectTeamDeleteValue;
+    private SendAndTrackFileAddedType sendAndTrackFileAddedValue;
+    private SendAndTrackFileRenamedType sendAndTrackFileRenamedValue;
+    private SendAndTrackFileUpdatedType sendAndTrackFileUpdatedValue;
+    private SendAndTrackLinkCreatedType sendAndTrackLinkCreatedValue;
+    private SendAndTrackLinkDeletedType sendAndTrackLinkDeletedValue;
+    private SendAndTrackLinkUpdatedType sendAndTrackLinkUpdatedValue;
+    private SendAndTrackLinkViewedType sendAndTrackLinkViewedValue;
+    private SendAndTrackRemovedFileAndAssociatedLinksType sendAndTrackRemovedFileAndAssociatedLinksValue;
     private SfAddGroupType sfAddGroupValue;
     private SfAllowNonMembersToViewSharedLinksType sfAllowNonMembersToViewSharedLinksValue;
     private SfExternalInviteWarnType sfExternalInviteWarnValue;
@@ -2484,6 +2963,7 @@ public final class EventType {
     private SharedLinkDisableType sharedLinkDisableValue;
     private SharedLinkDownloadType sharedLinkDownloadValue;
     private SharedLinkRemoveExpiryType sharedLinkRemoveExpiryValue;
+    private SharedLinkRemoveVisitorType sharedLinkRemoveVisitorValue;
     private SharedLinkSettingsAddExpirationType sharedLinkSettingsAddExpirationValue;
     private SharedLinkSettingsAddPasswordType sharedLinkSettingsAddPasswordValue;
     private SharedLinkSettingsAllowDownloadDisabledType sharedLinkSettingsAllowDownloadDisabledValue;
@@ -2523,6 +3003,15 @@ public final class EventType {
     private ShowcaseUntrashedType showcaseUntrashedValue;
     private ShowcaseUntrashedDeprecatedType showcaseUntrashedDeprecatedValue;
     private ShowcaseViewType showcaseViewValue;
+    private SignSignatureRequestCanceledType signSignatureRequestCanceledValue;
+    private SignSignatureRequestCompletedType signSignatureRequestCompletedValue;
+    private SignSignatureRequestDeclinedType signSignatureRequestDeclinedValue;
+    private SignSignatureRequestOpenedType signSignatureRequestOpenedValue;
+    private SignSignatureRequestReminderSentType signSignatureRequestReminderSentValue;
+    private SignSignatureRequestSentType signSignatureRequestSentValue;
+    private SignTemplateCreatedType signTemplateCreatedValue;
+    private SignTemplateSharedType signTemplateSharedValue;
+    private RiscSecurityEventType riscSecurityEventValue;
     private SsoAddCertType ssoAddCertValue;
     private SsoAddLoginUrlType ssoAddLoginUrlValue;
     private SsoAddLogoutUrlType ssoAddLogoutUrlValue;
@@ -2538,17 +3027,25 @@ public final class EventType {
     private TeamFolderDowngradeType teamFolderDowngradeValue;
     private TeamFolderPermanentlyDeleteType teamFolderPermanentlyDeleteValue;
     private TeamFolderRenameType teamFolderRenameValue;
+    private TeamFolderSpaceLimitsChangeCapsTypeType teamFolderSpaceLimitsChangeCapsTypeValue;
+    private TeamFolderSpaceLimitsChangeLimitType teamFolderSpaceLimitsChangeLimitValue;
+    private TeamFolderSpaceLimitsChangeNotificationTargetType teamFolderSpaceLimitsChangeNotificationTargetValue;
     private TeamSelectiveSyncSettingsChangedType teamSelectiveSyncSettingsChangedValue;
     private AccountCaptureChangePolicyType accountCaptureChangePolicyValue;
     private AdminEmailRemindersChangedType adminEmailRemindersChangedValue;
+    private AiThirdPartySharingDropboxBasePolicyChangedType aiThirdPartySharingDropboxBasePolicyChangedValue;
     private AllowDownloadDisabledType allowDownloadDisabledValue;
     private AllowDownloadEnabledType allowDownloadEnabledValue;
+    private AppleLoginChangePolicyType appleLoginChangePolicyValue;
     private AppPermissionsChangedType appPermissionsChangedValue;
     private CameraUploadsPolicyChangedType cameraUploadsPolicyChangedValue;
+    private CaptureTeamSpacePolicyChangedType captureTeamSpacePolicyChangedValue;
     private CaptureTranscriptPolicyChangedType captureTranscriptPolicyChangedValue;
     private ClassificationChangePolicyType classificationChangePolicyValue;
     private ComputerBackupPolicyChangedType computerBackupPolicyChangedValue;
     private ContentAdministrationPolicyChangedType contentAdministrationPolicyChangedValue;
+    private ContentDeletionProtectionChangePolicyType contentDeletionProtectionChangePolicyValue;
+    private DashExternalSharingPolicyChangedType dashExternalSharingPolicyChangedValue;
     private DataPlacementRestrictionChangePolicyType dataPlacementRestrictionChangePolicyValue;
     private DataPlacementRestrictionSatisfyPolicyType dataPlacementRestrictionSatisfyPolicyValue;
     private DeviceApprovalsAddExceptionType deviceApprovalsAddExceptionValue;
@@ -2573,6 +3070,7 @@ public final class EventType {
     private FileRequestsEmailsEnabledType fileRequestsEmailsEnabledValue;
     private FileRequestsEmailsRestrictedToTeamOnlyType fileRequestsEmailsRestrictedToTeamOnlyValue;
     private FileTransfersPolicyChangedType fileTransfersPolicyChangedValue;
+    private FlexibleFileNamesPolicyChangedType flexibleFileNamesPolicyChangedValue;
     private FolderLinkRestrictionPolicyChangedType folderLinkRestrictionPolicyChangedValue;
     private GoogleSsoChangePolicyType googleSsoChangePolicyValue;
     private GroupUserManagementChangePolicyType groupUserManagementChangePolicyValue;
@@ -2585,6 +3083,7 @@ public final class EventType {
     private MemberSpaceLimitsChangePolicyType memberSpaceLimitsChangePolicyValue;
     private MemberSpaceLimitsRemoveExceptionType memberSpaceLimitsRemoveExceptionValue;
     private MemberSuggestionsChangePolicyType memberSuggestionsChangePolicyValue;
+    private MicrosoftLoginChangePolicyType microsoftLoginChangePolicyValue;
     private MicrosoftOfficeAddinChangePolicyType microsoftOfficeAddinChangePolicyValue;
     private NetworkControlChangePolicyType networkControlChangePolicyValue;
     private PaperChangeDeploymentPolicyType paperChangeDeploymentPolicyValue;
@@ -2595,11 +3094,18 @@ public final class EventType {
     private PaperDesktopPolicyChangedType paperDesktopPolicyChangedValue;
     private PaperEnabledUsersGroupAdditionType paperEnabledUsersGroupAdditionValue;
     private PaperEnabledUsersGroupRemovalType paperEnabledUsersGroupRemovalValue;
+    private PasskeyLoginPolicyChangedType passkeyLoginPolicyChangedValue;
     private PasswordStrengthRequirementsChangePolicyType passwordStrengthRequirementsChangePolicyValue;
     private PermanentDeleteChangePolicyType permanentDeleteChangePolicyValue;
+    private PreviewsAiPolicyChangedType previewsAiPolicyChangedValue;
+    private ReplayAddingPeoplePolicyChangedType replayAddingPeoplePolicyChangedValue;
+    private ReplaySharingPolicyChangedType replaySharingPolicyChangedValue;
     private ResellerSupportChangePolicyType resellerSupportChangePolicyValue;
     private RewindPolicyChangedType rewindPolicyChangedValue;
+    private SendAndTrackPolicyChangedType sendAndTrackPolicyChangedValue;
+    private SendExternalSharingPolicyChangedType sendExternalSharingPolicyChangedValue;
     private SendForSignaturePolicyChangedType sendForSignaturePolicyChangedValue;
+    private SharedLinkDefaultPermissionsPolicyChangedType sharedLinkDefaultPermissionsPolicyChangedValue;
     private SharingChangeFolderJoinPolicyType sharingChangeFolderJoinPolicyValue;
     private SharingChangeLinkAllowChangeExpirationPolicyType sharingChangeLinkAllowChangeExpirationPolicyValue;
     private SharingChangeLinkDefaultExpirationPolicyType sharingChangeLinkDefaultExpirationPolicyValue;
@@ -2609,18 +3115,23 @@ public final class EventType {
     private ShowcaseChangeDownloadPolicyType showcaseChangeDownloadPolicyValue;
     private ShowcaseChangeEnabledPolicyType showcaseChangeEnabledPolicyValue;
     private ShowcaseChangeExternalSharingPolicyType showcaseChangeExternalSharingPolicyValue;
+    private SignExternalSharingPolicyChangedType signExternalSharingPolicyChangedValue;
+    private SignTemplateCreationPermissionChangedType signTemplateCreationPermissionChangedValue;
     private SmarterSmartSyncPolicyChangedType smarterSmartSyncPolicyChangedValue;
     private SmartSyncChangePolicyType smartSyncChangePolicyValue;
     private SmartSyncNotOptOutType smartSyncNotOptOutValue;
     private SmartSyncOptOutType smartSyncOptOutValue;
     private SsoChangePolicyType ssoChangePolicyValue;
+    private StackCrossTeamAccessPolicyChangedType stackCrossTeamAccessPolicyChangedValue;
     private TeamBrandingPolicyChangedType teamBrandingPolicyChangedValue;
     private TeamExtensionsPolicyChangedType teamExtensionsPolicyChangedValue;
+    private TeamMemberStorageRequestPolicyChangedType teamMemberStorageRequestPolicyChangedValue;
     private TeamSelectiveSyncPolicyChangedType teamSelectiveSyncPolicyChangedValue;
     private TeamSharingWhitelistSubjectsChangedType teamSharingWhitelistSubjectsChangedValue;
     private TfaAddExceptionType tfaAddExceptionValue;
     private TfaChangePolicyType tfaChangePolicyValue;
     private TfaRemoveExceptionType tfaRemoveExceptionValue;
+    private TopLevelContentPolicyChangedType topLevelContentPolicyChangedValue;
     private TwoAccountChangePolicyType twoAccountChangePolicyValue;
     private ViewerInfoPolicyChangedType viewerInfoPolicyChangedValue;
     private WatermarkingPolicyChangedType watermarkingPolicyChangedValue;
@@ -2639,6 +3150,8 @@ public final class EventType {
     private TeamProfileChangeNameType teamProfileChangeNameValue;
     private TeamProfileRemoveBackgroundType teamProfileRemoveBackgroundValue;
     private TeamProfileRemoveLogoType teamProfileRemoveLogoValue;
+    private PasskeyAddType passkeyAddValue;
+    private PasskeyRemoveType passkeyRemoveValue;
     private TfaAddBackupPhoneType tfaAddBackupPhoneValue;
     private TfaAddSecurityKeyType tfaAddSecurityKeyValue;
     private TfaChangeBackupPhoneType tfaChangeBackupPhoneValue;
@@ -3028,6 +3541,550 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.fileUnresolveCommentValue = fileUnresolveCommentValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashAddedCommentToStackValue  (dash) Added a comment to a stack.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashAddedCommentToStack(Tag _tag, DashAddedCommentToStackType dashAddedCommentToStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashAddedCommentToStackValue = dashAddedCommentToStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashAddedConnectorValue  (dash) Connected to a user connector.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashAddedConnector(Tag _tag, DashAddedConnectorType dashAddedConnectorValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashAddedConnectorValue = dashAddedConnectorValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashAddedLinkToStackValue  (dash) Added a link to a stack. Must
+     *     not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashAddedLinkToStack(Tag _tag, DashAddedLinkToStackType dashAddedLinkToStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashAddedLinkToStackValue = dashAddedLinkToStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashAddedTeamEmailDomainAllowlistValue  (dash) Admin added an
+     *     email domain to the team allowlist. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashAddedTeamEmailDomainAllowlist(Tag _tag, DashAddedTeamEmailDomainAllowlistType dashAddedTeamEmailDomainAllowlistValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashAddedTeamEmailDomainAllowlistValue = dashAddedTeamEmailDomainAllowlistValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashAdminAddedOrgWideConnectorValue  (dash) Admin added an admin
+     *     connector. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashAdminAddedOrgWideConnector(Tag _tag, DashAdminAddedOrgWideConnectorType dashAdminAddedOrgWideConnectorValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashAdminAddedOrgWideConnectorValue = dashAdminAddedOrgWideConnectorValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashAdminDisabledConnectorValue  (dash) Admin disabled a user
+     *     connector. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashAdminDisabledConnector(Tag _tag, DashAdminDisabledConnectorType dashAdminDisabledConnectorValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashAdminDisabledConnectorValue = dashAdminDisabledConnectorValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashAdminEnabledConnectorValue  (dash) Admin enabled a user
+     *     connector. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashAdminEnabledConnector(Tag _tag, DashAdminEnabledConnectorType dashAdminEnabledConnectorValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashAdminEnabledConnectorValue = dashAdminEnabledConnectorValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashAdminRemovedOrgWideConnectorValue  (dash) Admin removed an
+     *     admin connector. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashAdminRemovedOrgWideConnector(Tag _tag, DashAdminRemovedOrgWideConnectorType dashAdminRemovedOrgWideConnectorValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashAdminRemovedOrgWideConnectorValue = dashAdminRemovedOrgWideConnectorValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashArchivedStackValue  (dash) Archived a stack. Must not be
+     *     {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashArchivedStack(Tag _tag, DashArchivedStackType dashArchivedStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashArchivedStackValue = dashArchivedStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashChangedAudienceOfSharedLinkToStackValue  (dash) Changed the
+     *     audience of a shared link to a stack. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashChangedAudienceOfSharedLinkToStack(Tag _tag, DashChangedAudienceOfSharedLinkToStackType dashChangedAudienceOfSharedLinkToStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashChangedAudienceOfSharedLinkToStackValue = dashChangedAudienceOfSharedLinkToStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashClonedStackValue  (dash) Cloned stack. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashClonedStack(Tag _tag, DashClonedStackType dashClonedStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashClonedStackValue = dashClonedStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashConnectorToolsCallValue  (dash) Called a tool on a connector.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashConnectorToolsCall(Tag _tag, DashConnectorToolsCallType dashConnectorToolsCallValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashConnectorToolsCallValue = dashConnectorToolsCallValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashCreatedStackValue  (dash) Created a stack. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashCreatedStack(Tag _tag, DashCreatedStackType dashCreatedStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashCreatedStackValue = dashCreatedStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashDeletedCommentFromStackValue  (dash) Deleted a comment from a
+     *     stack. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashDeletedCommentFromStack(Tag _tag, DashDeletedCommentFromStackType dashDeletedCommentFromStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashDeletedCommentFromStackValue = dashDeletedCommentFromStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashDeletedStackValue  (dash) Deleted a stack. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashDeletedStack(Tag _tag, DashDeletedStackType dashDeletedStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashDeletedStackValue = dashDeletedStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashEditedCommentInStackValue  (dash) Edited a comment in a stack.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashEditedCommentInStack(Tag _tag, DashEditedCommentInStackType dashEditedCommentInStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashEditedCommentInStackValue = dashEditedCommentInStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashExternalUserOpenedStackValue  (dash) External user opened a
+     *     stack. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashExternalUserOpenedStack(Tag _tag, DashExternalUserOpenedStackType dashExternalUserOpenedStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashExternalUserOpenedStackValue = dashExternalUserOpenedStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashFirstLaunchedDesktopValue  (dash) Opened the desktop app for
+     *     the first time. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashFirstLaunchedDesktop(Tag _tag, DashFirstLaunchedDesktopType dashFirstLaunchedDesktopValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashFirstLaunchedDesktopValue = dashFirstLaunchedDesktopValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashFirstLaunchedExtensionValue  (dash) Opened the extension for
+     *     the first time. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashFirstLaunchedExtension(Tag _tag, DashFirstLaunchedExtensionType dashFirstLaunchedExtensionValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashFirstLaunchedExtensionValue = dashFirstLaunchedExtensionValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashFirstLaunchedWebStartPageValue  (dash) Opened the web Start
+     *     Page for the first time. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashFirstLaunchedWebStartPage(Tag _tag, DashFirstLaunchedWebStartPageType dashFirstLaunchedWebStartPageValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashFirstLaunchedWebStartPageValue = dashFirstLaunchedWebStartPageValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashOpenedSharedLinkToStackValue  (dash) Checked access
+     *     permissions to a stack. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashOpenedSharedLinkToStack(Tag _tag, DashOpenedSharedLinkToStackType dashOpenedSharedLinkToStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashOpenedSharedLinkToStackValue = dashOpenedSharedLinkToStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashOpenedStackValue  (dash) Opened a stack. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashOpenedStack(Tag _tag, DashOpenedStackType dashOpenedStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashOpenedStackValue = dashOpenedStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashPreviewOptOutStatusChangedValue  (dash) Changed the preview
+     *     opt-out status. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashPreviewOptOutStatusChanged(Tag _tag, DashPreviewOptOutStatusChangedType dashPreviewOptOutStatusChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashPreviewOptOutStatusChangedValue = dashPreviewOptOutStatusChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashRemovedConnectorValue  (dash) Disconnected a user connector.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashRemovedConnector(Tag _tag, DashRemovedConnectorType dashRemovedConnectorValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashRemovedConnectorValue = dashRemovedConnectorValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashRemovedLinkFromStackValue  (dash) Removed a link from a stack.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashRemovedLinkFromStack(Tag _tag, DashRemovedLinkFromStackType dashRemovedLinkFromStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashRemovedLinkFromStackValue = dashRemovedLinkFromStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashRemovedSharedLinkToStackValue  (dash) Removed a shared link to
+     *     a stack. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashRemovedSharedLinkToStack(Tag _tag, DashRemovedSharedLinkToStackType dashRemovedSharedLinkToStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashRemovedSharedLinkToStackValue = dashRemovedSharedLinkToStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashRemovedTeamEmailDomainAllowlistValue  (dash) Admin removed an
+     *     email domain from the team allowlist. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashRemovedTeamEmailDomainAllowlist(Tag _tag, DashRemovedTeamEmailDomainAllowlistType dashRemovedTeamEmailDomainAllowlistValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashRemovedTeamEmailDomainAllowlistValue = dashRemovedTeamEmailDomainAllowlistValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashRenamedStackValue  (dash) Renamed a stack. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashRenamedStack(Tag _tag, DashRenamedStackType dashRenamedStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashRenamedStackValue = dashRenamedStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashSharedLinkToStackValue  (dash) Shared a link to a stack. Must
+     *     not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashSharedLinkToStack(Tag _tag, DashSharedLinkToStackType dashSharedLinkToStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashSharedLinkToStackValue = dashSharedLinkToStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashUnarchivedStackValue  (dash) Unarchived a stack. Must not be
+     *     {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashUnarchivedStack(Tag _tag, DashUnarchivedStackType dashUnarchivedStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashUnarchivedStackValue = dashUnarchivedStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashViewedCompanyStackValue  (dash) Member viewed a company stack.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashViewedCompanyStack(Tag _tag, DashViewedCompanyStackType dashViewedCompanyStackValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashViewedCompanyStackValue = dashViewedCompanyStackValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashViewedExternalAiActivityReportValue  (dash) Admin viewed the
+     *     external AI activity report. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashViewedExternalAiActivityReport(Tag _tag, DashViewedExternalAiActivityReportType dashViewedExternalAiActivityReportValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashViewedExternalAiActivityReportValue = dashViewedExternalAiActivityReportValue;
         return result;
     }
 
@@ -3958,6 +5015,193 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param encryptedFolderCancelTeamKeyRotationValue  (encryption) Canceled
+     *     team key rotation. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndEncryptedFolderCancelTeamKeyRotation(Tag _tag, EncryptedFolderCancelTeamKeyRotationType encryptedFolderCancelTeamKeyRotationValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.encryptedFolderCancelTeamKeyRotationValue = encryptedFolderCancelTeamKeyRotationValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param encryptedFolderEnrollBackupKeyValue  (encryption) Added recovery
+     *     key. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndEncryptedFolderEnrollBackupKey(Tag _tag, EncryptedFolderEnrollBackupKeyType encryptedFolderEnrollBackupKeyValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.encryptedFolderEnrollBackupKeyValue = encryptedFolderEnrollBackupKeyValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param encryptedFolderEnrollClientValue  (encryption) Enrolled device.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndEncryptedFolderEnrollClient(Tag _tag, EncryptedFolderEnrollClientType encryptedFolderEnrollClientValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.encryptedFolderEnrollClientValue = encryptedFolderEnrollClientValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param encryptedFolderEnrollTeamValue  (encryption) Activated team folder
+     *     encryption. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndEncryptedFolderEnrollTeam(Tag _tag, EncryptedFolderEnrollTeamType encryptedFolderEnrollTeamValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.encryptedFolderEnrollTeamValue = encryptedFolderEnrollTeamValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param encryptedFolderFinishTeamUnenrollmentValue  (encryption)
+     *     Deactivated team folder encryption. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndEncryptedFolderFinishTeamUnenrollment(Tag _tag, EncryptedFolderFinishTeamUnenrollmentType encryptedFolderFinishTeamUnenrollmentValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.encryptedFolderFinishTeamUnenrollmentValue = encryptedFolderFinishTeamUnenrollmentValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param encryptedFolderInitTeamKeyRotationValue  (encryption) Initiated
+     *     team key rotation. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndEncryptedFolderInitTeamKeyRotation(Tag _tag, EncryptedFolderInitTeamKeyRotationType encryptedFolderInitTeamKeyRotationValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.encryptedFolderInitTeamKeyRotationValue = encryptedFolderInitTeamKeyRotationValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param encryptedFolderInitTeamUnenrollmentValue  (encryption) Initiated
+     *     deactivation of team folder encryption. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndEncryptedFolderInitTeamUnenrollment(Tag _tag, EncryptedFolderInitTeamUnenrollmentType encryptedFolderInitTeamUnenrollmentValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.encryptedFolderInitTeamUnenrollmentValue = encryptedFolderInitTeamUnenrollmentValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param encryptedFolderRemoveBackupKeyValue  (encryption) Removed recovery
+     *     key. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndEncryptedFolderRemoveBackupKey(Tag _tag, EncryptedFolderRemoveBackupKeyType encryptedFolderRemoveBackupKeyValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.encryptedFolderRemoveBackupKeyValue = encryptedFolderRemoveBackupKeyValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param encryptedFolderRotateTeamKeyValue  (encryption) Rotated team key.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndEncryptedFolderRotateTeamKey(Tag _tag, EncryptedFolderRotateTeamKeyType encryptedFolderRotateTeamKeyValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.encryptedFolderRotateTeamKeyValue = encryptedFolderRotateTeamKeyValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param encryptedFolderUnenrollClientValue  (encryption) Unenrolled
+     *     device. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndEncryptedFolderUnenrollClient(Tag _tag, EncryptedFolderUnenrollClientType encryptedFolderUnenrollClientValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.encryptedFolderUnenrollClientValue = encryptedFolderUnenrollClientValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param teamEncryptionKeyActivateKeyValue  (encryption) Activated team
+     *     encryption key. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamEncryptionKeyActivateKey(Tag _tag, TeamEncryptionKeyActivateKeyType teamEncryptionKeyActivateKeyValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamEncryptionKeyActivateKeyValue = teamEncryptionKeyActivateKeyValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param teamEncryptionKeyCancelKeyDeletionValue  (encryption) Canceled
      *     team encryption key deletion. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -3986,6 +5230,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.teamEncryptionKeyCreateKeyValue = teamEncryptionKeyCreateKeyValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param teamEncryptionKeyDeactivateKeyValue  (encryption) Deactivated team
+     *     encryption key. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamEncryptionKeyDeactivateKey(Tag _tag, TeamEncryptionKeyDeactivateKeyType teamEncryptionKeyDeactivateKeyValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamEncryptionKeyDeactivateKeyValue = teamEncryptionKeyDeactivateKeyValue;
         return result;
     }
 
@@ -4520,6 +5781,40 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param replayFileDownloadedValue  (file_operations) Downloaded files in
+     *     Replay. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndReplayFileDownloaded(Tag _tag, ReplayFileDownloadedType replayFileDownloadedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.replayFileDownloadedValue = replayFileDownloadedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param replayTeamProjectCreatedValue  (file_operations) Created a team
+     *     project in Replay. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndReplayTeamProjectCreated(Tag _tag, ReplayTeamProjectCreatedType replayTeamProjectCreatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.replayTeamProjectCreatedValue = replayTeamProjectCreatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param rewindFolderValue  (file_operations) Rewound a folder. Must not be
      *     {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -4616,6 +5911,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.emailIngestReceiveFileValue = emailIngestReceiveFileValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param fileRequestAutoCloseValue  (file_requests) Auto closed file
+     *     request. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndFileRequestAutoClose(Tag _tag, FileRequestAutoCloseType fileRequestAutoCloseValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.fileRequestAutoCloseValue = fileRequestAutoCloseValue;
         return result;
     }
 
@@ -4837,6 +6149,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.groupDescriptionUpdatedValue = groupDescriptionUpdatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param groupExternalSharingSettingOverrideChangedValue  (groups) Changed
+     *     group's external sharing setting. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndGroupExternalSharingSettingOverrideChanged(Tag _tag, GroupExternalSharingSettingOverrideChangedType groupExternalSharingSettingOverrideChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.groupExternalSharingSettingOverrideChangedValue = groupExternalSharingSettingOverrideChangedValue;
         return result;
     }
 
@@ -5124,6 +6453,40 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.ssoErrorValue = ssoErrorValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param addonAssignedValue  (members) Add-on Assigned. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndAddonAssigned(Tag _tag, AddonAssignedType addonAssignedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.addonAssignedValue = addonAssignedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param addonRemovedValue  (members) Add-on Removed. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndAddonRemoved(Tag _tag, AddonRemovedType addonRemovedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.addonRemovedValue = addonRemovedValue;
         return result;
     }
 
@@ -5552,6 +6915,40 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.pendingSecondaryEmailAddedValue = pendingSecondaryEmailAddedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param productAssignedToMemberValue  (members) Product assigned to team
+     *     member. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProductAssignedToMember(Tag _tag, ProductAssignedToMemberType productAssignedToMemberValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.productAssignedToMemberValue = productAssignedToMemberValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param productRemovedFromMemberValue  (members) Product removed from team
+     *     member. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProductRemovedFromMember(Tag _tag, ProductRemovedFromMemberType productRemovedFromMemberValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.productRemovedFromMemberValue = productRemovedFromMemberValue;
         return result;
     }
 
@@ -6636,6 +8033,40 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param memberAccessDetailsCreateReportValue  (reports) Created member
+     *     access report. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMemberAccessDetailsCreateReport(Tag _tag, MemberAccessDetailsCreateReportType memberAccessDetailsCreateReportValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.memberAccessDetailsCreateReportValue = memberAccessDetailsCreateReportValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param memberAccessDetailsCreateReportFailedValue  (reports) Couldn't
+     *     generate member access report. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMemberAccessDetailsCreateReportFailed(Tag _tag, MemberAccessDetailsCreateReportFailedType memberAccessDetailsCreateReportFailedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.memberAccessDetailsCreateReportFailedValue = memberAccessDetailsCreateReportFailedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param noExpirationLinkGenCreateReportValue  (reports) Report created:
      *     Links created with no expiration. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -6823,6 +8254,40 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param sharedFoldersCreateReportValue  (reports) Created shared folders
+     *     report. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSharedFoldersCreateReport(Tag _tag, SharedFoldersCreateReportType sharedFoldersCreateReportValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sharedFoldersCreateReportValue = sharedFoldersCreateReportValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param sharedFoldersCreateReportFailedValue  (reports) Couldn't generate
+     *     shared folders report. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSharedFoldersCreateReportFailed(Tag _tag, SharedFoldersCreateReportFailedType sharedFoldersCreateReportFailedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sharedFoldersCreateReportFailedValue = sharedFoldersCreateReportFailedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param smartSyncCreateAdminPrivilegeReportValue  (reports) Created Smart
      *     Sync non-admin devices report. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -6868,6 +8333,74 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.teamActivityCreateReportFailValue = teamActivityCreateReportFailValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param teamFoldersCreateReportValue  (reports) Created team folders
+     *     report. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamFoldersCreateReport(Tag _tag, TeamFoldersCreateReportType teamFoldersCreateReportValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamFoldersCreateReportValue = teamFoldersCreateReportValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param teamFoldersCreateReportFailedValue  (reports) Couldn't generate
+     *     team folders report. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamFoldersCreateReportFailed(Tag _tag, TeamFoldersCreateReportFailedType teamFoldersCreateReportFailedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamFoldersCreateReportFailedValue = teamFoldersCreateReportFailedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param teamStorageCreateReportValue  (reports) Created team storage
+     *     report. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamStorageCreateReport(Tag _tag, TeamStorageCreateReportType teamStorageCreateReportValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamStorageCreateReportValue = teamStorageCreateReportValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param teamStorageCreateReportFailedValue  (reports) Couldn't generate
+     *     team storage report. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamStorageCreateReportFailed(Tag _tag, TeamStorageCreateReportFailedType teamStorageCreateReportFailedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamStorageCreateReportFailedValue = teamStorageCreateReportFailedValue;
         return result;
     }
 
@@ -7096,7 +8629,7 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
-     * @param replayFileSharedLinkModifiedValue  (sharing) Modified shared link
+     * @param replayFileSharedLinkModifiedValue  (sharing) Changed shared link
      *     in Replay. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
@@ -7141,6 +8674,142 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.replayProjectTeamDeleteValue = replayProjectTeamDeleteValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param sendAndTrackFileAddedValue  (sharing) File added to Send and
+     *     Track. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSendAndTrackFileAdded(Tag _tag, SendAndTrackFileAddedType sendAndTrackFileAddedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sendAndTrackFileAddedValue = sendAndTrackFileAddedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param sendAndTrackFileRenamedValue  (sharing) File renamed in Send and
+     *     Track. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSendAndTrackFileRenamed(Tag _tag, SendAndTrackFileRenamedType sendAndTrackFileRenamedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sendAndTrackFileRenamedValue = sendAndTrackFileRenamedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param sendAndTrackFileUpdatedValue  (sharing) File updated in Send and
+     *     Track. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSendAndTrackFileUpdated(Tag _tag, SendAndTrackFileUpdatedType sendAndTrackFileUpdatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sendAndTrackFileUpdatedValue = sendAndTrackFileUpdatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param sendAndTrackLinkCreatedValue  (sharing) Link created in Send and
+     *     Track. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSendAndTrackLinkCreated(Tag _tag, SendAndTrackLinkCreatedType sendAndTrackLinkCreatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sendAndTrackLinkCreatedValue = sendAndTrackLinkCreatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param sendAndTrackLinkDeletedValue  (sharing) Link deleted in Send and
+     *     Track. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSendAndTrackLinkDeleted(Tag _tag, SendAndTrackLinkDeletedType sendAndTrackLinkDeletedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sendAndTrackLinkDeletedValue = sendAndTrackLinkDeletedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param sendAndTrackLinkUpdatedValue  (sharing) Send and Track Link
+     *     Updated. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSendAndTrackLinkUpdated(Tag _tag, SendAndTrackLinkUpdatedType sendAndTrackLinkUpdatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sendAndTrackLinkUpdatedValue = sendAndTrackLinkUpdatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param sendAndTrackLinkViewedValue  (sharing) Send and Track Link
+     *     Visited. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSendAndTrackLinkViewed(Tag _tag, SendAndTrackLinkViewedType sendAndTrackLinkViewedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sendAndTrackLinkViewedValue = sendAndTrackLinkViewedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param sendAndTrackRemovedFileAndAssociatedLinksValue  (sharing) Send and
+     *     Track file and associated links deleted. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSendAndTrackRemovedFileAndAssociatedLinks(Tag _tag, SendAndTrackRemovedFileAndAssociatedLinksType sendAndTrackRemovedFileAndAssociatedLinksValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sendAndTrackRemovedFileAndAssociatedLinksValue = sendAndTrackRemovedFileAndAssociatedLinksValue;
         return result;
     }
 
@@ -8103,6 +9772,23 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param sharedLinkRemoveVisitorValue  (sharing) Removed link visitor. Must
+     *     not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSharedLinkRemoveVisitor(Tag _tag, SharedLinkRemoveVisitorType sharedLinkRemoveVisitorValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sharedLinkRemoveVisitorValue = sharedLinkRemoveVisitorValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param sharedLinkSettingsAddExpirationValue  (sharing) Added an
      *     expiration date to the shared link. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -8768,6 +10454,159 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param signSignatureRequestCanceledValue  (signatures) Canceled signature
+     *     request. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSignSignatureRequestCanceled(Tag _tag, SignSignatureRequestCanceledType signSignatureRequestCanceledValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.signSignatureRequestCanceledValue = signSignatureRequestCanceledValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param signSignatureRequestCompletedValue  (signatures) Completed
+     *     signature request. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSignSignatureRequestCompleted(Tag _tag, SignSignatureRequestCompletedType signSignatureRequestCompletedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.signSignatureRequestCompletedValue = signSignatureRequestCompletedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param signSignatureRequestDeclinedValue  (signatures) Declined signature
+     *     request. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSignSignatureRequestDeclined(Tag _tag, SignSignatureRequestDeclinedType signSignatureRequestDeclinedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.signSignatureRequestDeclinedValue = signSignatureRequestDeclinedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param signSignatureRequestOpenedValue  (signatures) Opened signature
+     *     request. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSignSignatureRequestOpened(Tag _tag, SignSignatureRequestOpenedType signSignatureRequestOpenedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.signSignatureRequestOpenedValue = signSignatureRequestOpenedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param signSignatureRequestReminderSentValue  (signatures) Sent signature
+     *     request reminder. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSignSignatureRequestReminderSent(Tag _tag, SignSignatureRequestReminderSentType signSignatureRequestReminderSentValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.signSignatureRequestReminderSentValue = signSignatureRequestReminderSentValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param signSignatureRequestSentValue  (signatures) Sent signature
+     *     request. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSignSignatureRequestSent(Tag _tag, SignSignatureRequestSentType signSignatureRequestSentValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.signSignatureRequestSentValue = signSignatureRequestSentValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param signTemplateCreatedValue  (signatures) Created template. Must not
+     *     be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSignTemplateCreated(Tag _tag, SignTemplateCreatedType signTemplateCreatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.signTemplateCreatedValue = signTemplateCreatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param signTemplateSharedValue  (signatures) Shared template. Must not be
+     *     {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSignTemplateShared(Tag _tag, SignTemplateSharedType signTemplateSharedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.signTemplateSharedValue = signTemplateSharedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param riscSecurityEventValue  (sso) RISC security event received from
+     *     external provider. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndRiscSecurityEvent(Tag _tag, RiscSecurityEventType riscSecurityEventValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.riscSecurityEventValue = riscSecurityEventValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param ssoAddCertValue  (sso) Added X.509 certificate for SSO. Must not
      *     be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -9023,6 +10862,58 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param teamFolderSpaceLimitsChangeCapsTypeValue  (team_folders) Changed
+     *     team folder space limit enforcement type. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamFolderSpaceLimitsChangeCapsType(Tag _tag, TeamFolderSpaceLimitsChangeCapsTypeType teamFolderSpaceLimitsChangeCapsTypeValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamFolderSpaceLimitsChangeCapsTypeValue = teamFolderSpaceLimitsChangeCapsTypeValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param teamFolderSpaceLimitsChangeLimitValue  (team_folders) Changed team
+     *     folder space limit. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamFolderSpaceLimitsChangeLimit(Tag _tag, TeamFolderSpaceLimitsChangeLimitType teamFolderSpaceLimitsChangeLimitValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamFolderSpaceLimitsChangeLimitValue = teamFolderSpaceLimitsChangeLimitValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param teamFolderSpaceLimitsChangeNotificationTargetValue  (team_folders)
+     *     Changed team folder space limit notification target. Must not be
+     *     {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamFolderSpaceLimitsChangeNotificationTarget(Tag _tag, TeamFolderSpaceLimitsChangeNotificationTargetType teamFolderSpaceLimitsChangeNotificationTargetValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamFolderSpaceLimitsChangeNotificationTargetValue = teamFolderSpaceLimitsChangeNotificationTargetValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param teamSelectiveSyncSettingsChangedValue  (team_folders) Changed sync
      *     default. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -9075,6 +10966,24 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param aiThirdPartySharingDropboxBasePolicyChangedValue  (team_policies)
+     *     Changed AI third party sharing policy for team. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndAiThirdPartySharingDropboxBasePolicyChanged(Tag _tag, AiThirdPartySharingDropboxBasePolicyChangedType aiThirdPartySharingDropboxBasePolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.aiThirdPartySharingDropboxBasePolicyChangedValue = aiThirdPartySharingDropboxBasePolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param allowDownloadDisabledValue  (team_policies) Disabled downloads
      *     (deprecated, no longer logged). Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -9109,6 +11018,23 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param appleLoginChangePolicyValue  (team_policies) Enabled/disabled
+     *     Apple login for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndAppleLoginChangePolicy(Tag _tag, AppleLoginChangePolicyType appleLoginChangePolicyValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.appleLoginChangePolicyValue = appleLoginChangePolicyValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param appPermissionsChangedValue  (team_policies) Changed app
      *     permissions. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -9137,6 +11063,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.cameraUploadsPolicyChangedValue = cameraUploadsPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param captureTeamSpacePolicyChangedValue  (team_policies) Changed
+     *     Capture team space policy for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndCaptureTeamSpacePolicyChanged(Tag _tag, CaptureTeamSpacePolicyChangedType captureTeamSpacePolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.captureTeamSpacePolicyChangedValue = captureTeamSpacePolicyChangedValue;
         return result;
     }
 
@@ -9205,6 +11148,41 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.contentAdministrationPolicyChangedValue = contentAdministrationPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param contentDeletionProtectionChangePolicyValue  (team_policies)
+     *     Changed content deletion protection policy for team. Must not be
+     *     {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndContentDeletionProtectionChangePolicy(Tag _tag, ContentDeletionProtectionChangePolicyType contentDeletionProtectionChangePolicyValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.contentDeletionProtectionChangePolicyValue = contentDeletionProtectionChangePolicyValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param dashExternalSharingPolicyChangedValue  (team_policies) Changed
+     *     Dash external sharing policy for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDashExternalSharingPolicyChanged(Tag _tag, DashExternalSharingPolicyChangedType dashExternalSharingPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.dashExternalSharingPolicyChangedValue = dashExternalSharingPolicyChangedValue;
         return result;
     }
 
@@ -9629,6 +11607,23 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param flexibleFileNamesPolicyChangedValue  (team_policies) Changed
+     *     flexible file names policy for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndFlexibleFileNamesPolicyChanged(Tag _tag, FlexibleFileNamesPolicyChangedType flexibleFileNamesPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.flexibleFileNamesPolicyChangedValue = flexibleFileNamesPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param folderLinkRestrictionPolicyChangedValue  (team_policies) Changed
      *     folder link restrictions policy for team. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -9835,6 +11830,23 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param microsoftLoginChangePolicyValue  (team_policies) Enabled/disabled
+     *     Microsoft login for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMicrosoftLoginChangePolicy(Tag _tag, MicrosoftLoginChangePolicyType microsoftLoginChangePolicyValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.microsoftLoginChangePolicyValue = microsoftLoginChangePolicyValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param microsoftOfficeAddinChangePolicyValue  (team_policies)
      *     Enabled/disabled Microsoft Office add-in. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -10009,6 +12021,23 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param passkeyLoginPolicyChangedValue  (team_policies) Changed passkey
+     *     login policy for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndPasskeyLoginPolicyChanged(Tag _tag, PasskeyLoginPolicyChangedType passkeyLoginPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.passkeyLoginPolicyChangedValue = passkeyLoginPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param passwordStrengthRequirementsChangePolicyValue  (team_policies)
      *     Changed team password strength requirements. Must not be {@code
      *     null}.
@@ -10039,6 +12068,57 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.permanentDeleteChangePolicyValue = permanentDeleteChangePolicyValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param previewsAiPolicyChangedValue  (team_policies) Changed Dropbox AI
+     *     policy for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndPreviewsAiPolicyChanged(Tag _tag, PreviewsAiPolicyChangedType previewsAiPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.previewsAiPolicyChangedValue = previewsAiPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param replayAddingPeoplePolicyChangedValue  (team_policies) Changed the
+     *     policy for adding people to Replay content. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndReplayAddingPeoplePolicyChanged(Tag _tag, ReplayAddingPeoplePolicyChangedType replayAddingPeoplePolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.replayAddingPeoplePolicyChangedValue = replayAddingPeoplePolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param replaySharingPolicyChangedValue  (team_policies) Changed the
+     *     policy for sharing Replay content. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndReplaySharingPolicyChanged(Tag _tag, ReplaySharingPolicyChangedType replaySharingPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.replaySharingPolicyChangedValue = replaySharingPolicyChangedValue;
         return result;
     }
 
@@ -10079,6 +12159,41 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param sendAndTrackPolicyChangedValue  (team_policies) Changed “Send and
+     *     track” policy for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSendAndTrackPolicyChanged(Tag _tag, SendAndTrackPolicyChangedType sendAndTrackPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sendAndTrackPolicyChangedValue = sendAndTrackPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param sendExternalSharingPolicyChangedValue  (team_policies) Changed
+     *     “Send and track” external sharing policy for team. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSendExternalSharingPolicyChanged(Tag _tag, SendExternalSharingPolicyChangedType sendExternalSharingPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sendExternalSharingPolicyChangedValue = sendExternalSharingPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param sendForSignaturePolicyChangedValue  (team_policies) Changed send
      *     for signature policy for team. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -10090,6 +12205,24 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.sendForSignaturePolicyChangedValue = sendForSignaturePolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param sharedLinkDefaultPermissionsPolicyChangedValue  (team_policies)
+     *     Changed shared link default permissions policy for team. Must not be
+     *     {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSharedLinkDefaultPermissionsPolicyChanged(Tag _tag, SharedLinkDefaultPermissionsPolicyChangedType sharedLinkDefaultPermissionsPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sharedLinkDefaultPermissionsPolicyChangedValue = sharedLinkDefaultPermissionsPolicyChangedValue;
         return result;
     }
 
@@ -10257,6 +12390,41 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param signExternalSharingPolicyChangedValue  (team_policies) Changed
+     *     Signatures external sharing policy for team. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSignExternalSharingPolicyChanged(Tag _tag, SignExternalSharingPolicyChangedType signExternalSharingPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.signExternalSharingPolicyChangedValue = signExternalSharingPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param signTemplateCreationPermissionChangedValue  (team_policies)
+     *     Changed template creation permission. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSignTemplateCreationPermissionChanged(Tag _tag, SignTemplateCreationPermissionChangedType signTemplateCreationPermissionChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.signTemplateCreationPermissionChangedValue = signTemplateCreationPermissionChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param smarterSmartSyncPolicyChangedValue  (team_policies) Changed
      *     automatic Smart Sync setting for team. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -10342,6 +12510,23 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param stackCrossTeamAccessPolicyChangedValue  (team_policies) Changed
+     *     cross-team Stack access policy for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndStackCrossTeamAccessPolicyChanged(Tag _tag, StackCrossTeamAccessPolicyChangedType stackCrossTeamAccessPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.stackCrossTeamAccessPolicyChangedValue = stackCrossTeamAccessPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param teamBrandingPolicyChangedValue  (team_policies) Changed team
      *     branding policy for team. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -10370,6 +12555,24 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.teamExtensionsPolicyChangedValue = teamExtensionsPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param teamMemberStorageRequestPolicyChangedValue  (team_policies)
+     *     Changed team member storage request policy for team. Must not be
+     *     {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamMemberStorageRequestPolicyChanged(Tag _tag, TeamMemberStorageRequestPolicyChangedType teamMemberStorageRequestPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamMemberStorageRequestPolicyChangedValue = teamMemberStorageRequestPolicyChangedValue;
         return result;
     }
 
@@ -10428,8 +12631,8 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
-     * @param tfaChangePolicyValue  (team_policies) Changed two-step
-     *     verification setting for team. Must not be {@code null}.
+     * @param tfaChangePolicyValue  (team_policies) Changed two-factor
+     *     authentication setting for team. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -10456,6 +12659,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.tfaRemoveExceptionValue = tfaRemoveExceptionValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param topLevelContentPolicyChangedValue  (team_policies) Changed top
+     *     level content setting for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTopLevelContentPolicyChanged(Tag _tag, TopLevelContentPolicyChangedType topLevelContentPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.topLevelContentPolicyChangedValue = topLevelContentPolicyChangedValue;
         return result;
     }
 
@@ -10776,8 +12996,42 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
-     * @param tfaAddBackupPhoneValue  (tfa) Added backup phone for two-step
-     *     verification. Must not be {@code null}.
+     * @param passkeyAddValue  (tfa) Added passkey for login. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndPasskeyAdd(Tag _tag, PasskeyAddType passkeyAddValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.passkeyAddValue = passkeyAddValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param passkeyRemoveValue  (tfa) Removed passkey for login. Must not be
+     *     {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndPasskeyRemove(Tag _tag, PasskeyRemoveType passkeyRemoveValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.passkeyRemoveValue = passkeyRemoveValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param tfaAddBackupPhoneValue  (tfa) Added backup phone for two-factor
+     *     authentication. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -10793,8 +13047,8 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
-     * @param tfaAddSecurityKeyValue  (tfa) Added security key for two-step
-     *     verification. Must not be {@code null}.
+     * @param tfaAddSecurityKeyValue  (tfa) Added security key for two-factor
+     *     authentication. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -10810,8 +13064,8 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
-     * @param tfaChangeBackupPhoneValue  (tfa) Changed backup phone for two-step
-     *     verification. Must not be {@code null}.
+     * @param tfaChangeBackupPhoneValue  (tfa) Changed backup phone for
+     *     two-factor authentication. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -10827,8 +13081,8 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
-     * @param tfaChangeStatusValue  (tfa) Enabled/disabled/changed two-step
-     *     verification setting. Must not be {@code null}.
+     * @param tfaChangeStatusValue  (tfa) Enabled/disabled/changed two-factor
+     *     authentication setting. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -10844,8 +13098,8 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
-     * @param tfaRemoveBackupPhoneValue  (tfa) Removed backup phone for two-step
-     *     verification. Must not be {@code null}.
+     * @param tfaRemoveBackupPhoneValue  (tfa) Removed backup phone for
+     *     two-factor authentication. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -10861,8 +13115,8 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
-     * @param tfaRemoveSecurityKeyValue  (tfa) Removed security key for two-step
-     *     verification. Must not be {@code null}.
+     * @param tfaRemoveSecurityKeyValue  (tfa) Removed security key for
+     *     two-factor authentication. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -10878,8 +13132,8 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
-     * @param tfaResetValue  (tfa) Reset two-step verification for team member.
-     *     Must not be {@code null}.
+     * @param tfaResetValue  (tfa) Reset two-factor authentication for team
+     *     member. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -12345,6 +14599,1619 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.FILE_UNRESOLVE_COMMENT, but was Tag." + this._tag.name());
         }
         return fileUnresolveCommentValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_ADDED_COMMENT_TO_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_ADDED_COMMENT_TO_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashAddedCommentToStack() {
+        return this._tag == Tag.DASH_ADDED_COMMENT_TO_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_ADDED_COMMENT_TO_STACK}.
+     *
+     * <p> (dash) Added a comment to a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_ADDED_COMMENT_TO_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashAddedCommentToStack(DashAddedCommentToStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashAddedCommentToStack(Tag.DASH_ADDED_COMMENT_TO_STACK, value);
+    }
+
+    /**
+     * (dash) Added a comment to a stack
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_ADDED_COMMENT_TO_STACK}. </p>
+     *
+     * @return The {@link DashAddedCommentToStackType} value associated with
+     *     this instance if {@link #isDashAddedCommentToStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashAddedCommentToStack} is
+     *     {@code false}.
+     */
+    public DashAddedCommentToStackType getDashAddedCommentToStackValue() {
+        if (this._tag != Tag.DASH_ADDED_COMMENT_TO_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_ADDED_COMMENT_TO_STACK, but was Tag." + this._tag.name());
+        }
+        return dashAddedCommentToStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_ADDED_CONNECTOR}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_ADDED_CONNECTOR}, {@code false} otherwise.
+     */
+    public boolean isDashAddedConnector() {
+        return this._tag == Tag.DASH_ADDED_CONNECTOR;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_ADDED_CONNECTOR}.
+     *
+     * <p> (dash) Connected to a user connector </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_ADDED_CONNECTOR}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashAddedConnector(DashAddedConnectorType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashAddedConnector(Tag.DASH_ADDED_CONNECTOR, value);
+    }
+
+    /**
+     * (dash) Connected to a user connector
+     *
+     * <p> This instance must be tagged as {@link Tag#DASH_ADDED_CONNECTOR}.
+     * </p>
+     *
+     * @return The {@link DashAddedConnectorType} value associated with this
+     *     instance if {@link #isDashAddedConnector} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashAddedConnector} is {@code
+     *     false}.
+     */
+    public DashAddedConnectorType getDashAddedConnectorValue() {
+        if (this._tag != Tag.DASH_ADDED_CONNECTOR) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_ADDED_CONNECTOR, but was Tag." + this._tag.name());
+        }
+        return dashAddedConnectorValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_ADDED_LINK_TO_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_ADDED_LINK_TO_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashAddedLinkToStack() {
+        return this._tag == Tag.DASH_ADDED_LINK_TO_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_ADDED_LINK_TO_STACK}.
+     *
+     * <p> (dash) Added a link to a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_ADDED_LINK_TO_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashAddedLinkToStack(DashAddedLinkToStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashAddedLinkToStack(Tag.DASH_ADDED_LINK_TO_STACK, value);
+    }
+
+    /**
+     * (dash) Added a link to a stack
+     *
+     * <p> This instance must be tagged as {@link Tag#DASH_ADDED_LINK_TO_STACK}.
+     * </p>
+     *
+     * @return The {@link DashAddedLinkToStackType} value associated with this
+     *     instance if {@link #isDashAddedLinkToStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashAddedLinkToStack} is
+     *     {@code false}.
+     */
+    public DashAddedLinkToStackType getDashAddedLinkToStackValue() {
+        if (this._tag != Tag.DASH_ADDED_LINK_TO_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_ADDED_LINK_TO_STACK, but was Tag." + this._tag.name());
+        }
+        return dashAddedLinkToStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_ADDED_TEAM_EMAIL_DOMAIN_ALLOWLIST}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_ADDED_TEAM_EMAIL_DOMAIN_ALLOWLIST}, {@code false} otherwise.
+     */
+    public boolean isDashAddedTeamEmailDomainAllowlist() {
+        return this._tag == Tag.DASH_ADDED_TEAM_EMAIL_DOMAIN_ALLOWLIST;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_ADDED_TEAM_EMAIL_DOMAIN_ALLOWLIST}.
+     *
+     * <p> (dash) Admin added an email domain to the team allowlist </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_ADDED_TEAM_EMAIL_DOMAIN_ALLOWLIST}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashAddedTeamEmailDomainAllowlist(DashAddedTeamEmailDomainAllowlistType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashAddedTeamEmailDomainAllowlist(Tag.DASH_ADDED_TEAM_EMAIL_DOMAIN_ALLOWLIST, value);
+    }
+
+    /**
+     * (dash) Admin added an email domain to the team allowlist
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_ADDED_TEAM_EMAIL_DOMAIN_ALLOWLIST}. </p>
+     *
+     * @return The {@link DashAddedTeamEmailDomainAllowlistType} value
+     *     associated with this instance if {@link
+     *     #isDashAddedTeamEmailDomainAllowlist} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isDashAddedTeamEmailDomainAllowlist} is {@code false}.
+     */
+    public DashAddedTeamEmailDomainAllowlistType getDashAddedTeamEmailDomainAllowlistValue() {
+        if (this._tag != Tag.DASH_ADDED_TEAM_EMAIL_DOMAIN_ALLOWLIST) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_ADDED_TEAM_EMAIL_DOMAIN_ALLOWLIST, but was Tag." + this._tag.name());
+        }
+        return dashAddedTeamEmailDomainAllowlistValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_ADMIN_ADDED_ORG_WIDE_CONNECTOR}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_ADMIN_ADDED_ORG_WIDE_CONNECTOR}, {@code false} otherwise.
+     */
+    public boolean isDashAdminAddedOrgWideConnector() {
+        return this._tag == Tag.DASH_ADMIN_ADDED_ORG_WIDE_CONNECTOR;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_ADMIN_ADDED_ORG_WIDE_CONNECTOR}.
+     *
+     * <p> (dash) Admin added an admin connector </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_ADMIN_ADDED_ORG_WIDE_CONNECTOR}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashAdminAddedOrgWideConnector(DashAdminAddedOrgWideConnectorType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashAdminAddedOrgWideConnector(Tag.DASH_ADMIN_ADDED_ORG_WIDE_CONNECTOR, value);
+    }
+
+    /**
+     * (dash) Admin added an admin connector
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_ADMIN_ADDED_ORG_WIDE_CONNECTOR}. </p>
+     *
+     * @return The {@link DashAdminAddedOrgWideConnectorType} value associated
+     *     with this instance if {@link #isDashAdminAddedOrgWideConnector} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isDashAdminAddedOrgWideConnector} is {@code false}.
+     */
+    public DashAdminAddedOrgWideConnectorType getDashAdminAddedOrgWideConnectorValue() {
+        if (this._tag != Tag.DASH_ADMIN_ADDED_ORG_WIDE_CONNECTOR) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_ADMIN_ADDED_ORG_WIDE_CONNECTOR, but was Tag." + this._tag.name());
+        }
+        return dashAdminAddedOrgWideConnectorValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_ADMIN_DISABLED_CONNECTOR}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_ADMIN_DISABLED_CONNECTOR}, {@code false} otherwise.
+     */
+    public boolean isDashAdminDisabledConnector() {
+        return this._tag == Tag.DASH_ADMIN_DISABLED_CONNECTOR;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_ADMIN_DISABLED_CONNECTOR}.
+     *
+     * <p> (dash) Admin disabled a user connector </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_ADMIN_DISABLED_CONNECTOR}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashAdminDisabledConnector(DashAdminDisabledConnectorType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashAdminDisabledConnector(Tag.DASH_ADMIN_DISABLED_CONNECTOR, value);
+    }
+
+    /**
+     * (dash) Admin disabled a user connector
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_ADMIN_DISABLED_CONNECTOR}. </p>
+     *
+     * @return The {@link DashAdminDisabledConnectorType} value associated with
+     *     this instance if {@link #isDashAdminDisabledConnector} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashAdminDisabledConnector}
+     *     is {@code false}.
+     */
+    public DashAdminDisabledConnectorType getDashAdminDisabledConnectorValue() {
+        if (this._tag != Tag.DASH_ADMIN_DISABLED_CONNECTOR) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_ADMIN_DISABLED_CONNECTOR, but was Tag." + this._tag.name());
+        }
+        return dashAdminDisabledConnectorValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_ADMIN_ENABLED_CONNECTOR}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_ADMIN_ENABLED_CONNECTOR}, {@code false} otherwise.
+     */
+    public boolean isDashAdminEnabledConnector() {
+        return this._tag == Tag.DASH_ADMIN_ENABLED_CONNECTOR;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_ADMIN_ENABLED_CONNECTOR}.
+     *
+     * <p> (dash) Admin enabled a user connector </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_ADMIN_ENABLED_CONNECTOR}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashAdminEnabledConnector(DashAdminEnabledConnectorType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashAdminEnabledConnector(Tag.DASH_ADMIN_ENABLED_CONNECTOR, value);
+    }
+
+    /**
+     * (dash) Admin enabled a user connector
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_ADMIN_ENABLED_CONNECTOR}. </p>
+     *
+     * @return The {@link DashAdminEnabledConnectorType} value associated with
+     *     this instance if {@link #isDashAdminEnabledConnector} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashAdminEnabledConnector} is
+     *     {@code false}.
+     */
+    public DashAdminEnabledConnectorType getDashAdminEnabledConnectorValue() {
+        if (this._tag != Tag.DASH_ADMIN_ENABLED_CONNECTOR) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_ADMIN_ENABLED_CONNECTOR, but was Tag." + this._tag.name());
+        }
+        return dashAdminEnabledConnectorValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_ADMIN_REMOVED_ORG_WIDE_CONNECTOR}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_ADMIN_REMOVED_ORG_WIDE_CONNECTOR}, {@code false} otherwise.
+     */
+    public boolean isDashAdminRemovedOrgWideConnector() {
+        return this._tag == Tag.DASH_ADMIN_REMOVED_ORG_WIDE_CONNECTOR;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_ADMIN_REMOVED_ORG_WIDE_CONNECTOR}.
+     *
+     * <p> (dash) Admin removed an admin connector </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_ADMIN_REMOVED_ORG_WIDE_CONNECTOR}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashAdminRemovedOrgWideConnector(DashAdminRemovedOrgWideConnectorType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashAdminRemovedOrgWideConnector(Tag.DASH_ADMIN_REMOVED_ORG_WIDE_CONNECTOR, value);
+    }
+
+    /**
+     * (dash) Admin removed an admin connector
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_ADMIN_REMOVED_ORG_WIDE_CONNECTOR}. </p>
+     *
+     * @return The {@link DashAdminRemovedOrgWideConnectorType} value associated
+     *     with this instance if {@link #isDashAdminRemovedOrgWideConnector} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isDashAdminRemovedOrgWideConnector} is {@code false}.
+     */
+    public DashAdminRemovedOrgWideConnectorType getDashAdminRemovedOrgWideConnectorValue() {
+        if (this._tag != Tag.DASH_ADMIN_REMOVED_ORG_WIDE_CONNECTOR) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_ADMIN_REMOVED_ORG_WIDE_CONNECTOR, but was Tag." + this._tag.name());
+        }
+        return dashAdminRemovedOrgWideConnectorValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_ARCHIVED_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_ARCHIVED_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashArchivedStack() {
+        return this._tag == Tag.DASH_ARCHIVED_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_ARCHIVED_STACK}.
+     *
+     * <p> (dash) Archived a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_ARCHIVED_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashArchivedStack(DashArchivedStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashArchivedStack(Tag.DASH_ARCHIVED_STACK, value);
+    }
+
+    /**
+     * (dash) Archived a stack
+     *
+     * <p> This instance must be tagged as {@link Tag#DASH_ARCHIVED_STACK}. </p>
+     *
+     * @return The {@link DashArchivedStackType} value associated with this
+     *     instance if {@link #isDashArchivedStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashArchivedStack} is {@code
+     *     false}.
+     */
+    public DashArchivedStackType getDashArchivedStackValue() {
+        if (this._tag != Tag.DASH_ARCHIVED_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_ARCHIVED_STACK, but was Tag." + this._tag.name());
+        }
+        return dashArchivedStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_CHANGED_AUDIENCE_OF_SHARED_LINK_TO_STACK}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_CHANGED_AUDIENCE_OF_SHARED_LINK_TO_STACK}, {@code false}
+     *     otherwise.
+     */
+    public boolean isDashChangedAudienceOfSharedLinkToStack() {
+        return this._tag == Tag.DASH_CHANGED_AUDIENCE_OF_SHARED_LINK_TO_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_CHANGED_AUDIENCE_OF_SHARED_LINK_TO_STACK}.
+     *
+     * <p> (dash) Changed the audience of a shared link to a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_CHANGED_AUDIENCE_OF_SHARED_LINK_TO_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashChangedAudienceOfSharedLinkToStack(DashChangedAudienceOfSharedLinkToStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashChangedAudienceOfSharedLinkToStack(Tag.DASH_CHANGED_AUDIENCE_OF_SHARED_LINK_TO_STACK, value);
+    }
+
+    /**
+     * (dash) Changed the audience of a shared link to a stack
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_CHANGED_AUDIENCE_OF_SHARED_LINK_TO_STACK}. </p>
+     *
+     * @return The {@link DashChangedAudienceOfSharedLinkToStackType} value
+     *     associated with this instance if {@link
+     *     #isDashChangedAudienceOfSharedLinkToStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isDashChangedAudienceOfSharedLinkToStack} is {@code false}.
+     */
+    public DashChangedAudienceOfSharedLinkToStackType getDashChangedAudienceOfSharedLinkToStackValue() {
+        if (this._tag != Tag.DASH_CHANGED_AUDIENCE_OF_SHARED_LINK_TO_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_CHANGED_AUDIENCE_OF_SHARED_LINK_TO_STACK, but was Tag." + this._tag.name());
+        }
+        return dashChangedAudienceOfSharedLinkToStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_CLONED_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_CLONED_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashClonedStack() {
+        return this._tag == Tag.DASH_CLONED_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_CLONED_STACK}.
+     *
+     * <p> (dash) Cloned stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_CLONED_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashClonedStack(DashClonedStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashClonedStack(Tag.DASH_CLONED_STACK, value);
+    }
+
+    /**
+     * (dash) Cloned stack
+     *
+     * <p> This instance must be tagged as {@link Tag#DASH_CLONED_STACK}. </p>
+     *
+     * @return The {@link DashClonedStackType} value associated with this
+     *     instance if {@link #isDashClonedStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashClonedStack} is {@code
+     *     false}.
+     */
+    public DashClonedStackType getDashClonedStackValue() {
+        if (this._tag != Tag.DASH_CLONED_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_CLONED_STACK, but was Tag." + this._tag.name());
+        }
+        return dashClonedStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_CONNECTOR_TOOLS_CALL}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_CONNECTOR_TOOLS_CALL}, {@code false} otherwise.
+     */
+    public boolean isDashConnectorToolsCall() {
+        return this._tag == Tag.DASH_CONNECTOR_TOOLS_CALL;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_CONNECTOR_TOOLS_CALL}.
+     *
+     * <p> (dash) Called a tool on a connector </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_CONNECTOR_TOOLS_CALL}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashConnectorToolsCall(DashConnectorToolsCallType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashConnectorToolsCall(Tag.DASH_CONNECTOR_TOOLS_CALL, value);
+    }
+
+    /**
+     * (dash) Called a tool on a connector
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_CONNECTOR_TOOLS_CALL}. </p>
+     *
+     * @return The {@link DashConnectorToolsCallType} value associated with this
+     *     instance if {@link #isDashConnectorToolsCall} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashConnectorToolsCall} is
+     *     {@code false}.
+     */
+    public DashConnectorToolsCallType getDashConnectorToolsCallValue() {
+        if (this._tag != Tag.DASH_CONNECTOR_TOOLS_CALL) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_CONNECTOR_TOOLS_CALL, but was Tag." + this._tag.name());
+        }
+        return dashConnectorToolsCallValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_CREATED_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_CREATED_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashCreatedStack() {
+        return this._tag == Tag.DASH_CREATED_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_CREATED_STACK}.
+     *
+     * <p> (dash) Created a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_CREATED_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashCreatedStack(DashCreatedStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashCreatedStack(Tag.DASH_CREATED_STACK, value);
+    }
+
+    /**
+     * (dash) Created a stack
+     *
+     * <p> This instance must be tagged as {@link Tag#DASH_CREATED_STACK}. </p>
+     *
+     * @return The {@link DashCreatedStackType} value associated with this
+     *     instance if {@link #isDashCreatedStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashCreatedStack} is {@code
+     *     false}.
+     */
+    public DashCreatedStackType getDashCreatedStackValue() {
+        if (this._tag != Tag.DASH_CREATED_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_CREATED_STACK, but was Tag." + this._tag.name());
+        }
+        return dashCreatedStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_DELETED_COMMENT_FROM_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_DELETED_COMMENT_FROM_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashDeletedCommentFromStack() {
+        return this._tag == Tag.DASH_DELETED_COMMENT_FROM_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_DELETED_COMMENT_FROM_STACK}.
+     *
+     * <p> (dash) Deleted a comment from a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_DELETED_COMMENT_FROM_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashDeletedCommentFromStack(DashDeletedCommentFromStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashDeletedCommentFromStack(Tag.DASH_DELETED_COMMENT_FROM_STACK, value);
+    }
+
+    /**
+     * (dash) Deleted a comment from a stack
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_DELETED_COMMENT_FROM_STACK}. </p>
+     *
+     * @return The {@link DashDeletedCommentFromStackType} value associated with
+     *     this instance if {@link #isDashDeletedCommentFromStack} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashDeletedCommentFromStack}
+     *     is {@code false}.
+     */
+    public DashDeletedCommentFromStackType getDashDeletedCommentFromStackValue() {
+        if (this._tag != Tag.DASH_DELETED_COMMENT_FROM_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_DELETED_COMMENT_FROM_STACK, but was Tag." + this._tag.name());
+        }
+        return dashDeletedCommentFromStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_DELETED_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_DELETED_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashDeletedStack() {
+        return this._tag == Tag.DASH_DELETED_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_DELETED_STACK}.
+     *
+     * <p> (dash) Deleted a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_DELETED_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashDeletedStack(DashDeletedStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashDeletedStack(Tag.DASH_DELETED_STACK, value);
+    }
+
+    /**
+     * (dash) Deleted a stack
+     *
+     * <p> This instance must be tagged as {@link Tag#DASH_DELETED_STACK}. </p>
+     *
+     * @return The {@link DashDeletedStackType} value associated with this
+     *     instance if {@link #isDashDeletedStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashDeletedStack} is {@code
+     *     false}.
+     */
+    public DashDeletedStackType getDashDeletedStackValue() {
+        if (this._tag != Tag.DASH_DELETED_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_DELETED_STACK, but was Tag." + this._tag.name());
+        }
+        return dashDeletedStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_EDITED_COMMENT_IN_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_EDITED_COMMENT_IN_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashEditedCommentInStack() {
+        return this._tag == Tag.DASH_EDITED_COMMENT_IN_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_EDITED_COMMENT_IN_STACK}.
+     *
+     * <p> (dash) Edited a comment in a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_EDITED_COMMENT_IN_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashEditedCommentInStack(DashEditedCommentInStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashEditedCommentInStack(Tag.DASH_EDITED_COMMENT_IN_STACK, value);
+    }
+
+    /**
+     * (dash) Edited a comment in a stack
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_EDITED_COMMENT_IN_STACK}. </p>
+     *
+     * @return The {@link DashEditedCommentInStackType} value associated with
+     *     this instance if {@link #isDashEditedCommentInStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashEditedCommentInStack} is
+     *     {@code false}.
+     */
+    public DashEditedCommentInStackType getDashEditedCommentInStackValue() {
+        if (this._tag != Tag.DASH_EDITED_COMMENT_IN_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_EDITED_COMMENT_IN_STACK, but was Tag." + this._tag.name());
+        }
+        return dashEditedCommentInStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_EXTERNAL_USER_OPENED_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_EXTERNAL_USER_OPENED_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashExternalUserOpenedStack() {
+        return this._tag == Tag.DASH_EXTERNAL_USER_OPENED_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_EXTERNAL_USER_OPENED_STACK}.
+     *
+     * <p> (dash) External user opened a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_EXTERNAL_USER_OPENED_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashExternalUserOpenedStack(DashExternalUserOpenedStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashExternalUserOpenedStack(Tag.DASH_EXTERNAL_USER_OPENED_STACK, value);
+    }
+
+    /**
+     * (dash) External user opened a stack
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_EXTERNAL_USER_OPENED_STACK}. </p>
+     *
+     * @return The {@link DashExternalUserOpenedStackType} value associated with
+     *     this instance if {@link #isDashExternalUserOpenedStack} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashExternalUserOpenedStack}
+     *     is {@code false}.
+     */
+    public DashExternalUserOpenedStackType getDashExternalUserOpenedStackValue() {
+        if (this._tag != Tag.DASH_EXTERNAL_USER_OPENED_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_EXTERNAL_USER_OPENED_STACK, but was Tag." + this._tag.name());
+        }
+        return dashExternalUserOpenedStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_FIRST_LAUNCHED_DESKTOP}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_FIRST_LAUNCHED_DESKTOP}, {@code false} otherwise.
+     */
+    public boolean isDashFirstLaunchedDesktop() {
+        return this._tag == Tag.DASH_FIRST_LAUNCHED_DESKTOP;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_FIRST_LAUNCHED_DESKTOP}.
+     *
+     * <p> (dash) Opened the desktop app for the first time </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_FIRST_LAUNCHED_DESKTOP}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashFirstLaunchedDesktop(DashFirstLaunchedDesktopType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashFirstLaunchedDesktop(Tag.DASH_FIRST_LAUNCHED_DESKTOP, value);
+    }
+
+    /**
+     * (dash) Opened the desktop app for the first time
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_FIRST_LAUNCHED_DESKTOP}. </p>
+     *
+     * @return The {@link DashFirstLaunchedDesktopType} value associated with
+     *     this instance if {@link #isDashFirstLaunchedDesktop} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashFirstLaunchedDesktop} is
+     *     {@code false}.
+     */
+    public DashFirstLaunchedDesktopType getDashFirstLaunchedDesktopValue() {
+        if (this._tag != Tag.DASH_FIRST_LAUNCHED_DESKTOP) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_FIRST_LAUNCHED_DESKTOP, but was Tag." + this._tag.name());
+        }
+        return dashFirstLaunchedDesktopValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_FIRST_LAUNCHED_EXTENSION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_FIRST_LAUNCHED_EXTENSION}, {@code false} otherwise.
+     */
+    public boolean isDashFirstLaunchedExtension() {
+        return this._tag == Tag.DASH_FIRST_LAUNCHED_EXTENSION;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_FIRST_LAUNCHED_EXTENSION}.
+     *
+     * <p> (dash) Opened the extension for the first time </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_FIRST_LAUNCHED_EXTENSION}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashFirstLaunchedExtension(DashFirstLaunchedExtensionType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashFirstLaunchedExtension(Tag.DASH_FIRST_LAUNCHED_EXTENSION, value);
+    }
+
+    /**
+     * (dash) Opened the extension for the first time
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_FIRST_LAUNCHED_EXTENSION}. </p>
+     *
+     * @return The {@link DashFirstLaunchedExtensionType} value associated with
+     *     this instance if {@link #isDashFirstLaunchedExtension} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashFirstLaunchedExtension}
+     *     is {@code false}.
+     */
+    public DashFirstLaunchedExtensionType getDashFirstLaunchedExtensionValue() {
+        if (this._tag != Tag.DASH_FIRST_LAUNCHED_EXTENSION) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_FIRST_LAUNCHED_EXTENSION, but was Tag." + this._tag.name());
+        }
+        return dashFirstLaunchedExtensionValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_FIRST_LAUNCHED_WEB_START_PAGE}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_FIRST_LAUNCHED_WEB_START_PAGE}, {@code false} otherwise.
+     */
+    public boolean isDashFirstLaunchedWebStartPage() {
+        return this._tag == Tag.DASH_FIRST_LAUNCHED_WEB_START_PAGE;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_FIRST_LAUNCHED_WEB_START_PAGE}.
+     *
+     * <p> (dash) Opened the web Start Page for the first time </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_FIRST_LAUNCHED_WEB_START_PAGE}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashFirstLaunchedWebStartPage(DashFirstLaunchedWebStartPageType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashFirstLaunchedWebStartPage(Tag.DASH_FIRST_LAUNCHED_WEB_START_PAGE, value);
+    }
+
+    /**
+     * (dash) Opened the web Start Page for the first time
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_FIRST_LAUNCHED_WEB_START_PAGE}. </p>
+     *
+     * @return The {@link DashFirstLaunchedWebStartPageType} value associated
+     *     with this instance if {@link #isDashFirstLaunchedWebStartPage} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isDashFirstLaunchedWebStartPage} is {@code false}.
+     */
+    public DashFirstLaunchedWebStartPageType getDashFirstLaunchedWebStartPageValue() {
+        if (this._tag != Tag.DASH_FIRST_LAUNCHED_WEB_START_PAGE) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_FIRST_LAUNCHED_WEB_START_PAGE, but was Tag." + this._tag.name());
+        }
+        return dashFirstLaunchedWebStartPageValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_OPENED_SHARED_LINK_TO_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_OPENED_SHARED_LINK_TO_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashOpenedSharedLinkToStack() {
+        return this._tag == Tag.DASH_OPENED_SHARED_LINK_TO_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_OPENED_SHARED_LINK_TO_STACK}.
+     *
+     * <p> (dash) Checked access permissions to a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_OPENED_SHARED_LINK_TO_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashOpenedSharedLinkToStack(DashOpenedSharedLinkToStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashOpenedSharedLinkToStack(Tag.DASH_OPENED_SHARED_LINK_TO_STACK, value);
+    }
+
+    /**
+     * (dash) Checked access permissions to a stack
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_OPENED_SHARED_LINK_TO_STACK}. </p>
+     *
+     * @return The {@link DashOpenedSharedLinkToStackType} value associated with
+     *     this instance if {@link #isDashOpenedSharedLinkToStack} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashOpenedSharedLinkToStack}
+     *     is {@code false}.
+     */
+    public DashOpenedSharedLinkToStackType getDashOpenedSharedLinkToStackValue() {
+        if (this._tag != Tag.DASH_OPENED_SHARED_LINK_TO_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_OPENED_SHARED_LINK_TO_STACK, but was Tag." + this._tag.name());
+        }
+        return dashOpenedSharedLinkToStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_OPENED_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_OPENED_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashOpenedStack() {
+        return this._tag == Tag.DASH_OPENED_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_OPENED_STACK}.
+     *
+     * <p> (dash) Opened a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_OPENED_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashOpenedStack(DashOpenedStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashOpenedStack(Tag.DASH_OPENED_STACK, value);
+    }
+
+    /**
+     * (dash) Opened a stack
+     *
+     * <p> This instance must be tagged as {@link Tag#DASH_OPENED_STACK}. </p>
+     *
+     * @return The {@link DashOpenedStackType} value associated with this
+     *     instance if {@link #isDashOpenedStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashOpenedStack} is {@code
+     *     false}.
+     */
+    public DashOpenedStackType getDashOpenedStackValue() {
+        if (this._tag != Tag.DASH_OPENED_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_OPENED_STACK, but was Tag." + this._tag.name());
+        }
+        return dashOpenedStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_PREVIEW_OPT_OUT_STATUS_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_PREVIEW_OPT_OUT_STATUS_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isDashPreviewOptOutStatusChanged() {
+        return this._tag == Tag.DASH_PREVIEW_OPT_OUT_STATUS_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_PREVIEW_OPT_OUT_STATUS_CHANGED}.
+     *
+     * <p> (dash) Changed the preview opt-out status </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_PREVIEW_OPT_OUT_STATUS_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashPreviewOptOutStatusChanged(DashPreviewOptOutStatusChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashPreviewOptOutStatusChanged(Tag.DASH_PREVIEW_OPT_OUT_STATUS_CHANGED, value);
+    }
+
+    /**
+     * (dash) Changed the preview opt-out status
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_PREVIEW_OPT_OUT_STATUS_CHANGED}. </p>
+     *
+     * @return The {@link DashPreviewOptOutStatusChangedType} value associated
+     *     with this instance if {@link #isDashPreviewOptOutStatusChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isDashPreviewOptOutStatusChanged} is {@code false}.
+     */
+    public DashPreviewOptOutStatusChangedType getDashPreviewOptOutStatusChangedValue() {
+        if (this._tag != Tag.DASH_PREVIEW_OPT_OUT_STATUS_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_PREVIEW_OPT_OUT_STATUS_CHANGED, but was Tag." + this._tag.name());
+        }
+        return dashPreviewOptOutStatusChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_REMOVED_CONNECTOR}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_REMOVED_CONNECTOR}, {@code false} otherwise.
+     */
+    public boolean isDashRemovedConnector() {
+        return this._tag == Tag.DASH_REMOVED_CONNECTOR;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_REMOVED_CONNECTOR}.
+     *
+     * <p> (dash) Disconnected a user connector </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_REMOVED_CONNECTOR}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashRemovedConnector(DashRemovedConnectorType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashRemovedConnector(Tag.DASH_REMOVED_CONNECTOR, value);
+    }
+
+    /**
+     * (dash) Disconnected a user connector
+     *
+     * <p> This instance must be tagged as {@link Tag#DASH_REMOVED_CONNECTOR}.
+     * </p>
+     *
+     * @return The {@link DashRemovedConnectorType} value associated with this
+     *     instance if {@link #isDashRemovedConnector} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashRemovedConnector} is
+     *     {@code false}.
+     */
+    public DashRemovedConnectorType getDashRemovedConnectorValue() {
+        if (this._tag != Tag.DASH_REMOVED_CONNECTOR) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_REMOVED_CONNECTOR, but was Tag." + this._tag.name());
+        }
+        return dashRemovedConnectorValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_REMOVED_LINK_FROM_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_REMOVED_LINK_FROM_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashRemovedLinkFromStack() {
+        return this._tag == Tag.DASH_REMOVED_LINK_FROM_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_REMOVED_LINK_FROM_STACK}.
+     *
+     * <p> (dash) Removed a link from a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_REMOVED_LINK_FROM_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashRemovedLinkFromStack(DashRemovedLinkFromStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashRemovedLinkFromStack(Tag.DASH_REMOVED_LINK_FROM_STACK, value);
+    }
+
+    /**
+     * (dash) Removed a link from a stack
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_REMOVED_LINK_FROM_STACK}. </p>
+     *
+     * @return The {@link DashRemovedLinkFromStackType} value associated with
+     *     this instance if {@link #isDashRemovedLinkFromStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashRemovedLinkFromStack} is
+     *     {@code false}.
+     */
+    public DashRemovedLinkFromStackType getDashRemovedLinkFromStackValue() {
+        if (this._tag != Tag.DASH_REMOVED_LINK_FROM_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_REMOVED_LINK_FROM_STACK, but was Tag." + this._tag.name());
+        }
+        return dashRemovedLinkFromStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_REMOVED_SHARED_LINK_TO_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_REMOVED_SHARED_LINK_TO_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashRemovedSharedLinkToStack() {
+        return this._tag == Tag.DASH_REMOVED_SHARED_LINK_TO_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_REMOVED_SHARED_LINK_TO_STACK}.
+     *
+     * <p> (dash) Removed a shared link to a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_REMOVED_SHARED_LINK_TO_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashRemovedSharedLinkToStack(DashRemovedSharedLinkToStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashRemovedSharedLinkToStack(Tag.DASH_REMOVED_SHARED_LINK_TO_STACK, value);
+    }
+
+    /**
+     * (dash) Removed a shared link to a stack
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_REMOVED_SHARED_LINK_TO_STACK}. </p>
+     *
+     * @return The {@link DashRemovedSharedLinkToStackType} value associated
+     *     with this instance if {@link #isDashRemovedSharedLinkToStack} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashRemovedSharedLinkToStack}
+     *     is {@code false}.
+     */
+    public DashRemovedSharedLinkToStackType getDashRemovedSharedLinkToStackValue() {
+        if (this._tag != Tag.DASH_REMOVED_SHARED_LINK_TO_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_REMOVED_SHARED_LINK_TO_STACK, but was Tag." + this._tag.name());
+        }
+        return dashRemovedSharedLinkToStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_REMOVED_TEAM_EMAIL_DOMAIN_ALLOWLIST}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_REMOVED_TEAM_EMAIL_DOMAIN_ALLOWLIST}, {@code false}
+     *     otherwise.
+     */
+    public boolean isDashRemovedTeamEmailDomainAllowlist() {
+        return this._tag == Tag.DASH_REMOVED_TEAM_EMAIL_DOMAIN_ALLOWLIST;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_REMOVED_TEAM_EMAIL_DOMAIN_ALLOWLIST}.
+     *
+     * <p> (dash) Admin removed an email domain from the team allowlist </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_REMOVED_TEAM_EMAIL_DOMAIN_ALLOWLIST}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashRemovedTeamEmailDomainAllowlist(DashRemovedTeamEmailDomainAllowlistType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashRemovedTeamEmailDomainAllowlist(Tag.DASH_REMOVED_TEAM_EMAIL_DOMAIN_ALLOWLIST, value);
+    }
+
+    /**
+     * (dash) Admin removed an email domain from the team allowlist
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_REMOVED_TEAM_EMAIL_DOMAIN_ALLOWLIST}. </p>
+     *
+     * @return The {@link DashRemovedTeamEmailDomainAllowlistType} value
+     *     associated with this instance if {@link
+     *     #isDashRemovedTeamEmailDomainAllowlist} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isDashRemovedTeamEmailDomainAllowlist} is {@code false}.
+     */
+    public DashRemovedTeamEmailDomainAllowlistType getDashRemovedTeamEmailDomainAllowlistValue() {
+        if (this._tag != Tag.DASH_REMOVED_TEAM_EMAIL_DOMAIN_ALLOWLIST) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_REMOVED_TEAM_EMAIL_DOMAIN_ALLOWLIST, but was Tag." + this._tag.name());
+        }
+        return dashRemovedTeamEmailDomainAllowlistValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_RENAMED_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_RENAMED_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashRenamedStack() {
+        return this._tag == Tag.DASH_RENAMED_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_RENAMED_STACK}.
+     *
+     * <p> (dash) Renamed a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_RENAMED_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashRenamedStack(DashRenamedStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashRenamedStack(Tag.DASH_RENAMED_STACK, value);
+    }
+
+    /**
+     * (dash) Renamed a stack
+     *
+     * <p> This instance must be tagged as {@link Tag#DASH_RENAMED_STACK}. </p>
+     *
+     * @return The {@link DashRenamedStackType} value associated with this
+     *     instance if {@link #isDashRenamedStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashRenamedStack} is {@code
+     *     false}.
+     */
+    public DashRenamedStackType getDashRenamedStackValue() {
+        if (this._tag != Tag.DASH_RENAMED_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_RENAMED_STACK, but was Tag." + this._tag.name());
+        }
+        return dashRenamedStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_SHARED_LINK_TO_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_SHARED_LINK_TO_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashSharedLinkToStack() {
+        return this._tag == Tag.DASH_SHARED_LINK_TO_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_SHARED_LINK_TO_STACK}.
+     *
+     * <p> (dash) Shared a link to a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_SHARED_LINK_TO_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashSharedLinkToStack(DashSharedLinkToStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashSharedLinkToStack(Tag.DASH_SHARED_LINK_TO_STACK, value);
+    }
+
+    /**
+     * (dash) Shared a link to a stack
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_SHARED_LINK_TO_STACK}. </p>
+     *
+     * @return The {@link DashSharedLinkToStackType} value associated with this
+     *     instance if {@link #isDashSharedLinkToStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashSharedLinkToStack} is
+     *     {@code false}.
+     */
+    public DashSharedLinkToStackType getDashSharedLinkToStackValue() {
+        if (this._tag != Tag.DASH_SHARED_LINK_TO_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_SHARED_LINK_TO_STACK, but was Tag." + this._tag.name());
+        }
+        return dashSharedLinkToStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_UNARCHIVED_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_UNARCHIVED_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashUnarchivedStack() {
+        return this._tag == Tag.DASH_UNARCHIVED_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_UNARCHIVED_STACK}.
+     *
+     * <p> (dash) Unarchived a stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_UNARCHIVED_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashUnarchivedStack(DashUnarchivedStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashUnarchivedStack(Tag.DASH_UNARCHIVED_STACK, value);
+    }
+
+    /**
+     * (dash) Unarchived a stack
+     *
+     * <p> This instance must be tagged as {@link Tag#DASH_UNARCHIVED_STACK}.
+     * </p>
+     *
+     * @return The {@link DashUnarchivedStackType} value associated with this
+     *     instance if {@link #isDashUnarchivedStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashUnarchivedStack} is
+     *     {@code false}.
+     */
+    public DashUnarchivedStackType getDashUnarchivedStackValue() {
+        if (this._tag != Tag.DASH_UNARCHIVED_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_UNARCHIVED_STACK, but was Tag." + this._tag.name());
+        }
+        return dashUnarchivedStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_VIEWED_COMPANY_STACK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_VIEWED_COMPANY_STACK}, {@code false} otherwise.
+     */
+    public boolean isDashViewedCompanyStack() {
+        return this._tag == Tag.DASH_VIEWED_COMPANY_STACK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_VIEWED_COMPANY_STACK}.
+     *
+     * <p> (dash) Member viewed a company stack </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_VIEWED_COMPANY_STACK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashViewedCompanyStack(DashViewedCompanyStackType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashViewedCompanyStack(Tag.DASH_VIEWED_COMPANY_STACK, value);
+    }
+
+    /**
+     * (dash) Member viewed a company stack
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_VIEWED_COMPANY_STACK}. </p>
+     *
+     * @return The {@link DashViewedCompanyStackType} value associated with this
+     *     instance if {@link #isDashViewedCompanyStack} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isDashViewedCompanyStack} is
+     *     {@code false}.
+     */
+    public DashViewedCompanyStackType getDashViewedCompanyStackValue() {
+        if (this._tag != Tag.DASH_VIEWED_COMPANY_STACK) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_VIEWED_COMPANY_STACK, but was Tag." + this._tag.name());
+        }
+        return dashViewedCompanyStackValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_VIEWED_EXTERNAL_AI_ACTIVITY_REPORT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_VIEWED_EXTERNAL_AI_ACTIVITY_REPORT}, {@code false}
+     *     otherwise.
+     */
+    public boolean isDashViewedExternalAiActivityReport() {
+        return this._tag == Tag.DASH_VIEWED_EXTERNAL_AI_ACTIVITY_REPORT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_VIEWED_EXTERNAL_AI_ACTIVITY_REPORT}.
+     *
+     * <p> (dash) Admin viewed the external AI activity report </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_VIEWED_EXTERNAL_AI_ACTIVITY_REPORT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashViewedExternalAiActivityReport(DashViewedExternalAiActivityReportType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashViewedExternalAiActivityReport(Tag.DASH_VIEWED_EXTERNAL_AI_ACTIVITY_REPORT, value);
+    }
+
+    /**
+     * (dash) Admin viewed the external AI activity report
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_VIEWED_EXTERNAL_AI_ACTIVITY_REPORT}. </p>
+     *
+     * @return The {@link DashViewedExternalAiActivityReportType} value
+     *     associated with this instance if {@link
+     *     #isDashViewedExternalAiActivityReport} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isDashViewedExternalAiActivityReport} is {@code false}.
+     */
+    public DashViewedExternalAiActivityReportType getDashViewedExternalAiActivityReportValue() {
+        if (this._tag != Tag.DASH_VIEWED_EXTERNAL_AI_ACTIVITY_REPORT) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_VIEWED_EXTERNAL_AI_ACTIVITY_REPORT, but was Tag." + this._tag.name());
+        }
+        return dashViewedExternalAiActivityReportValue;
     }
 
     /**
@@ -15101,6 +18968,571 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENCRYPTED_FOLDER_CANCEL_TEAM_KEY_ROTATION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENCRYPTED_FOLDER_CANCEL_TEAM_KEY_ROTATION}, {@code false}
+     *     otherwise.
+     */
+    public boolean isEncryptedFolderCancelTeamKeyRotation() {
+        return this._tag == Tag.ENCRYPTED_FOLDER_CANCEL_TEAM_KEY_ROTATION;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ENCRYPTED_FOLDER_CANCEL_TEAM_KEY_ROTATION}.
+     *
+     * <p> (encryption) Canceled team key rotation </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ENCRYPTED_FOLDER_CANCEL_TEAM_KEY_ROTATION}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType encryptedFolderCancelTeamKeyRotation(EncryptedFolderCancelTeamKeyRotationType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndEncryptedFolderCancelTeamKeyRotation(Tag.ENCRYPTED_FOLDER_CANCEL_TEAM_KEY_ROTATION, value);
+    }
+
+    /**
+     * (encryption) Canceled team key rotation
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#ENCRYPTED_FOLDER_CANCEL_TEAM_KEY_ROTATION}. </p>
+     *
+     * @return The {@link EncryptedFolderCancelTeamKeyRotationType} value
+     *     associated with this instance if {@link
+     *     #isEncryptedFolderCancelTeamKeyRotation} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isEncryptedFolderCancelTeamKeyRotation} is {@code false}.
+     */
+    public EncryptedFolderCancelTeamKeyRotationType getEncryptedFolderCancelTeamKeyRotationValue() {
+        if (this._tag != Tag.ENCRYPTED_FOLDER_CANCEL_TEAM_KEY_ROTATION) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENCRYPTED_FOLDER_CANCEL_TEAM_KEY_ROTATION, but was Tag." + this._tag.name());
+        }
+        return encryptedFolderCancelTeamKeyRotationValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENCRYPTED_FOLDER_ENROLL_BACKUP_KEY}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENCRYPTED_FOLDER_ENROLL_BACKUP_KEY}, {@code false} otherwise.
+     */
+    public boolean isEncryptedFolderEnrollBackupKey() {
+        return this._tag == Tag.ENCRYPTED_FOLDER_ENROLL_BACKUP_KEY;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ENCRYPTED_FOLDER_ENROLL_BACKUP_KEY}.
+     *
+     * <p> (encryption) Added recovery key </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ENCRYPTED_FOLDER_ENROLL_BACKUP_KEY}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType encryptedFolderEnrollBackupKey(EncryptedFolderEnrollBackupKeyType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndEncryptedFolderEnrollBackupKey(Tag.ENCRYPTED_FOLDER_ENROLL_BACKUP_KEY, value);
+    }
+
+    /**
+     * (encryption) Added recovery key
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#ENCRYPTED_FOLDER_ENROLL_BACKUP_KEY}. </p>
+     *
+     * @return The {@link EncryptedFolderEnrollBackupKeyType} value associated
+     *     with this instance if {@link #isEncryptedFolderEnrollBackupKey} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isEncryptedFolderEnrollBackupKey} is {@code false}.
+     */
+    public EncryptedFolderEnrollBackupKeyType getEncryptedFolderEnrollBackupKeyValue() {
+        if (this._tag != Tag.ENCRYPTED_FOLDER_ENROLL_BACKUP_KEY) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENCRYPTED_FOLDER_ENROLL_BACKUP_KEY, but was Tag." + this._tag.name());
+        }
+        return encryptedFolderEnrollBackupKeyValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENCRYPTED_FOLDER_ENROLL_CLIENT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENCRYPTED_FOLDER_ENROLL_CLIENT}, {@code false} otherwise.
+     */
+    public boolean isEncryptedFolderEnrollClient() {
+        return this._tag == Tag.ENCRYPTED_FOLDER_ENROLL_CLIENT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ENCRYPTED_FOLDER_ENROLL_CLIENT}.
+     *
+     * <p> (encryption) Enrolled device </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ENCRYPTED_FOLDER_ENROLL_CLIENT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType encryptedFolderEnrollClient(EncryptedFolderEnrollClientType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndEncryptedFolderEnrollClient(Tag.ENCRYPTED_FOLDER_ENROLL_CLIENT, value);
+    }
+
+    /**
+     * (encryption) Enrolled device
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#ENCRYPTED_FOLDER_ENROLL_CLIENT}. </p>
+     *
+     * @return The {@link EncryptedFolderEnrollClientType} value associated with
+     *     this instance if {@link #isEncryptedFolderEnrollClient} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isEncryptedFolderEnrollClient}
+     *     is {@code false}.
+     */
+    public EncryptedFolderEnrollClientType getEncryptedFolderEnrollClientValue() {
+        if (this._tag != Tag.ENCRYPTED_FOLDER_ENROLL_CLIENT) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENCRYPTED_FOLDER_ENROLL_CLIENT, but was Tag." + this._tag.name());
+        }
+        return encryptedFolderEnrollClientValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENCRYPTED_FOLDER_ENROLL_TEAM}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENCRYPTED_FOLDER_ENROLL_TEAM}, {@code false} otherwise.
+     */
+    public boolean isEncryptedFolderEnrollTeam() {
+        return this._tag == Tag.ENCRYPTED_FOLDER_ENROLL_TEAM;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ENCRYPTED_FOLDER_ENROLL_TEAM}.
+     *
+     * <p> (encryption) Activated team folder encryption </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ENCRYPTED_FOLDER_ENROLL_TEAM}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType encryptedFolderEnrollTeam(EncryptedFolderEnrollTeamType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndEncryptedFolderEnrollTeam(Tag.ENCRYPTED_FOLDER_ENROLL_TEAM, value);
+    }
+
+    /**
+     * (encryption) Activated team folder encryption
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#ENCRYPTED_FOLDER_ENROLL_TEAM}. </p>
+     *
+     * @return The {@link EncryptedFolderEnrollTeamType} value associated with
+     *     this instance if {@link #isEncryptedFolderEnrollTeam} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isEncryptedFolderEnrollTeam} is
+     *     {@code false}.
+     */
+    public EncryptedFolderEnrollTeamType getEncryptedFolderEnrollTeamValue() {
+        if (this._tag != Tag.ENCRYPTED_FOLDER_ENROLL_TEAM) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENCRYPTED_FOLDER_ENROLL_TEAM, but was Tag." + this._tag.name());
+        }
+        return encryptedFolderEnrollTeamValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENCRYPTED_FOLDER_FINISH_TEAM_UNENROLLMENT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENCRYPTED_FOLDER_FINISH_TEAM_UNENROLLMENT}, {@code false}
+     *     otherwise.
+     */
+    public boolean isEncryptedFolderFinishTeamUnenrollment() {
+        return this._tag == Tag.ENCRYPTED_FOLDER_FINISH_TEAM_UNENROLLMENT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ENCRYPTED_FOLDER_FINISH_TEAM_UNENROLLMENT}.
+     *
+     * <p> (encryption) Deactivated team folder encryption </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ENCRYPTED_FOLDER_FINISH_TEAM_UNENROLLMENT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType encryptedFolderFinishTeamUnenrollment(EncryptedFolderFinishTeamUnenrollmentType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndEncryptedFolderFinishTeamUnenrollment(Tag.ENCRYPTED_FOLDER_FINISH_TEAM_UNENROLLMENT, value);
+    }
+
+    /**
+     * (encryption) Deactivated team folder encryption
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#ENCRYPTED_FOLDER_FINISH_TEAM_UNENROLLMENT}. </p>
+     *
+     * @return The {@link EncryptedFolderFinishTeamUnenrollmentType} value
+     *     associated with this instance if {@link
+     *     #isEncryptedFolderFinishTeamUnenrollment} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isEncryptedFolderFinishTeamUnenrollment} is {@code false}.
+     */
+    public EncryptedFolderFinishTeamUnenrollmentType getEncryptedFolderFinishTeamUnenrollmentValue() {
+        if (this._tag != Tag.ENCRYPTED_FOLDER_FINISH_TEAM_UNENROLLMENT) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENCRYPTED_FOLDER_FINISH_TEAM_UNENROLLMENT, but was Tag." + this._tag.name());
+        }
+        return encryptedFolderFinishTeamUnenrollmentValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENCRYPTED_FOLDER_INIT_TEAM_KEY_ROTATION}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENCRYPTED_FOLDER_INIT_TEAM_KEY_ROTATION}, {@code false}
+     *     otherwise.
+     */
+    public boolean isEncryptedFolderInitTeamKeyRotation() {
+        return this._tag == Tag.ENCRYPTED_FOLDER_INIT_TEAM_KEY_ROTATION;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ENCRYPTED_FOLDER_INIT_TEAM_KEY_ROTATION}.
+     *
+     * <p> (encryption) Initiated team key rotation </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ENCRYPTED_FOLDER_INIT_TEAM_KEY_ROTATION}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType encryptedFolderInitTeamKeyRotation(EncryptedFolderInitTeamKeyRotationType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndEncryptedFolderInitTeamKeyRotation(Tag.ENCRYPTED_FOLDER_INIT_TEAM_KEY_ROTATION, value);
+    }
+
+    /**
+     * (encryption) Initiated team key rotation
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#ENCRYPTED_FOLDER_INIT_TEAM_KEY_ROTATION}. </p>
+     *
+     * @return The {@link EncryptedFolderInitTeamKeyRotationType} value
+     *     associated with this instance if {@link
+     *     #isEncryptedFolderInitTeamKeyRotation} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isEncryptedFolderInitTeamKeyRotation} is {@code false}.
+     */
+    public EncryptedFolderInitTeamKeyRotationType getEncryptedFolderInitTeamKeyRotationValue() {
+        if (this._tag != Tag.ENCRYPTED_FOLDER_INIT_TEAM_KEY_ROTATION) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENCRYPTED_FOLDER_INIT_TEAM_KEY_ROTATION, but was Tag." + this._tag.name());
+        }
+        return encryptedFolderInitTeamKeyRotationValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENCRYPTED_FOLDER_INIT_TEAM_UNENROLLMENT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENCRYPTED_FOLDER_INIT_TEAM_UNENROLLMENT}, {@code false}
+     *     otherwise.
+     */
+    public boolean isEncryptedFolderInitTeamUnenrollment() {
+        return this._tag == Tag.ENCRYPTED_FOLDER_INIT_TEAM_UNENROLLMENT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ENCRYPTED_FOLDER_INIT_TEAM_UNENROLLMENT}.
+     *
+     * <p> (encryption) Initiated deactivation of team folder encryption </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ENCRYPTED_FOLDER_INIT_TEAM_UNENROLLMENT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType encryptedFolderInitTeamUnenrollment(EncryptedFolderInitTeamUnenrollmentType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndEncryptedFolderInitTeamUnenrollment(Tag.ENCRYPTED_FOLDER_INIT_TEAM_UNENROLLMENT, value);
+    }
+
+    /**
+     * (encryption) Initiated deactivation of team folder encryption
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#ENCRYPTED_FOLDER_INIT_TEAM_UNENROLLMENT}. </p>
+     *
+     * @return The {@link EncryptedFolderInitTeamUnenrollmentType} value
+     *     associated with this instance if {@link
+     *     #isEncryptedFolderInitTeamUnenrollment} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isEncryptedFolderInitTeamUnenrollment} is {@code false}.
+     */
+    public EncryptedFolderInitTeamUnenrollmentType getEncryptedFolderInitTeamUnenrollmentValue() {
+        if (this._tag != Tag.ENCRYPTED_FOLDER_INIT_TEAM_UNENROLLMENT) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENCRYPTED_FOLDER_INIT_TEAM_UNENROLLMENT, but was Tag." + this._tag.name());
+        }
+        return encryptedFolderInitTeamUnenrollmentValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENCRYPTED_FOLDER_REMOVE_BACKUP_KEY}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENCRYPTED_FOLDER_REMOVE_BACKUP_KEY}, {@code false} otherwise.
+     */
+    public boolean isEncryptedFolderRemoveBackupKey() {
+        return this._tag == Tag.ENCRYPTED_FOLDER_REMOVE_BACKUP_KEY;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ENCRYPTED_FOLDER_REMOVE_BACKUP_KEY}.
+     *
+     * <p> (encryption) Removed recovery key </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ENCRYPTED_FOLDER_REMOVE_BACKUP_KEY}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType encryptedFolderRemoveBackupKey(EncryptedFolderRemoveBackupKeyType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndEncryptedFolderRemoveBackupKey(Tag.ENCRYPTED_FOLDER_REMOVE_BACKUP_KEY, value);
+    }
+
+    /**
+     * (encryption) Removed recovery key
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#ENCRYPTED_FOLDER_REMOVE_BACKUP_KEY}. </p>
+     *
+     * @return The {@link EncryptedFolderRemoveBackupKeyType} value associated
+     *     with this instance if {@link #isEncryptedFolderRemoveBackupKey} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isEncryptedFolderRemoveBackupKey} is {@code false}.
+     */
+    public EncryptedFolderRemoveBackupKeyType getEncryptedFolderRemoveBackupKeyValue() {
+        if (this._tag != Tag.ENCRYPTED_FOLDER_REMOVE_BACKUP_KEY) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENCRYPTED_FOLDER_REMOVE_BACKUP_KEY, but was Tag." + this._tag.name());
+        }
+        return encryptedFolderRemoveBackupKeyValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENCRYPTED_FOLDER_ROTATE_TEAM_KEY}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENCRYPTED_FOLDER_ROTATE_TEAM_KEY}, {@code false} otherwise.
+     */
+    public boolean isEncryptedFolderRotateTeamKey() {
+        return this._tag == Tag.ENCRYPTED_FOLDER_ROTATE_TEAM_KEY;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ENCRYPTED_FOLDER_ROTATE_TEAM_KEY}.
+     *
+     * <p> (encryption) Rotated team key </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ENCRYPTED_FOLDER_ROTATE_TEAM_KEY}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType encryptedFolderRotateTeamKey(EncryptedFolderRotateTeamKeyType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndEncryptedFolderRotateTeamKey(Tag.ENCRYPTED_FOLDER_ROTATE_TEAM_KEY, value);
+    }
+
+    /**
+     * (encryption) Rotated team key
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#ENCRYPTED_FOLDER_ROTATE_TEAM_KEY}. </p>
+     *
+     * @return The {@link EncryptedFolderRotateTeamKeyType} value associated
+     *     with this instance if {@link #isEncryptedFolderRotateTeamKey} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isEncryptedFolderRotateTeamKey}
+     *     is {@code false}.
+     */
+    public EncryptedFolderRotateTeamKeyType getEncryptedFolderRotateTeamKeyValue() {
+        if (this._tag != Tag.ENCRYPTED_FOLDER_ROTATE_TEAM_KEY) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENCRYPTED_FOLDER_ROTATE_TEAM_KEY, but was Tag." + this._tag.name());
+        }
+        return encryptedFolderRotateTeamKeyValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENCRYPTED_FOLDER_UNENROLL_CLIENT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENCRYPTED_FOLDER_UNENROLL_CLIENT}, {@code false} otherwise.
+     */
+    public boolean isEncryptedFolderUnenrollClient() {
+        return this._tag == Tag.ENCRYPTED_FOLDER_UNENROLL_CLIENT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ENCRYPTED_FOLDER_UNENROLL_CLIENT}.
+     *
+     * <p> (encryption) Unenrolled device </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ENCRYPTED_FOLDER_UNENROLL_CLIENT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType encryptedFolderUnenrollClient(EncryptedFolderUnenrollClientType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndEncryptedFolderUnenrollClient(Tag.ENCRYPTED_FOLDER_UNENROLL_CLIENT, value);
+    }
+
+    /**
+     * (encryption) Unenrolled device
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#ENCRYPTED_FOLDER_UNENROLL_CLIENT}. </p>
+     *
+     * @return The {@link EncryptedFolderUnenrollClientType} value associated
+     *     with this instance if {@link #isEncryptedFolderUnenrollClient} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isEncryptedFolderUnenrollClient} is {@code false}.
+     */
+    public EncryptedFolderUnenrollClientType getEncryptedFolderUnenrollClientValue() {
+        if (this._tag != Tag.ENCRYPTED_FOLDER_UNENROLL_CLIENT) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENCRYPTED_FOLDER_UNENROLL_CLIENT, but was Tag." + this._tag.name());
+        }
+        return encryptedFolderUnenrollClientValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_ENCRYPTION_KEY_ACTIVATE_KEY}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_ENCRYPTION_KEY_ACTIVATE_KEY}, {@code false} otherwise.
+     */
+    public boolean isTeamEncryptionKeyActivateKey() {
+        return this._tag == Tag.TEAM_ENCRYPTION_KEY_ACTIVATE_KEY;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_ENCRYPTION_KEY_ACTIVATE_KEY}.
+     *
+     * <p> (encryption) Activated team encryption key </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_ENCRYPTION_KEY_ACTIVATE_KEY}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamEncryptionKeyActivateKey(TeamEncryptionKeyActivateKeyType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamEncryptionKeyActivateKey(Tag.TEAM_ENCRYPTION_KEY_ACTIVATE_KEY, value);
+    }
+
+    /**
+     * (encryption) Activated team encryption key
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_ENCRYPTION_KEY_ACTIVATE_KEY}. </p>
+     *
+     * @return The {@link TeamEncryptionKeyActivateKeyType} value associated
+     *     with this instance if {@link #isTeamEncryptionKeyActivateKey} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isTeamEncryptionKeyActivateKey}
+     *     is {@code false}.
+     */
+    public TeamEncryptionKeyActivateKeyType getTeamEncryptionKeyActivateKeyValue() {
+        if (this._tag != Tag.TEAM_ENCRYPTION_KEY_ACTIVATE_KEY) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_ENCRYPTION_KEY_ACTIVATE_KEY, but was Tag." + this._tag.name());
+        }
+        return teamEncryptionKeyActivateKeyValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#TEAM_ENCRYPTION_KEY_CANCEL_KEY_DELETION}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -15200,6 +19632,57 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.TEAM_ENCRYPTION_KEY_CREATE_KEY, but was Tag." + this._tag.name());
         }
         return teamEncryptionKeyCreateKeyValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_ENCRYPTION_KEY_DEACTIVATE_KEY}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_ENCRYPTION_KEY_DEACTIVATE_KEY}, {@code false} otherwise.
+     */
+    public boolean isTeamEncryptionKeyDeactivateKey() {
+        return this._tag == Tag.TEAM_ENCRYPTION_KEY_DEACTIVATE_KEY;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_ENCRYPTION_KEY_DEACTIVATE_KEY}.
+     *
+     * <p> (encryption) Deactivated team encryption key </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_ENCRYPTION_KEY_DEACTIVATE_KEY}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamEncryptionKeyDeactivateKey(TeamEncryptionKeyDeactivateKeyType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamEncryptionKeyDeactivateKey(Tag.TEAM_ENCRYPTION_KEY_DEACTIVATE_KEY, value);
+    }
+
+    /**
+     * (encryption) Deactivated team encryption key
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_ENCRYPTION_KEY_DEACTIVATE_KEY}. </p>
+     *
+     * @return The {@link TeamEncryptionKeyDeactivateKeyType} value associated
+     *     with this instance if {@link #isTeamEncryptionKeyDeactivateKey} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamEncryptionKeyDeactivateKey} is {@code false}.
+     */
+    public TeamEncryptionKeyDeactivateKeyType getTeamEncryptionKeyDeactivateKeyValue() {
+        if (this._tag != Tag.TEAM_ENCRYPTION_KEY_DEACTIVATE_KEY) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_ENCRYPTION_KEY_DEACTIVATE_KEY, but was Tag." + this._tag.name());
+        }
+        return teamEncryptionKeyDeactivateKeyValue;
     }
 
     /**
@@ -16744,6 +21227,106 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#REPLAY_FILE_DOWNLOADED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#REPLAY_FILE_DOWNLOADED}, {@code false} otherwise.
+     */
+    public boolean isReplayFileDownloaded() {
+        return this._tag == Tag.REPLAY_FILE_DOWNLOADED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#REPLAY_FILE_DOWNLOADED}.
+     *
+     * <p> (file_operations) Downloaded files in Replay </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#REPLAY_FILE_DOWNLOADED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType replayFileDownloaded(ReplayFileDownloadedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndReplayFileDownloaded(Tag.REPLAY_FILE_DOWNLOADED, value);
+    }
+
+    /**
+     * (file_operations) Downloaded files in Replay
+     *
+     * <p> This instance must be tagged as {@link Tag#REPLAY_FILE_DOWNLOADED}.
+     * </p>
+     *
+     * @return The {@link ReplayFileDownloadedType} value associated with this
+     *     instance if {@link #isReplayFileDownloaded} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isReplayFileDownloaded} is
+     *     {@code false}.
+     */
+    public ReplayFileDownloadedType getReplayFileDownloadedValue() {
+        if (this._tag != Tag.REPLAY_FILE_DOWNLOADED) {
+            throw new IllegalStateException("Invalid tag: required Tag.REPLAY_FILE_DOWNLOADED, but was Tag." + this._tag.name());
+        }
+        return replayFileDownloadedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#REPLAY_TEAM_PROJECT_CREATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#REPLAY_TEAM_PROJECT_CREATED}, {@code false} otherwise.
+     */
+    public boolean isReplayTeamProjectCreated() {
+        return this._tag == Tag.REPLAY_TEAM_PROJECT_CREATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#REPLAY_TEAM_PROJECT_CREATED}.
+     *
+     * <p> (file_operations) Created a team project in Replay </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#REPLAY_TEAM_PROJECT_CREATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType replayTeamProjectCreated(ReplayTeamProjectCreatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndReplayTeamProjectCreated(Tag.REPLAY_TEAM_PROJECT_CREATED, value);
+    }
+
+    /**
+     * (file_operations) Created a team project in Replay
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#REPLAY_TEAM_PROJECT_CREATED}. </p>
+     *
+     * @return The {@link ReplayTeamProjectCreatedType} value associated with
+     *     this instance if {@link #isReplayTeamProjectCreated} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isReplayTeamProjectCreated} is
+     *     {@code false}.
+     */
+    public ReplayTeamProjectCreatedType getReplayTeamProjectCreatedValue() {
+        if (this._tag != Tag.REPLAY_TEAM_PROJECT_CREATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.REPLAY_TEAM_PROJECT_CREATED, but was Tag." + this._tag.name());
+        }
+        return replayTeamProjectCreatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#REWIND_FOLDER}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -17038,6 +21621,56 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.EMAIL_INGEST_RECEIVE_FILE, but was Tag." + this._tag.name());
         }
         return emailIngestReceiveFileValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#FILE_REQUEST_AUTO_CLOSE}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#FILE_REQUEST_AUTO_CLOSE}, {@code false} otherwise.
+     */
+    public boolean isFileRequestAutoClose() {
+        return this._tag == Tag.FILE_REQUEST_AUTO_CLOSE;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#FILE_REQUEST_AUTO_CLOSE}.
+     *
+     * <p> (file_requests) Auto closed file request </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#FILE_REQUEST_AUTO_CLOSE}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType fileRequestAutoClose(FileRequestAutoCloseType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndFileRequestAutoClose(Tag.FILE_REQUEST_AUTO_CLOSE, value);
+    }
+
+    /**
+     * (file_requests) Auto closed file request
+     *
+     * <p> This instance must be tagged as {@link Tag#FILE_REQUEST_AUTO_CLOSE}.
+     * </p>
+     *
+     * @return The {@link FileRequestAutoCloseType} value associated with this
+     *     instance if {@link #isFileRequestAutoClose} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isFileRequestAutoClose} is
+     *     {@code false}.
+     */
+    public FileRequestAutoCloseType getFileRequestAutoCloseValue() {
+        if (this._tag != Tag.FILE_REQUEST_AUTO_CLOSE) {
+            throw new IllegalStateException("Invalid tag: required Tag.FILE_REQUEST_AUTO_CLOSE, but was Tag." + this._tag.name());
+        }
+        return fileRequestAutoCloseValue;
     }
 
     /**
@@ -17682,6 +22315,59 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.GROUP_DESCRIPTION_UPDATED, but was Tag." + this._tag.name());
         }
         return groupDescriptionUpdatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#GROUP_EXTERNAL_SHARING_SETTING_OVERRIDE_CHANGED}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#GROUP_EXTERNAL_SHARING_SETTING_OVERRIDE_CHANGED}, {@code false}
+     *     otherwise.
+     */
+    public boolean isGroupExternalSharingSettingOverrideChanged() {
+        return this._tag == Tag.GROUP_EXTERNAL_SHARING_SETTING_OVERRIDE_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#GROUP_EXTERNAL_SHARING_SETTING_OVERRIDE_CHANGED}.
+     *
+     * <p> (groups) Changed group's external sharing setting </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#GROUP_EXTERNAL_SHARING_SETTING_OVERRIDE_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType groupExternalSharingSettingOverrideChanged(GroupExternalSharingSettingOverrideChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndGroupExternalSharingSettingOverrideChanged(Tag.GROUP_EXTERNAL_SHARING_SETTING_OVERRIDE_CHANGED, value);
+    }
+
+    /**
+     * (groups) Changed group's external sharing setting
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#GROUP_EXTERNAL_SHARING_SETTING_OVERRIDE_CHANGED}. </p>
+     *
+     * @return The {@link GroupExternalSharingSettingOverrideChangedType} value
+     *     associated with this instance if {@link
+     *     #isGroupExternalSharingSettingOverrideChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isGroupExternalSharingSettingOverrideChanged} is {@code false}.
+     */
+    public GroupExternalSharingSettingOverrideChangedType getGroupExternalSharingSettingOverrideChangedValue() {
+        if (this._tag != Tag.GROUP_EXTERNAL_SHARING_SETTING_OVERRIDE_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.GROUP_EXTERNAL_SHARING_SETTING_OVERRIDE_CHANGED, but was Tag." + this._tag.name());
+        }
+        return groupExternalSharingSettingOverrideChangedValue;
     }
 
     /**
@@ -18530,6 +23216,104 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.SSO_ERROR, but was Tag." + this._tag.name());
         }
         return ssoErrorValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ADDON_ASSIGNED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ADDON_ASSIGNED}, {@code false} otherwise.
+     */
+    public boolean isAddonAssigned() {
+        return this._tag == Tag.ADDON_ASSIGNED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ADDON_ASSIGNED}.
+     *
+     * <p> (members) Add-on Assigned </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ADDON_ASSIGNED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType addonAssigned(AddonAssignedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndAddonAssigned(Tag.ADDON_ASSIGNED, value);
+    }
+
+    /**
+     * (members) Add-on Assigned
+     *
+     * <p> This instance must be tagged as {@link Tag#ADDON_ASSIGNED}. </p>
+     *
+     * @return The {@link AddonAssignedType} value associated with this instance
+     *     if {@link #isAddonAssigned} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isAddonAssigned} is {@code
+     *     false}.
+     */
+    public AddonAssignedType getAddonAssignedValue() {
+        if (this._tag != Tag.ADDON_ASSIGNED) {
+            throw new IllegalStateException("Invalid tag: required Tag.ADDON_ASSIGNED, but was Tag." + this._tag.name());
+        }
+        return addonAssignedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ADDON_REMOVED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ADDON_REMOVED}, {@code false} otherwise.
+     */
+    public boolean isAddonRemoved() {
+        return this._tag == Tag.ADDON_REMOVED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ADDON_REMOVED}.
+     *
+     * <p> (members) Add-on Removed </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ADDON_REMOVED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType addonRemoved(AddonRemovedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndAddonRemoved(Tag.ADDON_REMOVED, value);
+    }
+
+    /**
+     * (members) Add-on Removed
+     *
+     * <p> This instance must be tagged as {@link Tag#ADDON_REMOVED}. </p>
+     *
+     * @return The {@link AddonRemovedType} value associated with this instance
+     *     if {@link #isAddonRemoved} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isAddonRemoved} is {@code
+     *     false}.
+     */
+    public AddonRemovedType getAddonRemovedValue() {
+        if (this._tag != Tag.ADDON_REMOVED) {
+            throw new IllegalStateException("Invalid tag: required Tag.ADDON_REMOVED, but was Tag." + this._tag.name());
+        }
+        return addonRemovedValue;
     }
 
     /**
@@ -19795,6 +24579,106 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.PENDING_SECONDARY_EMAIL_ADDED, but was Tag." + this._tag.name());
         }
         return pendingSecondaryEmailAddedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PRODUCT_ASSIGNED_TO_MEMBER}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PRODUCT_ASSIGNED_TO_MEMBER}, {@code false} otherwise.
+     */
+    public boolean isProductAssignedToMember() {
+        return this._tag == Tag.PRODUCT_ASSIGNED_TO_MEMBER;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PRODUCT_ASSIGNED_TO_MEMBER}.
+     *
+     * <p> (members) Product assigned to team member </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PRODUCT_ASSIGNED_TO_MEMBER}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType productAssignedToMember(ProductAssignedToMemberType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProductAssignedToMember(Tag.PRODUCT_ASSIGNED_TO_MEMBER, value);
+    }
+
+    /**
+     * (members) Product assigned to team member
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PRODUCT_ASSIGNED_TO_MEMBER}. </p>
+     *
+     * @return The {@link ProductAssignedToMemberType} value associated with
+     *     this instance if {@link #isProductAssignedToMember} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProductAssignedToMember} is
+     *     {@code false}.
+     */
+    public ProductAssignedToMemberType getProductAssignedToMemberValue() {
+        if (this._tag != Tag.PRODUCT_ASSIGNED_TO_MEMBER) {
+            throw new IllegalStateException("Invalid tag: required Tag.PRODUCT_ASSIGNED_TO_MEMBER, but was Tag." + this._tag.name());
+        }
+        return productAssignedToMemberValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PRODUCT_REMOVED_FROM_MEMBER}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PRODUCT_REMOVED_FROM_MEMBER}, {@code false} otherwise.
+     */
+    public boolean isProductRemovedFromMember() {
+        return this._tag == Tag.PRODUCT_REMOVED_FROM_MEMBER;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PRODUCT_REMOVED_FROM_MEMBER}.
+     *
+     * <p> (members) Product removed from team member </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PRODUCT_REMOVED_FROM_MEMBER}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType productRemovedFromMember(ProductRemovedFromMemberType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProductRemovedFromMember(Tag.PRODUCT_REMOVED_FROM_MEMBER, value);
+    }
+
+    /**
+     * (members) Product removed from team member
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PRODUCT_REMOVED_FROM_MEMBER}. </p>
+     *
+     * @return The {@link ProductRemovedFromMemberType} value associated with
+     *     this instance if {@link #isProductRemovedFromMember} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProductRemovedFromMember} is
+     *     {@code false}.
+     */
+    public ProductRemovedFromMemberType getProductRemovedFromMemberValue() {
+        if (this._tag != Tag.PRODUCT_REMOVED_FROM_MEMBER) {
+            throw new IllegalStateException("Invalid tag: required Tag.PRODUCT_REMOVED_FROM_MEMBER, but was Tag." + this._tag.name());
+        }
+        return productRemovedFromMemberValue;
     }
 
     /**
@@ -22968,6 +27852,109 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEMBER_ACCESS_DETAILS_CREATE_REPORT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEMBER_ACCESS_DETAILS_CREATE_REPORT}, {@code false} otherwise.
+     */
+    public boolean isMemberAccessDetailsCreateReport() {
+        return this._tag == Tag.MEMBER_ACCESS_DETAILS_CREATE_REPORT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEMBER_ACCESS_DETAILS_CREATE_REPORT}.
+     *
+     * <p> (reports) Created member access report </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEMBER_ACCESS_DETAILS_CREATE_REPORT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType memberAccessDetailsCreateReport(MemberAccessDetailsCreateReportType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMemberAccessDetailsCreateReport(Tag.MEMBER_ACCESS_DETAILS_CREATE_REPORT, value);
+    }
+
+    /**
+     * (reports) Created member access report
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEMBER_ACCESS_DETAILS_CREATE_REPORT}. </p>
+     *
+     * @return The {@link MemberAccessDetailsCreateReportType} value associated
+     *     with this instance if {@link #isMemberAccessDetailsCreateReport} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMemberAccessDetailsCreateReport} is {@code false}.
+     */
+    public MemberAccessDetailsCreateReportType getMemberAccessDetailsCreateReportValue() {
+        if (this._tag != Tag.MEMBER_ACCESS_DETAILS_CREATE_REPORT) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEMBER_ACCESS_DETAILS_CREATE_REPORT, but was Tag." + this._tag.name());
+        }
+        return memberAccessDetailsCreateReportValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEMBER_ACCESS_DETAILS_CREATE_REPORT_FAILED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEMBER_ACCESS_DETAILS_CREATE_REPORT_FAILED}, {@code false}
+     *     otherwise.
+     */
+    public boolean isMemberAccessDetailsCreateReportFailed() {
+        return this._tag == Tag.MEMBER_ACCESS_DETAILS_CREATE_REPORT_FAILED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEMBER_ACCESS_DETAILS_CREATE_REPORT_FAILED}.
+     *
+     * <p> (reports) Couldn't generate member access report </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEMBER_ACCESS_DETAILS_CREATE_REPORT_FAILED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType memberAccessDetailsCreateReportFailed(MemberAccessDetailsCreateReportFailedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMemberAccessDetailsCreateReportFailed(Tag.MEMBER_ACCESS_DETAILS_CREATE_REPORT_FAILED, value);
+    }
+
+    /**
+     * (reports) Couldn't generate member access report
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEMBER_ACCESS_DETAILS_CREATE_REPORT_FAILED}. </p>
+     *
+     * @return The {@link MemberAccessDetailsCreateReportFailedType} value
+     *     associated with this instance if {@link
+     *     #isMemberAccessDetailsCreateReportFailed} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMemberAccessDetailsCreateReportFailed} is {@code false}.
+     */
+    public MemberAccessDetailsCreateReportFailedType getMemberAccessDetailsCreateReportFailedValue() {
+        if (this._tag != Tag.MEMBER_ACCESS_DETAILS_CREATE_REPORT_FAILED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEMBER_ACCESS_DETAILS_CREATE_REPORT_FAILED, but was Tag." + this._tag.name());
+        }
+        return memberAccessDetailsCreateReportFailedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#NO_EXPIRATION_LINK_GEN_CREATE_REPORT}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -23531,6 +28518,108 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#SHARED_FOLDERS_CREATE_REPORT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SHARED_FOLDERS_CREATE_REPORT}, {@code false} otherwise.
+     */
+    public boolean isSharedFoldersCreateReport() {
+        return this._tag == Tag.SHARED_FOLDERS_CREATE_REPORT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SHARED_FOLDERS_CREATE_REPORT}.
+     *
+     * <p> (reports) Created shared folders report </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SHARED_FOLDERS_CREATE_REPORT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sharedFoldersCreateReport(SharedFoldersCreateReportType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSharedFoldersCreateReport(Tag.SHARED_FOLDERS_CREATE_REPORT, value);
+    }
+
+    /**
+     * (reports) Created shared folders report
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SHARED_FOLDERS_CREATE_REPORT}. </p>
+     *
+     * @return The {@link SharedFoldersCreateReportType} value associated with
+     *     this instance if {@link #isSharedFoldersCreateReport} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isSharedFoldersCreateReport} is
+     *     {@code false}.
+     */
+    public SharedFoldersCreateReportType getSharedFoldersCreateReportValue() {
+        if (this._tag != Tag.SHARED_FOLDERS_CREATE_REPORT) {
+            throw new IllegalStateException("Invalid tag: required Tag.SHARED_FOLDERS_CREATE_REPORT, but was Tag." + this._tag.name());
+        }
+        return sharedFoldersCreateReportValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SHARED_FOLDERS_CREATE_REPORT_FAILED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SHARED_FOLDERS_CREATE_REPORT_FAILED}, {@code false} otherwise.
+     */
+    public boolean isSharedFoldersCreateReportFailed() {
+        return this._tag == Tag.SHARED_FOLDERS_CREATE_REPORT_FAILED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SHARED_FOLDERS_CREATE_REPORT_FAILED}.
+     *
+     * <p> (reports) Couldn't generate shared folders report </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SHARED_FOLDERS_CREATE_REPORT_FAILED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sharedFoldersCreateReportFailed(SharedFoldersCreateReportFailedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSharedFoldersCreateReportFailed(Tag.SHARED_FOLDERS_CREATE_REPORT_FAILED, value);
+    }
+
+    /**
+     * (reports) Couldn't generate shared folders report
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SHARED_FOLDERS_CREATE_REPORT_FAILED}. </p>
+     *
+     * @return The {@link SharedFoldersCreateReportFailedType} value associated
+     *     with this instance if {@link #isSharedFoldersCreateReportFailed} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isSharedFoldersCreateReportFailed} is {@code false}.
+     */
+    public SharedFoldersCreateReportFailedType getSharedFoldersCreateReportFailedValue() {
+        if (this._tag != Tag.SHARED_FOLDERS_CREATE_REPORT_FAILED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SHARED_FOLDERS_CREATE_REPORT_FAILED, but was Tag." + this._tag.name());
+        }
+        return sharedFoldersCreateReportFailedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#SMART_SYNC_CREATE_ADMIN_PRIVILEGE_REPORT}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -23680,6 +28769,208 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.TEAM_ACTIVITY_CREATE_REPORT_FAIL, but was Tag." + this._tag.name());
         }
         return teamActivityCreateReportFailValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_FOLDERS_CREATE_REPORT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_FOLDERS_CREATE_REPORT}, {@code false} otherwise.
+     */
+    public boolean isTeamFoldersCreateReport() {
+        return this._tag == Tag.TEAM_FOLDERS_CREATE_REPORT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_FOLDERS_CREATE_REPORT}.
+     *
+     * <p> (reports) Created team folders report </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_FOLDERS_CREATE_REPORT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamFoldersCreateReport(TeamFoldersCreateReportType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamFoldersCreateReport(Tag.TEAM_FOLDERS_CREATE_REPORT, value);
+    }
+
+    /**
+     * (reports) Created team folders report
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_FOLDERS_CREATE_REPORT}. </p>
+     *
+     * @return The {@link TeamFoldersCreateReportType} value associated with
+     *     this instance if {@link #isTeamFoldersCreateReport} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isTeamFoldersCreateReport} is
+     *     {@code false}.
+     */
+    public TeamFoldersCreateReportType getTeamFoldersCreateReportValue() {
+        if (this._tag != Tag.TEAM_FOLDERS_CREATE_REPORT) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_FOLDERS_CREATE_REPORT, but was Tag." + this._tag.name());
+        }
+        return teamFoldersCreateReportValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_FOLDERS_CREATE_REPORT_FAILED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_FOLDERS_CREATE_REPORT_FAILED}, {@code false} otherwise.
+     */
+    public boolean isTeamFoldersCreateReportFailed() {
+        return this._tag == Tag.TEAM_FOLDERS_CREATE_REPORT_FAILED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_FOLDERS_CREATE_REPORT_FAILED}.
+     *
+     * <p> (reports) Couldn't generate team folders report </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_FOLDERS_CREATE_REPORT_FAILED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamFoldersCreateReportFailed(TeamFoldersCreateReportFailedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamFoldersCreateReportFailed(Tag.TEAM_FOLDERS_CREATE_REPORT_FAILED, value);
+    }
+
+    /**
+     * (reports) Couldn't generate team folders report
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_FOLDERS_CREATE_REPORT_FAILED}. </p>
+     *
+     * @return The {@link TeamFoldersCreateReportFailedType} value associated
+     *     with this instance if {@link #isTeamFoldersCreateReportFailed} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamFoldersCreateReportFailed} is {@code false}.
+     */
+    public TeamFoldersCreateReportFailedType getTeamFoldersCreateReportFailedValue() {
+        if (this._tag != Tag.TEAM_FOLDERS_CREATE_REPORT_FAILED) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_FOLDERS_CREATE_REPORT_FAILED, but was Tag." + this._tag.name());
+        }
+        return teamFoldersCreateReportFailedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_STORAGE_CREATE_REPORT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_STORAGE_CREATE_REPORT}, {@code false} otherwise.
+     */
+    public boolean isTeamStorageCreateReport() {
+        return this._tag == Tag.TEAM_STORAGE_CREATE_REPORT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_STORAGE_CREATE_REPORT}.
+     *
+     * <p> (reports) Created team storage report </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_STORAGE_CREATE_REPORT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamStorageCreateReport(TeamStorageCreateReportType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamStorageCreateReport(Tag.TEAM_STORAGE_CREATE_REPORT, value);
+    }
+
+    /**
+     * (reports) Created team storage report
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_STORAGE_CREATE_REPORT}. </p>
+     *
+     * @return The {@link TeamStorageCreateReportType} value associated with
+     *     this instance if {@link #isTeamStorageCreateReport} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isTeamStorageCreateReport} is
+     *     {@code false}.
+     */
+    public TeamStorageCreateReportType getTeamStorageCreateReportValue() {
+        if (this._tag != Tag.TEAM_STORAGE_CREATE_REPORT) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_STORAGE_CREATE_REPORT, but was Tag." + this._tag.name());
+        }
+        return teamStorageCreateReportValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_STORAGE_CREATE_REPORT_FAILED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_STORAGE_CREATE_REPORT_FAILED}, {@code false} otherwise.
+     */
+    public boolean isTeamStorageCreateReportFailed() {
+        return this._tag == Tag.TEAM_STORAGE_CREATE_REPORT_FAILED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_STORAGE_CREATE_REPORT_FAILED}.
+     *
+     * <p> (reports) Couldn't generate team storage report </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_STORAGE_CREATE_REPORT_FAILED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamStorageCreateReportFailed(TeamStorageCreateReportFailedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamStorageCreateReportFailed(Tag.TEAM_STORAGE_CREATE_REPORT_FAILED, value);
+    }
+
+    /**
+     * (reports) Couldn't generate team storage report
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_STORAGE_CREATE_REPORT_FAILED}. </p>
+     *
+     * @return The {@link TeamStorageCreateReportFailedType} value associated
+     *     with this instance if {@link #isTeamStorageCreateReportFailed} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamStorageCreateReportFailed} is {@code false}.
+     */
+    public TeamStorageCreateReportFailedType getTeamStorageCreateReportFailedValue() {
+        if (this._tag != Tag.TEAM_STORAGE_CREATE_REPORT_FAILED) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_STORAGE_CREATE_REPORT_FAILED, but was Tag." + this._tag.name());
+        }
+        return teamStorageCreateReportFailedValue;
     }
 
     /**
@@ -24351,7 +29642,7 @@ public final class EventType {
      * Returns an instance of {@code EventType} that has its tag set to {@link
      * Tag#REPLAY_FILE_SHARED_LINK_MODIFIED}.
      *
-     * <p> (sharing) Modified shared link in Replay </p>
+     * <p> (sharing) Changed shared link in Replay </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -24368,7 +29659,7 @@ public final class EventType {
     }
 
     /**
-     * (sharing) Modified shared link in Replay
+     * (sharing) Changed shared link in Replay
      *
      * <p> This instance must be tagged as {@link
      * Tag#REPLAY_FILE_SHARED_LINK_MODIFIED}. </p>
@@ -24485,6 +29776,409 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.REPLAY_PROJECT_TEAM_DELETE, but was Tag." + this._tag.name());
         }
         return replayProjectTeamDeleteValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SEND_AND_TRACK_FILE_ADDED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SEND_AND_TRACK_FILE_ADDED}, {@code false} otherwise.
+     */
+    public boolean isSendAndTrackFileAdded() {
+        return this._tag == Tag.SEND_AND_TRACK_FILE_ADDED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SEND_AND_TRACK_FILE_ADDED}.
+     *
+     * <p> (sharing) File added to Send and Track </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SEND_AND_TRACK_FILE_ADDED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sendAndTrackFileAdded(SendAndTrackFileAddedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSendAndTrackFileAdded(Tag.SEND_AND_TRACK_FILE_ADDED, value);
+    }
+
+    /**
+     * (sharing) File added to Send and Track
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SEND_AND_TRACK_FILE_ADDED}. </p>
+     *
+     * @return The {@link SendAndTrackFileAddedType} value associated with this
+     *     instance if {@link #isSendAndTrackFileAdded} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isSendAndTrackFileAdded} is
+     *     {@code false}.
+     */
+    public SendAndTrackFileAddedType getSendAndTrackFileAddedValue() {
+        if (this._tag != Tag.SEND_AND_TRACK_FILE_ADDED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SEND_AND_TRACK_FILE_ADDED, but was Tag." + this._tag.name());
+        }
+        return sendAndTrackFileAddedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SEND_AND_TRACK_FILE_RENAMED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SEND_AND_TRACK_FILE_RENAMED}, {@code false} otherwise.
+     */
+    public boolean isSendAndTrackFileRenamed() {
+        return this._tag == Tag.SEND_AND_TRACK_FILE_RENAMED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SEND_AND_TRACK_FILE_RENAMED}.
+     *
+     * <p> (sharing) File renamed in Send and Track </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SEND_AND_TRACK_FILE_RENAMED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sendAndTrackFileRenamed(SendAndTrackFileRenamedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSendAndTrackFileRenamed(Tag.SEND_AND_TRACK_FILE_RENAMED, value);
+    }
+
+    /**
+     * (sharing) File renamed in Send and Track
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SEND_AND_TRACK_FILE_RENAMED}. </p>
+     *
+     * @return The {@link SendAndTrackFileRenamedType} value associated with
+     *     this instance if {@link #isSendAndTrackFileRenamed} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isSendAndTrackFileRenamed} is
+     *     {@code false}.
+     */
+    public SendAndTrackFileRenamedType getSendAndTrackFileRenamedValue() {
+        if (this._tag != Tag.SEND_AND_TRACK_FILE_RENAMED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SEND_AND_TRACK_FILE_RENAMED, but was Tag." + this._tag.name());
+        }
+        return sendAndTrackFileRenamedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SEND_AND_TRACK_FILE_UPDATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SEND_AND_TRACK_FILE_UPDATED}, {@code false} otherwise.
+     */
+    public boolean isSendAndTrackFileUpdated() {
+        return this._tag == Tag.SEND_AND_TRACK_FILE_UPDATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SEND_AND_TRACK_FILE_UPDATED}.
+     *
+     * <p> (sharing) File updated in Send and Track </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SEND_AND_TRACK_FILE_UPDATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sendAndTrackFileUpdated(SendAndTrackFileUpdatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSendAndTrackFileUpdated(Tag.SEND_AND_TRACK_FILE_UPDATED, value);
+    }
+
+    /**
+     * (sharing) File updated in Send and Track
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SEND_AND_TRACK_FILE_UPDATED}. </p>
+     *
+     * @return The {@link SendAndTrackFileUpdatedType} value associated with
+     *     this instance if {@link #isSendAndTrackFileUpdated} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isSendAndTrackFileUpdated} is
+     *     {@code false}.
+     */
+    public SendAndTrackFileUpdatedType getSendAndTrackFileUpdatedValue() {
+        if (this._tag != Tag.SEND_AND_TRACK_FILE_UPDATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SEND_AND_TRACK_FILE_UPDATED, but was Tag." + this._tag.name());
+        }
+        return sendAndTrackFileUpdatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SEND_AND_TRACK_LINK_CREATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SEND_AND_TRACK_LINK_CREATED}, {@code false} otherwise.
+     */
+    public boolean isSendAndTrackLinkCreated() {
+        return this._tag == Tag.SEND_AND_TRACK_LINK_CREATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SEND_AND_TRACK_LINK_CREATED}.
+     *
+     * <p> (sharing) Link created in Send and Track </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SEND_AND_TRACK_LINK_CREATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sendAndTrackLinkCreated(SendAndTrackLinkCreatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSendAndTrackLinkCreated(Tag.SEND_AND_TRACK_LINK_CREATED, value);
+    }
+
+    /**
+     * (sharing) Link created in Send and Track
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SEND_AND_TRACK_LINK_CREATED}. </p>
+     *
+     * @return The {@link SendAndTrackLinkCreatedType} value associated with
+     *     this instance if {@link #isSendAndTrackLinkCreated} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isSendAndTrackLinkCreated} is
+     *     {@code false}.
+     */
+    public SendAndTrackLinkCreatedType getSendAndTrackLinkCreatedValue() {
+        if (this._tag != Tag.SEND_AND_TRACK_LINK_CREATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SEND_AND_TRACK_LINK_CREATED, but was Tag." + this._tag.name());
+        }
+        return sendAndTrackLinkCreatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SEND_AND_TRACK_LINK_DELETED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SEND_AND_TRACK_LINK_DELETED}, {@code false} otherwise.
+     */
+    public boolean isSendAndTrackLinkDeleted() {
+        return this._tag == Tag.SEND_AND_TRACK_LINK_DELETED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SEND_AND_TRACK_LINK_DELETED}.
+     *
+     * <p> (sharing) Link deleted in Send and Track </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SEND_AND_TRACK_LINK_DELETED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sendAndTrackLinkDeleted(SendAndTrackLinkDeletedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSendAndTrackLinkDeleted(Tag.SEND_AND_TRACK_LINK_DELETED, value);
+    }
+
+    /**
+     * (sharing) Link deleted in Send and Track
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SEND_AND_TRACK_LINK_DELETED}. </p>
+     *
+     * @return The {@link SendAndTrackLinkDeletedType} value associated with
+     *     this instance if {@link #isSendAndTrackLinkDeleted} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isSendAndTrackLinkDeleted} is
+     *     {@code false}.
+     */
+    public SendAndTrackLinkDeletedType getSendAndTrackLinkDeletedValue() {
+        if (this._tag != Tag.SEND_AND_TRACK_LINK_DELETED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SEND_AND_TRACK_LINK_DELETED, but was Tag." + this._tag.name());
+        }
+        return sendAndTrackLinkDeletedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SEND_AND_TRACK_LINK_UPDATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SEND_AND_TRACK_LINK_UPDATED}, {@code false} otherwise.
+     */
+    public boolean isSendAndTrackLinkUpdated() {
+        return this._tag == Tag.SEND_AND_TRACK_LINK_UPDATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SEND_AND_TRACK_LINK_UPDATED}.
+     *
+     * <p> (sharing) Send and Track Link Updated </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SEND_AND_TRACK_LINK_UPDATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sendAndTrackLinkUpdated(SendAndTrackLinkUpdatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSendAndTrackLinkUpdated(Tag.SEND_AND_TRACK_LINK_UPDATED, value);
+    }
+
+    /**
+     * (sharing) Send and Track Link Updated
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SEND_AND_TRACK_LINK_UPDATED}. </p>
+     *
+     * @return The {@link SendAndTrackLinkUpdatedType} value associated with
+     *     this instance if {@link #isSendAndTrackLinkUpdated} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isSendAndTrackLinkUpdated} is
+     *     {@code false}.
+     */
+    public SendAndTrackLinkUpdatedType getSendAndTrackLinkUpdatedValue() {
+        if (this._tag != Tag.SEND_AND_TRACK_LINK_UPDATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SEND_AND_TRACK_LINK_UPDATED, but was Tag." + this._tag.name());
+        }
+        return sendAndTrackLinkUpdatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SEND_AND_TRACK_LINK_VIEWED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SEND_AND_TRACK_LINK_VIEWED}, {@code false} otherwise.
+     */
+    public boolean isSendAndTrackLinkViewed() {
+        return this._tag == Tag.SEND_AND_TRACK_LINK_VIEWED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SEND_AND_TRACK_LINK_VIEWED}.
+     *
+     * <p> (sharing) Send and Track Link Visited </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SEND_AND_TRACK_LINK_VIEWED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sendAndTrackLinkViewed(SendAndTrackLinkViewedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSendAndTrackLinkViewed(Tag.SEND_AND_TRACK_LINK_VIEWED, value);
+    }
+
+    /**
+     * (sharing) Send and Track Link Visited
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SEND_AND_TRACK_LINK_VIEWED}. </p>
+     *
+     * @return The {@link SendAndTrackLinkViewedType} value associated with this
+     *     instance if {@link #isSendAndTrackLinkViewed} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isSendAndTrackLinkViewed} is
+     *     {@code false}.
+     */
+    public SendAndTrackLinkViewedType getSendAndTrackLinkViewedValue() {
+        if (this._tag != Tag.SEND_AND_TRACK_LINK_VIEWED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SEND_AND_TRACK_LINK_VIEWED, but was Tag." + this._tag.name());
+        }
+        return sendAndTrackLinkViewedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SEND_AND_TRACK_REMOVED_FILE_AND_ASSOCIATED_LINKS}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SEND_AND_TRACK_REMOVED_FILE_AND_ASSOCIATED_LINKS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isSendAndTrackRemovedFileAndAssociatedLinks() {
+        return this._tag == Tag.SEND_AND_TRACK_REMOVED_FILE_AND_ASSOCIATED_LINKS;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SEND_AND_TRACK_REMOVED_FILE_AND_ASSOCIATED_LINKS}.
+     *
+     * <p> (sharing) Send and Track file and associated links deleted </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SEND_AND_TRACK_REMOVED_FILE_AND_ASSOCIATED_LINKS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sendAndTrackRemovedFileAndAssociatedLinks(SendAndTrackRemovedFileAndAssociatedLinksType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSendAndTrackRemovedFileAndAssociatedLinks(Tag.SEND_AND_TRACK_REMOVED_FILE_AND_ASSOCIATED_LINKS, value);
+    }
+
+    /**
+     * (sharing) Send and Track file and associated links deleted
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SEND_AND_TRACK_REMOVED_FILE_AND_ASSOCIATED_LINKS}. </p>
+     *
+     * @return The {@link SendAndTrackRemovedFileAndAssociatedLinksType} value
+     *     associated with this instance if {@link
+     *     #isSendAndTrackRemovedFileAndAssociatedLinks} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isSendAndTrackRemovedFileAndAssociatedLinks} is {@code false}.
+     */
+    public SendAndTrackRemovedFileAndAssociatedLinksType getSendAndTrackRemovedFileAndAssociatedLinksValue() {
+        if (this._tag != Tag.SEND_AND_TRACK_REMOVED_FILE_AND_ASSOCIATED_LINKS) {
+            throw new IllegalStateException("Invalid tag: required Tag.SEND_AND_TRACK_REMOVED_FILE_AND_ASSOCIATED_LINKS, but was Tag." + this._tag.name());
+        }
+        return sendAndTrackRemovedFileAndAssociatedLinksValue;
     }
 
     /**
@@ -27306,6 +33000,56 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#SHARED_LINK_REMOVE_VISITOR}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SHARED_LINK_REMOVE_VISITOR}, {@code false} otherwise.
+     */
+    public boolean isSharedLinkRemoveVisitor() {
+        return this._tag == Tag.SHARED_LINK_REMOVE_VISITOR;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SHARED_LINK_REMOVE_VISITOR}.
+     *
+     * <p> (sharing) Removed link visitor </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SHARED_LINK_REMOVE_VISITOR}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sharedLinkRemoveVisitor(SharedLinkRemoveVisitorType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSharedLinkRemoveVisitor(Tag.SHARED_LINK_REMOVE_VISITOR, value);
+    }
+
+    /**
+     * (sharing) Removed link visitor
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SHARED_LINK_REMOVE_VISITOR}. </p>
+     *
+     * @return The {@link SharedLinkRemoveVisitorType} value associated with
+     *     this instance if {@link #isSharedLinkRemoveVisitor} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isSharedLinkRemoveVisitor} is
+     *     {@code false}.
+     */
+    public SharedLinkRemoveVisitorType getSharedLinkRemoveVisitorValue() {
+        if (this._tag != Tag.SHARED_LINK_REMOVE_VISITOR) {
+            throw new IllegalStateException("Invalid tag: required Tag.SHARED_LINK_REMOVE_VISITOR, but was Tag." + this._tag.name());
+        }
+        return sharedLinkRemoveVisitorValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#SHARED_LINK_SETTINGS_ADD_EXPIRATION}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -29263,6 +35007,460 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_CANCELED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SIGN_SIGNATURE_REQUEST_CANCELED}, {@code false} otherwise.
+     */
+    public boolean isSignSignatureRequestCanceled() {
+        return this._tag == Tag.SIGN_SIGNATURE_REQUEST_CANCELED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_CANCELED}.
+     *
+     * <p> (signatures) Canceled signature request </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SIGN_SIGNATURE_REQUEST_CANCELED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType signSignatureRequestCanceled(SignSignatureRequestCanceledType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSignSignatureRequestCanceled(Tag.SIGN_SIGNATURE_REQUEST_CANCELED, value);
+    }
+
+    /**
+     * (signatures) Canceled signature request
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_CANCELED}. </p>
+     *
+     * @return The {@link SignSignatureRequestCanceledType} value associated
+     *     with this instance if {@link #isSignSignatureRequestCanceled} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isSignSignatureRequestCanceled}
+     *     is {@code false}.
+     */
+    public SignSignatureRequestCanceledType getSignSignatureRequestCanceledValue() {
+        if (this._tag != Tag.SIGN_SIGNATURE_REQUEST_CANCELED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SIGN_SIGNATURE_REQUEST_CANCELED, but was Tag." + this._tag.name());
+        }
+        return signSignatureRequestCanceledValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_COMPLETED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SIGN_SIGNATURE_REQUEST_COMPLETED}, {@code false} otherwise.
+     */
+    public boolean isSignSignatureRequestCompleted() {
+        return this._tag == Tag.SIGN_SIGNATURE_REQUEST_COMPLETED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_COMPLETED}.
+     *
+     * <p> (signatures) Completed signature request </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SIGN_SIGNATURE_REQUEST_COMPLETED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType signSignatureRequestCompleted(SignSignatureRequestCompletedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSignSignatureRequestCompleted(Tag.SIGN_SIGNATURE_REQUEST_COMPLETED, value);
+    }
+
+    /**
+     * (signatures) Completed signature request
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_COMPLETED}. </p>
+     *
+     * @return The {@link SignSignatureRequestCompletedType} value associated
+     *     with this instance if {@link #isSignSignatureRequestCompleted} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isSignSignatureRequestCompleted} is {@code false}.
+     */
+    public SignSignatureRequestCompletedType getSignSignatureRequestCompletedValue() {
+        if (this._tag != Tag.SIGN_SIGNATURE_REQUEST_COMPLETED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SIGN_SIGNATURE_REQUEST_COMPLETED, but was Tag." + this._tag.name());
+        }
+        return signSignatureRequestCompletedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_DECLINED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SIGN_SIGNATURE_REQUEST_DECLINED}, {@code false} otherwise.
+     */
+    public boolean isSignSignatureRequestDeclined() {
+        return this._tag == Tag.SIGN_SIGNATURE_REQUEST_DECLINED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_DECLINED}.
+     *
+     * <p> (signatures) Declined signature request </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SIGN_SIGNATURE_REQUEST_DECLINED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType signSignatureRequestDeclined(SignSignatureRequestDeclinedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSignSignatureRequestDeclined(Tag.SIGN_SIGNATURE_REQUEST_DECLINED, value);
+    }
+
+    /**
+     * (signatures) Declined signature request
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_DECLINED}. </p>
+     *
+     * @return The {@link SignSignatureRequestDeclinedType} value associated
+     *     with this instance if {@link #isSignSignatureRequestDeclined} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isSignSignatureRequestDeclined}
+     *     is {@code false}.
+     */
+    public SignSignatureRequestDeclinedType getSignSignatureRequestDeclinedValue() {
+        if (this._tag != Tag.SIGN_SIGNATURE_REQUEST_DECLINED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SIGN_SIGNATURE_REQUEST_DECLINED, but was Tag." + this._tag.name());
+        }
+        return signSignatureRequestDeclinedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_OPENED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SIGN_SIGNATURE_REQUEST_OPENED}, {@code false} otherwise.
+     */
+    public boolean isSignSignatureRequestOpened() {
+        return this._tag == Tag.SIGN_SIGNATURE_REQUEST_OPENED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_OPENED}.
+     *
+     * <p> (signatures) Opened signature request </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SIGN_SIGNATURE_REQUEST_OPENED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType signSignatureRequestOpened(SignSignatureRequestOpenedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSignSignatureRequestOpened(Tag.SIGN_SIGNATURE_REQUEST_OPENED, value);
+    }
+
+    /**
+     * (signatures) Opened signature request
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_OPENED}. </p>
+     *
+     * @return The {@link SignSignatureRequestOpenedType} value associated with
+     *     this instance if {@link #isSignSignatureRequestOpened} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isSignSignatureRequestOpened}
+     *     is {@code false}.
+     */
+    public SignSignatureRequestOpenedType getSignSignatureRequestOpenedValue() {
+        if (this._tag != Tag.SIGN_SIGNATURE_REQUEST_OPENED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SIGN_SIGNATURE_REQUEST_OPENED, but was Tag." + this._tag.name());
+        }
+        return signSignatureRequestOpenedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_REMINDER_SENT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SIGN_SIGNATURE_REQUEST_REMINDER_SENT}, {@code false} otherwise.
+     */
+    public boolean isSignSignatureRequestReminderSent() {
+        return this._tag == Tag.SIGN_SIGNATURE_REQUEST_REMINDER_SENT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_REMINDER_SENT}.
+     *
+     * <p> (signatures) Sent signature request reminder </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SIGN_SIGNATURE_REQUEST_REMINDER_SENT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType signSignatureRequestReminderSent(SignSignatureRequestReminderSentType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSignSignatureRequestReminderSent(Tag.SIGN_SIGNATURE_REQUEST_REMINDER_SENT, value);
+    }
+
+    /**
+     * (signatures) Sent signature request reminder
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_REMINDER_SENT}. </p>
+     *
+     * @return The {@link SignSignatureRequestReminderSentType} value associated
+     *     with this instance if {@link #isSignSignatureRequestReminderSent} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isSignSignatureRequestReminderSent} is {@code false}.
+     */
+    public SignSignatureRequestReminderSentType getSignSignatureRequestReminderSentValue() {
+        if (this._tag != Tag.SIGN_SIGNATURE_REQUEST_REMINDER_SENT) {
+            throw new IllegalStateException("Invalid tag: required Tag.SIGN_SIGNATURE_REQUEST_REMINDER_SENT, but was Tag." + this._tag.name());
+        }
+        return signSignatureRequestReminderSentValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_SENT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SIGN_SIGNATURE_REQUEST_SENT}, {@code false} otherwise.
+     */
+    public boolean isSignSignatureRequestSent() {
+        return this._tag == Tag.SIGN_SIGNATURE_REQUEST_SENT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_SENT}.
+     *
+     * <p> (signatures) Sent signature request </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SIGN_SIGNATURE_REQUEST_SENT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType signSignatureRequestSent(SignSignatureRequestSentType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSignSignatureRequestSent(Tag.SIGN_SIGNATURE_REQUEST_SENT, value);
+    }
+
+    /**
+     * (signatures) Sent signature request
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SIGN_SIGNATURE_REQUEST_SENT}. </p>
+     *
+     * @return The {@link SignSignatureRequestSentType} value associated with
+     *     this instance if {@link #isSignSignatureRequestSent} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isSignSignatureRequestSent} is
+     *     {@code false}.
+     */
+    public SignSignatureRequestSentType getSignSignatureRequestSentValue() {
+        if (this._tag != Tag.SIGN_SIGNATURE_REQUEST_SENT) {
+            throw new IllegalStateException("Invalid tag: required Tag.SIGN_SIGNATURE_REQUEST_SENT, but was Tag." + this._tag.name());
+        }
+        return signSignatureRequestSentValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SIGN_TEMPLATE_CREATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SIGN_TEMPLATE_CREATED}, {@code false} otherwise.
+     */
+    public boolean isSignTemplateCreated() {
+        return this._tag == Tag.SIGN_TEMPLATE_CREATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SIGN_TEMPLATE_CREATED}.
+     *
+     * <p> (signatures) Created template </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SIGN_TEMPLATE_CREATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType signTemplateCreated(SignTemplateCreatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSignTemplateCreated(Tag.SIGN_TEMPLATE_CREATED, value);
+    }
+
+    /**
+     * (signatures) Created template
+     *
+     * <p> This instance must be tagged as {@link Tag#SIGN_TEMPLATE_CREATED}.
+     * </p>
+     *
+     * @return The {@link SignTemplateCreatedType} value associated with this
+     *     instance if {@link #isSignTemplateCreated} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isSignTemplateCreated} is
+     *     {@code false}.
+     */
+    public SignTemplateCreatedType getSignTemplateCreatedValue() {
+        if (this._tag != Tag.SIGN_TEMPLATE_CREATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SIGN_TEMPLATE_CREATED, but was Tag." + this._tag.name());
+        }
+        return signTemplateCreatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SIGN_TEMPLATE_SHARED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SIGN_TEMPLATE_SHARED}, {@code false} otherwise.
+     */
+    public boolean isSignTemplateShared() {
+        return this._tag == Tag.SIGN_TEMPLATE_SHARED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SIGN_TEMPLATE_SHARED}.
+     *
+     * <p> (signatures) Shared template </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SIGN_TEMPLATE_SHARED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType signTemplateShared(SignTemplateSharedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSignTemplateShared(Tag.SIGN_TEMPLATE_SHARED, value);
+    }
+
+    /**
+     * (signatures) Shared template
+     *
+     * <p> This instance must be tagged as {@link Tag#SIGN_TEMPLATE_SHARED}.
+     * </p>
+     *
+     * @return The {@link SignTemplateSharedType} value associated with this
+     *     instance if {@link #isSignTemplateShared} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isSignTemplateShared} is {@code
+     *     false}.
+     */
+    public SignTemplateSharedType getSignTemplateSharedValue() {
+        if (this._tag != Tag.SIGN_TEMPLATE_SHARED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SIGN_TEMPLATE_SHARED, but was Tag." + this._tag.name());
+        }
+        return signTemplateSharedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#RISC_SECURITY_EVENT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#RISC_SECURITY_EVENT}, {@code false} otherwise.
+     */
+    public boolean isRiscSecurityEvent() {
+        return this._tag == Tag.RISC_SECURITY_EVENT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#RISC_SECURITY_EVENT}.
+     *
+     * <p> (sso) RISC security event received from external provider </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#RISC_SECURITY_EVENT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType riscSecurityEvent(RiscSecurityEventType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndRiscSecurityEvent(Tag.RISC_SECURITY_EVENT, value);
+    }
+
+    /**
+     * (sso) RISC security event received from external provider
+     *
+     * <p> This instance must be tagged as {@link Tag#RISC_SECURITY_EVENT}. </p>
+     *
+     * @return The {@link RiscSecurityEventType} value associated with this
+     *     instance if {@link #isRiscSecurityEvent} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isRiscSecurityEvent} is {@code
+     *     false}.
+     */
+    public RiscSecurityEventType getRiscSecurityEventValue() {
+        if (this._tag != Tag.RISC_SECURITY_EVENT) {
+            throw new IllegalStateException("Invalid tag: required Tag.RISC_SECURITY_EVENT, but was Tag." + this._tag.name());
+        }
+        return riscSecurityEventValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#SSO_ADD_CERT}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -30007,6 +36205,163 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE}, {@code false}
+     *     otherwise.
+     */
+    public boolean isTeamFolderSpaceLimitsChangeCapsType() {
+        return this._tag == Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE}.
+     *
+     * <p> (team_folders) Changed team folder space limit enforcement type </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamFolderSpaceLimitsChangeCapsType(TeamFolderSpaceLimitsChangeCapsTypeType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamFolderSpaceLimitsChangeCapsType(Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE, value);
+    }
+
+    /**
+     * (team_folders) Changed team folder space limit enforcement type
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE}. </p>
+     *
+     * @return The {@link TeamFolderSpaceLimitsChangeCapsTypeType} value
+     *     associated with this instance if {@link
+     *     #isTeamFolderSpaceLimitsChangeCapsType} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamFolderSpaceLimitsChangeCapsType} is {@code false}.
+     */
+    public TeamFolderSpaceLimitsChangeCapsTypeType getTeamFolderSpaceLimitsChangeCapsTypeValue() {
+        if (this._tag != Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE, but was Tag." + this._tag.name());
+        }
+        return teamFolderSpaceLimitsChangeCapsTypeValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT}, {@code false} otherwise.
+     */
+    public boolean isTeamFolderSpaceLimitsChangeLimit() {
+        return this._tag == Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT}.
+     *
+     * <p> (team_folders) Changed team folder space limit </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamFolderSpaceLimitsChangeLimit(TeamFolderSpaceLimitsChangeLimitType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamFolderSpaceLimitsChangeLimit(Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT, value);
+    }
+
+    /**
+     * (team_folders) Changed team folder space limit
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT}. </p>
+     *
+     * @return The {@link TeamFolderSpaceLimitsChangeLimitType} value associated
+     *     with this instance if {@link #isTeamFolderSpaceLimitsChangeLimit} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamFolderSpaceLimitsChangeLimit} is {@code false}.
+     */
+    public TeamFolderSpaceLimitsChangeLimitType getTeamFolderSpaceLimitsChangeLimitValue() {
+        if (this._tag != Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT, but was Tag." + this._tag.name());
+        }
+        return teamFolderSpaceLimitsChangeLimitValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET}, {@code
+     *     false} otherwise.
+     */
+    public boolean isTeamFolderSpaceLimitsChangeNotificationTarget() {
+        return this._tag == Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET}.
+     *
+     * <p> (team_folders) Changed team folder space limit notification target
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamFolderSpaceLimitsChangeNotificationTarget(TeamFolderSpaceLimitsChangeNotificationTargetType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamFolderSpaceLimitsChangeNotificationTarget(Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET, value);
+    }
+
+    /**
+     * (team_folders) Changed team folder space limit notification target
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET}. </p>
+     *
+     * @return The {@link TeamFolderSpaceLimitsChangeNotificationTargetType}
+     *     value associated with this instance if {@link
+     *     #isTeamFolderSpaceLimitsChangeNotificationTarget} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamFolderSpaceLimitsChangeNotificationTarget} is {@code false}.
+     */
+    public TeamFolderSpaceLimitsChangeNotificationTargetType getTeamFolderSpaceLimitsChangeNotificationTargetValue() {
+        if (this._tag != Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET, but was Tag." + this._tag.name());
+        }
+        return teamFolderSpaceLimitsChangeNotificationTargetValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#TEAM_SELECTIVE_SYNC_SETTINGS_CHANGED}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -30162,6 +36517,59 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#AI_THIRD_PARTY_SHARING_DROPBOX_BASE_POLICY_CHANGED}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#AI_THIRD_PARTY_SHARING_DROPBOX_BASE_POLICY_CHANGED}, {@code
+     *     false} otherwise.
+     */
+    public boolean isAiThirdPartySharingDropboxBasePolicyChanged() {
+        return this._tag == Tag.AI_THIRD_PARTY_SHARING_DROPBOX_BASE_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#AI_THIRD_PARTY_SHARING_DROPBOX_BASE_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed AI third party sharing policy for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#AI_THIRD_PARTY_SHARING_DROPBOX_BASE_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType aiThirdPartySharingDropboxBasePolicyChanged(AiThirdPartySharingDropboxBasePolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndAiThirdPartySharingDropboxBasePolicyChanged(Tag.AI_THIRD_PARTY_SHARING_DROPBOX_BASE_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed AI third party sharing policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#AI_THIRD_PARTY_SHARING_DROPBOX_BASE_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link AiThirdPartySharingDropboxBasePolicyChangedType} value
+     *     associated with this instance if {@link
+     *     #isAiThirdPartySharingDropboxBasePolicyChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isAiThirdPartySharingDropboxBasePolicyChanged} is {@code false}.
+     */
+    public AiThirdPartySharingDropboxBasePolicyChangedType getAiThirdPartySharingDropboxBasePolicyChangedValue() {
+        if (this._tag != Tag.AI_THIRD_PARTY_SHARING_DROPBOX_BASE_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.AI_THIRD_PARTY_SHARING_DROPBOX_BASE_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return aiThirdPartySharingDropboxBasePolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#ALLOW_DOWNLOAD_DISABLED}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -30263,6 +36671,56 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#APPLE_LOGIN_CHANGE_POLICY}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#APPLE_LOGIN_CHANGE_POLICY}, {@code false} otherwise.
+     */
+    public boolean isAppleLoginChangePolicy() {
+        return this._tag == Tag.APPLE_LOGIN_CHANGE_POLICY;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#APPLE_LOGIN_CHANGE_POLICY}.
+     *
+     * <p> (team_policies) Enabled/disabled Apple login for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#APPLE_LOGIN_CHANGE_POLICY}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType appleLoginChangePolicy(AppleLoginChangePolicyType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndAppleLoginChangePolicy(Tag.APPLE_LOGIN_CHANGE_POLICY, value);
+    }
+
+    /**
+     * (team_policies) Enabled/disabled Apple login for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#APPLE_LOGIN_CHANGE_POLICY}. </p>
+     *
+     * @return The {@link AppleLoginChangePolicyType} value associated with this
+     *     instance if {@link #isAppleLoginChangePolicy} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isAppleLoginChangePolicy} is
+     *     {@code false}.
+     */
+    public AppleLoginChangePolicyType getAppleLoginChangePolicyValue() {
+        if (this._tag != Tag.APPLE_LOGIN_CHANGE_POLICY) {
+            throw new IllegalStateException("Invalid tag: required Tag.APPLE_LOGIN_CHANGE_POLICY, but was Tag." + this._tag.name());
+        }
+        return appleLoginChangePolicyValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#APP_PERMISSIONS_CHANGED}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -30360,6 +36818,57 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.CAMERA_UPLOADS_POLICY_CHANGED, but was Tag." + this._tag.name());
         }
         return cameraUploadsPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#CAPTURE_TEAM_SPACE_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#CAPTURE_TEAM_SPACE_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isCaptureTeamSpacePolicyChanged() {
+        return this._tag == Tag.CAPTURE_TEAM_SPACE_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#CAPTURE_TEAM_SPACE_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed Capture team space policy for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#CAPTURE_TEAM_SPACE_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType captureTeamSpacePolicyChanged(CaptureTeamSpacePolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndCaptureTeamSpacePolicyChanged(Tag.CAPTURE_TEAM_SPACE_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed Capture team space policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#CAPTURE_TEAM_SPACE_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link CaptureTeamSpacePolicyChangedType} value associated
+     *     with this instance if {@link #isCaptureTeamSpacePolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isCaptureTeamSpacePolicyChanged} is {@code false}.
+     */
+    public CaptureTeamSpacePolicyChangedType getCaptureTeamSpacePolicyChangedValue() {
+        if (this._tag != Tag.CAPTURE_TEAM_SPACE_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.CAPTURE_TEAM_SPACE_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return captureTeamSpacePolicyChangedValue;
     }
 
     /**
@@ -30564,6 +37073,110 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.CONTENT_ADMINISTRATION_POLICY_CHANGED, but was Tag." + this._tag.name());
         }
         return contentAdministrationPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#CONTENT_DELETION_PROTECTION_CHANGE_POLICY}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#CONTENT_DELETION_PROTECTION_CHANGE_POLICY}, {@code false}
+     *     otherwise.
+     */
+    public boolean isContentDeletionProtectionChangePolicy() {
+        return this._tag == Tag.CONTENT_DELETION_PROTECTION_CHANGE_POLICY;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#CONTENT_DELETION_PROTECTION_CHANGE_POLICY}.
+     *
+     * <p> (team_policies) Changed content deletion protection policy for team
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#CONTENT_DELETION_PROTECTION_CHANGE_POLICY}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType contentDeletionProtectionChangePolicy(ContentDeletionProtectionChangePolicyType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndContentDeletionProtectionChangePolicy(Tag.CONTENT_DELETION_PROTECTION_CHANGE_POLICY, value);
+    }
+
+    /**
+     * (team_policies) Changed content deletion protection policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#CONTENT_DELETION_PROTECTION_CHANGE_POLICY}. </p>
+     *
+     * @return The {@link ContentDeletionProtectionChangePolicyType} value
+     *     associated with this instance if {@link
+     *     #isContentDeletionProtectionChangePolicy} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isContentDeletionProtectionChangePolicy} is {@code false}.
+     */
+    public ContentDeletionProtectionChangePolicyType getContentDeletionProtectionChangePolicyValue() {
+        if (this._tag != Tag.CONTENT_DELETION_PROTECTION_CHANGE_POLICY) {
+            throw new IllegalStateException("Invalid tag: required Tag.CONTENT_DELETION_PROTECTION_CHANGE_POLICY, but was Tag." + this._tag.name());
+        }
+        return contentDeletionProtectionChangePolicyValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#DASH_EXTERNAL_SHARING_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DASH_EXTERNAL_SHARING_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isDashExternalSharingPolicyChanged() {
+        return this._tag == Tag.DASH_EXTERNAL_SHARING_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DASH_EXTERNAL_SHARING_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed Dash external sharing policy for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DASH_EXTERNAL_SHARING_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType dashExternalSharingPolicyChanged(DashExternalSharingPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDashExternalSharingPolicyChanged(Tag.DASH_EXTERNAL_SHARING_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed Dash external sharing policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DASH_EXTERNAL_SHARING_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link DashExternalSharingPolicyChangedType} value associated
+     *     with this instance if {@link #isDashExternalSharingPolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isDashExternalSharingPolicyChanged} is {@code false}.
+     */
+    public DashExternalSharingPolicyChangedType getDashExternalSharingPolicyChangedValue() {
+        if (this._tag != Tag.DASH_EXTERNAL_SHARING_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.DASH_EXTERNAL_SHARING_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return dashExternalSharingPolicyChangedValue;
     }
 
     /**
@@ -31806,6 +38419,57 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#FLEXIBLE_FILE_NAMES_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#FLEXIBLE_FILE_NAMES_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isFlexibleFileNamesPolicyChanged() {
+        return this._tag == Tag.FLEXIBLE_FILE_NAMES_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#FLEXIBLE_FILE_NAMES_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed flexible file names policy for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#FLEXIBLE_FILE_NAMES_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType flexibleFileNamesPolicyChanged(FlexibleFileNamesPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndFlexibleFileNamesPolicyChanged(Tag.FLEXIBLE_FILE_NAMES_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed flexible file names policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#FLEXIBLE_FILE_NAMES_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link FlexibleFileNamesPolicyChangedType} value associated
+     *     with this instance if {@link #isFlexibleFileNamesPolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isFlexibleFileNamesPolicyChanged} is {@code false}.
+     */
+    public FlexibleFileNamesPolicyChangedType getFlexibleFileNamesPolicyChangedValue() {
+        if (this._tag != Tag.FLEXIBLE_FILE_NAMES_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.FLEXIBLE_FILE_NAMES_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return flexibleFileNamesPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#FOLDER_LINK_RESTRICTION_POLICY_CHANGED}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -32423,6 +39087,57 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#MICROSOFT_LOGIN_CHANGE_POLICY}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MICROSOFT_LOGIN_CHANGE_POLICY}, {@code false} otherwise.
+     */
+    public boolean isMicrosoftLoginChangePolicy() {
+        return this._tag == Tag.MICROSOFT_LOGIN_CHANGE_POLICY;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MICROSOFT_LOGIN_CHANGE_POLICY}.
+     *
+     * <p> (team_policies) Enabled/disabled Microsoft login for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MICROSOFT_LOGIN_CHANGE_POLICY}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType microsoftLoginChangePolicy(MicrosoftLoginChangePolicyType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMicrosoftLoginChangePolicy(Tag.MICROSOFT_LOGIN_CHANGE_POLICY, value);
+    }
+
+    /**
+     * (team_policies) Enabled/disabled Microsoft login for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MICROSOFT_LOGIN_CHANGE_POLICY}. </p>
+     *
+     * @return The {@link MicrosoftLoginChangePolicyType} value associated with
+     *     this instance if {@link #isMicrosoftLoginChangePolicy} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isMicrosoftLoginChangePolicy}
+     *     is {@code false}.
+     */
+    public MicrosoftLoginChangePolicyType getMicrosoftLoginChangePolicyValue() {
+        if (this._tag != Tag.MICROSOFT_LOGIN_CHANGE_POLICY) {
+            throw new IllegalStateException("Invalid tag: required Tag.MICROSOFT_LOGIN_CHANGE_POLICY, but was Tag." + this._tag.name());
+        }
+        return microsoftLoginChangePolicyValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -32939,6 +39654,57 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PASSKEY_LOGIN_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PASSKEY_LOGIN_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isPasskeyLoginPolicyChanged() {
+        return this._tag == Tag.PASSKEY_LOGIN_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PASSKEY_LOGIN_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed passkey login policy for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PASSKEY_LOGIN_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType passkeyLoginPolicyChanged(PasskeyLoginPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndPasskeyLoginPolicyChanged(Tag.PASSKEY_LOGIN_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed passkey login policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PASSKEY_LOGIN_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link PasskeyLoginPolicyChangedType} value associated with
+     *     this instance if {@link #isPasskeyLoginPolicyChanged} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isPasskeyLoginPolicyChanged} is
+     *     {@code false}.
+     */
+    public PasskeyLoginPolicyChangedType getPasskeyLoginPolicyChangedValue() {
+        if (this._tag != Tag.PASSKEY_LOGIN_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PASSKEY_LOGIN_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return passkeyLoginPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#PASSWORD_STRENGTH_REQUIREMENTS_CHANGE_POLICY}, {@code false}
      * otherwise.
      *
@@ -33045,6 +39811,159 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PREVIEWS_AI_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PREVIEWS_AI_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isPreviewsAiPolicyChanged() {
+        return this._tag == Tag.PREVIEWS_AI_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PREVIEWS_AI_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed Dropbox AI policy for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PREVIEWS_AI_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType previewsAiPolicyChanged(PreviewsAiPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndPreviewsAiPolicyChanged(Tag.PREVIEWS_AI_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed Dropbox AI policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PREVIEWS_AI_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link PreviewsAiPolicyChangedType} value associated with
+     *     this instance if {@link #isPreviewsAiPolicyChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isPreviewsAiPolicyChanged} is
+     *     {@code false}.
+     */
+    public PreviewsAiPolicyChangedType getPreviewsAiPolicyChangedValue() {
+        if (this._tag != Tag.PREVIEWS_AI_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PREVIEWS_AI_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return previewsAiPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#REPLAY_ADDING_PEOPLE_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#REPLAY_ADDING_PEOPLE_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isReplayAddingPeoplePolicyChanged() {
+        return this._tag == Tag.REPLAY_ADDING_PEOPLE_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#REPLAY_ADDING_PEOPLE_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed the policy for adding people to Replay
+     * content </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#REPLAY_ADDING_PEOPLE_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType replayAddingPeoplePolicyChanged(ReplayAddingPeoplePolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndReplayAddingPeoplePolicyChanged(Tag.REPLAY_ADDING_PEOPLE_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed the policy for adding people to Replay content
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#REPLAY_ADDING_PEOPLE_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link ReplayAddingPeoplePolicyChangedType} value associated
+     *     with this instance if {@link #isReplayAddingPeoplePolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isReplayAddingPeoplePolicyChanged} is {@code false}.
+     */
+    public ReplayAddingPeoplePolicyChangedType getReplayAddingPeoplePolicyChangedValue() {
+        if (this._tag != Tag.REPLAY_ADDING_PEOPLE_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.REPLAY_ADDING_PEOPLE_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return replayAddingPeoplePolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#REPLAY_SHARING_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#REPLAY_SHARING_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isReplaySharingPolicyChanged() {
+        return this._tag == Tag.REPLAY_SHARING_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#REPLAY_SHARING_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed the policy for sharing Replay content </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#REPLAY_SHARING_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType replaySharingPolicyChanged(ReplaySharingPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndReplaySharingPolicyChanged(Tag.REPLAY_SHARING_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed the policy for sharing Replay content
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#REPLAY_SHARING_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link ReplaySharingPolicyChangedType} value associated with
+     *     this instance if {@link #isReplaySharingPolicyChanged} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isReplaySharingPolicyChanged}
+     *     is {@code false}.
+     */
+    public ReplaySharingPolicyChangedType getReplaySharingPolicyChangedValue() {
+        if (this._tag != Tag.REPLAY_SHARING_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.REPLAY_SHARING_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return replaySharingPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#RESELLER_SUPPORT_CHANGE_POLICY}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -33146,6 +40065,109 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#SEND_AND_TRACK_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SEND_AND_TRACK_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isSendAndTrackPolicyChanged() {
+        return this._tag == Tag.SEND_AND_TRACK_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SEND_AND_TRACK_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed “Send and track” policy for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SEND_AND_TRACK_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sendAndTrackPolicyChanged(SendAndTrackPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSendAndTrackPolicyChanged(Tag.SEND_AND_TRACK_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed “Send and track” policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SEND_AND_TRACK_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link SendAndTrackPolicyChangedType} value associated with
+     *     this instance if {@link #isSendAndTrackPolicyChanged} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isSendAndTrackPolicyChanged} is
+     *     {@code false}.
+     */
+    public SendAndTrackPolicyChangedType getSendAndTrackPolicyChangedValue() {
+        if (this._tag != Tag.SEND_AND_TRACK_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SEND_AND_TRACK_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return sendAndTrackPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SEND_EXTERNAL_SHARING_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SEND_EXTERNAL_SHARING_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isSendExternalSharingPolicyChanged() {
+        return this._tag == Tag.SEND_EXTERNAL_SHARING_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SEND_EXTERNAL_SHARING_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed “Send and track” external sharing policy for
+     * team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SEND_EXTERNAL_SHARING_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sendExternalSharingPolicyChanged(SendExternalSharingPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSendExternalSharingPolicyChanged(Tag.SEND_EXTERNAL_SHARING_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed “Send and track” external sharing policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SEND_EXTERNAL_SHARING_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link SendExternalSharingPolicyChangedType} value associated
+     *     with this instance if {@link #isSendExternalSharingPolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isSendExternalSharingPolicyChanged} is {@code false}.
+     */
+    public SendExternalSharingPolicyChangedType getSendExternalSharingPolicyChangedValue() {
+        if (this._tag != Tag.SEND_EXTERNAL_SHARING_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SEND_EXTERNAL_SHARING_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return sendExternalSharingPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#SEND_FOR_SIGNATURE_POLICY_CHANGED}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -33193,6 +40215,60 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.SEND_FOR_SIGNATURE_POLICY_CHANGED, but was Tag." + this._tag.name());
         }
         return sendForSignaturePolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SHARED_LINK_DEFAULT_PERMISSIONS_POLICY_CHANGED}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SHARED_LINK_DEFAULT_PERMISSIONS_POLICY_CHANGED}, {@code false}
+     *     otherwise.
+     */
+    public boolean isSharedLinkDefaultPermissionsPolicyChanged() {
+        return this._tag == Tag.SHARED_LINK_DEFAULT_PERMISSIONS_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SHARED_LINK_DEFAULT_PERMISSIONS_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed shared link default permissions policy for
+     * team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SHARED_LINK_DEFAULT_PERMISSIONS_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sharedLinkDefaultPermissionsPolicyChanged(SharedLinkDefaultPermissionsPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSharedLinkDefaultPermissionsPolicyChanged(Tag.SHARED_LINK_DEFAULT_PERMISSIONS_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed shared link default permissions policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SHARED_LINK_DEFAULT_PERMISSIONS_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link SharedLinkDefaultPermissionsPolicyChangedType} value
+     *     associated with this instance if {@link
+     *     #isSharedLinkDefaultPermissionsPolicyChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isSharedLinkDefaultPermissionsPolicyChanged} is {@code false}.
+     */
+    public SharedLinkDefaultPermissionsPolicyChangedType getSharedLinkDefaultPermissionsPolicyChangedValue() {
+        if (this._tag != Tag.SHARED_LINK_DEFAULT_PERMISSIONS_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SHARED_LINK_DEFAULT_PERMISSIONS_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return sharedLinkDefaultPermissionsPolicyChangedValue;
     }
 
     /**
@@ -33679,6 +40755,110 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#SIGN_EXTERNAL_SHARING_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SIGN_EXTERNAL_SHARING_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isSignExternalSharingPolicyChanged() {
+        return this._tag == Tag.SIGN_EXTERNAL_SHARING_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SIGN_EXTERNAL_SHARING_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed Signatures external sharing policy for team
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SIGN_EXTERNAL_SHARING_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType signExternalSharingPolicyChanged(SignExternalSharingPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSignExternalSharingPolicyChanged(Tag.SIGN_EXTERNAL_SHARING_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed Signatures external sharing policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SIGN_EXTERNAL_SHARING_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link SignExternalSharingPolicyChangedType} value associated
+     *     with this instance if {@link #isSignExternalSharingPolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isSignExternalSharingPolicyChanged} is {@code false}.
+     */
+    public SignExternalSharingPolicyChangedType getSignExternalSharingPolicyChangedValue() {
+        if (this._tag != Tag.SIGN_EXTERNAL_SHARING_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SIGN_EXTERNAL_SHARING_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return signExternalSharingPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SIGN_TEMPLATE_CREATION_PERMISSION_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SIGN_TEMPLATE_CREATION_PERMISSION_CHANGED}, {@code false}
+     *     otherwise.
+     */
+    public boolean isSignTemplateCreationPermissionChanged() {
+        return this._tag == Tag.SIGN_TEMPLATE_CREATION_PERMISSION_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SIGN_TEMPLATE_CREATION_PERMISSION_CHANGED}.
+     *
+     * <p> (team_policies) Changed template creation permission </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SIGN_TEMPLATE_CREATION_PERMISSION_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType signTemplateCreationPermissionChanged(SignTemplateCreationPermissionChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSignTemplateCreationPermissionChanged(Tag.SIGN_TEMPLATE_CREATION_PERMISSION_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed template creation permission
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SIGN_TEMPLATE_CREATION_PERMISSION_CHANGED}. </p>
+     *
+     * @return The {@link SignTemplateCreationPermissionChangedType} value
+     *     associated with this instance if {@link
+     *     #isSignTemplateCreationPermissionChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isSignTemplateCreationPermissionChanged} is {@code false}.
+     */
+    public SignTemplateCreationPermissionChangedType getSignTemplateCreationPermissionChangedValue() {
+        if (this._tag != Tag.SIGN_TEMPLATE_CREATION_PERMISSION_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.SIGN_TEMPLATE_CREATION_PERMISSION_CHANGED, but was Tag." + this._tag.name());
+        }
+        return signTemplateCreationPermissionChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#SMARTER_SMART_SYNC_POLICY_CHANGED}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -33929,6 +41109,57 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#STACK_CROSS_TEAM_ACCESS_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#STACK_CROSS_TEAM_ACCESS_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isStackCrossTeamAccessPolicyChanged() {
+        return this._tag == Tag.STACK_CROSS_TEAM_ACCESS_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#STACK_CROSS_TEAM_ACCESS_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed cross-team Stack access policy for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#STACK_CROSS_TEAM_ACCESS_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType stackCrossTeamAccessPolicyChanged(StackCrossTeamAccessPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndStackCrossTeamAccessPolicyChanged(Tag.STACK_CROSS_TEAM_ACCESS_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed cross-team Stack access policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#STACK_CROSS_TEAM_ACCESS_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link StackCrossTeamAccessPolicyChangedType} value
+     *     associated with this instance if {@link
+     *     #isStackCrossTeamAccessPolicyChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isStackCrossTeamAccessPolicyChanged} is {@code false}.
+     */
+    public StackCrossTeamAccessPolicyChangedType getStackCrossTeamAccessPolicyChangedValue() {
+        if (this._tag != Tag.STACK_CROSS_TEAM_ACCESS_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.STACK_CROSS_TEAM_ACCESS_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return stackCrossTeamAccessPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#TEAM_BRANDING_POLICY_CHANGED}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -34027,6 +41258,59 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.TEAM_EXTENSIONS_POLICY_CHANGED, but was Tag." + this._tag.name());
         }
         return teamExtensionsPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED}, {@code false}
+     *     otherwise.
+     */
+    public boolean isTeamMemberStorageRequestPolicyChanged() {
+        return this._tag == Tag.TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed team member storage request policy for team
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamMemberStorageRequestPolicyChanged(TeamMemberStorageRequestPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamMemberStorageRequestPolicyChanged(Tag.TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed team member storage request policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link TeamMemberStorageRequestPolicyChangedType} value
+     *     associated with this instance if {@link
+     *     #isTeamMemberStorageRequestPolicyChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamMemberStorageRequestPolicyChanged} is {@code false}.
+     */
+    public TeamMemberStorageRequestPolicyChangedType getTeamMemberStorageRequestPolicyChangedValue() {
+        if (this._tag != Tag.TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return teamMemberStorageRequestPolicyChangedValue;
     }
 
     /**
@@ -34197,7 +41481,8 @@ public final class EventType {
      * Returns an instance of {@code EventType} that has its tag set to {@link
      * Tag#TFA_CHANGE_POLICY}.
      *
-     * <p> (team_policies) Changed two-step verification setting for team </p>
+     * <p> (team_policies) Changed two-factor authentication setting for team
+     * </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -34214,7 +41499,7 @@ public final class EventType {
     }
 
     /**
-     * (team_policies) Changed two-step verification setting for team
+     * (team_policies) Changed two-factor authentication setting for team
      *
      * <p> This instance must be tagged as {@link Tag#TFA_CHANGE_POLICY}. </p>
      *
@@ -34281,6 +41566,57 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.TFA_REMOVE_EXCEPTION, but was Tag." + this._tag.name());
         }
         return tfaRemoveExceptionValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TOP_LEVEL_CONTENT_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TOP_LEVEL_CONTENT_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isTopLevelContentPolicyChanged() {
+        return this._tag == Tag.TOP_LEVEL_CONTENT_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TOP_LEVEL_CONTENT_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed top level content setting for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TOP_LEVEL_CONTENT_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType topLevelContentPolicyChanged(TopLevelContentPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTopLevelContentPolicyChanged(Tag.TOP_LEVEL_CONTENT_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed top level content setting for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TOP_LEVEL_CONTENT_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link TopLevelContentPolicyChangedType} value associated
+     *     with this instance if {@link #isTopLevelContentPolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isTopLevelContentPolicyChanged}
+     *     is {@code false}.
+     */
+    public TopLevelContentPolicyChangedType getTopLevelContentPolicyChangedValue() {
+        if (this._tag != Tag.TOP_LEVEL_CONTENT_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.TOP_LEVEL_CONTENT_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return topLevelContentPolicyChangedValue;
     }
 
     /**
@@ -35211,6 +42547,103 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PASSKEY_ADD}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PASSKEY_ADD}, {@code false} otherwise.
+     */
+    public boolean isPasskeyAdd() {
+        return this._tag == Tag.PASSKEY_ADD;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PASSKEY_ADD}.
+     *
+     * <p> (tfa) Added passkey for login </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PASSKEY_ADD}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType passkeyAdd(PasskeyAddType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndPasskeyAdd(Tag.PASSKEY_ADD, value);
+    }
+
+    /**
+     * (tfa) Added passkey for login
+     *
+     * <p> This instance must be tagged as {@link Tag#PASSKEY_ADD}. </p>
+     *
+     * @return The {@link PasskeyAddType} value associated with this instance if
+     *     {@link #isPasskeyAdd} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isPasskeyAdd} is {@code false}.
+     */
+    public PasskeyAddType getPasskeyAddValue() {
+        if (this._tag != Tag.PASSKEY_ADD) {
+            throw new IllegalStateException("Invalid tag: required Tag.PASSKEY_ADD, but was Tag." + this._tag.name());
+        }
+        return passkeyAddValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PASSKEY_REMOVE}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PASSKEY_REMOVE}, {@code false} otherwise.
+     */
+    public boolean isPasskeyRemove() {
+        return this._tag == Tag.PASSKEY_REMOVE;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PASSKEY_REMOVE}.
+     *
+     * <p> (tfa) Removed passkey for login </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PASSKEY_REMOVE}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType passkeyRemove(PasskeyRemoveType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndPasskeyRemove(Tag.PASSKEY_REMOVE, value);
+    }
+
+    /**
+     * (tfa) Removed passkey for login
+     *
+     * <p> This instance must be tagged as {@link Tag#PASSKEY_REMOVE}. </p>
+     *
+     * @return The {@link PasskeyRemoveType} value associated with this instance
+     *     if {@link #isPasskeyRemove} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isPasskeyRemove} is {@code
+     *     false}.
+     */
+    public PasskeyRemoveType getPasskeyRemoveValue() {
+        if (this._tag != Tag.PASSKEY_REMOVE) {
+            throw new IllegalStateException("Invalid tag: required Tag.PASSKEY_REMOVE, but was Tag." + this._tag.name());
+        }
+        return passkeyRemoveValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#TFA_ADD_BACKUP_PHONE}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -35224,7 +42657,7 @@ public final class EventType {
      * Returns an instance of {@code EventType} that has its tag set to {@link
      * Tag#TFA_ADD_BACKUP_PHONE}.
      *
-     * <p> (tfa) Added backup phone for two-step verification </p>
+     * <p> (tfa) Added backup phone for two-factor authentication </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -35241,7 +42674,7 @@ public final class EventType {
     }
 
     /**
-     * (tfa) Added backup phone for two-step verification
+     * (tfa) Added backup phone for two-factor authentication
      *
      * <p> This instance must be tagged as {@link Tag#TFA_ADD_BACKUP_PHONE}.
      * </p>
@@ -35274,7 +42707,7 @@ public final class EventType {
      * Returns an instance of {@code EventType} that has its tag set to {@link
      * Tag#TFA_ADD_SECURITY_KEY}.
      *
-     * <p> (tfa) Added security key for two-step verification </p>
+     * <p> (tfa) Added security key for two-factor authentication </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -35291,7 +42724,7 @@ public final class EventType {
     }
 
     /**
-     * (tfa) Added security key for two-step verification
+     * (tfa) Added security key for two-factor authentication
      *
      * <p> This instance must be tagged as {@link Tag#TFA_ADD_SECURITY_KEY}.
      * </p>
@@ -35324,7 +42757,7 @@ public final class EventType {
      * Returns an instance of {@code EventType} that has its tag set to {@link
      * Tag#TFA_CHANGE_BACKUP_PHONE}.
      *
-     * <p> (tfa) Changed backup phone for two-step verification </p>
+     * <p> (tfa) Changed backup phone for two-factor authentication </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -35341,7 +42774,7 @@ public final class EventType {
     }
 
     /**
-     * (tfa) Changed backup phone for two-step verification
+     * (tfa) Changed backup phone for two-factor authentication
      *
      * <p> This instance must be tagged as {@link Tag#TFA_CHANGE_BACKUP_PHONE}.
      * </p>
@@ -35374,7 +42807,7 @@ public final class EventType {
      * Returns an instance of {@code EventType} that has its tag set to {@link
      * Tag#TFA_CHANGE_STATUS}.
      *
-     * <p> (tfa) Enabled/disabled/changed two-step verification setting </p>
+     * <p> (tfa) Enabled/disabled/changed two-factor authentication setting </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -35391,7 +42824,7 @@ public final class EventType {
     }
 
     /**
-     * (tfa) Enabled/disabled/changed two-step verification setting
+     * (tfa) Enabled/disabled/changed two-factor authentication setting
      *
      * <p> This instance must be tagged as {@link Tag#TFA_CHANGE_STATUS}. </p>
      *
@@ -35423,7 +42856,7 @@ public final class EventType {
      * Returns an instance of {@code EventType} that has its tag set to {@link
      * Tag#TFA_REMOVE_BACKUP_PHONE}.
      *
-     * <p> (tfa) Removed backup phone for two-step verification </p>
+     * <p> (tfa) Removed backup phone for two-factor authentication </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -35440,7 +42873,7 @@ public final class EventType {
     }
 
     /**
-     * (tfa) Removed backup phone for two-step verification
+     * (tfa) Removed backup phone for two-factor authentication
      *
      * <p> This instance must be tagged as {@link Tag#TFA_REMOVE_BACKUP_PHONE}.
      * </p>
@@ -35473,7 +42906,7 @@ public final class EventType {
      * Returns an instance of {@code EventType} that has its tag set to {@link
      * Tag#TFA_REMOVE_SECURITY_KEY}.
      *
-     * <p> (tfa) Removed security key for two-step verification </p>
+     * <p> (tfa) Removed security key for two-factor authentication </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -35490,7 +42923,7 @@ public final class EventType {
     }
 
     /**
-     * (tfa) Removed security key for two-step verification
+     * (tfa) Removed security key for two-factor authentication
      *
      * <p> This instance must be tagged as {@link Tag#TFA_REMOVE_SECURITY_KEY}.
      * </p>
@@ -35523,7 +42956,7 @@ public final class EventType {
      * Returns an instance of {@code EventType} that has its tag set to {@link
      * Tag#TFA_RESET}.
      *
-     * <p> (tfa) Reset two-step verification for team member </p>
+     * <p> (tfa) Reset two-factor authentication for team member </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -35540,7 +42973,7 @@ public final class EventType {
     }
 
     /**
-     * (tfa) Reset two-step verification for team member
+     * (tfa) Reset two-factor authentication for team member
      *
      * <p> This instance must be tagged as {@link Tag#TFA_RESET}. </p>
      *
@@ -36909,6 +44342,38 @@ public final class EventType {
             this.fileResolveCommentValue,
             this.fileUnlikeCommentValue,
             this.fileUnresolveCommentValue,
+            this.dashAddedCommentToStackValue,
+            this.dashAddedConnectorValue,
+            this.dashAddedLinkToStackValue,
+            this.dashAddedTeamEmailDomainAllowlistValue,
+            this.dashAdminAddedOrgWideConnectorValue,
+            this.dashAdminDisabledConnectorValue,
+            this.dashAdminEnabledConnectorValue,
+            this.dashAdminRemovedOrgWideConnectorValue,
+            this.dashArchivedStackValue,
+            this.dashChangedAudienceOfSharedLinkToStackValue,
+            this.dashClonedStackValue,
+            this.dashConnectorToolsCallValue,
+            this.dashCreatedStackValue,
+            this.dashDeletedCommentFromStackValue,
+            this.dashDeletedStackValue,
+            this.dashEditedCommentInStackValue,
+            this.dashExternalUserOpenedStackValue,
+            this.dashFirstLaunchedDesktopValue,
+            this.dashFirstLaunchedExtensionValue,
+            this.dashFirstLaunchedWebStartPageValue,
+            this.dashOpenedSharedLinkToStackValue,
+            this.dashOpenedStackValue,
+            this.dashPreviewOptOutStatusChangedValue,
+            this.dashRemovedConnectorValue,
+            this.dashRemovedLinkFromStackValue,
+            this.dashRemovedSharedLinkToStackValue,
+            this.dashRemovedTeamEmailDomainAllowlistValue,
+            this.dashRenamedStackValue,
+            this.dashSharedLinkToStackValue,
+            this.dashUnarchivedStackValue,
+            this.dashViewedCompanyStackValue,
+            this.dashViewedExternalAiActivityReportValue,
             this.governancePolicyAddFoldersValue,
             this.governancePolicyAddFolderFailedValue,
             this.governancePolicyContentDisposedValue,
@@ -36963,8 +44428,20 @@ public final class EventType {
             this.domainVerificationAddDomainSuccessValue,
             this.domainVerificationRemoveDomainValue,
             this.enabledDomainInvitesValue,
+            this.encryptedFolderCancelTeamKeyRotationValue,
+            this.encryptedFolderEnrollBackupKeyValue,
+            this.encryptedFolderEnrollClientValue,
+            this.encryptedFolderEnrollTeamValue,
+            this.encryptedFolderFinishTeamUnenrollmentValue,
+            this.encryptedFolderInitTeamKeyRotationValue,
+            this.encryptedFolderInitTeamUnenrollmentValue,
+            this.encryptedFolderRemoveBackupKeyValue,
+            this.encryptedFolderRotateTeamKeyValue,
+            this.encryptedFolderUnenrollClientValue,
+            this.teamEncryptionKeyActivateKeyValue,
             this.teamEncryptionKeyCancelKeyDeletionValue,
             this.teamEncryptionKeyCreateKeyValue,
+            this.teamEncryptionKeyDeactivateKeyValue,
             this.teamEncryptionKeyDeleteKeyValue,
             this.teamEncryptionKeyDisableKeyValue,
             this.teamEncryptionKeyEnableKeyValue,
@@ -36996,12 +44473,15 @@ public final class EventType {
             this.objectLabelUpdatedValueValue,
             this.organizeFolderWithTidyValue,
             this.replayFileDeleteValue,
+            this.replayFileDownloadedValue,
+            this.replayTeamProjectCreatedValue,
             this.rewindFolderValue,
             this.undoNamingConventionValue,
             this.undoOrganizeFolderWithTidyValue,
             this.userTagsAddedValue,
             this.userTagsRemovedValue,
             this.emailIngestReceiveFileValue,
+            this.fileRequestAutoCloseValue,
             this.fileRequestChangeValue,
             this.fileRequestCloseValue,
             this.fileRequestCreateValue,
@@ -37015,6 +44495,7 @@ public final class EventType {
             this.groupCreateValue,
             this.groupDeleteValue,
             this.groupDescriptionUpdatedValue,
+            this.groupExternalSharingSettingOverrideChangedValue,
             this.groupJoinPolicyUpdatedValue,
             this.groupMovedValue,
             this.groupRemoveExternalIdValue,
@@ -37032,6 +44513,8 @@ public final class EventType {
             this.signInAsSessionEndValue,
             this.signInAsSessionStartValue,
             this.ssoErrorValue,
+            this.addonAssignedValue,
+            this.addonRemovedValue,
             this.backupAdminInvitationSentValue,
             this.backupInvitationOpenedValue,
             this.createTeamInviteLinkValue,
@@ -37057,6 +44540,8 @@ public final class EventType {
             this.memberSuggestValue,
             this.memberTransferAccountContentsValue,
             this.pendingSecondaryEmailAddedValue,
+            this.productAssignedToMemberValue,
+            this.productRemovedFromMemberValue,
             this.secondaryEmailDeletedValue,
             this.secondaryEmailVerifiedValue,
             this.secondaryMailsPolicyChangedValue,
@@ -37120,6 +44605,8 @@ public final class EventType {
             this.exportMembersReportFailValue,
             this.externalSharingCreateReportValue,
             this.externalSharingReportFailedValue,
+            this.memberAccessDetailsCreateReportValue,
+            this.memberAccessDetailsCreateReportFailedValue,
             this.noExpirationLinkGenCreateReportValue,
             this.noExpirationLinkGenReportFailedValue,
             this.noPasswordLinkGenCreateReportValue,
@@ -37131,9 +44618,15 @@ public final class EventType {
             this.paperAdminExportStartValue,
             this.ransomwareAlertCreateReportValue,
             this.ransomwareAlertCreateReportFailedValue,
+            this.sharedFoldersCreateReportValue,
+            this.sharedFoldersCreateReportFailedValue,
             this.smartSyncCreateAdminPrivilegeReportValue,
             this.teamActivityCreateReportValue,
             this.teamActivityCreateReportFailValue,
+            this.teamFoldersCreateReportValue,
+            this.teamFoldersCreateReportFailedValue,
+            this.teamStorageCreateReportValue,
+            this.teamStorageCreateReportFailedValue,
             this.collectionShareValue,
             this.fileTransfersFileAddValue,
             this.fileTransfersTransferDeleteValue,
@@ -37150,6 +44643,14 @@ public final class EventType {
             this.replayFileSharedLinkModifiedValue,
             this.replayProjectTeamAddValue,
             this.replayProjectTeamDeleteValue,
+            this.sendAndTrackFileAddedValue,
+            this.sendAndTrackFileRenamedValue,
+            this.sendAndTrackFileUpdatedValue,
+            this.sendAndTrackLinkCreatedValue,
+            this.sendAndTrackLinkDeletedValue,
+            this.sendAndTrackLinkUpdatedValue,
+            this.sendAndTrackLinkViewedValue,
+            this.sendAndTrackRemovedFileAndAssociatedLinksValue,
             this.sfAddGroupValue,
             this.sfAllowNonMembersToViewSharedLinksValue,
             this.sfExternalInviteWarnValue,
@@ -37205,6 +44706,7 @@ public final class EventType {
             this.sharedLinkDisableValue,
             this.sharedLinkDownloadValue,
             this.sharedLinkRemoveExpiryValue,
+            this.sharedLinkRemoveVisitorValue,
             this.sharedLinkSettingsAddExpirationValue,
             this.sharedLinkSettingsAddPasswordValue,
             this.sharedLinkSettingsAllowDownloadDisabledValue,
@@ -37244,6 +44746,15 @@ public final class EventType {
             this.showcaseUntrashedValue,
             this.showcaseUntrashedDeprecatedValue,
             this.showcaseViewValue,
+            this.signSignatureRequestCanceledValue,
+            this.signSignatureRequestCompletedValue,
+            this.signSignatureRequestDeclinedValue,
+            this.signSignatureRequestOpenedValue,
+            this.signSignatureRequestReminderSentValue,
+            this.signSignatureRequestSentValue,
+            this.signTemplateCreatedValue,
+            this.signTemplateSharedValue,
+            this.riscSecurityEventValue,
             this.ssoAddCertValue,
             this.ssoAddLoginUrlValue,
             this.ssoAddLogoutUrlValue,
@@ -37259,17 +44770,25 @@ public final class EventType {
             this.teamFolderDowngradeValue,
             this.teamFolderPermanentlyDeleteValue,
             this.teamFolderRenameValue,
+            this.teamFolderSpaceLimitsChangeCapsTypeValue,
+            this.teamFolderSpaceLimitsChangeLimitValue,
+            this.teamFolderSpaceLimitsChangeNotificationTargetValue,
             this.teamSelectiveSyncSettingsChangedValue,
             this.accountCaptureChangePolicyValue,
             this.adminEmailRemindersChangedValue,
+            this.aiThirdPartySharingDropboxBasePolicyChangedValue,
             this.allowDownloadDisabledValue,
             this.allowDownloadEnabledValue,
+            this.appleLoginChangePolicyValue,
             this.appPermissionsChangedValue,
             this.cameraUploadsPolicyChangedValue,
+            this.captureTeamSpacePolicyChangedValue,
             this.captureTranscriptPolicyChangedValue,
             this.classificationChangePolicyValue,
             this.computerBackupPolicyChangedValue,
             this.contentAdministrationPolicyChangedValue,
+            this.contentDeletionProtectionChangePolicyValue,
+            this.dashExternalSharingPolicyChangedValue,
             this.dataPlacementRestrictionChangePolicyValue,
             this.dataPlacementRestrictionSatisfyPolicyValue,
             this.deviceApprovalsAddExceptionValue,
@@ -37294,6 +44813,7 @@ public final class EventType {
             this.fileRequestsEmailsEnabledValue,
             this.fileRequestsEmailsRestrictedToTeamOnlyValue,
             this.fileTransfersPolicyChangedValue,
+            this.flexibleFileNamesPolicyChangedValue,
             this.folderLinkRestrictionPolicyChangedValue,
             this.googleSsoChangePolicyValue,
             this.groupUserManagementChangePolicyValue,
@@ -37306,6 +44826,7 @@ public final class EventType {
             this.memberSpaceLimitsChangePolicyValue,
             this.memberSpaceLimitsRemoveExceptionValue,
             this.memberSuggestionsChangePolicyValue,
+            this.microsoftLoginChangePolicyValue,
             this.microsoftOfficeAddinChangePolicyValue,
             this.networkControlChangePolicyValue,
             this.paperChangeDeploymentPolicyValue,
@@ -37316,11 +44837,18 @@ public final class EventType {
             this.paperDesktopPolicyChangedValue,
             this.paperEnabledUsersGroupAdditionValue,
             this.paperEnabledUsersGroupRemovalValue,
+            this.passkeyLoginPolicyChangedValue,
             this.passwordStrengthRequirementsChangePolicyValue,
             this.permanentDeleteChangePolicyValue,
+            this.previewsAiPolicyChangedValue,
+            this.replayAddingPeoplePolicyChangedValue,
+            this.replaySharingPolicyChangedValue,
             this.resellerSupportChangePolicyValue,
             this.rewindPolicyChangedValue,
+            this.sendAndTrackPolicyChangedValue,
+            this.sendExternalSharingPolicyChangedValue,
             this.sendForSignaturePolicyChangedValue,
+            this.sharedLinkDefaultPermissionsPolicyChangedValue,
             this.sharingChangeFolderJoinPolicyValue,
             this.sharingChangeLinkAllowChangeExpirationPolicyValue,
             this.sharingChangeLinkDefaultExpirationPolicyValue,
@@ -37330,18 +44858,23 @@ public final class EventType {
             this.showcaseChangeDownloadPolicyValue,
             this.showcaseChangeEnabledPolicyValue,
             this.showcaseChangeExternalSharingPolicyValue,
+            this.signExternalSharingPolicyChangedValue,
+            this.signTemplateCreationPermissionChangedValue,
             this.smarterSmartSyncPolicyChangedValue,
             this.smartSyncChangePolicyValue,
             this.smartSyncNotOptOutValue,
             this.smartSyncOptOutValue,
             this.ssoChangePolicyValue,
+            this.stackCrossTeamAccessPolicyChangedValue,
             this.teamBrandingPolicyChangedValue,
             this.teamExtensionsPolicyChangedValue,
+            this.teamMemberStorageRequestPolicyChangedValue,
             this.teamSelectiveSyncPolicyChangedValue,
             this.teamSharingWhitelistSubjectsChangedValue,
             this.tfaAddExceptionValue,
             this.tfaChangePolicyValue,
             this.tfaRemoveExceptionValue,
+            this.topLevelContentPolicyChangedValue,
             this.twoAccountChangePolicyValue,
             this.viewerInfoPolicyChangedValue,
             this.watermarkingPolicyChangedValue,
@@ -37360,6 +44893,8 @@ public final class EventType {
             this.teamProfileChangeNameValue,
             this.teamProfileRemoveBackgroundValue,
             this.teamProfileRemoveLogoValue,
+            this.passkeyAddValue,
+            this.passkeyRemoveValue,
             this.tfaAddBackupPhoneValue,
             this.tfaAddSecurityKeyValue,
             this.tfaChangeBackupPhoneValue,
@@ -37450,6 +44985,70 @@ public final class EventType {
                     return (this.fileUnlikeCommentValue == other.fileUnlikeCommentValue) || (this.fileUnlikeCommentValue.equals(other.fileUnlikeCommentValue));
                 case FILE_UNRESOLVE_COMMENT:
                     return (this.fileUnresolveCommentValue == other.fileUnresolveCommentValue) || (this.fileUnresolveCommentValue.equals(other.fileUnresolveCommentValue));
+                case DASH_ADDED_COMMENT_TO_STACK:
+                    return (this.dashAddedCommentToStackValue == other.dashAddedCommentToStackValue) || (this.dashAddedCommentToStackValue.equals(other.dashAddedCommentToStackValue));
+                case DASH_ADDED_CONNECTOR:
+                    return (this.dashAddedConnectorValue == other.dashAddedConnectorValue) || (this.dashAddedConnectorValue.equals(other.dashAddedConnectorValue));
+                case DASH_ADDED_LINK_TO_STACK:
+                    return (this.dashAddedLinkToStackValue == other.dashAddedLinkToStackValue) || (this.dashAddedLinkToStackValue.equals(other.dashAddedLinkToStackValue));
+                case DASH_ADDED_TEAM_EMAIL_DOMAIN_ALLOWLIST:
+                    return (this.dashAddedTeamEmailDomainAllowlistValue == other.dashAddedTeamEmailDomainAllowlistValue) || (this.dashAddedTeamEmailDomainAllowlistValue.equals(other.dashAddedTeamEmailDomainAllowlistValue));
+                case DASH_ADMIN_ADDED_ORG_WIDE_CONNECTOR:
+                    return (this.dashAdminAddedOrgWideConnectorValue == other.dashAdminAddedOrgWideConnectorValue) || (this.dashAdminAddedOrgWideConnectorValue.equals(other.dashAdminAddedOrgWideConnectorValue));
+                case DASH_ADMIN_DISABLED_CONNECTOR:
+                    return (this.dashAdminDisabledConnectorValue == other.dashAdminDisabledConnectorValue) || (this.dashAdminDisabledConnectorValue.equals(other.dashAdminDisabledConnectorValue));
+                case DASH_ADMIN_ENABLED_CONNECTOR:
+                    return (this.dashAdminEnabledConnectorValue == other.dashAdminEnabledConnectorValue) || (this.dashAdminEnabledConnectorValue.equals(other.dashAdminEnabledConnectorValue));
+                case DASH_ADMIN_REMOVED_ORG_WIDE_CONNECTOR:
+                    return (this.dashAdminRemovedOrgWideConnectorValue == other.dashAdminRemovedOrgWideConnectorValue) || (this.dashAdminRemovedOrgWideConnectorValue.equals(other.dashAdminRemovedOrgWideConnectorValue));
+                case DASH_ARCHIVED_STACK:
+                    return (this.dashArchivedStackValue == other.dashArchivedStackValue) || (this.dashArchivedStackValue.equals(other.dashArchivedStackValue));
+                case DASH_CHANGED_AUDIENCE_OF_SHARED_LINK_TO_STACK:
+                    return (this.dashChangedAudienceOfSharedLinkToStackValue == other.dashChangedAudienceOfSharedLinkToStackValue) || (this.dashChangedAudienceOfSharedLinkToStackValue.equals(other.dashChangedAudienceOfSharedLinkToStackValue));
+                case DASH_CLONED_STACK:
+                    return (this.dashClonedStackValue == other.dashClonedStackValue) || (this.dashClonedStackValue.equals(other.dashClonedStackValue));
+                case DASH_CONNECTOR_TOOLS_CALL:
+                    return (this.dashConnectorToolsCallValue == other.dashConnectorToolsCallValue) || (this.dashConnectorToolsCallValue.equals(other.dashConnectorToolsCallValue));
+                case DASH_CREATED_STACK:
+                    return (this.dashCreatedStackValue == other.dashCreatedStackValue) || (this.dashCreatedStackValue.equals(other.dashCreatedStackValue));
+                case DASH_DELETED_COMMENT_FROM_STACK:
+                    return (this.dashDeletedCommentFromStackValue == other.dashDeletedCommentFromStackValue) || (this.dashDeletedCommentFromStackValue.equals(other.dashDeletedCommentFromStackValue));
+                case DASH_DELETED_STACK:
+                    return (this.dashDeletedStackValue == other.dashDeletedStackValue) || (this.dashDeletedStackValue.equals(other.dashDeletedStackValue));
+                case DASH_EDITED_COMMENT_IN_STACK:
+                    return (this.dashEditedCommentInStackValue == other.dashEditedCommentInStackValue) || (this.dashEditedCommentInStackValue.equals(other.dashEditedCommentInStackValue));
+                case DASH_EXTERNAL_USER_OPENED_STACK:
+                    return (this.dashExternalUserOpenedStackValue == other.dashExternalUserOpenedStackValue) || (this.dashExternalUserOpenedStackValue.equals(other.dashExternalUserOpenedStackValue));
+                case DASH_FIRST_LAUNCHED_DESKTOP:
+                    return (this.dashFirstLaunchedDesktopValue == other.dashFirstLaunchedDesktopValue) || (this.dashFirstLaunchedDesktopValue.equals(other.dashFirstLaunchedDesktopValue));
+                case DASH_FIRST_LAUNCHED_EXTENSION:
+                    return (this.dashFirstLaunchedExtensionValue == other.dashFirstLaunchedExtensionValue) || (this.dashFirstLaunchedExtensionValue.equals(other.dashFirstLaunchedExtensionValue));
+                case DASH_FIRST_LAUNCHED_WEB_START_PAGE:
+                    return (this.dashFirstLaunchedWebStartPageValue == other.dashFirstLaunchedWebStartPageValue) || (this.dashFirstLaunchedWebStartPageValue.equals(other.dashFirstLaunchedWebStartPageValue));
+                case DASH_OPENED_SHARED_LINK_TO_STACK:
+                    return (this.dashOpenedSharedLinkToStackValue == other.dashOpenedSharedLinkToStackValue) || (this.dashOpenedSharedLinkToStackValue.equals(other.dashOpenedSharedLinkToStackValue));
+                case DASH_OPENED_STACK:
+                    return (this.dashOpenedStackValue == other.dashOpenedStackValue) || (this.dashOpenedStackValue.equals(other.dashOpenedStackValue));
+                case DASH_PREVIEW_OPT_OUT_STATUS_CHANGED:
+                    return (this.dashPreviewOptOutStatusChangedValue == other.dashPreviewOptOutStatusChangedValue) || (this.dashPreviewOptOutStatusChangedValue.equals(other.dashPreviewOptOutStatusChangedValue));
+                case DASH_REMOVED_CONNECTOR:
+                    return (this.dashRemovedConnectorValue == other.dashRemovedConnectorValue) || (this.dashRemovedConnectorValue.equals(other.dashRemovedConnectorValue));
+                case DASH_REMOVED_LINK_FROM_STACK:
+                    return (this.dashRemovedLinkFromStackValue == other.dashRemovedLinkFromStackValue) || (this.dashRemovedLinkFromStackValue.equals(other.dashRemovedLinkFromStackValue));
+                case DASH_REMOVED_SHARED_LINK_TO_STACK:
+                    return (this.dashRemovedSharedLinkToStackValue == other.dashRemovedSharedLinkToStackValue) || (this.dashRemovedSharedLinkToStackValue.equals(other.dashRemovedSharedLinkToStackValue));
+                case DASH_REMOVED_TEAM_EMAIL_DOMAIN_ALLOWLIST:
+                    return (this.dashRemovedTeamEmailDomainAllowlistValue == other.dashRemovedTeamEmailDomainAllowlistValue) || (this.dashRemovedTeamEmailDomainAllowlistValue.equals(other.dashRemovedTeamEmailDomainAllowlistValue));
+                case DASH_RENAMED_STACK:
+                    return (this.dashRenamedStackValue == other.dashRenamedStackValue) || (this.dashRenamedStackValue.equals(other.dashRenamedStackValue));
+                case DASH_SHARED_LINK_TO_STACK:
+                    return (this.dashSharedLinkToStackValue == other.dashSharedLinkToStackValue) || (this.dashSharedLinkToStackValue.equals(other.dashSharedLinkToStackValue));
+                case DASH_UNARCHIVED_STACK:
+                    return (this.dashUnarchivedStackValue == other.dashUnarchivedStackValue) || (this.dashUnarchivedStackValue.equals(other.dashUnarchivedStackValue));
+                case DASH_VIEWED_COMPANY_STACK:
+                    return (this.dashViewedCompanyStackValue == other.dashViewedCompanyStackValue) || (this.dashViewedCompanyStackValue.equals(other.dashViewedCompanyStackValue));
+                case DASH_VIEWED_EXTERNAL_AI_ACTIVITY_REPORT:
+                    return (this.dashViewedExternalAiActivityReportValue == other.dashViewedExternalAiActivityReportValue) || (this.dashViewedExternalAiActivityReportValue.equals(other.dashViewedExternalAiActivityReportValue));
                 case GOVERNANCE_POLICY_ADD_FOLDERS:
                     return (this.governancePolicyAddFoldersValue == other.governancePolicyAddFoldersValue) || (this.governancePolicyAddFoldersValue.equals(other.governancePolicyAddFoldersValue));
                 case GOVERNANCE_POLICY_ADD_FOLDER_FAILED:
@@ -37558,10 +45157,34 @@ public final class EventType {
                     return (this.domainVerificationRemoveDomainValue == other.domainVerificationRemoveDomainValue) || (this.domainVerificationRemoveDomainValue.equals(other.domainVerificationRemoveDomainValue));
                 case ENABLED_DOMAIN_INVITES:
                     return (this.enabledDomainInvitesValue == other.enabledDomainInvitesValue) || (this.enabledDomainInvitesValue.equals(other.enabledDomainInvitesValue));
+                case ENCRYPTED_FOLDER_CANCEL_TEAM_KEY_ROTATION:
+                    return (this.encryptedFolderCancelTeamKeyRotationValue == other.encryptedFolderCancelTeamKeyRotationValue) || (this.encryptedFolderCancelTeamKeyRotationValue.equals(other.encryptedFolderCancelTeamKeyRotationValue));
+                case ENCRYPTED_FOLDER_ENROLL_BACKUP_KEY:
+                    return (this.encryptedFolderEnrollBackupKeyValue == other.encryptedFolderEnrollBackupKeyValue) || (this.encryptedFolderEnrollBackupKeyValue.equals(other.encryptedFolderEnrollBackupKeyValue));
+                case ENCRYPTED_FOLDER_ENROLL_CLIENT:
+                    return (this.encryptedFolderEnrollClientValue == other.encryptedFolderEnrollClientValue) || (this.encryptedFolderEnrollClientValue.equals(other.encryptedFolderEnrollClientValue));
+                case ENCRYPTED_FOLDER_ENROLL_TEAM:
+                    return (this.encryptedFolderEnrollTeamValue == other.encryptedFolderEnrollTeamValue) || (this.encryptedFolderEnrollTeamValue.equals(other.encryptedFolderEnrollTeamValue));
+                case ENCRYPTED_FOLDER_FINISH_TEAM_UNENROLLMENT:
+                    return (this.encryptedFolderFinishTeamUnenrollmentValue == other.encryptedFolderFinishTeamUnenrollmentValue) || (this.encryptedFolderFinishTeamUnenrollmentValue.equals(other.encryptedFolderFinishTeamUnenrollmentValue));
+                case ENCRYPTED_FOLDER_INIT_TEAM_KEY_ROTATION:
+                    return (this.encryptedFolderInitTeamKeyRotationValue == other.encryptedFolderInitTeamKeyRotationValue) || (this.encryptedFolderInitTeamKeyRotationValue.equals(other.encryptedFolderInitTeamKeyRotationValue));
+                case ENCRYPTED_FOLDER_INIT_TEAM_UNENROLLMENT:
+                    return (this.encryptedFolderInitTeamUnenrollmentValue == other.encryptedFolderInitTeamUnenrollmentValue) || (this.encryptedFolderInitTeamUnenrollmentValue.equals(other.encryptedFolderInitTeamUnenrollmentValue));
+                case ENCRYPTED_FOLDER_REMOVE_BACKUP_KEY:
+                    return (this.encryptedFolderRemoveBackupKeyValue == other.encryptedFolderRemoveBackupKeyValue) || (this.encryptedFolderRemoveBackupKeyValue.equals(other.encryptedFolderRemoveBackupKeyValue));
+                case ENCRYPTED_FOLDER_ROTATE_TEAM_KEY:
+                    return (this.encryptedFolderRotateTeamKeyValue == other.encryptedFolderRotateTeamKeyValue) || (this.encryptedFolderRotateTeamKeyValue.equals(other.encryptedFolderRotateTeamKeyValue));
+                case ENCRYPTED_FOLDER_UNENROLL_CLIENT:
+                    return (this.encryptedFolderUnenrollClientValue == other.encryptedFolderUnenrollClientValue) || (this.encryptedFolderUnenrollClientValue.equals(other.encryptedFolderUnenrollClientValue));
+                case TEAM_ENCRYPTION_KEY_ACTIVATE_KEY:
+                    return (this.teamEncryptionKeyActivateKeyValue == other.teamEncryptionKeyActivateKeyValue) || (this.teamEncryptionKeyActivateKeyValue.equals(other.teamEncryptionKeyActivateKeyValue));
                 case TEAM_ENCRYPTION_KEY_CANCEL_KEY_DELETION:
                     return (this.teamEncryptionKeyCancelKeyDeletionValue == other.teamEncryptionKeyCancelKeyDeletionValue) || (this.teamEncryptionKeyCancelKeyDeletionValue.equals(other.teamEncryptionKeyCancelKeyDeletionValue));
                 case TEAM_ENCRYPTION_KEY_CREATE_KEY:
                     return (this.teamEncryptionKeyCreateKeyValue == other.teamEncryptionKeyCreateKeyValue) || (this.teamEncryptionKeyCreateKeyValue.equals(other.teamEncryptionKeyCreateKeyValue));
+                case TEAM_ENCRYPTION_KEY_DEACTIVATE_KEY:
+                    return (this.teamEncryptionKeyDeactivateKeyValue == other.teamEncryptionKeyDeactivateKeyValue) || (this.teamEncryptionKeyDeactivateKeyValue.equals(other.teamEncryptionKeyDeactivateKeyValue));
                 case TEAM_ENCRYPTION_KEY_DELETE_KEY:
                     return (this.teamEncryptionKeyDeleteKeyValue == other.teamEncryptionKeyDeleteKeyValue) || (this.teamEncryptionKeyDeleteKeyValue.equals(other.teamEncryptionKeyDeleteKeyValue));
                 case TEAM_ENCRYPTION_KEY_DISABLE_KEY:
@@ -37624,6 +45247,10 @@ public final class EventType {
                     return (this.organizeFolderWithTidyValue == other.organizeFolderWithTidyValue) || (this.organizeFolderWithTidyValue.equals(other.organizeFolderWithTidyValue));
                 case REPLAY_FILE_DELETE:
                     return (this.replayFileDeleteValue == other.replayFileDeleteValue) || (this.replayFileDeleteValue.equals(other.replayFileDeleteValue));
+                case REPLAY_FILE_DOWNLOADED:
+                    return (this.replayFileDownloadedValue == other.replayFileDownloadedValue) || (this.replayFileDownloadedValue.equals(other.replayFileDownloadedValue));
+                case REPLAY_TEAM_PROJECT_CREATED:
+                    return (this.replayTeamProjectCreatedValue == other.replayTeamProjectCreatedValue) || (this.replayTeamProjectCreatedValue.equals(other.replayTeamProjectCreatedValue));
                 case REWIND_FOLDER:
                     return (this.rewindFolderValue == other.rewindFolderValue) || (this.rewindFolderValue.equals(other.rewindFolderValue));
                 case UNDO_NAMING_CONVENTION:
@@ -37636,6 +45263,8 @@ public final class EventType {
                     return (this.userTagsRemovedValue == other.userTagsRemovedValue) || (this.userTagsRemovedValue.equals(other.userTagsRemovedValue));
                 case EMAIL_INGEST_RECEIVE_FILE:
                     return (this.emailIngestReceiveFileValue == other.emailIngestReceiveFileValue) || (this.emailIngestReceiveFileValue.equals(other.emailIngestReceiveFileValue));
+                case FILE_REQUEST_AUTO_CLOSE:
+                    return (this.fileRequestAutoCloseValue == other.fileRequestAutoCloseValue) || (this.fileRequestAutoCloseValue.equals(other.fileRequestAutoCloseValue));
                 case FILE_REQUEST_CHANGE:
                     return (this.fileRequestChangeValue == other.fileRequestChangeValue) || (this.fileRequestChangeValue.equals(other.fileRequestChangeValue));
                 case FILE_REQUEST_CLOSE:
@@ -37662,6 +45291,8 @@ public final class EventType {
                     return (this.groupDeleteValue == other.groupDeleteValue) || (this.groupDeleteValue.equals(other.groupDeleteValue));
                 case GROUP_DESCRIPTION_UPDATED:
                     return (this.groupDescriptionUpdatedValue == other.groupDescriptionUpdatedValue) || (this.groupDescriptionUpdatedValue.equals(other.groupDescriptionUpdatedValue));
+                case GROUP_EXTERNAL_SHARING_SETTING_OVERRIDE_CHANGED:
+                    return (this.groupExternalSharingSettingOverrideChangedValue == other.groupExternalSharingSettingOverrideChangedValue) || (this.groupExternalSharingSettingOverrideChangedValue.equals(other.groupExternalSharingSettingOverrideChangedValue));
                 case GROUP_JOIN_POLICY_UPDATED:
                     return (this.groupJoinPolicyUpdatedValue == other.groupJoinPolicyUpdatedValue) || (this.groupJoinPolicyUpdatedValue.equals(other.groupJoinPolicyUpdatedValue));
                 case GROUP_MOVED:
@@ -37696,6 +45327,10 @@ public final class EventType {
                     return (this.signInAsSessionStartValue == other.signInAsSessionStartValue) || (this.signInAsSessionStartValue.equals(other.signInAsSessionStartValue));
                 case SSO_ERROR:
                     return (this.ssoErrorValue == other.ssoErrorValue) || (this.ssoErrorValue.equals(other.ssoErrorValue));
+                case ADDON_ASSIGNED:
+                    return (this.addonAssignedValue == other.addonAssignedValue) || (this.addonAssignedValue.equals(other.addonAssignedValue));
+                case ADDON_REMOVED:
+                    return (this.addonRemovedValue == other.addonRemovedValue) || (this.addonRemovedValue.equals(other.addonRemovedValue));
                 case BACKUP_ADMIN_INVITATION_SENT:
                     return (this.backupAdminInvitationSentValue == other.backupAdminInvitationSentValue) || (this.backupAdminInvitationSentValue.equals(other.backupAdminInvitationSentValue));
                 case BACKUP_INVITATION_OPENED:
@@ -37746,6 +45381,10 @@ public final class EventType {
                     return (this.memberTransferAccountContentsValue == other.memberTransferAccountContentsValue) || (this.memberTransferAccountContentsValue.equals(other.memberTransferAccountContentsValue));
                 case PENDING_SECONDARY_EMAIL_ADDED:
                     return (this.pendingSecondaryEmailAddedValue == other.pendingSecondaryEmailAddedValue) || (this.pendingSecondaryEmailAddedValue.equals(other.pendingSecondaryEmailAddedValue));
+                case PRODUCT_ASSIGNED_TO_MEMBER:
+                    return (this.productAssignedToMemberValue == other.productAssignedToMemberValue) || (this.productAssignedToMemberValue.equals(other.productAssignedToMemberValue));
+                case PRODUCT_REMOVED_FROM_MEMBER:
+                    return (this.productRemovedFromMemberValue == other.productRemovedFromMemberValue) || (this.productRemovedFromMemberValue.equals(other.productRemovedFromMemberValue));
                 case SECONDARY_EMAIL_DELETED:
                     return (this.secondaryEmailDeletedValue == other.secondaryEmailDeletedValue) || (this.secondaryEmailDeletedValue.equals(other.secondaryEmailDeletedValue));
                 case SECONDARY_EMAIL_VERIFIED:
@@ -37872,6 +45511,10 @@ public final class EventType {
                     return (this.externalSharingCreateReportValue == other.externalSharingCreateReportValue) || (this.externalSharingCreateReportValue.equals(other.externalSharingCreateReportValue));
                 case EXTERNAL_SHARING_REPORT_FAILED:
                     return (this.externalSharingReportFailedValue == other.externalSharingReportFailedValue) || (this.externalSharingReportFailedValue.equals(other.externalSharingReportFailedValue));
+                case MEMBER_ACCESS_DETAILS_CREATE_REPORT:
+                    return (this.memberAccessDetailsCreateReportValue == other.memberAccessDetailsCreateReportValue) || (this.memberAccessDetailsCreateReportValue.equals(other.memberAccessDetailsCreateReportValue));
+                case MEMBER_ACCESS_DETAILS_CREATE_REPORT_FAILED:
+                    return (this.memberAccessDetailsCreateReportFailedValue == other.memberAccessDetailsCreateReportFailedValue) || (this.memberAccessDetailsCreateReportFailedValue.equals(other.memberAccessDetailsCreateReportFailedValue));
                 case NO_EXPIRATION_LINK_GEN_CREATE_REPORT:
                     return (this.noExpirationLinkGenCreateReportValue == other.noExpirationLinkGenCreateReportValue) || (this.noExpirationLinkGenCreateReportValue.equals(other.noExpirationLinkGenCreateReportValue));
                 case NO_EXPIRATION_LINK_GEN_REPORT_FAILED:
@@ -37894,12 +45537,24 @@ public final class EventType {
                     return (this.ransomwareAlertCreateReportValue == other.ransomwareAlertCreateReportValue) || (this.ransomwareAlertCreateReportValue.equals(other.ransomwareAlertCreateReportValue));
                 case RANSOMWARE_ALERT_CREATE_REPORT_FAILED:
                     return (this.ransomwareAlertCreateReportFailedValue == other.ransomwareAlertCreateReportFailedValue) || (this.ransomwareAlertCreateReportFailedValue.equals(other.ransomwareAlertCreateReportFailedValue));
+                case SHARED_FOLDERS_CREATE_REPORT:
+                    return (this.sharedFoldersCreateReportValue == other.sharedFoldersCreateReportValue) || (this.sharedFoldersCreateReportValue.equals(other.sharedFoldersCreateReportValue));
+                case SHARED_FOLDERS_CREATE_REPORT_FAILED:
+                    return (this.sharedFoldersCreateReportFailedValue == other.sharedFoldersCreateReportFailedValue) || (this.sharedFoldersCreateReportFailedValue.equals(other.sharedFoldersCreateReportFailedValue));
                 case SMART_SYNC_CREATE_ADMIN_PRIVILEGE_REPORT:
                     return (this.smartSyncCreateAdminPrivilegeReportValue == other.smartSyncCreateAdminPrivilegeReportValue) || (this.smartSyncCreateAdminPrivilegeReportValue.equals(other.smartSyncCreateAdminPrivilegeReportValue));
                 case TEAM_ACTIVITY_CREATE_REPORT:
                     return (this.teamActivityCreateReportValue == other.teamActivityCreateReportValue) || (this.teamActivityCreateReportValue.equals(other.teamActivityCreateReportValue));
                 case TEAM_ACTIVITY_CREATE_REPORT_FAIL:
                     return (this.teamActivityCreateReportFailValue == other.teamActivityCreateReportFailValue) || (this.teamActivityCreateReportFailValue.equals(other.teamActivityCreateReportFailValue));
+                case TEAM_FOLDERS_CREATE_REPORT:
+                    return (this.teamFoldersCreateReportValue == other.teamFoldersCreateReportValue) || (this.teamFoldersCreateReportValue.equals(other.teamFoldersCreateReportValue));
+                case TEAM_FOLDERS_CREATE_REPORT_FAILED:
+                    return (this.teamFoldersCreateReportFailedValue == other.teamFoldersCreateReportFailedValue) || (this.teamFoldersCreateReportFailedValue.equals(other.teamFoldersCreateReportFailedValue));
+                case TEAM_STORAGE_CREATE_REPORT:
+                    return (this.teamStorageCreateReportValue == other.teamStorageCreateReportValue) || (this.teamStorageCreateReportValue.equals(other.teamStorageCreateReportValue));
+                case TEAM_STORAGE_CREATE_REPORT_FAILED:
+                    return (this.teamStorageCreateReportFailedValue == other.teamStorageCreateReportFailedValue) || (this.teamStorageCreateReportFailedValue.equals(other.teamStorageCreateReportFailedValue));
                 case COLLECTION_SHARE:
                     return (this.collectionShareValue == other.collectionShareValue) || (this.collectionShareValue.equals(other.collectionShareValue));
                 case FILE_TRANSFERS_FILE_ADD:
@@ -37932,6 +45587,22 @@ public final class EventType {
                     return (this.replayProjectTeamAddValue == other.replayProjectTeamAddValue) || (this.replayProjectTeamAddValue.equals(other.replayProjectTeamAddValue));
                 case REPLAY_PROJECT_TEAM_DELETE:
                     return (this.replayProjectTeamDeleteValue == other.replayProjectTeamDeleteValue) || (this.replayProjectTeamDeleteValue.equals(other.replayProjectTeamDeleteValue));
+                case SEND_AND_TRACK_FILE_ADDED:
+                    return (this.sendAndTrackFileAddedValue == other.sendAndTrackFileAddedValue) || (this.sendAndTrackFileAddedValue.equals(other.sendAndTrackFileAddedValue));
+                case SEND_AND_TRACK_FILE_RENAMED:
+                    return (this.sendAndTrackFileRenamedValue == other.sendAndTrackFileRenamedValue) || (this.sendAndTrackFileRenamedValue.equals(other.sendAndTrackFileRenamedValue));
+                case SEND_AND_TRACK_FILE_UPDATED:
+                    return (this.sendAndTrackFileUpdatedValue == other.sendAndTrackFileUpdatedValue) || (this.sendAndTrackFileUpdatedValue.equals(other.sendAndTrackFileUpdatedValue));
+                case SEND_AND_TRACK_LINK_CREATED:
+                    return (this.sendAndTrackLinkCreatedValue == other.sendAndTrackLinkCreatedValue) || (this.sendAndTrackLinkCreatedValue.equals(other.sendAndTrackLinkCreatedValue));
+                case SEND_AND_TRACK_LINK_DELETED:
+                    return (this.sendAndTrackLinkDeletedValue == other.sendAndTrackLinkDeletedValue) || (this.sendAndTrackLinkDeletedValue.equals(other.sendAndTrackLinkDeletedValue));
+                case SEND_AND_TRACK_LINK_UPDATED:
+                    return (this.sendAndTrackLinkUpdatedValue == other.sendAndTrackLinkUpdatedValue) || (this.sendAndTrackLinkUpdatedValue.equals(other.sendAndTrackLinkUpdatedValue));
+                case SEND_AND_TRACK_LINK_VIEWED:
+                    return (this.sendAndTrackLinkViewedValue == other.sendAndTrackLinkViewedValue) || (this.sendAndTrackLinkViewedValue.equals(other.sendAndTrackLinkViewedValue));
+                case SEND_AND_TRACK_REMOVED_FILE_AND_ASSOCIATED_LINKS:
+                    return (this.sendAndTrackRemovedFileAndAssociatedLinksValue == other.sendAndTrackRemovedFileAndAssociatedLinksValue) || (this.sendAndTrackRemovedFileAndAssociatedLinksValue.equals(other.sendAndTrackRemovedFileAndAssociatedLinksValue));
                 case SF_ADD_GROUP:
                     return (this.sfAddGroupValue == other.sfAddGroupValue) || (this.sfAddGroupValue.equals(other.sfAddGroupValue));
                 case SF_ALLOW_NON_MEMBERS_TO_VIEW_SHARED_LINKS:
@@ -38042,6 +45713,8 @@ public final class EventType {
                     return (this.sharedLinkDownloadValue == other.sharedLinkDownloadValue) || (this.sharedLinkDownloadValue.equals(other.sharedLinkDownloadValue));
                 case SHARED_LINK_REMOVE_EXPIRY:
                     return (this.sharedLinkRemoveExpiryValue == other.sharedLinkRemoveExpiryValue) || (this.sharedLinkRemoveExpiryValue.equals(other.sharedLinkRemoveExpiryValue));
+                case SHARED_LINK_REMOVE_VISITOR:
+                    return (this.sharedLinkRemoveVisitorValue == other.sharedLinkRemoveVisitorValue) || (this.sharedLinkRemoveVisitorValue.equals(other.sharedLinkRemoveVisitorValue));
                 case SHARED_LINK_SETTINGS_ADD_EXPIRATION:
                     return (this.sharedLinkSettingsAddExpirationValue == other.sharedLinkSettingsAddExpirationValue) || (this.sharedLinkSettingsAddExpirationValue.equals(other.sharedLinkSettingsAddExpirationValue));
                 case SHARED_LINK_SETTINGS_ADD_PASSWORD:
@@ -38120,6 +45793,24 @@ public final class EventType {
                     return (this.showcaseUntrashedDeprecatedValue == other.showcaseUntrashedDeprecatedValue) || (this.showcaseUntrashedDeprecatedValue.equals(other.showcaseUntrashedDeprecatedValue));
                 case SHOWCASE_VIEW:
                     return (this.showcaseViewValue == other.showcaseViewValue) || (this.showcaseViewValue.equals(other.showcaseViewValue));
+                case SIGN_SIGNATURE_REQUEST_CANCELED:
+                    return (this.signSignatureRequestCanceledValue == other.signSignatureRequestCanceledValue) || (this.signSignatureRequestCanceledValue.equals(other.signSignatureRequestCanceledValue));
+                case SIGN_SIGNATURE_REQUEST_COMPLETED:
+                    return (this.signSignatureRequestCompletedValue == other.signSignatureRequestCompletedValue) || (this.signSignatureRequestCompletedValue.equals(other.signSignatureRequestCompletedValue));
+                case SIGN_SIGNATURE_REQUEST_DECLINED:
+                    return (this.signSignatureRequestDeclinedValue == other.signSignatureRequestDeclinedValue) || (this.signSignatureRequestDeclinedValue.equals(other.signSignatureRequestDeclinedValue));
+                case SIGN_SIGNATURE_REQUEST_OPENED:
+                    return (this.signSignatureRequestOpenedValue == other.signSignatureRequestOpenedValue) || (this.signSignatureRequestOpenedValue.equals(other.signSignatureRequestOpenedValue));
+                case SIGN_SIGNATURE_REQUEST_REMINDER_SENT:
+                    return (this.signSignatureRequestReminderSentValue == other.signSignatureRequestReminderSentValue) || (this.signSignatureRequestReminderSentValue.equals(other.signSignatureRequestReminderSentValue));
+                case SIGN_SIGNATURE_REQUEST_SENT:
+                    return (this.signSignatureRequestSentValue == other.signSignatureRequestSentValue) || (this.signSignatureRequestSentValue.equals(other.signSignatureRequestSentValue));
+                case SIGN_TEMPLATE_CREATED:
+                    return (this.signTemplateCreatedValue == other.signTemplateCreatedValue) || (this.signTemplateCreatedValue.equals(other.signTemplateCreatedValue));
+                case SIGN_TEMPLATE_SHARED:
+                    return (this.signTemplateSharedValue == other.signTemplateSharedValue) || (this.signTemplateSharedValue.equals(other.signTemplateSharedValue));
+                case RISC_SECURITY_EVENT:
+                    return (this.riscSecurityEventValue == other.riscSecurityEventValue) || (this.riscSecurityEventValue.equals(other.riscSecurityEventValue));
                 case SSO_ADD_CERT:
                     return (this.ssoAddCertValue == other.ssoAddCertValue) || (this.ssoAddCertValue.equals(other.ssoAddCertValue));
                 case SSO_ADD_LOGIN_URL:
@@ -38150,20 +45841,32 @@ public final class EventType {
                     return (this.teamFolderPermanentlyDeleteValue == other.teamFolderPermanentlyDeleteValue) || (this.teamFolderPermanentlyDeleteValue.equals(other.teamFolderPermanentlyDeleteValue));
                 case TEAM_FOLDER_RENAME:
                     return (this.teamFolderRenameValue == other.teamFolderRenameValue) || (this.teamFolderRenameValue.equals(other.teamFolderRenameValue));
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE:
+                    return (this.teamFolderSpaceLimitsChangeCapsTypeValue == other.teamFolderSpaceLimitsChangeCapsTypeValue) || (this.teamFolderSpaceLimitsChangeCapsTypeValue.equals(other.teamFolderSpaceLimitsChangeCapsTypeValue));
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT:
+                    return (this.teamFolderSpaceLimitsChangeLimitValue == other.teamFolderSpaceLimitsChangeLimitValue) || (this.teamFolderSpaceLimitsChangeLimitValue.equals(other.teamFolderSpaceLimitsChangeLimitValue));
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET:
+                    return (this.teamFolderSpaceLimitsChangeNotificationTargetValue == other.teamFolderSpaceLimitsChangeNotificationTargetValue) || (this.teamFolderSpaceLimitsChangeNotificationTargetValue.equals(other.teamFolderSpaceLimitsChangeNotificationTargetValue));
                 case TEAM_SELECTIVE_SYNC_SETTINGS_CHANGED:
                     return (this.teamSelectiveSyncSettingsChangedValue == other.teamSelectiveSyncSettingsChangedValue) || (this.teamSelectiveSyncSettingsChangedValue.equals(other.teamSelectiveSyncSettingsChangedValue));
                 case ACCOUNT_CAPTURE_CHANGE_POLICY:
                     return (this.accountCaptureChangePolicyValue == other.accountCaptureChangePolicyValue) || (this.accountCaptureChangePolicyValue.equals(other.accountCaptureChangePolicyValue));
                 case ADMIN_EMAIL_REMINDERS_CHANGED:
                     return (this.adminEmailRemindersChangedValue == other.adminEmailRemindersChangedValue) || (this.adminEmailRemindersChangedValue.equals(other.adminEmailRemindersChangedValue));
+                case AI_THIRD_PARTY_SHARING_DROPBOX_BASE_POLICY_CHANGED:
+                    return (this.aiThirdPartySharingDropboxBasePolicyChangedValue == other.aiThirdPartySharingDropboxBasePolicyChangedValue) || (this.aiThirdPartySharingDropboxBasePolicyChangedValue.equals(other.aiThirdPartySharingDropboxBasePolicyChangedValue));
                 case ALLOW_DOWNLOAD_DISABLED:
                     return (this.allowDownloadDisabledValue == other.allowDownloadDisabledValue) || (this.allowDownloadDisabledValue.equals(other.allowDownloadDisabledValue));
                 case ALLOW_DOWNLOAD_ENABLED:
                     return (this.allowDownloadEnabledValue == other.allowDownloadEnabledValue) || (this.allowDownloadEnabledValue.equals(other.allowDownloadEnabledValue));
+                case APPLE_LOGIN_CHANGE_POLICY:
+                    return (this.appleLoginChangePolicyValue == other.appleLoginChangePolicyValue) || (this.appleLoginChangePolicyValue.equals(other.appleLoginChangePolicyValue));
                 case APP_PERMISSIONS_CHANGED:
                     return (this.appPermissionsChangedValue == other.appPermissionsChangedValue) || (this.appPermissionsChangedValue.equals(other.appPermissionsChangedValue));
                 case CAMERA_UPLOADS_POLICY_CHANGED:
                     return (this.cameraUploadsPolicyChangedValue == other.cameraUploadsPolicyChangedValue) || (this.cameraUploadsPolicyChangedValue.equals(other.cameraUploadsPolicyChangedValue));
+                case CAPTURE_TEAM_SPACE_POLICY_CHANGED:
+                    return (this.captureTeamSpacePolicyChangedValue == other.captureTeamSpacePolicyChangedValue) || (this.captureTeamSpacePolicyChangedValue.equals(other.captureTeamSpacePolicyChangedValue));
                 case CAPTURE_TRANSCRIPT_POLICY_CHANGED:
                     return (this.captureTranscriptPolicyChangedValue == other.captureTranscriptPolicyChangedValue) || (this.captureTranscriptPolicyChangedValue.equals(other.captureTranscriptPolicyChangedValue));
                 case CLASSIFICATION_CHANGE_POLICY:
@@ -38172,6 +45875,10 @@ public final class EventType {
                     return (this.computerBackupPolicyChangedValue == other.computerBackupPolicyChangedValue) || (this.computerBackupPolicyChangedValue.equals(other.computerBackupPolicyChangedValue));
                 case CONTENT_ADMINISTRATION_POLICY_CHANGED:
                     return (this.contentAdministrationPolicyChangedValue == other.contentAdministrationPolicyChangedValue) || (this.contentAdministrationPolicyChangedValue.equals(other.contentAdministrationPolicyChangedValue));
+                case CONTENT_DELETION_PROTECTION_CHANGE_POLICY:
+                    return (this.contentDeletionProtectionChangePolicyValue == other.contentDeletionProtectionChangePolicyValue) || (this.contentDeletionProtectionChangePolicyValue.equals(other.contentDeletionProtectionChangePolicyValue));
+                case DASH_EXTERNAL_SHARING_POLICY_CHANGED:
+                    return (this.dashExternalSharingPolicyChangedValue == other.dashExternalSharingPolicyChangedValue) || (this.dashExternalSharingPolicyChangedValue.equals(other.dashExternalSharingPolicyChangedValue));
                 case DATA_PLACEMENT_RESTRICTION_CHANGE_POLICY:
                     return (this.dataPlacementRestrictionChangePolicyValue == other.dataPlacementRestrictionChangePolicyValue) || (this.dataPlacementRestrictionChangePolicyValue.equals(other.dataPlacementRestrictionChangePolicyValue));
                 case DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY:
@@ -38220,6 +45927,8 @@ public final class EventType {
                     return (this.fileRequestsEmailsRestrictedToTeamOnlyValue == other.fileRequestsEmailsRestrictedToTeamOnlyValue) || (this.fileRequestsEmailsRestrictedToTeamOnlyValue.equals(other.fileRequestsEmailsRestrictedToTeamOnlyValue));
                 case FILE_TRANSFERS_POLICY_CHANGED:
                     return (this.fileTransfersPolicyChangedValue == other.fileTransfersPolicyChangedValue) || (this.fileTransfersPolicyChangedValue.equals(other.fileTransfersPolicyChangedValue));
+                case FLEXIBLE_FILE_NAMES_POLICY_CHANGED:
+                    return (this.flexibleFileNamesPolicyChangedValue == other.flexibleFileNamesPolicyChangedValue) || (this.flexibleFileNamesPolicyChangedValue.equals(other.flexibleFileNamesPolicyChangedValue));
                 case FOLDER_LINK_RESTRICTION_POLICY_CHANGED:
                     return (this.folderLinkRestrictionPolicyChangedValue == other.folderLinkRestrictionPolicyChangedValue) || (this.folderLinkRestrictionPolicyChangedValue.equals(other.folderLinkRestrictionPolicyChangedValue));
                 case GOOGLE_SSO_CHANGE_POLICY:
@@ -38244,6 +45953,8 @@ public final class EventType {
                     return (this.memberSpaceLimitsRemoveExceptionValue == other.memberSpaceLimitsRemoveExceptionValue) || (this.memberSpaceLimitsRemoveExceptionValue.equals(other.memberSpaceLimitsRemoveExceptionValue));
                 case MEMBER_SUGGESTIONS_CHANGE_POLICY:
                     return (this.memberSuggestionsChangePolicyValue == other.memberSuggestionsChangePolicyValue) || (this.memberSuggestionsChangePolicyValue.equals(other.memberSuggestionsChangePolicyValue));
+                case MICROSOFT_LOGIN_CHANGE_POLICY:
+                    return (this.microsoftLoginChangePolicyValue == other.microsoftLoginChangePolicyValue) || (this.microsoftLoginChangePolicyValue.equals(other.microsoftLoginChangePolicyValue));
                 case MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY:
                     return (this.microsoftOfficeAddinChangePolicyValue == other.microsoftOfficeAddinChangePolicyValue) || (this.microsoftOfficeAddinChangePolicyValue.equals(other.microsoftOfficeAddinChangePolicyValue));
                 case NETWORK_CONTROL_CHANGE_POLICY:
@@ -38264,16 +45975,30 @@ public final class EventType {
                     return (this.paperEnabledUsersGroupAdditionValue == other.paperEnabledUsersGroupAdditionValue) || (this.paperEnabledUsersGroupAdditionValue.equals(other.paperEnabledUsersGroupAdditionValue));
                 case PAPER_ENABLED_USERS_GROUP_REMOVAL:
                     return (this.paperEnabledUsersGroupRemovalValue == other.paperEnabledUsersGroupRemovalValue) || (this.paperEnabledUsersGroupRemovalValue.equals(other.paperEnabledUsersGroupRemovalValue));
+                case PASSKEY_LOGIN_POLICY_CHANGED:
+                    return (this.passkeyLoginPolicyChangedValue == other.passkeyLoginPolicyChangedValue) || (this.passkeyLoginPolicyChangedValue.equals(other.passkeyLoginPolicyChangedValue));
                 case PASSWORD_STRENGTH_REQUIREMENTS_CHANGE_POLICY:
                     return (this.passwordStrengthRequirementsChangePolicyValue == other.passwordStrengthRequirementsChangePolicyValue) || (this.passwordStrengthRequirementsChangePolicyValue.equals(other.passwordStrengthRequirementsChangePolicyValue));
                 case PERMANENT_DELETE_CHANGE_POLICY:
                     return (this.permanentDeleteChangePolicyValue == other.permanentDeleteChangePolicyValue) || (this.permanentDeleteChangePolicyValue.equals(other.permanentDeleteChangePolicyValue));
+                case PREVIEWS_AI_POLICY_CHANGED:
+                    return (this.previewsAiPolicyChangedValue == other.previewsAiPolicyChangedValue) || (this.previewsAiPolicyChangedValue.equals(other.previewsAiPolicyChangedValue));
+                case REPLAY_ADDING_PEOPLE_POLICY_CHANGED:
+                    return (this.replayAddingPeoplePolicyChangedValue == other.replayAddingPeoplePolicyChangedValue) || (this.replayAddingPeoplePolicyChangedValue.equals(other.replayAddingPeoplePolicyChangedValue));
+                case REPLAY_SHARING_POLICY_CHANGED:
+                    return (this.replaySharingPolicyChangedValue == other.replaySharingPolicyChangedValue) || (this.replaySharingPolicyChangedValue.equals(other.replaySharingPolicyChangedValue));
                 case RESELLER_SUPPORT_CHANGE_POLICY:
                     return (this.resellerSupportChangePolicyValue == other.resellerSupportChangePolicyValue) || (this.resellerSupportChangePolicyValue.equals(other.resellerSupportChangePolicyValue));
                 case REWIND_POLICY_CHANGED:
                     return (this.rewindPolicyChangedValue == other.rewindPolicyChangedValue) || (this.rewindPolicyChangedValue.equals(other.rewindPolicyChangedValue));
+                case SEND_AND_TRACK_POLICY_CHANGED:
+                    return (this.sendAndTrackPolicyChangedValue == other.sendAndTrackPolicyChangedValue) || (this.sendAndTrackPolicyChangedValue.equals(other.sendAndTrackPolicyChangedValue));
+                case SEND_EXTERNAL_SHARING_POLICY_CHANGED:
+                    return (this.sendExternalSharingPolicyChangedValue == other.sendExternalSharingPolicyChangedValue) || (this.sendExternalSharingPolicyChangedValue.equals(other.sendExternalSharingPolicyChangedValue));
                 case SEND_FOR_SIGNATURE_POLICY_CHANGED:
                     return (this.sendForSignaturePolicyChangedValue == other.sendForSignaturePolicyChangedValue) || (this.sendForSignaturePolicyChangedValue.equals(other.sendForSignaturePolicyChangedValue));
+                case SHARED_LINK_DEFAULT_PERMISSIONS_POLICY_CHANGED:
+                    return (this.sharedLinkDefaultPermissionsPolicyChangedValue == other.sharedLinkDefaultPermissionsPolicyChangedValue) || (this.sharedLinkDefaultPermissionsPolicyChangedValue.equals(other.sharedLinkDefaultPermissionsPolicyChangedValue));
                 case SHARING_CHANGE_FOLDER_JOIN_POLICY:
                     return (this.sharingChangeFolderJoinPolicyValue == other.sharingChangeFolderJoinPolicyValue) || (this.sharingChangeFolderJoinPolicyValue.equals(other.sharingChangeFolderJoinPolicyValue));
                 case SHARING_CHANGE_LINK_ALLOW_CHANGE_EXPIRATION_POLICY:
@@ -38292,6 +46017,10 @@ public final class EventType {
                     return (this.showcaseChangeEnabledPolicyValue == other.showcaseChangeEnabledPolicyValue) || (this.showcaseChangeEnabledPolicyValue.equals(other.showcaseChangeEnabledPolicyValue));
                 case SHOWCASE_CHANGE_EXTERNAL_SHARING_POLICY:
                     return (this.showcaseChangeExternalSharingPolicyValue == other.showcaseChangeExternalSharingPolicyValue) || (this.showcaseChangeExternalSharingPolicyValue.equals(other.showcaseChangeExternalSharingPolicyValue));
+                case SIGN_EXTERNAL_SHARING_POLICY_CHANGED:
+                    return (this.signExternalSharingPolicyChangedValue == other.signExternalSharingPolicyChangedValue) || (this.signExternalSharingPolicyChangedValue.equals(other.signExternalSharingPolicyChangedValue));
+                case SIGN_TEMPLATE_CREATION_PERMISSION_CHANGED:
+                    return (this.signTemplateCreationPermissionChangedValue == other.signTemplateCreationPermissionChangedValue) || (this.signTemplateCreationPermissionChangedValue.equals(other.signTemplateCreationPermissionChangedValue));
                 case SMARTER_SMART_SYNC_POLICY_CHANGED:
                     return (this.smarterSmartSyncPolicyChangedValue == other.smarterSmartSyncPolicyChangedValue) || (this.smarterSmartSyncPolicyChangedValue.equals(other.smarterSmartSyncPolicyChangedValue));
                 case SMART_SYNC_CHANGE_POLICY:
@@ -38302,10 +46031,14 @@ public final class EventType {
                     return (this.smartSyncOptOutValue == other.smartSyncOptOutValue) || (this.smartSyncOptOutValue.equals(other.smartSyncOptOutValue));
                 case SSO_CHANGE_POLICY:
                     return (this.ssoChangePolicyValue == other.ssoChangePolicyValue) || (this.ssoChangePolicyValue.equals(other.ssoChangePolicyValue));
+                case STACK_CROSS_TEAM_ACCESS_POLICY_CHANGED:
+                    return (this.stackCrossTeamAccessPolicyChangedValue == other.stackCrossTeamAccessPolicyChangedValue) || (this.stackCrossTeamAccessPolicyChangedValue.equals(other.stackCrossTeamAccessPolicyChangedValue));
                 case TEAM_BRANDING_POLICY_CHANGED:
                     return (this.teamBrandingPolicyChangedValue == other.teamBrandingPolicyChangedValue) || (this.teamBrandingPolicyChangedValue.equals(other.teamBrandingPolicyChangedValue));
                 case TEAM_EXTENSIONS_POLICY_CHANGED:
                     return (this.teamExtensionsPolicyChangedValue == other.teamExtensionsPolicyChangedValue) || (this.teamExtensionsPolicyChangedValue.equals(other.teamExtensionsPolicyChangedValue));
+                case TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED:
+                    return (this.teamMemberStorageRequestPolicyChangedValue == other.teamMemberStorageRequestPolicyChangedValue) || (this.teamMemberStorageRequestPolicyChangedValue.equals(other.teamMemberStorageRequestPolicyChangedValue));
                 case TEAM_SELECTIVE_SYNC_POLICY_CHANGED:
                     return (this.teamSelectiveSyncPolicyChangedValue == other.teamSelectiveSyncPolicyChangedValue) || (this.teamSelectiveSyncPolicyChangedValue.equals(other.teamSelectiveSyncPolicyChangedValue));
                 case TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED:
@@ -38316,6 +46049,8 @@ public final class EventType {
                     return (this.tfaChangePolicyValue == other.tfaChangePolicyValue) || (this.tfaChangePolicyValue.equals(other.tfaChangePolicyValue));
                 case TFA_REMOVE_EXCEPTION:
                     return (this.tfaRemoveExceptionValue == other.tfaRemoveExceptionValue) || (this.tfaRemoveExceptionValue.equals(other.tfaRemoveExceptionValue));
+                case TOP_LEVEL_CONTENT_POLICY_CHANGED:
+                    return (this.topLevelContentPolicyChangedValue == other.topLevelContentPolicyChangedValue) || (this.topLevelContentPolicyChangedValue.equals(other.topLevelContentPolicyChangedValue));
                 case TWO_ACCOUNT_CHANGE_POLICY:
                     return (this.twoAccountChangePolicyValue == other.twoAccountChangePolicyValue) || (this.twoAccountChangePolicyValue.equals(other.twoAccountChangePolicyValue));
                 case VIEWER_INFO_POLICY_CHANGED:
@@ -38352,6 +46087,10 @@ public final class EventType {
                     return (this.teamProfileRemoveBackgroundValue == other.teamProfileRemoveBackgroundValue) || (this.teamProfileRemoveBackgroundValue.equals(other.teamProfileRemoveBackgroundValue));
                 case TEAM_PROFILE_REMOVE_LOGO:
                     return (this.teamProfileRemoveLogoValue == other.teamProfileRemoveLogoValue) || (this.teamProfileRemoveLogoValue.equals(other.teamProfileRemoveLogoValue));
+                case PASSKEY_ADD:
+                    return (this.passkeyAddValue == other.passkeyAddValue) || (this.passkeyAddValue.equals(other.passkeyAddValue));
+                case PASSKEY_REMOVE:
+                    return (this.passkeyRemoveValue == other.passkeyRemoveValue) || (this.passkeyRemoveValue.equals(other.passkeyRemoveValue));
                 case TFA_ADD_BACKUP_PHONE:
                     return (this.tfaAddBackupPhoneValue == other.tfaAddBackupPhoneValue) || (this.tfaAddBackupPhoneValue.equals(other.tfaAddBackupPhoneValue));
                 case TFA_ADD_SECURITY_KEY:
@@ -38590,6 +46329,230 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("file_unresolve_comment", g);
                     FileUnresolveCommentType.Serializer.INSTANCE.serialize(value.fileUnresolveCommentValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_ADDED_COMMENT_TO_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_added_comment_to_stack", g);
+                    DashAddedCommentToStackType.Serializer.INSTANCE.serialize(value.dashAddedCommentToStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_ADDED_CONNECTOR: {
+                    g.writeStartObject();
+                    writeTag("dash_added_connector", g);
+                    DashAddedConnectorType.Serializer.INSTANCE.serialize(value.dashAddedConnectorValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_ADDED_LINK_TO_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_added_link_to_stack", g);
+                    DashAddedLinkToStackType.Serializer.INSTANCE.serialize(value.dashAddedLinkToStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_ADDED_TEAM_EMAIL_DOMAIN_ALLOWLIST: {
+                    g.writeStartObject();
+                    writeTag("dash_added_team_email_domain_allowlist", g);
+                    DashAddedTeamEmailDomainAllowlistType.Serializer.INSTANCE.serialize(value.dashAddedTeamEmailDomainAllowlistValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_ADMIN_ADDED_ORG_WIDE_CONNECTOR: {
+                    g.writeStartObject();
+                    writeTag("dash_admin_added_org_wide_connector", g);
+                    DashAdminAddedOrgWideConnectorType.Serializer.INSTANCE.serialize(value.dashAdminAddedOrgWideConnectorValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_ADMIN_DISABLED_CONNECTOR: {
+                    g.writeStartObject();
+                    writeTag("dash_admin_disabled_connector", g);
+                    DashAdminDisabledConnectorType.Serializer.INSTANCE.serialize(value.dashAdminDisabledConnectorValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_ADMIN_ENABLED_CONNECTOR: {
+                    g.writeStartObject();
+                    writeTag("dash_admin_enabled_connector", g);
+                    DashAdminEnabledConnectorType.Serializer.INSTANCE.serialize(value.dashAdminEnabledConnectorValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_ADMIN_REMOVED_ORG_WIDE_CONNECTOR: {
+                    g.writeStartObject();
+                    writeTag("dash_admin_removed_org_wide_connector", g);
+                    DashAdminRemovedOrgWideConnectorType.Serializer.INSTANCE.serialize(value.dashAdminRemovedOrgWideConnectorValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_ARCHIVED_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_archived_stack", g);
+                    DashArchivedStackType.Serializer.INSTANCE.serialize(value.dashArchivedStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_CHANGED_AUDIENCE_OF_SHARED_LINK_TO_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_changed_audience_of_shared_link_to_stack", g);
+                    DashChangedAudienceOfSharedLinkToStackType.Serializer.INSTANCE.serialize(value.dashChangedAudienceOfSharedLinkToStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_CLONED_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_cloned_stack", g);
+                    DashClonedStackType.Serializer.INSTANCE.serialize(value.dashClonedStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_CONNECTOR_TOOLS_CALL: {
+                    g.writeStartObject();
+                    writeTag("dash_connector_tools_call", g);
+                    DashConnectorToolsCallType.Serializer.INSTANCE.serialize(value.dashConnectorToolsCallValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_CREATED_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_created_stack", g);
+                    DashCreatedStackType.Serializer.INSTANCE.serialize(value.dashCreatedStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_DELETED_COMMENT_FROM_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_deleted_comment_from_stack", g);
+                    DashDeletedCommentFromStackType.Serializer.INSTANCE.serialize(value.dashDeletedCommentFromStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_DELETED_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_deleted_stack", g);
+                    DashDeletedStackType.Serializer.INSTANCE.serialize(value.dashDeletedStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_EDITED_COMMENT_IN_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_edited_comment_in_stack", g);
+                    DashEditedCommentInStackType.Serializer.INSTANCE.serialize(value.dashEditedCommentInStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_EXTERNAL_USER_OPENED_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_external_user_opened_stack", g);
+                    DashExternalUserOpenedStackType.Serializer.INSTANCE.serialize(value.dashExternalUserOpenedStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_FIRST_LAUNCHED_DESKTOP: {
+                    g.writeStartObject();
+                    writeTag("dash_first_launched_desktop", g);
+                    DashFirstLaunchedDesktopType.Serializer.INSTANCE.serialize(value.dashFirstLaunchedDesktopValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_FIRST_LAUNCHED_EXTENSION: {
+                    g.writeStartObject();
+                    writeTag("dash_first_launched_extension", g);
+                    DashFirstLaunchedExtensionType.Serializer.INSTANCE.serialize(value.dashFirstLaunchedExtensionValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_FIRST_LAUNCHED_WEB_START_PAGE: {
+                    g.writeStartObject();
+                    writeTag("dash_first_launched_web_start_page", g);
+                    DashFirstLaunchedWebStartPageType.Serializer.INSTANCE.serialize(value.dashFirstLaunchedWebStartPageValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_OPENED_SHARED_LINK_TO_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_opened_shared_link_to_stack", g);
+                    DashOpenedSharedLinkToStackType.Serializer.INSTANCE.serialize(value.dashOpenedSharedLinkToStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_OPENED_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_opened_stack", g);
+                    DashOpenedStackType.Serializer.INSTANCE.serialize(value.dashOpenedStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_PREVIEW_OPT_OUT_STATUS_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("dash_preview_opt_out_status_changed", g);
+                    DashPreviewOptOutStatusChangedType.Serializer.INSTANCE.serialize(value.dashPreviewOptOutStatusChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_REMOVED_CONNECTOR: {
+                    g.writeStartObject();
+                    writeTag("dash_removed_connector", g);
+                    DashRemovedConnectorType.Serializer.INSTANCE.serialize(value.dashRemovedConnectorValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_REMOVED_LINK_FROM_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_removed_link_from_stack", g);
+                    DashRemovedLinkFromStackType.Serializer.INSTANCE.serialize(value.dashRemovedLinkFromStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_REMOVED_SHARED_LINK_TO_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_removed_shared_link_to_stack", g);
+                    DashRemovedSharedLinkToStackType.Serializer.INSTANCE.serialize(value.dashRemovedSharedLinkToStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_REMOVED_TEAM_EMAIL_DOMAIN_ALLOWLIST: {
+                    g.writeStartObject();
+                    writeTag("dash_removed_team_email_domain_allowlist", g);
+                    DashRemovedTeamEmailDomainAllowlistType.Serializer.INSTANCE.serialize(value.dashRemovedTeamEmailDomainAllowlistValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_RENAMED_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_renamed_stack", g);
+                    DashRenamedStackType.Serializer.INSTANCE.serialize(value.dashRenamedStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_SHARED_LINK_TO_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_shared_link_to_stack", g);
+                    DashSharedLinkToStackType.Serializer.INSTANCE.serialize(value.dashSharedLinkToStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_UNARCHIVED_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_unarchived_stack", g);
+                    DashUnarchivedStackType.Serializer.INSTANCE.serialize(value.dashUnarchivedStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_VIEWED_COMPANY_STACK: {
+                    g.writeStartObject();
+                    writeTag("dash_viewed_company_stack", g);
+                    DashViewedCompanyStackType.Serializer.INSTANCE.serialize(value.dashViewedCompanyStackValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_VIEWED_EXTERNAL_AI_ACTIVITY_REPORT: {
+                    g.writeStartObject();
+                    writeTag("dash_viewed_external_ai_activity_report", g);
+                    DashViewedExternalAiActivityReportType.Serializer.INSTANCE.serialize(value.dashViewedExternalAiActivityReportValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -38971,6 +46934,83 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case ENCRYPTED_FOLDER_CANCEL_TEAM_KEY_ROTATION: {
+                    g.writeStartObject();
+                    writeTag("encrypted_folder_cancel_team_key_rotation", g);
+                    EncryptedFolderCancelTeamKeyRotationType.Serializer.INSTANCE.serialize(value.encryptedFolderCancelTeamKeyRotationValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ENCRYPTED_FOLDER_ENROLL_BACKUP_KEY: {
+                    g.writeStartObject();
+                    writeTag("encrypted_folder_enroll_backup_key", g);
+                    EncryptedFolderEnrollBackupKeyType.Serializer.INSTANCE.serialize(value.encryptedFolderEnrollBackupKeyValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ENCRYPTED_FOLDER_ENROLL_CLIENT: {
+                    g.writeStartObject();
+                    writeTag("encrypted_folder_enroll_client", g);
+                    EncryptedFolderEnrollClientType.Serializer.INSTANCE.serialize(value.encryptedFolderEnrollClientValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ENCRYPTED_FOLDER_ENROLL_TEAM: {
+                    g.writeStartObject();
+                    writeTag("encrypted_folder_enroll_team", g);
+                    EncryptedFolderEnrollTeamType.Serializer.INSTANCE.serialize(value.encryptedFolderEnrollTeamValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ENCRYPTED_FOLDER_FINISH_TEAM_UNENROLLMENT: {
+                    g.writeStartObject();
+                    writeTag("encrypted_folder_finish_team_unenrollment", g);
+                    EncryptedFolderFinishTeamUnenrollmentType.Serializer.INSTANCE.serialize(value.encryptedFolderFinishTeamUnenrollmentValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ENCRYPTED_FOLDER_INIT_TEAM_KEY_ROTATION: {
+                    g.writeStartObject();
+                    writeTag("encrypted_folder_init_team_key_rotation", g);
+                    EncryptedFolderInitTeamKeyRotationType.Serializer.INSTANCE.serialize(value.encryptedFolderInitTeamKeyRotationValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ENCRYPTED_FOLDER_INIT_TEAM_UNENROLLMENT: {
+                    g.writeStartObject();
+                    writeTag("encrypted_folder_init_team_unenrollment", g);
+                    EncryptedFolderInitTeamUnenrollmentType.Serializer.INSTANCE.serialize(value.encryptedFolderInitTeamUnenrollmentValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ENCRYPTED_FOLDER_REMOVE_BACKUP_KEY: {
+                    g.writeStartObject();
+                    writeTag("encrypted_folder_remove_backup_key", g);
+                    EncryptedFolderRemoveBackupKeyType.Serializer.INSTANCE.serialize(value.encryptedFolderRemoveBackupKeyValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ENCRYPTED_FOLDER_ROTATE_TEAM_KEY: {
+                    g.writeStartObject();
+                    writeTag("encrypted_folder_rotate_team_key", g);
+                    EncryptedFolderRotateTeamKeyType.Serializer.INSTANCE.serialize(value.encryptedFolderRotateTeamKeyValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ENCRYPTED_FOLDER_UNENROLL_CLIENT: {
+                    g.writeStartObject();
+                    writeTag("encrypted_folder_unenroll_client", g);
+                    EncryptedFolderUnenrollClientType.Serializer.INSTANCE.serialize(value.encryptedFolderUnenrollClientValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_ENCRYPTION_KEY_ACTIVATE_KEY: {
+                    g.writeStartObject();
+                    writeTag("team_encryption_key_activate_key", g);
+                    TeamEncryptionKeyActivateKeyType.Serializer.INSTANCE.serialize(value.teamEncryptionKeyActivateKeyValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case TEAM_ENCRYPTION_KEY_CANCEL_KEY_DELETION: {
                     g.writeStartObject();
                     writeTag("team_encryption_key_cancel_key_deletion", g);
@@ -38982,6 +47022,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("team_encryption_key_create_key", g);
                     TeamEncryptionKeyCreateKeyType.Serializer.INSTANCE.serialize(value.teamEncryptionKeyCreateKeyValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_ENCRYPTION_KEY_DEACTIVATE_KEY: {
+                    g.writeStartObject();
+                    writeTag("team_encryption_key_deactivate_key", g);
+                    TeamEncryptionKeyDeactivateKeyType.Serializer.INSTANCE.serialize(value.teamEncryptionKeyDeactivateKeyValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -39202,6 +47249,20 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case REPLAY_FILE_DOWNLOADED: {
+                    g.writeStartObject();
+                    writeTag("replay_file_downloaded", g);
+                    ReplayFileDownloadedType.Serializer.INSTANCE.serialize(value.replayFileDownloadedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case REPLAY_TEAM_PROJECT_CREATED: {
+                    g.writeStartObject();
+                    writeTag("replay_team_project_created", g);
+                    ReplayTeamProjectCreatedType.Serializer.INSTANCE.serialize(value.replayTeamProjectCreatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case REWIND_FOLDER: {
                     g.writeStartObject();
                     writeTag("rewind_folder", g);
@@ -39241,6 +47302,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("email_ingest_receive_file", g);
                     EmailIngestReceiveFileType.Serializer.INSTANCE.serialize(value.emailIngestReceiveFileValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case FILE_REQUEST_AUTO_CLOSE: {
+                    g.writeStartObject();
+                    writeTag("file_request_auto_close", g);
+                    FileRequestAutoCloseType.Serializer.INSTANCE.serialize(value.fileRequestAutoCloseValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -39332,6 +47400,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("group_description_updated", g);
                     GroupDescriptionUpdatedType.Serializer.INSTANCE.serialize(value.groupDescriptionUpdatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case GROUP_EXTERNAL_SHARING_SETTING_OVERRIDE_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("group_external_sharing_setting_override_changed", g);
+                    GroupExternalSharingSettingOverrideChangedType.Serializer.INSTANCE.serialize(value.groupExternalSharingSettingOverrideChangedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -39451,6 +47526,20 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("sso_error", g);
                     SsoErrorType.Serializer.INSTANCE.serialize(value.ssoErrorValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ADDON_ASSIGNED: {
+                    g.writeStartObject();
+                    writeTag("addon_assigned", g);
+                    AddonAssignedType.Serializer.INSTANCE.serialize(value.addonAssignedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ADDON_REMOVED: {
+                    g.writeStartObject();
+                    writeTag("addon_removed", g);
+                    AddonRemovedType.Serializer.INSTANCE.serialize(value.addonRemovedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -39626,6 +47715,20 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("pending_secondary_email_added", g);
                     PendingSecondaryEmailAddedType.Serializer.INSTANCE.serialize(value.pendingSecondaryEmailAddedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PRODUCT_ASSIGNED_TO_MEMBER: {
+                    g.writeStartObject();
+                    writeTag("product_assigned_to_member", g);
+                    ProductAssignedToMemberType.Serializer.INSTANCE.serialize(value.productAssignedToMemberValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PRODUCT_REMOVED_FROM_MEMBER: {
+                    g.writeStartObject();
+                    writeTag("product_removed_from_member", g);
+                    ProductRemovedFromMemberType.Serializer.INSTANCE.serialize(value.productRemovedFromMemberValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -40070,6 +48173,20 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case MEMBER_ACCESS_DETAILS_CREATE_REPORT: {
+                    g.writeStartObject();
+                    writeTag("member_access_details_create_report", g);
+                    MemberAccessDetailsCreateReportType.Serializer.INSTANCE.serialize(value.memberAccessDetailsCreateReportValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEMBER_ACCESS_DETAILS_CREATE_REPORT_FAILED: {
+                    g.writeStartObject();
+                    writeTag("member_access_details_create_report_failed", g);
+                    MemberAccessDetailsCreateReportFailedType.Serializer.INSTANCE.serialize(value.memberAccessDetailsCreateReportFailedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case NO_EXPIRATION_LINK_GEN_CREATE_REPORT: {
                     g.writeStartObject();
                     writeTag("no_expiration_link_gen_create_report", g);
@@ -40147,6 +48264,20 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case SHARED_FOLDERS_CREATE_REPORT: {
+                    g.writeStartObject();
+                    writeTag("shared_folders_create_report", g);
+                    SharedFoldersCreateReportType.Serializer.INSTANCE.serialize(value.sharedFoldersCreateReportValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SHARED_FOLDERS_CREATE_REPORT_FAILED: {
+                    g.writeStartObject();
+                    writeTag("shared_folders_create_report_failed", g);
+                    SharedFoldersCreateReportFailedType.Serializer.INSTANCE.serialize(value.sharedFoldersCreateReportFailedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case SMART_SYNC_CREATE_ADMIN_PRIVILEGE_REPORT: {
                     g.writeStartObject();
                     writeTag("smart_sync_create_admin_privilege_report", g);
@@ -40165,6 +48296,34 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("team_activity_create_report_fail", g);
                     TeamActivityCreateReportFailType.Serializer.INSTANCE.serialize(value.teamActivityCreateReportFailValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_FOLDERS_CREATE_REPORT: {
+                    g.writeStartObject();
+                    writeTag("team_folders_create_report", g);
+                    TeamFoldersCreateReportType.Serializer.INSTANCE.serialize(value.teamFoldersCreateReportValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_FOLDERS_CREATE_REPORT_FAILED: {
+                    g.writeStartObject();
+                    writeTag("team_folders_create_report_failed", g);
+                    TeamFoldersCreateReportFailedType.Serializer.INSTANCE.serialize(value.teamFoldersCreateReportFailedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_STORAGE_CREATE_REPORT: {
+                    g.writeStartObject();
+                    writeTag("team_storage_create_report", g);
+                    TeamStorageCreateReportType.Serializer.INSTANCE.serialize(value.teamStorageCreateReportValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_STORAGE_CREATE_REPORT_FAILED: {
+                    g.writeStartObject();
+                    writeTag("team_storage_create_report_failed", g);
+                    TeamStorageCreateReportFailedType.Serializer.INSTANCE.serialize(value.teamStorageCreateReportFailedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -40277,6 +48436,62 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("replay_project_team_delete", g);
                     ReplayProjectTeamDeleteType.Serializer.INSTANCE.serialize(value.replayProjectTeamDeleteValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SEND_AND_TRACK_FILE_ADDED: {
+                    g.writeStartObject();
+                    writeTag("send_and_track_file_added", g);
+                    SendAndTrackFileAddedType.Serializer.INSTANCE.serialize(value.sendAndTrackFileAddedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SEND_AND_TRACK_FILE_RENAMED: {
+                    g.writeStartObject();
+                    writeTag("send_and_track_file_renamed", g);
+                    SendAndTrackFileRenamedType.Serializer.INSTANCE.serialize(value.sendAndTrackFileRenamedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SEND_AND_TRACK_FILE_UPDATED: {
+                    g.writeStartObject();
+                    writeTag("send_and_track_file_updated", g);
+                    SendAndTrackFileUpdatedType.Serializer.INSTANCE.serialize(value.sendAndTrackFileUpdatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SEND_AND_TRACK_LINK_CREATED: {
+                    g.writeStartObject();
+                    writeTag("send_and_track_link_created", g);
+                    SendAndTrackLinkCreatedType.Serializer.INSTANCE.serialize(value.sendAndTrackLinkCreatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SEND_AND_TRACK_LINK_DELETED: {
+                    g.writeStartObject();
+                    writeTag("send_and_track_link_deleted", g);
+                    SendAndTrackLinkDeletedType.Serializer.INSTANCE.serialize(value.sendAndTrackLinkDeletedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SEND_AND_TRACK_LINK_UPDATED: {
+                    g.writeStartObject();
+                    writeTag("send_and_track_link_updated", g);
+                    SendAndTrackLinkUpdatedType.Serializer.INSTANCE.serialize(value.sendAndTrackLinkUpdatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SEND_AND_TRACK_LINK_VIEWED: {
+                    g.writeStartObject();
+                    writeTag("send_and_track_link_viewed", g);
+                    SendAndTrackLinkViewedType.Serializer.INSTANCE.serialize(value.sendAndTrackLinkViewedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SEND_AND_TRACK_REMOVED_FILE_AND_ASSOCIATED_LINKS: {
+                    g.writeStartObject();
+                    writeTag("send_and_track_removed_file_and_associated_links", g);
+                    SendAndTrackRemovedFileAndAssociatedLinksType.Serializer.INSTANCE.serialize(value.sendAndTrackRemovedFileAndAssociatedLinksValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -40665,6 +48880,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case SHARED_LINK_REMOVE_VISITOR: {
+                    g.writeStartObject();
+                    writeTag("shared_link_remove_visitor", g);
+                    SharedLinkRemoveVisitorType.Serializer.INSTANCE.serialize(value.sharedLinkRemoveVisitorValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case SHARED_LINK_SETTINGS_ADD_EXPIRATION: {
                     g.writeStartObject();
                     writeTag("shared_link_settings_add_expiration", g);
@@ -40938,6 +49160,69 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case SIGN_SIGNATURE_REQUEST_CANCELED: {
+                    g.writeStartObject();
+                    writeTag("sign_signature_request_canceled", g);
+                    SignSignatureRequestCanceledType.Serializer.INSTANCE.serialize(value.signSignatureRequestCanceledValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SIGN_SIGNATURE_REQUEST_COMPLETED: {
+                    g.writeStartObject();
+                    writeTag("sign_signature_request_completed", g);
+                    SignSignatureRequestCompletedType.Serializer.INSTANCE.serialize(value.signSignatureRequestCompletedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SIGN_SIGNATURE_REQUEST_DECLINED: {
+                    g.writeStartObject();
+                    writeTag("sign_signature_request_declined", g);
+                    SignSignatureRequestDeclinedType.Serializer.INSTANCE.serialize(value.signSignatureRequestDeclinedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SIGN_SIGNATURE_REQUEST_OPENED: {
+                    g.writeStartObject();
+                    writeTag("sign_signature_request_opened", g);
+                    SignSignatureRequestOpenedType.Serializer.INSTANCE.serialize(value.signSignatureRequestOpenedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SIGN_SIGNATURE_REQUEST_REMINDER_SENT: {
+                    g.writeStartObject();
+                    writeTag("sign_signature_request_reminder_sent", g);
+                    SignSignatureRequestReminderSentType.Serializer.INSTANCE.serialize(value.signSignatureRequestReminderSentValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SIGN_SIGNATURE_REQUEST_SENT: {
+                    g.writeStartObject();
+                    writeTag("sign_signature_request_sent", g);
+                    SignSignatureRequestSentType.Serializer.INSTANCE.serialize(value.signSignatureRequestSentValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SIGN_TEMPLATE_CREATED: {
+                    g.writeStartObject();
+                    writeTag("sign_template_created", g);
+                    SignTemplateCreatedType.Serializer.INSTANCE.serialize(value.signTemplateCreatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SIGN_TEMPLATE_SHARED: {
+                    g.writeStartObject();
+                    writeTag("sign_template_shared", g);
+                    SignTemplateSharedType.Serializer.INSTANCE.serialize(value.signTemplateSharedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case RISC_SECURITY_EVENT: {
+                    g.writeStartObject();
+                    writeTag("risc_security_event", g);
+                    RiscSecurityEventType.Serializer.INSTANCE.serialize(value.riscSecurityEventValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case SSO_ADD_CERT: {
                     g.writeStartObject();
                     writeTag("sso_add_cert", g);
@@ -41043,6 +49328,27 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_CAPS_TYPE: {
+                    g.writeStartObject();
+                    writeTag("team_folder_space_limits_change_caps_type", g);
+                    TeamFolderSpaceLimitsChangeCapsTypeType.Serializer.INSTANCE.serialize(value.teamFolderSpaceLimitsChangeCapsTypeValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_LIMIT: {
+                    g.writeStartObject();
+                    writeTag("team_folder_space_limits_change_limit", g);
+                    TeamFolderSpaceLimitsChangeLimitType.Serializer.INSTANCE.serialize(value.teamFolderSpaceLimitsChangeLimitValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_FOLDER_SPACE_LIMITS_CHANGE_NOTIFICATION_TARGET: {
+                    g.writeStartObject();
+                    writeTag("team_folder_space_limits_change_notification_target", g);
+                    TeamFolderSpaceLimitsChangeNotificationTargetType.Serializer.INSTANCE.serialize(value.teamFolderSpaceLimitsChangeNotificationTargetValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case TEAM_SELECTIVE_SYNC_SETTINGS_CHANGED: {
                     g.writeStartObject();
                     writeTag("team_selective_sync_settings_changed", g);
@@ -41064,6 +49370,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case AI_THIRD_PARTY_SHARING_DROPBOX_BASE_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("ai_third_party_sharing_dropbox_base_policy_changed", g);
+                    AiThirdPartySharingDropboxBasePolicyChangedType.Serializer.INSTANCE.serialize(value.aiThirdPartySharingDropboxBasePolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case ALLOW_DOWNLOAD_DISABLED: {
                     g.writeStartObject();
                     writeTag("allow_download_disabled", g);
@@ -41078,6 +49391,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case APPLE_LOGIN_CHANGE_POLICY: {
+                    g.writeStartObject();
+                    writeTag("apple_login_change_policy", g);
+                    AppleLoginChangePolicyType.Serializer.INSTANCE.serialize(value.appleLoginChangePolicyValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case APP_PERMISSIONS_CHANGED: {
                     g.writeStartObject();
                     writeTag("app_permissions_changed", g);
@@ -41089,6 +49409,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("camera_uploads_policy_changed", g);
                     CameraUploadsPolicyChangedType.Serializer.INSTANCE.serialize(value.cameraUploadsPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case CAPTURE_TEAM_SPACE_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("capture_team_space_policy_changed", g);
+                    CaptureTeamSpacePolicyChangedType.Serializer.INSTANCE.serialize(value.captureTeamSpacePolicyChangedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -41117,6 +49444,20 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("content_administration_policy_changed", g);
                     ContentAdministrationPolicyChangedType.Serializer.INSTANCE.serialize(value.contentAdministrationPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case CONTENT_DELETION_PROTECTION_CHANGE_POLICY: {
+                    g.writeStartObject();
+                    writeTag("content_deletion_protection_change_policy", g);
+                    ContentDeletionProtectionChangePolicyType.Serializer.INSTANCE.serialize(value.contentDeletionProtectionChangePolicyValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case DASH_EXTERNAL_SHARING_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("dash_external_sharing_policy_changed", g);
+                    DashExternalSharingPolicyChangedType.Serializer.INSTANCE.serialize(value.dashExternalSharingPolicyChangedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -41288,6 +49629,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case FLEXIBLE_FILE_NAMES_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("flexible_file_names_policy_changed", g);
+                    FlexibleFileNamesPolicyChangedType.Serializer.INSTANCE.serialize(value.flexibleFileNamesPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case FOLDER_LINK_RESTRICTION_POLICY_CHANGED: {
                     g.writeStartObject();
                     writeTag("folder_link_restriction_policy_changed", g);
@@ -41372,6 +49720,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case MICROSOFT_LOGIN_CHANGE_POLICY: {
+                    g.writeStartObject();
+                    writeTag("microsoft_login_change_policy", g);
+                    MicrosoftLoginChangePolicyType.Serializer.INSTANCE.serialize(value.microsoftLoginChangePolicyValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY: {
                     g.writeStartObject();
                     writeTag("microsoft_office_addin_change_policy", g);
@@ -41442,6 +49797,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case PASSKEY_LOGIN_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("passkey_login_policy_changed", g);
+                    PasskeyLoginPolicyChangedType.Serializer.INSTANCE.serialize(value.passkeyLoginPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case PASSWORD_STRENGTH_REQUIREMENTS_CHANGE_POLICY: {
                     g.writeStartObject();
                     writeTag("password_strength_requirements_change_policy", g);
@@ -41453,6 +49815,27 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("permanent_delete_change_policy", g);
                     PermanentDeleteChangePolicyType.Serializer.INSTANCE.serialize(value.permanentDeleteChangePolicyValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PREVIEWS_AI_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("previews_ai_policy_changed", g);
+                    PreviewsAiPolicyChangedType.Serializer.INSTANCE.serialize(value.previewsAiPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case REPLAY_ADDING_PEOPLE_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("replay_adding_people_policy_changed", g);
+                    ReplayAddingPeoplePolicyChangedType.Serializer.INSTANCE.serialize(value.replayAddingPeoplePolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case REPLAY_SHARING_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("replay_sharing_policy_changed", g);
+                    ReplaySharingPolicyChangedType.Serializer.INSTANCE.serialize(value.replaySharingPolicyChangedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -41470,10 +49853,31 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case SEND_AND_TRACK_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("send_and_track_policy_changed", g);
+                    SendAndTrackPolicyChangedType.Serializer.INSTANCE.serialize(value.sendAndTrackPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SEND_EXTERNAL_SHARING_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("send_external_sharing_policy_changed", g);
+                    SendExternalSharingPolicyChangedType.Serializer.INSTANCE.serialize(value.sendExternalSharingPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case SEND_FOR_SIGNATURE_POLICY_CHANGED: {
                     g.writeStartObject();
                     writeTag("send_for_signature_policy_changed", g);
                     SendForSignaturePolicyChangedType.Serializer.INSTANCE.serialize(value.sendForSignaturePolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SHARED_LINK_DEFAULT_PERMISSIONS_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("shared_link_default_permissions_policy_changed", g);
+                    SharedLinkDefaultPermissionsPolicyChangedType.Serializer.INSTANCE.serialize(value.sharedLinkDefaultPermissionsPolicyChangedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -41540,6 +49944,20 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case SIGN_EXTERNAL_SHARING_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("sign_external_sharing_policy_changed", g);
+                    SignExternalSharingPolicyChangedType.Serializer.INSTANCE.serialize(value.signExternalSharingPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SIGN_TEMPLATE_CREATION_PERMISSION_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("sign_template_creation_permission_changed", g);
+                    SignTemplateCreationPermissionChangedType.Serializer.INSTANCE.serialize(value.signTemplateCreationPermissionChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case SMARTER_SMART_SYNC_POLICY_CHANGED: {
                     g.writeStartObject();
                     writeTag("smarter_smart_sync_policy_changed", g);
@@ -41575,6 +49993,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case STACK_CROSS_TEAM_ACCESS_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("stack_cross_team_access_policy_changed", g);
+                    StackCrossTeamAccessPolicyChangedType.Serializer.INSTANCE.serialize(value.stackCrossTeamAccessPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case TEAM_BRANDING_POLICY_CHANGED: {
                     g.writeStartObject();
                     writeTag("team_branding_policy_changed", g);
@@ -41586,6 +50011,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("team_extensions_policy_changed", g);
                     TeamExtensionsPolicyChangedType.Serializer.INSTANCE.serialize(value.teamExtensionsPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("team_member_storage_request_policy_changed", g);
+                    TeamMemberStorageRequestPolicyChangedType.Serializer.INSTANCE.serialize(value.teamMemberStorageRequestPolicyChangedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -41621,6 +50053,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("tfa_remove_exception", g);
                     TfaRemoveExceptionType.Serializer.INSTANCE.serialize(value.tfaRemoveExceptionValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TOP_LEVEL_CONTENT_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("top_level_content_policy_changed", g);
+                    TopLevelContentPolicyChangedType.Serializer.INSTANCE.serialize(value.topLevelContentPolicyChangedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -41747,6 +50186,20 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("team_profile_remove_logo", g);
                     TeamProfileRemoveLogoType.Serializer.INSTANCE.serialize(value.teamProfileRemoveLogoValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PASSKEY_ADD: {
+                    g.writeStartObject();
+                    writeTag("passkey_add", g);
+                    PasskeyAddType.Serializer.INSTANCE.serialize(value.passkeyAddValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PASSKEY_REMOVE: {
+                    g.writeStartObject();
+                    writeTag("passkey_remove", g);
+                    PasskeyRemoveType.Serializer.INSTANCE.serialize(value.passkeyRemoveValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -42098,6 +50551,166 @@ public final class EventType {
                 fieldValue = FileUnresolveCommentType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.fileUnresolveComment(fieldValue);
             }
+            else if ("dash_added_comment_to_stack".equals(tag)) {
+                DashAddedCommentToStackType fieldValue = null;
+                fieldValue = DashAddedCommentToStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashAddedCommentToStack(fieldValue);
+            }
+            else if ("dash_added_connector".equals(tag)) {
+                DashAddedConnectorType fieldValue = null;
+                fieldValue = DashAddedConnectorType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashAddedConnector(fieldValue);
+            }
+            else if ("dash_added_link_to_stack".equals(tag)) {
+                DashAddedLinkToStackType fieldValue = null;
+                fieldValue = DashAddedLinkToStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashAddedLinkToStack(fieldValue);
+            }
+            else if ("dash_added_team_email_domain_allowlist".equals(tag)) {
+                DashAddedTeamEmailDomainAllowlistType fieldValue = null;
+                fieldValue = DashAddedTeamEmailDomainAllowlistType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashAddedTeamEmailDomainAllowlist(fieldValue);
+            }
+            else if ("dash_admin_added_org_wide_connector".equals(tag)) {
+                DashAdminAddedOrgWideConnectorType fieldValue = null;
+                fieldValue = DashAdminAddedOrgWideConnectorType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashAdminAddedOrgWideConnector(fieldValue);
+            }
+            else if ("dash_admin_disabled_connector".equals(tag)) {
+                DashAdminDisabledConnectorType fieldValue = null;
+                fieldValue = DashAdminDisabledConnectorType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashAdminDisabledConnector(fieldValue);
+            }
+            else if ("dash_admin_enabled_connector".equals(tag)) {
+                DashAdminEnabledConnectorType fieldValue = null;
+                fieldValue = DashAdminEnabledConnectorType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashAdminEnabledConnector(fieldValue);
+            }
+            else if ("dash_admin_removed_org_wide_connector".equals(tag)) {
+                DashAdminRemovedOrgWideConnectorType fieldValue = null;
+                fieldValue = DashAdminRemovedOrgWideConnectorType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashAdminRemovedOrgWideConnector(fieldValue);
+            }
+            else if ("dash_archived_stack".equals(tag)) {
+                DashArchivedStackType fieldValue = null;
+                fieldValue = DashArchivedStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashArchivedStack(fieldValue);
+            }
+            else if ("dash_changed_audience_of_shared_link_to_stack".equals(tag)) {
+                DashChangedAudienceOfSharedLinkToStackType fieldValue = null;
+                fieldValue = DashChangedAudienceOfSharedLinkToStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashChangedAudienceOfSharedLinkToStack(fieldValue);
+            }
+            else if ("dash_cloned_stack".equals(tag)) {
+                DashClonedStackType fieldValue = null;
+                fieldValue = DashClonedStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashClonedStack(fieldValue);
+            }
+            else if ("dash_connector_tools_call".equals(tag)) {
+                DashConnectorToolsCallType fieldValue = null;
+                fieldValue = DashConnectorToolsCallType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashConnectorToolsCall(fieldValue);
+            }
+            else if ("dash_created_stack".equals(tag)) {
+                DashCreatedStackType fieldValue = null;
+                fieldValue = DashCreatedStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashCreatedStack(fieldValue);
+            }
+            else if ("dash_deleted_comment_from_stack".equals(tag)) {
+                DashDeletedCommentFromStackType fieldValue = null;
+                fieldValue = DashDeletedCommentFromStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashDeletedCommentFromStack(fieldValue);
+            }
+            else if ("dash_deleted_stack".equals(tag)) {
+                DashDeletedStackType fieldValue = null;
+                fieldValue = DashDeletedStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashDeletedStack(fieldValue);
+            }
+            else if ("dash_edited_comment_in_stack".equals(tag)) {
+                DashEditedCommentInStackType fieldValue = null;
+                fieldValue = DashEditedCommentInStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashEditedCommentInStack(fieldValue);
+            }
+            else if ("dash_external_user_opened_stack".equals(tag)) {
+                DashExternalUserOpenedStackType fieldValue = null;
+                fieldValue = DashExternalUserOpenedStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashExternalUserOpenedStack(fieldValue);
+            }
+            else if ("dash_first_launched_desktop".equals(tag)) {
+                DashFirstLaunchedDesktopType fieldValue = null;
+                fieldValue = DashFirstLaunchedDesktopType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashFirstLaunchedDesktop(fieldValue);
+            }
+            else if ("dash_first_launched_extension".equals(tag)) {
+                DashFirstLaunchedExtensionType fieldValue = null;
+                fieldValue = DashFirstLaunchedExtensionType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashFirstLaunchedExtension(fieldValue);
+            }
+            else if ("dash_first_launched_web_start_page".equals(tag)) {
+                DashFirstLaunchedWebStartPageType fieldValue = null;
+                fieldValue = DashFirstLaunchedWebStartPageType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashFirstLaunchedWebStartPage(fieldValue);
+            }
+            else if ("dash_opened_shared_link_to_stack".equals(tag)) {
+                DashOpenedSharedLinkToStackType fieldValue = null;
+                fieldValue = DashOpenedSharedLinkToStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashOpenedSharedLinkToStack(fieldValue);
+            }
+            else if ("dash_opened_stack".equals(tag)) {
+                DashOpenedStackType fieldValue = null;
+                fieldValue = DashOpenedStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashOpenedStack(fieldValue);
+            }
+            else if ("dash_preview_opt_out_status_changed".equals(tag)) {
+                DashPreviewOptOutStatusChangedType fieldValue = null;
+                fieldValue = DashPreviewOptOutStatusChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashPreviewOptOutStatusChanged(fieldValue);
+            }
+            else if ("dash_removed_connector".equals(tag)) {
+                DashRemovedConnectorType fieldValue = null;
+                fieldValue = DashRemovedConnectorType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashRemovedConnector(fieldValue);
+            }
+            else if ("dash_removed_link_from_stack".equals(tag)) {
+                DashRemovedLinkFromStackType fieldValue = null;
+                fieldValue = DashRemovedLinkFromStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashRemovedLinkFromStack(fieldValue);
+            }
+            else if ("dash_removed_shared_link_to_stack".equals(tag)) {
+                DashRemovedSharedLinkToStackType fieldValue = null;
+                fieldValue = DashRemovedSharedLinkToStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashRemovedSharedLinkToStack(fieldValue);
+            }
+            else if ("dash_removed_team_email_domain_allowlist".equals(tag)) {
+                DashRemovedTeamEmailDomainAllowlistType fieldValue = null;
+                fieldValue = DashRemovedTeamEmailDomainAllowlistType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashRemovedTeamEmailDomainAllowlist(fieldValue);
+            }
+            else if ("dash_renamed_stack".equals(tag)) {
+                DashRenamedStackType fieldValue = null;
+                fieldValue = DashRenamedStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashRenamedStack(fieldValue);
+            }
+            else if ("dash_shared_link_to_stack".equals(tag)) {
+                DashSharedLinkToStackType fieldValue = null;
+                fieldValue = DashSharedLinkToStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashSharedLinkToStack(fieldValue);
+            }
+            else if ("dash_unarchived_stack".equals(tag)) {
+                DashUnarchivedStackType fieldValue = null;
+                fieldValue = DashUnarchivedStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashUnarchivedStack(fieldValue);
+            }
+            else if ("dash_viewed_company_stack".equals(tag)) {
+                DashViewedCompanyStackType fieldValue = null;
+                fieldValue = DashViewedCompanyStackType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashViewedCompanyStack(fieldValue);
+            }
+            else if ("dash_viewed_external_ai_activity_report".equals(tag)) {
+                DashViewedExternalAiActivityReportType fieldValue = null;
+                fieldValue = DashViewedExternalAiActivityReportType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashViewedExternalAiActivityReport(fieldValue);
+            }
             else if ("governance_policy_add_folders".equals(tag)) {
                 GovernancePolicyAddFoldersType fieldValue = null;
                 fieldValue = GovernancePolicyAddFoldersType.Serializer.INSTANCE.deserialize(p, true);
@@ -42368,6 +50981,61 @@ public final class EventType {
                 fieldValue = EnabledDomainInvitesType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.enabledDomainInvites(fieldValue);
             }
+            else if ("encrypted_folder_cancel_team_key_rotation".equals(tag)) {
+                EncryptedFolderCancelTeamKeyRotationType fieldValue = null;
+                fieldValue = EncryptedFolderCancelTeamKeyRotationType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.encryptedFolderCancelTeamKeyRotation(fieldValue);
+            }
+            else if ("encrypted_folder_enroll_backup_key".equals(tag)) {
+                EncryptedFolderEnrollBackupKeyType fieldValue = null;
+                fieldValue = EncryptedFolderEnrollBackupKeyType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.encryptedFolderEnrollBackupKey(fieldValue);
+            }
+            else if ("encrypted_folder_enroll_client".equals(tag)) {
+                EncryptedFolderEnrollClientType fieldValue = null;
+                fieldValue = EncryptedFolderEnrollClientType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.encryptedFolderEnrollClient(fieldValue);
+            }
+            else if ("encrypted_folder_enroll_team".equals(tag)) {
+                EncryptedFolderEnrollTeamType fieldValue = null;
+                fieldValue = EncryptedFolderEnrollTeamType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.encryptedFolderEnrollTeam(fieldValue);
+            }
+            else if ("encrypted_folder_finish_team_unenrollment".equals(tag)) {
+                EncryptedFolderFinishTeamUnenrollmentType fieldValue = null;
+                fieldValue = EncryptedFolderFinishTeamUnenrollmentType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.encryptedFolderFinishTeamUnenrollment(fieldValue);
+            }
+            else if ("encrypted_folder_init_team_key_rotation".equals(tag)) {
+                EncryptedFolderInitTeamKeyRotationType fieldValue = null;
+                fieldValue = EncryptedFolderInitTeamKeyRotationType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.encryptedFolderInitTeamKeyRotation(fieldValue);
+            }
+            else if ("encrypted_folder_init_team_unenrollment".equals(tag)) {
+                EncryptedFolderInitTeamUnenrollmentType fieldValue = null;
+                fieldValue = EncryptedFolderInitTeamUnenrollmentType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.encryptedFolderInitTeamUnenrollment(fieldValue);
+            }
+            else if ("encrypted_folder_remove_backup_key".equals(tag)) {
+                EncryptedFolderRemoveBackupKeyType fieldValue = null;
+                fieldValue = EncryptedFolderRemoveBackupKeyType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.encryptedFolderRemoveBackupKey(fieldValue);
+            }
+            else if ("encrypted_folder_rotate_team_key".equals(tag)) {
+                EncryptedFolderRotateTeamKeyType fieldValue = null;
+                fieldValue = EncryptedFolderRotateTeamKeyType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.encryptedFolderRotateTeamKey(fieldValue);
+            }
+            else if ("encrypted_folder_unenroll_client".equals(tag)) {
+                EncryptedFolderUnenrollClientType fieldValue = null;
+                fieldValue = EncryptedFolderUnenrollClientType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.encryptedFolderUnenrollClient(fieldValue);
+            }
+            else if ("team_encryption_key_activate_key".equals(tag)) {
+                TeamEncryptionKeyActivateKeyType fieldValue = null;
+                fieldValue = TeamEncryptionKeyActivateKeyType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamEncryptionKeyActivateKey(fieldValue);
+            }
             else if ("team_encryption_key_cancel_key_deletion".equals(tag)) {
                 TeamEncryptionKeyCancelKeyDeletionType fieldValue = null;
                 fieldValue = TeamEncryptionKeyCancelKeyDeletionType.Serializer.INSTANCE.deserialize(p, true);
@@ -42377,6 +51045,11 @@ public final class EventType {
                 TeamEncryptionKeyCreateKeyType fieldValue = null;
                 fieldValue = TeamEncryptionKeyCreateKeyType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.teamEncryptionKeyCreateKey(fieldValue);
+            }
+            else if ("team_encryption_key_deactivate_key".equals(tag)) {
+                TeamEncryptionKeyDeactivateKeyType fieldValue = null;
+                fieldValue = TeamEncryptionKeyDeactivateKeyType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamEncryptionKeyDeactivateKey(fieldValue);
             }
             else if ("team_encryption_key_delete_key".equals(tag)) {
                 TeamEncryptionKeyDeleteKeyType fieldValue = null;
@@ -42533,6 +51206,16 @@ public final class EventType {
                 fieldValue = ReplayFileDeleteType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.replayFileDelete(fieldValue);
             }
+            else if ("replay_file_downloaded".equals(tag)) {
+                ReplayFileDownloadedType fieldValue = null;
+                fieldValue = ReplayFileDownloadedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.replayFileDownloaded(fieldValue);
+            }
+            else if ("replay_team_project_created".equals(tag)) {
+                ReplayTeamProjectCreatedType fieldValue = null;
+                fieldValue = ReplayTeamProjectCreatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.replayTeamProjectCreated(fieldValue);
+            }
             else if ("rewind_folder".equals(tag)) {
                 RewindFolderType fieldValue = null;
                 fieldValue = RewindFolderType.Serializer.INSTANCE.deserialize(p, true);
@@ -42562,6 +51245,11 @@ public final class EventType {
                 EmailIngestReceiveFileType fieldValue = null;
                 fieldValue = EmailIngestReceiveFileType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.emailIngestReceiveFile(fieldValue);
+            }
+            else if ("file_request_auto_close".equals(tag)) {
+                FileRequestAutoCloseType fieldValue = null;
+                fieldValue = FileRequestAutoCloseType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.fileRequestAutoClose(fieldValue);
             }
             else if ("file_request_change".equals(tag)) {
                 FileRequestChangeType fieldValue = null;
@@ -42627,6 +51315,11 @@ public final class EventType {
                 GroupDescriptionUpdatedType fieldValue = null;
                 fieldValue = GroupDescriptionUpdatedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.groupDescriptionUpdated(fieldValue);
+            }
+            else if ("group_external_sharing_setting_override_changed".equals(tag)) {
+                GroupExternalSharingSettingOverrideChangedType fieldValue = null;
+                fieldValue = GroupExternalSharingSettingOverrideChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.groupExternalSharingSettingOverrideChanged(fieldValue);
             }
             else if ("group_join_policy_updated".equals(tag)) {
                 GroupJoinPolicyUpdatedType fieldValue = null;
@@ -42712,6 +51405,16 @@ public final class EventType {
                 SsoErrorType fieldValue = null;
                 fieldValue = SsoErrorType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.ssoError(fieldValue);
+            }
+            else if ("addon_assigned".equals(tag)) {
+                AddonAssignedType fieldValue = null;
+                fieldValue = AddonAssignedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.addonAssigned(fieldValue);
+            }
+            else if ("addon_removed".equals(tag)) {
+                AddonRemovedType fieldValue = null;
+                fieldValue = AddonRemovedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.addonRemoved(fieldValue);
             }
             else if ("backup_admin_invitation_sent".equals(tag)) {
                 BackupAdminInvitationSentType fieldValue = null;
@@ -42837,6 +51540,16 @@ public final class EventType {
                 PendingSecondaryEmailAddedType fieldValue = null;
                 fieldValue = PendingSecondaryEmailAddedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.pendingSecondaryEmailAdded(fieldValue);
+            }
+            else if ("product_assigned_to_member".equals(tag)) {
+                ProductAssignedToMemberType fieldValue = null;
+                fieldValue = ProductAssignedToMemberType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.productAssignedToMember(fieldValue);
+            }
+            else if ("product_removed_from_member".equals(tag)) {
+                ProductRemovedFromMemberType fieldValue = null;
+                fieldValue = ProductRemovedFromMemberType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.productRemovedFromMember(fieldValue);
             }
             else if ("secondary_email_deleted".equals(tag)) {
                 SecondaryEmailDeletedType fieldValue = null;
@@ -43153,6 +51866,16 @@ public final class EventType {
                 fieldValue = ExternalSharingReportFailedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.externalSharingReportFailed(fieldValue);
             }
+            else if ("member_access_details_create_report".equals(tag)) {
+                MemberAccessDetailsCreateReportType fieldValue = null;
+                fieldValue = MemberAccessDetailsCreateReportType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.memberAccessDetailsCreateReport(fieldValue);
+            }
+            else if ("member_access_details_create_report_failed".equals(tag)) {
+                MemberAccessDetailsCreateReportFailedType fieldValue = null;
+                fieldValue = MemberAccessDetailsCreateReportFailedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.memberAccessDetailsCreateReportFailed(fieldValue);
+            }
             else if ("no_expiration_link_gen_create_report".equals(tag)) {
                 NoExpirationLinkGenCreateReportType fieldValue = null;
                 fieldValue = NoExpirationLinkGenCreateReportType.Serializer.INSTANCE.deserialize(p, true);
@@ -43208,6 +51931,16 @@ public final class EventType {
                 fieldValue = RansomwareAlertCreateReportFailedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.ransomwareAlertCreateReportFailed(fieldValue);
             }
+            else if ("shared_folders_create_report".equals(tag)) {
+                SharedFoldersCreateReportType fieldValue = null;
+                fieldValue = SharedFoldersCreateReportType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sharedFoldersCreateReport(fieldValue);
+            }
+            else if ("shared_folders_create_report_failed".equals(tag)) {
+                SharedFoldersCreateReportFailedType fieldValue = null;
+                fieldValue = SharedFoldersCreateReportFailedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sharedFoldersCreateReportFailed(fieldValue);
+            }
             else if ("smart_sync_create_admin_privilege_report".equals(tag)) {
                 SmartSyncCreateAdminPrivilegeReportType fieldValue = null;
                 fieldValue = SmartSyncCreateAdminPrivilegeReportType.Serializer.INSTANCE.deserialize(p, true);
@@ -43222,6 +51955,26 @@ public final class EventType {
                 TeamActivityCreateReportFailType fieldValue = null;
                 fieldValue = TeamActivityCreateReportFailType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.teamActivityCreateReportFail(fieldValue);
+            }
+            else if ("team_folders_create_report".equals(tag)) {
+                TeamFoldersCreateReportType fieldValue = null;
+                fieldValue = TeamFoldersCreateReportType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamFoldersCreateReport(fieldValue);
+            }
+            else if ("team_folders_create_report_failed".equals(tag)) {
+                TeamFoldersCreateReportFailedType fieldValue = null;
+                fieldValue = TeamFoldersCreateReportFailedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamFoldersCreateReportFailed(fieldValue);
+            }
+            else if ("team_storage_create_report".equals(tag)) {
+                TeamStorageCreateReportType fieldValue = null;
+                fieldValue = TeamStorageCreateReportType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamStorageCreateReport(fieldValue);
+            }
+            else if ("team_storage_create_report_failed".equals(tag)) {
+                TeamStorageCreateReportFailedType fieldValue = null;
+                fieldValue = TeamStorageCreateReportFailedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamStorageCreateReportFailed(fieldValue);
             }
             else if ("collection_share".equals(tag)) {
                 CollectionShareType fieldValue = null;
@@ -43302,6 +52055,46 @@ public final class EventType {
                 ReplayProjectTeamDeleteType fieldValue = null;
                 fieldValue = ReplayProjectTeamDeleteType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.replayProjectTeamDelete(fieldValue);
+            }
+            else if ("send_and_track_file_added".equals(tag)) {
+                SendAndTrackFileAddedType fieldValue = null;
+                fieldValue = SendAndTrackFileAddedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sendAndTrackFileAdded(fieldValue);
+            }
+            else if ("send_and_track_file_renamed".equals(tag)) {
+                SendAndTrackFileRenamedType fieldValue = null;
+                fieldValue = SendAndTrackFileRenamedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sendAndTrackFileRenamed(fieldValue);
+            }
+            else if ("send_and_track_file_updated".equals(tag)) {
+                SendAndTrackFileUpdatedType fieldValue = null;
+                fieldValue = SendAndTrackFileUpdatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sendAndTrackFileUpdated(fieldValue);
+            }
+            else if ("send_and_track_link_created".equals(tag)) {
+                SendAndTrackLinkCreatedType fieldValue = null;
+                fieldValue = SendAndTrackLinkCreatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sendAndTrackLinkCreated(fieldValue);
+            }
+            else if ("send_and_track_link_deleted".equals(tag)) {
+                SendAndTrackLinkDeletedType fieldValue = null;
+                fieldValue = SendAndTrackLinkDeletedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sendAndTrackLinkDeleted(fieldValue);
+            }
+            else if ("send_and_track_link_updated".equals(tag)) {
+                SendAndTrackLinkUpdatedType fieldValue = null;
+                fieldValue = SendAndTrackLinkUpdatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sendAndTrackLinkUpdated(fieldValue);
+            }
+            else if ("send_and_track_link_viewed".equals(tag)) {
+                SendAndTrackLinkViewedType fieldValue = null;
+                fieldValue = SendAndTrackLinkViewedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sendAndTrackLinkViewed(fieldValue);
+            }
+            else if ("send_and_track_removed_file_and_associated_links".equals(tag)) {
+                SendAndTrackRemovedFileAndAssociatedLinksType fieldValue = null;
+                fieldValue = SendAndTrackRemovedFileAndAssociatedLinksType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sendAndTrackRemovedFileAndAssociatedLinks(fieldValue);
             }
             else if ("sf_add_group".equals(tag)) {
                 SfAddGroupType fieldValue = null;
@@ -43578,6 +52371,11 @@ public final class EventType {
                 fieldValue = SharedLinkRemoveExpiryType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.sharedLinkRemoveExpiry(fieldValue);
             }
+            else if ("shared_link_remove_visitor".equals(tag)) {
+                SharedLinkRemoveVisitorType fieldValue = null;
+                fieldValue = SharedLinkRemoveVisitorType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sharedLinkRemoveVisitor(fieldValue);
+            }
             else if ("shared_link_settings_add_expiration".equals(tag)) {
                 SharedLinkSettingsAddExpirationType fieldValue = null;
                 fieldValue = SharedLinkSettingsAddExpirationType.Serializer.INSTANCE.deserialize(p, true);
@@ -43773,6 +52571,51 @@ public final class EventType {
                 fieldValue = ShowcaseViewType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.showcaseView(fieldValue);
             }
+            else if ("sign_signature_request_canceled".equals(tag)) {
+                SignSignatureRequestCanceledType fieldValue = null;
+                fieldValue = SignSignatureRequestCanceledType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.signSignatureRequestCanceled(fieldValue);
+            }
+            else if ("sign_signature_request_completed".equals(tag)) {
+                SignSignatureRequestCompletedType fieldValue = null;
+                fieldValue = SignSignatureRequestCompletedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.signSignatureRequestCompleted(fieldValue);
+            }
+            else if ("sign_signature_request_declined".equals(tag)) {
+                SignSignatureRequestDeclinedType fieldValue = null;
+                fieldValue = SignSignatureRequestDeclinedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.signSignatureRequestDeclined(fieldValue);
+            }
+            else if ("sign_signature_request_opened".equals(tag)) {
+                SignSignatureRequestOpenedType fieldValue = null;
+                fieldValue = SignSignatureRequestOpenedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.signSignatureRequestOpened(fieldValue);
+            }
+            else if ("sign_signature_request_reminder_sent".equals(tag)) {
+                SignSignatureRequestReminderSentType fieldValue = null;
+                fieldValue = SignSignatureRequestReminderSentType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.signSignatureRequestReminderSent(fieldValue);
+            }
+            else if ("sign_signature_request_sent".equals(tag)) {
+                SignSignatureRequestSentType fieldValue = null;
+                fieldValue = SignSignatureRequestSentType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.signSignatureRequestSent(fieldValue);
+            }
+            else if ("sign_template_created".equals(tag)) {
+                SignTemplateCreatedType fieldValue = null;
+                fieldValue = SignTemplateCreatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.signTemplateCreated(fieldValue);
+            }
+            else if ("sign_template_shared".equals(tag)) {
+                SignTemplateSharedType fieldValue = null;
+                fieldValue = SignTemplateSharedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.signTemplateShared(fieldValue);
+            }
+            else if ("risc_security_event".equals(tag)) {
+                RiscSecurityEventType fieldValue = null;
+                fieldValue = RiscSecurityEventType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.riscSecurityEvent(fieldValue);
+            }
             else if ("sso_add_cert".equals(tag)) {
                 SsoAddCertType fieldValue = null;
                 fieldValue = SsoAddCertType.Serializer.INSTANCE.deserialize(p, true);
@@ -43848,6 +52691,21 @@ public final class EventType {
                 fieldValue = TeamFolderRenameType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.teamFolderRename(fieldValue);
             }
+            else if ("team_folder_space_limits_change_caps_type".equals(tag)) {
+                TeamFolderSpaceLimitsChangeCapsTypeType fieldValue = null;
+                fieldValue = TeamFolderSpaceLimitsChangeCapsTypeType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamFolderSpaceLimitsChangeCapsType(fieldValue);
+            }
+            else if ("team_folder_space_limits_change_limit".equals(tag)) {
+                TeamFolderSpaceLimitsChangeLimitType fieldValue = null;
+                fieldValue = TeamFolderSpaceLimitsChangeLimitType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamFolderSpaceLimitsChangeLimit(fieldValue);
+            }
+            else if ("team_folder_space_limits_change_notification_target".equals(tag)) {
+                TeamFolderSpaceLimitsChangeNotificationTargetType fieldValue = null;
+                fieldValue = TeamFolderSpaceLimitsChangeNotificationTargetType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamFolderSpaceLimitsChangeNotificationTarget(fieldValue);
+            }
             else if ("team_selective_sync_settings_changed".equals(tag)) {
                 TeamSelectiveSyncSettingsChangedType fieldValue = null;
                 fieldValue = TeamSelectiveSyncSettingsChangedType.Serializer.INSTANCE.deserialize(p, true);
@@ -43863,6 +52721,11 @@ public final class EventType {
                 fieldValue = AdminEmailRemindersChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.adminEmailRemindersChanged(fieldValue);
             }
+            else if ("ai_third_party_sharing_dropbox_base_policy_changed".equals(tag)) {
+                AiThirdPartySharingDropboxBasePolicyChangedType fieldValue = null;
+                fieldValue = AiThirdPartySharingDropboxBasePolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.aiThirdPartySharingDropboxBasePolicyChanged(fieldValue);
+            }
             else if ("allow_download_disabled".equals(tag)) {
                 AllowDownloadDisabledType fieldValue = null;
                 fieldValue = AllowDownloadDisabledType.Serializer.INSTANCE.deserialize(p, true);
@@ -43873,6 +52736,11 @@ public final class EventType {
                 fieldValue = AllowDownloadEnabledType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.allowDownloadEnabled(fieldValue);
             }
+            else if ("apple_login_change_policy".equals(tag)) {
+                AppleLoginChangePolicyType fieldValue = null;
+                fieldValue = AppleLoginChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.appleLoginChangePolicy(fieldValue);
+            }
             else if ("app_permissions_changed".equals(tag)) {
                 AppPermissionsChangedType fieldValue = null;
                 fieldValue = AppPermissionsChangedType.Serializer.INSTANCE.deserialize(p, true);
@@ -43882,6 +52750,11 @@ public final class EventType {
                 CameraUploadsPolicyChangedType fieldValue = null;
                 fieldValue = CameraUploadsPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.cameraUploadsPolicyChanged(fieldValue);
+            }
+            else if ("capture_team_space_policy_changed".equals(tag)) {
+                CaptureTeamSpacePolicyChangedType fieldValue = null;
+                fieldValue = CaptureTeamSpacePolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.captureTeamSpacePolicyChanged(fieldValue);
             }
             else if ("capture_transcript_policy_changed".equals(tag)) {
                 CaptureTranscriptPolicyChangedType fieldValue = null;
@@ -43902,6 +52775,16 @@ public final class EventType {
                 ContentAdministrationPolicyChangedType fieldValue = null;
                 fieldValue = ContentAdministrationPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.contentAdministrationPolicyChanged(fieldValue);
+            }
+            else if ("content_deletion_protection_change_policy".equals(tag)) {
+                ContentDeletionProtectionChangePolicyType fieldValue = null;
+                fieldValue = ContentDeletionProtectionChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.contentDeletionProtectionChangePolicy(fieldValue);
+            }
+            else if ("dash_external_sharing_policy_changed".equals(tag)) {
+                DashExternalSharingPolicyChangedType fieldValue = null;
+                fieldValue = DashExternalSharingPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.dashExternalSharingPolicyChanged(fieldValue);
             }
             else if ("data_placement_restriction_change_policy".equals(tag)) {
                 DataPlacementRestrictionChangePolicyType fieldValue = null;
@@ -44023,6 +52906,11 @@ public final class EventType {
                 fieldValue = FileTransfersPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.fileTransfersPolicyChanged(fieldValue);
             }
+            else if ("flexible_file_names_policy_changed".equals(tag)) {
+                FlexibleFileNamesPolicyChangedType fieldValue = null;
+                fieldValue = FlexibleFileNamesPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.flexibleFileNamesPolicyChanged(fieldValue);
+            }
             else if ("folder_link_restriction_policy_changed".equals(tag)) {
                 FolderLinkRestrictionPolicyChangedType fieldValue = null;
                 fieldValue = FolderLinkRestrictionPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
@@ -44083,6 +52971,11 @@ public final class EventType {
                 fieldValue = MemberSuggestionsChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.memberSuggestionsChangePolicy(fieldValue);
             }
+            else if ("microsoft_login_change_policy".equals(tag)) {
+                MicrosoftLoginChangePolicyType fieldValue = null;
+                fieldValue = MicrosoftLoginChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.microsoftLoginChangePolicy(fieldValue);
+            }
             else if ("microsoft_office_addin_change_policy".equals(tag)) {
                 MicrosoftOfficeAddinChangePolicyType fieldValue = null;
                 fieldValue = MicrosoftOfficeAddinChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
@@ -44133,6 +53026,11 @@ public final class EventType {
                 fieldValue = PaperEnabledUsersGroupRemovalType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.paperEnabledUsersGroupRemoval(fieldValue);
             }
+            else if ("passkey_login_policy_changed".equals(tag)) {
+                PasskeyLoginPolicyChangedType fieldValue = null;
+                fieldValue = PasskeyLoginPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.passkeyLoginPolicyChanged(fieldValue);
+            }
             else if ("password_strength_requirements_change_policy".equals(tag)) {
                 PasswordStrengthRequirementsChangePolicyType fieldValue = null;
                 fieldValue = PasswordStrengthRequirementsChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
@@ -44142,6 +53040,21 @@ public final class EventType {
                 PermanentDeleteChangePolicyType fieldValue = null;
                 fieldValue = PermanentDeleteChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.permanentDeleteChangePolicy(fieldValue);
+            }
+            else if ("previews_ai_policy_changed".equals(tag)) {
+                PreviewsAiPolicyChangedType fieldValue = null;
+                fieldValue = PreviewsAiPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.previewsAiPolicyChanged(fieldValue);
+            }
+            else if ("replay_adding_people_policy_changed".equals(tag)) {
+                ReplayAddingPeoplePolicyChangedType fieldValue = null;
+                fieldValue = ReplayAddingPeoplePolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.replayAddingPeoplePolicyChanged(fieldValue);
+            }
+            else if ("replay_sharing_policy_changed".equals(tag)) {
+                ReplaySharingPolicyChangedType fieldValue = null;
+                fieldValue = ReplaySharingPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.replaySharingPolicyChanged(fieldValue);
             }
             else if ("reseller_support_change_policy".equals(tag)) {
                 ResellerSupportChangePolicyType fieldValue = null;
@@ -44153,10 +53066,25 @@ public final class EventType {
                 fieldValue = RewindPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.rewindPolicyChanged(fieldValue);
             }
+            else if ("send_and_track_policy_changed".equals(tag)) {
+                SendAndTrackPolicyChangedType fieldValue = null;
+                fieldValue = SendAndTrackPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sendAndTrackPolicyChanged(fieldValue);
+            }
+            else if ("send_external_sharing_policy_changed".equals(tag)) {
+                SendExternalSharingPolicyChangedType fieldValue = null;
+                fieldValue = SendExternalSharingPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sendExternalSharingPolicyChanged(fieldValue);
+            }
             else if ("send_for_signature_policy_changed".equals(tag)) {
                 SendForSignaturePolicyChangedType fieldValue = null;
                 fieldValue = SendForSignaturePolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.sendForSignaturePolicyChanged(fieldValue);
+            }
+            else if ("shared_link_default_permissions_policy_changed".equals(tag)) {
+                SharedLinkDefaultPermissionsPolicyChangedType fieldValue = null;
+                fieldValue = SharedLinkDefaultPermissionsPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sharedLinkDefaultPermissionsPolicyChanged(fieldValue);
             }
             else if ("sharing_change_folder_join_policy".equals(tag)) {
                 SharingChangeFolderJoinPolicyType fieldValue = null;
@@ -44203,6 +53131,16 @@ public final class EventType {
                 fieldValue = ShowcaseChangeExternalSharingPolicyType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.showcaseChangeExternalSharingPolicy(fieldValue);
             }
+            else if ("sign_external_sharing_policy_changed".equals(tag)) {
+                SignExternalSharingPolicyChangedType fieldValue = null;
+                fieldValue = SignExternalSharingPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.signExternalSharingPolicyChanged(fieldValue);
+            }
+            else if ("sign_template_creation_permission_changed".equals(tag)) {
+                SignTemplateCreationPermissionChangedType fieldValue = null;
+                fieldValue = SignTemplateCreationPermissionChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.signTemplateCreationPermissionChanged(fieldValue);
+            }
             else if ("smarter_smart_sync_policy_changed".equals(tag)) {
                 SmarterSmartSyncPolicyChangedType fieldValue = null;
                 fieldValue = SmarterSmartSyncPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
@@ -44228,6 +53166,11 @@ public final class EventType {
                 fieldValue = SsoChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.ssoChangePolicy(fieldValue);
             }
+            else if ("stack_cross_team_access_policy_changed".equals(tag)) {
+                StackCrossTeamAccessPolicyChangedType fieldValue = null;
+                fieldValue = StackCrossTeamAccessPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.stackCrossTeamAccessPolicyChanged(fieldValue);
+            }
             else if ("team_branding_policy_changed".equals(tag)) {
                 TeamBrandingPolicyChangedType fieldValue = null;
                 fieldValue = TeamBrandingPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
@@ -44237,6 +53180,11 @@ public final class EventType {
                 TeamExtensionsPolicyChangedType fieldValue = null;
                 fieldValue = TeamExtensionsPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.teamExtensionsPolicyChanged(fieldValue);
+            }
+            else if ("team_member_storage_request_policy_changed".equals(tag)) {
+                TeamMemberStorageRequestPolicyChangedType fieldValue = null;
+                fieldValue = TeamMemberStorageRequestPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamMemberStorageRequestPolicyChanged(fieldValue);
             }
             else if ("team_selective_sync_policy_changed".equals(tag)) {
                 TeamSelectiveSyncPolicyChangedType fieldValue = null;
@@ -44262,6 +53210,11 @@ public final class EventType {
                 TfaRemoveExceptionType fieldValue = null;
                 fieldValue = TfaRemoveExceptionType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.tfaRemoveException(fieldValue);
+            }
+            else if ("top_level_content_policy_changed".equals(tag)) {
+                TopLevelContentPolicyChangedType fieldValue = null;
+                fieldValue = TopLevelContentPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.topLevelContentPolicyChanged(fieldValue);
             }
             else if ("two_account_change_policy".equals(tag)) {
                 TwoAccountChangePolicyType fieldValue = null;
@@ -44352,6 +53305,16 @@ public final class EventType {
                 TeamProfileRemoveLogoType fieldValue = null;
                 fieldValue = TeamProfileRemoveLogoType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.teamProfileRemoveLogo(fieldValue);
+            }
+            else if ("passkey_add".equals(tag)) {
+                PasskeyAddType fieldValue = null;
+                fieldValue = PasskeyAddType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.passkeyAdd(fieldValue);
+            }
+            else if ("passkey_remove".equals(tag)) {
+                PasskeyRemoveType fieldValue = null;
+                fieldValue = PasskeyRemoveType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.passkeyRemove(fieldValue);
             }
             else if ("tfa_add_backup_phone".equals(tag)) {
                 TfaAddBackupPhoneType fieldValue = null;

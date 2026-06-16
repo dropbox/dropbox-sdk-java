@@ -37,7 +37,7 @@ public final class UploadApiRateLimitValue {
     public enum Tag {
         /**
          * This team has unlimited upload API quota. So far both server version
-         * account and legacy  account type have unlimited monthly upload api
+         * account and legacy account type have unlimited monthly upload api
          * quota.
          */
         UNLIMITED,
@@ -58,7 +58,7 @@ public final class UploadApiRateLimitValue {
 
     /**
      * This team has unlimited upload API quota. So far both server version
-     * account and legacy  account type have unlimited monthly upload api quota.
+     * account and legacy account type have unlimited monthly upload api quota.
      */
     public static final UploadApiRateLimitValue UNLIMITED = new UploadApiRateLimitValue().withTag(Tag.UNLIMITED);
     /**

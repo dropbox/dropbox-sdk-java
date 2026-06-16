@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Activated a hold.
  */
 public class LegalHoldsActivateAHoldDetails {
-    // struct team_log.LegalHoldsActivateAHoldDetails (team_log_generated.stone)
+    // struct team_log.LegalHoldsActivateAHoldDetails (team_log.stone)
 
     @Nonnull
     protected final String legalHoldId;

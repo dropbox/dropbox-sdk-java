@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * who can add, remove, or change the privileges of members.
  */
 public enum AclUpdatePolicy {
-    // union sharing.AclUpdatePolicy (sharing_folders.stone)
+    // union sharing.AclUpdatePolicy (sharing.stone)
     /**
      * Only the owner can update the ACL.
      */

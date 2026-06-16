@@ -22,7 +22,8 @@ public class ExportBuilder extends DbxDownloadStyleBuilder<ExportResult> {
      * Creates a new instance of this builder.
      *
      * @param path  The path of the file to be exported. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      * @param _client  Dropbox namespace-specific client used to issue files
      *     requests.

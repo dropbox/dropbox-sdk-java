@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Category of events in event audit log.
  */
 public enum EventCategory {
-    // union team_log.EventCategory (team_log_generated.stone)
+    // union team_log.EventCategory (team_log.stone)
     /**
      * Events that involve team related alerts.
      */
@@ -33,6 +33,10 @@ public enum EventCategory {
      * Events that have to do with comments on files and Paper documents.
      */
     COMMENTS,
+    /**
+     * Events that apply to Dropbox Dash
+     */
+    DASH,
     /**
      * Events that involve data governance actions
      */
@@ -93,6 +97,10 @@ public enum EventCategory {
      */
     SHOWCASE,
     /**
+     * Events that apply to Dropbox Sign
+     */
+    SIGNATURES,
+    /**
      * Events that involve using or configuring single sign-on as well as
      * administrative policies concerning single sign-on.
      */
@@ -146,6 +154,10 @@ public enum EventCategory {
                 }
                 case COMMENTS: {
                     g.writeString("comments");
+                    break;
+                }
+                case DASH: {
+                    g.writeString("dash");
                     break;
                 }
                 case DATA_GOVERNANCE: {
@@ -202,6 +214,10 @@ public enum EventCategory {
                 }
                 case SHOWCASE: {
                     g.writeString("showcase");
+                    break;
+                }
+                case SIGNATURES: {
+                    g.writeString("signatures");
                     break;
                 }
                 case SSO: {
@@ -261,6 +277,9 @@ public enum EventCategory {
             else if ("comments".equals(tag)) {
                 value = EventCategory.COMMENTS;
             }
+            else if ("dash".equals(tag)) {
+                value = EventCategory.DASH;
+            }
             else if ("data_governance".equals(tag)) {
                 value = EventCategory.DATA_GOVERNANCE;
             }
@@ -302,6 +321,9 @@ public enum EventCategory {
             }
             else if ("showcase".equals(tag)) {
                 value = EventCategory.SHOWCASE;
+            }
+            else if ("signatures".equals(tag)) {
+                value = EventCategory.SIGNATURES;
             }
             else if ("sso".equals(tag)) {
                 value = EventCategory.SSO;

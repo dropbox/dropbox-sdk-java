@@ -24,8 +24,8 @@ public enum TeamMembershipType {
      */
     FULL,
     /**
-     * User does not have access to the shared quota and team admins have
-     * restricted administrative control.
+     * Field is deprecated. User does not have access to the shared quota and
+     * team admins have restricted administrative control.
      */
     LIMITED;
 

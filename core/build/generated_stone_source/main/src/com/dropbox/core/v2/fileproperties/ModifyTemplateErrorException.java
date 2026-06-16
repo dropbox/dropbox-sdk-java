@@ -15,10 +15,10 @@ import com.dropbox.core.LocalizedText;
  * {@link DbxTeamFilePropertiesRequests#templatesUpdateForTeam(String)}, {@link
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#propertiesTemplateAdd(String,String,java.util.List)},
  * {@link
- * com.dropbox.core.v2.team.DbxTeamTeamRequests#propertiesTemplateUpdate(String)},
- * {@link
  * DbxUserFilePropertiesRequests#templatesAddForUser(String,String,java.util.List)},
- * and {@link DbxUserFilePropertiesRequests#templatesUpdateForUser(String)}.
+ * {@link DbxUserFilePropertiesRequests#templatesUpdateForUser(String)}, and
+ * {@link
+ * com.dropbox.core.v2.team.DbxTeamTeamRequests#propertiesTemplateUpdate(String)}.
  * </p>
  */
 public class ModifyTemplateErrorException extends DbxApiException {
@@ -26,9 +26,9 @@ public class ModifyTemplateErrorException extends DbxApiException {
     //     2/file_properties/templates/add_for_team
     //     2/file_properties/templates/update_for_team
     //     2/team/properties/template/add
-    //     2/team/properties/template/update
     //     2/file_properties/templates/add_for_user
     //     2/file_properties/templates/update_for_user
+    //     2/team/properties/template/update
 
     private static final long serialVersionUID = 0L;
 
@@ -39,10 +39,10 @@ public class ModifyTemplateErrorException extends DbxApiException {
      * {@link
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#propertiesTemplateAdd(String,String,java.util.List)},
      * {@link
-     * com.dropbox.core.v2.team.DbxTeamTeamRequests#propertiesTemplateUpdate(String)},
-     * {@link
      * DbxUserFilePropertiesRequests#templatesAddForUser(String,String,java.util.List)},
-     * and {@link DbxUserFilePropertiesRequests#templatesUpdateForUser(String)}.
+     * {@link DbxUserFilePropertiesRequests#templatesUpdateForUser(String)}, and
+     * {@link
+     * com.dropbox.core.v2.team.DbxTeamTeamRequests#propertiesTemplateUpdate(String)}.
      */
     public final ModifyTemplateError errorValue;
 

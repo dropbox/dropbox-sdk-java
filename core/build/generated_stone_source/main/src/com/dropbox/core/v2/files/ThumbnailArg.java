@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ThumbnailArg {
     // struct files.ThumbnailArg (files.stone)
@@ -30,6 +31,10 @@ public class ThumbnailArg {
     protected final ThumbnailSize size;
     @Nonnull
     protected final ThumbnailMode mode;
+    @Nonnull
+    protected final ThumbnailQuality quality;
+    @Nullable
+    protected final Boolean excludeMediaInfo;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -37,23 +42,29 @@ public class ThumbnailArg {
      *
      * @param path  The path to the image file you want to thumbnail. Must match
      *     pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
-     * @param format  The format for the thumbnail image, jpeg (default) or png.
-     *     For  images that are photos, jpeg should be preferred, while png is
-     *     better for screenshots and digital arts. Must not be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
+     * @param format  The format for the thumbnail image, jpeg (default), png,
+     *     or webp. For images that are photos, jpeg should be preferred, while
+     *     png is better for screenshots and digital arts, and web for
+     *     compression. Must not be {@code null}.
      * @param size  The size for the thumbnail image. Must not be {@code null}.
      * @param mode  How to resize and crop the image to achieve the desired
      *     size. Must not be {@code null}.
+     * @param quality  Quality of the thumbnail image. Must not be {@code null}.
+     * @param excludeMediaInfo  Normally, {@link FileMetadata#getMediaInfo} is
+     *     set for photo and video. When this flag is true, {@link
+     *     FileMetadata#getMediaInfo} is not populated. This improves latency
+     *     for use cases where `media_info` is not needed.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailArg(@Nonnull String path, @Nonnull ThumbnailFormat format, @Nonnull ThumbnailSize size, @Nonnull ThumbnailMode mode) {
+    public ThumbnailArg(@Nonnull String path, @Nonnull ThumbnailFormat format, @Nonnull ThumbnailSize size, @Nonnull ThumbnailMode mode, @Nonnull ThumbnailQuality quality, @Nullable Boolean excludeMediaInfo) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -69,6 +80,11 @@ public class ThumbnailArg {
             throw new IllegalArgumentException("Required value for 'mode' is null");
         }
         this.mode = mode;
+        if (quality == null) {
+            throw new IllegalArgumentException("Required value for 'quality' is null");
+        }
+        this.quality = quality;
+        this.excludeMediaInfo = excludeMediaInfo;
     }
 
     /**
@@ -78,14 +94,14 @@ public class ThumbnailArg {
      *
      * @param path  The path to the image file you want to thumbnail. Must match
      *     pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
     public ThumbnailArg(@Nonnull String path) {
-        this(path, ThumbnailFormat.JPEG, ThumbnailSize.W64H64, ThumbnailMode.STRICT);
+        this(path, ThumbnailFormat.JPEG, ThumbnailSize.W64H64, ThumbnailMode.STRICT, ThumbnailQuality.QUALITY_80, null);
     }
 
     /**
@@ -99,9 +115,9 @@ public class ThumbnailArg {
     }
 
     /**
-     * The format for the thumbnail image, jpeg (default) or png. For  images
-     * that are photos, jpeg should be preferred, while png is  better for
-     * screenshots and digital arts.
+     * The format for the thumbnail image, jpeg (default), png, or webp. For
+     * images that are photos, jpeg should be preferred, while png is better for
+     * screenshots and digital arts, and web for compression.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailFormat.JPEG.
@@ -134,12 +150,36 @@ public class ThumbnailArg {
     }
 
     /**
+     * Quality of the thumbnail image.
+     *
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     ThumbnailQuality.QUALITY_80.
+     */
+    @Nonnull
+    public ThumbnailQuality getQuality() {
+        return quality;
+    }
+
+    /**
+     * Normally, {@link FileMetadata#getMediaInfo} is set for photo and video.
+     * When this flag is true, {@link FileMetadata#getMediaInfo} is not
+     * populated. This improves latency for use cases where `media_info` is not
+     * needed.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public Boolean getExcludeMediaInfo() {
+        return excludeMediaInfo;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path to the image file you want to thumbnail. Must match
      *     pattern "{@code
-     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}" and not
-     *     be {@code null}.
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
+     *     and not be {@code null}.
      *
      * @return builder for this class.
      *
@@ -159,18 +199,22 @@ public class ThumbnailArg {
         protected ThumbnailFormat format;
         protected ThumbnailSize size;
         protected ThumbnailMode mode;
+        protected ThumbnailQuality quality;
+        protected Boolean excludeMediaInfo;
 
         protected Builder(String path) {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
+            if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;
             this.format = ThumbnailFormat.JPEG;
             this.size = ThumbnailSize.W64H64;
             this.mode = ThumbnailMode.STRICT;
+            this.quality = ThumbnailQuality.QUALITY_80;
+            this.excludeMediaInfo = null;
         }
 
         /**
@@ -179,11 +223,11 @@ public class ThumbnailArg {
          * <p> If left unset or set to {@code null}, defaults to {@code
          * ThumbnailFormat.JPEG}. </p>
          *
-         * @param format  The format for the thumbnail image, jpeg (default) or
-         *     png. For  images that are photos, jpeg should be preferred, while
-         *     png is  better for screenshots and digital arts. Must not be
-         *     {@code null}. Defaults to {@code ThumbnailFormat.JPEG} when set
-         *     to {@code null}.
+         * @param format  The format for the thumbnail image, jpeg (default),
+         *     png, or webp. For images that are photos, jpeg should be
+         *     preferred, while png is better for screenshots and digital arts,
+         *     and web for compression. Must not be {@code null}. Defaults to
+         *     {@code ThumbnailFormat.JPEG} when set to {@code null}.
          *
          * @return this builder
          *
@@ -251,13 +295,53 @@ public class ThumbnailArg {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code
+         * ThumbnailQuality.QUALITY_80}. </p>
+         *
+         * @param quality  Quality of the thumbnail image. Must not be {@code
+         *     null}. Defaults to {@code ThumbnailQuality.QUALITY_80} when set
+         *     to {@code null}.
+         *
+         * @return this builder
+         *
+         * @throws IllegalArgumentException  If any argument does not meet its
+         *     preconditions.
+         */
+        public Builder withQuality(ThumbnailQuality quality) {
+            if (quality != null) {
+                this.quality = quality;
+            }
+            else {
+                this.quality = ThumbnailQuality.QUALITY_80;
+            }
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param excludeMediaInfo  Normally, {@link FileMetadata#getMediaInfo}
+         *     is set for photo and video. When this flag is true, {@link
+         *     FileMetadata#getMediaInfo} is not populated. This improves
+         *     latency for use cases where `media_info` is not needed.
+         *
+         * @return this builder
+         */
+        public Builder withExcludeMediaInfo(Boolean excludeMediaInfo) {
+            this.excludeMediaInfo = excludeMediaInfo;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link ThumbnailArg} configured with this
          * builder's values
          *
          * @return new instance of {@link ThumbnailArg}
          */
         public ThumbnailArg build() {
-            return new ThumbnailArg(path, format, size, mode);
+            return new ThumbnailArg(path, format, size, mode, quality, excludeMediaInfo);
         }
     }
 
@@ -267,7 +351,9 @@ public class ThumbnailArg {
             this.path,
             this.format,
             this.size,
-            this.mode
+            this.mode,
+            this.quality,
+            this.excludeMediaInfo
         });
         return hash;
     }
@@ -287,6 +373,8 @@ public class ThumbnailArg {
                 && ((this.format == other.format) || (this.format.equals(other.format)))
                 && ((this.size == other.size) || (this.size.equals(other.size)))
                 && ((this.mode == other.mode) || (this.mode.equals(other.mode)))
+                && ((this.quality == other.quality) || (this.quality.equals(other.quality)))
+                && ((this.excludeMediaInfo == other.excludeMediaInfo) || (this.excludeMediaInfo != null && this.excludeMediaInfo.equals(other.excludeMediaInfo)))
                 ;
         }
         else {
@@ -330,6 +418,12 @@ public class ThumbnailArg {
             ThumbnailSize.Serializer.INSTANCE.serialize(value.size, g);
             g.writeFieldName("mode");
             ThumbnailMode.Serializer.INSTANCE.serialize(value.mode, g);
+            g.writeFieldName("quality");
+            ThumbnailQuality.Serializer.INSTANCE.serialize(value.quality, g);
+            if (value.excludeMediaInfo != null) {
+                g.writeFieldName("exclude_media_info");
+                StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.excludeMediaInfo, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -348,6 +442,8 @@ public class ThumbnailArg {
                 ThumbnailFormat f_format = ThumbnailFormat.JPEG;
                 ThumbnailSize f_size = ThumbnailSize.W64H64;
                 ThumbnailMode f_mode = ThumbnailMode.STRICT;
+                ThumbnailQuality f_quality = ThumbnailQuality.QUALITY_80;
+                Boolean f_excludeMediaInfo = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -363,6 +459,12 @@ public class ThumbnailArg {
                     else if ("mode".equals(field)) {
                         f_mode = ThumbnailMode.Serializer.INSTANCE.deserialize(p);
                     }
+                    else if ("quality".equals(field)) {
+                        f_quality = ThumbnailQuality.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("exclude_media_info".equals(field)) {
+                        f_excludeMediaInfo = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -370,7 +472,7 @@ public class ThumbnailArg {
                 if (f_path == null) {
                     throw new JsonParseException(p, "Required field \"path\" missing.");
                 }
-                value = new ThumbnailArg(f_path, f_format, f_size, f_mode);
+                value = new ThumbnailArg(f_path, f_format, f_size, f_mode, f_quality, f_excludeMediaInfo);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

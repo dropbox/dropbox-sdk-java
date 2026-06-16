@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -16,14 +16,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 
 /**
- * Reset two-step verification for team member.
+ * Reset two-factor authentication for team member.
  */
 public class TfaResetDetails {
-    // struct team_log.TfaResetDetails (team_log_generated.stone)
+    // struct team_log.TfaResetDetails (team_log.stone)
 
 
     /**
-     * Reset two-step verification for team member.
+     * Reset two-factor authentication for team member.
      */
     public TfaResetDetails() {
     }

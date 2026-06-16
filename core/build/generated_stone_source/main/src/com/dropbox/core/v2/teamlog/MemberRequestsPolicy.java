@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum MemberRequestsPolicy {
-    // union team_log.MemberRequestsPolicy (team_log_generated.stone)
+    // union team_log.MemberRequestsPolicy (team_log.stone)
     AUTO_ACCEPT,
     DISABLED,
     REQUIRE_APPROVAL,

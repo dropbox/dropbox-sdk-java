@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Changed the default expiration for the links shared outside of the team.
  */
 public class SharingChangeLinkDefaultExpirationPolicyDetails {
-    // struct team_log.SharingChangeLinkDefaultExpirationPolicyDetails (team_log_generated.stone)
+    // struct team_log.SharingChangeLinkDefaultExpirationPolicyDetails (team_log.stone)
 
     @Nonnull
     protected final DefaultLinkExpirationDaysPolicy newValue;

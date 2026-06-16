@@ -23,8 +23,34 @@ class PaperDocExport extends RefPaperDoc {
 
     @Nonnull
     protected final ExportFormat exportFormat;
+    protected final boolean includeComments;
 
     /**
+     *
+     * @param docId  The Paper doc ID. Must not be {@code null}.
+     * @param exportFormat  Must not be {@code null}.
+     * @param includeComments  When true, export includes comment threads (e.g.
+     *     markdown footnotes). When false or omitted, body only. Other formats
+     *     may adopt this later; currently only markdown uses it. Plain bool
+     *     (not optional): protoc-gen-godbx does not support proto3 optional
+     *     yet.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public PaperDocExport(@Nonnull String docId, @Nonnull ExportFormat exportFormat, boolean includeComments) {
+        super(docId);
+        if (exportFormat == null) {
+            throw new IllegalArgumentException("Required value for 'exportFormat' is null");
+        }
+        this.exportFormat = exportFormat;
+        this.includeComments = includeComments;
+    }
+
+    /**
+     * None
+     *
+     * <p> The default values for unset fields will be used. </p>
      *
      * @param docId  The Paper doc ID. Must not be {@code null}.
      * @param exportFormat  Must not be {@code null}.
@@ -33,11 +59,7 @@ class PaperDocExport extends RefPaperDoc {
      *     preconditions.
      */
     public PaperDocExport(@Nonnull String docId, @Nonnull ExportFormat exportFormat) {
-        super(docId);
-        if (exportFormat == null) {
-            throw new IllegalArgumentException("Required value for 'exportFormat' is null");
-        }
-        this.exportFormat = exportFormat;
+        this(docId, exportFormat, false);
     }
 
     /**
@@ -59,10 +81,24 @@ class PaperDocExport extends RefPaperDoc {
         return exportFormat;
     }
 
+    /**
+     * When true, export includes comment threads (e.g. markdown footnotes).
+     * When false or omitted, body only. Other formats may adopt this later;
+     * currently only markdown uses it. Plain bool (not optional):
+     * protoc-gen-godbx does not support proto3 optional yet.
+     *
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     false.
+     */
+    public boolean getIncludeComments() {
+        return includeComments;
+    }
+
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            this.exportFormat
+            this.exportFormat,
+            this.includeComments
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -81,6 +117,7 @@ class PaperDocExport extends RefPaperDoc {
             PaperDocExport other = (PaperDocExport) obj;
             return ((this.docId == other.docId) || (this.docId.equals(other.docId)))
                 && ((this.exportFormat == other.exportFormat) || (this.exportFormat.equals(other.exportFormat)))
+                && (this.includeComments == other.includeComments)
                 ;
         }
         else {
@@ -120,6 +157,8 @@ class PaperDocExport extends RefPaperDoc {
             StoneSerializers.string().serialize(value.docId, g);
             g.writeFieldName("export_format");
             ExportFormat.Serializer.INSTANCE.serialize(value.exportFormat, g);
+            g.writeFieldName("include_comments");
+            StoneSerializers.boolean_().serialize(value.includeComments, g);
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -136,6 +175,7 @@ class PaperDocExport extends RefPaperDoc {
             if (tag == null) {
                 String f_docId = null;
                 ExportFormat f_exportFormat = null;
+                Boolean f_includeComments = false;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -144,6 +184,9 @@ class PaperDocExport extends RefPaperDoc {
                     }
                     else if ("export_format".equals(field)) {
                         f_exportFormat = ExportFormat.Serializer.INSTANCE.deserialize(p);
+                    }
+                    else if ("include_comments".equals(field)) {
+                        f_includeComments = StoneSerializers.boolean_().deserialize(p);
                     }
                     else {
                         skipValue(p);
@@ -155,7 +198,7 @@ class PaperDocExport extends RefPaperDoc {
                 if (f_exportFormat == null) {
                     throw new JsonParseException(p, "Required field \"export_format\" missing.");
                 }
-                value = new PaperDocExport(f_docId, f_exportFormat);
+                value = new PaperDocExport(f_docId, f_exportFormat, f_includeComments);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

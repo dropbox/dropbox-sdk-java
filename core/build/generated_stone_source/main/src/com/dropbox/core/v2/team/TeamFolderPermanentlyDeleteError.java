@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_folders.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -23,7 +23,7 @@ import java.util.Arrays;
  * associated with this instance.
  */
 public final class TeamFolderPermanentlyDeleteError {
-    // union team.TeamFolderPermanentlyDeleteError (team_folders.stone)
+    // union team.TeamFolderPermanentlyDeleteError (team.stone)
 
     /**
      * Discriminating tag type for {@link TeamFolderPermanentlyDeleteError}.

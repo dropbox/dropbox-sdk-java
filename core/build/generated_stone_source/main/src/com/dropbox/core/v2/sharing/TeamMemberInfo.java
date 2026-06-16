@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Information about a team member.
  */
 public class TeamMemberInfo {
-    // struct sharing.TeamMemberInfo (shared_links.stone)
+    // struct sharing.TeamMemberInfo (sharing.stone)
 
     @Nonnull
     protected final Team teamInfo;

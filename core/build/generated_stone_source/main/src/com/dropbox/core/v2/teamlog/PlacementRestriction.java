@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -17,8 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum PlacementRestriction {
-    // union team_log.PlacementRestriction (team_log_generated.stone)
+    // union team_log.PlacementRestriction (team_log.stone)
     AUSTRALIA_ONLY,
+    CANADA_ONLY,
     EUROPE_ONLY,
     JAPAN_ONLY,
     NONE,
@@ -44,6 +45,10 @@ public enum PlacementRestriction {
             switch (value) {
                 case AUSTRALIA_ONLY: {
                     g.writeString("australia_only");
+                    break;
+                }
+                case CANADA_ONLY: {
+                    g.writeString("canada_only");
                     break;
                 }
                 case EUROPE_ONLY: {
@@ -92,6 +97,9 @@ public enum PlacementRestriction {
             }
             else if ("australia_only".equals(tag)) {
                 value = PlacementRestriction.AUSTRALIA_ONLY;
+            }
+            else if ("canada_only".equals(tag)) {
+                value = PlacementRestriction.CANADA_ONLY;
             }
             else if ("europe_only".equals(tag)) {
                 value = PlacementRestriction.EUROPE_ONLY;

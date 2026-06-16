@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 class RevokeSharedLinkArg {
-    // struct sharing.RevokeSharedLinkArg (shared_links.stone)
+    // struct sharing.RevokeSharedLinkArg (sharing.stone)
 
     @Nonnull
     protected final String url;

@@ -34,7 +34,7 @@ public class FileRequestDeadline {
      * @param deadline  The deadline for this file request. Must not be {@code
      *     null}.
      * @param allowLateUploads  If set, allow uploads after the deadline has
-     *     passed. These     uploads will be marked overdue.
+     *     passed. These uploads will be marked overdue.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -73,8 +73,8 @@ public class FileRequestDeadline {
     }
 
     /**
-     * If set, allow uploads after the deadline has passed. These     uploads
-     * will be marked overdue.
+     * If set, allow uploads after the deadline has passed. These uploads will
+     * be marked overdue.
      *
      * @return value for this field, or {@code null} if not present.
      */

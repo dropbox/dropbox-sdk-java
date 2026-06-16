@@ -28,7 +28,8 @@ class DownloadZipArg {
     /**
      *
      * @param path  The path of the folder to download. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -38,7 +39,7 @@ class DownloadZipArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;

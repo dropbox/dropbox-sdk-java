@@ -53,7 +53,7 @@ class CreateFolderBatchArg {
             if (x == null) {
                 throw new IllegalArgumentException("An item in list 'paths' is null");
             }
-            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)", x)) {
+            if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)", x)) {
                 throw new IllegalArgumentException("Stringan item in list 'paths' does not match pattern");
             }
         }
@@ -148,7 +148,7 @@ class CreateFolderBatchArg {
                 if (x == null) {
                     throw new IllegalArgumentException("An item in list 'paths' is null");
                 }
-                if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)", x)) {
+                if (!java.util.regex.Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)", x)) {
                     throw new IllegalArgumentException("Stringan item in list 'paths' does not match pattern");
                 }
             }

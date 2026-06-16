@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Arguments for {@link DbxUserSharingRequests#listFileMembers(String)}.
  */
 class ListFileMembersArg {
-    // struct sharing.ListFileMembersArg (sharing_files.stone)
+    // struct sharing.ListFileMembersArg (sharing.stone)
 
     @Nonnull
     protected final String file;

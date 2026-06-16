@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from openid_openid_types.stone, openid_openid.stone */
+/* This file was generated from openid.stone */
 
 package com.dropbox.core.v2.openid;
 
@@ -15,7 +15,7 @@ import java.util.Map;
  * Routes in namespace "openid".
  */
 public class DbxUserOpenidRequests {
-    // namespace openid (openid_openid_types.stone, openid_openid.stone)
+    // namespace openid (openid.stone)
 
     private final DbxRawClientV2 client;
 

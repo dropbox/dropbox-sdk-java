@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,8 +20,9 @@ import java.util.Arrays;
  * External Drive Backup eligibility status
  */
 public enum ExternalDriveBackupEligibilityStatus {
-    // union team_log.ExternalDriveBackupEligibilityStatus (team_log_generated.stone)
+    // union team_log.ExternalDriveBackupEligibilityStatus (team_log.stone)
     EXCEED_LICENSE_CAP,
+    SKIP,
     SUCCESS,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
@@ -43,6 +44,10 @@ public enum ExternalDriveBackupEligibilityStatus {
             switch (value) {
                 case EXCEED_LICENSE_CAP: {
                     g.writeString("exceed_license_cap");
+                    break;
+                }
+                case SKIP: {
+                    g.writeString("skip");
                     break;
                 }
                 case SUCCESS: {
@@ -75,6 +80,9 @@ public enum ExternalDriveBackupEligibilityStatus {
             }
             else if ("exceed_license_cap".equals(tag)) {
                 value = ExternalDriveBackupEligibilityStatus.EXCEED_LICENSE_CAP;
+            }
+            else if ("skip".equals(tag)) {
+                value = ExternalDriveBackupEligibilityStatus.SKIP;
             }
             else if ("success".equals(tag)) {
                 value = ExternalDriveBackupEligibilityStatus.SUCCESS;

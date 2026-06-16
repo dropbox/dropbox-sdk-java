@@ -59,7 +59,11 @@ public enum DeleteAllClosedFileRequestsError {
      * There was an error validating the request. For example, the title was
      * invalid, or there were disallowed characters in the destination path.
      */
-    VALIDATION_ERROR;
+    VALIDATION_ERROR,
+    /**
+     * This user doesn't have permission to edit files in a destination folder
+     */
+    NO_WRITE_PERMISSION;
 
     /**
      * For internal use only.
@@ -100,6 +104,10 @@ public enum DeleteAllClosedFileRequestsError {
                 }
                 case VALIDATION_ERROR: {
                     g.writeString("validation_error");
+                    break;
+                }
+                case NO_WRITE_PERMISSION: {
+                    g.writeString("no_write_permission");
                     break;
                 }
                 default: {
@@ -149,6 +157,9 @@ public enum DeleteAllClosedFileRequestsError {
             }
             else if ("validation_error".equals(tag)) {
                 value = DeleteAllClosedFileRequestsError.VALIDATION_ERROR;
+            }
+            else if ("no_write_permission".equals(tag)) {
+                value = DeleteAllClosedFileRequestsError.NO_WRITE_PERMISSION;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

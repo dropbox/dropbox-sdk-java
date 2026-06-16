@@ -32,6 +32,16 @@ public enum UserFeature {
      */
     FILE_LOCKING,
     /**
+     * This feature contains information about whether or not the user is part
+     * of a team with a shared team root.
+     */
+    TEAM_SHARED_DROPBOX,
+    /**
+     * This feature contains information about whether or not the user's home
+     * namespace is distinct from their root namespace.
+     */
+    DISTINCT_MEMBER_HOME,
+    /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
      * <p> Receiving a catch-all value typically indicates this SDK version is
@@ -55,6 +65,14 @@ public enum UserFeature {
                 }
                 case FILE_LOCKING: {
                     g.writeString("file_locking");
+                    break;
+                }
+                case TEAM_SHARED_DROPBOX: {
+                    g.writeString("team_shared_dropbox");
+                    break;
+                }
+                case DISTINCT_MEMBER_HOME: {
+                    g.writeString("distinct_member_home");
                     break;
                 }
                 default: {
@@ -86,6 +104,12 @@ public enum UserFeature {
             }
             else if ("file_locking".equals(tag)) {
                 value = UserFeature.FILE_LOCKING;
+            }
+            else if ("team_shared_dropbox".equals(tag)) {
+                value = UserFeature.TEAM_SHARED_DROPBOX;
+            }
+            else if ("distinct_member_home".equals(tag)) {
+                value = UserFeature.DISTINCT_MEMBER_HOME;
             }
             else {
                 value = UserFeature.OTHER;

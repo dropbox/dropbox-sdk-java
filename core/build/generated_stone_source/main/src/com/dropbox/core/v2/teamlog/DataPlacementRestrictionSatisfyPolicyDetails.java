@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Completed restrictions on data center locations where team data resides.
  */
 public class DataPlacementRestrictionSatisfyPolicyDetails {
-    // struct team_log.DataPlacementRestrictionSatisfyPolicyDetails (team_log_generated.stone)
+    // struct team_log.DataPlacementRestrictionSatisfyPolicyDetails (team_log.stone)
 
     @Nonnull
     protected final PlacementRestriction placementRestriction;

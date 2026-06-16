@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * identify the user account.
  */
 class MembersDeactivateBaseArg {
-    // struct team.MembersDeactivateBaseArg (team_members.stone)
+    // struct team.MembersDeactivateBaseArg (team.stone)
 
     @Nonnull
     protected final UserSelectorArg user;

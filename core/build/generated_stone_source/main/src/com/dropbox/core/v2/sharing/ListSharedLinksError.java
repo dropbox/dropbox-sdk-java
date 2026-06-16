@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -28,7 +28,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class ListSharedLinksError {
-    // union sharing.ListSharedLinksError (shared_links.stone)
+    // union sharing.ListSharedLinksError (sharing.stone)
 
     /**
      * Discriminating tag type for {@link ListSharedLinksError}.

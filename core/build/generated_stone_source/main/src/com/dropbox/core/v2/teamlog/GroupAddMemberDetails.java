@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Added team members to group.
  */
 public class GroupAddMemberDetails {
-    // struct team_log.GroupAddMemberDetails (team_log_generated.stone)
+    // struct team_log.GroupAddMemberDetails (team_log.stone)
 
     protected final boolean isGroupOwner;
 

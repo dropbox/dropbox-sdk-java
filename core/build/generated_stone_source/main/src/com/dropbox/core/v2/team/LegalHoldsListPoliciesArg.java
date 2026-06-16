@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_legal_holds.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 class LegalHoldsListPoliciesArg {
-    // struct team.LegalHoldsListPoliciesArg (team_legal_holds.stone)
+    // struct team.LegalHoldsListPoliciesArg (team.stone)
 
     protected final boolean includeReleased;
 

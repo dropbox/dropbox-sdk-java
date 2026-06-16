@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class ShareFolderArgBase {
-    // struct sharing.ShareFolderArgBase (sharing_folders.stone)
+    // struct sharing.ShareFolderArgBase (sharing.stone)
 
     @Nullable
     protected final AclUpdatePolicy aclUpdatePolicy;
@@ -43,7 +43,8 @@ class ShareFolderArgBase {
      *
      * @param path  The path or the file id to the folder to share. If it does
      *     not exist, then a new one is created. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param aclUpdatePolicy  Who can add and remove members of this shared
      *     folder.
      * @param forceAsync  Whether to force the share to happen asynchronously.
@@ -67,7 +68,7 @@ class ShareFolderArgBase {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)", path)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -86,7 +87,8 @@ class ShareFolderArgBase {
      *
      * @param path  The path or the file id to the folder to share. If it does
      *     not exist, then a new one is created. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -175,7 +177,8 @@ class ShareFolderArgBase {
      *
      * @param path  The path or the file id to the folder to share. If it does
      *     not exist, then a new one is created. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return builder for this class.
      *
@@ -203,7 +206,7 @@ class ShareFolderArgBase {
             if (path == null) {
                 throw new IllegalArgumentException("Required value for 'path' is null");
             }
-            if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)", path)) {
+            if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)", path)) {
                 throw new IllegalArgumentException("String 'path' does not match pattern");
             }
             this.path = path;

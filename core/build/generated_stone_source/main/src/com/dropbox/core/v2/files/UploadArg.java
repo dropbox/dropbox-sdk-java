@@ -35,8 +35,9 @@ class UploadArg extends CommitInfo {
      * specifying values for all optional fields.
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param mode  Selects what to do if the file already exists. Must not be
      *     {@code null}.
      * @param autorename  If there's a conflict, as determined by {@link
@@ -89,8 +90,9 @@ class UploadArg extends CommitInfo {
      * <p> The default values for unset fields will be used. </p>
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -201,8 +203,9 @@ class UploadArg extends CommitInfo {
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  Path in the user's Dropbox to save the file. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return builder for this class.
      *

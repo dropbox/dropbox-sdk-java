@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_folders.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 class TeamFolderIdListArg {
-    // struct team.TeamFolderIdListArg (team_folders.stone)
+    // struct team.TeamFolderIdListArg (team.stone)
 
     @Nonnull
     protected final List<String> teamFolderIds;

@@ -62,7 +62,7 @@ public class DbxUserFilePropertiesRequests {
      *     pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and not be
      *     {@code null}.
      * @param propertyGroups  The property groups which are to be added to a
-     *     Dropbox file. No two groups in the input should  refer to the same
+     *     Dropbox file. No two groups in the input should refer to the same
      *     template. Must not contain a {@code null} item and not be {@code
      *     null}.
      *
@@ -118,7 +118,7 @@ public class DbxUserFilePropertiesRequests {
      *     pattern "{@code /(.|[\\r\\n])*|id:.*|(ns:[0-9]+(/.*)?)}" and not be
      *     {@code null}.
      * @param propertyGroups  The property groups "snapshot" updates to force
-     *     apply. No two groups in the input should  refer to the same template.
+     *     apply. No two groups in the input should refer to the same template.
      *     Must contain at least 1 items, not contain a {@code null} item, and
      *     not be {@code null}.
      *

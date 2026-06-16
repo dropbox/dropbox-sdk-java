@@ -40,9 +40,7 @@ public class PropertyFieldTemplate {
      *     keys can be up to 256 bytes. Must not be {@code null}.
      * @param description  Description of the property field. Property field
      *     descriptions can be up to 1024 bytes. Must not be {@code null}.
-     * @param type  Data type of the value of this property field. This type
-     *     will be enforced upon property creation and modifications. Must not
-     *     be {@code null}.
+     * @param type  Must not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -85,8 +83,6 @@ public class PropertyFieldTemplate {
     }
 
     /**
-     * Data type of the value of this property field. This type will be enforced
-     * upon property creation and modifications.
      *
      * @return value for this field, never {@code null}.
      */

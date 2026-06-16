@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * to join the team
  */
 public enum AdminEmailRemindersPolicy {
-    // union team_log.AdminEmailRemindersPolicy (team_log_generated.stone)
+    // union team_log.AdminEmailRemindersPolicy (team_log.stone)
     DEFAULT,
     DISABLED,
     ENABLED,

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_groups.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -26,7 +26,7 @@ import java.util.Arrays;
  * tag associated with this instance. </p>
  */
 public final class GroupSelector {
-    // union team.GroupSelector (team_groups.stone)
+    // union team.GroupSelector (team.stone)
 
     /**
      * Discriminating tag type for {@link GroupSelector}.

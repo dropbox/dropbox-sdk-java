@@ -29,8 +29,8 @@ public class LockFileResult {
     /**
      *
      * @param metadata  Metadata of the file. Must not be {@code null}.
-     * @param lock  The file lock state after the operation. Must not be {@code
-     *     null}.
+     * @param lock  Field is deprecated. The file lock state after the
+     *     operation. Must not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -57,10 +57,13 @@ public class LockFileResult {
     }
 
     /**
-     * The file lock state after the operation.
+     * Field is deprecated. The file lock state after the operation.
      *
      * @return value for this field, never {@code null}.
+     *
+     * @deprecated
      */
+    @Deprecated
     @Nonnull
     public FileLock getLock() {
         return lock;

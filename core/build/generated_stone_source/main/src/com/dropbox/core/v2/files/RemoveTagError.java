@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_tagging.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -23,7 +23,7 @@ import java.util.Arrays;
  * associated with this instance.
  */
 public final class RemoveTagError {
-    // union files.RemoveTagError (file_tagging.stone)
+    // union files.RemoveTagError (files.stone)
 
     /**
      * Discriminating tag type for {@link RemoveTagError}.

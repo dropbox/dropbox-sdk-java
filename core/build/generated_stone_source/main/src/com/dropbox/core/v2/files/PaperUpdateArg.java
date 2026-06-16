@@ -36,8 +36,9 @@ class PaperUpdateArg {
      *
      * @param path  Path in the user's Dropbox to update. The path must
      *     correspond to a Paper doc or an error will be returned. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param importFormat  The format of the provided data. Must not be {@code
      *     null}.
      * @param docUpdatePolicy  How the provided content should be applied to the
@@ -53,7 +54,7 @@ class PaperUpdateArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)", path)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -75,8 +76,9 @@ class PaperUpdateArg {
      *
      * @param path  Path in the user's Dropbox to update. The path must
      *     correspond to a Paper doc or an error will be returned. Must match
-     *     pattern "{@code (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not
-     *     be {@code null}.
+     *     pattern "{@code
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param importFormat  The format of the provided data. Must not be {@code
      *     null}.
      * @param docUpdatePolicy  How the provided content should be applied to the

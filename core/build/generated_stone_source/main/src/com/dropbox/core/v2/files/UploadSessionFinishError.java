@@ -50,9 +50,9 @@ public final class UploadSessionFinishError {
          */
         PROPERTIES_ERROR, // InvalidPropertyGroupError
         /**
-         * The batch request commits files into too many different shared
-         * folders. Please limit your batch request to files contained in a
-         * single shared folder.
+         * Field is deprecated. The batch request commits files into too many
+         * different shared folders. Please limit your batch request to files
+         * contained in a single shared folder.
          */
         TOO_MANY_SHARED_FOLDER_TARGETS,
         /**
@@ -74,7 +74,7 @@ public final class UploadSessionFinishError {
          */
         CONCURRENT_SESSION_MISSING_DATA,
         /**
-         * The request payload must be at most 150 MB.
+         * The request payload must be at most 150 MiB.
          */
         PAYLOAD_TOO_LARGE,
         /**
@@ -82,6 +82,11 @@ public final class UploadSessionFinishError {
          * match the provided content hash.
          */
         CONTENT_HASH_MISMATCH,
+        /**
+         * The file is required to be encrypted, which is not supported in our
+         * public API.
+         */
+        ENCRYPTION_NOT_SUPPORTED,
         /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
@@ -94,9 +99,9 @@ public final class UploadSessionFinishError {
     }
 
     /**
-     * The batch request commits files into too many different shared folders.
-     * Please limit your batch request to files contained in a single shared
-     * folder.
+     * Field is deprecated. The batch request commits files into too many
+     * different shared folders. Please limit your batch request to files
+     * contained in a single shared folder.
      */
     public static final UploadSessionFinishError TOO_MANY_SHARED_FOLDER_TARGETS = new UploadSessionFinishError().withTag(Tag.TOO_MANY_SHARED_FOLDER_TARGETS);
     /**
@@ -117,7 +122,7 @@ public final class UploadSessionFinishError {
      */
     public static final UploadSessionFinishError CONCURRENT_SESSION_MISSING_DATA = new UploadSessionFinishError().withTag(Tag.CONCURRENT_SESSION_MISSING_DATA);
     /**
-     * The request payload must be at most 150 MB.
+     * The request payload must be at most 150 MiB.
      */
     public static final UploadSessionFinishError PAYLOAD_TOO_LARGE = new UploadSessionFinishError().withTag(Tag.PAYLOAD_TOO_LARGE);
     /**
@@ -125,6 +130,11 @@ public final class UploadSessionFinishError {
      * the provided content hash.
      */
     public static final UploadSessionFinishError CONTENT_HASH_MISMATCH = new UploadSessionFinishError().withTag(Tag.CONTENT_HASH_MISMATCH);
+    /**
+     * The file is required to be encrypted, which is not supported in our
+     * public API.
+     */
+    public static final UploadSessionFinishError ENCRYPTION_NOT_SUPPORTED = new UploadSessionFinishError().withTag(Tag.ENCRYPTION_NOT_SUPPORTED);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -454,6 +464,17 @@ public final class UploadSessionFinishError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENCRYPTION_NOT_SUPPORTED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENCRYPTION_NOT_SUPPORTED}, {@code false} otherwise.
+     */
+    public boolean isEncryptionNotSupported() {
+        return this._tag == Tag.ENCRYPTION_NOT_SUPPORTED;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -508,6 +529,8 @@ public final class UploadSessionFinishError {
                 case PAYLOAD_TOO_LARGE:
                     return true;
                 case CONTENT_HASH_MISMATCH:
+                    return true;
+                case ENCRYPTION_NOT_SUPPORTED:
                     return true;
                 case OTHER:
                     return true;
@@ -598,6 +621,10 @@ public final class UploadSessionFinishError {
                     g.writeString("content_hash_mismatch");
                     break;
                 }
+                case ENCRYPTION_NOT_SUPPORTED: {
+                    g.writeString("encryption_not_supported");
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -660,6 +687,9 @@ public final class UploadSessionFinishError {
             }
             else if ("content_hash_mismatch".equals(tag)) {
                 value = UploadSessionFinishError.CONTENT_HASH_MISMATCH;
+            }
+            else if ("encryption_not_supported".equals(tag)) {
+                value = UploadSessionFinishError.ENCRYPTION_NOT_SUPPORTED;
             }
             else {
                 value = UploadSessionFinishError.OTHER;

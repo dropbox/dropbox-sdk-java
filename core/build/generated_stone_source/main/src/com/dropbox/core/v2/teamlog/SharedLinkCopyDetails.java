@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Added file/folder to Dropbox from shared link.
  */
 public class SharedLinkCopyDetails {
-    // struct team_log.SharedLinkCopyDetails (team_log_generated.stone)
+    // struct team_log.SharedLinkCopyDetails (team_log.stone)
 
     @Nullable
     protected final UserLogInfo sharedLinkOwner;

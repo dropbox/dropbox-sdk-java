@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from file_tagging.stone */
+/* This file was generated from files.stone */
 
 package com.dropbox.core.v2.files;
 
@@ -27,7 +27,7 @@ import java.util.Arrays;
  * will be used. </p>
  */
 public final class BaseTagError {
-    // union files.BaseTagError (file_tagging.stone)
+    // union files.BaseTagError (files.stone)
 
     /**
      * Discriminating tag type for {@link BaseTagError}.

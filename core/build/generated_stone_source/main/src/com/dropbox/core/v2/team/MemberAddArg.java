@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_members.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class MemberAddArg extends MemberAddArgBase {
-    // struct team.MemberAddArg (team_members.stone)
+    // struct team.MemberAddArg (team.stone)
 
     @Nonnull
     protected final AdminTier role;
@@ -35,8 +35,8 @@ public class MemberAddArg extends MemberAddArgBase {
      *     ^['#&A-Za-z0-9._%+-]+@[A-Za-z0-9-][A-Za-z0-9.-]*\\.[A-Za-z]{2,15}$}",
      *     and not be {@code null}.
      * @param memberGivenName  Member's first name. Must have length of at most
-     *     100 and match pattern "{@code [^/:?*<>\"|]*}".
-     * @param memberSurname  Member's last name. Must have length of at most 100
+     *     50 and match pattern "{@code [^/:?*<>\"|]*}".
+     * @param memberSurname  Member's last name. Must have length of at most 50
      *     and match pattern "{@code [^/:?*<>\"|]*}".
      * @param memberExternalId  External ID for member. Must have length of at
      *     most 64.
@@ -217,7 +217,7 @@ public class MemberAddArg extends MemberAddArgBase {
          * Set value for optional field.
          *
          * @param memberGivenName  Member's first name. Must have length of at
-         *     most 100 and match pattern "{@code [^/:?*<>\"|]*}".
+         *     most 50 and match pattern "{@code [^/:?*<>\"|]*}".
          *
          * @return this builder
          *
@@ -233,7 +233,7 @@ public class MemberAddArg extends MemberAddArgBase {
          * Set value for optional field.
          *
          * @param memberSurname  Member's last name. Must have length of at most
-         *     100 and match pattern "{@code [^/:?*<>\"|]*}".
+         *     50 and match pattern "{@code [^/:?*<>\"|]*}".
          *
          * @return this builder
          *

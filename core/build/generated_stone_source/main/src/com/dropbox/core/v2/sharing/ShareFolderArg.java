@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 class ShareFolderArg extends ShareFolderArgBase {
-    // struct sharing.ShareFolderArg (sharing_folders.stone)
+    // struct sharing.ShareFolderArg (sharing.stone)
 
     @Nullable
     protected final List<FolderAction> actions;
@@ -35,7 +35,8 @@ class ShareFolderArg extends ShareFolderArgBase {
      *
      * @param path  The path or the file id to the folder to share. If it does
      *     not exist, then a new one is created. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      * @param aclUpdatePolicy  Who can add and remove members of this shared
      *     folder.
      * @param forceAsync  Whether to force the share to happen asynchronously.
@@ -49,7 +50,7 @@ class ShareFolderArg extends ShareFolderArgBase {
      * @param accessInheritance  The access inheritance settings for the folder.
      *     Must not be {@code null}.
      * @param actions  A list of `FolderAction`s corresponding to
-     *     `FolderPermission`s that should appear in the  response's {@link
+     *     `FolderPermission`s that should appear in the response's {@link
      *     SharedFolderMetadata#getPermissions} field describing the actions the
      *     authenticated user can perform on the folder. Must not contain a
      *     {@code null} item.
@@ -78,7 +79,8 @@ class ShareFolderArg extends ShareFolderArgBase {
      *
      * @param path  The path or the file id to the folder to share. If it does
      *     not exist, then a new one is created. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -164,7 +166,7 @@ class ShareFolderArg extends ShareFolderArgBase {
 
     /**
      * A list of `FolderAction`s corresponding to `FolderPermission`s that
-     * should appear in the  response's {@link
+     * should appear in the response's {@link
      * SharedFolderMetadata#getPermissions} field describing the actions the
      * authenticated user can perform on the folder.
      *
@@ -190,7 +192,8 @@ class ShareFolderArg extends ShareFolderArgBase {
      *
      * @param path  The path or the file id to the folder to share. If it does
      *     not exist, then a new one is created. Must match pattern "{@code
-     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/.*)?)|(id:.*)}" and not be {@code null}.
+     *     (/(.|[\\r\\n])*)|(ns:[0-9]+(/(.|[\\r\\n])*)?)|(id:.*)}" and not be
+     *     {@code null}.
      *
      * @return builder for this class.
      *
@@ -219,9 +222,9 @@ class ShareFolderArg extends ShareFolderArgBase {
          * Set value for optional field.
          *
          * @param actions  A list of `FolderAction`s corresponding to
-         *     `FolderPermission`s that should appear in the  response's {@link
+         *     `FolderPermission`s that should appear in the response's {@link
          *     SharedFolderMetadata#getPermissions} field describing the actions
-         *     the  authenticated user can perform on the folder. Must not
+         *     the authenticated user can perform on the folder. Must not
          *     contain a {@code null} item.
          *
          * @return this builder

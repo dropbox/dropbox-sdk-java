@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Whether the user is allowed to take the sharing action on the file.
  */
 public class FilePermission {
-    // struct sharing.FilePermission (sharing_files.stone)
+    // struct sharing.FilePermission (sharing.stone)
 
     @Nonnull
     protected final FileAction action;

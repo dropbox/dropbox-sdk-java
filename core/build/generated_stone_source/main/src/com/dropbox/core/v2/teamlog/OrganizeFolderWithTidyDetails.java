@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
  * Organized a folder with multi-file organize.
  */
 public class OrganizeFolderWithTidyDetails {
-    // struct team_log.OrganizeFolderWithTidyDetails (team_log_generated.stone)
+    // struct team_log.OrganizeFolderWithTidyDetails (team_log.stone)
 
 
     /**

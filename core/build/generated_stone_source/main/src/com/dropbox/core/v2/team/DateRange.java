@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_reports.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Input arguments that can be provided for most reports.
  */
 class DateRange {
-    // struct team.DateRange (team_reports.stone)
+    // struct team.DateRange (team.stone)
 
     @Nullable
     protected final Date startDate;
@@ -39,7 +39,7 @@ class DateRange {
      * specifying values for all optional fields. </p>
      *
      * @param startDate  Optional starting date (inclusive). If start_date is
-     *     None or too long ago, this field will  be set to 6 months ago.
+     *     None or too long ago, this field will be set to 6 months ago.
      * @param endDate  Optional ending date (exclusive).
      */
     public DateRange(@Nullable Date startDate, @Nullable Date endDate) {
@@ -58,7 +58,7 @@ class DateRange {
 
     /**
      * Optional starting date (inclusive). If start_date is None or too long
-     * ago, this field will  be set to 6 months ago.
+     * ago, this field will be set to 6 months ago.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -103,7 +103,7 @@ class DateRange {
          * Set value for optional field.
          *
          * @param startDate  Optional starting date (inclusive). If start_date
-         *     is None or too long ago, this field will  be set to 6 months ago.
+         *     is None or too long ago, this field will be set to 6 months ago.
          *
          * @return this builder
          */

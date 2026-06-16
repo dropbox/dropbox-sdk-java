@@ -44,8 +44,12 @@ public class DbxAppListFolderBuilder {
      *
      * @param recursive  If true, the list folder operation will be applied
      *     recursively to all subfolders and the response will contain contents
-     *     of all subfolders. Defaults to {@code false} when set to {@code
-     *     null}.
+     *     of all subfolders. In some cases, setting {@link
+     *     ListFolderArg#getRecursive} to {@code true} may lead to performance
+     *     issues or errors, especially when traversing folder structures with a
+     *     large number of items. A workaround for such cases is to set {@link
+     *     ListFolderArg#getRecursive} to {@code false} and traverse subfolders
+     *     one at a time. Defaults to {@code false} when set to {@code null}.
      *
      * @return this builder
      */
@@ -59,13 +63,16 @@ public class DbxAppListFolderBuilder {
      *
      * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
      *
-     * @param includeMediaInfo  If true, {@link FileMetadata#getMediaInfo} is
-     *     set for photo and video. This parameter will no longer have an effect
-     *     starting December 2, 2019. Defaults to {@code false} when set to
-     *     {@code null}.
+     * @param includeMediaInfo  Field is deprecated. If true, {@link
+     *     FileMetadata#getMediaInfo} is set for photo and video. This parameter
+     *     will no longer have an effect starting December 2, 2019. Defaults to
+     *     {@code false} when set to {@code null}.
      *
      * @return this builder
+     *
+     * @deprecated
      */
+    @Deprecated
     public DbxAppListFolderBuilder withIncludeMediaInfo(Boolean includeMediaInfo) {
         this._builder.withIncludeMediaInfo(includeMediaInfo);
         return this;
@@ -93,7 +100,7 @@ public class DbxAppListFolderBuilder {
      * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
      *
      * @param includeHasExplicitSharedMembers  If true, the results will include
-     *     a flag for each file indicating whether or not  that file has any
+     *     a flag for each file indicating whether or not that file has any
      *     explicit members. Defaults to {@code false} when set to {@code null}.
      *
      * @return this builder

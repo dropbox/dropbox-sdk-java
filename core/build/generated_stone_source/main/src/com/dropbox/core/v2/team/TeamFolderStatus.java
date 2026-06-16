@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_folders.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -17,19 +17,25 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum TeamFolderStatus {
-    // union team.TeamFolderStatus (team_folders.stone)
+    // union team.TeamFolderStatus (team.stone)
     /**
      * The team folder and sub-folders are available to all members.
      */
     ACTIVE,
     /**
-     * The team folder is not accessible outside of the team folder manager.
+     * The team folder is archived and is not accessible outside of the team
+     * folder manager.
      */
     ARCHIVED,
     /**
-     * The team folder is not accessible outside of the team folder manager.
+     * The team folder is in the process of being archived and is not accessible
+     * outside of the team folder manager.
      */
     ARCHIVE_IN_PROGRESS,
+    /**
+     * The team folder is unmounted and can be restored.
+     */
+    INACTIVE,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -58,6 +64,10 @@ public enum TeamFolderStatus {
                 }
                 case ARCHIVE_IN_PROGRESS: {
                     g.writeString("archive_in_progress");
+                    break;
+                }
+                case INACTIVE: {
+                    g.writeString("inactive");
                     break;
                 }
                 default: {
@@ -92,6 +102,9 @@ public enum TeamFolderStatus {
             }
             else if ("archive_in_progress".equals(tag)) {
                 value = TeamFolderStatus.ARCHIVE_IN_PROGRESS;
+            }
+            else if ("inactive".equals(tag)) {
+                value = TeamFolderStatus.INACTIVE;
             }
             else {
                 value = TeamFolderStatus.OTHER;

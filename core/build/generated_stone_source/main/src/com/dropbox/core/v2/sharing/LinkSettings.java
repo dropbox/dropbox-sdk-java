@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_content_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * Settings that apply to a link.
  */
 public class LinkSettings {
-    // struct sharing.LinkSettings (shared_content_links.stone)
+    // struct sharing.LinkSettings (sharing.stone)
 
     @Nullable
     protected final AccessLevel accessLevel;

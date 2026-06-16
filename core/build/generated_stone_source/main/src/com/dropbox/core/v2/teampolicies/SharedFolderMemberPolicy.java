@@ -30,6 +30,11 @@ public enum SharedFolderMemberPolicy {
      */
     ANYONE,
     /**
+     * Only a teammate and approved people can be a member of a folder shared by
+     * a team member.
+     */
+    TEAM_AND_APPROVED,
+    /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
      * <p> Receiving a catch-all value typically indicates this SDK version is
@@ -53,6 +58,10 @@ public enum SharedFolderMemberPolicy {
                 }
                 case ANYONE: {
                     g.writeString("anyone");
+                    break;
+                }
+                case TEAM_AND_APPROVED: {
+                    g.writeString("team_and_approved");
                     break;
                 }
                 default: {
@@ -84,6 +93,9 @@ public enum SharedFolderMemberPolicy {
             }
             else if ("anyone".equals(tag)) {
                 value = SharedFolderMemberPolicy.ANYONE;
+            }
+            else if ("team_and_approved".equals(tag)) {
+                value = SharedFolderMemberPolicy.TEAM_AND_APPROVED;
             }
             else {
                 value = SharedFolderMemberPolicy.OTHER;

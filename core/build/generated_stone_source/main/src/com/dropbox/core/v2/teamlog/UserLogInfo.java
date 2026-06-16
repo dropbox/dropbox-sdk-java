@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
  * User's logged information.
  */
 public class UserLogInfo {
-    // struct team_log.UserLogInfo (team_log_generated.stone)
+    // struct team_log.UserLogInfo (team_log.stone)
 
     @Nullable
     protected final String accountId;
@@ -251,16 +251,16 @@ public class UserLogInfo {
 
         @Override
         public void serialize(UserLogInfo value, JsonGenerator g, boolean collapse) throws IOException, JsonGenerationException {
+            if (value instanceof NonTeamMemberLogInfo) {
+                NonTeamMemberLogInfo.Serializer.INSTANCE.serialize((NonTeamMemberLogInfo) value, g, collapse);
+                return;
+            }
             if (value instanceof TeamMemberLogInfo) {
                 TeamMemberLogInfo.Serializer.INSTANCE.serialize((TeamMemberLogInfo) value, g, collapse);
                 return;
             }
             if (value instanceof TrustedNonTeamMemberLogInfo) {
                 TrustedNonTeamMemberLogInfo.Serializer.INSTANCE.serialize((TrustedNonTeamMemberLogInfo) value, g, collapse);
-                return;
-            }
-            if (value instanceof NonTeamMemberLogInfo) {
-                NonTeamMemberLogInfo.Serializer.INSTANCE.serialize((NonTeamMemberLogInfo) value, g, collapse);
                 return;
             }
             if (!collapse) {
@@ -319,14 +319,14 @@ public class UserLogInfo {
             else if ("".equals(tag)) {
                 value = Serializer.INSTANCE.deserialize(p, true);
             }
+            else if ("non_team_member".equals(tag)) {
+                value = NonTeamMemberLogInfo.Serializer.INSTANCE.deserialize(p, true);
+            }
             else if ("team_member".equals(tag)) {
                 value = TeamMemberLogInfo.Serializer.INSTANCE.deserialize(p, true);
             }
             else if ("trusted_non_team_member".equals(tag)) {
                 value = TrustedNonTeamMemberLogInfo.Serializer.INSTANCE.deserialize(p, true);
-            }
-            else if ("non_team_member".equals(tag)) {
-                value = NonTeamMemberLogInfo.Serializer.INSTANCE.deserialize(p, true);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

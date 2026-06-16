@@ -11,7 +11,7 @@ import com.dropbox.core.LocalizedText;
  * GetSharedLinkFileError} error.
  *
  * <p> This exception is raised by {@link
- * DbxUserSharingRequests#getSharedLinkFile(String)}. </p>
+ * DbxAppSharingRequests#getSharedLinkFile(String)}. </p>
  */
 public class GetSharedLinkFileErrorException extends DbxApiException {
     // exception for routes:
@@ -21,7 +21,7 @@ public class GetSharedLinkFileErrorException extends DbxApiException {
 
     /**
      * The error reported by {@link
-     * DbxUserSharingRequests#getSharedLinkFile(String)}.
+     * DbxAppSharingRequests#getSharedLinkFile(String)}.
      */
     public final GetSharedLinkFileError errorValue;
 

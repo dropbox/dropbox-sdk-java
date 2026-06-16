@@ -72,6 +72,11 @@ public final class WriteError {
          */
         TOO_MANY_WRITE_OPERATIONS,
         /**
+         * The user doesn't have permission to perform the action due to
+         * restrictions set by a team administrator
+         */
+        ACCESS_RESTRICTED,
+        /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
          *
@@ -107,6 +112,11 @@ public final class WriteError {
      * request.
      */
     public static final WriteError TOO_MANY_WRITE_OPERATIONS = new WriteError().withTag(Tag.TOO_MANY_WRITE_OPERATIONS);
+    /**
+     * The user doesn't have permission to perform the action due to
+     * restrictions set by a team administrator
+     */
+    public static final WriteError ACCESS_RESTRICTED = new WriteError().withTag(Tag.ACCESS_RESTRICTED);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -368,6 +378,17 @@ public final class WriteError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ACCESS_RESTRICTED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ACCESS_RESTRICTED}, {@code false} otherwise.
+     */
+    public boolean isAccessRestricted() {
+        return this._tag == Tag.ACCESS_RESTRICTED;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -417,6 +438,8 @@ public final class WriteError {
                 case OPERATION_SUPPRESSED:
                     return true;
                 case TOO_MANY_WRITE_OPERATIONS:
+                    return true;
+                case ACCESS_RESTRICTED:
                     return true;
                 case OTHER:
                     return true;
@@ -495,6 +518,10 @@ public final class WriteError {
                     g.writeString("too_many_write_operations");
                     break;
                 }
+                case ACCESS_RESTRICTED: {
+                    g.writeString("access_restricted");
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -555,6 +582,9 @@ public final class WriteError {
             }
             else if ("too_many_write_operations".equals(tag)) {
                 value = WriteError.TOO_MANY_WRITE_OPERATIONS;
+            }
+            else if ("access_restricted".equals(tag)) {
+                value = WriteError.ACCESS_RESTRICTED;
             }
             else {
                 value = WriteError.OTHER;

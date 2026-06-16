@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -16,14 +16,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 
 /**
- * Added backup phone for two-step verification.
+ * Added backup phone for two-factor authentication.
  */
 public class TfaAddBackupPhoneDetails {
-    // struct team_log.TfaAddBackupPhoneDetails (team_log_generated.stone)
+    // struct team_log.TfaAddBackupPhoneDetails (team_log.stone)
 
 
     /**
-     * Added backup phone for two-step verification.
+     * Added backup phone for two-factor authentication.
      */
     public TfaAddBackupPhoneDetails() {
     }

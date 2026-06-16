@@ -35,9 +35,8 @@ public final class SaveUrlError {
     public enum Tag {
         PATH, // WriteError
         /**
-         * Failed downloading the given URL. The URL may be  password-protected
-         * and the password provided was incorrect,  or the link may be
-         * disabled.
+         * Failed downloading the given URL. The URL may be password-protected
+         * and the password provided was incorrect, or the link may be disabled.
          */
         DOWNLOAD_FAILED,
         /**
@@ -60,8 +59,8 @@ public final class SaveUrlError {
     }
 
     /**
-     * Failed downloading the given URL. The URL may be  password-protected and
-     * the password provided was incorrect,  or the link may be disabled.
+     * Failed downloading the given URL. The URL may be password-protected and
+     * the password provided was incorrect, or the link may be disabled.
      */
     public static final SaveUrlError DOWNLOAD_FAILED = new SaveUrlError().withTag(Tag.DOWNLOAD_FAILED);
     /**

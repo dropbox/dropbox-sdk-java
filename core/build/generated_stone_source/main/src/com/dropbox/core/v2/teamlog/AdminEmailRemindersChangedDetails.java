@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Changed admin reminder settings for requests to join the team.
  */
 public class AdminEmailRemindersChangedDetails {
-    // struct team_log.AdminEmailRemindersChangedDetails (team_log_generated.stone)
+    // struct team_log.AdminEmailRemindersChangedDetails (team_log.stone)
 
     @Nonnull
     protected final AdminEmailRemindersPolicy newValue;

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_devices.stone, team_secondary_mails.stone, team_members.stone, team_linked_apps.stone, team_reports.stone, team_folders.stone, team_member_space_limits.stone, team.stone, team_groups.stone, team_legal_holds.stone, team_namespaces.stone, team_sharing_allowlist.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -18,14 +18,11 @@ import com.dropbox.core.v2.fileproperties.AddTemplateArg;
 import com.dropbox.core.v2.fileproperties.AddTemplateResult;
 import com.dropbox.core.v2.fileproperties.GetTemplateArg;
 import com.dropbox.core.v2.fileproperties.GetTemplateResult;
-import com.dropbox.core.v2.fileproperties.ListTemplateResult;
 import com.dropbox.core.v2.fileproperties.ModifyTemplateError;
 import com.dropbox.core.v2.fileproperties.ModifyTemplateErrorException;
 import com.dropbox.core.v2.fileproperties.PropertyFieldTemplate;
 import com.dropbox.core.v2.fileproperties.TemplateError;
 import com.dropbox.core.v2.fileproperties.TemplateErrorException;
-import com.dropbox.core.v2.fileproperties.UpdateTemplateArg;
-import com.dropbox.core.v2.fileproperties.UpdateTemplateResult;
 import com.dropbox.core.v2.files.SyncSettingArg;
 
 import java.util.HashMap;
@@ -36,7 +33,7 @@ import java.util.Map;
  * Routes in namespace "team".
  */
 public class DbxTeamTeamRequests {
-    // namespace team (team_devices.stone, team_secondary_mails.stone, team_members.stone, team_linked_apps.stone, team_reports.stone, team_folders.stone, team_member_space_limits.stone, team.stone, team_groups.stone, team_legal_holds.stone, team_namespaces.stone, team_sharing_allowlist.stone)
+    // namespace team (team.stone)
 
     private final DbxRawClientV2 client;
 
@@ -123,9 +120,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * List all device sessions of a team.
-     *
-     * <p> Permission : Team member file access. </p>
+     * List all device sessions of a team. Permission : Team member file access.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link DevicesListMembersDevicesBuilder} for more details. </p>
@@ -170,15 +165,12 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * List all device sessions of a team.
-     *
-     * <p> Permission : Team member file access. </p>
+     * List all device sessions of a team. Permission : Team member file access.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link DevicesListTeamDevicesBuilder} for more details. </p>
      *
-     * @deprecated use {@link DbxTeamTeamRequests#devicesListMembersDevices}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public ListTeamDevicesResult devicesListTeamDevices() throws ListTeamDevicesErrorException, DbxException {
@@ -192,8 +184,7 @@ public class DbxTeamTeamRequests {
      * @return Request builder for configuring request parameters and completing
      *     the request.
      *
-     * @deprecated use {@link DbxTeamTeamRequests#devicesListMembersDevices}
-     *     instead.
+     * @deprecated
      */
     @Deprecated
     public DevicesListTeamDevicesBuilder devicesListTeamDevicesBuilder() {
@@ -266,7 +257,7 @@ public class DbxTeamTeamRequests {
     //
 
     /**
-     * Get the values for one or more featues. This route allows you to check
+     * Get the values for one or more features. This route allows you to check
      * your account's capability for what feature you can access or what value
      * you have for certain features. Permission : Team information.
      *
@@ -287,11 +278,9 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Get the values for one or more featues. This route allows you to check
+     * Get the values for one or more features. This route allows you to check
      * your account's capability for what feature you can access or what value
-     * you have for certain features.
-     *
-     * <p> Permission : Team information. </p>
+     * you have for certain features. Permission : Team information.
      *
      * @param features  A list of features in {@link Feature}. If the list is
      *     empty, this route will return {@link FeaturesGetValuesBatchError}.
@@ -354,9 +343,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Creates a new, empty group, with a requested name.
-     *
-     * <p> Permission : Team member management. </p>
+     * Creates a new, empty group, with a requested name. Permission : Team
+     * member management.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link GroupsCreateBuilder} for more details. </p>
@@ -428,8 +416,8 @@ public class DbxTeamTeamRequests {
 
     /**
      * Retrieves information about one or more groups. Note that the optional
-     * field  {@link GroupFullInfo#getMembers} is not returned for
-     * system-managed groups. Permission : Team Information.
+     * field {@link GroupFullInfo#getMembers} is not returned for system-managed
+     * groups. Permission : Team Information.
      *
      * @param arg  Argument for selecting a list of groups, either by group_ids,
      *     or external group IDs.
@@ -491,9 +479,7 @@ public class DbxTeamTeamRequests {
      * {@link
      * DbxTeamTeamRequests#groupsMembersRemove(GroupSelector,List,boolean)} use
      * this method to poll the status of granting/revoking group members' access
-     * to group-owned resources.
-     *
-     * <p> Permission : Team member management. </p>
+     * to group-owned resources. Permission : Team member management.
      *
      * @param asyncJobId  Id of the asynchronous job. This is the value of a
      *     response returned from the method that launched the job. Must have
@@ -535,9 +521,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Lists groups on a team.
-     *
-     * <p> Permission : Team Information. </p>
+     * Lists groups on a team. Permission : Team Information.
      *
      * <p> The {@code limit} request parameter will default to {@code 1000L}
      * (see {@link #groupsList(long)}). </p>
@@ -548,9 +532,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Lists groups on a team.
-     *
-     * <p> Permission : Team Information. </p>
+     * Lists groups on a team. Permission : Team Information.
      *
      * @param limit  Number of results to return per call. Must be greater than
      *     or equal to 1 and be less than or equal to 1000.
@@ -597,9 +579,7 @@ public class DbxTeamTeamRequests {
     /**
      * Once a cursor has been retrieved from {@link
      * DbxTeamTeamRequests#groupsList(long)}, use this to paginate through all
-     * groups.
-     *
-     * <p> Permission : Team Information. </p>
+     * groups. Permission : Team Information.
      *
      * @param cursor  Indicates from what point to get the next set of groups.
      *     Must not be {@code null}.
@@ -644,14 +624,10 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Adds members to a group.
-     *
-     * <p> The members are added immediately. However the granting of
-     * group-owned resources may take additional time. Use the {@link
-     * DbxTeamTeamRequests#groupsJobStatusGet(String)} to determine whether this
-     * process has completed. </p>
-     *
-     * <p> Permission : Team member management. </p>
+     * Adds members to a group. The members are added immediately. However the
+     * granting of group-owned resources may take additional time. Use the
+     * {@link DbxTeamTeamRequests#groupsJobStatusGet(String)} to determine
+     * whether this process has completed. Permission : Team member management.
      *
      * <p> The {@code returnMembers} request parameter will default to {@code
      * true} (see {@link #groupsMembersAdd(GroupSelector,List,boolean)}). </p>
@@ -675,21 +651,17 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Adds members to a group.
-     *
-     * <p> The members are added immediately. However the granting of
-     * group-owned resources may take additional time. Use the {@link
-     * DbxTeamTeamRequests#groupsJobStatusGet(String)} to determine whether this
-     * process has completed. </p>
-     *
-     * <p> Permission : Team member management. </p>
+     * Adds members to a group. The members are added immediately. However the
+     * granting of group-owned resources may take additional time. Use the
+     * {@link DbxTeamTeamRequests#groupsJobStatusGet(String)} to determine
+     * whether this process has completed. Permission : Team member management.
      *
      * @param group  Group to which users will be added. Must not be {@code
      *     null}.
      * @param members  List of users to be added to the group. Must not contain
      *     a {@code null} item and not be {@code null}.
      * @param returnMembers  Whether to return the list of members in the group.
-     *     Note that the default value will cause all the group members  to be
+     *     Note that the default value will cause all the group members to be
      *     returned in the response. This may take a long time for large groups.
      *
      * @return Result returned by {@link
@@ -729,9 +701,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Lists members of a group.
-     *
-     * <p> Permission : Team Information. </p>
+     * Lists members of a group. Permission : Team Information.
      *
      * <p> The {@code limit} request parameter will default to {@code 1000L}
      * (see {@link #groupsMembersList(GroupSelector,long)}). </p>
@@ -748,9 +718,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Lists members of a group.
-     *
-     * <p> Permission : Team Information. </p>
+     * Lists members of a group. Permission : Team Information.
      *
      * @param group  The group whose members are to be listed. Must not be
      *     {@code null}.
@@ -799,9 +767,7 @@ public class DbxTeamTeamRequests {
     /**
      * Once a cursor has been retrieved from {@link
      * DbxTeamTeamRequests#groupsMembersList(GroupSelector,long)}, use this to
-     * paginate through all members of the group.
-     *
-     * <p> Permission : Team information. </p>
+     * paginate through all members of the group. Permission : Team information.
      *
      * @param cursor  Indicates from what point to get the next set of groups.
      *     Must not be {@code null}.
@@ -848,17 +814,12 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Removes members from a group.
-     *
-     * <p> The members are removed immediately. However the revoking of
-     * group-owned resources may take additional time. Use the {@link
-     * DbxTeamTeamRequests#groupsJobStatusGet(String)} to determine whether this
-     * process has completed. </p>
-     *
-     * <p> This method permits removing the only owner of a group, even in cases
-     * where this is not possible via the web client. </p>
-     *
-     * <p> Permission : Team member management. </p>
+     * Removes members from a group. The members are removed immediately.
+     * However the revoking of group-owned resources may take additional time.
+     * Use the {@link DbxTeamTeamRequests#groupsJobStatusGet(String)} to
+     * determine whether this process has completed. This method permits
+     * removing the only owner of a group, even in cases where this is not
+     * possible via the web client. Permission : Team member management.
      *
      * <p> The {@code returnMembers} request parameter will default to {@code
      * true} (see {@link #groupsMembersRemove(GroupSelector,List,boolean)}).
@@ -883,24 +844,19 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Removes members from a group.
-     *
-     * <p> The members are removed immediately. However the revoking of
-     * group-owned resources may take additional time. Use the {@link
-     * DbxTeamTeamRequests#groupsJobStatusGet(String)} to determine whether this
-     * process has completed. </p>
-     *
-     * <p> This method permits removing the only owner of a group, even in cases
-     * where this is not possible via the web client. </p>
-     *
-     * <p> Permission : Team member management. </p>
+     * Removes members from a group. The members are removed immediately.
+     * However the revoking of group-owned resources may take additional time.
+     * Use the {@link DbxTeamTeamRequests#groupsJobStatusGet(String)} to
+     * determine whether this process has completed. This method permits
+     * removing the only owner of a group, even in cases where this is not
+     * possible via the web client. Permission : Team member management.
      *
      * @param group  Group from which users will be removed. Must not be {@code
      *     null}.
      * @param users  List of users to be removed from the group. Must not
      *     contain a {@code null} item and not be {@code null}.
      * @param returnMembers  Whether to return the list of members in the group.
-     *     Note that the default value will cause all the group members  to be
+     *     Note that the default value will cause all the group members to be
      *     returned in the response. This may take a long time for large groups.
      *
      * @return Result returned by {@link
@@ -941,9 +897,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Sets a member's access type in a group.
-     *
-     * <p> Permission : Team member management. </p>
+     * Sets a member's access type in a group. Permission : Team member
+     * management.
      *
      * <p> The {@code returnMembers} request parameter will default to {@code
      * true} (see {@link
@@ -967,9 +922,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Sets a member's access type in a group.
-     *
-     * <p> Permission : Team member management. </p>
+     * Sets a member's access type in a group. Permission : Team member
+     * management.
      *
      * @param group  Specify a group. Must not be {@code null}.
      * @param user  Identity of a user that is a member of the {@code group}
@@ -979,7 +933,7 @@ public class DbxTeamTeamRequests {
      * @param accessType  New group access type the user will have. Must not be
      *     {@code null}.
      * @param returnMembers  Whether to return the list of members in the group.
-     *     Note that the default value will cause all the group members  to be
+     *     Note that the default value will cause all the group members to be
      *     returned in the response. This may take a long time for large groups.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -1017,9 +971,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Updates a group's name and/or external ID.
-     *
-     * <p> Permission : Team member management. </p>
+     * Updates a group's name and/or external ID. Permission : Team member
+     * management.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link GroupsUpdateBuilder} for more details. </p>
@@ -1079,9 +1032,7 @@ public class DbxTeamTeamRequests {
 
     /**
      * Creates new legal hold policy. Note: Legal Holds is a paid add-on. Not
-     * all teams have the feature.
-     *
-     * <p> Permission : Team member file access. </p>
+     * all teams have the feature. Permission : Team member file access.
      *
      * @param name  Policy name. Must have length of at most 140 and not be
      *     {@code null}.
@@ -1142,9 +1093,7 @@ public class DbxTeamTeamRequests {
 
     /**
      * Gets a legal hold by Id. Note: Legal Holds is a paid add-on. Not all
-     * teams have the feature.
-     *
-     * <p> Permission : Team member file access. </p>
+     * teams have the feature. Permission : Team member file access.
      *
      * @param id  The legal hold Id. Must match pattern "{@code ^pid_dbhid:.+}"
      *     and not be {@code null}.
@@ -1184,9 +1133,8 @@ public class DbxTeamTeamRequests {
 
     /**
      * List the file metadata that's under the hold. Note: Legal Holds is a paid
-     * add-on. Not all teams have the feature.
-     *
-     * <p> Permission : Team member file access. </p>
+     * add-on. Not all teams have the feature. Permission : Team member file
+     * access.
      *
      * @param id  The legal hold Id. Must match pattern "{@code ^pid_dbhid:.+}"
      *     and not be {@code null}.
@@ -1226,9 +1174,8 @@ public class DbxTeamTeamRequests {
 
     /**
      * Continue listing the file metadata that's under the hold. Note: Legal
-     * Holds is a paid add-on. Not all teams have the feature.
-     *
-     * <p> Permission : Team member file access. </p>
+     * Holds is a paid add-on. Not all teams have the feature. Permission : Team
+     * member file access.
      *
      * @param id  The legal hold Id. Must match pattern "{@code ^pid_dbhid:.+}"
      *     and not be {@code null}.
@@ -1243,9 +1190,8 @@ public class DbxTeamTeamRequests {
 
     /**
      * Continue listing the file metadata that's under the hold. Note: Legal
-     * Holds is a paid add-on. Not all teams have the feature.
-     *
-     * <p> Permission : Team member file access. </p>
+     * Holds is a paid add-on. Not all teams have the feature. Permission : Team
+     * member file access.
      *
      * @param id  The legal hold Id. Must match pattern "{@code ^pid_dbhid:.+}"
      *     and not be {@code null}.
@@ -1292,9 +1238,7 @@ public class DbxTeamTeamRequests {
 
     /**
      * Lists legal holds on a team. Note: Legal Holds is a paid add-on. Not all
-     * teams have the feature.
-     *
-     * <p> Permission : Team member file access. </p>
+     * teams have the feature. Permission : Team member file access.
      *
      * <p> The {@code includeReleased} request parameter will default to {@code
      * false} (see {@link #legalHoldsListPolicies(boolean)}). </p>
@@ -1306,9 +1250,7 @@ public class DbxTeamTeamRequests {
 
     /**
      * Lists legal holds on a team. Note: Legal Holds is a paid add-on. Not all
-     * teams have the feature.
-     *
-     * <p> Permission : Team member file access. </p>
+     * teams have the feature. Permission : Team member file access.
      *
      * @param includeReleased  Whether to return holds that were released.
      */
@@ -1343,9 +1285,7 @@ public class DbxTeamTeamRequests {
 
     /**
      * Releases a legal hold by Id. Note: Legal Holds is a paid add-on. Not all
-     * teams have the feature.
-     *
-     * <p> Permission : Team member file access. </p>
+     * teams have the feature. Permission : Team member file access.
      *
      * @param id  The legal hold Id. Must match pattern "{@code ^pid_dbhid:.+}"
      *     and not be {@code null}.
@@ -1384,9 +1324,7 @@ public class DbxTeamTeamRequests {
 
     /**
      * Updates a legal hold. Note: Legal Holds is a paid add-on. Not all teams
-     * have the feature.
-     *
-     * <p> Permission : Team member file access. </p>
+     * have the feature. Permission : Team member file access.
      *
      * @param id  The legal hold Id. Must match pattern "{@code ^pid_dbhid:.+}"
      *     and not be {@code null}.
@@ -1442,9 +1380,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * List all linked applications of the team member.
-     *
-     * <p> Note, this endpoint does not list any team-linked applications. </p>
+     * List all linked applications of the team member. Note, this endpoint does
+     * not list any team-linked applications.
      *
      * @param teamMemberId  The team member id. Must not be {@code null}.
      *
@@ -1486,9 +1423,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * List all applications linked to the team members' accounts.
-     *
-     * <p> Note, this endpoint does not list any team-linked applications. </p>
+     * List all applications linked to the team members' accounts. Note, this
+     * endpoint does not list any team-linked applications.
      *
      * @return Information returned by {@link
      *     DbxTeamTeamRequests#linkedAppsListMembersLinkedApps(String)}.
@@ -1499,9 +1435,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * List all applications linked to the team members' accounts.
-     *
-     * <p> Note, this endpoint does not list any team-linked applications. </p>
+     * List all applications linked to the team members' accounts. Note, this
+     * endpoint does not list any team-linked applications.
      *
      * @param cursor  At the first call to the {@link
      *     DbxTeamTeamRequests#linkedAppsListMembersLinkedApps(String)} the
@@ -1547,15 +1482,13 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * List all applications linked to the team members' accounts.
-     *
-     * <p> Note, this endpoint doesn't list any team-linked applications. </p>
+     * List all applications linked to the team members' accounts. Note, this
+     * endpoint doesn't list any team-linked applications.
      *
      * @return Information returned by {@link
      *     DbxTeamTeamRequests#linkedAppsListTeamLinkedApps(String)}.
      *
-     * @deprecated use {@link
-     *     DbxTeamTeamRequests#linkedAppsListMembersLinkedApps(String)} instead.
+     * @deprecated
      */
     @Deprecated
     public ListTeamAppsResult linkedAppsListTeamLinkedApps() throws ListTeamAppsErrorException, DbxException {
@@ -1564,9 +1497,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * List all applications linked to the team members' accounts.
-     *
-     * <p> Note, this endpoint doesn't list any team-linked applications. </p>
+     * List all applications linked to the team members' accounts. Note, this
+     * endpoint doesn't list any team-linked applications.
      *
      * @param cursor  At the first call to the {@link
      *     DbxTeamTeamRequests#linkedAppsListTeamLinkedApps(String)} the cursor
@@ -1577,8 +1509,7 @@ public class DbxTeamTeamRequests {
      * @return Information returned by {@link
      *     DbxTeamTeamRequests#linkedAppsListTeamLinkedApps(String)}.
      *
-     * @deprecated use {@link
-     *     DbxTeamTeamRequests#linkedAppsListMembersLinkedApps(String)} instead.
+     * @deprecated
      */
     @Deprecated
     public ListTeamAppsResult linkedAppsListTeamLinkedApps(String cursor) throws ListTeamAppsErrorException, DbxException {
@@ -1634,8 +1565,9 @@ public class DbxTeamTeamRequests {
      * @param appId  The application's unique id. Must not be {@code null}.
      * @param teamMemberId  The unique id of the member owning the device. Must
      *     not be {@code null}.
-     * @param keepAppFolder  This flag is not longer supported, the application
-     *     dedicated folder (in case the application uses  one) will be kept.
+     * @param keepAppFolder  Field is deprecated. This flag is not longer
+     *     supported, the application dedicated folder (in case the application
+     *     uses one) will be kept.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -1998,10 +1930,10 @@ public class DbxTeamTeamRequests {
     //
 
     /**
-     * Set users custom quota. Custom quota has to be at least 15GB. A maximum
-     * of 1000 members can be specified in a single call. Note: to apply a
-     * custom space limit, a team admin needs to set a member space limit for
-     * the team first. (the team admin can check the settings here:
+     * Set users custom quota. Custom quota has to be at least 2GB. A maximum of
+     * 1000 members can be specified in a single call. Note: to apply a custom
+     * space limit, a team admin needs to set a member space limit for the team
+     * first. (the team admin can check the settings here:
      * https://www.dropbox.com/team/admin/settings/space).
      *
      */
@@ -2021,10 +1953,10 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Set users custom quota. Custom quota has to be at least 15GB. A maximum
-     * of 1000 members can be specified in a single call. Note: to apply a
-     * custom space limit, a team admin needs to set a member space limit for
-     * the team first. (the team admin can check the settings here:
+     * Set users custom quota. Custom quota has to be at least 2GB. A maximum of
+     * 1000 members can be specified in a single call. Note: to apply a custom
+     * space limit, a team admin needs to set a member space limit for the team
+     * first. (the team admin can check the settings here:
      * https://www.dropbox.com/team/admin/settings/space).
      *
      * @param usersAndQuotas  List of users and their custom quotas. Must not
@@ -2072,24 +2004,17 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Adds members to a team.
-     *
-     * <p> Permission : Team member management </p>
-     *
-     * <p> A maximum of 20 members can be specified in a single call. </p>
-     *
-     * <p> If no Dropbox account exists with the email address specified, a new
-     * Dropbox account will be created with the given email address, and that
-     * account will be invited to the team. </p>
-     *
-     * <p> If a personal Dropbox account exists with the email address specified
-     * in the call, this call will create a placeholder Dropbox account for the
-     * user on the team and send an email inviting the user to migrate their
-     * existing personal account onto the team. </p>
-     *
-     * <p> Team member management apps are required to set an initial given_name
-     * and surname for a user to use in the team invitation and for 'Perform as
-     * team member' actions taken on the user before they become 'active'. </p>
+     * Adds members to a team. Permission : Team member management A maximum of
+     * 20 members can be specified in a single call. If no Dropbox account
+     * exists with the email address specified, a new Dropbox account will be
+     * created with the given email address, and that account will be invited to
+     * the team. If a personal Dropbox account exists with the email address
+     * specified in the call, this call will create a placeholder Dropbox
+     * account for the user on the team and send an email inviting the user to
+     * migrate their existing personal account onto the team. Team member
+     * management apps are required to set an initial given_name and surname for
+     * a user to use in the team invitation and for 'Perform as team member'
+     * actions taken on the user before they become 'active'.
      *
      * <p> The {@code forceAsync} request parameter will default to {@code
      * false} (see {@link #membersAdd(List,boolean)}). </p>
@@ -2106,24 +2031,17 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Adds members to a team.
-     *
-     * <p> Permission : Team member management </p>
-     *
-     * <p> A maximum of 20 members can be specified in a single call. </p>
-     *
-     * <p> If no Dropbox account exists with the email address specified, a new
-     * Dropbox account will be created with the given email address, and that
-     * account will be invited to the team. </p>
-     *
-     * <p> If a personal Dropbox account exists with the email address specified
-     * in the call, this call will create a placeholder Dropbox account for the
-     * user on the team and send an email inviting the user to migrate their
-     * existing personal account onto the team. </p>
-     *
-     * <p> Team member management apps are required to set an initial given_name
-     * and surname for a user to use in the team invitation and for 'Perform as
-     * team member' actions taken on the user before they become 'active'. </p>
+     * Adds members to a team. Permission : Team member management A maximum of
+     * 20 members can be specified in a single call. If no Dropbox account
+     * exists with the email address specified, a new Dropbox account will be
+     * created with the given email address, and that account will be invited to
+     * the team. If a personal Dropbox account exists with the email address
+     * specified in the call, this call will create a placeholder Dropbox
+     * account for the user on the team and send an email inviting the user to
+     * migrate their existing personal account onto the team. Team member
+     * management apps are required to set an initial given_name and surname for
+     * a user to use in the team invitation and for 'Perform as team member'
+     * actions taken on the user before they become 'active'.
      *
      * @param newMembers  Details of new members to be added to the team. Must
      *     not contain a {@code null} item and not be {@code null}.
@@ -2149,10 +2067,7 @@ public class DbxTeamTeamRequests {
      * the team. If a personal Dropbox account exists with the email address
      * specified in the call, this call will create a placeholder Dropbox
      * account for the user on the team and send an email inviting the user to
-     * migrate their existing personal account onto the team. Team member
-     * management apps are required to set an initial given_name and surname for
-     * a user to use in the team invitation and for 'Perform as team member'
-     * actions taken on the user before they become 'active'.
+     * migrate their existing personal account onto the team.
      *
      */
     MembersAddLaunchV2Result membersAddV2(MembersAddV2Arg arg) throws DbxApiException, DbxException {
@@ -2171,24 +2086,14 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Adds members to a team.
-     *
-     * <p> Permission : Team member management </p>
-     *
-     * <p> A maximum of 20 members can be specified in a single call. </p>
-     *
-     * <p> If no Dropbox account exists with the email address specified, a new
-     * Dropbox account will be created with the given email address, and that
-     * account will be invited to the team. </p>
-     *
-     * <p> If a personal Dropbox account exists with the email address specified
-     * in the call, this call will create a placeholder Dropbox account for the
-     * user on the team and send an email inviting the user to migrate their
-     * existing personal account onto the team. </p>
-     *
-     * <p> Team member management apps are required to set an initial given_name
-     * and surname for a user to use in the team invitation and for 'Perform as
-     * team member' actions taken on the user before they become 'active'. </p>
+     * Adds members to a team. Permission : Team member management A maximum of
+     * 20 members can be specified in a single call. If no Dropbox account
+     * exists with the email address specified, a new Dropbox account will be
+     * created with the given email address, and that account will be invited to
+     * the team. If a personal Dropbox account exists with the email address
+     * specified in the call, this call will create a placeholder Dropbox
+     * account for the user on the team and send an email inviting the user to
+     * migrate their existing personal account onto the team.
      *
      * <p> The {@code forceAsync} request parameter will default to {@code
      * false} (see {@link #membersAddV2(List,boolean)}). </p>
@@ -2205,24 +2110,14 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Adds members to a team.
-     *
-     * <p> Permission : Team member management </p>
-     *
-     * <p> A maximum of 20 members can be specified in a single call. </p>
-     *
-     * <p> If no Dropbox account exists with the email address specified, a new
-     * Dropbox account will be created with the given email address, and that
-     * account will be invited to the team. </p>
-     *
-     * <p> If a personal Dropbox account exists with the email address specified
-     * in the call, this call will create a placeholder Dropbox account for the
-     * user on the team and send an email inviting the user to migrate their
-     * existing personal account onto the team. </p>
-     *
-     * <p> Team member management apps are required to set an initial given_name
-     * and surname for a user to use in the team invitation and for 'Perform as
-     * team member' actions taken on the user before they become 'active'. </p>
+     * Adds members to a team. Permission : Team member management A maximum of
+     * 20 members can be specified in a single call. If no Dropbox account
+     * exists with the email address specified, a new Dropbox account will be
+     * created with the given email address, and that account will be invited to
+     * the team. If a personal Dropbox account exists with the email address
+     * specified in the call, this call will create a placeholder Dropbox
+     * account for the user on the team and send an email inviting the user to
+     * migrate their existing personal account onto the team.
      *
      * @param newMembers  Details of new members to be added to the team. Must
      *     not contain a {@code null} item and not be {@code null}.
@@ -2266,9 +2161,7 @@ public class DbxTeamTeamRequests {
     /**
      * Once an async_job_id is returned from {@link
      * DbxTeamTeamRequests#membersAdd(List,boolean)} , use this to poll the
-     * status of the asynchronous request.
-     *
-     * <p> Permission : Team member management. </p>
+     * status of the asynchronous request. Permission : Team member management.
      *
      * @param asyncJobId  Id of the asynchronous job. This is the value of a
      *     response returned from the method that launched the job. Must have
@@ -2312,9 +2205,7 @@ public class DbxTeamTeamRequests {
     /**
      * Once an async_job_id is returned from {@link
      * DbxTeamTeamRequests#membersAddV2(List,boolean)} , use this to poll the
-     * status of the asynchronous request.
-     *
-     * <p> Permission : Team member management. </p>
+     * status of the asynchronous request. Permission : Team member management.
      *
      * @param asyncJobId  Id of the asynchronous job. This is the value of a
      *     response returned from the method that launched the job. Must have
@@ -2326,6 +2217,53 @@ public class DbxTeamTeamRequests {
     public MembersAddJobStatusV2Result membersAddJobStatusGetV2(String asyncJobId) throws PollErrorException, DbxException {
         PollArg _arg = new PollArg(asyncJobId);
         return membersAddJobStatusGetV2(_arg);
+    }
+
+    //
+    // route 2/team/members/delete_former_member_files
+    //
+
+    /**
+     * Permanently delete the files of a user who has been removed from the
+     * team. After permanent deletion, those files will not be available to be
+     * transferred to another team member. Permission : Team member management
+     * Exactly one of team_member_id, email, or external_id must be provided to
+     * identify the user account.
+     *
+     * @param arg  Exactly one of team_member_id, email, or external_id must be
+     *     provided to identify a former team member.
+     */
+    void membersDeleteFormerMemberFiles(MembersFormerMemberArg arg) throws MembersDeleteFormerMemberFilesErrorException, DbxException {
+        try {
+            this.client.rpcStyle(this.client.getHost().getApi(),
+                                 "2/team/members/delete_former_member_files",
+                                 arg,
+                                 false,
+                                 MembersFormerMemberArg.Serializer.INSTANCE,
+                                 com.dropbox.core.stone.StoneSerializers.void_(),
+                                 MembersDeleteFormerMemberFilesError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new MembersDeleteFormerMemberFilesErrorException("2/team/members/delete_former_member_files", ex.getRequestId(), ex.getUserMessage(), (MembersDeleteFormerMemberFilesError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Permanently delete the files of a user who has been removed from the
+     * team. After permanent deletion, those files will not be available to be
+     * transferred to another team member. Permission : Team member management
+     * Exactly one of team_member_id, email, or external_id must be provided to
+     * identify the user account.
+     *
+     * @param user  Identity of user whose files will be permanently deleted.
+     *     Must not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public void membersDeleteFormerMemberFiles(UserSelectorArg user) throws MembersDeleteFormerMemberFilesErrorException, DbxException {
+        MembersFormerMemberArg _arg = new MembersFormerMemberArg(user);
+        membersDeleteFormerMemberFiles(_arg);
     }
 
     //
@@ -2355,9 +2293,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Deletes a team member's profile photo.
-     *
-     * <p> Permission : Team member management. </p>
+     * Deletes a team member's profile photo. Permission : Team member
+     * management.
      *
      * @param user  Identity of the user whose profile photo will be deleted.
      *     Must not be {@code null}.
@@ -2400,9 +2337,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Deletes a team member's profile photo.
-     *
-     * <p> Permission : Team member management. </p>
+     * Deletes a team member's profile photo. Permission : Team member
+     * management.
      *
      * @param user  Identity of the user whose profile photo will be deleted.
      *     Must not be {@code null}.
@@ -2474,13 +2410,10 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Returns information about multiple team members.
-     *
-     * <p> Permission : Team information </p>
-     *
-     * <p> This endpoint will return {@link
+     * Returns information about multiple team members. Permission : Team
+     * information This endpoint will return {@link
      * MembersGetInfoItem#getIdNotFoundValue}, for IDs (or emails) that cannot
-     * be matched to a valid team member. </p>
+     * be matched to a valid team member.
      *
      * @param members  List of team members. Must not contain a {@code null}
      *     item and not be {@code null}.
@@ -2520,13 +2453,10 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Returns information about multiple team members.
-     *
-     * <p> Permission : Team information </p>
-     *
-     * <p> This endpoint will return {@link
+     * Returns information about multiple team members. Permission : Team
+     * information This endpoint will return {@link
      * MembersGetInfoItem#getIdNotFoundValue}, for IDs (or emails) that cannot
-     * be matched to a valid team member. </p>
+     * be matched to a valid team member.
      *
      * @param members  List of team members. Must not contain a {@code null}
      *     item and not be {@code null}.
@@ -2563,9 +2493,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Lists members of a team.
-     *
-     * <p> Permission : Team information. </p>
+     * Lists members of a team. Permission : Team information.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link MembersListBuilder} for more details. </p>
@@ -2610,9 +2538,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Lists members of a team.
-     *
-     * <p> Permission : Team information. </p>
+     * Lists members of a team. Permission : Team information.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link MembersListV2Builder} for more details. </p>
@@ -2661,9 +2587,7 @@ public class DbxTeamTeamRequests {
     /**
      * Once a cursor has been retrieved from {@link
      * DbxTeamTeamRequests#membersList}, use this to paginate through all team
-     * members.
-     *
-     * <p> Permission : Team information. </p>
+     * members. Permission : Team information.
      *
      * @param cursor  Indicates from what point to get the next set of members.
      *     Must not be {@code null}.
@@ -2704,9 +2628,7 @@ public class DbxTeamTeamRequests {
     /**
      * Once a cursor has been retrieved from {@link
      * DbxTeamTeamRequests#membersListV2}, use this to paginate through all team
-     * members.
-     *
-     * <p> Permission : Team information. </p>
+     * members. Permission : Team information.
      *
      * @param cursor  Indicates from what point to get the next set of members.
      *     Must not be {@code null}.
@@ -2755,8 +2677,7 @@ public class DbxTeamTeamRequests {
      * initiates an asynchronous job. To obtain the final result of the job, the
      * client should periodically poll {@link
      * DbxTeamTeamRequests#membersMoveFormerMemberFilesJobStatusCheck(String)}.
-     *
-     * <p> Permission : Team member management. </p>
+     * Permission : Team member management.
      *
      * @param user  Identity of user to remove/suspend/have their files moved.
      *     Must not be {@code null}.
@@ -2812,9 +2733,8 @@ public class DbxTeamTeamRequests {
     /**
      * Once an async_job_id is returned from {@link
      * DbxTeamTeamRequests#membersMoveFormerMemberFiles(UserSelectorArg,UserSelectorArg,UserSelectorArg)}
-     * , use this to poll the status of the asynchronous request.
-     *
-     * <p> Permission : Team member management. </p>
+     * , use this to poll the status of the asynchronous request. Permission :
+     * Team member management.
      *
      * @param asyncJobId  Id of the asynchronous job. This is the value of a
      *     response returned from the method that launched the job. Must have
@@ -2860,12 +2780,9 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Recover a deleted member.
-     *
-     * <p> Permission : Team member management </p>
-     *
-     * <p> Exactly one of team_member_id, email, or external_id must be provided
-     * to identify the user account. </p>
+     * Recover a deleted member. Permission : Team member management Exactly one
+     * of team_member_id, email, or external_id must be provided to identify the
+     * user account.
      *
      * @param user  Identity of user to recover. Must not be {@code null}.
      *
@@ -2893,8 +2810,10 @@ public class DbxTeamTeamRequests {
      * MemberAddResult#getUserAlreadyOnTeamValue}. Accounts can have their files
      * transferred via the admin console for a limited time, based on the
      * version history length associated with the team (180 days for most
-     * teams). This endpoint may initiate an asynchronous job. To obtain the
-     * final result of the job, the client should periodically poll {@link
+     * teams). Accounts can have their stacks transferred through the admin
+     * console. This only transfers stacks that they have created. This endpoint
+     * may initiate an asynchronous job. To obtain the final result of the job,
+     * the client should periodically poll {@link
      * DbxTeamTeamRequests#membersRemoveJobStatusGet(String)}.
      *
      *
@@ -2918,28 +2837,22 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Removes a member from a team.
-     *
-     * <p> Permission : Team member management </p>
-     *
-     * <p> Exactly one of team_member_id, email, or external_id must be provided
-     * to identify the user account. </p>
-     *
-     * <p> Accounts can be recovered via {@link
+     * Removes a member from a team. Permission : Team member management Exactly
+     * one of team_member_id, email, or external_id must be provided to identify
+     * the user account. Accounts can be recovered via {@link
      * DbxTeamTeamRequests#membersRecover(UserSelectorArg)} for a 7 day period
      * or until the account has been permanently deleted or transferred to
      * another account (whichever comes first). Calling {@link
      * DbxTeamTeamRequests#membersAdd(List,boolean)} while a user is still
      * recoverable on your team will return with {@link
-     * MemberAddResult#getUserAlreadyOnTeamValue}. </p>
-     *
-     * <p> Accounts can have their files transferred via the admin console for a
-     * limited time, based on the version history length associated with the
-     * team (180 days for most teams). </p>
-     *
-     * <p> This endpoint may initiate an asynchronous job. To obtain the final
-     * result of the job, the client should periodically poll {@link
-     * DbxTeamTeamRequests#membersRemoveJobStatusGet(String)}. </p>
+     * MemberAddResult#getUserAlreadyOnTeamValue}. Accounts can have their files
+     * transferred via the admin console for a limited time, based on the
+     * version history length associated with the team (180 days for most
+     * teams). Accounts can have their stacks transferred through the admin
+     * console. This only transfers stacks that they have created. This endpoint
+     * may initiate an asynchronous job. To obtain the final result of the job,
+     * the client should periodically poll {@link
+     * DbxTeamTeamRequests#membersRemoveJobStatusGet(String)}.
      *
      * <p> The default values for the optional request parameters will be used.
      * See {@link MembersRemoveBuilder} for more details. </p>
@@ -2971,8 +2884,10 @@ public class DbxTeamTeamRequests {
      * MemberAddResult#getUserAlreadyOnTeamValue}. Accounts can have their files
      * transferred via the admin console for a limited time, based on the
      * version history length associated with the team (180 days for most
-     * teams). This endpoint may initiate an asynchronous job. To obtain the
-     * final result of the job, the client should periodically poll {@link
+     * teams). Accounts can have their stacks transferred through the admin
+     * console. This only transfers stacks that they have created. This endpoint
+     * may initiate an asynchronous job. To obtain the final result of the job,
+     * the client should periodically poll {@link
      * DbxTeamTeamRequests#membersRemoveJobStatusGet(String)}.
      *
      * @param user  Identity of user to remove/suspend/have their files moved.
@@ -3024,9 +2939,8 @@ public class DbxTeamTeamRequests {
     /**
      * Once an async_job_id is returned from {@link
      * DbxTeamTeamRequests#membersRemove(UserSelectorArg)} , use this to poll
-     * the status of the asynchronous request.
-     *
-     * <p> Permission : Team member management. </p>
+     * the status of the asynchronous request. Permission : Team member
+     * management.
      *
      * @param asyncJobId  Id of the asynchronous job. This is the value of a
      *     response returned from the method that launched the job. Must have
@@ -3071,13 +2985,10 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Add secondary emails to users.
-     *
-     * <p> Permission : Team member management. </p>
-     *
-     * <p> Emails that are on verified domains will be verified automatically.
-     * For each email address not on a verified domain a verification email will
-     * be sent. </p>
+     * Add secondary emails to users. Permission : Team member management.
+     * Emails that are on verified domains will be verified automatically. For
+     * each email address not on a verified domain a verification email will be
+     * sent.
      *
      * @param newSecondaryEmails  List of users and secondary emails to add.
      *     Must not contain a {@code null} item and not be {@code null}.
@@ -3116,12 +3027,9 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Delete secondary emails from users
-     *
-     * <p> Permission : Team member management. </p>
-     *
-     * <p> Users will be notified of deletions of verified secondary emails at
-     * both the secondary email and their primary email. </p>
+     * Delete secondary emails from users Permission : Team member management.
+     * Users will be notified of deletions of verified secondary emails at both
+     * the secondary email and their primary email.
      *
      * @param emailsToDelete  List of users and their secondary emails to
      *     delete. Must not contain a {@code null} item and not be {@code null}.
@@ -3161,9 +3069,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Resend secondary email verification emails.
-     *
-     * <p> Permission : Team member management. </p>
+     * Resend secondary email verification emails. Permission : Team member
+     * management.
      *
      * @param emailsToResend  List of users and secondary emails to resend
      *     verification emails to. Must not contain a {@code null} item and not
@@ -3233,9 +3140,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Updates a team member's permissions.
-     *
-     * <p> Permission : Team member management. </p>
+     * Updates a team member's permissions. Permission : Team member management.
      *
      * @param user  Identity of user whose role will be set. Must not be {@code
      *     null}.
@@ -3275,9 +3180,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Updates a team member's permissions.
-     *
-     * <p> Permission : Team member management. </p>
+     * Updates a team member's permissions. Permission : Team member management.
      *
      * @param user  Identity of user whose role will be set. Must not be {@code
      *     null}.
@@ -3291,9 +3194,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Updates a team member's permissions.
-     *
-     * <p> Permission : Team member management. </p>
+     * Updates a team member's permissions. Permission : Team member management.
      *
      * @param user  Identity of user whose role will be set. Must not be {@code
      *     null}.
@@ -3354,9 +3255,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Updates a team member's profile.
-     *
-     * <p> Permission : Team member management. </p>
+     * Updates a team member's profile. Permission : Team member management.
      *
      * @param user  Identity of user whose profile will be set. Must not be
      *     {@code null}.
@@ -3418,9 +3317,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Updates a team member's profile.
-     *
-     * <p> Permission : Team member management. </p>
+     * Updates a team member's profile. Permission : Team member management.
      *
      * @param user  Identity of user whose profile will be set. Must not be
      *     {@code null}.
@@ -3480,9 +3377,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Updates a team member's profile photo.
-     *
-     * <p> Permission : Team member management. </p>
+     * Updates a team member's profile photo. Permission : Team member
+     * management.
      *
      * @param user  Identity of the user whose profile photo will be set. Must
      *     not be {@code null}.
@@ -3527,9 +3423,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Updates a team member's profile photo.
-     *
-     * <p> Permission : Team member management. </p>
+     * Updates a team member's profile photo. Permission : Team member
+     * management.
      *
      * @param user  Identity of the user whose profile photo will be set. Must
      *     not be {@code null}.
@@ -3573,12 +3468,9 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Suspend a member from a team.
-     *
-     * <p> Permission : Team member management </p>
-     *
-     * <p> Exactly one of team_member_id, email, or external_id must be provided
-     * to identify the user account. </p>
+     * Suspend a member from a team. Permission : Team member management Exactly
+     * one of team_member_id, email, or external_id must be provided to identify
+     * the user account.
      *
      * <p> The {@code wipeData} request parameter will default to {@code true}
      * (see {@link #membersSuspend(UserSelectorArg,boolean)}). </p>
@@ -3595,12 +3487,9 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Suspend a member from a team.
-     *
-     * <p> Permission : Team member management </p>
-     *
-     * <p> Exactly one of team_member_id, email, or external_id must be provided
-     * to identify the user account. </p>
+     * Suspend a member from a team. Permission : Team member management Exactly
+     * one of team_member_id, email, or external_id must be provided to identify
+     * the user account.
      *
      * @param user  Identity of user to remove/suspend/have their files moved.
      *     Must not be {@code null}.
@@ -3643,12 +3532,9 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Unsuspend a member from a team.
-     *
-     * <p> Permission : Team member management </p>
-     *
-     * <p> Exactly one of team_member_id, email, or external_id must be provided
-     * to identify the user account. </p>
+     * Unsuspend a member from a team. Permission : Team member management
+     * Exactly one of team_member_id, email, or external_id must be provided to
+     * identify the user account.
      *
      * @param user  Identity of user to unsuspend. Must not be {@code null}.
      *
@@ -3716,8 +3602,8 @@ public class DbxTeamTeamRequests {
      * folders may be owned by other users or other teams. Duplicates may occur
      * in the list.
      *
-     * @param limit  Specifying a value here has no effect. Must be greater than
-     *     or equal to 1 and be less than or equal to 1000.
+     * @param limit  Field is deprecated. Specifying a value here has no effect.
+     *     Must be greater than or equal to 1 and be less than or equal to 1000.
      *
      * @return Result for {@link DbxTeamTeamRequests#namespacesList(long)}.
      *
@@ -3869,100 +3755,6 @@ public class DbxTeamTeamRequests {
     public GetTemplateResult propertiesTemplateGet(String templateId) throws TemplateErrorException, DbxException {
         GetTemplateArg _arg = new GetTemplateArg(templateId);
         return propertiesTemplateGet(_arg);
-    }
-
-    //
-    // route 2/team/properties/template/list
-    //
-
-    /**
-     * Permission : Team member file access. The scope for the route is
-     * files.team_metadata.write.
-     *
-     * @deprecated
-     */
-    @Deprecated
-    public ListTemplateResult propertiesTemplateList() throws TemplateErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/team/properties/template/list",
-                                        null,
-                                        false,
-                                        com.dropbox.core.stone.StoneSerializers.void_(),
-                                        ListTemplateResult.Serializer.INSTANCE,
-                                        TemplateError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new TemplateErrorException("2/team/properties/template/list", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue());
-        }
-    }
-
-    //
-    // route 2/team/properties/template/update
-    //
-
-    /**
-     * Permission : Team member file access.
-     *
-     */
-    UpdateTemplateResult propertiesTemplateUpdate(UpdateTemplateArg arg) throws ModifyTemplateErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/team/properties/template/update",
-                                        arg,
-                                        false,
-                                        UpdateTemplateArg.Serializer.INSTANCE,
-                                        UpdateTemplateResult.Serializer.INSTANCE,
-                                        ModifyTemplateError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new ModifyTemplateErrorException("2/team/properties/template/update", ex.getRequestId(), ex.getUserMessage(), (ModifyTemplateError) ex.getErrorValue());
-        }
-    }
-
-    /**
-     * Permission : Team member file access.
-     *
-     * @param templateId  An identifier for template added by  See {@link
-     *     com.dropbox.core.v2.fileproperties.DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)}
-     *     or {@link
-     *     com.dropbox.core.v2.fileproperties.DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)}.
-     *     Must have length of at least 1, match pattern "{@code (/|ptid:).*}",
-     *     and not be {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     *
-     * @deprecated
-     */
-    @Deprecated
-    public UpdateTemplateResult propertiesTemplateUpdate(String templateId) throws ModifyTemplateErrorException, DbxException {
-        UpdateTemplateArg _arg = new UpdateTemplateArg(templateId);
-        return propertiesTemplateUpdate(_arg);
-    }
-
-    /**
-     * Permission : Team member file access.
-     *
-     * @param templateId  An identifier for template added by  See {@link
-     *     com.dropbox.core.v2.fileproperties.DbxUserFilePropertiesRequests#templatesAddForUser(String,String,List)}
-     *     or {@link
-     *     com.dropbox.core.v2.fileproperties.DbxTeamFilePropertiesRequests#templatesAddForTeam(String,String,List)}.
-     *     Must have length of at least 1, match pattern "{@code (/|ptid:).*}",
-     *     and not be {@code null}.
-     *
-     * @return Request builder for configuring request parameters and completing
-     *     the request.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     *
-     * @deprecated
-     */
-    @Deprecated
-    public PropertiesTemplateUpdateBuilder propertiesTemplateUpdateBuilder(String templateId) {
-        UpdateTemplateArg.Builder argBuilder_ = UpdateTemplateArg.newBuilder(templateId);
-        return new PropertiesTemplateUpdateBuilder(this, argBuilder_);
     }
 
     //
@@ -4464,9 +4256,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Sets an archived team folder's status to active.
-     *
-     * <p> Permission : Team member file access. </p>
+     * Sets an archived team folder's status to active. Permission : Team member
+     * file access.
      *
      * @param teamFolderId  The ID of the team folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -4488,7 +4279,10 @@ public class DbxTeamTeamRequests {
     /**
      * Sets an active team folder's status to archived and removes all folder
      * and file members. This endpoint cannot be used for teams that have a
-     * shared team space. Permission : Team member file access.
+     * shared team space. This route will either finish synchronously, or return
+     * a job ID and do the async archive job in background. Please use
+     * team_folder/archive/check to check the job status. Permission : Team
+     * member file access.
      *
      */
     TeamFolderArchiveLaunch teamFolderArchive(TeamFolderArchiveArg arg) throws TeamFolderArchiveErrorException, DbxException {
@@ -4509,9 +4303,10 @@ public class DbxTeamTeamRequests {
     /**
      * Sets an active team folder's status to archived and removes all folder
      * and file members. This endpoint cannot be used for teams that have a
-     * shared team space.
-     *
-     * <p> Permission : Team member file access. </p>
+     * shared team space. This route will either finish synchronously, or return
+     * a job ID and do the async archive job in background. Please use
+     * team_folder/archive/check to check the job status. Permission : Team
+     * member file access.
      *
      * <p> The {@code forceAsyncOff} request parameter will default to {@code
      * false} (see {@link #teamFolderArchive(String,boolean)}). </p>
@@ -4530,9 +4325,10 @@ public class DbxTeamTeamRequests {
     /**
      * Sets an active team folder's status to archived and removes all folder
      * and file members. This endpoint cannot be used for teams that have a
-     * shared team space.
-     *
-     * <p> Permission : Team member file access. </p>
+     * shared team space. This route will either finish synchronously, or return
+     * a job ID and do the async archive job in background. Please use
+     * team_folder/archive/check to check the job status. Permission : Team
+     * member file access.
      *
      * @param teamFolderId  The ID of the team folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -4553,6 +4349,11 @@ public class DbxTeamTeamRequests {
 
     /**
      * Returns the status of an asynchronous job for archiving a team folder.
+     * The job may show '.tag' as complete, but the team folder could still be
+     * in the process of archiving (indicated by {@link
+     * TeamFolderMetadata#getStatus} with 'archive_in_progress'). To confirm
+     * that the team folder is fully archived, check the field {@link
+     * TeamFolderMetadata#getStatus} in the response for the value 'archived'.
      * Permission : Team member file access.
      *
      * @param arg  Arguments for methods that poll the status of an asynchronous
@@ -4575,8 +4376,12 @@ public class DbxTeamTeamRequests {
 
     /**
      * Returns the status of an asynchronous job for archiving a team folder.
-     *
-     * <p> Permission : Team member file access. </p>
+     * The job may show '.tag' as complete, but the team folder could still be
+     * in the process of archiving (indicated by {@link
+     * TeamFolderMetadata#getStatus} with 'archive_in_progress'). To confirm
+     * that the team folder is fully archived, check the field {@link
+     * TeamFolderMetadata#getStatus} in the response for the value 'archived'.
+     * Permission : Team member file access.
      *
      * @param asyncJobId  Id of the asynchronous job. This is the value of a
      *     response returned from the method that launched the job. Must have
@@ -4620,8 +4425,7 @@ public class DbxTeamTeamRequests {
     /**
      * Creates a new, active, team folder with no members. This endpoint can
      * only be used for teams that do not already have a shared team space.
-     *
-     * <p> Permission : Team member file access. </p>
+     * Permission : Team member file access.
      *
      * @param name  Name for the new team folder. Must not be {@code null}.
      *
@@ -4638,8 +4442,7 @@ public class DbxTeamTeamRequests {
     /**
      * Creates a new, active, team folder with no members. This endpoint can
      * only be used for teams that do not already have a shared team space.
-     *
-     * <p> Permission : Team member file access. </p>
+     * Permission : Team member file access.
      *
      * @param name  Name for the new team folder. Must not be {@code null}.
      * @param syncSetting  The sync setting to apply to this team folder. Only
@@ -4680,9 +4483,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Retrieves metadata for team folders.
-     *
-     * <p> Permission : Team member file access. </p>
+     * Retrieves metadata for team folders. Permission : Team member file
+     * access.
      *
      * @param teamFolderIds  The list of team folder IDs. Must contain at least
      *     1 items, not contain a {@code null} item, and not be {@code null}.
@@ -4722,9 +4524,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Lists all team folders.
-     *
-     * <p> Permission : Team member file access. </p>
+     * Lists all team folders. Permission : Team member file access.
      *
      * <p> The {@code limit} request parameter will default to {@code 1000L}
      * (see {@link #teamFolderList(long)}). </p>
@@ -4738,9 +4538,7 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Lists all team folders.
-     *
-     * <p> Permission : Team member file access. </p>
+     * Lists all team folders. Permission : Team member file access.
      *
      * @param limit  The maximum number of results to return per request. Must
      *     be greater than or equal to 1 and be less than or equal to 1000.
@@ -4793,9 +4591,7 @@ public class DbxTeamTeamRequests {
     /**
      * Once a cursor has been retrieved from {@link
      * DbxTeamTeamRequests#teamFolderList(long)}, use this to paginate through
-     * all team folders.
-     *
-     * <p> Permission : Team member file access. </p>
+     * all team folders. Permission : Team member file access.
      *
      * @param cursor  Indicates from what point to get the next set of team
      *     folders. Must not be {@code null}.
@@ -4838,9 +4634,8 @@ public class DbxTeamTeamRequests {
 
     /**
      * Permanently deletes an archived team folder. This endpoint cannot be used
-     * for teams that have a shared team space.
-     *
-     * <p> Permission : Team member file access. </p>
+     * for teams that have a shared team space. Permission : Team member file
+     * access.
      *
      * @param teamFolderId  The ID of the team folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -4880,9 +4675,8 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Changes an active team folder's name.
-     *
-     * <p> Permission : Team member file access. </p>
+     * Changes an active team folder's name. Permission : Team member file
+     * access.
      *
      * @param teamFolderId  The ID of the team folder. Must match pattern
      *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
@@ -4896,6 +4690,49 @@ public class DbxTeamTeamRequests {
     public TeamFolderMetadata teamFolderRename(String teamFolderId, String name) throws TeamFolderRenameErrorException, DbxException {
         TeamFolderRenameArg _arg = new TeamFolderRenameArg(teamFolderId, name);
         return teamFolderRename(_arg);
+    }
+
+    //
+    // route 2/team/team_folder/restore
+    //
+
+    /**
+     * Sets an inactive team folder's status to active. Permission: Team member
+     * file access.
+     *
+     *
+     * @return Properties of a team folder.
+     */
+    TeamFolderMetadata teamFolderRestore(TeamFolderIdArg arg) throws TeamFolderRestoreErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/team/team_folder/restore",
+                                        arg,
+                                        false,
+                                        TeamFolderIdArg.Serializer.INSTANCE,
+                                        TeamFolderMetadata.Serializer.INSTANCE,
+                                        TeamFolderRestoreError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new TeamFolderRestoreErrorException("2/team/team_folder/restore", ex.getRequestId(), ex.getUserMessage(), (TeamFolderRestoreError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Sets an inactive team folder's status to active. Permission: Team member
+     * file access.
+     *
+     * @param teamFolderId  The ID of the team folder. Must match pattern
+     *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     *
+     * @return Properties of a team folder.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public TeamFolderMetadata teamFolderRestore(String teamFolderId) throws TeamFolderRestoreErrorException, DbxException {
+        TeamFolderIdArg _arg = new TeamFolderIdArg(teamFolderId);
+        return teamFolderRestore(_arg);
     }
 
     //

@@ -1,9 +1,8 @@
 /* DO NOT EDIT */
-/* This file was generated from check_api_v2_types.stone, check_api_v2_service.stone */
+/* This file was generated from check.stone */
 
 package com.dropbox.core.v2.check;
 
-import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxWrappedException;
 import com.dropbox.core.http.HttpRequestor;
@@ -16,7 +15,7 @@ import java.util.Map;
  * Routes in namespace "check".
  */
 public class DbxAppCheckRequests {
-    // namespace check (check_api_v2_types.stone, check_api_v2_service.stone)
+    // namespace check (check.stone)
 
     private final DbxRawClientV2 client;
 
@@ -40,7 +39,7 @@ public class DbxAppCheckRequests {
      *
      * @return EchoResult contains the result returned from the Dropbox servers.
      */
-    EchoResult app(EchoArg arg) throws DbxApiException, DbxException {
+    EchoResult app(EchoArg arg) throws EchoErrorException, DbxException {
         try {
             return this.client.rpcStyle(this.client.getHost().getApi(),
                                         "2/check/app",
@@ -48,10 +47,10 @@ public class DbxAppCheckRequests {
                                         false,
                                         EchoArg.Serializer.INSTANCE,
                                         EchoResult.Serializer.INSTANCE,
-                                        com.dropbox.core.stone.StoneSerializers.void_());
+                                        EchoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"app\":" + ex.getErrorValue());
+            throw new EchoErrorException("2/check/app", ex.getRequestId(), ex.getUserMessage(), (EchoError) ex.getErrorValue());
         }
     }
 
@@ -68,7 +67,7 @@ public class DbxAppCheckRequests {
      *
      * @return EchoResult contains the result returned from the Dropbox servers.
      */
-    public EchoResult app() throws DbxApiException, DbxException {
+    public EchoResult app() throws EchoErrorException, DbxException {
         EchoArg _arg = new EchoArg();
         return app(_arg);
     }
@@ -89,7 +88,7 @@ public class DbxAppCheckRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public EchoResult app(String query) throws DbxApiException, DbxException {
+    public EchoResult app(String query) throws EchoErrorException, DbxException {
         if (query == null) {
             throw new IllegalArgumentException("Required value for 'query' is null");
         }

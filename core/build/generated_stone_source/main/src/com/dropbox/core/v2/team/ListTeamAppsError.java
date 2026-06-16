@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_linked_apps.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  * DbxTeamTeamRequests#linkedAppsListTeamLinkedApps(String)}.
  */
 public enum ListTeamAppsError {
-    // union team.ListTeamAppsError (team_linked_apps.stone)
+    // union team.ListTeamAppsError (team.stone)
     /**
      * Indicates that the cursor has been invalidated. Call {@link
      * DbxTeamTeamRequests#linkedAppsListTeamLinkedApps(String)} again with an

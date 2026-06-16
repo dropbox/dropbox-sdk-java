@@ -30,6 +30,10 @@ public enum ExportFormat {
      */
     MARKDOWN,
     /**
+     * Doc metadata JSON export format.
+     */
+    JSON,
+    /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
      * <p> Receiving a catch-all value typically indicates this SDK version is
@@ -53,6 +57,10 @@ public enum ExportFormat {
                 }
                 case MARKDOWN: {
                     g.writeString("markdown");
+                    break;
+                }
+                case JSON: {
+                    g.writeString("json");
                     break;
                 }
                 default: {
@@ -84,6 +92,9 @@ public enum ExportFormat {
             }
             else if ("markdown".equals(tag)) {
                 value = ExportFormat.MARKDOWN;
+            }
+            else if ("json".equals(tag)) {
+                value = ExportFormat.JSON;
             }
             else {
                 value = ExportFormat.OTHER;

@@ -35,9 +35,9 @@ public class SearchV2Result {
      *     not contain a {@code null} item and not be {@code null}.
      * @param hasMore  Used for paging. If true, indicates there is another page
      *     of results available that can be fetched by calling {@link
-     *     DbxUserFilesRequests#searchContinueV2(String)} with the cursor.
+     *     DbxAppFilesRequests#searchContinueV2(String)} with the cursor.
      * @param cursor  Pass the cursor into {@link
-     *     DbxUserFilesRequests#searchContinueV2(String)} to fetch the next page
+     *     DbxAppFilesRequests#searchContinueV2(String)} to fetch the next page
      *     of results. Must have length of at least 1.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -71,7 +71,7 @@ public class SearchV2Result {
      *     not contain a {@code null} item and not be {@code null}.
      * @param hasMore  Used for paging. If true, indicates there is another page
      *     of results available that can be fetched by calling {@link
-     *     DbxUserFilesRequests#searchContinueV2(String)} with the cursor.
+     *     DbxAppFilesRequests#searchContinueV2(String)} with the cursor.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -93,7 +93,7 @@ public class SearchV2Result {
     /**
      * Used for paging. If true, indicates there is another page of results
      * available that can be fetched by calling {@link
-     * DbxUserFilesRequests#searchContinueV2(String)} with the cursor.
+     * DbxAppFilesRequests#searchContinueV2(String)} with the cursor.
      *
      * @return value for this field.
      */
@@ -102,9 +102,8 @@ public class SearchV2Result {
     }
 
     /**
-     * Pass the cursor into {@link
-     * DbxUserFilesRequests#searchContinueV2(String)} to fetch the next page of
-     * results.
+     * Pass the cursor into {@link DbxAppFilesRequests#searchContinueV2(String)}
+     * to fetch the next page of results.
      *
      * @return value for this field, or {@code null} if not present.
      */

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_namespaces.stone */
+/* This file was generated from team.stone */
 
 package com.dropbox.core.v2.team;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
  * Result for {@link DbxTeamTeamRequests#namespacesList(long)}.
  */
 public class TeamNamespacesListResult {
-    // struct team.TeamNamespacesListResult (team_namespaces.stone)
+    // struct team.TeamNamespacesListResult (team.stone)
 
     @Nonnull
     protected final List<NamespaceMetadata> namespaces;

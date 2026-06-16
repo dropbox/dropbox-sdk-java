@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Changed whether members can see who viewed shared file/folder.
  */
 public class SharedContentChangeViewerInfoPolicyDetails {
-    // struct team_log.SharedContentChangeViewerInfoPolicyDetails (team_log_generated.stone)
+    // struct team_log.SharedContentChangeViewerInfoPolicyDetails (team_log.stone)
 
     @Nonnull
     protected final ViewerInfoPolicy newValue;

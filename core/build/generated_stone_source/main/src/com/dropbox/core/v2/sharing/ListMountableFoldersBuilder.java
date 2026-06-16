@@ -62,7 +62,7 @@ public class ListMountableFoldersBuilder {
      * Set value for optional field.
      *
      * @param actions  A list of `FolderAction`s corresponding to
-     *     `FolderPermission`s that should appear in the  response's {@link
+     *     `FolderPermission`s that should appear in the response's {@link
      *     SharedFolderMetadata#getPermissions} field describing the actions the
      *     authenticated user can perform on the folder. Must not contain a
      *     {@code null} item.

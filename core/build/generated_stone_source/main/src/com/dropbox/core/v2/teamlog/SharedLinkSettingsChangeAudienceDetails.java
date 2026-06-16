@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * Changed the audience of the shared link.
  */
 public class SharedLinkSettingsChangeAudienceDetails {
-    // struct team_log.SharedLinkSettingsChangeAudienceDetails (team_log_generated.stone)
+    // struct team_log.SharedLinkSettingsChangeAudienceDetails (team_log.stone)
 
     @Nonnull
     protected final AccessLevel sharedContentAccessLevel;

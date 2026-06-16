@@ -31,7 +31,8 @@ public class ExportArg {
     /**
      *
      * @param path  The path of the file to be exported. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      * @param exportFormat  The file format to which the file should be
      *     exported. This must be one of the formats listed in the file's
@@ -47,7 +48,7 @@ public class ExportArg {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
-        if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)", path)) {
+        if (!Pattern.matches("(/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)", path)) {
             throw new IllegalArgumentException("String 'path' does not match pattern");
         }
         this.path = path;
@@ -60,7 +61,8 @@ public class ExportArg {
      * <p> The default values for unset fields will be used. </p>
      *
      * @param path  The path of the file to be exported. Must match pattern
-     *     "{@code (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/.*)?)}"
+     *     "{@code
+     *     (/(.|[\\r\\n])*|id:.*)|(rev:[0-9a-f]{9,})|(ns:[0-9]+(/(.|[\\r\\n])*)?)}"
      *     and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its

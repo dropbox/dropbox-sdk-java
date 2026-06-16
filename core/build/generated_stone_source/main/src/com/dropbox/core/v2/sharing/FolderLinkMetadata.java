@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from shared_links.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * The metadata of a folder shared link.
  */
 public class FolderLinkMetadata extends SharedLinkMetadata {
-    // struct sharing.FolderLinkMetadata (shared_links.stone)
+    // struct sharing.FolderLinkMetadata (sharing.stone)
 
 
     /**
@@ -45,10 +45,11 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
      *     expire.
      * @param pathLower  The lowercased full path in the user's Dropbox. This
      *     always starts with a slash. This field will only be present only if
-     *     the linked file is in the authenticated user's  dropbox.
+     *     the linked file is in the authenticated user's dropbox and the user
+     *     is the owner of the link.
      * @param teamMemberInfo  The team membership information of the link's
-     *     owner.  This field will only be present  if the link's owner is a
-     *     team member.
+     *     owner.  This field will only be present if the link's owner is a team
+     *     member.
      * @param contentOwnerTeamInfo  The team information of the content's owner.
      *     This field will only be present if the content's owner is a team
      *     member and the content's owner team is different from the link's
@@ -132,7 +133,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
     /**
      * The lowercased full path in the user's Dropbox. This always starts with a
      * slash. This field will only be present only if the linked file is in the
-     * authenticated user's  dropbox.
+     * authenticated user's dropbox and the user is the owner of the link.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -143,7 +144,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
 
     /**
      * The team membership information of the link's owner.  This field will
-     * only be present  if the link's owner is a team member.
+     * only be present if the link's owner is a team member.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -225,7 +226,8 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
          *
          * @param pathLower  The lowercased full path in the user's Dropbox.
          *     This always starts with a slash. This field will only be present
-         *     only if the linked file is in the authenticated user's  dropbox.
+         *     only if the linked file is in the authenticated user's dropbox
+         *     and the user is the owner of the link.
          *
          * @return this builder
          */
@@ -238,7 +240,7 @@ public class FolderLinkMetadata extends SharedLinkMetadata {
          * Set value for optional field.
          *
          * @param teamMemberInfo  The team membership information of the link's
-         *     owner.  This field will only be present  if the link's owner is a
+         *     owner.  This field will only be present if the link's owner is a
          *     team member.
          *
          * @return this builder

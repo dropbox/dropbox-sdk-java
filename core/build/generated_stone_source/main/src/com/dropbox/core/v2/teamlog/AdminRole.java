@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -17,10 +17,12 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public enum AdminRole {
-    // union team_log.AdminRole (team_log_generated.stone)
+    // union team_log.AdminRole (team_log.stone)
     BILLING_ADMIN,
     COMPLIANCE_ADMIN,
     CONTENT_ADMIN,
+    DEPRECATED_FREEMIUM_TEAM_MEMBER,
+    FREEMIUM_TEAM_CREATOR,
     LIMITED_ADMIN,
     MEMBER_ONLY,
     REPORTING_ADMIN,
@@ -56,6 +58,14 @@ public enum AdminRole {
                 }
                 case CONTENT_ADMIN: {
                     g.writeString("content_admin");
+                    break;
+                }
+                case DEPRECATED_FREEMIUM_TEAM_MEMBER: {
+                    g.writeString("deprecated_freemium_team_member");
+                    break;
+                }
+                case FREEMIUM_TEAM_CREATOR: {
+                    g.writeString("freemium_team_creator");
                     break;
                 }
                 case LIMITED_ADMIN: {
@@ -118,6 +128,12 @@ public enum AdminRole {
             }
             else if ("content_admin".equals(tag)) {
                 value = AdminRole.CONTENT_ADMIN;
+            }
+            else if ("deprecated_freemium_team_member".equals(tag)) {
+                value = AdminRole.DEPRECATED_FREEMIUM_TEAM_MEMBER;
+            }
+            else if ("freemium_team_creator".equals(tag)) {
+                value = AdminRole.FREEMIUM_TEAM_CREATOR;
             }
             else if ("limited_admin".equals(tag)) {
                 value = AdminRole.LIMITED_ADMIN;

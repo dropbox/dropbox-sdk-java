@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_files.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
  * Arguments of {@link DbxUserSharingRequests#getFileMetadataBatch(List,List)}.
  */
 class GetFileMetadataBatchArg {
-    // struct sharing.GetFileMetadataBatchArg (sharing_files.stone)
+    // struct sharing.GetFileMetadataBatchArg (sharing.stone)
 
     @Nonnull
     protected final List<String> files;
@@ -38,7 +38,7 @@ class GetFileMetadataBatchArg {
      * @param files  The files to query. Must contain at most 100 items, not
      *     contain a {@code null} item, and not be {@code null}.
      * @param actions  A list of `FileAction`s corresponding to
-     *     `FilePermission`s that should appear in the  response's {@link
+     *     `FilePermission`s that should appear in the response's {@link
      *     SharedFileMetadata#getPermissions} field describing the actions the
      *     authenticated user can perform on the file. Must not contain a {@code
      *     null} item.
@@ -103,8 +103,8 @@ class GetFileMetadataBatchArg {
 
     /**
      * A list of `FileAction`s corresponding to `FilePermission`s that should
-     * appear in the  response's {@link SharedFileMetadata#getPermissions} field
-     * describing the actions the  authenticated user can perform on the file.
+     * appear in the response's {@link SharedFileMetadata#getPermissions} field
+     * describing the actions the authenticated user can perform on the file.
      *
      * @return value for this field, or {@code null} if not present.
      */

@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from sharing_folders.stone */
+/* This file was generated from sharing.stone */
 
 package com.dropbox.core.v2.sharing;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  * operation.
  */
 public class MemberAccessLevelResult {
-    // struct sharing.MemberAccessLevelResult (sharing_folders.stone)
+    // struct sharing.MemberAccessLevelResult (sharing.stone)
 
     @Nullable
     protected final AccessLevel accessLevel;

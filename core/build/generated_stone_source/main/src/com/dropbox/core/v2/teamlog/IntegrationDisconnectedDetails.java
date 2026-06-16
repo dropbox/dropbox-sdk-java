@@ -1,5 +1,5 @@
 /* DO NOT EDIT */
-/* This file was generated from team_log_generated.stone */
+/* This file was generated from team_log.stone */
 
 package com.dropbox.core.v2.teamlog;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Disconnected integration for member.
  */
 public class IntegrationDisconnectedDetails {
-    // struct team_log.IntegrationDisconnectedDetails (team_log_generated.stone)
+    // struct team_log.IntegrationDisconnectedDetails (team_log.stone)
 
     @Nonnull
     protected final String integrationName;
