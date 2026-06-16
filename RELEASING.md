@@ -9,11 +9,12 @@ Please follow the steps in each one of the following sections to complete a rele
  6. Create a PR titled "Release vX.Y.Z"
  7. Merge the PR after checks pass.  This will trigger our GitHub Action to publish to Maven Central.
  8. This part below should be automated in CI, but if publishing fails, you will need to perform these steps manually
-     * Login to Sonatype to promote the artifacts https://central.sonatype.org/pages/releasing-the-deployment.html
-         * Click on Staging Repositories under Build Promotion
-         * Select all the Repositories that contain the content you want to release
-         * Click on Close and refresh until the Release button is active
-         * Click Release and submit
+     * Login to the Central Publishing Portal to inspect or publish the deployment https://central.sonatype.com/publishing/deployments
+         * Select the deployment for this release version.
+         * Review any validation errors and fix them if the deployment failed validation.
+         * If validation succeeded but publishing did not complete, click Publish.
+     * CI publishes through the Central Portal OSSRH Staging API compatibility endpoint.
+     * CI uses the `CENTRAL_PORTAL_USERNAME` and `CENTRAL_PORTAL_PASSWORD` GitHub secrets. These must be Central Portal user token credentials, not the username and password used to sign in to Sonatype.
 
 ## Tag the Release
  1. Pull the latest code `git fetch origin` that was just merged with the stable version.

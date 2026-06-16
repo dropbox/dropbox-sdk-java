@@ -31,6 +31,7 @@ dependencyGuard {
 }
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.S01)
+    // Vanniktech 0.24 appends /service/local/ to this root URL.
+    publishToMavenCentral(new SonatypeHost("https://ossrh-staging-api.central.sonatype.com"))
     signAllPublications()
 }
