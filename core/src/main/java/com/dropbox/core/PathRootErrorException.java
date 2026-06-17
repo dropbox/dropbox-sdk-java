@@ -2,19 +2,24 @@ package com.dropbox.core;
 
 import com.dropbox.core.v2.common.PathRootError;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Gets thrown when an invalid path rood is supplied.
  */
 public class PathRootErrorException extends DbxException {
     private static final long serialVersionUID = 0;
 
-    private final PathRootError pathRootError;
+    private final @Nonnull PathRootError pathRootError;
 
-    public PathRootError getPathRootError() {
+    public @Nonnull PathRootError getPathRootError() {
         return pathRootError;
     }
 
-    public PathRootErrorException(String requestId, String message, PathRootError pathRootError) {
+    public PathRootErrorException(@Nullable String requestId,
+                                  @Nullable String message,
+                                  @Nonnull PathRootError pathRootError) {
         super(requestId, message);
         this.pathRootError = pathRootError;
     }

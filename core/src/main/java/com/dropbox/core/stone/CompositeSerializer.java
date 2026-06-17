@@ -8,14 +8,17 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
-public abstract class CompositeSerializer<T> extends StoneSerializer<T> {
-    protected static final String TAG_FIELD = ".tag";
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-    protected static boolean hasTag(JsonParser p) throws IOException, JsonParseException {
+public abstract class CompositeSerializer<T> extends StoneSerializer<T> {
+    protected static final @Nonnull String TAG_FIELD = ".tag";
+
+    protected static boolean hasTag(@Nonnull JsonParser p) throws IOException, JsonParseException {
         return p.getCurrentToken() == JsonToken.FIELD_NAME && TAG_FIELD.equals(p.getCurrentName());
     }
 
-    protected static String readTag(JsonParser p) throws IOException, JsonParseException {
+    protected static @Nullable String readTag(@Nonnull JsonParser p) throws IOException, JsonParseException {
         if (!hasTag(p)) {
             return null;
         }
@@ -26,10 +29,9 @@ public abstract class CompositeSerializer<T> extends StoneSerializer<T> {
         return tag;
     }
 
-    protected void writeTag(String tag, JsonGenerator g) throws IOException, JsonGenerationException {
+    protected void writeTag(@Nullable String tag, @Nonnull JsonGenerator g) throws IOException, JsonGenerationException {
         if (tag != null) {
             g.writeStringField(TAG_FIELD, tag);
         }
     }
 }
-

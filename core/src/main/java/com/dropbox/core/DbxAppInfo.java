@@ -1,5 +1,7 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 
 import static com.dropbox.core.util.StringUtil.jq;
@@ -13,15 +15,14 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * Identifying information about your application.
  */
 public class DbxAppInfo extends Dumpable {
-    private final String key;
-    private final String secret;
-    private final DbxHost host;
+    private final @Nonnull String key;
+    private final @Nullable String secret;
+    private final @Nonnull DbxHost host;
 
     /**
      *
@@ -30,7 +31,7 @@ public class DbxAppInfo extends Dumpable {
      * @param key Dropbox app key (see {@link #getKey})
      * @see com.dropbox.core.DbxPKCEWebAuth
      */
-    public DbxAppInfo(String key) {
+    public DbxAppInfo(@Nonnull String key) {
         this(key, null);
     }
 
@@ -38,7 +39,7 @@ public class DbxAppInfo extends Dumpable {
      * @param key Dropbox app key (see {@link #getKey})
      * @param secret Dropbox app secret (see {@link #getSecret})
      */
-    public DbxAppInfo(String key, String secret) {
+    public DbxAppInfo(@Nonnull String key, @Nullable String secret) {
         checkKeyArg(key);
         checkSecretArg(secret);
 
@@ -52,7 +53,7 @@ public class DbxAppInfo extends Dumpable {
      * @param secret Dropbox app secret (see {@link #getSecret})
      * @param host Dropbox host configuration (see {@link #getHost})
      */
-    public DbxAppInfo(String key, String secret, DbxHost host) {
+    public DbxAppInfo(@Nonnull String key, @Nullable String secret, @Nonnull DbxHost host) {
         checkKeyArg(key);
         checkSecretArg(secret);
 
@@ -68,7 +69,7 @@ public class DbxAppInfo extends Dumpable {
      *
      * @return Dropbox app key
      */
-    public String getKey() {
+    public @Nonnull String getKey() {
         return key;
     }
 
@@ -83,7 +84,7 @@ public class DbxAppInfo extends Dumpable {
      *
      * @return Dropbox app secret
      */
-    public String getSecret() {
+    public @Nullable String getSecret() {
         return secret;
     }
 
@@ -95,7 +96,7 @@ public class DbxAppInfo extends Dumpable {
      *
      * @return Dropbox host configuration
      */
-    public DbxHost getHost() {
+    public @Nonnull DbxHost getHost() {
         return host;
     }
 
@@ -110,7 +111,7 @@ public class DbxAppInfo extends Dumpable {
     }
 
     @Override
-    protected void dumpFields(DumpWriter out) {
+    protected void dumpFields(@Nonnull DumpWriter out) {
         out.f("key").v(key);
         out.f("secret").v(secret);
     }
@@ -125,7 +126,7 @@ public class DbxAppInfo extends Dumpable {
      * that what you passed in is an actual valid Dropbox API app key.
      * </p>
      */
-    public static /*@Nullable*/String getKeyFormatError(String key) {
+    public static @Nullable String getKeyFormatError(@Nullable String key) {
         return getTokenPartError(key);
     }
 
@@ -139,17 +140,17 @@ public class DbxAppInfo extends Dumpable {
      * you passed in is an actual valid Dropbox API app key.
      * </p>
      */
-    public static /*@Nullable*/String getSecretFormatError(String key) {
+    public static @Nullable String getSecretFormatError(@Nullable String key) {
         return getTokenPartError(key);
     }
 
     // ------------------------------------------------------
     // JSON parsing
 
-    public static final JsonReader<DbxAppInfo> Reader = new JsonReader<DbxAppInfo>()
+    public static final @Nonnull JsonReader<DbxAppInfo> Reader = new JsonReader<DbxAppInfo>()
     {
         @Override
-        public final DbxAppInfo read(JsonParser parser)
+        public final @Nonnull DbxAppInfo read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             JsonLocation top = JsonReader.expectObjectStart(parser);
@@ -191,10 +192,10 @@ public class DbxAppInfo extends Dumpable {
         }
     };
 
-    public static final JsonReader<String> KeyReader = new JsonReader<String>()
+    public static final @Nonnull JsonReader<String> KeyReader = new JsonReader<String>()
     {
         @Override
-        public String read(JsonParser parser) throws IOException, JsonReadException
+        public @Nonnull String read(@Nonnull JsonParser parser) throws IOException, JsonReadException
         {
             try {
                 String v = parser.getText();
@@ -211,10 +212,10 @@ public class DbxAppInfo extends Dumpable {
         }
     };
 
-    public static final JsonReader<String> SecretReader = new JsonReader<String>()
+    public static final @Nonnull JsonReader<String> SecretReader = new JsonReader<String>()
     {
         @Override
-        public String read(JsonParser parser) throws IOException, JsonReadException
+        public @Nonnull String read(@Nonnull JsonParser parser) throws IOException, JsonReadException
         {
             try {
                 String v = parser.getText();
@@ -232,7 +233,7 @@ public class DbxAppInfo extends Dumpable {
 
     };
 
-    public static /*@Nullable*/String getTokenPartError(String s)
+    public static @Nullable String getTokenPartError(@Nullable String s)
     {
         if (s == null) return null;
         if (s.length() == 0) return "can't be empty";
@@ -246,7 +247,7 @@ public class DbxAppInfo extends Dumpable {
         return null;
     }
 
-    public static void checkKeyArg(String key)
+    public static void checkKeyArg(@Nullable String key)
     {
         String error;
 
@@ -260,7 +261,7 @@ public class DbxAppInfo extends Dumpable {
         throw new IllegalArgumentException("Bad 'key': " + error);
     }
 
-    public static void checkSecretArg(String secret)
+    public static void checkSecretArg(@Nullable String secret)
     {
         String error = getTokenPartError(secret);
         if (error == null) return;

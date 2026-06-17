@@ -49,7 +49,9 @@ class DropboxApiWrapper(
                     .uploadBuilder("/$fileName") //Upload to the root of Dropbox
                     .withMode(WriteMode.OVERWRITE)
                     .uploadAndFinish(inputStream)
-                DropboxUploadApiResponse.Success(fileMetadata)
+                DropboxUploadApiResponse.Success(
+                    requireNotNull(fileMetadata) { "Upload did not return file metadata." }
+                )
             } catch (exception: DbxException) {
                 DropboxUploadApiResponse.Failure(exception)
             }
@@ -139,7 +141,9 @@ class DropboxApiWrapper(
                         )
                             .withMode(WriteMode.OVERWRITE)
                             .uploadAndFinish(inputStream)
-                        FileMetadataApiResult.Success(metadata)
+                        FileMetadataApiResult.Success(
+                            requireNotNull(metadata) { "Upload did not return file metadata." }
+                        )
                     }
                 } catch (e: DbxException) {
                     FileMetadataApiResult.Error(e)
@@ -190,5 +194,4 @@ class DropboxApiWrapper(
         }
     }
 }
-
 

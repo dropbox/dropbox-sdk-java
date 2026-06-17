@@ -1,8 +1,9 @@
 package com.dropbox.core.v1;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import static com.dropbox.core.util.StringUtil.jq;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * Utility functions for working with Dropbox paths.  This SDK uses {@code String}s
@@ -17,13 +18,13 @@ import static com.dropbox.core.util.StringUtil.jq;
  */
 public class DbxPathV1
 {
-    public static boolean isValid(String path)
+    public static boolean isValid(@Nonnull String path)
     {
         String error = findError(path);
         return (error == null);
     }
 
-    public static /*@Nullable*/String findError(String path)
+    public static @Nullable String findError(@Nonnull String path)
     {
         if (!path.startsWith("/")) return "must start with \"/\"";
         if (path.length() == 1) return null;  // Special case for "/"
@@ -38,7 +39,7 @@ public class DbxPathV1
         return null;
     }
 
-    public static void checkArg(String argName, String value)
+    public static void checkArg(@Nonnull String argName, @Nonnull String value)
     {
         if (value == null) {
             throw new IllegalArgumentException("'" + argName + "' should not be null");
@@ -49,7 +50,7 @@ public class DbxPathV1
         }
     }
 
-    public static void checkArgNonRoot(String argName, String value)
+    public static void checkArgNonRoot(@Nonnull String argName, @Nonnull String value)
     {
         if ("/".equals(value)) {
             throw new IllegalArgumentException("'" + argName + "' should not be the root path (\"/\")");
@@ -65,7 +66,7 @@ public class DbxPathV1
      *     <li>{@code getName("/Photos/Home.jpeg")} &rarr; {@code "Home.jpeg"}</li>
      * </ul>
      */
-    public static String getName(String path)
+    public static @Nonnull String getName(@Nonnull String path)
     {
         if (path == null) throw new IllegalArgumentException("'path' can't be null");
         if (!path.startsWith("/")) throw new IllegalArgumentException("Not a valid path.  Doesn't start with a \"/\": \"" + path + "\"");
@@ -78,7 +79,7 @@ public class DbxPathV1
         return path.substring(start+1);
     }
 
-    public static String[] split(String path)
+    public static @Nonnull String[] split(@Nonnull String path)
     {
         if (path == null) throw new IllegalArgumentException("'path' can't be null");
         if (!path.startsWith("/")) throw new IllegalArgumentException("Not a valid path.  Doesn't start with a \"/\": \"" + path + "\"");
@@ -97,7 +98,7 @@ public class DbxPathV1
      *     <li>{@code getParent("/Photos/Recent/Home.jpeg")} &rarr; {@code "/Photos/Recent"}</li>
      * </ul>
      */
-    public static /*@Nullable*/String getParent(String path)
+    public static @Nullable String getParent(@Nonnull String path)
     {
         if (path == null) throw new IllegalArgumentException("'path' can't be null");
         if (!path.startsWith("/")) throw new IllegalArgumentException("Not a valid path.  Doesn't start with a \"/\": \"" + path + "\"");

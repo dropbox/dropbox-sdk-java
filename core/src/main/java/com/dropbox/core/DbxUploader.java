@@ -11,6 +11,9 @@ import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.IOUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Class for completing upload requests.
  *
@@ -43,16 +46,19 @@ import com.dropbox.core.util.IOUtil;
  * @param <X> exception type returned by server on request failure
  */
 public abstract class DbxUploader<R, E, X extends DbxApiException> implements Closeable {
-    private final HttpRequestor.Uploader httpUploader;
-    private final StoneSerializer<R> responseSerializer;
-    private final StoneSerializer<E> errorSerializer;
+    private final @Nonnull HttpRequestor.Uploader httpUploader;
+    private final @Nonnull StoneSerializer<R> responseSerializer;
+    private final @Nonnull StoneSerializer<E> errorSerializer;
 
     private boolean closed;
     private boolean finished;
 
-    private final String userId;
+    private final @Nullable String userId;
 
-    protected DbxUploader(HttpRequestor.Uploader httpUploader, StoneSerializer<R> responseSerializer, StoneSerializer<E> errorSerializer, String userId) {
+    protected DbxUploader(@Nonnull HttpRequestor.Uploader httpUploader,
+                          @Nonnull StoneSerializer<R> responseSerializer,
+                          @Nonnull StoneSerializer<E> errorSerializer,
+                          @Nullable String userId) {
         this.httpUploader = httpUploader;
         this.responseSerializer = responseSerializer;
         this.errorSerializer = errorSerializer;
@@ -62,7 +68,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
         this.userId = userId;
     }
 
-    protected abstract X newException(DbxWrappedException error);
+    protected abstract @Nonnull X newException(@Nonnull DbxWrappedException error);
 
     /**
      * Uploads all bytes read from the given {@link InputStream} and returns the response.
@@ -92,7 +98,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * @throws IOException if an error occurs reading the input stream.
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
-    public R uploadAndFinish(InputStream in) throws X, DbxException, IOException {
+    public @Nullable R uploadAndFinish(@Nonnull InputStream in) throws X, DbxException, IOException {
         return uploadAndFinish(in, null);
     }
 
@@ -111,7 +117,8 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * @throws IOException if an error occurs reading the input stream.
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
-    public R uploadAndFinish(InputStream in, IOUtil.ProgressListener progressListener) throws X, DbxException, IOException {
+    public @Nullable R uploadAndFinish(@Nonnull InputStream in,
+                                       @Nullable IOUtil.ProgressListener progressListener) throws X, DbxException, IOException {
         try {
             try {
                 httpUploader.setProgressListener(progressListener);
@@ -163,7 +170,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * @throws IOException if an error occurs reading the input stream.
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
-    public R uploadAndFinish(InputStream in, long limit) throws X, DbxException, IOException {
+    public @Nullable R uploadAndFinish(@Nonnull InputStream in, long limit) throws X, DbxException, IOException {
         return uploadAndFinish(IOUtil.limit(in, limit));
     }
 
@@ -183,7 +190,9 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * @throws IOException if an error occurs reading the input stream.
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
-    public R uploadAndFinish(InputStream in, long limit, IOUtil.ProgressListener progressListener) throws X, DbxException, IOException {
+    public @Nullable R uploadAndFinish(@Nonnull InputStream in,
+                                       long limit,
+                                       @Nullable IOUtil.ProgressListener progressListener) throws X, DbxException, IOException {
         return uploadAndFinish(IOUtil.limit(in, limit), progressListener);
     }
 
@@ -232,7 +241,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      *
      * @see #uploadAndFinish(InputStream)
      */
-    public OutputStream getOutputStream() {
+    public @Nonnull OutputStream getOutputStream() {
         assertOpenAndUnfinished();
         return this.httpUploader.getBody();
     }
@@ -254,7 +263,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      *
      * @see #uploadAndFinish(InputStream)
      */
-    public OutputStream getOutputStream(IOUtil.ProgressListener progressListener) {
+    public @Nonnull OutputStream getOutputStream(@Nullable IOUtil.ProgressListener progressListener) {
         this.httpUploader.setProgressListener(progressListener);
         return getOutputStream();
     }
@@ -271,7 +280,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * @throws DbxException if an error occurs sending the upload or reading the response
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
-    public R finish() throws X, DbxException {
+    public @Nullable R finish() throws X, DbxException {
         assertOpenAndUnfinished();
 
         HttpRequestor.Response response = null;

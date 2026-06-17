@@ -9,15 +9,17 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Used by the example code to remember auth information.
  */
 public final class DbxAuthInfo {
-    private final String accessToken;
-    private final Long expiresAt;
-    private final String refreshToken;
-    private final DbxHost host;
+    private final @Nonnull String accessToken;
+    private final @Nullable Long expiresAt;
+    private final @Nullable String refreshToken;
+    private final @Nonnull DbxHost host;
 
     /**
      * Creates a new instance with the given parameters.
@@ -25,7 +27,7 @@ public final class DbxAuthInfo {
      * @param accessToken OAuth access token for authorization with Dropbox servers
      * @param host Dropbox host configuration used to select Dropbox servers
      */
-    public DbxAuthInfo(String accessToken, DbxHost host) {
+    public DbxAuthInfo(@Nonnull String accessToken, @Nonnull DbxHost host) {
         this(accessToken, null, null, host);
     }
 
@@ -38,7 +40,10 @@ public final class DbxAuthInfo {
      * @param refreshToken Refresh token which can bu used to obtain new accessToken
      * @param host Dropbox host configuration used to select Dropbox servers
      */
-    public DbxAuthInfo(String accessToken, Long expiresAt, String refreshToken, DbxHost host) {
+    public DbxAuthInfo(@Nonnull String accessToken,
+                       @Nullable Long expiresAt,
+                       @Nullable String refreshToken,
+                       @Nonnull DbxHost host) {
         if (accessToken == null) throw new IllegalArgumentException("'accessToken' can't be null");
         if (host == null) throw new IllegalArgumentException("'host' can't be null");
 
@@ -53,7 +58,7 @@ public final class DbxAuthInfo {
      *
      * @return OAuth access token
      */
-    public String getAccessToken() {
+    public @Nonnull String getAccessToken() {
         return accessToken;
     }
 
@@ -63,7 +68,7 @@ public final class DbxAuthInfo {
      *
      * @return ExpiresAt in millisecond.
      */
-    public Long getExpiresAt() {
+    public @Nullable Long getExpiresAt() {
         return expiresAt;
     }
 
@@ -73,7 +78,7 @@ public final class DbxAuthInfo {
      *
      * @return Refresh Token.
      */
-    public String getRefreshToken() {
+    public @Nullable String getRefreshToken() {
         return refreshToken;
     }
 
@@ -82,14 +87,14 @@ public final class DbxAuthInfo {
      *
      * @return Dropbox host configuration
      */
-    public DbxHost getHost() {
+    public @Nonnull DbxHost getHost() {
         return host;
     }
 
-    public static final JsonReader<DbxAuthInfo> Reader = new JsonReader<DbxAuthInfo>()
+    public static final @Nonnull JsonReader<DbxAuthInfo> Reader = new JsonReader<DbxAuthInfo>()
     {
         @Override
-        public final DbxAuthInfo read(JsonParser parser)
+        public final @Nonnull DbxAuthInfo read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             JsonLocation top = JsonReader.expectObjectStart(parser);
@@ -135,10 +140,10 @@ public final class DbxAuthInfo {
         }
     };
 
-    public static final JsonWriter<DbxAuthInfo> Writer = new JsonWriter<DbxAuthInfo>()
+    public static final @Nonnull JsonWriter<DbxAuthInfo> Writer = new JsonWriter<DbxAuthInfo>()
     {
         @Override
-        public void write(DbxAuthInfo authInfo, JsonGenerator g) throws IOException
+        public void write(@Nonnull DbxAuthInfo authInfo, @Nonnull JsonGenerator g) throws IOException
         {
             g.writeStartObject();
             g.writeStringField("access_token", authInfo.accessToken);

@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  *
  * This class provides deserialization for the error response returned from OAuth endpoint.
@@ -18,17 +21,17 @@ import java.util.Set;
  * @see <a href="https://tools.ietf.org/html/rfc6749#section-5.2">https://tools.ietf.org/html/rfc6749#section-5.2</a>
  */
 public class DbxOAuthError {
-    public final static String INVALID_REQUEST = "invalid_request";
-    public final static String INVALID_GRANT = "invalid_grant";
-    public final static String UNSUPPORTED_GRANT_TYPE = "unsupported_grant_type";
-    public final static String UNKNOWN = "unknown";
-    public final static Set<String> ERRORS = new HashSet<String>(Arrays.asList(INVALID_REQUEST,
+    public final static @Nonnull String INVALID_REQUEST = "invalid_request";
+    public final static @Nonnull String INVALID_GRANT = "invalid_grant";
+    public final static @Nonnull String UNSUPPORTED_GRANT_TYPE = "unsupported_grant_type";
+    public final static @Nonnull String UNKNOWN = "unknown";
+    public final static @Nonnull Set<String> ERRORS = new HashSet<String>(Arrays.asList(INVALID_REQUEST,
         INVALID_GRANT, UNSUPPORTED_GRANT_TYPE));
 
-    private final String error;
-    private final String errorDescription;
+    private final @Nonnull String error;
+    private final @Nullable String errorDescription;
 
-    public DbxOAuthError(String error, String errorDescription) {
+    public DbxOAuthError(@Nonnull String error, @Nullable String errorDescription) {
         if (ERRORS.contains(error)) {
             this.error = error;
         } else {
@@ -38,18 +41,18 @@ public class DbxOAuthError {
         this.errorDescription = errorDescription;
     }
 
-    public String getError() {
+    public @Nonnull String getError() {
         return this.error;
     }
 
-    public String getErrorDescription() {
+    public @Nullable String getErrorDescription() {
         return this.errorDescription;
     }
 
-    public static final JsonReader<DbxOAuthError> Reader = new JsonReader<DbxOAuthError>()
+    public static final @Nonnull JsonReader<DbxOAuthError> Reader = new JsonReader<DbxOAuthError>()
     {
         @Override
-        public final DbxOAuthError read(JsonParser parser)
+        public final @Nonnull DbxOAuthError read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             JsonLocation top = JsonReader.expectObjectStart(parser);

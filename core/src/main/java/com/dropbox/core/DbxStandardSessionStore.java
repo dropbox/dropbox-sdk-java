@@ -1,8 +1,9 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import jakarta.servlet.http.HttpSession;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * A {@link DbxSessionStore} implementation that stores the value using the standard
@@ -20,31 +21,31 @@ import jakarta.servlet.http.HttpSession;
  * </pre>
  */
 public final class DbxStandardSessionStore implements DbxSessionStore {
-    private final HttpSession session;
-    private final String key;
+    private final @Nonnull HttpSession session;
+    private final @Nonnull String key;
 
-    public DbxStandardSessionStore(HttpSession session, String key) {
+    public DbxStandardSessionStore(@Nonnull HttpSession session, @Nonnull String key) {
         this.session = session;
         this.key = key;
     }
 
-    public HttpSession getSession() {
+    public @Nonnull HttpSession getSession() {
         return session;
     }
 
-    public String getKey() {
+    public @Nonnull String getKey() {
         return key;
     }
 
     @Override
-    public /*@Nullable*/String get() {
+    public @Nullable String get() {
         Object v = session.getAttribute(key);
         if (v instanceof String) return (String) v;
         return null;
     }
 
     @Override
-    public void set(String value) {
+    public void set(@Nonnull String value) {
         session.setAttribute(key, value);
     }
 

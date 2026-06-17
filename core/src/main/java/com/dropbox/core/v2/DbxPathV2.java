@@ -1,6 +1,7 @@
 package com.dropbox.core.v2;
 
-/*>>> import checkers.nullness.quals.Nullable; */
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Utility functions for working with Dropbox paths.  This SDK uses {@code String}s
@@ -15,13 +16,13 @@ package com.dropbox.core.v2;
  */
 public class DbxPathV2
 {
-    public static boolean isValid(String path)
+    public static boolean isValid(@Nonnull String path)
     {
         String error = findError(path);
         return (error == null);
     }
 
-    public static /*@Nullable*/String findError(String path)
+    public static @Nullable String findError(@Nonnull String path)
     {
         if (path.length() == 0) return null;  // Special case for ""
 
@@ -44,7 +45,7 @@ public class DbxPathV2
      *     <li>{@code getName("/Photos/Home.jpeg")} &rarr; {@code "Home.jpeg"}</li>
      * </ul>
      */
-    public static String getName(String path)
+    public static @Nullable String getName(@Nonnull String path)
     {
         if (path == null) throw new IllegalArgumentException("'path' can't be null");
         if (path.length() == 0) return null;
@@ -58,7 +59,7 @@ public class DbxPathV2
         return path.substring(start+1);
     }
 
-    public static String[] split(String path)
+    public static @Nonnull String[] split(@Nonnull String path)
     {
         if (path == null) throw new IllegalArgumentException("'path' can't be null");
         if (path.length() == 0) return new String[0];
@@ -77,7 +78,7 @@ public class DbxPathV2
      *     <li>{@code getParent("/Photos/Recent/Home.jpeg")} &rarr; {@code "/Photos/Recent"}</li>
      * </ul>
      */
-    public static /*@Nullable*/String getParent(String path)
+    public static @Nullable String getParent(@Nonnull String path)
     {
         if (path == null) throw new IllegalArgumentException("'path' can't be null");
         if (path.length() == 0) return null;

@@ -1,13 +1,15 @@
 package com.dropbox.core.v1;
 
+import javax.annotation.Nonnull;
+
 /**
  * Thumbnail image format presets, to be used with {@link DbxClientV1#getThumbnail}.
  */
 public class DbxThumbnailFormat
 {
-    public final String ident;
+    public final @Nonnull String ident;
 
-    public DbxThumbnailFormat(String ident)
+    public DbxThumbnailFormat(@Nonnull String ident)
     {
         this.ident = ident;
     }
@@ -15,13 +17,13 @@ public class DbxThumbnailFormat
     /**
      * JPEG format, preferred over PNG for photographic images.
      */
-    public static final DbxThumbnailFormat JPEG = new DbxThumbnailFormat("jpeg");
+    public static final @Nonnull DbxThumbnailFormat JPEG = new DbxThumbnailFormat("jpeg");
 
     /**
      * PNG format, preferred over JPEG for non-photographic images, such as
      * screenshots and digital art.
      */
-    public static final DbxThumbnailFormat PNG = new DbxThumbnailFormat("png");
+    public static final @Nonnull DbxThumbnailFormat PNG = new DbxThumbnailFormat("png");
 
     /**
      * Try and guess the right {@code DbxThumbnailFormat} to use based on the image's file
@@ -34,7 +36,7 @@ public class DbxThumbnailFormat
      * DbxThumbnailFormat.bestForFileName("/family.jpg");       // returns DbxThumbnailFormat.JPEG
      * </pre>
      */
-    public static DbxThumbnailFormat bestForFileName(String fileName, DbxThumbnailFormat fallback)
+    public static @Nonnull DbxThumbnailFormat bestForFileName(@Nonnull String fileName, @Nonnull DbxThumbnailFormat fallback)
     {
         fileName = fileName.toLowerCase();
         if (fileName.endsWith(".png") || fileName.endsWith(".gif")) {

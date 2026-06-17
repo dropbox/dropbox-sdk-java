@@ -2,6 +2,9 @@ package com.dropbox.core;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * A transient exception has occurred and the request should be retried. Clients should only retry
  * requests after waiting the requested backoff duration (see {@link #getBackoffMillis}).
@@ -17,7 +20,7 @@ public class RetryException extends DbxException {
      * @param requestId ID assigned to request by Dropbox servers
      * @param message Error message
      */
-    public RetryException(String requestId, String message) {
+    public RetryException(@Nullable String requestId, @Nullable String message) {
         this(requestId, message, 0L, TimeUnit.MILLISECONDS);
     }
 
@@ -29,7 +32,7 @@ public class RetryException extends DbxException {
      * @param backoff amount of time to backoff before retrying the request
      * @param unit unit of time for {@code backoff}
      */
-    public RetryException(String requestId, String message, long backoff, TimeUnit unit) {
+    public RetryException(@Nullable String requestId, @Nullable String message, long backoff, @Nonnull TimeUnit unit) {
         super(requestId, message);
 
         this.backoffMillis = unit.toMillis(backoff);
@@ -45,4 +48,3 @@ public class RetryException extends DbxException {
         return backoffMillis;
     }
 }
-

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
+
 /**
  * A callback for streaming data from an {@link InputStream}.
  *
@@ -21,7 +23,7 @@ public abstract class DbxStreamReader<E extends Throwable>
      * call {@link InputStream#close close()} on the stream (the stream will
      * be closed automatically).
      */
-    public abstract void read(NoThrowInputStream in) throws E;
+    public abstract void read(@Nonnull NoThrowInputStream in) throws E;
 
     /**
      * A {@link DbxStreamReader} that gets its source data from the given {@code OutputStream}.
@@ -29,14 +31,14 @@ public abstract class DbxStreamReader<E extends Throwable>
      */
     public static final class OutputStreamCopier extends DbxStreamReader<IOException>
     {
-        private final OutputStream dest;
+        private final @Nonnull OutputStream dest;
 
-        public OutputStreamCopier(OutputStream dest)
+        public OutputStreamCopier(@Nonnull OutputStream dest)
         {
             this.dest = dest;
         }
 
-        public void read(NoThrowInputStream source) throws IOException
+        public void read(@Nonnull NoThrowInputStream source) throws IOException
         {
             IOUtil.copyStreamToStream(source, dest);
         }
@@ -44,11 +46,11 @@ public abstract class DbxStreamReader<E extends Throwable>
 
     public static final class ByteArrayCopier extends DbxStreamReader<RuntimeException>
     {
-        private final byte[] data;
+        private final @Nonnull byte[] data;
         private final int offset;
         private final int length;
 
-        public ByteArrayCopier(byte[] data, int offset, int length)
+        public ByteArrayCopier(@Nonnull byte[] data, int offset, int length)
         {
             if (data == null) throw new IllegalArgumentException("'data' can't be null");
             if (offset < 0 || offset >= data.length) throw new IllegalArgumentException("'offset' is out of bounds");
@@ -58,13 +60,13 @@ public abstract class DbxStreamReader<E extends Throwable>
             this.length = length;
         }
 
-        public ByteArrayCopier(byte[] data)
+        public ByteArrayCopier(@Nonnull byte[] data)
         {
             this(data, 0, data.length);
         }
 
         @Override
-        public void read(NoThrowInputStream in)
+        public void read(@Nonnull NoThrowInputStream in)
         {
             in.read(this.data, this.offset, this.length);
         }

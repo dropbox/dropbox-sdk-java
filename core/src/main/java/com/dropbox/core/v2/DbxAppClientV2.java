@@ -9,6 +9,9 @@ import com.dropbox.core.v2.common.PathRoot;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Use this class to make remote calls to the Dropbox API app endpoints.  App endpoints expose
  * actions you can perform as a Dropbox app without user authorization.  You'll need your app key
@@ -28,7 +31,7 @@ public class DbxAppClientV2 extends DbxAppClientV2Base {
      * @param key Dropbox app key (e.g. consumer key in OAuth)
      * @param secret Dropbox app secret (e.g. consumer secret in OAuth)
      */
-    public DbxAppClientV2(DbxRequestConfig requestConfig, String key, String secret) {
+    public DbxAppClientV2(@Nonnull DbxRequestConfig requestConfig, @Nonnull String key, @Nonnull String secret) {
         this(requestConfig, key, secret, DbxHost.DEFAULT);
     }
 
@@ -43,7 +46,10 @@ public class DbxAppClientV2 extends DbxAppClientV2Base {
      * @param host  Dropbox hosts to send requests to (used for mocking and
      *     testing)
      */
-    public DbxAppClientV2(DbxRequestConfig requestConfig, String key, String secret, DbxHost host) {
+    public DbxAppClientV2(@Nonnull DbxRequestConfig requestConfig,
+                          @Nonnull String key,
+                          @Nonnull String secret,
+                          @Nonnull DbxHost host) {
         super(new DbxAppRawClientV2(requestConfig, key, secret, host, null));
     }
 
@@ -60,7 +66,11 @@ public class DbxAppClientV2 extends DbxAppClientV2Base {
      * @param userId The user ID of the current Dropbox account. Used for
      *               multi-Dropbox account use-case.
      */
-    public DbxAppClientV2(DbxRequestConfig requestConfig, String key, String secret, DbxHost host, String userId) {
+    public DbxAppClientV2(@Nonnull DbxRequestConfig requestConfig,
+                          @Nonnull String key,
+                          @Nonnull String secret,
+                          @Nonnull DbxHost host,
+                          @Nullable String userId) {
         super(new DbxAppRawClientV2(requestConfig, key, secret, host, userId));
     }
 
@@ -68,17 +78,21 @@ public class DbxAppClientV2 extends DbxAppClientV2Base {
      * {@link DbxRawClientV2} raw client that adds app auth headers to all requests.
      */
     private static final class DbxAppRawClientV2 extends DbxRawClientV2 {
-        private final String key;
-        private final String secret;
+        private final @Nonnull String key;
+        private final @Nonnull String secret;
 
-        private DbxAppRawClientV2(DbxRequestConfig requestConfig, String key, String secret, DbxHost host, String userId) {
+        private DbxAppRawClientV2(@Nonnull DbxRequestConfig requestConfig,
+                                  @Nonnull String key,
+                                  @Nonnull String secret,
+                                  @Nonnull DbxHost host,
+                                  @Nullable String userId) {
             super(requestConfig, host, userId, null);
             this.key = key;
             this.secret = secret;
         }
 
         @Override
-        public DbxRefreshResult refreshAccessToken() {
+        public @Nullable DbxRefreshResult refreshAccessToken() {
             //no op
             return null;
         }
@@ -94,13 +108,13 @@ public class DbxAppClientV2 extends DbxAppClientV2Base {
         }
 
         @Override
-        protected void addAuthHeaders(List<HttpRequestor.Header> headers) {
+        protected void addAuthHeaders(@Nonnull List<HttpRequestor.Header> headers) {
             DbxRequestUtil.removeAuthHeader(headers);
             DbxRequestUtil.addBasicAuthHeader(headers, key, secret);
         }
 
         @Override
-        protected DbxRawClientV2 withPathRoot(PathRoot pathRoot) {
+        protected @Nonnull DbxRawClientV2 withPathRoot(@Nonnull PathRoot pathRoot) {
             throw new UnsupportedOperationException("App endpoints don't support Dropbox-API-Path-Root header.");
         }
     }

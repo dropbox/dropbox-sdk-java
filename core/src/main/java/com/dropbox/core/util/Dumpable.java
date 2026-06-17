@@ -1,6 +1,7 @@
 package com.dropbox.core.util;
 
-/*>>> import checkers.nullness.quals.Nullable; */
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * A common superclass for pure-data classes.  Contains a function to dump
@@ -8,14 +9,14 @@ package com.dropbox.core.util;
  */
 public abstract class Dumpable
 {
-    public final String toString()
+    public final @Nonnull String toString()
     {
         StringBuilder buf = new StringBuilder();
         toString(buf);
         return buf.toString();
     }
 
-    public final void toString(StringBuilder buf)
+    public final void toString(@Nonnull StringBuilder buf)
     {
         new DumpWriter.Plain(buf).v(this);
     }
@@ -29,7 +30,7 @@ public abstract class Dumpable
      * may change the format.
      * </p>
      */
-    public final String toStringMultiline()
+    public final @Nonnull String toStringMultiline()
     {
         StringBuilder buf = new StringBuilder();
         toStringMultiline(buf, 0, true);
@@ -52,11 +53,11 @@ public abstract class Dumpable
      *    Whether you will start displaying this value on its own line (and will need indentation
      *    on the first line) or not.
      */
-    public final void toStringMultiline(StringBuilder buf, int currentIndent, boolean nl)
+    public final void toStringMultiline(@Nonnull StringBuilder buf, int currentIndent, boolean nl)
     {
         new DumpWriter.Multiline(buf, 2, currentIndent, nl).v(this);
     }
 
-    protected /*@Nullable*/String getTypeName() { return null; }
-    protected abstract void dumpFields(DumpWriter out);
+    protected @Nullable String getTypeName() { return null; }
+    protected abstract void dumpFields(@Nonnull DumpWriter out);
 }

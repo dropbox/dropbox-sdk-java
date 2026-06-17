@@ -11,20 +11,23 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+
 public class DbxAccountInfo extends Dumpable
 {
     public final long userId;
-    public final String displayName;
-    public final String country;
-    public final String referralLink;
-    public final Quota quota;
-    public final String email;
-    public final NameDetails nameDetails;
+    public final @Nonnull String displayName;
+    public final @Nonnull String country;
+    public final @Nonnull String referralLink;
+    public final @Nonnull Quota quota;
+    public final @Nonnull String email;
+    public final @Nonnull NameDetails nameDetails;
     public final boolean emailVerified;
 
 
-    public DbxAccountInfo(long userId, String displayName, String country, String referralLink, Quota quota, String email,
-                          NameDetails nameDetails, boolean emailVerified)
+    public DbxAccountInfo(long userId, @Nonnull String displayName, @Nonnull String country,
+                          @Nonnull String referralLink, @Nonnull Quota quota, @Nonnull String email,
+                          @Nonnull NameDetails nameDetails, boolean emailVerified)
     {
         this.userId = userId;
         this.displayName = displayName;
@@ -37,7 +40,7 @@ public class DbxAccountInfo extends Dumpable
     }
 
     @Override
-    protected void dumpFields(DumpWriter out)
+    protected void dumpFields(@Nonnull DumpWriter out)
     {
         out.f("userId").v(userId);
         out.f("displayName").v(displayName);
@@ -63,7 +66,7 @@ public class DbxAccountInfo extends Dumpable
         }
 
         @Override
-        protected void dumpFields(DumpWriter out)
+        protected void dumpFields(@Nonnull DumpWriter out)
         {
             out.f("total").v(total);
             out.f("normal").v(normal);
@@ -73,9 +76,9 @@ public class DbxAccountInfo extends Dumpable
         // ------------------------------------------------------
         // JSON parsing
 
-        public static final JsonReader<Quota> Reader = new JsonReader<Quota>()
+        public static final @Nonnull JsonReader<Quota> Reader = new JsonReader<Quota>()
         {
-            public final Quota read(JsonParser parser)
+            public final @Nonnull Quota read(@Nonnull JsonParser parser)
                 throws IOException, JsonReadException
             {
                 JsonLocation top = JsonReader.expectObjectStart(parser);
@@ -131,11 +134,11 @@ public class DbxAccountInfo extends Dumpable
 
     public static final class NameDetails extends Dumpable
     {
-        public final String familiarName;
-        public final String givenName;
-        public final String surname;
+        public final @Nonnull String familiarName;
+        public final @Nonnull String givenName;
+        public final @Nonnull String surname;
 
-        public NameDetails(String familiarName, String givenName, String surname)
+        public NameDetails(@Nonnull String familiarName, @Nonnull String givenName, @Nonnull String surname)
         {
             this.familiarName = familiarName;
             this.givenName = givenName;
@@ -143,7 +146,7 @@ public class DbxAccountInfo extends Dumpable
         }
 
         @Override
-        protected void dumpFields(DumpWriter out)
+        protected void dumpFields(@Nonnull DumpWriter out)
         {
             out.f("familiarName").v(familiarName);
             out.f("givenName").v(givenName);
@@ -153,9 +156,9 @@ public class DbxAccountInfo extends Dumpable
         // ------------------------------------------------------
         // JSON parsing
 
-        public static final JsonReader<NameDetails> Reader = new JsonReader<NameDetails>()
+        public static final @Nonnull JsonReader<NameDetails> Reader = new JsonReader<NameDetails>()
         {
-            public final NameDetails read(JsonParser parser)
+            public final @Nonnull NameDetails read(@Nonnull JsonParser parser)
                     throws IOException, JsonReadException
             {
                 JsonLocation top = JsonReader.expectObjectStart(parser);
@@ -212,9 +215,9 @@ public class DbxAccountInfo extends Dumpable
     // ------------------------------------------------------
     // JSON parsing
 
-    public static final JsonReader<DbxAccountInfo> Reader = new JsonReader<DbxAccountInfo>()
+    public static final @Nonnull JsonReader<DbxAccountInfo> Reader = new JsonReader<DbxAccountInfo>()
     {
-        public final DbxAccountInfo read(JsonParser parser)
+        public final @Nonnull DbxAccountInfo read(@Nonnull JsonParser parser)
             throws IOException, JsonReadException
         {
             JsonLocation top = JsonReader.expectObjectStart(parser);

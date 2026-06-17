@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
+
 /**
  * Wraps an existing input stream, converting all the underlying stream's {@code IOException}s
  * to our own {@link HiddenException}, which is a subclass of {@code RuntimeException}.  This
@@ -21,10 +23,10 @@ import java.io.OutputStream;
  * </p>
  */
 public final class NoThrowInputStream extends InputStream {
-    private final InputStream underlying;
+    private final @Nonnull InputStream underlying;
     private long bytesRead = 0;
 
-    public NoThrowInputStream(InputStream underlying) {
+    public NoThrowInputStream(@Nonnull InputStream underlying) {
         this.underlying = underlying;
     }
 
@@ -44,7 +46,7 @@ public final class NoThrowInputStream extends InputStream {
     }
 
     @Override
-    public int read(byte[] b, int off, int len) {
+    public int read(@Nonnull byte[] b, int off, int len) {
         try {
             int bytesReadNow = underlying.read(b, off, len);
             this.bytesRead += bytesReadNow;
@@ -56,7 +58,7 @@ public final class NoThrowInputStream extends InputStream {
     }
 
     @Override
-    public int read(byte[] b) {
+    public int read(@Nonnull byte[] b) {
         try {
             int bytesReadNow = underlying.read(b);
             this.bytesRead += bytesReadNow;
@@ -69,12 +71,12 @@ public final class NoThrowInputStream extends InputStream {
     public static final class HiddenException extends RuntimeException {
         private static final long serialVersionUID = 0L;
 
-        public HiddenException(IOException underlying) {
+        public HiddenException(@Nonnull IOException underlying) {
             super(underlying);
         }
 
         @Override
-        public IOException getCause() {
+        public @Nonnull IOException getCause() {
             return (IOException) super.getCause();
         }
     }

@@ -1,23 +1,27 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Locale;
 
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.http.StandardHttpRequestor;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * A grouping of a few configuration parameters for how we should make requests to the
  * Dropbox servers.
  */
 public class DbxRequestConfig {
-    private final String clientIdentifier;
-    private final /*@Nullable*/String userLocale;
-    private final HttpRequestor httpRequestor;
+    private final @Nonnull String clientIdentifier;
+    private final @Nullable String userLocale;
+    private final @Nonnull HttpRequestor httpRequestor;
     private final int maxRetries;
 
-    private DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale, HttpRequestor httpRequestor, int maxRetries) {
+    private DbxRequestConfig(@Nonnull String clientIdentifier,
+                             @Nullable String userLocale,
+                             @Nonnull HttpRequestor httpRequestor,
+                             int maxRetries) {
         if (clientIdentifier == null) throw new NullPointerException("clientIdentifier");
         if (httpRequestor == null) throw new NullPointerException("httpRequestor");
         if (maxRetries < 0) throw new IllegalArgumentException("maxRetries");
@@ -33,7 +37,7 @@ public class DbxRequestConfig {
      *
      * @param clientIdentifier see {@link #getClientIdentifier}
      */
-    public DbxRequestConfig(String clientIdentifier) {
+    public DbxRequestConfig(@Nonnull String clientIdentifier) {
         this(clientIdentifier, null);
     }
 
@@ -46,7 +50,7 @@ public class DbxRequestConfig {
      * @deprecated Use {@link #newBuilder} to customize configuration
      */
     @Deprecated
-    public DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale) {
+    public DbxRequestConfig(@Nonnull String clientIdentifier, @Nullable String userLocale) {
         this(clientIdentifier, userLocale, StandardHttpRequestor.INSTANCE);
     }
 
@@ -60,7 +64,9 @@ public class DbxRequestConfig {
      * @deprecated Use {@link #newBuilder} to customize configuration
      */
     @Deprecated
-    public DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale, HttpRequestor httpRequestor) {
+    public DbxRequestConfig(@Nonnull String clientIdentifier,
+                            @Nullable String userLocale,
+                            @Nonnull HttpRequestor httpRequestor) {
         this(clientIdentifier, userLocale, httpRequestor, 0);
     }
 
@@ -82,7 +88,7 @@ public class DbxRequestConfig {
      * debugging things later.
      * </p>
      */
-    public String getClientIdentifier() {
+    public @Nonnull String getClientIdentifier() {
         return clientIdentifier;
     }
 
@@ -106,7 +112,7 @@ public class DbxRequestConfig {
      * to the user's configured locale setting.
      * </p>
      */
-    public String getUserLocale() {
+    public @Nullable String getUserLocale() {
         return userLocale;
     }
 
@@ -114,7 +120,7 @@ public class DbxRequestConfig {
      * Returns the {@link HttpRequestor} you passed in when constructing this object, which
      * defaults to {@link StandardHttpRequestor#INSTANCE}.
      */
-    public HttpRequestor getHttpRequestor() {
+    public @Nonnull HttpRequestor getHttpRequestor() {
         return httpRequestor;
     }
 
@@ -162,7 +168,7 @@ public class DbxRequestConfig {
      *
      * @return builder configured to build a copy of this instance
      */
-    public Builder copy() {
+    public @Nonnull Builder copy() {
         return new Builder(clientIdentifier, userLocale, httpRequestor, maxRetries);
     }
 
@@ -172,13 +178,13 @@ public class DbxRequestConfig {
      *
      * @param clientIdentifier see {@link #getClientIdentifier}
      */
-    public static Builder newBuilder(String clientIdentifier) {
+    public static @Nonnull Builder newBuilder(@Nonnull String clientIdentifier) {
         if (clientIdentifier == null) throw new NullPointerException("clientIdentifier");
         return new Builder(clientIdentifier);
     }
 
     // Available in Java 7, but not in Java 6. Do a hacky version of it here.
-    private static String toLanguageTag(Locale locale) {
+    private static @Nullable String toLanguageTag(@Nullable Locale locale) {
         if (locale == null) {
             return null;
         }
@@ -197,7 +203,7 @@ public class DbxRequestConfig {
     // APIv1 accepts Locale.toString() formatted locales (e.g. 'en_US'), but APIv2 will return an
     // error if the locale is not in proper Language Tag format. Attempt to convert old locale
     // formats to the new one.
-    private static String toLanguageTag(String locale) {
+    private static @Nullable String toLanguageTag(@Nullable String locale) {
         if (locale == null) {
             return null;
         }
@@ -226,15 +232,15 @@ public class DbxRequestConfig {
      * Builder for {@link DbxRequestConfig}.
      */
     public static final class Builder {
-        private final String clientIdentifier;
+        private final @Nonnull String clientIdentifier;
 
-        private /*@Nullable*/ String userLocale;
-        private HttpRequestor httpRequestor;
+        private @Nullable String userLocale;
+        private @Nonnull HttpRequestor httpRequestor;
         private int maxRetries;
 
-        private Builder(String clientIdentifier,
-                        /*@Nullable*/ String userLocale,
-                        HttpRequestor httpRequestor,
+        private Builder(@Nonnull String clientIdentifier,
+                        @Nullable String userLocale,
+                        @Nonnull HttpRequestor httpRequestor,
                         int maxRetries) {
             this.clientIdentifier = clientIdentifier;
             this.userLocale = userLocale;
@@ -242,7 +248,7 @@ public class DbxRequestConfig {
             this.maxRetries = maxRetries;
         }
 
-        private Builder(String clientIdentifier) {
+        private Builder(@Nonnull String clientIdentifier) {
             this.clientIdentifier = clientIdentifier;
 
             this.userLocale = null;
@@ -262,7 +268,7 @@ public class DbxRequestConfig {
          *
          * @return this builder
          */
-        public Builder withUserLocale(/*@Nullable*/ String userLocale) {
+        public @Nonnull Builder withUserLocale(@Nullable String userLocale) {
             this.userLocale = userLocale;
             return this;
         }
@@ -276,7 +282,7 @@ public class DbxRequestConfig {
          *
          * @return this builder
          */
-        public Builder withUserLocaleFromPreferences() {
+        public @Nonnull Builder withUserLocaleFromPreferences() {
             this.userLocale = null;
             return this;
         }
@@ -292,7 +298,7 @@ public class DbxRequestConfig {
          *
          * @return this builder
          */
-        public Builder withUserLocaleFrom(/*@Nullable*/ Locale userLocale) { // not named withUserLocale because of ambiguous calls when passing 'null'
+        public @Nonnull Builder withUserLocaleFrom(@Nullable Locale userLocale) { // not named withUserLocale because of ambiguous calls when passing 'null'
             this.userLocale = toLanguageTag(userLocale);
             return this;
         }
@@ -306,7 +312,7 @@ public class DbxRequestConfig {
          *
          * @return this builder
          */
-        public Builder withHttpRequestor(HttpRequestor httpRequestor) {
+        public @Nonnull Builder withHttpRequestor(@Nonnull HttpRequestor httpRequestor) {
             if (httpRequestor == null) throw new NullPointerException("httpRequestor");
             this.httpRequestor = httpRequestor;
             return this;
@@ -324,7 +330,7 @@ public class DbxRequestConfig {
          *
          * @return this builder
          */
-        public Builder withAutoRetryEnabled() {
+        public @Nonnull Builder withAutoRetryEnabled() {
             return withAutoRetryEnabled(3);
         }
 
@@ -338,7 +344,7 @@ public class DbxRequestConfig {
          *
          * @see #withAutoRetryEnabled
          */
-        public Builder withAutoRetryDisabled() {
+        public @Nonnull Builder withAutoRetryDisabled() {
             this.maxRetries = 0;
             return this;
         }
@@ -365,7 +371,7 @@ public class DbxRequestConfig {
          *
          * @throws IllegalArgumentException if {@code maxRetries} is not positive.
          */
-        public Builder withAutoRetryEnabled(int maxRetries) {
+        public @Nonnull Builder withAutoRetryEnabled(int maxRetries) {
             if (maxRetries <= 0) throw new IllegalArgumentException("maxRetries must be positive");
             this.maxRetries = maxRetries;
             return this;
@@ -377,7 +383,7 @@ public class DbxRequestConfig {
          *
          * @return new {@code DbxRequestConfig} instance.
          */
-        public DbxRequestConfig build() {
+        public @Nonnull DbxRequestConfig build() {
             return new DbxRequestConfig(clientIdentifier, userLocale, httpRequestor, maxRetries);
         }
     }

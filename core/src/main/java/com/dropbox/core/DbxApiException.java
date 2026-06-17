@@ -1,5 +1,6 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -8,14 +9,19 @@ import javax.annotation.Nullable;
 public class DbxApiException extends DbxException {
     private static final long serialVersionUID = 0L;
 
-    private final LocalizedText userMessage;
+    private final @Nullable LocalizedText userMessage;
 
-    public DbxApiException(String requestId, LocalizedText userMessage, String message) {
+    public DbxApiException(@Nullable String requestId,
+                           @Nullable LocalizedText userMessage,
+                           @Nonnull String message) {
         super(requestId, message);
         this.userMessage = userMessage;
     }
 
-    public DbxApiException(String requestId, LocalizedText userMessage, String message, Throwable cause) {
+    public DbxApiException(@Nullable String requestId,
+                           @Nullable LocalizedText userMessage,
+                           @Nonnull String message,
+                           @Nonnull Throwable cause) {
         super(requestId, message, cause);
         this.userMessage = userMessage;
     }
@@ -27,16 +33,17 @@ public class DbxApiException extends DbxException {
      *
      * @return human-readable message to display to end user, or {@code null} if unavailable
      */
-    @Nullable
-    public LocalizedText getUserMessage() {
+    public @Nullable LocalizedText getUserMessage() {
         return userMessage;
     }
 
-    protected static String buildMessage(String routeName, LocalizedText userMessage) {
+    protected static @Nonnull String buildMessage(@Nonnull String routeName, @Nullable LocalizedText userMessage) {
         return buildMessage(routeName, userMessage, null);
     }
 
-    protected static String buildMessage(String routeName, LocalizedText userMessage, Object errorValue) {
+    protected static @Nonnull String buildMessage(@Nonnull String routeName,
+                                                  @Nullable LocalizedText userMessage,
+                                                  @Nullable Object errorValue) {
         StringBuilder sb = new StringBuilder();
         sb.append("Exception in ").append(routeName);
         if (errorValue != null) {

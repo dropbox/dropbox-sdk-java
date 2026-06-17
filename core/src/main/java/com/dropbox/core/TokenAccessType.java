@@ -1,5 +1,7 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
+
 /**
  *  Whether or not to include refresh token in {@link DbxAuthFinish}
  *  Non-mobile apps use it in {@link DbxWebAuth}.
@@ -15,14 +17,14 @@ public enum TokenAccessType{
      */
     OFFLINE("offline");
 
-    private String string;
+    private @Nonnull String string;
 
-    TokenAccessType(String string) {
+    TokenAccessType(@Nonnull String string) {
         this.string = string;
     }
 
     @Override
-    public String toString() {
+    public @Nonnull String toString() {
         return string;
     }
 }

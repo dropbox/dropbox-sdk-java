@@ -3,6 +3,8 @@ package com.dropbox.core;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
+
 /**
  * Wraps an existing output stream, converting all the underlying stream's {@code IOException}s
  * to our own {@link HiddenException}, which is a subclass of {@code RuntimeException}.  This
@@ -21,10 +23,10 @@ import java.io.OutputStream;
  */
 public final class NoThrowOutputStream extends OutputStream
 {
-    private final OutputStream underlying;
+    private final @Nonnull OutputStream underlying;
     private long bytesWritten = 0;
 
-    public NoThrowOutputStream(OutputStream underlying)
+    public NoThrowOutputStream(@Nonnull OutputStream underlying)
     {
         this.underlying = underlying;
     }
@@ -47,7 +49,7 @@ public final class NoThrowOutputStream extends OutputStream
     }
 
     @Override
-    public void write(byte[] b, int off, int len)
+    public void write(@Nonnull byte[] b, int off, int len)
     {
         try {
             bytesWritten += len;
@@ -59,7 +61,7 @@ public final class NoThrowOutputStream extends OutputStream
     }
 
     @Override
-    public void write(byte[] b)
+    public void write(@Nonnull byte[] b)
     {
         try {
             bytesWritten += b.length;
@@ -84,16 +86,16 @@ public final class NoThrowOutputStream extends OutputStream
 
     public static final class HiddenException extends RuntimeException
     {
-        public final NoThrowOutputStream owner;
+        public final @Nonnull NoThrowOutputStream owner;
 
-        public HiddenException(NoThrowOutputStream owner, IOException underlying)
+        public HiddenException(@Nonnull NoThrowOutputStream owner, @Nonnull IOException underlying)
         {
             super(underlying);
             this.owner = owner;
         }
 
         @Override
-        public IOException getCause()
+        public @Nonnull IOException getCause()
         {
             return (IOException) super.getCause();
         }

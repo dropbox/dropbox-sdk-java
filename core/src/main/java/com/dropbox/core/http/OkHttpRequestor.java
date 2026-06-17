@@ -19,9 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import okio.*;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * {@link HttpRequestor} implementation that uses <a href="http://square.github.io/okhttp/">OkHttp
@@ -35,7 +37,7 @@ public class OkHttpRequestor extends HttpRequestor {
     /**
      * Returns an {@code OkHttpClient} instance with the default settings for this SDK.
      */
-    public static OkHttpClient defaultOkHttpClient() {
+    public static @Nonnull OkHttpClient defaultOkHttpClient() {
         OkHttpClient client = new OkHttpClient();
         client.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
         client.setReadTimeout(DEFAULT_READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
@@ -60,7 +62,7 @@ public class OkHttpRequestor extends HttpRequestor {
      * </pre>
      *
      */
-    public OkHttpRequestor(OkHttpClient client) {
+    public OkHttpRequestor(@Nonnull OkHttpClient client) {
         if (client == null) throw new NullPointerException("client");
         OkHttpUtil.assertNotSameThreadExecutor(client.getDispatcher().getExecutorService());
         this.client = client.clone();
@@ -74,7 +76,7 @@ public class OkHttpRequestor extends HttpRequestor {
      *
      * @return clone of the underlying {@code OkHttpClient} used by this requestor.
      */
-    public OkHttpClient getClient() {
+    public @Nonnull OkHttpClient getClient() {
         return client;
     }
 
@@ -86,7 +88,7 @@ public class OkHttpRequestor extends HttpRequestor {
      *
      * @param request Builder of request to be executed
      */
-    protected void configureRequest(Request.Builder request) { }
+    protected void configureRequest(@Nonnull Request.Builder request) { }
 
     /**
      * Called before returning {@link Response} from a request.
@@ -100,12 +102,12 @@ public class OkHttpRequestor extends HttpRequestor {
      *
      * @return OkHttp response
      */
-    protected com.squareup.okhttp.Response interceptResponse(com.squareup.okhttp.Response response) {
+    protected @Nonnull com.squareup.okhttp.Response interceptResponse(@Nonnull com.squareup.okhttp.Response response) {
         return response;
     }
 
     @Override
-    public Response doGet(String url, Iterable<Header> headers) throws IOException {
+    public @Nonnull Response doGet(@Nonnull String url, @Nonnull Iterable<Header> headers) throws IOException {
         Request.Builder builder = new Request.Builder().get().url(url);
         toOkHttpHeaders(headers, builder);
         configureRequest(builder);
@@ -116,29 +118,33 @@ public class OkHttpRequestor extends HttpRequestor {
     }
 
     @Override
-    public HttpRequestor.Uploader startPost(String url, Iterable<Header> headers) throws IOException {
+    public @Nonnull HttpRequestor.Uploader startPost(@Nonnull String url,
+                                                     @Nonnull Iterable<Header> headers) throws IOException {
         return startUpload(url, headers, "POST");
     }
 
     @Override
-    public HttpRequestor.Uploader startPut(String url, Iterable<Header> headers) throws IOException {
+    public @Nonnull HttpRequestor.Uploader startPut(@Nonnull String url,
+                                                    @Nonnull Iterable<Header> headers) throws IOException {
         return startUpload(url, headers, "PUT");
     }
 
-    private BufferedUploader startUpload(String url, Iterable<Header> headers, String method) {
+    private @Nonnull BufferedUploader startUpload(@Nonnull String url,
+                                                  @Nonnull Iterable<Header> headers,
+                                                  @Nonnull String method) {
         Request.Builder builder = new Request.Builder()
             .url(url);
         toOkHttpHeaders(headers, builder);
         return new BufferedUploader(method, builder);
     }
 
-    private static void toOkHttpHeaders(Iterable<Header> headers, Request.Builder builder) {
+    private static void toOkHttpHeaders(@Nonnull Iterable<Header> headers, @Nonnull Request.Builder builder) {
         for (Header header : headers) {
             builder.addHeader(header.getKey(), header.getValue());
         }
     }
 
-    private static Map<String, List<String>> fromOkHttpHeaders(Headers headers) {
+    private static @Nonnull Map<String, List<String>> fromOkHttpHeaders(@Nonnull Headers headers) {
         Map<String, List<String>> responseHeaders = new HashMap<String, List<String>>(headers.size());
         for (String name : headers.names()) {
             responseHeaders.put(name, headers.values(name));
@@ -167,7 +173,7 @@ public class OkHttpRequestor extends HttpRequestor {
         private boolean closed;
         private boolean cancelled;
 
-        public BufferedUploader(String method, Request.Builder request) {
+        public BufferedUploader(@Nonnull String method, @Nonnull Request.Builder request) {
             this.method = method;
             this.request = request;
 
@@ -186,7 +192,7 @@ public class OkHttpRequestor extends HttpRequestor {
         }
 
         @Override
-        public OutputStream getBody() {
+        public @Nonnull OutputStream getBody() {
             // getBody() can be called multiple times to get access to the output stream. Don't
             // error if this is the case.
             if (body instanceof PipedRequestBody) {
@@ -206,7 +212,7 @@ public class OkHttpRequestor extends HttpRequestor {
             }
         }
 
-        private void setBody(RequestBody body) {
+        private void setBody(@Nonnull RequestBody body) {
             assertNoBody();
             this.body = body;
             this.request.method(method, body);
@@ -214,12 +220,12 @@ public class OkHttpRequestor extends HttpRequestor {
         }
 
         @Override
-        public void upload(File file) {
+        public void upload(@Nonnull File file) {
             setBody(RequestBody.create(null, file));
         }
 
         @Override
-        public void upload(byte [] body) {
+        public void upload(@Nonnull byte [] body) {
             setBody(RequestBody.create(null, body));
         }
 
@@ -245,7 +251,7 @@ public class OkHttpRequestor extends HttpRequestor {
         }
 
         @Override
-        public Response finish() throws IOException {
+        public @Nonnull Response finish() throws IOException {
             if (cancelled) {
                 throw new IllegalStateException("Already aborted");
             }
@@ -272,15 +278,15 @@ public class OkHttpRequestor extends HttpRequestor {
     }
 
     public static final class AsyncCallback implements Callback {
-        private IOException error;
-        private com.squareup.okhttp.Response response;
+        private @Nullable IOException error;
+        private @Nullable com.squareup.okhttp.Response response;
 
         private AsyncCallback() {
             this.error = null;
             this.response = null;
         }
 
-        public synchronized com.squareup.okhttp.Response getResponse() throws IOException {
+        public synchronized @Nonnull com.squareup.okhttp.Response getResponse() throws IOException {
             while (error == null && response == null) {
                 try {
                     wait();
@@ -296,13 +302,13 @@ public class OkHttpRequestor extends HttpRequestor {
         }
 
         @Override
-        public synchronized void onFailure(Request request, IOException ex) {
+        public synchronized void onFailure(@Nonnull Request request, @Nonnull IOException ex) {
             this.error = ex;
             notifyAll();
         }
 
         @Override
-        public synchronized void onResponse(com.squareup.okhttp.Response response) throws IOException {
+        public synchronized void onResponse(@Nonnull com.squareup.okhttp.Response response) throws IOException {
             this.response = response;
             notifyAll();
         }
@@ -311,15 +317,15 @@ public class OkHttpRequestor extends HttpRequestor {
     private static class PipedRequestBody extends RequestBody implements Closeable {
         private final OkHttpUtil.PipedStream stream;
 
-        private IOUtil.ProgressListener listener;
+        private @Nullable IOUtil.ProgressListener listener;
 
         public PipedRequestBody() {
             this.stream = new OkHttpUtil.PipedStream();
         }
 
-        public void setListener(IOUtil.ProgressListener listener) { this.listener = listener; }
+        public void setListener(@Nullable IOUtil.ProgressListener listener) { this.listener = listener; }
 
-        public OutputStream getOutputStream() {
+        public @Nonnull OutputStream getOutputStream() {
             return stream.getOutputStream();
         }
 
@@ -329,7 +335,7 @@ public class OkHttpRequestor extends HttpRequestor {
         }
 
         @Override
-        public MediaType contentType() {
+        public @Nullable MediaType contentType() {
             return null;
         }
 
@@ -339,7 +345,7 @@ public class OkHttpRequestor extends HttpRequestor {
         }
 
         @Override
-        public void writeTo(BufferedSink sink) throws IOException {
+        public void writeTo(@Nonnull BufferedSink sink) throws IOException {
             CountingSink countingSink = new CountingSink(sink);
             BufferedSink bufferedSink = Okio.buffer(countingSink);
             stream.writeTo(bufferedSink);
@@ -350,12 +356,12 @@ public class OkHttpRequestor extends HttpRequestor {
         private final class CountingSink extends ForwardingSink {
             private long bytesWritten = 0;
 
-            public CountingSink(Sink delegate) {
+            public CountingSink(@Nonnull Sink delegate) {
                 super(delegate);
             }
 
             @Override
-            public void write(Buffer source, long byteCount) throws IOException {
+            public void write(@Nonnull Buffer source, long byteCount) throws IOException {
                 super.write(source, byteCount);
 
                 bytesWritten += byteCount;

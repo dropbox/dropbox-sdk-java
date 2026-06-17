@@ -19,7 +19,9 @@ import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 
-/*>>> import checkers.nullness.quals.Nullable; */
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 
 /**
  * {@link HttpRequestor} implementation that uses Google App Engine URL fetch service.
@@ -47,45 +49,45 @@ public class GoogleAppEngineRequestor extends HttpRequestor {
         this(newDefaultOptions());
     }
 
-    public GoogleAppEngineRequestor(FetchOptions options) {
+    public GoogleAppEngineRequestor(@Nonnull FetchOptions options) {
         this(options, URLFetchServiceFactory.getURLFetchService());
     }
 
-    public GoogleAppEngineRequestor(FetchOptions options, URLFetchService service) {
+    public GoogleAppEngineRequestor(@Nonnull FetchOptions options, @Nonnull URLFetchService service) {
         if (options == null) throw new NullPointerException("options");
         if (service == null) throw new NullPointerException("service");
         this.options = options;
         this.service = service;
     }
 
-    public FetchOptions getOptions() {
+    public @Nonnull FetchOptions getOptions() {
         return options;
     }
 
-    public URLFetchService getService() {
+    public @Nonnull URLFetchService getService() {
         return service;
     }
 
     @Override
-    public Response doGet(String url, Iterable<Header> headers) throws IOException {
+    public @Nonnull Response doGet(@Nonnull String url, @Nonnull Iterable<Header> headers) throws IOException {
         HTTPRequest request = newRequest(url, HTTPMethod.GET, headers);
         HTTPResponse response = service.fetch(request);
         return toRequestorResponse(response);
     }
 
     @Override
-    public Uploader startPost(String url, Iterable<Header> headers) throws IOException {
+    public @Nonnull Uploader startPost(@Nonnull String url, @Nonnull Iterable<Header> headers) throws IOException {
         HTTPRequest request = newRequest(url, HTTPMethod.POST, headers);
         return new FetchServiceUploader(service, request, new ByteArrayOutputStream());
     }
 
     @Override
-    public Uploader startPut(String url, Iterable<Header> headers) throws IOException {
+    public @Nonnull Uploader startPut(@Nonnull String url, @Nonnull Iterable<Header> headers) throws IOException {
         HTTPRequest request = newRequest(url, HTTPMethod.POST, headers);
         return new FetchServiceUploader(service, request, new ByteArrayOutputStream());
     }
 
-    private HTTPRequest newRequest(String url, HTTPMethod method, Iterable<Header> headers) throws IOException {
+    private @Nonnull HTTPRequest newRequest(@Nonnull String url, @Nonnull HTTPMethod method, @Nonnull Iterable<Header> headers) throws IOException {
         HTTPRequest request = new HTTPRequest(new URL(url), method, options);
         for (Header header : headers) {
             request.addHeader(new HTTPHeader(header.getKey(), header.getValue()));
@@ -99,7 +101,7 @@ public class GoogleAppEngineRequestor extends HttpRequestor {
      *
      * @return new instance of default fetch options used by this requestor.
      */
-    public static FetchOptions newDefaultOptions() {
+    public static @Nonnull FetchOptions newDefaultOptions() {
         return FetchOptions.Builder.withDefaults()
             .validateCertificate()
             .doNotFollowRedirects()
@@ -108,7 +110,7 @@ public class GoogleAppEngineRequestor extends HttpRequestor {
             .setDeadline((DEFAULT_CONNECT_TIMEOUT_MILLIS + DEFAULT_READ_TIMEOUT_MILLIS)/1000.0);
     }
 
-    private static Response toRequestorResponse(HTTPResponse response) {
+    private static @Nonnull Response toRequestorResponse(@Nonnull HTTPResponse response) {
         Map<String, List<String>> headers = new HashMap<String, List<String>>();
         for (HTTPHeader header : response.getHeadersUncombined()) {
             List<String> existing = headers.get(header.getName());
@@ -128,16 +130,18 @@ public class GoogleAppEngineRequestor extends HttpRequestor {
         private final URLFetchService service;
         private final ByteArrayOutputStream body;
 
-        private HTTPRequest request;
+        private @Nullable HTTPRequest request;
 
-        public FetchServiceUploader(URLFetchService service, HTTPRequest request, ByteArrayOutputStream body) {
+        public FetchServiceUploader(@Nonnull URLFetchService service,
+                                    @Nonnull HTTPRequest request,
+                                    @Nonnull ByteArrayOutputStream body) {
             this.service = service;
             this.request = request;
             this.body = body;
         }
 
         @Override
-        public OutputStream getBody() {
+        public @Nonnull OutputStream getBody() {
             return body;
         }
 
@@ -165,16 +169,17 @@ public class GoogleAppEngineRequestor extends HttpRequestor {
         }
 
         @Override
-        public Response finish() throws IOException {
+        public @Nonnull Response finish() throws IOException {
             if (request == null) {
                 throw new IllegalStateException("Uploader already closed.");
             }
-            request.setPayload(body.toByteArray());
+            byte[] payload = body.toByteArray();
+            request.setPayload(payload);
             HTTPResponse response = service.fetch(request);
             Response requestorResponse = toRequestorResponse(response);
             close();
             if (progressListener != null) {
-                progressListener.onProgress(request.getPayload().length);
+                progressListener.onProgress(payload.length);
             }
             return requestorResponse;
         }

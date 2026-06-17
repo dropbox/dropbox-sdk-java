@@ -59,6 +59,10 @@ object AuthorizeExample {
             System.err.println("Error reading <app-info-file>: " + ex.message)
             System.exit(1)
             return
+        } ?: run {
+            System.err.println("Error reading <app-info-file>: app info file did not contain app info.")
+            System.exit(1)
+            return
         }
 
         // Run through Dropbox API authorization process

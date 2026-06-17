@@ -2,6 +2,9 @@ package com.dropbox.core;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The server is overloaded, or you have hit a rate limit.  Try again later after the designated
  * backoff (see {@link #getBackoffMillis}).
@@ -9,8 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class RateLimitException extends RetryException {
     private static final long serialVersionUID = 0L;
 
-    public RateLimitException(String requestId, String message, long backoff, TimeUnit unit) {
+    public RateLimitException(@Nullable String requestId, @Nullable String message, long backoff, @Nonnull TimeUnit unit) {
         super(requestId, message, backoff, unit);
     }
 }
-

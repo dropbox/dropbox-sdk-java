@@ -13,33 +13,36 @@ import java.util.TimeZone;
 
 import com.dropbox.core.json.JsonDateReader;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public abstract class JsonWriter<T>
 {
-    private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    private static final @Nonnull TimeZone UTC = TimeZone.getTimeZone("UTC");
+    private static final @Nonnull String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-    public static String formatDate(Date date) {
+    public static @Nonnull String formatDate(@Nonnull Date date) {
         DateFormat df = new SimpleDateFormat(DATE_FORMAT);
         df.setTimeZone(UTC);
         return df.format(date);
     }
 
-    public abstract void write(T value, JsonGenerator g)
+    public abstract void write(@Nullable T value, @Nonnull JsonGenerator g)
         throws IOException;
 
-    public void write(T value, JsonGenerator g, int level)
+    public void write(@Nullable T value, @Nonnull JsonGenerator g, int level)
             throws IOException
     {
         write(value, g);
     }
 
-    public void writeFields(T value, JsonGenerator g)
+    public void writeFields(@Nullable T value, @Nonnull JsonGenerator g)
         throws IOException
     {
         // Default does nothing.  Override for struct fields.
     }
 
-    public final String writeToString(T value, boolean indent)
+    public final @Nonnull String writeToString(@Nullable T value, boolean indent)
     {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
@@ -62,12 +65,12 @@ public abstract class JsonWriter<T>
         }
     }
 
-    public final String writeToString(T value)
+    public final @Nonnull String writeToString(@Nullable T value)
     {
         return writeToString(value, true);
     }
 
-    public final void writeToStream(T value, OutputStream out, boolean indent)
+    public final void writeToStream(@Nullable T value, @Nonnull OutputStream out, boolean indent)
         throws IOException
     {
         JsonGenerator g = JsonReader.jsonFactory.createGenerator(out);
@@ -82,13 +85,13 @@ public abstract class JsonWriter<T>
         }
     }
 
-    public final void writeToStream(T value, OutputStream out)
+    public final void writeToStream(@Nullable T value, @Nonnull OutputStream out)
             throws IOException
     {
         writeToStream(value, out, true);
     }
 
-    public final void writeToFile(T value, File file, boolean indent)
+    public final void writeToFile(@Nullable T value, @Nonnull File file, boolean indent)
         throws IOException
     {
         FileOutputStream fout = new FileOutputStream(file);
@@ -100,25 +103,25 @@ public abstract class JsonWriter<T>
         }
     }
 
-    public final void writeToFile(T value, File file)
+    public final void writeToFile(@Nullable T value, @Nonnull File file)
             throws IOException
     {
         writeToFile(value, file, true);
     }
 
-    public final void writeToFile(T value, String fileName, boolean indent)
+    public final void writeToFile(@Nullable T value, @Nonnull String fileName, boolean indent)
             throws IOException
     {
         writeToFile(value, new File(fileName), indent);
     }
 
-    public final void writeToFile(T value, String fileName)
+    public final void writeToFile(@Nullable T value, @Nonnull String fileName)
         throws IOException
     {
         writeToFile(value, fileName, true);
     }
 
-    public final void writeDateIso(java.util.Date date, JsonGenerator g)
+    public final void writeDateIso(@Nonnull java.util.Date date, @Nonnull JsonGenerator g)
             throws IOException
     {
         g.writeString(formatDate(date));
@@ -127,7 +130,7 @@ public abstract class JsonWriter<T>
     static private final String weekdays[] = {null, "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     static private final String months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", null};
 
-    public final void writeDate(java.util.Date date, JsonGenerator g)
+    public final void writeDate(@Nonnull java.util.Date date, @Nonnull JsonGenerator g)
         throws IOException
     {
         GregorianCalendar c = new GregorianCalendar(JsonDateReader.UTC);
@@ -150,7 +153,7 @@ public abstract class JsonWriter<T>
         g.writeString(buf.toString());
     }
 
-    private static String zeroPad(String v, int desiredLength)
+    private static @Nonnull String zeroPad(@Nonnull String v, int desiredLength)
     {
         while (v.length() < desiredLength) {
             v = "0" + v;

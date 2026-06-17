@@ -1,28 +1,29 @@
 package com.dropbox.core.json;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.File;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 public final class JsonReadException extends java.lang.Exception
 {
     public static final long serialVersionUID = 0;
 
-    public final String error;
-    public final JsonLocation location;
-    private /*@Nullable*/PathPart path;
+    public final @Nonnull String error;
+    public final @Nonnull JsonLocation location;
+    private @Nullable PathPart path;
 
-    public JsonReadException(String error, JsonLocation location)
+    public JsonReadException(@Nonnull String error, @Nonnull JsonLocation location)
     {
         this.error = error;
         this.location = location;
         this.path = null;
     }
 
-    public JsonReadException(String error, JsonLocation location, Throwable cause)
+    public JsonReadException(@Nonnull String error, @Nonnull JsonLocation location, @Nonnull Throwable cause)
     {
         super(cause);
         this.error = error;
@@ -30,19 +31,19 @@ public final class JsonReadException extends java.lang.Exception
         this.path = null;
     }
 
-    public JsonReadException addFieldContext(String fieldName)
+    public @Nonnull JsonReadException addFieldContext(@Nonnull String fieldName)
     {
         this.path = new PathPart('"' + fieldName + '"', this.path);
         return this;
     }
 
-    public JsonReadException addArrayContext(int index)
+    public @Nonnull JsonReadException addArrayContext(int index)
     {
         this.path = new PathPart(Integer.toString(index), this.path);
         return this;
     }
 
-    public String getMessage()
+    public @Nonnull String getMessage()
     {
         StringBuilder buf = new StringBuilder();
 
@@ -68,7 +69,7 @@ public final class JsonReadException extends java.lang.Exception
         return buf.toString();
     }
 
-    public static void toStringLocation(StringBuilder buf, JsonLocation location)
+    public static void toStringLocation(@Nonnull StringBuilder buf, @Nonnull JsonLocation location)
     {
         Object sourceRef = location.getSourceRef();
         if (sourceRef instanceof File) {
@@ -84,17 +85,17 @@ public final class JsonReadException extends java.lang.Exception
 
     public static final class PathPart
     {
-        public final String description;
-        public final /*@Nullable*/PathPart next;
+        public final @Nonnull String description;
+        public final @Nullable PathPart next;
 
-        public PathPart(String description, /*@Nullable*/PathPart next)
+        public PathPart(@Nonnull String description, @Nullable PathPart next)
         {
             this.description = description;
             this.next = next;
         }
     }
 
-    public static JsonReadException fromJackson(JsonProcessingException ex)
+    public static @Nonnull JsonReadException fromJackson(@Nonnull JsonProcessingException ex)
     {
         String message = ex.getMessage();
 

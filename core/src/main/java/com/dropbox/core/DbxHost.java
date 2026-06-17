@@ -1,5 +1,7 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.json.JsonWriter;
@@ -11,7 +13,6 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * This is for mocking things out during testing.  Most of the time you won't have to deal with
@@ -22,17 +23,17 @@ public final class DbxHost {
      * The standard Dropbox hosts: "api.dropbox.com", "api-content.dropbox.com",
      * and "www.dropbox.com"
      */
-    public static final DbxHost DEFAULT = new DbxHost(
+    public static final @Nonnull DbxHost DEFAULT = new DbxHost(
         "api.dropboxapi.com",
         "content.dropboxapi.com",
         "www.dropbox.com",
         "notify.dropboxapi.com"
     );
 
-    private final String api;
-    private final String content;
-    private final String web;
-    private final String notify;
+    private final @Nonnull String api;
+    private final @Nonnull String content;
+    private final @Nonnull String web;
+    private final @Nonnull String notify;
 
     /**
      * @param api main Dropbox API server host name
@@ -40,7 +41,7 @@ public final class DbxHost {
      * @param web Dropbox web server host name
      * @param notify Dropbox notification server host name
      */
-    public DbxHost(String api, String content, String web, String notify) {
+    public DbxHost(@Nonnull String api, @Nonnull String content, @Nonnull String web, @Nonnull String notify) {
         this.api = api;
         this.content = content;
         this.web = web;
@@ -53,7 +54,7 @@ public final class DbxHost {
      *
      * @return host name of main Dropbox API server
      */
-    public String getApi() {
+    public @Nonnull String getApi() {
         return api;
     }
 
@@ -63,7 +64,7 @@ public final class DbxHost {
      *
      * @return host name of Dropbox API content server
      */
-    public String getContent() {
+    public @Nonnull String getContent() {
         return content;
     }
 
@@ -73,7 +74,7 @@ public final class DbxHost {
      *
      * @return host name of Dropbox API web server used during user authorization
      */
-    public String getWeb() {
+    public @Nonnull String getWeb() {
         return web;
     }
 
@@ -83,7 +84,7 @@ public final class DbxHost {
      *
      * @return host name of Dropbox notification server used for longpolling
      */
-    public String getNotify() {
+    public @Nonnull String getNotify() {
         return notify;
     }
 
@@ -93,7 +94,7 @@ public final class DbxHost {
     }
 
     @Override
-    public boolean equals(/*@Nullable*/Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (obj == this) {
             return true;
         } else if(obj instanceof DbxHost) {
@@ -107,13 +108,13 @@ public final class DbxHost {
         }
     }
 
-    private static DbxHost fromBaseHost(String s) {
+    private static @Nonnull DbxHost fromBaseHost(@Nonnull String s) {
         return new DbxHost("api-" + s, "api-content-" + s, "meta-" + s, "api-notify-" + s);
     }
 
-    public static final JsonReader<DbxHost> Reader = new JsonReader<DbxHost>() {
+    public static final @Nonnull JsonReader<DbxHost> Reader = new JsonReader<DbxHost>() {
         @Override
-        public DbxHost read(JsonParser parser) throws IOException, JsonReadException {
+        public @Nonnull DbxHost read(@Nonnull JsonParser parser) throws IOException, JsonReadException {
             JsonToken t = parser.getCurrentToken();
             if (t == JsonToken.VALUE_STRING) {
                 String s = parser.getText();
@@ -168,7 +169,7 @@ public final class DbxHost {
         }
     };
 
-    private /*@Nullable*/String inferBaseHost() {
+    private @Nullable String inferBaseHost() {
         if (web.startsWith("meta-") && api.startsWith("api-") && content.startsWith("api-content-") && notify.startsWith("api-notify-")) {
             String webBase = web.substring("meta-".length());
             String apiBase = api.substring("api-".length());
@@ -181,9 +182,9 @@ public final class DbxHost {
         return null;
     }
 
-    public static final JsonWriter<DbxHost> Writer = new JsonWriter<DbxHost>() {
+    public static final @Nonnull JsonWriter<DbxHost> Writer = new JsonWriter<DbxHost>() {
         @Override
-        public void write(DbxHost host, JsonGenerator g) throws IOException {
+        public void write(@Nonnull DbxHost host, @Nonnull JsonGenerator g) throws IOException {
             String base = host.inferBaseHost();
             if (base != null) {
                 g.writeString(base);

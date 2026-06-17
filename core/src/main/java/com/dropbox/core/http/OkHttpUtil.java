@@ -9,20 +9,22 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Nonnull;
+
 import okio.BufferedSink;
 import okio.Okio;
 
 
 final class OkHttpUtil {
 
-    public static void assertNotSameThreadExecutor(ExecutorService executor) {
+    public static void assertNotSameThreadExecutor(@Nonnull ExecutorService executor) {
         Thread current = Thread.currentThread();
 
         Thread executed;
         try {
             executed = executor.submit(new Callable<Thread>() {
                 @Override
-                public Thread call() {
+                public @Nonnull Thread call() {
                     return Thread.currentThread();
                 }
             }).get(2, TimeUnit.MINUTES);
@@ -57,7 +59,7 @@ final class OkHttpUtil {
             }
         }
 
-        public OutputStream getOutputStream() {
+        public @Nonnull OutputStream getOutputStream() {
             return out;
         }
 
@@ -75,7 +77,7 @@ final class OkHttpUtil {
             }
         }
 
-        public void writeTo(BufferedSink sink) throws IOException {
+        public void writeTo(@Nonnull BufferedSink sink) throws IOException {
             sink.writeAll(Okio.source(in));
         }
     }

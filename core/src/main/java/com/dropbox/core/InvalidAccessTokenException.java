@@ -2,6 +2,9 @@ package com.dropbox.core;
 
 import com.dropbox.core.v2.auth.AuthError;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Gets thrown when the access token you're using to make API calls is invalid.
  *
@@ -15,14 +18,16 @@ import com.dropbox.core.v2.auth.AuthError;
  */
 public class InvalidAccessTokenException extends DbxException {
     private static final long serialVersionUID = 0;
-    private AuthError authError;
+    private @Nonnull AuthError authError;
 
-    public InvalidAccessTokenException(String requestId, String message, AuthError authError) {
+    public InvalidAccessTokenException(@Nullable String requestId,
+                                       @Nullable String message,
+                                       @Nonnull AuthError authError) {
         super(requestId, message);
         this.authError = authError;
     }
 
-    public AuthError getAuthError() {
+    public @Nonnull AuthError getAuthError() {
         return this.authError;
     }
 }

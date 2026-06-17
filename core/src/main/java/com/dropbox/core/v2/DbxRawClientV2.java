@@ -35,10 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/*>>> import checkers.nullness.quals.NonNull; */
-/*>>> import checkers.nullness.quals.Nullable; */
-/*>>> import checkers.nullness.quals.MonotonicNonNull; */
-/*>>> import checkers.initialization.quals.Initialized; */
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 
 /**
  * Use this class to make remote calls to the Dropbox API.  You'll need an access token first,
@@ -50,18 +49,18 @@ import java.util.Random;
  * </p>
  */
 public abstract class DbxRawClientV2 {
-    public static final String USER_AGENT_ID = "OfficialDropboxJavaSDKv2";
+    public static final @Nonnull String USER_AGENT_ID = "OfficialDropboxJavaSDKv2";
 
-    private static final JsonFactory JSON = new JsonFactory();
-    private static final Random RAND = new Random();
+    private static final @Nonnull JsonFactory JSON = new JsonFactory();
+    private static final @Nonnull Random RAND = new Random();
 
-    private final DbxRequestConfig requestConfig;
-    private final DbxHost host;
+    private final @Nonnull DbxRequestConfig requestConfig;
+    private final @Nonnull DbxHost host;
 
     /* for multiple Dropbox account use-case */
-    private final String userId;
+    private final @Nullable String userId;
 
-    private final PathRoot pathRoot;
+    private final @Nullable PathRoot pathRoot;
 
     /**
      * @param requestConfig Configuration controlling How requests should be issued to Dropbox
@@ -70,7 +69,10 @@ public abstract class DbxRawClientV2 {
      * @param userId The user ID of the current Dropbox account. Used for multi-Dropbox account use-case.
      * @param pathRoot We will send this value in Dropbox-API-Path-Root header if it presents.
      */
-    protected DbxRawClientV2(DbxRequestConfig requestConfig, DbxHost host, String userId, PathRoot pathRoot) {
+    protected DbxRawClientV2(@Nonnull DbxRequestConfig requestConfig,
+                             @Nonnull DbxHost host,
+                             @Nullable String userId,
+                             @Nullable PathRoot pathRoot) {
         if (requestConfig == null) throw new NullPointerException("requestConfig");
         if (host == null) throw new NullPointerException("host");
 
@@ -85,9 +87,9 @@ public abstract class DbxRawClientV2 {
      *
      * @param headers List of request headers. Add authentication headers to this list.
      */
-    protected abstract void addAuthHeaders(List<HttpRequestor.Header> headers);
+    protected abstract void addAuthHeaders(@Nonnull List<HttpRequestor.Header> headers);
 
-    public abstract DbxRefreshResult refreshAccessToken() throws DbxException;
+    public abstract @Nullable DbxRefreshResult refreshAccessToken() throws DbxException;
 
     protected abstract boolean canRefreshAccessToken();
 
@@ -110,15 +112,15 @@ public abstract class DbxRawClientV2 {
      *
      * @param pathRoot {@code pathRoot} object containing the content for Dropbox-API-Path-Root header.
      */
-    protected abstract DbxRawClientV2 withPathRoot(PathRoot pathRoot);
+    protected abstract @Nonnull DbxRawClientV2 withPathRoot(@Nonnull PathRoot pathRoot);
 
-    public <ArgT,ResT,ErrT> ResT rpcStyle(final String host,
-                                          final String path,
-                                          final ArgT arg,
+    public <ArgT,ResT,ErrT> @Nullable ResT rpcStyle(final @Nonnull String host,
+                                          final @Nonnull String path,
+                                          final @Nullable ArgT arg,
                                           final boolean noAuth,
-                                          final StoneSerializer<ArgT> argSerializer,
-                                          final StoneSerializer<ResT> responseSerializer,
-                                          final StoneSerializer<ErrT> errorSerializer)
+                                          final @Nonnull StoneSerializer<ArgT> argSerializer,
+                                          final @Nonnull StoneSerializer<ResT> responseSerializer,
+                                          final @Nonnull StoneSerializer<ErrT> errorSerializer)
         throws DbxWrappedException, DbxException {
 
         final byte [] body = writeAsBytes(argSerializer, arg);
@@ -135,10 +137,10 @@ public abstract class DbxRawClientV2 {
         headers.add(new HttpRequestor.Header("Content-Type", "application/json; charset=utf-8"));
 
         return executeRetriableWithRefresh(requestConfig.getMaxRetries(), new RetriableExecution<ResT> () {
-            private String userIdAnon;
+            private @Nullable String userIdAnon;
 
             @Override
-            public ResT execute() throws DbxWrappedException, DbxException {
+            public @Nullable ResT execute() throws DbxWrappedException, DbxException {
                 if (!noAuth) {
                     addAuthHeaders(headers);
                 }
@@ -161,21 +163,21 @@ public abstract class DbxRawClientV2 {
                 }
             }
 
-            private RetriableExecution<ResT> init(String userId){
+            private @Nonnull RetriableExecution<ResT> init(@Nullable String userId){
                 this.userIdAnon = userId;
                 return this;
             }
         }.init(this.userId));
     }
 
-    public <ArgT,ResT,ErrT> DbxDownloader<ResT> downloadStyle(final String host,
-                                                              final String path,
-                                                              final ArgT arg,
+    public <ArgT,ResT,ErrT> @Nonnull DbxDownloader<ResT> downloadStyle(final @Nonnull String host,
+                                                              final @Nonnull String path,
+                                                              final @Nullable ArgT arg,
                                                               final boolean noAuth,
-                                                              final List<HttpRequestor.Header> extraHeaders,
-                                                              final StoneSerializer<ArgT> argSerializer,
-                                                              final StoneSerializer<ResT> responseSerializer,
-                                                              final StoneSerializer<ErrT> errorSerializer)
+                                                              final @Nonnull List<HttpRequestor.Header> extraHeaders,
+                                                              final @Nonnull StoneSerializer<ArgT> argSerializer,
+                                                              final @Nonnull StoneSerializer<ResT> responseSerializer,
+                                                              final @Nonnull StoneSerializer<ErrT> errorSerializer)
         throws DbxWrappedException, DbxException {
 
         final List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>(extraHeaders);
@@ -190,10 +192,10 @@ public abstract class DbxRawClientV2 {
         final byte[] body = new byte[0];
 
         return executeRetriableWithRefresh(requestConfig.getMaxRetries(), new RetriableExecution<DbxDownloader<ResT>>() {
-            private String userIdAnon;
+            private @Nullable String userIdAnon;
 
             @Override
-            public DbxDownloader<ResT> execute() throws DbxWrappedException, DbxException {
+            public @Nonnull DbxDownloader<ResT> execute() throws DbxWrappedException, DbxException {
                 if (!noAuth) {
                     addAuthHeaders(headers);
                 }
@@ -232,14 +234,14 @@ public abstract class DbxRawClientV2 {
                 }
             }
 
-            private RetriableExecution<DbxDownloader<ResT>> init(String userId){
+            private @Nonnull RetriableExecution<DbxDownloader<ResT>> init(@Nullable String userId){
                 this.userIdAnon = userId;
                 return this;
             }
         }.init(this.userId));
     }
 
-    private static <T> byte [] writeAsBytes(StoneSerializer<T> serializer, T arg) throws DbxException {
+    private static <T> @Nonnull byte [] writeAsBytes(@Nonnull StoneSerializer<T> serializer, @Nullable T arg) throws DbxException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             serializer.serialize(arg, out);
@@ -249,7 +251,7 @@ public abstract class DbxRawClientV2 {
         return out.toByteArray();
     }
 
-    private static <T> String headerSafeJson(StoneSerializer<T> serializer, T value) {
+    private static <T> @Nonnull String headerSafeJson(@Nonnull StoneSerializer<T> serializer, @Nullable T value) {
         StringWriter out = new StringWriter();
         try {
             JsonGenerator g = JSON.createGenerator(out);
@@ -264,11 +266,11 @@ public abstract class DbxRawClientV2 {
         return out.toString();
     }
 
-    public <ArgT> HttpRequestor.Uploader uploadStyle(String host,
-                                                     String path,
-                                                     ArgT arg,
+    public <ArgT> @Nonnull HttpRequestor.Uploader uploadStyle(@Nonnull String host,
+                                                     @Nonnull String path,
+                                                     @Nullable ArgT arg,
                                                      boolean noAuth,
-                                                     StoneSerializer<ArgT> argSerializer)
+                                                     @Nonnull StoneSerializer<ArgT> argSerializer)
         throws DbxException {
 
         String uri = DbxRequestUtil.buildUri(host, path);
@@ -295,7 +297,7 @@ public abstract class DbxRawClientV2 {
      *
      * @return configuration to use for issuing requests.
      */
-    public DbxRequestConfig getRequestConfig() {
+    public @Nonnull DbxRequestConfig getRequestConfig() {
         return requestConfig;
     }
 
@@ -304,7 +306,7 @@ public abstract class DbxRawClientV2 {
      *
      * @return Dropbox hosts to use for requests.
      */
-    public DbxHost getHost() {
+    public @Nonnull DbxHost getHost() {
         return host;
     }
 
@@ -313,7 +315,7 @@ public abstract class DbxRawClientV2 {
      *
      * @return The user ID of the current Dropbox account.
      */
-    public String getUserId() {
+    public @Nullable String getUserId() {
         return userId;
     }
 
@@ -325,7 +327,7 @@ public abstract class DbxRawClientV2 {
      * behavior backwards compatibility in v1, we leave the old implementation in {@code
      * DbxRequestUtil} unchanged.
      */
-    private static <T> T executeRetriable(int maxRetries, RetriableExecution<T> execution) throws DbxWrappedException, DbxException {
+    private static <T> @Nullable T executeRetriable(int maxRetries, @Nonnull RetriableExecution<T> execution) throws DbxWrappedException, DbxException {
         if (maxRetries == 0) {
             return execution.execute();
         }
@@ -345,7 +347,7 @@ public abstract class DbxRawClientV2 {
         }
     }
 
-    private <T> T executeRetriableWithRefresh(int maxRetries, RetriableExecution<T>
+    private <T> @Nullable T executeRetriableWithRefresh(int maxRetries, @Nonnull RetriableExecution<T>
         execution) throws DbxWrappedException, DbxException {
         try {
             return executeRetriable(maxRetries, execution);
@@ -389,6 +391,6 @@ public abstract class DbxRawClientV2 {
     }
 
     private interface RetriableExecution<T> {
-        T execute() throws DbxWrappedException, DbxException;
+        @Nullable T execute() throws DbxWrappedException, DbxException;
     }
 }

@@ -1,16 +1,16 @@
 package com.dropbox.core.util;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-/*>>> import checkers.nullness.quals.Nullable; */
-/*>>> import checkers.nullness.quals.NonNull; */
 
 public class LangUtil
 {
-    public static RuntimeException mkAssert(String messagePrefix, Throwable cause)
+    public static @Nonnull RuntimeException mkAssert(@Nonnull String messagePrefix, @Nonnull Throwable cause)
     {
         RuntimeException ae = new RuntimeException(messagePrefix + ": " + cause.getMessage());
         ae.initCause(cause);
@@ -20,7 +20,7 @@ public class LangUtil
         // RuntimeException worked.
     }
 
-    public static AssertionError badType(Object a)
+    public static @Nonnull AssertionError badType(@Nullable Object a)
     {
         String msg;
         if (a == null) {
@@ -31,30 +31,30 @@ public class LangUtil
         return new AssertionError(msg);
     }
 
-    public static <T> T[] arrayConcat(T[] a, T[] b)
+    public static <T> @Nonnull T[] arrayConcat(@Nonnull T[] a, @Nonnull T[] b)
     {
         if (a == null) throw new IllegalArgumentException("'a' can't be null");
         if (b == null) throw new IllegalArgumentException("'b' can't be null");
-        /*@Nullable*/T[] rn = Arrays.copyOf(a, a.length + b.length);
+        @Nullable T[] rn = Arrays.copyOf(a, a.length + b.length);
         System.arraycopy(b, 0, rn, a.length, b.length);
         @SuppressWarnings("nullness") T[] r = rn;
         return r;
     }
 
-    public static <T> boolean nullableEquals(/*@Nullable*/T a, /*@Nullable*/T b)
+    public static <T> boolean nullableEquals(@Nullable T a, @Nullable T b)
     {
         if (a == null) return (b == null);
         if (b == null) return false;
         return a.equals(b);
     }
 
-    public static int nullableHashCode(/*@Nullable*/Object o)
+    public static int nullableHashCode(@Nullable Object o)
     {
         if (o == null) return 0;
         return o.hashCode() + 1;
     }
 
-    public static Date truncateMillis(/*@Nullable*/Date date) {
+    public static @Nullable Date truncateMillis(@Nullable Date date) {
         if (date != null) {
             long time = date.getTime();
             return new Date(time - (time % 1000L));
@@ -63,7 +63,7 @@ public class LangUtil
         }
     }
 
-    public static List<Date> truncateMillis(/*@Nullable*/List<Date> dates) {
+    public static @Nullable List<Date> truncateMillis(@Nullable List<Date> dates) {
         if (dates != null) {
             List<Date> truncated = new ArrayList<Date>(dates.size());
             for (Date date : dates) {

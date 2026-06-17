@@ -1,5 +1,7 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.fasterxml.jackson.core.JsonLocation;
@@ -11,22 +13,21 @@ import java.io.IOException;
 
 import static com.dropbox.core.util.StringUtil.jq;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * When you successfully complete the authorization process, the Dropbox server returns
  * this information to you.
  */
 public final class DbxAuthFinish {
-    private final String accessToken;
-    private final Long expiresIn;
-    private final String refreshToken;
-    private final String userId;
-    private final String accountId;
-    private final String teamId;
-    private final /*@Nullable*/String urlState;
+    private final @Nonnull String accessToken;
+    private final @Nullable Long expiresIn;
+    private final @Nullable String refreshToken;
+    private final @Nonnull String userId;
+    private final @Nullable String accountId;
+    private final @Nullable String teamId;
+    private final @Nullable String urlState;
     private long issueTime;
-    private final String scope;
+    private final @Nullable String scope;
 
     /**
      * @param accessToken OAuth access token
@@ -35,7 +36,11 @@ public final class DbxAuthFinish {
      * was passed
      */
     @Deprecated
-    public DbxAuthFinish(String accessToken, String userId, String accountId, String teamId, /*@Nullable*/String urlState) {
+    public DbxAuthFinish(@Nonnull String accessToken,
+                         @Nonnull String userId,
+                         @Nullable String accountId,
+                         @Nullable String teamId,
+                         @Nullable String urlState) {
         this(accessToken, null, null, userId, teamId, accountId, urlState);
     }
 
@@ -52,8 +57,13 @@ public final class DbxAuthFinish {
      * @param urlState State data passed in to {@link DbxWebAuth#start} or {@code null} if no state
      * was passed
      */
-    public DbxAuthFinish(String accessToken, Long expiresIn, String refreshToken, String userId,
-                         String teamId, String accountId, /*@Nullable*/String urlState) {
+    public DbxAuthFinish(@Nonnull String accessToken,
+                         @Nullable Long expiresIn,
+                         @Nullable String refreshToken,
+                         @Nonnull String userId,
+                         @Nullable String teamId,
+                         @Nullable String accountId,
+                         @Nullable String urlState) {
         this(accessToken, expiresIn, refreshToken, userId, teamId, accountId, urlState, null);
     }
 
@@ -73,9 +83,14 @@ public final class DbxAuthFinish {
      * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
      * will get HTTP 401.
      */
-    public DbxAuthFinish(String accessToken, Long expiresIn, String refreshToken, String userId,
-                         String teamId, String accountId, /*@Nullable*/String urlState, String
-                             scope) {
+    public DbxAuthFinish(@Nonnull String accessToken,
+                         @Nullable Long expiresIn,
+                         @Nullable String refreshToken,
+                         @Nonnull String userId,
+                         @Nullable String teamId,
+                         @Nullable String accountId,
+                         @Nullable String urlState,
+                         @Nullable String scope) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
         this.refreshToken = refreshToken;
@@ -93,7 +108,7 @@ public final class DbxAuthFinish {
      *
      * @return OAuth access token used for authorization with Dropbox servers
      */
-    public String getAccessToken() {
+    public @Nonnull String getAccessToken() {
         return accessToken;
     }
 
@@ -106,7 +121,7 @@ public final class DbxAuthFinish {
      *
      * @return OAuth access token used for authorization with Dropbox servers
      */
-    public Long getExpiresAt() {
+    public @Nullable Long getExpiresAt() {
         if (expiresIn == null) {
             return null;
         }
@@ -122,7 +137,7 @@ public final class DbxAuthFinish {
      *
      * @return OAuth access token used for authorization with Dropbox servers
      */
-    public String getRefreshToken() {
+    public @Nullable String getRefreshToken() {
         return refreshToken;
     }
 
@@ -132,7 +147,7 @@ public final class DbxAuthFinish {
      *
      * @return Dropbox user ID of user that approved your app for access to their account
      */
-    public String getUserId() {
+    public @Nonnull String getUserId() {
         return userId;
     }
 
@@ -142,7 +157,7 @@ public final class DbxAuthFinish {
      *
      * @return Dropbox account ID of user that approved your app for access to their account
      */
-    public String getAccountId() {
+    public @Nullable String getAccountId() {
         return accountId;
     }
 
@@ -152,7 +167,7 @@ public final class DbxAuthFinish {
      *
      * @return Dropbox team ID of team's that approved your app for access to their account
      */
-    public String getTeamId() {
+    public @Nullable String getTeamId() {
         return teamId;
     }
 
@@ -164,7 +179,7 @@ public final class DbxAuthFinish {
      * API endpoints. To call one API endpoint you have to obtains the scope first otherwise you
      * will get HTTP 401.
      */
-    public String getScope() {
+    public @Nullable String getScope() {
         return scope;
     }
 
@@ -175,7 +190,7 @@ public final class DbxAuthFinish {
      * @return state data passed into {@link DbxWebAuth#start}, or {@code null} if no state was
      * passed
      */
-    public /*@Nullable*/ String getUrlState() {
+    public @Nullable String getUrlState() {
         return urlState;
     }
 
@@ -192,7 +207,8 @@ public final class DbxAuthFinish {
      *
      * @param urlState Custom state passed into /oauth2/authorize
      */
-    DbxAuthFinish withUrlState(/*@Nullable*/ String urlState) {
+    @Nonnull
+    DbxAuthFinish withUrlState(@Nullable String urlState) {
         if (this.urlState != null) {
             throw new IllegalStateException("Already have URL state.");
         }
@@ -207,8 +223,8 @@ public final class DbxAuthFinish {
     /**
      * For JSON parsing.
      */
-    public static final JsonReader<DbxAuthFinish> Reader = new JsonReader<DbxAuthFinish>() {
-        public DbxAuthFinish read(JsonParser parser) throws IOException, JsonReadException {
+    public static final @Nonnull JsonReader<DbxAuthFinish> Reader = new JsonReader<DbxAuthFinish>() {
+        public @Nonnull DbxAuthFinish read(@Nonnull JsonParser parser) throws IOException, JsonReadException {
             JsonLocation top = JsonReader.expectObjectStart(parser);
 
             String accessToken = null;
@@ -281,9 +297,9 @@ public final class DbxAuthFinish {
         }
     };
 
-    public static final JsonReader<String> BearerTokenTypeReader = new JsonReader<String>() {
+    public static final @Nonnull JsonReader<String> BearerTokenTypeReader = new JsonReader<String>() {
         @Override
-        public String read(JsonParser parser) throws IOException, JsonReadException {
+        public @Nonnull String read(@Nonnull JsonParser parser) throws IOException, JsonReadException {
             try {
                 String v = parser.getText();
                 if (!v.equals("Bearer") && !v.equals("bearer")) {
@@ -298,9 +314,9 @@ public final class DbxAuthFinish {
 
     };
 
-    public static final JsonReader<String> AccessTokenReader = new JsonReader<String>() {
+    public static final @Nonnull JsonReader<String> AccessTokenReader = new JsonReader<String>() {
         @Override
-        public String read(JsonParser parser) throws IOException, JsonReadException {
+        public @Nonnull String read(@Nonnull JsonParser parser) throws IOException, JsonReadException {
             try {
                 String v = parser.getText();
                 String error = DbxAppInfo.getTokenPartError(v);

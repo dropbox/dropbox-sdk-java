@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -16,9 +17,9 @@ public class JsonDateReader
     /**
      * A parser for dates returned by the Dropbox API.
      */
-    public static final JsonReader<Date> Dropbox = new JsonReader<Date>() {
+    public static final @Nonnull JsonReader<Date> Dropbox = new JsonReader<Date>() {
         @Override
-        public Date read(JsonParser parser) throws IOException, JsonReadException
+        public @Nonnull Date read(@Nonnull JsonParser parser) throws IOException, JsonReadException
         {
             JsonLocation l = parser.getCurrentLocation();
             try {
@@ -38,7 +39,7 @@ public class JsonDateReader
         }
     };
 
-    public static Date parseDropboxDate(char[] buffer, int offset, int length)
+    public static @Nonnull Date parseDropboxDate(@Nonnull char[] buffer, int offset, int length)
         throws java.text.ParseException
     {
         int i = offset;
@@ -147,7 +148,7 @@ public class JsonDateReader
         return c.getTime();
     }
 
-    public static final TimeZone UTC = TimeZone.getTimeZone("UTC");
+    public static final @Nonnull TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     private static boolean isDigit(char c)
     {
@@ -229,9 +230,9 @@ public class JsonDateReader
      * (e.g. {@literal "2010-01-01T12:00:00Z"}
      * or {@literal "2010-01-01T12:00:00.000Z"}).
      */
-    public static final JsonReader<Date> DropboxV2 = new JsonReader<Date>() {
+    public static final @Nonnull JsonReader<Date> DropboxV2 = new JsonReader<Date>() {
         @Override
-        public Date read(JsonParser parser) throws IOException, JsonReadException
+        public @Nonnull Date read(@Nonnull JsonParser parser) throws IOException, JsonReadException
         {
             JsonLocation l = parser.getCurrentLocation();
             try {
@@ -251,7 +252,7 @@ public class JsonDateReader
         }
     };
 
-    public static Date parseDropbox8601Date(char[] buffer, int offset, int length)
+    public static @Nonnull Date parseDropbox8601Date(@Nonnull char[] buffer, int offset, int length)
         throws java.text.ParseException
     {
         int i = offset;

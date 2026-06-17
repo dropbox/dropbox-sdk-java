@@ -14,6 +14,9 @@ import com.dropbox.core.util.IOUtil;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The common interface for all builders associated with download style methods. After setting any
  * optional request parameters, use {@link #start} or {@link #download} to initiate the request.
@@ -57,15 +60,15 @@ import java.io.OutputStream;
  * @param <R> The return type of the {@link DbxDownloader}
  */
 public abstract class DbxDownloadStyleBuilder<R> {
-    private Long start;
-    private Long length;
+    private @Nullable Long start;
+    private @Nullable Long length;
 
     protected DbxDownloadStyleBuilder() {
         this.start = null;
         this.length = null;
     }
 
-    protected List<HttpRequestor.Header> getHeaders() {
+    protected @Nonnull List<HttpRequestor.Header> getHeaders() {
         if (start == null) {
             return Collections.emptyList();
         }
@@ -95,7 +98,7 @@ public abstract class DbxDownloadStyleBuilder<R> {
      *
      * @throws DbxException if an error occursing issuing the request
      */
-    public abstract DbxDownloader<R> start() throws DbxException;
+    public abstract @Nonnull DbxDownloader<R> start() throws DbxException;
 
     /**
      * Sets the partial byte range to download.
@@ -113,7 +116,7 @@ public abstract class DbxDownloadStyleBuilder<R> {
      *
      * @throws IllegalArgumentException if {@code start} or {@code length} are negative
      */
-    public DbxDownloadStyleBuilder<R> range(long start, long length) {
+    public @Nonnull DbxDownloadStyleBuilder<R> range(long start, long length) {
         if (start < 0) throw new IllegalArgumentException("start must be non-negative");
         if (length < 1) throw new IllegalArgumentException("length must be positive");
 
@@ -138,7 +141,7 @@ public abstract class DbxDownloadStyleBuilder<R> {
      *
      * @throws IllegalArgumentException if {@code start} is negative
      */
-    public DbxDownloadStyleBuilder<R> range(long start) {
+    public @Nonnull DbxDownloadStyleBuilder<R> range(long start) {
         if (start < 0) throw new IllegalArgumentException("start must be non-negative");
 
         this.start = start;
@@ -161,7 +164,7 @@ public abstract class DbxDownloadStyleBuilder<R> {
      * @throws DbxException if an error occurs reading the response or response body
      * @throws IOException if an error occurs writing the response body to the output stream.
      */
-    public R download(OutputStream out) throws DbxException, IOException {
+    public @Nullable R download(@Nonnull OutputStream out) throws DbxException, IOException {
         return start().download(out);
     }
 }

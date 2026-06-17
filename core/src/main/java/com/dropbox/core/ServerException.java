@@ -1,5 +1,8 @@
 package com.dropbox.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The server said that something went wrong on its end (HTTP 500 error code).
  * This indicates bug on the Dropbox server, but there are multiple potential causes.
@@ -26,8 +29,7 @@ package com.dropbox.core;
 public class ServerException extends DbxException {
     private static final long serialVersionUID = 0;
 
-    public ServerException(String requestId, String message) {
+    public ServerException(@Nullable String requestId, @Nullable String message) {
         super(requestId, message);
     }
 }
-

@@ -1,5 +1,7 @@
 package com.dropbox.core.v1;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.dropbox.core.json.JsonArrayReader;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
@@ -12,7 +14,6 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 
-/*>>> import checkers.nullness.quals.Nullable; */
 
 /**
  * Represents a single "page" of results from a delta-style API call.  This is the more
@@ -41,7 +42,7 @@ public class DbxDeltaC<C> extends Dumpable
     /**
      * Apply these entries to your local state to catch up with the Dropbox server's state.
      */
-    public final C entries;
+    public final @Nonnull C entries;
 
     /**
      * A string that is used by the server to keep track of which entries have already been
@@ -53,7 +54,7 @@ public class DbxDeltaC<C> extends Dumpable
      * (such as a database) so you can resume continue you left off.
      * </p>
      */
-    public final String cursor;
+    public final @Nonnull String cursor;
 
     /**
      * If {@code true}, then there are more entries available.  You can retrieve
@@ -68,7 +69,7 @@ public class DbxDeltaC<C> extends Dumpable
      * @param cursor {@link #cursor}
      * @param hasMore {@link #hasMore}
      */
-    public DbxDeltaC(boolean reset, C entries, String cursor, boolean hasMore)
+    public DbxDeltaC(boolean reset, @Nonnull C entries, @Nonnull String cursor, boolean hasMore)
     {
         this.reset = reset;
         this.entries = entries;
@@ -76,7 +77,7 @@ public class DbxDeltaC<C> extends Dumpable
         this.hasMore = hasMore;
     }
 
-    protected void dumpFields(DumpWriter out)
+    protected void dumpFields(@Nonnull DumpWriter out)
     {
         out.f("reset").v(reset);
         out.f("cursor").v(cursor);
@@ -89,21 +90,21 @@ public class DbxDeltaC<C> extends Dumpable
      */
     public static final class Reader<C, MD extends Dumpable> extends JsonReader<DbxDeltaC<C>>
     {
-        public final JsonReader<MD> metadataReader;
-        public final Collector<DbxDeltaC.Entry<MD>, C> entryCollector;
+        public final @Nonnull JsonReader<MD> metadataReader;
+        public final @Nonnull Collector<DbxDeltaC.Entry<MD>, C> entryCollector;
 
-        public Reader(JsonReader<MD> metadataReader, Collector<DbxDeltaC.Entry<MD>, C> entryCollector)
+        public Reader(@Nonnull JsonReader<MD> metadataReader, @Nonnull Collector<DbxDeltaC.Entry<MD>, C> entryCollector)
         {
             this.metadataReader = metadataReader;
             this.entryCollector = entryCollector;
         }
 
-        public DbxDeltaC<C> read(JsonParser parser) throws IOException, JsonReadException
+        public @Nonnull DbxDeltaC<C> read(@Nonnull JsonParser parser) throws IOException, JsonReadException
         {
             return read(parser, metadataReader, entryCollector);
         }
 
-        public static <C, MD extends Dumpable> DbxDeltaC<C> read(JsonParser parser, JsonReader<MD> metadataReader, Collector<DbxDeltaC.Entry<MD>, C> entryCollector)
+        public static <C, MD extends Dumpable> @Nonnull DbxDeltaC<C> read(@Nonnull JsonParser parser, @Nonnull JsonReader<MD> metadataReader, @Nonnull Collector<DbxDeltaC.Entry<MD>, C> entryCollector)
             throws IOException, JsonReadException
         {
             JsonLocation top = JsonReader.expectObjectStart(parser);
@@ -184,7 +185,7 @@ public class DbxDeltaC<C> extends Dumpable
          * To get the original case-preserved path, look in the {@link #metadata metadata} field.
          * </p>
          */
-        public final String lcPath;
+        public final @Nonnull String lcPath;
 
         /**
          * If this is {@code null}, it means that this path doesn't exist on
@@ -214,19 +215,19 @@ public class DbxDeltaC<C> extends Dumpable
          * </li>
          * </ul>
          */
-        public final /*@Nullable*/MD metadata;
+        public final @Nullable MD metadata;
 
         /**
          * @param lcPath {@link #lcPath}
          * @param metadata {@link #metadata}
          */
-        public Entry(String lcPath, /*@Nullable*/MD metadata)
+        public Entry(@Nonnull String lcPath, @Nullable MD metadata)
         {
             this.lcPath = lcPath;
             this.metadata = metadata;
         }
 
-        protected void dumpFields(DumpWriter out)
+        protected void dumpFields(@Nonnull DumpWriter out)
         {
             out.f("lcPath").v(lcPath);
             out.f("metadata").v(metadata);
@@ -237,19 +238,19 @@ public class DbxDeltaC<C> extends Dumpable
          */
         public static final class Reader<MD extends Dumpable> extends JsonReader<Entry<MD>>
         {
-            public final JsonReader<MD> metadataReader;
+            public final @Nonnull JsonReader<MD> metadataReader;
 
-            public Reader(JsonReader<MD> metadataReader)
+            public Reader(@Nonnull JsonReader<MD> metadataReader)
             {
                 this.metadataReader = metadataReader;
             }
 
-            public Entry<MD> read(JsonParser parser) throws IOException, JsonReadException
+            public @Nonnull Entry<MD> read(@Nonnull JsonParser parser) throws IOException, JsonReadException
             {
                 return read(parser, metadataReader);
             }
 
-            public static <MD extends Dumpable> Entry<MD> read(JsonParser parser, JsonReader<MD> metadataReader)
+            public static <MD extends Dumpable> @Nonnull Entry<MD> read(@Nonnull JsonParser parser, @Nonnull JsonReader<MD> metadataReader)
                 throws IOException, JsonReadException
             {
                 JsonLocation arrayStart = JsonReader.expectArrayStart(parser);
@@ -270,7 +271,7 @@ public class DbxDeltaC<C> extends Dumpable
                     throw new JsonReadException("expecting a two-element array of [path, metadata], found a one-element array", arrayStart);
                 }
 
-                /*@Nullable*/MD metadata;
+                @Nullable MD metadata;
                 try {
                     metadata = metadataReader.readOptional(parser);
                 }
@@ -289,4 +290,3 @@ public class DbxDeltaC<C> extends Dumpable
         }
     }
 }
-
