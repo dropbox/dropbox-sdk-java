@@ -1,13 +1,13 @@
 [versions]
-android-compile-sdk = "33"
-android-gradle-plugin = "7.4.2"
+android-compile-sdk = "36"
+android-gradle-plugin = "9.2.1"
 android-min-sdk = "26"
 android-target-sdk = "33"
 androidx-activity = "1.5.0"
-binary-compatibility-validator = "0.11.1"
-dependency-guard = "0.4.3"
+binary-compatibility-validator = "0.18.1"
+dependency-guard = "0.5.0"
 junit-jupiter = "5.8.2"
-kotlin = "1.6.21"
+kotlin = "2.4.0"
 kotlin-coroutines = "1.6.4"
 
 [libraries]
@@ -23,7 +23,7 @@ androidx-recyclerview = 'androidx.recyclerview:recyclerview:1.2.1'
 apache-commons-lang = "org.apache.commons:commons-lang3:3.4"
 appengine-api = 'com.google.appengine:appengine-api-1.0-sdk:1.9.38'
 glide = 'com.github.bumptech.glide:glide:4.12.0'
-guardsquare-proguard-gradle = 'com.guardsquare:proguard-gradle:7.3.1'
+guardsquare-proguard-gradle = 'com.guardsquare:proguard-gradle:7.9.1'
 jackson-core = 'com.fasterxml.jackson.core:jackson-core:2.15.0'
 jackson-databind = 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
 jetty-server = "org.eclipse.jetty:jetty-server:11.0.15"
@@ -56,8 +56,8 @@ truth = "com.google.truth:truth:1.1.2"
 
 [plugins]
 binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }
-blind-pirate-osgi = "com.github.blindpirate.osgi:0.0.6"
+bnd-builder = "biz.aQute.bnd.builder:7.3.0"
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependency-guard" }
-gradle-version-plugin = "com.github.ben-manes.versions:0.42.0"
+gradle-version-plugin = "com.github.ben-manes.versions:0.54.0"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-maven-publish-plugin = "com.vanniktech.maven.publish:0.24.0"
+maven-publish-plugin = "com.vanniktech.maven.publish:0.37.0"

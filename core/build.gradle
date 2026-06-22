@@ -1,11 +1,10 @@
 import com.dropbox.stone.java.StoneTask
 import com.dropbox.stone.java.model.ClientSpec
 import com.dropbox.stone.java.model.StoneConfig
-import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
     id 'java-library'
-    id "com.github.blindpirate.osgi"
+    id "biz.aQute.bnd.builder"
     id "org.jetbrains.kotlin.jvm"
     id "com.vanniktech.maven.publish"
     id "com.github.ben-manes.versions"
@@ -18,14 +17,37 @@ dependencyGuard {
     configuration("runtimeClasspath")
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
 ext {
     mavenName = 'Official Dropbox Java SDK'
     generatedSources = file("$buildDir/generated-sources")
     generatedResources = file("$buildDir/generated-resources")
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
+}
+
+def toOsgiBundleVersion(Object versionValue) {
+    String version = versionValue.toString()
+    if (version == Project.DEFAULT_VERSION) {
+        return "0.0.0.${Project.DEFAULT_VERSION}"
+    }
+
+    def matcher = version =~ /^(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:[-.]?(.+))?$/
+    if (!matcher.matches()) {
+        return "0.0.0.${version.replaceAll(/[^A-Za-z0-9_-]/, '_')}"
+    }
+
+    String major = matcher[0][1]
+    String minor = matcher[0][2] ?: "0"
+    String micro = matcher[0][3] ?: "0"
+    String qualifier = matcher[0][4]
+            ? ".${matcher[0][4].replaceAll(/[^A-Za-z0-9_-]/, '_')}"
+            : ""
+
+    return "${major}.${minor}.${micro}${qualifier}"
 }
 
 tasks.register('versionWriterTask') {
@@ -82,6 +104,10 @@ configurations {
     withoutOsgi.extendsFrom api
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.release.set(8)
+}
+
 tasks.named("compileJava", JavaCompile) {
     options.compilerArgs << '-Xlint:all'
     options.warnings = true
@@ -97,8 +123,8 @@ tasks.named("test", Test) {
     useTestNG()
 
     // TestNG specific options
-    options.parallel 'methods'
-    options.threadCount 4
+    options.parallel = 'methods'
+    options.threadCount = 4
 
     // exclude integration tests
     exclude '**/IT*.class'
@@ -150,7 +176,7 @@ tasks.register('integrationTest', Test) {
 
     reports {
         html {
-            destination = file("${buildDir}/reports/integration-tests")
+            outputLocation = layout.buildDirectory.dir("reports/integration-tests")
         }
     }
 
@@ -178,8 +204,8 @@ tasks.named("javadoc", Javadoc) {
         versionName = ""
     }
 
-    title "${project.mavenName} ${versionName} API"
-    failOnError true
+    title = "${project.mavenName} ${versionName} API"
+    failOnError = true
 
     // JDK 8's javadoc has an on-by-default lint called "missing", which requires that everything
     // be documented. Disable this lint because we intentionally don't document some things.
@@ -193,25 +219,29 @@ tasks.named("javadoc", Javadoc) {
 }
 
 tasks.named("jar", Jar) {
-    // OsgiManifest since we import 'osgi' plugin
-    manifest {
-        name project.name
-        description project.description
-        license 'http://opensource.org/licenses/MIT'
-        instruction 'Import-Package',
-                'android.*;resolution:=optional',
-                'com.google.appengine.*;resolution:=optional',
-                'com.squareup.okhttp;resolution:=optional',
-                'okhttp3;resolution:=optional',
-                'okio;resolution:=optional',
-                'kotlin.*;resolution:=optional',
-                '*'
-
-        def noeeProp = 'osgi.bnd.noee'
-        def noee = providers.gradleProperty(noeeProp).forUseAtConfigurationTime().getOrElse(
-                providers.systemProperty(noeeProp).forUseAtConfigurationTime().getOrElse('false')
-        )
-        instruction '-noee', noee
+    bundle {
+        def bndProperties = [
+                'Bundle-SymbolicName': "${rootProject.name}.${project.name}",
+                'Bundle-Version'      : toOsgiBundleVersion(project.version),
+                'Bundle-Name'         : project.name,
+                'Bundle-License'      : 'http://opensource.org/licenses/MIT',
+                'Export-Package'      : 'com.dropbox.core,com.dropbox.core.*',
+                'Import-Package'      : [
+                        'com.google.appengine.*;resolution:=optional',
+                        'com.squareup.okhttp;resolution:=optional',
+                        'okhttp3;resolution:=optional',
+                        'okio;resolution:=optional',
+                        '*',
+                ].join(','),
+                '-noee'               : providers.gradleProperty('osgi.bnd.noee')
+                        .orElse(providers.systemProperty('osgi.bnd.noee'))
+                        .orElse('false')
+                        .get()
+        ]
+        if (project.description != null) {
+            bndProperties['Bundle-Description'] = project.description
+        }
+        bnd(bndProperties)
     }
 }
 
@@ -234,9 +264,11 @@ tasks.register('javadocJar', Jar) {
 }
 
 artifacts {
-    archives sourcesJar
-    archives javadocJar
     withoutOsgi jarWithoutOsgi
+}
+
+tasks.named("assemble") {
+    dependsOn(tasks.named("sourcesJar"), tasks.named("javadocJar"))
 }
 
 // reject dependencyUpdates candidates with alpha or beta in their names:
@@ -294,7 +326,6 @@ tasks.named("generateStone", StoneTask) {
 
     ])
     outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/main/src"))
-    sourceSets { main { java.srcDir(outputDir) } }
 }
 
 tasks.named("generateTestStone", StoneTask) {
@@ -315,10 +346,9 @@ tasks.named("generateTestStone", StoneTask) {
             ),
     ])
     outputDir.set(project.layout.buildDirectory.dir("generated_stone_source/test/src"))
-    sourceSets { test { java.srcDir(outputDir) } }
 }
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.S01)
+    publishToMavenCentral()
     signAllPublications()
 }

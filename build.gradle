@@ -16,7 +16,7 @@ plugins {
     alias(dropboxJavaSdkLibs.plugins.dependency.guard)
     alias(dropboxJavaSdkLibs.plugins.maven.publish.plugin) apply false
     alias(dropboxJavaSdkLibs.plugins.gradle.version.plugin) apply false
-    alias(dropboxJavaSdkLibs.plugins.blind.pirate.osgi) apply false
+    alias(dropboxJavaSdkLibs.plugins.bnd.builder) apply false
     alias(dropboxJavaSdkLibs.plugins.binary.compatibility.validator) apply false
 }
 

@@ -2,9 +2,19 @@ apply plugin: 'java'
 
 description = 'ProGuard minified SDK test suite for ProGuard compatibility tests.'
 group = 'com.dropbox.core.test'
-archivesBaseName = 'dropbox-proguard-test'
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+
+base {
+    archivesName = 'dropbox-proguard-test'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release.set(8)
+}
 
 ext {
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
@@ -63,8 +73,8 @@ def getAuthInfoFile() {
 
 
 tasks.register('proguard', proguard.gradle.ProGuardTask) {
-    def buildDir = project.buildDir
-    def archivesBaseName = project.archivesBaseName
+    def buildDir = layout.buildDirectory.get().asFile
+    def archivesBaseName = base.archivesName.get()
     def version = project.version
     ext {
         configDir = file("src/main/resources/proguard/")
@@ -100,8 +110,8 @@ tasks.register('proguard', proguard.gradle.ProGuardTask) {
 tasks.register('proguardTest', JavaExec) {
     dependsOn(tasks.named("proguard"))
     classpath = files(proguard.proguardJar)
-    main = 'com.dropbox.core.test.proguard.Main'
-    ignoreExitValue false
+    mainClass = 'com.dropbox.core.test.proguard.Main'
+    ignoreExitValue = false
 
     doFirst {
         args getAuthInfoFile().absolutePath

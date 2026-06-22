@@ -42,27 +42,27 @@ class StonePlugin : Plugin<Project> {
         val taskName: String = if (isMainSourceSet) {
             "generateStone"
         } else {
-            "generate${sourceSet.name.capitalize()}Stone"
+            "generate${sourceSet.name.replaceFirstChar { it.uppercaseChar() }}Stone"
         }
+        val generatedSourceDir = project.layout.buildDirectory.dir("generated/source/stone/${sourceSet.name}/src")
 
-        project.tasks.register(taskName, StoneTask::class.java) {
+        val taskProvider = project.tasks.register(taskName, StoneTask::class.java) {
             description = "Generate Stone Java source files for ${sourceSet.name}."
 
             val routeWhitelistFilterPropName = "com.dropbox.api.${sourceSet.name}.routeWhitelistFilter"
-            val routeWhitelistFilterValue: String? = project.properties[routeWhitelistFilterPropName] as String?
+            val routeWhitelistFilterValue: String? = project.findProperty(routeWhitelistFilterPropName) as String?
             if (!routeWhitelistFilterValue.isNullOrBlank()) routeWhitelistFilter.set(File(routeWhitelistFilterValue))
 
             val specDirPropName = "com.dropbox.api.${sourceSet.name}.specDir"
-            val specDirPropNameValue: String? = project.properties[specDirPropName] as String?
+            val specDirPropNameValue: String? = project.findProperty(specDirPropName) as String?
             val mySpecDir: String = specDirPropNameValue ?: "src/${sourceSet.name}/stone"
             specDir.set(File(mySpecDir))
 
             generatorFile.set(File("${project.layout.projectDirectory}/generator/java/java.stoneg.py"))
             stoneDir.set(File("stone"))
             pythonCommand.set("python")
-            outputDir.set(File("${project.layout.buildDirectory}/generated/source/stone/${sourceSet.name}/src"))
-
-            sourceSet.java.srcDir("${outputDir}/src")
+            outputDir.set(generatedSourceDir)
         }
+        sourceSet.java.srcDir(taskProvider.flatMap { it.outputDir })
     }
 }

@@ -1,8 +1,5 @@
-import com.vanniktech.maven.publish.SonatypeHost
-
 plugins {
     id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
     id "org.jetbrains.kotlinx.binary-compatibility-validator"
     id "com.vanniktech.maven.publish"
     id "com.github.ben-manes.versions"
@@ -11,14 +8,21 @@ plugins {
 
 android {
     namespace = "com.dropbox.core.sdk.android"
-    compileSdk dropboxJavaSdkLibs.versions.android.compile.sdk.get().toInteger()
+    compileSdk = dropboxJavaSdkLibs.versions.android.compile.sdk.get().toInteger()
     defaultConfig {
-        minSdk dropboxJavaSdkLibs.versions.android.min.sdk.get().toInteger()
-        targetSdk dropboxJavaSdkLibs.versions.android.target.sdk.get().toInteger()
+        minSdk = dropboxJavaSdkLibs.versions.android.min.sdk.get().toInteger()
+        targetSdk = dropboxJavaSdkLibs.versions.android.target.sdk.get().toInteger()
     }
 
-    kotlinOptions {
-        freeCompilerArgs += '-Xexplicit-api=strict'
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add('-Xexplicit-api=strict')
     }
 }
 
@@ -31,6 +35,6 @@ dependencyGuard {
 }
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.S01)
+    publishToMavenCentral()
     signAllPublications()
 }
