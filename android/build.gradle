@@ -1,3 +1,8 @@
+import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
+import kotlinx.validation.KotlinApiBuildTask
+import kotlinx.validation.KotlinApiCompareTask
+import kotlinx.validation.SyncFile
+
 plugins {
     id 'com.android.library'
     id "org.jetbrains.kotlinx.binary-compatibility-validator"
@@ -9,6 +14,11 @@ plugins {
 android {
     namespace = "com.dropbox.core.sdk.android"
     compileSdk = dropboxJavaSdkLibs.versions.android.compile.sdk.get().toInteger()
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         minSdk = dropboxJavaSdkLibs.versions.android.min.sdk.get().toInteger()
         targetSdk = dropboxJavaSdkLibs.versions.android.target.sdk.get().toInteger()
@@ -30,11 +40,58 @@ dependencies {
     api(project(path: ":core", configuration: "withoutOsgi"))
 }
 
+configurations {
+    androidApiValidationRuntime
+}
+
+dependencies {
+    androidApiValidationRuntime("org.jetbrains.kotlinx:binary-compatibility-validator:${dropboxJavaSdkLibs.versions.binary.compatibility.validator.get()}")
+    androidApiValidationRuntime(dropboxJavaSdkLibs.kotlin.stdlib)
+    androidApiValidationRuntime("org.jetbrains.kotlin:kotlin-metadata-jvm:${dropboxJavaSdkLibs.versions.kotlin.asProvider().get()}")
+}
+
+def androidApiBuild = tasks.register("apiBuild", KotlinApiBuildTask) {
+    description = "Builds Kotlin API for release variant of ${project.name}."
+
+    def compileReleaseKotlin = tasks.named("compileReleaseKotlin")
+    def compileReleaseJava = tasks.named("compileReleaseJavaWithJavac")
+
+    dependsOn(compileReleaseKotlin, compileReleaseJava)
+    inputClassesDirs.from(compileReleaseKotlin.map { it.outputs.files })
+    inputClassesDirs.from(compileReleaseJava.map { it.destinationDirectory })
+    inputDependencies.from(configurations.named("releaseCompileClasspath"))
+    outputApiFile.set(layout.buildDirectory.file("api/${project.name}.api"))
+    runtimeClasspath.from(configurations.named("androidApiValidationRuntime"))
+}
+
+tasks.register("apiCheck", KotlinApiCompareTask) {
+    group = "verification"
+    description = "Checks signatures of public API against the golden value in API folder for ${project.name}."
+
+    dependsOn(androidApiBuild)
+    projectApiFile.set(layout.projectDirectory.file("api/${project.name}.api"))
+    generatedApiFile.set(androidApiBuild.flatMap { it.outputApiFile })
+}
+
+tasks.register("apiDump", SyncFile) {
+    group = "verification"
+    description = "Syncs the API file for ${project.name}."
+
+    dependsOn(androidApiBuild)
+    from.set(androidApiBuild.flatMap { it.outputApiFile })
+    to.set(layout.projectDirectory.file("api/${project.name}.api"))
+}
+
+tasks.named("check") {
+    dependsOn(tasks.named("apiCheck"))
+}
+
 dependencyGuard {
     configuration("releaseRuntimeClasspath")
 }
 
 mavenPublishing {
+    configure(new AndroidSingleVariantLibrary("release", true, true))
     publishToMavenCentral()
     signAllPublications()
 }
