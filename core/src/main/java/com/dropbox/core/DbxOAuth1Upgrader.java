@@ -4,15 +4,14 @@ import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.json.JsonReadException;
 import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.v1.DbxClientV1;
-import static com.dropbox.core.util.LangUtil.mkAssert;
 
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -106,12 +105,7 @@ public final class DbxOAuth1Upgrader
 
     private static String encode(String s)
     {
-        try {
-            return URLEncoder.encode(s, "UTF-8");
-        }
-        catch (UnsupportedEncodingException ex) {
-            throw mkAssert("UTF-8 should always be supported", ex);
-        }
+        return URLEncoder.encode(s, StandardCharsets.UTF_8);
     }
 
     /**

@@ -71,7 +71,7 @@ public abstract class DbxDownloadStyleBuilder<R> {
         }
 
         List<HttpRequestor.Header> headers = new ArrayList<HttpRequestor.Header>();
-        String rangeValue = String.format("bytes=%d-", start.longValue());
+        String rangeValue = "bytes=" + start.longValue() + "-";
         if (length != null) {
             // Range header is inclusive (e.g. bytes=0-499 means first 500 bytes)
             rangeValue += Long.toString(start.longValue() + length.longValue() - 1);

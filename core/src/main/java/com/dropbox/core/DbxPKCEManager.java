@@ -4,16 +4,13 @@ import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.LangUtil;
 import com.dropbox.core.v2.DbxRawClientV2;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.dropbox.core.util.StringUtil.urlSafeBase64Encode;
 
 /**
  * This class should be lib/jar private. We make it public so that Android related code can use it.
@@ -29,6 +26,7 @@ public class DbxPKCEManager {
     private static final SecureRandom RAND = new SecureRandom();
     private static final String CODE_VERIFIER_CHAR_SET =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~";
+    private static final Base64.Encoder UrlSafeBase64Encoder = Base64.getUrlEncoder().withoutPadding();
 
     private String codeVerifier;
     private String codeChallenge;
@@ -61,11 +59,9 @@ public class DbxPKCEManager {
     static String generateCodeChallenge(String codeVerifier) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] signiture = digest.digest(codeVerifier.getBytes("US-ASCII"));
-            return urlSafeBase64Encode(signiture).replaceAll("=+$", ""); // remove trailing equal
+            byte[] signature = digest.digest(codeVerifier.getBytes(StandardCharsets.US_ASCII));
+            return UrlSafeBase64Encoder.encodeToString(signature);
         } catch (NoSuchAlgorithmException e) {
-            throw LangUtil.mkAssert("Impossible", e);
-        } catch (UnsupportedEncodingException e) {
             throw LangUtil.mkAssert("Impossible", e);
         }
     }

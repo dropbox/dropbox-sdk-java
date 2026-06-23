@@ -1,16 +1,16 @@
 package com.dropbox.core;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.CharacterCodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.dropbox.core.stone.StoneSerializer;
 import com.dropbox.core.v2.auth.AuthError;
@@ -35,16 +35,10 @@ import static com.dropbox.core.util.LangUtil.mkAssert;
 /*>>> import checkers.nullness.quals.Nullable; */
 
 public final class DbxRequestUtil {
-    private static final Random RAND = new Random();
-
     public static DbxGlobalCallbackFactory sharedCallbackFactory;
 
     public static String encodeUrlParam(String s) {
-        try {
-            return URLEncoder.encode(s, "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            throw mkAssert("UTF-8 should always be supported", ex);
-        }
+        return URLEncoder.encode(s, StandardCharsets.UTF_8);
     }
 
     public static String buildUrlWithParams(/*@Nullable*/String userLocale,
@@ -572,7 +566,7 @@ public final class DbxRequestUtil {
 
             // add a random jitter to the backoff to avoid stampeding herd. This is especially
             // useful for ServerExceptions, where backoff is 0.
-            backoff += RAND.nextInt(1000);
+            backoff += ThreadLocalRandom.current().nextInt(1000);
 
             if (backoff > 0L) {
                 try {

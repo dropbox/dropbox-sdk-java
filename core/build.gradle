@@ -18,8 +18,8 @@ dependencyGuard {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 ext {
@@ -105,7 +105,7 @@ configurations {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.release.set(17)
+    options.release.set(21)
 }
 
 tasks.named("compileJava", JavaCompile) {
@@ -216,7 +216,7 @@ tasks.named("javadoc", Javadoc) {
     if (JavaVersion.current().isJava8Compatible()) {
         options.addBooleanOption "Xdoclint:all,-missing,-reference", true
     }
-    options.addStringOption "link", "https://docs.oracle.com/en/java/javase/17/docs/api/"
+    options.addStringOption "link", "https://docs.oracle.com/en/java/javase/21/docs/api/"
 }
 
 tasks.named("jar", Jar) {
