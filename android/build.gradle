@@ -53,13 +53,10 @@ dependencies {
 def androidApiBuild = tasks.register("apiBuild", KotlinApiBuildTask) {
     description = "Builds Kotlin API for release variant of ${project.name}."
 
-    def compileReleaseKotlin = tasks.named("compileReleaseKotlin")
-    def compileReleaseJava = tasks.named("compileReleaseJavaWithJavac")
-
-    dependsOn(compileReleaseKotlin, compileReleaseJava)
-    inputClassesDirs.from(compileReleaseKotlin.map { it.outputs.files })
-    inputClassesDirs.from(compileReleaseJava.map { it.destinationDirectory })
+    dependsOn(tasks.named("bundleLibCompileToJarRelease"))
+    inputJar.set(layout.buildDirectory.file("intermediates/compile_library_classes_jar/release/classes.jar"))
     inputDependencies.from(configurations.named("releaseCompileClasspath"))
+    ignoredClasses.add("com.dropbox.core.sdk.android.R")
     outputApiFile.set(layout.buildDirectory.file("api/${project.name}.api"))
     runtimeClasspath.from(configurations.named("androidApiValidationRuntime"))
 }
