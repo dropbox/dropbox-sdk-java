@@ -16,7 +16,7 @@ Documentation: [Javadocs](https://dropbox.github.io/dropbox-sdk-java/)
 
 ### Java Version
 
-The current release of Dropbox SDK Java supports Java 8+.
+The current release of Dropbox SDK Java supports Java 17+.
 
 ### Android Version
 
@@ -370,7 +370,7 @@ dependencies {
 The JAR's manifest has the following line:
 
 ```
-Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=17))"
 ```
 
 Most OSGi containers should provide this capability.  Unfortunately, some OSGi containers don't do this correctly and will reject the bundle JAR in the OSGi subsystem context.
