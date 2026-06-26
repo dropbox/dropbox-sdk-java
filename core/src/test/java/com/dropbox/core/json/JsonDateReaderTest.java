@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import static org.testng.Assert.assertEquals;
+
 public class JsonDateReaderTest
 {
     @Test
@@ -41,6 +43,14 @@ public class JsonDateReaderTest
         }
 
         if (count < 1000) throw new AssertionError("Loop didn't run enough: " + count);
+    }
+
+    @Test
+    public void parseDropbox8601DateTest()
+        throws java.text.ParseException
+    {
+        validateDropbox8601DateParser("2015-04-01T12:01:12Z", 1427889672000L);
+        validateDropbox8601DateParser("2012-04-23T18:25:43.511Z", 1335205543511L);
     }
 
     private static final ThreadLocal<SimpleDateFormat> dateFormatHolder =  new ThreadLocal<SimpleDateFormat>() {
@@ -92,5 +102,13 @@ public class JsonDateReaderTest
         } else if (ourResult != null && !ourResult.equals(libResult)) {
             throw new AssertionError(jq(date) + ": us=Date(" + preciseDateFormatHolder.get().format(ourResult) + "), lib=Date(" + preciseDateFormatHolder.get().format(libResult) + ")");
         }
+    }
+
+    private static void validateDropbox8601DateParser(String date, long expectedMillis)
+        throws java.text.ParseException
+    {
+        char[] buf = date.toCharArray();
+        Date result = JsonDateReader.parseDropbox8601Date(buf, 0, buf.length);
+        assertEquals(result.getTime(), expectedMillis);
     }
 }

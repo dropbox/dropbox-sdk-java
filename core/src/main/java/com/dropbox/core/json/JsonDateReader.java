@@ -5,11 +5,11 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 public class JsonDateReader
 {
@@ -261,32 +261,13 @@ public class JsonDateReader
             throw new java.text.ParseException("expecting date to be 20 or 24 characters, got " + length, 0);
         }
 
-        // TODO: This needs to be looked at further.
-        // Does this need to handle arbitrary timezones?
         String s = new String(b, i, length);
-        final DateFormat format;
-        if (length == 20) {
-            // Assume this is an ISO 8601 date with a trailing Z to indicate UTC:
-            // e.g. "2015-04-01T12:01:12Z",
-            format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        } else {
-            // Assume this is an ISO 8601 date with a trailing Z to indicate UTC:
-            // plus milliseconds, e.g. "2012-04-23T18:25:43.511Z".
-            format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        }
-        format.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-        Date result;
         try {
-            result = format.parse(s);
-        } catch (IllegalArgumentException ex) {
-            throw new java.text.ParseException("invalid characters in date" + s, 0);
+            return Date.from(Instant.parse(s));
+        } catch (DateTimeParseException | IllegalArgumentException ex) {
+            java.text.ParseException parseException = new java.text.ParseException("invalid date" + s, 0);
+            parseException.initCause(ex);
+            throw parseException;
         }
-
-        if (result == null) {
-            throw new java.text.ParseException("invalid date" + s, 0);
-        }
-
-        return result;
     }
 }

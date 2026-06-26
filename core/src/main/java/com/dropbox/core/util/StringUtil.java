@@ -1,21 +1,23 @@
 package com.dropbox.core.util;
 
-import static com.dropbox.core.util.LangUtil.mkAssert;
-
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 
 public class StringUtil
 {
-    public static final Charset UTF8 = Charset.forName("UTF-8");
+    public static final Charset UTF8 = StandardCharsets.UTF_8;
 
     private static final char[] HexDigits = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f',};
+    private static final Base64.Encoder Base64Encoder = Base64.getEncoder();
+    private static final Base64.Encoder UrlSafeBase64Encoder = Base64.getUrlEncoder();
+
     public static char hexDigit(int i) { return HexDigits[i]; }
 
     public static String utf8ToString(byte[] utf8Data)
@@ -36,14 +38,7 @@ public class StringUtil
 
     public static byte[] stringToUtf8(String s)
     {
-        try {
-            // Java 1.5 doesn't have the version of getBytes that takes a Charset object, so we
-            // just use this one and catch the exception.
-            return s.getBytes("UTF-8");
-        }
-        catch (UnsupportedEncodingException ex) {
-            throw mkAssert("UTF-8 should always be supported", ex);
-        }
+        return s.getBytes(UTF8);
     }
 
     /**
@@ -163,12 +158,14 @@ public class StringUtil
 
     public static String base64Encode(byte[] data)
     {
-        return base64EncodeGeneric(Base64Digits, data);
+        if (data == null) throw new IllegalArgumentException("'data' can't be null");
+        return Base64Encoder.encodeToString(data);
     }
 
     public static String urlSafeBase64Encode(byte[] data)
     {
-        return base64EncodeGeneric(UrlSafeBase64Digits, data);
+        if (data == null) throw new IllegalArgumentException("'data' can't be null");
+        return UrlSafeBase64Encoder.encodeToString(data);
     }
 
     public static String base64EncodeGeneric(String digits, byte[] data)
@@ -176,6 +173,8 @@ public class StringUtil
         if (data == null) throw new IllegalArgumentException("'data' can't be null");
         if (digits == null) throw new IllegalArgumentException("'digits' can't be null");
         if (digits.length() != 64) throw new IllegalArgumentException("'digits' must be 64 characters long: " + jq(digits));
+        if (Base64Digits.equals(digits)) return Base64Encoder.encodeToString(data);
+        if (UrlSafeBase64Digits.equals(digits)) return UrlSafeBase64Encoder.encodeToString(data);
 
         int numGroupsOfThreeInputBytes = (data.length + 2) / 3;
         int numOutputChars = numGroupsOfThreeInputBytes * 4;

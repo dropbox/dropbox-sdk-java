@@ -74,9 +74,17 @@ public class IOUtil {
 
     public static byte[] slurp(InputStream in, int byteLimit, byte[] slurpBuffer) throws IOException {
         if (byteLimit < 0) throw new RuntimeException("'byteLimit' must be non-negative: " + byteLimit);
+        if (slurpBuffer.length == 0) throw new IllegalArgumentException("'slurpBuffer' must not be empty");
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        copyStreamToStream(in, baos, slurpBuffer);
+        int remaining = byteLimit;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(Math.min(byteLimit, slurpBuffer.length));
+        while (remaining > 0) {
+            int count = in.read(slurpBuffer, 0, Math.min(slurpBuffer.length, remaining));
+            if (count == -1) break;
+
+            baos.write(slurpBuffer, 0, count);
+            remaining -= count;
+        }
         return baos.toByteArray();
     }
 
