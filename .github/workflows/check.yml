@@ -54,6 +54,9 @@ jobs:
     - name: Check
       run: ./gradlew check
 
+    - name: Generate Javadocs
+      run: ./gradlew :core:javadoc :android:javaDocReleaseGeneration
+
   integration:
     runs-on: ubuntu-latest
     if: github.repository == 'dropbox/dropbox-sdk-java' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
