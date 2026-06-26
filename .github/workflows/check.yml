@@ -174,17 +174,24 @@ jobs:
             SIGNING_PASSWORD,sdk-release-signing-password
           parse-json-secrets: false
 
-      - name: Upload Artifacts
+      - name: Retrieve version
+        run: |
+          echo "VERSION_NAME=$(cat gradle.properties | grep -w "VERSION_NAME" | cut -d'=' -f2)" >> $GITHUB_ENV
+
+      - name: Check signing configuration
+        run: ./gradlew :core:checkSigningConfiguration --no-daemon --no-parallel --no-configuration-cache --stacktrace
+        env:
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ env.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ env.SIGNING_PASSWORD }}
+
+      - name: Publish Snapshot to Maven Central
         run: ./gradlew publishToMavenCentral --no-daemon --no-parallel --no-configuration-cache --stacktrace
+        if: "endsWith(env.VERSION_NAME, '-SNAPSHOT')"
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ env.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ env.OSSRH_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ env.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ env.SIGNING_PASSWORD }}
-
-      - name: Retrieve version
-        run: |
-          echo "VERSION_NAME=$(cat gradle.properties | grep -w "VERSION_NAME" | cut -d'=' -f2)" >> $GITHUB_ENV
 
       - name: Publish Release to Maven Central
         run: ./gradlew publishAndReleaseToMavenCentral --no-daemon --no-parallel
@@ -192,6 +199,8 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ env.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ env.OSSRH_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ env.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ env.SIGNING_PASSWORD }}
 
       - name: Upload Test Reports
         uses: actions/upload-artifact@v4
