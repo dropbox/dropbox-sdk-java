@@ -15,6 +15,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.release.set(8)
+}
+
 dependencies {
     implementation(project(":core"))
 

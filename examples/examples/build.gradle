@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("kotlin")
+    id("org.jetbrains.kotlin.jvm")
 }
 
 description = 'Consolidated Examples'
@@ -8,6 +8,16 @@ description = 'Consolidated Examples'
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release.set(8)
 }
 
 dependencies {

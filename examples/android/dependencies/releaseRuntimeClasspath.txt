@@ -58,10 +58,10 @@ com.google.code.findbugs:jsr305:3.0.2
 com.google.guava:listenablefuture:1.0
 com.squareup.okhttp3:okhttp:4.0.0
 com.squareup.okio:okio:2.2.2
-org.jetbrains.kotlin:kotlin-stdlib-common:1.6.21
-org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21
-org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21
-org.jetbrains.kotlin:kotlin-stdlib:1.6.21
+org.jetbrains.kotlin:kotlin-stdlib-common:2.4.0
+org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0
+org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0
+org.jetbrains.kotlin:kotlin-stdlib:2.4.0
 org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4
 org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4
 org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4

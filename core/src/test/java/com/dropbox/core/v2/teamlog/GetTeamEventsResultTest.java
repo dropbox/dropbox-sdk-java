@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
@@ -68,6 +67,6 @@ public class GetTeamEventsResultTest {
     private String readJsonFromFile(String filename) throws IOException {
         File file = new File("src/test/java/com/dropbox/core/v2/teamlog/" + filename);
         System.out.println(file.getCanonicalPath());
-        return Files.readString(Path.of(file.toURI()), StandardCharsets.US_ASCII);
+        return new String(Files.readAllBytes(file.toPath()), StandardCharsets.US_ASCII);
     }
 }

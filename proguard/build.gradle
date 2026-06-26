@@ -2,9 +2,19 @@ apply plugin: 'java'
 
 description = 'ProGuard minified SDK test suite for ProGuard compatibility tests.'
 group = 'com.dropbox.core.test'
-archivesBaseName = 'dropbox-proguard-test'
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+
+base {
+    archivesName = 'dropbox-proguard-test'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release.set(8)
+}
 
 ext {
     authInfoPropertyName = 'com.dropbox.test.authInfoFile'
@@ -39,32 +49,16 @@ tasks.named("compileJava", JavaCompile).configure {
     options.encoding = 'utf-8'
 }
 
-// copied from rootProject's build.gradle. We avoid using subprojects due to Android Studio bug and
-// dbapp-android integration.
-def getAuthInfoFile() {
-    if (!project.hasProperty(authInfoPropertyName)) {
-        throw new GradleException('' +
-            "These tests require the \"${authInfoPropertyName}\" " +
-            "project property be set to point to an authorization JSON file " +
-            "(e.g. ./gradlew proguardTest -P${authInfoPropertyName}=auth.json)."
-        )
-    }
-
-    def authInfoFile = file(project.property(authInfoPropertyName))
-    if (!authInfoFile.exists()) {
-        throw new GradleException('' +
-            "The test auth info file does not exist: \"${authInfoFile.absolutePath}\". " +
-            "Please ensure the \"${authInfoPropertyName}\" project property is set to point to " +
-            "the correct authorization JSON file."
-        )
-    }
-    return authInfoFile
+def projectDirPath = layout.projectDirectory.asFile.toPath()
+def authInfoFileProvider = providers.gradleProperty(authInfoPropertyName).map { authInfoFilePath ->
+    projectDirPath.resolve(authInfoFilePath).normalize().toFile()
 }
 
-
 tasks.register('proguard', proguard.gradle.ProGuardTask) {
-    def buildDir = project.buildDir
-    def archivesBaseName = project.archivesBaseName
+    def mainRuntimeClasspath = sourceSets.main.runtimeClasspath
+    def mainCompileClasspath = sourceSets.main.compileClasspath
+    def buildDir = layout.buildDirectory.get().asFile
+    def archivesBaseName = base.archivesName.get()
     def version = project.version
     ext {
         configDir = file("src/main/resources/proguard/")
@@ -75,7 +69,7 @@ tasks.register('proguard', proguard.gradle.ProGuardTask) {
     inputs.dir configDir
     inputs.file configFile
 
-    injars sourceSets.main.runtimeClasspath, filter: '!META-INF/*'
+    injars mainRuntimeClasspath, filter: '!META-INF/*'
     if (System.getProperty('java.version').startsWith('1.')) {
         libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
     } else {
@@ -85,8 +79,8 @@ tasks.register('proguard', proguard.gradle.ProGuardTask) {
         //libraryjars "${System.getProperty('java.home')}/jmods/java.sql.jmod", jarfilter: '!**.jar', filter: '!module-info.class'
         //libraryjars "${System.getProperty('java.home')}/jmods/....."
     }
-    libraryjars sourceSets.main.compileClasspath.filter { file ->
-        return !sourceSets.main.runtimeClasspath.contains(file)
+    libraryjars mainCompileClasspath.filter { file ->
+        return !mainRuntimeClasspath.contains(file)
     }
 
     outjars proguardJar
@@ -100,10 +94,25 @@ tasks.register('proguard', proguard.gradle.ProGuardTask) {
 tasks.register('proguardTest', JavaExec) {
     dependsOn(tasks.named("proguard"))
     classpath = files(proguard.proguardJar)
-    main = 'com.dropbox.core.test.proguard.Main'
-    ignoreExitValue false
+    mainClass = 'com.dropbox.core.test.proguard.Main'
+    ignoreExitValue = false
 
     doFirst {
-        args getAuthInfoFile().absolutePath
+        def authInfoFile = authInfoFileProvider.orNull
+        if (authInfoFile == null) {
+            throw new GradleException('' +
+                "These tests require the \"${authInfoPropertyName}\" " +
+                "project property be set to point to an authorization JSON file " +
+                "(e.g. ./gradlew proguardTest -P${authInfoPropertyName}=auth.json)."
+            )
+        }
+        if (!authInfoFile.exists()) {
+            throw new GradleException('' +
+                "The test auth info file does not exist: \"${authInfoFile.absolutePath}\". " +
+                "Please ensure the \"${authInfoPropertyName}\" project property is set to point to " +
+                "the correct authorization JSON file."
+            )
+        }
+        args authInfoFile.absolutePath
     }
 }

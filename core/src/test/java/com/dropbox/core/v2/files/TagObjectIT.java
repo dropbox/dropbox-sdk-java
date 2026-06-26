@@ -6,6 +6,7 @@ import com.dropbox.core.v2.DbxClientV2;
 import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -18,7 +19,7 @@ import static org.testng.AssertJUnit.assertEquals;
 public class TagObjectIT {
 
     private List<TagObject> getTagsForPath(DbxClientV2 client, String dropboxPath) throws DbxException {
-        List<PathToTags> pathToTags = client.files().tagsGet(List.of(dropboxPath)).getPathsToTags();
+        List<PathToTags> pathToTags = client.files().tagsGet(Collections.singletonList(dropboxPath)).getPathsToTags();
         assertEquals(1, pathToTags.size()); // There is only one path (the one we asked for)
         PathToTags pathToTag = pathToTags.get(0);
         assertEquals(dropboxPath, pathToTag.getPath()); // This is the path we are looking for

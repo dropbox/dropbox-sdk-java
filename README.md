@@ -284,7 +284,7 @@ If you leverage jettifier and see the following errors then please add `android.
 Failed to transform jackson-core-2.15.0.jar (com.fasterxml.jackson.core:jackson-core:2.15.0) to match attributes {artifactType=android-classes-jar, org.gradle.category=library, org.gradle.dependency.bundling=external, org.gradle.libraryelements=jar, org.gradle.status=release, org.gradle.usage=java-api}.
 ```
 
-The Android code in this SDK is written in Kotlin (as of 5.4.x) and Kotlin is now a runtime dependency. If you do not already have Kotlin in your project, you will need to add `implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")` to your dependencies block in order to avoid a runtime exception.
+The Android code in this SDK is written in Kotlin (as of 5.4.x) and Kotlin is now a runtime dependency. If you do not already have Kotlin in your project, you will need to add `implementation("org.jetbrains.kotlin:kotlin-stdlib:2.4.0")` to your dependencies block in order to avoid a runtime exception.
 
 If the [official Dropbox App](https://play.google.com/store/apps/details?id=com.dropbox.android) is installed, it will attempt to use it to do authorization.  If it is not, a web authentication flow is launched in-browser.
 
@@ -370,7 +370,7 @@ dependencies {
 The JAR's manifest has the following line:
 
 ```
-Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=11))"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
 ```
 
 Most OSGi containers should provide this capability.  Unfortunately, some OSGi containers don't do this correctly and will reject the bundle JAR in the OSGi subsystem context.
