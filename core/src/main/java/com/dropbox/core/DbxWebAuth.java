@@ -24,7 +24,7 @@ import com.dropbox.core.v2.DbxRawClientV2;
  * for a user when they first use your application.  Once you have an access token for that user, it
  * remains valid for years.
  *
- * <h1> Redirect example </h1>
+ * <h2> Redirect example </h2>
  * <p> One-time setup typically done on server initialization: </p>
  * <pre>
  *     {@link DbxRequestConfig} requestConfig = new DbxRequestConfig("text-edit/0.1");
@@ -34,7 +34,7 @@ import com.dropbox.core.v2.DbxRawClientV2;
  *     String redirectUri = "http://my-server.com/dropbox-auth-finish";
  * </pre>
  *
- * <h2> Part 1 </h2>
+ * <h3> Part 1 </h3>
  * <p> Handler for "http://my-server.com/dropbox-auth-start": </p>
  * <pre>
  *     {@link jakarta.servlet.http.HttpServletRequest} request = ...
@@ -59,7 +59,7 @@ import com.dropbox.core.v2.DbxRawClientV2;
  *     response.sendRedirect(authorizePageUrl);
  * </pre>
  *
- * <h2> Part 2 </h2>
+ * <h3> Part 2 </h3>
  * <p> Handler for "http://my-server.com/dropbox-auth-finish": </p>
  * <pre>
  *     {@link jakarta.servlet.http.HttpServletRequest} request = ...
@@ -111,7 +111,7 @@ import com.dropbox.core.v2.DbxRawClientV2;
  *     ...
  * </pre>
  *
- * <h1> No Redirect Example </h1>
+ * <h2> No Redirect Example </h2>
  *
  * <pre>
  *     {@link DbxRequestConfig} requestConfig = new DbxRequestConfig("text-edit/0.1");

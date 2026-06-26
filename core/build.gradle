@@ -207,13 +207,14 @@ tasks.named("javadoc", Javadoc) {
     title = "${project.mavenName} ${versionName} API"
     failOnError = true
 
-    // JDK 8's javadoc has an on-by-default lint called "missing", which requires that everything
-    // be documented. Disable this lint because we intentionally don't document some things.
+    // JDK's javadoc has on-by-default lints for missing docs and unresolved references. Disable
+    // these because we intentionally don't document some things and generated/cross-module links
+    // are not always resolvable in this standalone Javadoc task.
     //
     // NOTE: ugly hack to set our doclint settings due to strange handling of string options by the
     // javadoc task.
     if (JavaVersion.current().isJava8Compatible()) {
-        options.addBooleanOption "Xdoclint:all,-missing", true
+        options.addBooleanOption "Xdoclint:all,-missing,-reference", true
     }
     options.addStringOption "link", "http://docs.oracle.com/javase/8/docs/api/"
 }
