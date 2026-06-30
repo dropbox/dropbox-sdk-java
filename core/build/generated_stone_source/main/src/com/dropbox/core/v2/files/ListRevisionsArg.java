@@ -30,6 +30,7 @@ class ListRevisionsArg {
     protected final long limit;
     @Nullable
     protected final String beforeRev;
+    protected final boolean includeRestorableInfo;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -48,11 +49,13 @@ class ListRevisionsArg {
      *     call to list_revisions to fetch the next page of revisions. Only
      *     supported in path mode. Must have length of at least 9 and match
      *     pattern "{@code [0-9a-f]+}".
+     * @param includeRestorableInfo  If true, each returned revision will
+     *     include whether that revision can be restored.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListRevisionsArg(@Nonnull String path, @Nonnull ListRevisionsMode mode, long limit, @Nullable String beforeRev) {
+    public ListRevisionsArg(@Nonnull String path, @Nonnull ListRevisionsMode mode, long limit, @Nullable String beforeRev, boolean includeRestorableInfo) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -80,6 +83,7 @@ class ListRevisionsArg {
             }
         }
         this.beforeRev = beforeRev;
+        this.includeRestorableInfo = includeRestorableInfo;
     }
 
     /**
@@ -96,7 +100,7 @@ class ListRevisionsArg {
      *     preconditions.
      */
     public ListRevisionsArg(@Nonnull String path) {
-        this(path, ListRevisionsMode.PATH, 10L, null);
+        this(path, ListRevisionsMode.PATH, 10L, null, false);
     }
 
     /**
@@ -144,6 +148,17 @@ class ListRevisionsArg {
     }
 
     /**
+     * If true, each returned revision will include whether that revision can be
+     * restored.
+     *
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     false.
+     */
+    public boolean getIncludeRestorableInfo() {
+        return includeRestorableInfo;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  The path to the file you want to see the revisions of. Must
@@ -169,6 +184,7 @@ class ListRevisionsArg {
         protected ListRevisionsMode mode;
         protected long limit;
         protected String beforeRev;
+        protected boolean includeRestorableInfo;
 
         protected Builder(String path) {
             if (path == null) {
@@ -181,6 +197,7 @@ class ListRevisionsArg {
             this.mode = ListRevisionsMode.PATH;
             this.limit = 10L;
             this.beforeRev = null;
+            this.includeRestorableInfo = false;
         }
 
         /**
@@ -268,13 +285,35 @@ class ListRevisionsArg {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code false}.
+         * </p>
+         *
+         * @param includeRestorableInfo  If true, each returned revision will
+         *     include whether that revision can be restored. Defaults to {@code
+         *     false} when set to {@code null}.
+         *
+         * @return this builder
+         */
+        public Builder withIncludeRestorableInfo(Boolean includeRestorableInfo) {
+            if (includeRestorableInfo != null) {
+                this.includeRestorableInfo = includeRestorableInfo;
+            }
+            else {
+                this.includeRestorableInfo = false;
+            }
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link ListRevisionsArg} configured with this
          * builder's values
          *
          * @return new instance of {@link ListRevisionsArg}
          */
         public ListRevisionsArg build() {
-            return new ListRevisionsArg(path, mode, limit, beforeRev);
+            return new ListRevisionsArg(path, mode, limit, beforeRev, includeRestorableInfo);
         }
     }
 
@@ -284,7 +323,8 @@ class ListRevisionsArg {
             this.path,
             this.mode,
             this.limit,
-            this.beforeRev
+            this.beforeRev,
+            this.includeRestorableInfo
         });
         return hash;
     }
@@ -304,6 +344,7 @@ class ListRevisionsArg {
                 && ((this.mode == other.mode) || (this.mode.equals(other.mode)))
                 && (this.limit == other.limit)
                 && ((this.beforeRev == other.beforeRev) || (this.beforeRev != null && this.beforeRev.equals(other.beforeRev)))
+                && (this.includeRestorableInfo == other.includeRestorableInfo)
                 ;
         }
         else {
@@ -349,6 +390,8 @@ class ListRevisionsArg {
                 g.writeFieldName("before_rev");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.beforeRev, g);
             }
+            g.writeFieldName("include_restorable_info");
+            StoneSerializers.boolean_().serialize(value.includeRestorableInfo, g);
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -367,6 +410,7 @@ class ListRevisionsArg {
                 ListRevisionsMode f_mode = ListRevisionsMode.PATH;
                 Long f_limit = 10L;
                 String f_beforeRev = null;
+                Boolean f_includeRestorableInfo = false;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -382,6 +426,9 @@ class ListRevisionsArg {
                     else if ("before_rev".equals(field)) {
                         f_beforeRev = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
+                    else if ("include_restorable_info".equals(field)) {
+                        f_includeRestorableInfo = StoneSerializers.boolean_().deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -389,7 +436,7 @@ class ListRevisionsArg {
                 if (f_path == null) {
                     throw new JsonParseException(p, "Required field \"path\" missing.");
                 }
-                value = new ListRevisionsArg(f_path, f_mode, f_limit, f_beforeRev);
+                value = new ListRevisionsArg(f_path, f_mode, f_limit, f_beforeRev, f_includeRestorableInfo);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

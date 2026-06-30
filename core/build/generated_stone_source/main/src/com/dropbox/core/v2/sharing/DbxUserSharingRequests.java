@@ -785,12 +785,13 @@ public class DbxUserSharingRequests {
     //
 
     /**
-     * Returns a list of {@link LinkMetadata} objects for this user, including
-     * collection links. If no path is given, returns a list of all shared links
-     * for the current user, including collection links, up to a maximum of 1000
-     * links. If a non-empty path is given, returns a list of all shared links
-     * that allow access to the given path. Collection links are never returned
-     * in this case. DEPRECATED: Use list_shared_links instead.
+     * DEPRECATED: Use list_shared_links instead. This endpoint will be retired
+     * in October 2026. Returns a list of {@link LinkMetadata} objects for this
+     * user, including collection links. If no path is given, returns a list of
+     * all shared links for the current user, including collection links, up to
+     * a maximum of 1000 links. If a non-empty path is given, returns a list of
+     * all shared links that allow access to the given path. Collection links
+     * are never returned in this case.
      *
      */
     GetSharedLinksResult getSharedLinks(GetSharedLinksArg arg) throws GetSharedLinksErrorException, DbxException {
@@ -809,12 +810,13 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * Returns a list of {@link LinkMetadata} objects for this user, including
-     * collection links. If no path is given, returns a list of all shared links
-     * for the current user, including collection links, up to a maximum of 1000
-     * links. If a non-empty path is given, returns a list of all shared links
-     * that allow access to the given path. Collection links are never returned
-     * in this case. DEPRECATED: Use list_shared_links instead.
+     * DEPRECATED: Use list_shared_links instead. This endpoint will be retired
+     * in October 2026. Returns a list of {@link LinkMetadata} objects for this
+     * user, including collection links. If no path is given, returns a list of
+     * all shared links for the current user, including collection links, up to
+     * a maximum of 1000 links. If a non-empty path is given, returns a list of
+     * all shared links that allow access to the given path. Collection links
+     * are never returned in this case.
      *
      * @deprecated
      */
@@ -825,12 +827,13 @@ public class DbxUserSharingRequests {
     }
 
     /**
-     * Returns a list of {@link LinkMetadata} objects for this user, including
-     * collection links. If no path is given, returns a list of all shared links
-     * for the current user, including collection links, up to a maximum of 1000
-     * links. If a non-empty path is given, returns a list of all shared links
-     * that allow access to the given path. Collection links are never returned
-     * in this case. DEPRECATED: Use list_shared_links instead.
+     * DEPRECATED: Use list_shared_links instead. This endpoint will be retired
+     * in October 2026. Returns a list of {@link LinkMetadata} objects for this
+     * user, including collection links. If no path is given, returns a list of
+     * all shared links for the current user, including collection links, up to
+     * a maximum of 1000 links. If a non-empty path is given, returns a list of
+     * all shared links that allow access to the given path. Collection links
+     * are never returned in this case.
      *
      * @param path  See {@link DbxUserSharingRequests#getSharedLinks(String)}
      *     description.

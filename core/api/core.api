@@ -3731,9 +3731,6 @@ public class com/dropbox/core/v2/files/DbxAppFilesRequests {
 	public fun listFolder (Ljava/lang/String;)Lcom/dropbox/core/v2/files/ListFolderResult;
 	public fun listFolderBuilder (Ljava/lang/String;)Lcom/dropbox/core/v2/files/DbxAppListFolderBuilder;
 	public fun listFolderContinue (Ljava/lang/String;)Lcom/dropbox/core/v2/files/ListFolderResult;
-	public fun searchContinueV2 (Ljava/lang/String;)Lcom/dropbox/core/v2/files/SearchV2Result;
-	public fun searchV2 (Ljava/lang/String;)Lcom/dropbox/core/v2/files/SearchV2Result;
-	public fun searchV2Builder (Ljava/lang/String;)Lcom/dropbox/core/v2/files/DbxAppSearchV2Builder;
 }
 
 public class com/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder : com/dropbox/core/v2/DbxDownloadStyleBuilder {
@@ -3753,16 +3750,10 @@ public class com/dropbox/core/v2/files/DbxAppListFolderBuilder {
 	public fun withIncludeMountedFolders (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxAppListFolderBuilder;
 	public fun withIncludeNonDownloadableFiles (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxAppListFolderBuilder;
 	public fun withIncludePropertyGroups (Lcom/dropbox/core/v2/fileproperties/TemplateFilterBase;)Lcom/dropbox/core/v2/files/DbxAppListFolderBuilder;
+	public fun withIncludeRestorableInfo (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxAppListFolderBuilder;
 	public fun withLimit (Ljava/lang/Long;)Lcom/dropbox/core/v2/files/DbxAppListFolderBuilder;
 	public fun withRecursive (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxAppListFolderBuilder;
 	public fun withSharedLink (Lcom/dropbox/core/v2/files/SharedLink;)Lcom/dropbox/core/v2/files/DbxAppListFolderBuilder;
-}
-
-public class com/dropbox/core/v2/files/DbxAppSearchV2Builder {
-	public fun start ()Lcom/dropbox/core/v2/files/SearchV2Result;
-	public fun withIncludeHighlights (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxAppSearchV2Builder;
-	public fun withMatchFieldOptions (Lcom/dropbox/core/v2/files/SearchMatchFieldOptions;)Lcom/dropbox/core/v2/files/DbxAppSearchV2Builder;
-	public fun withOptions (Lcom/dropbox/core/v2/files/SearchOptions;)Lcom/dropbox/core/v2/files/DbxAppSearchV2Builder;
 }
 
 public class com/dropbox/core/v2/files/DbxUserFilesRequests {
@@ -3853,7 +3844,7 @@ public class com/dropbox/core/v2/files/DbxUserFilesRequests {
 	public fun searchBuilder (Ljava/lang/String;Ljava/lang/String;)Lcom/dropbox/core/v2/files/SearchBuilder;
 	public fun searchContinueV2 (Ljava/lang/String;)Lcom/dropbox/core/v2/files/SearchV2Result;
 	public fun searchV2 (Ljava/lang/String;)Lcom/dropbox/core/v2/files/SearchV2Result;
-	public fun searchV2Builder (Ljava/lang/String;)Lcom/dropbox/core/v2/files/DbxUserSearchV2Builder;
+	public fun searchV2Builder (Ljava/lang/String;)Lcom/dropbox/core/v2/files/SearchV2Builder;
 	public fun tagsAdd (Ljava/lang/String;Ljava/lang/String;)V
 	public fun tagsGet (Ljava/util/List;)Lcom/dropbox/core/v2/files/GetTagsResult;
 	public fun tagsRemove (Ljava/lang/String;Ljava/lang/String;)V
@@ -3893,16 +3884,10 @@ public class com/dropbox/core/v2/files/DbxUserListFolderBuilder {
 	public fun withIncludeMountedFolders (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxUserListFolderBuilder;
 	public fun withIncludeNonDownloadableFiles (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxUserListFolderBuilder;
 	public fun withIncludePropertyGroups (Lcom/dropbox/core/v2/fileproperties/TemplateFilterBase;)Lcom/dropbox/core/v2/files/DbxUserListFolderBuilder;
+	public fun withIncludeRestorableInfo (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxUserListFolderBuilder;
 	public fun withLimit (Ljava/lang/Long;)Lcom/dropbox/core/v2/files/DbxUserListFolderBuilder;
 	public fun withRecursive (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxUserListFolderBuilder;
 	public fun withSharedLink (Lcom/dropbox/core/v2/files/SharedLink;)Lcom/dropbox/core/v2/files/DbxUserListFolderBuilder;
-}
-
-public class com/dropbox/core/v2/files/DbxUserSearchV2Builder {
-	public fun start ()Lcom/dropbox/core/v2/files/SearchV2Result;
-	public fun withIncludeHighlights (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxUserSearchV2Builder;
-	public fun withMatchFieldOptions (Lcom/dropbox/core/v2/files/SearchMatchFieldOptions;)Lcom/dropbox/core/v2/files/DbxUserSearchV2Builder;
-	public fun withOptions (Lcom/dropbox/core/v2/files/SearchOptions;)Lcom/dropbox/core/v2/files/DbxUserSearchV2Builder;
 }
 
 public class com/dropbox/core/v2/files/DeleteArg {
@@ -4063,9 +4048,11 @@ public class com/dropbox/core/v2/files/DeleteResult : com/dropbox/core/v2/files/
 }
 
 public class com/dropbox/core/v2/files/DeletedMetadata : com/dropbox/core/v2/files/Metadata {
+	protected final field isRestorable Ljava/lang/Boolean;
 	public fun <init> (Ljava/lang/String;)V
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;)V
 	public fun equals (Ljava/lang/Object;)Z
+	public fun getIsRestorable ()Ljava/lang/Boolean;
 	public fun getName ()Ljava/lang/String;
 	public fun getParentSharedFolderId ()Ljava/lang/String;
 	public fun getPathDisplay ()Ljava/lang/String;
@@ -4078,9 +4065,11 @@ public class com/dropbox/core/v2/files/DeletedMetadata : com/dropbox/core/v2/fil
 }
 
 public class com/dropbox/core/v2/files/DeletedMetadata$Builder : com/dropbox/core/v2/files/Metadata$Builder {
+	protected field isRestorable Ljava/lang/Boolean;
 	protected fun <init> (Ljava/lang/String;)V
 	public fun build ()Lcom/dropbox/core/v2/files/DeletedMetadata;
 	public synthetic fun build ()Lcom/dropbox/core/v2/files/Metadata;
+	public fun withIsRestorable (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DeletedMetadata$Builder;
 	public fun withParentSharedFolderId (Ljava/lang/String;)Lcom/dropbox/core/v2/files/DeletedMetadata$Builder;
 	public synthetic fun withParentSharedFolderId (Ljava/lang/String;)Lcom/dropbox/core/v2/files/Metadata$Builder;
 	public fun withPathDisplay (Ljava/lang/String;)Lcom/dropbox/core/v2/files/DeletedMetadata$Builder;
@@ -4412,6 +4401,7 @@ public class com/dropbox/core/v2/files/FileMetadata : com/dropbox/core/v2/files/
 	protected final field hasExplicitSharedMembers Ljava/lang/Boolean;
 	protected final field id Ljava/lang/String;
 	protected final field isDownloadable Z
+	protected final field isRestorable Ljava/lang/Boolean;
 	protected final field mediaInfo Lcom/dropbox/core/v2/files/MediaInfo;
 	protected final field propertyGroups Ljava/util/List;
 	protected final field rev Ljava/lang/String;
@@ -4420,7 +4410,7 @@ public class com/dropbox/core/v2/files/FileMetadata : com/dropbox/core/v2/files/
 	protected final field size J
 	protected final field symlinkInfo Lcom/dropbox/core/v2/files/SymlinkInfo;
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/Date;Ljava/util/Date;Ljava/lang/String;J)V
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/Date;Ljava/util/Date;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/files/MediaInfo;Lcom/dropbox/core/v2/files/SymlinkInfo;Lcom/dropbox/core/v2/files/FileSharingInfo;ZLcom/dropbox/core/v2/files/ExportInfo;Ljava/util/List;Ljava/lang/Boolean;Ljava/lang/String;Lcom/dropbox/core/v2/files/FileLockMetadata;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/Date;Ljava/util/Date;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/files/MediaInfo;Lcom/dropbox/core/v2/files/SymlinkInfo;Lcom/dropbox/core/v2/files/FileSharingInfo;ZLcom/dropbox/core/v2/files/ExportInfo;Ljava/util/List;Ljava/lang/Boolean;Ljava/lang/String;Lcom/dropbox/core/v2/files/FileLockMetadata;Ljava/lang/Boolean;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getClientModified ()Ljava/util/Date;
 	public fun getContentHash ()Ljava/lang/String;
@@ -4429,6 +4419,7 @@ public class com/dropbox/core/v2/files/FileMetadata : com/dropbox/core/v2/files/
 	public fun getHasExplicitSharedMembers ()Ljava/lang/Boolean;
 	public fun getId ()Ljava/lang/String;
 	public fun getIsDownloadable ()Z
+	public fun getIsRestorable ()Ljava/lang/Boolean;
 	public fun getMediaInfo ()Lcom/dropbox/core/v2/files/MediaInfo;
 	public fun getName ()Ljava/lang/String;
 	public fun getParentSharedFolderId ()Ljava/lang/String;
@@ -4455,6 +4446,7 @@ public class com/dropbox/core/v2/files/FileMetadata$Builder : com/dropbox/core/v
 	protected field hasExplicitSharedMembers Ljava/lang/Boolean;
 	protected final field id Ljava/lang/String;
 	protected field isDownloadable Z
+	protected field isRestorable Ljava/lang/Boolean;
 	protected field mediaInfo Lcom/dropbox/core/v2/files/MediaInfo;
 	protected field propertyGroups Ljava/util/List;
 	protected final field rev Ljava/lang/String;
@@ -4470,6 +4462,7 @@ public class com/dropbox/core/v2/files/FileMetadata$Builder : com/dropbox/core/v
 	public fun withFileLockInfo (Lcom/dropbox/core/v2/files/FileLockMetadata;)Lcom/dropbox/core/v2/files/FileMetadata$Builder;
 	public fun withHasExplicitSharedMembers (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/FileMetadata$Builder;
 	public fun withIsDownloadable (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/FileMetadata$Builder;
+	public fun withIsRestorable (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/FileMetadata$Builder;
 	public fun withMediaInfo (Lcom/dropbox/core/v2/files/MediaInfo;)Lcom/dropbox/core/v2/files/FileMetadata$Builder;
 	public fun withParentSharedFolderId (Ljava/lang/String;)Lcom/dropbox/core/v2/files/FileMetadata$Builder;
 	public synthetic fun withParentSharedFolderId (Ljava/lang/String;)Lcom/dropbox/core/v2/files/Metadata$Builder;
@@ -4896,6 +4889,7 @@ public class com/dropbox/core/v2/files/ListFolderGetLatestCursorBuilder {
 	public fun withIncludeMountedFolders (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/ListFolderGetLatestCursorBuilder;
 	public fun withIncludeNonDownloadableFiles (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/ListFolderGetLatestCursorBuilder;
 	public fun withIncludePropertyGroups (Lcom/dropbox/core/v2/fileproperties/TemplateFilterBase;)Lcom/dropbox/core/v2/files/ListFolderGetLatestCursorBuilder;
+	public fun withIncludeRestorableInfo (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/ListFolderGetLatestCursorBuilder;
 	public fun withLimit (Ljava/lang/Long;)Lcom/dropbox/core/v2/files/ListFolderGetLatestCursorBuilder;
 	public fun withRecursive (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/ListFolderGetLatestCursorBuilder;
 	public fun withSharedLink (Lcom/dropbox/core/v2/files/SharedLink;)Lcom/dropbox/core/v2/files/ListFolderGetLatestCursorBuilder;
@@ -4953,6 +4947,7 @@ public class com/dropbox/core/v2/files/ListFolderResult {
 public class com/dropbox/core/v2/files/ListRevisionsBuilder {
 	public fun start ()Lcom/dropbox/core/v2/files/ListRevisionsResult;
 	public fun withBeforeRev (Ljava/lang/String;)Lcom/dropbox/core/v2/files/ListRevisionsBuilder;
+	public fun withIncludeRestorableInfo (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/ListRevisionsBuilder;
 	public fun withLimit (Ljava/lang/Long;)Lcom/dropbox/core/v2/files/ListRevisionsBuilder;
 	public fun withMode (Lcom/dropbox/core/v2/files/ListRevisionsMode;)Lcom/dropbox/core/v2/files/ListRevisionsBuilder;
 }
@@ -6267,6 +6262,13 @@ public class com/dropbox/core/v2/files/SearchResult {
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/files/SearchV2Builder {
+	public fun start ()Lcom/dropbox/core/v2/files/SearchV2Result;
+	public fun withIncludeHighlights (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/SearchV2Builder;
+	public fun withMatchFieldOptions (Lcom/dropbox/core/v2/files/SearchMatchFieldOptions;)Lcom/dropbox/core/v2/files/SearchV2Builder;
+	public fun withOptions (Lcom/dropbox/core/v2/files/SearchOptions;)Lcom/dropbox/core/v2/files/SearchV2Builder;
 }
 
 public class com/dropbox/core/v2/files/SearchV2Result {
@@ -19642,6 +19644,7 @@ public final class com/dropbox/core/v2/teamlog/EventCategory : java/lang/Enum {
 	public static final field OTHER Lcom/dropbox/core/v2/teamlog/EventCategory;
 	public static final field PAPER Lcom/dropbox/core/v2/teamlog/EventCategory;
 	public static final field PASSWORDS Lcom/dropbox/core/v2/teamlog/EventCategory;
+	public static final field PROTECT Lcom/dropbox/core/v2/teamlog/EventCategory;
 	public static final field REPORTS Lcom/dropbox/core/v2/teamlog/EventCategory;
 	public static final field SHARING Lcom/dropbox/core/v2/teamlog/EventCategory;
 	public static final field SHOWCASE Lcom/dropbox/core/v2/teamlog/EventCategory;
@@ -20211,6 +20214,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getPreviewsAiPolicyChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/PreviewsAiPolicyChangedDetails;
 	public fun getProductAssignedToMemberDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProductAssignedToMemberDetails;
 	public fun getProductRemovedFromMemberDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProductRemovedFromMemberDetails;
+	public fun getProtectInternalDomainsChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedDetails;
 	public fun getRansomwareAlertCreateReportDetailsValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportDetails;
 	public fun getRansomwareAlertCreateReportFailedDetailsValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedDetails;
 	public fun getRansomwareRestoreProcessCompletedDetailsValue ()Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedDetails;
@@ -20854,6 +20858,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isPreviewsAiPolicyChangedDetails ()Z
 	public fun isProductAssignedToMemberDetails ()Z
 	public fun isProductRemovedFromMemberDetails ()Z
+	public fun isProtectInternalDomainsChangedDetails ()Z
 	public fun isRansomwareAlertCreateReportDetails ()Z
 	public fun isRansomwareAlertCreateReportFailedDetails ()Z
 	public fun isRansomwareRestoreProcessCompletedDetails ()Z
@@ -21230,6 +21235,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun previewsAiPolicyChangedDetails (Lcom/dropbox/core/v2/teamlog/PreviewsAiPolicyChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun productAssignedToMemberDetails (Lcom/dropbox/core/v2/teamlog/ProductAssignedToMemberDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun productRemovedFromMemberDetails (Lcom/dropbox/core/v2/teamlog/ProductRemovedFromMemberDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun protectInternalDomainsChangedDetails (Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun ransomwareAlertCreateReportDetails (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun ransomwareAlertCreateReportFailedDetails (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun ransomwareRestoreProcessCompletedDetails (Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -21843,6 +21849,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field PREVIEWS_AI_POLICY_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PRODUCT_ASSIGNED_TO_MEMBER_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PRODUCT_REMOVED_FROM_MEMBER_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT_FAILED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field RANSOMWARE_RESTORE_PROCESS_COMPLETED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -22650,6 +22657,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getPreviewsAiPolicyChangedValue ()Lcom/dropbox/core/v2/teamlog/PreviewsAiPolicyChangedType;
 	public fun getProductAssignedToMemberValue ()Lcom/dropbox/core/v2/teamlog/ProductAssignedToMemberType;
 	public fun getProductRemovedFromMemberValue ()Lcom/dropbox/core/v2/teamlog/ProductRemovedFromMemberType;
+	public fun getProtectInternalDomainsChangedValue ()Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedType;
 	public fun getRansomwareAlertCreateReportFailedValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedType;
 	public fun getRansomwareAlertCreateReportValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportType;
 	public fun getRansomwareRestoreProcessCompletedValue ()Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedType;
@@ -23292,6 +23300,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isPreviewsAiPolicyChanged ()Z
 	public fun isProductAssignedToMember ()Z
 	public fun isProductRemovedFromMember ()Z
+	public fun isProtectInternalDomainsChanged ()Z
 	public fun isRansomwareAlertCreateReport ()Z
 	public fun isRansomwareAlertCreateReportFailed ()Z
 	public fun isRansomwareRestoreProcessCompleted ()Z
@@ -23667,6 +23676,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun previewsAiPolicyChanged (Lcom/dropbox/core/v2/teamlog/PreviewsAiPolicyChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun productAssignedToMember (Lcom/dropbox/core/v2/teamlog/ProductAssignedToMemberType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun productRemovedFromMember (Lcom/dropbox/core/v2/teamlog/ProductRemovedFromMemberType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun protectInternalDomainsChanged (Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun ransomwareAlertCreateReport (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun ransomwareAlertCreateReportFailed (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun ransomwareRestoreProcessCompleted (Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -24279,6 +24289,7 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field PREVIEWS_AI_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PRODUCT_ASSIGNED_TO_MEMBER Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PRODUCT_REMOVED_FROM_MEMBER Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field PROTECT_INTERNAL_DOMAINS_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT_FAILED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field RANSOMWARE_RESTORE_PROCESS_COMPLETED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -24890,6 +24901,7 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field PREVIEWS_AI_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PRODUCT_ASSIGNED_TO_MEMBER Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PRODUCT_REMOVED_FROM_MEMBER Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field PROTECT_INTERNAL_DOMAINS_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT_FAILED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field RANSOMWARE_RESTORE_PROCESS_COMPLETED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
@@ -31228,6 +31240,39 @@ public class com/dropbox/core/v2/teamlog/ProductRemovedFromMemberType {
 	public fun toStringMultiline ()Ljava/lang/String;
 }
 
+public class com/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedDetails {
+	protected final field domainsAdded Ljava/util/List;
+	protected final field domainsRemoved Ljava/util/List;
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDomainsAdded ()Ljava/util/List;
+	public fun getDomainsRemoved ()Ljava/util/List;
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedDetails$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedDetails$Builder {
+	protected field domainsAdded Ljava/util/List;
+	protected field domainsRemoved Ljava/util/List;
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedDetails;
+	public fun withDomainsAdded (Ljava/util/List;)Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedDetails$Builder;
+	public fun withDomainsRemoved (Ljava/util/List;)Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedDetails$Builder;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
 public class com/dropbox/core/v2/teamlog/RansomwareAlertCreateReportDetails {
 	public fun <init> ()V
 	public fun equals (Ljava/lang/Object;)Z
@@ -35899,6 +35944,7 @@ public class com/dropbox/core/v2/teamlog/TeamFolderRenameType {
 }
 
 public final class com/dropbox/core/v2/teamlog/TeamFolderSpaceCapsType : java/lang/Enum {
+	public static final field HARD Lcom/dropbox/core/v2/teamlog/TeamFolderSpaceCapsType;
 	public static final field OFF Lcom/dropbox/core/v2/teamlog/TeamFolderSpaceCapsType;
 	public static final field OTHER Lcom/dropbox/core/v2/teamlog/TeamFolderSpaceCapsType;
 	public static final field SOFT Lcom/dropbox/core/v2/teamlog/TeamFolderSpaceCapsType;

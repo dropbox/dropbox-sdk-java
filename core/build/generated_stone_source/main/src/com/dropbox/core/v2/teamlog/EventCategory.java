@@ -84,6 +84,10 @@ public enum EventCategory {
      */
     PASSWORDS,
     /**
+     * Events that apply to Dropbox Protect
+     */
+    PROTECT,
+    /**
      * Events that concern generation of admin reports, including team activity
      * and device usage.
      */
@@ -204,6 +208,10 @@ public enum EventCategory {
                     g.writeString("passwords");
                     break;
                 }
+                case PROTECT: {
+                    g.writeString("protect");
+                    break;
+                }
                 case REPORTS: {
                     g.writeString("reports");
                     break;
@@ -312,6 +320,9 @@ public enum EventCategory {
             }
             else if ("passwords".equals(tag)) {
                 value = EventCategory.PASSWORDS;
+            }
+            else if ("protect".equals(tag)) {
+                value = EventCategory.PROTECT;
             }
             else if ("reports".equals(tag)) {
                 value = EventCategory.REPORTS;
