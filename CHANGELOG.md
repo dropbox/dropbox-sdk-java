@@ -1,3 +1,7 @@
+8.0.1 (2026-06-30)
+---------------------------------------------
+- Update generated SDK code from the latest Dropbox API spec.
+
 8.0.0 (2026-06-26)
 ---------------------------------------------
 - [#569](https://github.com/dropbox/dropbox-sdk-java/pull/569) Upgrade build to Java 21 and require Java 21+ for SDK 8.0.0.
