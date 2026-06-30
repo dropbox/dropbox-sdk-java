@@ -1,3 +1,12 @@
+7.1.1 (2026-06-30)
+---------------------------------------------
+- Update generated SDK code from the latest Dropbox API spec.
+- Add restorable metadata support for file revisions and deleted entries.
+- Remove generated app-auth `files/search_v2` and `files/search/continue_v2` methods after the API spec changed those routes to user auth only.
+- Regenerate the user `files/search_v2` builder as `SearchV2Builder` after the route became user-auth only.
+- Add Dropbox Protect team log event models for internal domain list changes.
+- Update `sharing/get_shared_links` deprecation documentation with the October 2026 retirement timeline.
+
 7.1.0 (2026-06-16)
 ---------------------------------------------
 - Update generated SDK code from the latest Dropbox API spec.

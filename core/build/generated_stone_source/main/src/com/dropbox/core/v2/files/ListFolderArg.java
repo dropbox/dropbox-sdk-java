@@ -38,6 +38,7 @@ class ListFolderArg {
     @Nullable
     protected final TemplateFilterBase includePropertyGroups;
     protected final boolean includeNonDownloadableFiles;
+    protected final boolean includeRestorableInfo;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -80,11 +81,13 @@ class ListFolderArg {
      *     templates.
      * @param includeNonDownloadableFiles  If true, include files that are not
      *     downloadable, i.e. Google Docs.
+     * @param includeRestorableInfo  If true, each returned deleted entry will
+     *     include whether that entry can be restored.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ListFolderArg(@Nonnull String path, boolean recursive, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, boolean includeMountedFolders, @Nullable Long limit, @Nullable SharedLink sharedLink, @Nullable TemplateFilterBase includePropertyGroups, boolean includeNonDownloadableFiles) {
+    public ListFolderArg(@Nonnull String path, boolean recursive, boolean includeMediaInfo, boolean includeDeleted, boolean includeHasExplicitSharedMembers, boolean includeMountedFolders, @Nullable Long limit, @Nullable SharedLink sharedLink, @Nullable TemplateFilterBase includePropertyGroups, boolean includeNonDownloadableFiles, boolean includeRestorableInfo) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -109,6 +112,7 @@ class ListFolderArg {
         this.sharedLink = sharedLink;
         this.includePropertyGroups = includePropertyGroups;
         this.includeNonDownloadableFiles = includeNonDownloadableFiles;
+        this.includeRestorableInfo = includeRestorableInfo;
     }
 
     /**
@@ -124,7 +128,7 @@ class ListFolderArg {
      *     preconditions.
      */
     public ListFolderArg(@Nonnull String path) {
-        this(path, false, false, false, false, true, null, null, null, true);
+        this(path, false, false, false, false, true, null, null, null, true, false);
     }
 
     /**
@@ -249,6 +253,17 @@ class ListFolderArg {
     }
 
     /**
+     * If true, each returned deleted entry will include whether that entry can
+     * be restored.
+     *
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     false.
+     */
+    public boolean getIncludeRestorableInfo() {
+        return includeRestorableInfo;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param path  A unique identifier for the file. Must match pattern "{@code
@@ -279,6 +294,7 @@ class ListFolderArg {
         protected SharedLink sharedLink;
         protected TemplateFilterBase includePropertyGroups;
         protected boolean includeNonDownloadableFiles;
+        protected boolean includeRestorableInfo;
 
         protected Builder(String path) {
             if (path == null) {
@@ -297,6 +313,7 @@ class ListFolderArg {
             this.sharedLink = null;
             this.includePropertyGroups = null;
             this.includeNonDownloadableFiles = true;
+            this.includeRestorableInfo = false;
         }
 
         /**
@@ -501,13 +518,35 @@ class ListFolderArg {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code false}.
+         * </p>
+         *
+         * @param includeRestorableInfo  If true, each returned deleted entry
+         *     will include whether that entry can be restored. Defaults to
+         *     {@code false} when set to {@code null}.
+         *
+         * @return this builder
+         */
+        public Builder withIncludeRestorableInfo(Boolean includeRestorableInfo) {
+            if (includeRestorableInfo != null) {
+                this.includeRestorableInfo = includeRestorableInfo;
+            }
+            else {
+                this.includeRestorableInfo = false;
+            }
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link ListFolderArg} configured with this
          * builder's values
          *
          * @return new instance of {@link ListFolderArg}
          */
         public ListFolderArg build() {
-            return new ListFolderArg(path, recursive, includeMediaInfo, includeDeleted, includeHasExplicitSharedMembers, includeMountedFolders, limit, sharedLink, includePropertyGroups, includeNonDownloadableFiles);
+            return new ListFolderArg(path, recursive, includeMediaInfo, includeDeleted, includeHasExplicitSharedMembers, includeMountedFolders, limit, sharedLink, includePropertyGroups, includeNonDownloadableFiles, includeRestorableInfo);
         }
     }
 
@@ -523,7 +562,8 @@ class ListFolderArg {
             this.limit,
             this.sharedLink,
             this.includePropertyGroups,
-            this.includeNonDownloadableFiles
+            this.includeNonDownloadableFiles,
+            this.includeRestorableInfo
         });
         return hash;
     }
@@ -549,6 +589,7 @@ class ListFolderArg {
                 && ((this.sharedLink == other.sharedLink) || (this.sharedLink != null && this.sharedLink.equals(other.sharedLink)))
                 && ((this.includePropertyGroups == other.includePropertyGroups) || (this.includePropertyGroups != null && this.includePropertyGroups.equals(other.includePropertyGroups)))
                 && (this.includeNonDownloadableFiles == other.includeNonDownloadableFiles)
+                && (this.includeRestorableInfo == other.includeRestorableInfo)
                 ;
         }
         else {
@@ -610,6 +651,8 @@ class ListFolderArg {
             }
             g.writeFieldName("include_non_downloadable_files");
             StoneSerializers.boolean_().serialize(value.includeNonDownloadableFiles, g);
+            g.writeFieldName("include_restorable_info");
+            StoneSerializers.boolean_().serialize(value.includeRestorableInfo, g);
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -634,6 +677,7 @@ class ListFolderArg {
                 SharedLink f_sharedLink = null;
                 TemplateFilterBase f_includePropertyGroups = null;
                 Boolean f_includeNonDownloadableFiles = true;
+                Boolean f_includeRestorableInfo = false;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -667,6 +711,9 @@ class ListFolderArg {
                     else if ("include_non_downloadable_files".equals(field)) {
                         f_includeNonDownloadableFiles = StoneSerializers.boolean_().deserialize(p);
                     }
+                    else if ("include_restorable_info".equals(field)) {
+                        f_includeRestorableInfo = StoneSerializers.boolean_().deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -674,7 +721,7 @@ class ListFolderArg {
                 if (f_path == null) {
                     throw new JsonParseException(p, "Required field \"path\" missing.");
                 }
-                value = new ListFolderArg(f_path, f_recursive, f_includeMediaInfo, f_includeDeleted, f_includeHasExplicitSharedMembers, f_includeMountedFolders, f_limit, f_sharedLink, f_includePropertyGroups, f_includeNonDownloadableFiles);
+                value = new ListFolderArg(f_path, f_recursive, f_includeMediaInfo, f_includeDeleted, f_includeHasExplicitSharedMembers, f_includeMountedFolders, f_limit, f_sharedLink, f_includePropertyGroups, f_includeNonDownloadableFiles, f_includeRestorableInfo);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

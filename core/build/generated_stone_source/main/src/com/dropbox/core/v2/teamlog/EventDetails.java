@@ -310,6 +310,7 @@ public final class EventDetails {
         PASSWORD_CHANGE_DETAILS, // PasswordChangeDetails
         PASSWORD_RESET_DETAILS, // PasswordResetDetails
         PASSWORD_RESET_ALL_DETAILS, // PasswordResetAllDetails
+        PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS, // ProtectInternalDomainsChangedDetails
         CLASSIFICATION_CREATE_REPORT_DETAILS, // ClassificationCreateReportDetails
         CLASSIFICATION_CREATE_REPORT_FAIL_DETAILS, // ClassificationCreateReportFailDetails
         EMM_CREATE_EXCEPTIONS_REPORT_DETAILS, // EmmCreateExceptionsReportDetails
@@ -941,6 +942,7 @@ public final class EventDetails {
     private PasswordChangeDetails passwordChangeDetailsValue;
     private PasswordResetDetails passwordResetDetailsValue;
     private PasswordResetAllDetails passwordResetAllDetailsValue;
+    private ProtectInternalDomainsChangedDetails protectInternalDomainsChangedDetailsValue;
     private ClassificationCreateReportDetails classificationCreateReportDetailsValue;
     private ClassificationCreateReportFailDetails classificationCreateReportFailDetailsValue;
     private EmmCreateExceptionsReportDetails emmCreateExceptionsReportDetailsValue;
@@ -5755,6 +5757,23 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.passwordResetAllDetailsValue = passwordResetAllDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param protectInternalDomainsChangedDetailsValue  Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndProtectInternalDomainsChangedDetails(Tag _tag, ProtectInternalDomainsChangedDetails protectInternalDomainsChangedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.protectInternalDomainsChangedDetailsValue = protectInternalDomainsChangedDetailsValue;
         return result;
     }
 
@@ -24624,6 +24643,56 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isProtectInternalDomainsChangedDetails() {
+        return this._tag == Tag.PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails protectInternalDomainsChangedDetails(ProtectInternalDomainsChangedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndProtectInternalDomainsChangedDetails(Tag.PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS}.
+     *
+     * @return The {@link ProtectInternalDomainsChangedDetails} value associated
+     *     with this instance if {@link #isProtectInternalDomainsChangedDetails}
+     *     is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectInternalDomainsChangedDetails} is {@code false}.
+     */
+    public ProtectInternalDomainsChangedDetails getProtectInternalDomainsChangedDetailsValue() {
+        if (this._tag != Tag.PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return protectInternalDomainsChangedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#CLASSIFICATION_CREATE_REPORT_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -41239,6 +41308,7 @@ public final class EventDetails {
             this.passwordChangeDetailsValue,
             this.passwordResetDetailsValue,
             this.passwordResetAllDetailsValue,
+            this.protectInternalDomainsChangedDetailsValue,
             this.classificationCreateReportDetailsValue,
             this.classificationCreateReportFailDetailsValue,
             this.emmCreateExceptionsReportDetailsValue,
@@ -42138,6 +42208,8 @@ public final class EventDetails {
                     return (this.passwordResetDetailsValue == other.passwordResetDetailsValue) || (this.passwordResetDetailsValue.equals(other.passwordResetDetailsValue));
                 case PASSWORD_RESET_ALL_DETAILS:
                     return (this.passwordResetAllDetailsValue == other.passwordResetAllDetailsValue) || (this.passwordResetAllDetailsValue.equals(other.passwordResetAllDetailsValue));
+                case PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS:
+                    return (this.protectInternalDomainsChangedDetailsValue == other.protectInternalDomainsChangedDetailsValue) || (this.protectInternalDomainsChangedDetailsValue.equals(other.protectInternalDomainsChangedDetailsValue));
                 case CLASSIFICATION_CREATE_REPORT_DETAILS:
                     return (this.classificationCreateReportDetailsValue == other.classificationCreateReportDetailsValue) || (this.classificationCreateReportDetailsValue.equals(other.classificationCreateReportDetailsValue));
                 case CLASSIFICATION_CREATE_REPORT_FAIL_DETAILS:
@@ -44759,6 +44831,13 @@ public final class EventDetails {
                     g.writeStartObject();
                     writeTag("password_reset_all_details", g);
                     PasswordResetAllDetails.Serializer.INSTANCE.serialize(value.passwordResetAllDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("protect_internal_domains_changed_details", g);
+                    ProtectInternalDomainsChangedDetails.Serializer.INSTANCE.serialize(value.protectInternalDomainsChangedDetailsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -48477,6 +48556,11 @@ public final class EventDetails {
                 PasswordResetAllDetails fieldValue = null;
                 fieldValue = PasswordResetAllDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.passwordResetAllDetails(fieldValue);
+            }
+            else if ("protect_internal_domains_changed_details".equals(tag)) {
+                ProtectInternalDomainsChangedDetails fieldValue = null;
+                fieldValue = ProtectInternalDomainsChangedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.protectInternalDomainsChangedDetails(fieldValue);
             }
             else if ("classification_create_report_details".equals(tag)) {
                 ClassificationCreateReportDetails fieldValue = null;
