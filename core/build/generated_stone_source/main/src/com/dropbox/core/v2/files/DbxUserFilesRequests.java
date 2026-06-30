@@ -3601,9 +3601,9 @@ public class DbxUserFilesRequests {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DbxUserSearchV2Builder searchV2Builder(String query) {
+    public SearchV2Builder searchV2Builder(String query) {
         SearchV2Arg.Builder argBuilder_ = SearchV2Arg.newBuilder(query);
-        return new DbxUserSearchV2Builder(this, argBuilder_);
+        return new SearchV2Builder(this, argBuilder_);
     }
 
     //

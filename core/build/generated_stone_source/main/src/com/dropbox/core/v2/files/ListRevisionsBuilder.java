@@ -95,6 +95,22 @@ public class ListRevisionsBuilder {
     }
 
     /**
+     * Set value for optional field.
+     *
+     * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
+     *
+     * @param includeRestorableInfo  If true, each returned revision will
+     *     include whether that revision can be restored. Defaults to {@code
+     *     false} when set to {@code null}.
+     *
+     * @return this builder
+     */
+    public ListRevisionsBuilder withIncludeRestorableInfo(Boolean includeRestorableInfo) {
+        this._builder.withIncludeRestorableInfo(includeRestorableInfo);
+        return this;
+    }
+
+    /**
      * Issues the request.
      */
     public ListRevisionsResult start() throws ListRevisionsErrorException, DbxException {

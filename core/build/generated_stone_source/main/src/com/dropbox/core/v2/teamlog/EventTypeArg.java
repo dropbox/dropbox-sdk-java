@@ -1138,6 +1138,10 @@ public enum EventTypeArg {
      */
     PASSWORD_RESET_ALL,
     /**
+     * (protect) Modified Protect internal domains list
+     */
+    PROTECT_INTERNAL_DOMAINS_CHANGED,
+    /**
      * (reports) Created Classification report
      */
     CLASSIFICATION_CREATE_REPORT,
@@ -3641,6 +3645,10 @@ public enum EventTypeArg {
                     g.writeString("password_reset_all");
                     break;
                 }
+                case PROTECT_INTERNAL_DOMAINS_CHANGED: {
+                    g.writeString("protect_internal_domains_changed");
+                    break;
+                }
                 case CLASSIFICATION_CREATE_REPORT: {
                     g.writeString("classification_create_report");
                     break;
@@ -5809,6 +5817,9 @@ public enum EventTypeArg {
             }
             else if ("password_reset_all".equals(tag)) {
                 value = EventTypeArg.PASSWORD_RESET_ALL;
+            }
+            else if ("protect_internal_domains_changed".equals(tag)) {
+                value = EventTypeArg.PROTECT_INTERNAL_DOMAINS_CHANGED;
             }
             else if ("classification_create_report".equals(tag)) {
                 value = EventTypeArg.CLASSIFICATION_CREATE_REPORT;
