@@ -27,8 +27,8 @@ class SearchV2ContinueArg {
     /**
      *
      * @param cursor  The cursor returned by your last call to {@link
-     *     DbxAppFilesRequests#searchV2(String)}. Used to fetch the next page of
-     *     results. Must have length of at least 1 and not be {@code null}.
+     *     DbxUserFilesRequests#searchV2(String)}. Used to fetch the next page
+     *     of results. Must have length of at least 1 and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -45,7 +45,7 @@ class SearchV2ContinueArg {
 
     /**
      * The cursor returned by your last call to {@link
-     * DbxAppFilesRequests#searchV2(String)}. Used to fetch the next page of
+     * DbxUserFilesRequests#searchV2(String)}. Used to fetch the next page of
      * results.
      *
      * @return value for this field, never {@code null}.

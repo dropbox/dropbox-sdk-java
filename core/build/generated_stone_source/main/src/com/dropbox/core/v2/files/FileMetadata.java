@@ -53,6 +53,8 @@ public class FileMetadata extends Metadata {
     protected final String contentHash;
     @Nullable
     protected final FileLockMetadata fileLockInfo;
+    @Nullable
+    protected final Boolean isRestorable;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -121,11 +123,13 @@ public class FileMetadata extends Metadata {
      *     most 64.
      * @param fileLockInfo  If present, the metadata associated with the file's
      *     current lock.
+     * @param isRestorable  If present, indicates whether this file revision can
+     *     be restored.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public FileMetadata(@Nonnull String name, @Nonnull String id, @Nonnull Date clientModified, @Nonnull Date serverModified, @Nonnull String rev, long size, @Nullable String pathLower, @Nullable String pathDisplay, @Nullable String parentSharedFolderId, @Nullable String previewUrl, @Nullable MediaInfo mediaInfo, @Nullable SymlinkInfo symlinkInfo, @Nullable FileSharingInfo sharingInfo, boolean isDownloadable, @Nullable ExportInfo exportInfo, @Nullable List<PropertyGroup> propertyGroups, @Nullable Boolean hasExplicitSharedMembers, @Nullable String contentHash, @Nullable FileLockMetadata fileLockInfo) {
+    public FileMetadata(@Nonnull String name, @Nonnull String id, @Nonnull Date clientModified, @Nonnull Date serverModified, @Nonnull String rev, long size, @Nullable String pathLower, @Nullable String pathDisplay, @Nullable String parentSharedFolderId, @Nullable String previewUrl, @Nullable MediaInfo mediaInfo, @Nullable SymlinkInfo symlinkInfo, @Nullable FileSharingInfo sharingInfo, boolean isDownloadable, @Nullable ExportInfo exportInfo, @Nullable List<PropertyGroup> propertyGroups, @Nullable Boolean hasExplicitSharedMembers, @Nullable String contentHash, @Nullable FileLockMetadata fileLockInfo, @Nullable Boolean isRestorable) {
         super(name, pathLower, pathDisplay, parentSharedFolderId, previewUrl);
         if (id == null) {
             throw new IllegalArgumentException("Required value for 'id' is null");
@@ -177,6 +181,7 @@ public class FileMetadata extends Metadata {
         }
         this.contentHash = contentHash;
         this.fileLockInfo = fileLockInfo;
+        this.isRestorable = isRestorable;
     }
 
     /**
@@ -206,7 +211,7 @@ public class FileMetadata extends Metadata {
      *     preconditions.
      */
     public FileMetadata(@Nonnull String name, @Nonnull String id, @Nonnull Date clientModified, @Nonnull Date serverModified, @Nonnull String rev, long size) {
-        this(name, id, clientModified, serverModified, rev, size, null, null, null, null, null, null, null, true, null, null, null, null, null);
+        this(name, id, clientModified, serverModified, rev, size, null, null, null, null, null, null, null, true, null, null, null, null, null, null);
     }
 
     /**
@@ -432,6 +437,16 @@ public class FileMetadata extends Metadata {
     }
 
     /**
+     * If present, indicates whether this file revision can be restored.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public Boolean getIsRestorable() {
+        return isRestorable;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param name  The last component of the path (including extension). This
@@ -480,6 +495,7 @@ public class FileMetadata extends Metadata {
         protected Boolean hasExplicitSharedMembers;
         protected String contentHash;
         protected FileLockMetadata fileLockInfo;
+        protected Boolean isRestorable;
 
         protected Builder(String name, String id, Date clientModified, Date serverModified, String rev, long size) {
             super(name);
@@ -518,6 +534,7 @@ public class FileMetadata extends Metadata {
             this.hasExplicitSharedMembers = null;
             this.contentHash = null;
             this.fileLockInfo = null;
+            this.isRestorable = null;
         }
 
         /**
@@ -683,6 +700,19 @@ public class FileMetadata extends Metadata {
         /**
          * Set value for optional field.
          *
+         * @param isRestorable  If present, indicates whether this file revision
+         *     can be restored.
+         *
+         * @return this builder
+         */
+        public Builder withIsRestorable(Boolean isRestorable) {
+            this.isRestorable = isRestorable;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
          * @param pathLower  The lowercased full path in the user's Dropbox.
          *     This always starts with a slash. This field will be null if the
          *     file or folder is not mounted.
@@ -753,7 +783,7 @@ public class FileMetadata extends Metadata {
          * @return new instance of {@link FileMetadata}
          */
         public FileMetadata build() {
-            return new FileMetadata(name, id, clientModified, serverModified, rev, size, pathLower, pathDisplay, parentSharedFolderId, previewUrl, mediaInfo, symlinkInfo, sharingInfo, isDownloadable, exportInfo, propertyGroups, hasExplicitSharedMembers, contentHash, fileLockInfo);
+            return new FileMetadata(name, id, clientModified, serverModified, rev, size, pathLower, pathDisplay, parentSharedFolderId, previewUrl, mediaInfo, symlinkInfo, sharingInfo, isDownloadable, exportInfo, propertyGroups, hasExplicitSharedMembers, contentHash, fileLockInfo, isRestorable);
         }
     }
 
@@ -773,7 +803,8 @@ public class FileMetadata extends Metadata {
             this.propertyGroups,
             this.hasExplicitSharedMembers,
             this.contentHash,
-            this.fileLockInfo
+            this.fileLockInfo,
+            this.isRestorable
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -809,6 +840,7 @@ public class FileMetadata extends Metadata {
                 && ((this.hasExplicitSharedMembers == other.hasExplicitSharedMembers) || (this.hasExplicitSharedMembers != null && this.hasExplicitSharedMembers.equals(other.hasExplicitSharedMembers)))
                 && ((this.contentHash == other.contentHash) || (this.contentHash != null && this.contentHash.equals(other.contentHash)))
                 && ((this.fileLockInfo == other.fileLockInfo) || (this.fileLockInfo != null && this.fileLockInfo.equals(other.fileLockInfo)))
+                && ((this.isRestorable == other.isRestorable) || (this.isRestorable != null && this.isRestorable.equals(other.isRestorable)))
                 ;
         }
         else {
@@ -907,6 +939,10 @@ public class FileMetadata extends Metadata {
                 g.writeFieldName("file_lock_info");
                 StoneSerializers.nullableStruct(FileLockMetadata.Serializer.INSTANCE).serialize(value.fileLockInfo, g);
             }
+            if (value.isRestorable != null) {
+                g.writeFieldName("is_restorable");
+                StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.isRestorable, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -943,6 +979,7 @@ public class FileMetadata extends Metadata {
                 Boolean f_hasExplicitSharedMembers = null;
                 String f_contentHash = null;
                 FileLockMetadata f_fileLockInfo = null;
+                Boolean f_isRestorable = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -1003,6 +1040,9 @@ public class FileMetadata extends Metadata {
                     else if ("file_lock_info".equals(field)) {
                         f_fileLockInfo = StoneSerializers.nullableStruct(FileLockMetadata.Serializer.INSTANCE).deserialize(p);
                     }
+                    else if ("is_restorable".equals(field)) {
+                        f_isRestorable = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -1025,7 +1065,7 @@ public class FileMetadata extends Metadata {
                 if (f_size == null) {
                     throw new JsonParseException(p, "Required field \"size\" missing.");
                 }
-                value = new FileMetadata(f_name, f_id, f_clientModified, f_serverModified, f_rev, f_size, f_pathLower, f_pathDisplay, f_parentSharedFolderId, f_previewUrl, f_mediaInfo, f_symlinkInfo, f_sharingInfo, f_isDownloadable, f_exportInfo, f_propertyGroups, f_hasExplicitSharedMembers, f_contentHash, f_fileLockInfo);
+                value = new FileMetadata(f_name, f_id, f_clientModified, f_serverModified, f_rev, f_size, f_pathLower, f_pathDisplay, f_parentSharedFolderId, f_previewUrl, f_mediaInfo, f_symlinkInfo, f_sharingInfo, f_isDownloadable, f_exportInfo, f_propertyGroups, f_hasExplicitSharedMembers, f_contentHash, f_fileLockInfo, f_isRestorable);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

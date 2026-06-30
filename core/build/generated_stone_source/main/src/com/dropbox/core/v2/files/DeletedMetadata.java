@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,6 +26,8 @@ import javax.annotation.Nullable;
 public class DeletedMetadata extends Metadata {
     // struct files.DeletedMetadata (files.stone)
 
+    @Nullable
+    protected final Boolean isRestorable;
 
     /**
      * Indicates that there used to be a file or folder at this path, but it no
@@ -50,12 +53,15 @@ public class DeletedMetadata extends Metadata {
      *     FolderSharingInfo#getParentSharedFolderId} instead. Must match
      *     pattern "{@code [-_0-9a-zA-Z:]+}".
      * @param previewUrl  The preview URL of the file.
+     * @param isRestorable  If present, indicates whether this deleted entry can
+     *     be restored.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public DeletedMetadata(@Nonnull String name, @Nullable String pathLower, @Nullable String pathDisplay, @Nullable String parentSharedFolderId, @Nullable String previewUrl) {
+    public DeletedMetadata(@Nonnull String name, @Nullable String pathLower, @Nullable String pathDisplay, @Nullable String parentSharedFolderId, @Nullable String previewUrl, @Nullable Boolean isRestorable) {
         super(name, pathLower, pathDisplay, parentSharedFolderId, previewUrl);
+        this.isRestorable = isRestorable;
     }
 
     /**
@@ -71,7 +77,7 @@ public class DeletedMetadata extends Metadata {
      *     preconditions.
      */
     public DeletedMetadata(@Nonnull String name) {
-        this(name, null, null, null, null);
+        this(name, null, null, null, null, null);
     }
 
     /**
@@ -138,6 +144,16 @@ public class DeletedMetadata extends Metadata {
     }
 
     /**
+     * If present, indicates whether this deleted entry can be restored.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public Boolean getIsRestorable() {
+        return isRestorable;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param name  The last component of the path (including extension). This
@@ -157,8 +173,24 @@ public class DeletedMetadata extends Metadata {
      */
     public static class Builder extends Metadata.Builder {
 
+        protected Boolean isRestorable;
+
         protected Builder(String name) {
             super(name);
+            this.isRestorable = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param isRestorable  If present, indicates whether this deleted entry
+         *     can be restored.
+         *
+         * @return this builder
+         */
+        public Builder withIsRestorable(Boolean isRestorable) {
+            this.isRestorable = isRestorable;
+            return this;
         }
 
         /**
@@ -234,14 +266,17 @@ public class DeletedMetadata extends Metadata {
          * @return new instance of {@link DeletedMetadata}
          */
         public DeletedMetadata build() {
-            return new DeletedMetadata(name, pathLower, pathDisplay, parentSharedFolderId, previewUrl);
+            return new DeletedMetadata(name, pathLower, pathDisplay, parentSharedFolderId, previewUrl, isRestorable);
         }
     }
 
     @Override
     public int hashCode() {
-        // attempt to deal with inheritance
-        return getClass().toString().hashCode();
+        int hash = Arrays.hashCode(new Object [] {
+            this.isRestorable
+        });
+        hash = (31 * super.hashCode()) + hash;
+        return hash;
     }
 
     @Override
@@ -260,6 +295,7 @@ public class DeletedMetadata extends Metadata {
                 && ((this.pathDisplay == other.pathDisplay) || (this.pathDisplay != null && this.pathDisplay.equals(other.pathDisplay)))
                 && ((this.parentSharedFolderId == other.parentSharedFolderId) || (this.parentSharedFolderId != null && this.parentSharedFolderId.equals(other.parentSharedFolderId)))
                 && ((this.previewUrl == other.previewUrl) || (this.previewUrl != null && this.previewUrl.equals(other.previewUrl)))
+                && ((this.isRestorable == other.isRestorable) || (this.isRestorable != null && this.isRestorable.equals(other.isRestorable)))
                 ;
         }
         else {
@@ -314,6 +350,10 @@ public class DeletedMetadata extends Metadata {
                 g.writeFieldName("preview_url");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.previewUrl, g);
             }
+            if (value.isRestorable != null) {
+                g.writeFieldName("is_restorable");
+                StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.isRestorable, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -336,6 +376,7 @@ public class DeletedMetadata extends Metadata {
                 String f_pathDisplay = null;
                 String f_parentSharedFolderId = null;
                 String f_previewUrl = null;
+                Boolean f_isRestorable = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -354,6 +395,9 @@ public class DeletedMetadata extends Metadata {
                     else if ("preview_url".equals(field)) {
                         f_previewUrl = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
+                    else if ("is_restorable".equals(field)) {
+                        f_isRestorable = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -361,7 +405,7 @@ public class DeletedMetadata extends Metadata {
                 if (f_name == null) {
                     throw new JsonParseException(p, "Required field \"name\" missing.");
                 }
-                value = new DeletedMetadata(f_name, f_pathLower, f_pathDisplay, f_parentSharedFolderId, f_previewUrl);
+                value = new DeletedMetadata(f_name, f_pathLower, f_pathDisplay, f_parentSharedFolderId, f_previewUrl, f_isRestorable);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

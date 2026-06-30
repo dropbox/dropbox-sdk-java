@@ -1158,6 +1158,10 @@ public final class EventType {
          */
         PASSWORD_RESET_ALL, // PasswordResetAllType
         /**
+         * (protect) Modified Protect internal domains list
+         */
+        PROTECT_INTERNAL_DOMAINS_CHANGED, // ProtectInternalDomainsChangedType
+        /**
          * (reports) Created Classification report
          */
         CLASSIFICATION_CREATE_REPORT, // ClassificationCreateReportType
@@ -2854,6 +2858,7 @@ public final class EventType {
     private PasswordChangeType passwordChangeValue;
     private PasswordResetType passwordResetValue;
     private PasswordResetAllType passwordResetAllValue;
+    private ProtectInternalDomainsChangedType protectInternalDomainsChangedValue;
     private ClassificationCreateReportType classificationCreateReportValue;
     private ClassificationCreateReportFailType classificationCreateReportFailValue;
     private EmmCreateExceptionsReportType emmCreateExceptionsReportValue;
@@ -7891,6 +7896,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.passwordResetAllValue = passwordResetAllValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectInternalDomainsChangedValue  (protect) Modified Protect
+     *     internal domains list. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectInternalDomainsChanged(Tag _tag, ProtectInternalDomainsChangedType protectInternalDomainsChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectInternalDomainsChangedValue = protectInternalDomainsChangedValue;
         return result;
     }
 
@@ -27447,6 +27469,57 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_INTERNAL_DOMAINS_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_INTERNAL_DOMAINS_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isProtectInternalDomainsChanged() {
+        return this._tag == Tag.PROTECT_INTERNAL_DOMAINS_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_INTERNAL_DOMAINS_CHANGED}.
+     *
+     * <p> (protect) Modified Protect internal domains list </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_INTERNAL_DOMAINS_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectInternalDomainsChanged(ProtectInternalDomainsChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectInternalDomainsChanged(Tag.PROTECT_INTERNAL_DOMAINS_CHANGED, value);
+    }
+
+    /**
+     * (protect) Modified Protect internal domains list
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_INTERNAL_DOMAINS_CHANGED}. </p>
+     *
+     * @return The {@link ProtectInternalDomainsChangedType} value associated
+     *     with this instance if {@link #isProtectInternalDomainsChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectInternalDomainsChanged} is {@code false}.
+     */
+    public ProtectInternalDomainsChangedType getProtectInternalDomainsChangedValue() {
+        if (this._tag != Tag.PROTECT_INTERNAL_DOMAINS_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_INTERNAL_DOMAINS_CHANGED, but was Tag." + this._tag.name());
+        }
+        return protectInternalDomainsChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#CLASSIFICATION_CREATE_REPORT}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -44597,6 +44670,7 @@ public final class EventType {
             this.passwordChangeValue,
             this.passwordResetValue,
             this.passwordResetAllValue,
+            this.protectInternalDomainsChangedValue,
             this.classificationCreateReportValue,
             this.classificationCreateReportFailValue,
             this.emmCreateExceptionsReportValue,
@@ -45495,6 +45569,8 @@ public final class EventType {
                     return (this.passwordResetValue == other.passwordResetValue) || (this.passwordResetValue.equals(other.passwordResetValue));
                 case PASSWORD_RESET_ALL:
                     return (this.passwordResetAllValue == other.passwordResetAllValue) || (this.passwordResetAllValue.equals(other.passwordResetAllValue));
+                case PROTECT_INTERNAL_DOMAINS_CHANGED:
+                    return (this.protectInternalDomainsChangedValue == other.protectInternalDomainsChangedValue) || (this.protectInternalDomainsChangedValue.equals(other.protectInternalDomainsChangedValue));
                 case CLASSIFICATION_CREATE_REPORT:
                     return (this.classificationCreateReportValue == other.classificationCreateReportValue) || (this.classificationCreateReportValue.equals(other.classificationCreateReportValue));
                 case CLASSIFICATION_CREATE_REPORT_FAIL:
@@ -48114,6 +48190,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("password_reset_all", g);
                     PasswordResetAllType.Serializer.INSTANCE.serialize(value.passwordResetAllValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_INTERNAL_DOMAINS_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("protect_internal_domains_changed", g);
+                    ProtectInternalDomainsChangedType.Serializer.INSTANCE.serialize(value.protectInternalDomainsChangedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -51825,6 +51908,11 @@ public final class EventType {
                 PasswordResetAllType fieldValue = null;
                 fieldValue = PasswordResetAllType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.passwordResetAll(fieldValue);
+            }
+            else if ("protect_internal_domains_changed".equals(tag)) {
+                ProtectInternalDomainsChangedType fieldValue = null;
+                fieldValue = ProtectInternalDomainsChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectInternalDomainsChanged(fieldValue);
             }
             else if ("classification_create_report".equals(tag)) {
                 ClassificationCreateReportType fieldValue = null;
