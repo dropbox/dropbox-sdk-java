@@ -1,4 +1,4 @@
-## Important: Make sure you're using v7.0.0 or newer of this SDK by January 2026 for continued compatibility with the Dropbox API servers. Please refer to this blog post for more information: https://dropbox.tech/developers/api-server-certificate-changes
+## Important: Use v7.0.0 or newer of this SDK for compatibility with the Dropbox API servers. Older versions stopped working in January 2026. Please refer to this blog post for more information: https://dropbox.tech/developers/api-server-certificate-changes
 
 # Dropbox Core SDK for Java
 
