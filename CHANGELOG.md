@@ -1,3 +1,7 @@
+8.0.2 (2026-07-15)
+---------------------------------------------
+- [#587](https://github.com/dropbox/dropbox-sdk-java/pull/587) Fix Android URL encoder compatibility.
+
 8.0.1 (2026-06-30)
 ---------------------------------------------
 - Update generated SDK code from the latest Dropbox API spec.
