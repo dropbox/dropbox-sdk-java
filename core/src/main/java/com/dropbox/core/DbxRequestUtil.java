@@ -1,11 +1,11 @@
 package com.dropbox.core;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.CharacterCodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,14 @@ public final class DbxRequestUtil {
     public static DbxGlobalCallbackFactory sharedCallbackFactory;
 
     public static String encodeUrlParam(String s) {
-        return URLEncoder.encode(s, StandardCharsets.UTF_8);
+        try {
+            // Use the String overload for Android API compatibility. The Charset overload was
+            // added to Android much later than the String overload.
+            return URLEncoder.encode(s, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            // UTF-8 is required by every Java implementation.
+            throw new AssertionError(ex);
+        }
     }
 
     public static String buildUrlWithParams(/*@Nullable*/String userLocale,
