@@ -10,8 +10,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -105,7 +105,14 @@ public final class DbxOAuth1Upgrader
 
     private static String encode(String s)
     {
-        return URLEncoder.encode(s, StandardCharsets.UTF_8);
+        try {
+            // Use the String overload for Android API compatibility. The Charset overload was
+            // added to Android much later than the String overload.
+            return URLEncoder.encode(s, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            // UTF-8 is required by every Java implementation.
+            throw new AssertionError(ex);
+        }
     }
 
     /**
