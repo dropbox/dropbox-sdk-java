@@ -160,6 +160,10 @@ tasks.register('integrationTest', Test) {
     description 'Runs integration tests against Production or Dev servers.'
     enabled = project.hasProperty(authInfoPropertyName)
 
+    // Run against the same compiled classes and classpath as the unit `test` task.
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+
     useTestNG()
 
     // only select integration tests (similar to maven-failsafe-plugin rules)

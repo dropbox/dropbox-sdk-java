@@ -271,6 +271,31 @@ To run individual tests, use the `--tests` gradle test filter:
 ./gradlew -Pcom.dropbox.test.authInfoFile=<path-to-test.auth> integrationTest --tests '*.DbxClientV1IT.testAccountInfo'
 ```
 
+### Scoped credential integration tests
+
+A few integration tests exercise the credential model shared across the Dropbox SDKs (scoped user
+and team refresh tokens plus a shared link). In addition to the `test.auth` file above, these tests
+read the following environment variables and are **automatically skipped** when the variables are
+not set:
+
+- `SCOPED_USER_CLIENT_ID`, `SCOPED_USER_CLIENT_SECRET`, `SCOPED_USER_REFRESH_TOKEN`
+- `SCOPED_TEAM_CLIENT_ID`, `SCOPED_TEAM_CLIENT_SECRET`, `SCOPED_TEAM_REFRESH_TOKEN`
+- `DROPBOX_SHARED_LINK`
+
+For local development you don't need to do anything with these: run `integrationTest` with your
+`test.auth` file as usual, and the scoped tests simply skip. To run them locally as well, export the
+variables alongside the usual command:
+
+```shell
+SCOPED_USER_CLIENT_ID=... SCOPED_USER_CLIENT_SECRET=... SCOPED_USER_REFRESH_TOKEN=... \
+SCOPED_TEAM_CLIENT_ID=... SCOPED_TEAM_CLIENT_SECRET=... SCOPED_TEAM_REFRESH_TOKEN=... \
+DROPBOX_SHARED_LINK=... \
+  ./gradlew -Pcom.dropbox.test.authInfoFile=<path-to-test.auth> integrationTest
+```
+
+On CI these variables are provided automatically, so all integration tests run there. Local
+development continues to use your own `test.auth` file.
+
 ## Usage on Android
 
 Edit your project's "build.gradle" and add the following to the dependencies section:
