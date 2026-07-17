@@ -20,6 +20,7 @@ import com.squareup.okhttp.OkHttpClient;
 
 import okhttp3.Request;
 import okhttp3.Response;
+import org.testng.SkipException;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
@@ -29,14 +30,27 @@ import com.dropbox.core.http.OkHttpRequestor;
 import com.dropbox.core.http.OkHttp3Requestor;
 import com.dropbox.core.http.StandardHttpRequestor;
 import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.oauth.DbxCredential;
 import com.dropbox.core.v1.DbxClientV1;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.DbxTeamClientV2;
 import com.dropbox.core.v2.files.DeleteErrorException;
 
 // integration test utility class
 public final class ITUtil {
     private static final String AUTH_INFO_FILE_PROPERTY = "com.dropbox.test.authInfoFile";
     private static final String HTTP_REQUESTOR_PROPERTY = "com.dropbox.test.httpRequestor";
+
+    // Environment variables mirroring the credential model shared across the Dropbox SDKs
+    // (see dropbox-sdk-python). Populated in CI from the "api-sdk-integration-test-creds"
+    // AWS Secrets Manager secret. Scoped clients authenticate via refresh tokens.
+    public static final String SCOPED_USER_CLIENT_ID = "SCOPED_USER_CLIENT_ID";
+    public static final String SCOPED_USER_CLIENT_SECRET = "SCOPED_USER_CLIENT_SECRET";
+    public static final String SCOPED_USER_REFRESH_TOKEN = "SCOPED_USER_REFRESH_TOKEN";
+    public static final String SCOPED_TEAM_CLIENT_ID = "SCOPED_TEAM_CLIENT_ID";
+    public static final String SCOPED_TEAM_CLIENT_SECRET = "SCOPED_TEAM_CLIENT_SECRET";
+    public static final String SCOPED_TEAM_REFRESH_TOKEN = "SCOPED_TEAM_REFRESH_TOKEN";
+    public static final String DROPBOX_SHARED_LINK = "DROPBOX_SHARED_LINK";
 
     private static final Random RAND = new Random(0L);
     private static final long READ_TIMEOUT = TimeUnit.SECONDS.toMillis(20);
@@ -194,6 +208,56 @@ public final class ITUtil {
             auth.getAccessToken(),
             auth.getHost()
         );
+    }
+
+    /**
+     * Reads an environment variable, skipping the current test (rather than failing) if it is
+     * not set. This lets the scoped-credential integration tests run only in environments that
+     * supply the shared SDK credentials while remaining opt-in elsewhere.
+     */
+    public static String valueFromEnvOrSkip(String name) {
+        String value = System.getenv(name);
+        if (value == null || value.isEmpty()) {
+            throw new SkipException(
+                "Environment variable \"" + name + "\" is not set; skipping test that requires " +
+                "shared SDK integration credentials.");
+        }
+        return value;
+    }
+
+    /**
+     * Builds a {@link DbxCredential} from a refresh token plus app key/secret. The access token
+     * is a placeholder with an {@code expiresAt} of {@code 0}, which forces the client to refresh
+     * before the first request.
+     */
+    static DbxCredential refreshCredential(String refreshToken, String appKey, String appSecret) {
+        return new DbxCredential("placeholder-access-token", 0L, refreshToken, appKey, appSecret);
+    }
+
+    /**
+     * Creates a user {@link DbxClientV2} authenticated via the scoped user refresh token supplied
+     * through environment variables. Skips the calling test if the credentials are not set.
+     */
+    public static DbxClientV2 newScopedUserClientV2() {
+        DbxCredential credential = refreshCredential(
+            valueFromEnvOrSkip(SCOPED_USER_REFRESH_TOKEN),
+            valueFromEnvOrSkip(SCOPED_USER_CLIENT_ID),
+            valueFromEnvOrSkip(SCOPED_USER_CLIENT_SECRET)
+        );
+        return new DbxClientV2(newRequestConfig().build(), credential);
+    }
+
+    /**
+     * Creates a {@link DbxTeamClientV2} authenticated via the scoped team refresh token supplied
+     * through environment variables. Skips the calling test if the credentials are not set.
+     */
+    public static DbxTeamClientV2 newScopedTeamClientV2() {
+        DbxCredential credential = refreshCredential(
+            valueFromEnvOrSkip(SCOPED_TEAM_REFRESH_TOKEN),
+            valueFromEnvOrSkip(SCOPED_TEAM_CLIENT_ID),
+            valueFromEnvOrSkip(SCOPED_TEAM_CLIENT_SECRET)
+        );
+        return new DbxTeamClientV2(newRequestConfig().build(), credential);
     }
 
     private static final class RootContainer {

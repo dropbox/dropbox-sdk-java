@@ -96,20 +96,26 @@ jobs:
     - name: Configure AWS credentials (OIDC)
       uses: aws-actions/configure-aws-credentials@v6
       with:
-        role-to-assume: arn:aws:iam::521590706193:role/oidc-github-dropbox-dropbox-sdk-java-branch-main
+        role-to-assume: arn:aws:iam::082972943155:role/oidc-github-dropbox-dropbox-sdk-java-repo
         aws-region: us-west-2
 
-    - name: Get integration test secrets from AWS Secrets Manager
+    # Shared credential model used across the Dropbox SDKs (scoped user/team refresh tokens and a
+    # shared link). Exposed as CREDS_<KEY> env vars. The scoped user credentials also back the
+    # auth_output file consumed by the file-based tests (examples, proguard, and the legacy IT
+    # tests), so all of CI runs against this single shared credential.
+    - name: Get shared SDK integration test secrets from AWS Secrets Manager
       uses: aws-actions/aws-secretsmanager-get-secrets@v3
       with:
         secret-ids: |
-          APP_KEY,dropbox-sdk-java-app-key
-          APP_SECRET,dropbox-sdk-java-app-secret
-          REFRESH_TOKEN,dropbox-sdk-java-refresh-token
-        parse-json-secrets: false
+          CREDS,api-sdk-integration-test-creds
+        parse-json-secrets: true
 
     - name: Obtain oauth access token for integration tests
       run: ./generate-ci-auth-file
+      env:
+        APP_KEY: ${{ env.CREDS_SCOPED_USER_CLIENT_ID }}
+        APP_SECRET: ${{ env.CREDS_SCOPED_USER_CLIENT_SECRET }}
+        REFRESH_TOKEN: ${{ env.CREDS_SCOPED_USER_REFRESH_TOKEN }}
 
     - name: Run Integration Tests for Examples
       run: ./gradlew :examples:examples:test :examples:java:test -Pci=true --info
@@ -117,14 +123,38 @@ jobs:
     - name: Run Integration Tests - OkHttpRequestor
       run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output integrationTest &&
            ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest
+      env:
+        SCOPED_USER_CLIENT_ID: ${{ env.CREDS_SCOPED_USER_CLIENT_ID }}
+        SCOPED_USER_CLIENT_SECRET: ${{ env.CREDS_SCOPED_USER_CLIENT_SECRET }}
+        SCOPED_USER_REFRESH_TOKEN: ${{ env.CREDS_SCOPED_USER_REFRESH_TOKEN }}
+        SCOPED_TEAM_CLIENT_ID: ${{ env.CREDS_SCOPED_TEAM_CLIENT_ID }}
+        SCOPED_TEAM_CLIENT_SECRET: ${{ env.CREDS_SCOPED_TEAM_CLIENT_SECRET }}
+        SCOPED_TEAM_REFRESH_TOKEN: ${{ env.CREDS_SCOPED_TEAM_REFRESH_TOKEN }}
+        DROPBOX_SHARED_LINK: ${{ env.CREDS_DROPBOX_SHARED_LINK }}
 
     - name: Run Integration Tests - OkHttp3Requestor
       run: ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttp3Requestor -Pcom.dropbox.test.authInfoFile=../auth_output integrationTest &&
            ./gradlew -Pcom.dropbox.test.httpRequestor=OkHttp3Requestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest
+      env:
+        SCOPED_USER_CLIENT_ID: ${{ env.CREDS_SCOPED_USER_CLIENT_ID }}
+        SCOPED_USER_CLIENT_SECRET: ${{ env.CREDS_SCOPED_USER_CLIENT_SECRET }}
+        SCOPED_USER_REFRESH_TOKEN: ${{ env.CREDS_SCOPED_USER_REFRESH_TOKEN }}
+        SCOPED_TEAM_CLIENT_ID: ${{ env.CREDS_SCOPED_TEAM_CLIENT_ID }}
+        SCOPED_TEAM_CLIENT_SECRET: ${{ env.CREDS_SCOPED_TEAM_CLIENT_SECRET }}
+        SCOPED_TEAM_REFRESH_TOKEN: ${{ env.CREDS_SCOPED_TEAM_REFRESH_TOKEN }}
+        DROPBOX_SHARED_LINK: ${{ env.CREDS_DROPBOX_SHARED_LINK }}
 
     - name: Run Integration Tests - StandardHttpRequestor
       run: ./gradlew -Pcom.dropbox.test.httpRequestor=StandardHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output integrationTest &&
            ./gradlew -Pcom.dropbox.test.httpRequestor=StandardHttpRequestor -Pcom.dropbox.test.authInfoFile=../auth_output proguardTest
+      env:
+        SCOPED_USER_CLIENT_ID: ${{ env.CREDS_SCOPED_USER_CLIENT_ID }}
+        SCOPED_USER_CLIENT_SECRET: ${{ env.CREDS_SCOPED_USER_CLIENT_SECRET }}
+        SCOPED_USER_REFRESH_TOKEN: ${{ env.CREDS_SCOPED_USER_REFRESH_TOKEN }}
+        SCOPED_TEAM_CLIENT_ID: ${{ env.CREDS_SCOPED_TEAM_CLIENT_ID }}
+        SCOPED_TEAM_CLIENT_SECRET: ${{ env.CREDS_SCOPED_TEAM_CLIENT_SECRET }}
+        SCOPED_TEAM_REFRESH_TOKEN: ${{ env.CREDS_SCOPED_TEAM_REFRESH_TOKEN }}
+        DROPBOX_SHARED_LINK: ${{ env.CREDS_DROPBOX_SHARED_LINK }}
 
   publish:
     runs-on: ubuntu-latest
