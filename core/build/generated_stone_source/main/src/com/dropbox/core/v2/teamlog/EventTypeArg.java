@@ -611,6 +611,10 @@ public enum EventTypeArg {
      */
     FOLDER_OVERVIEW_ITEM_UNPINNED,
     /**
+     * (file_operations) Downloaded files in Media Hub
+     */
+    MEDIA_HUB_FILE_DOWNLOADED,
+    /**
      * (file_operations) Added a label
      */
     OBJECT_LABEL_ADDED,
@@ -1285,6 +1289,34 @@ public enum EventTypeArg {
      * (sharing) Viewed transfer
      */
     FILE_TRANSFERS_TRANSFER_VIEW,
+    /**
+     * (sharing) Added member to Media Hub project
+     */
+    MEDIA_HUB_PROJECT_TEAM_ADD,
+    /**
+     * (sharing) Removed member from Media Hub project
+     */
+    MEDIA_HUB_PROJECT_TEAM_DELETE,
+    /**
+     * (sharing) Changed member role in Media Hub project
+     */
+    MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED,
+    /**
+     * (sharing) Changed Media Hub shared link audience
+     */
+    MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED,
+    /**
+     * (sharing) Created Media Hub shared link
+     */
+    MEDIA_HUB_SHARED_LINK_CREATED,
+    /**
+     * (sharing) Changed Media Hub shared link download setting
+     */
+    MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED,
+    /**
+     * (sharing) Revoked Media Hub shared link
+     */
+    MEDIA_HUB_SHARED_LINK_REVOKED,
     /**
      * (sharing) Changed Paper doc to invite-only (deprecated, no longer logged)
      */
@@ -2066,6 +2098,18 @@ public enum EventTypeArg {
      */
     INVITE_ACCEPTANCE_EMAIL_POLICY_CHANGED,
     /**
+     * (team_policies) Changed the policy for adding people to Media Hub content
+     */
+    MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED,
+    /**
+     * (team_policies) Changed the policy for downloading Media Hub content
+     */
+    MEDIA_HUB_DOWNLOAD_POLICY_CHANGED,
+    /**
+     * (team_policies) Changed the policy for sharing Media Hub content
+     */
+    MEDIA_HUB_LINK_SHARING_POLICY_CHANGED,
+    /**
      * (team_policies) Changed whether users can find team when not invited
      */
     MEMBER_REQUESTS_CHANGE_POLICY,
@@ -2102,6 +2146,10 @@ public enum EventTypeArg {
      * (team_policies) Enabled/disabled Microsoft Office add-in
      */
     MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY,
+    /**
+     * (team_policies) Changed multi-team identity policy for team
+     */
+    MULTI_TEAM_IDENTITY_POLICY_CHANGED,
     /**
      * (team_policies) Enabled/disabled network control
      */
@@ -3129,6 +3177,10 @@ public enum EventTypeArg {
                     g.writeString("folder_overview_item_unpinned");
                     break;
                 }
+                case MEDIA_HUB_FILE_DOWNLOADED: {
+                    g.writeString("media_hub_file_downloaded");
+                    break;
+                }
                 case OBJECT_LABEL_ADDED: {
                     g.writeString("object_label_added");
                     break;
@@ -3791,6 +3843,34 @@ public enum EventTypeArg {
                 }
                 case FILE_TRANSFERS_TRANSFER_VIEW: {
                     g.writeString("file_transfers_transfer_view");
+                    break;
+                }
+                case MEDIA_HUB_PROJECT_TEAM_ADD: {
+                    g.writeString("media_hub_project_team_add");
+                    break;
+                }
+                case MEDIA_HUB_PROJECT_TEAM_DELETE: {
+                    g.writeString("media_hub_project_team_delete");
+                    break;
+                }
+                case MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED: {
+                    g.writeString("media_hub_project_team_role_changed");
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED: {
+                    g.writeString("media_hub_shared_link_audience_changed");
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_CREATED: {
+                    g.writeString("media_hub_shared_link_created");
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED: {
+                    g.writeString("media_hub_shared_link_download_setting_changed");
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_REVOKED: {
+                    g.writeString("media_hub_shared_link_revoked");
                     break;
                 }
                 case NOTE_ACL_INVITE_ONLY: {
@@ -4537,6 +4617,18 @@ public enum EventTypeArg {
                     g.writeString("invite_acceptance_email_policy_changed");
                     break;
                 }
+                case MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED: {
+                    g.writeString("media_hub_adding_people_policy_changed");
+                    break;
+                }
+                case MEDIA_HUB_DOWNLOAD_POLICY_CHANGED: {
+                    g.writeString("media_hub_download_policy_changed");
+                    break;
+                }
+                case MEDIA_HUB_LINK_SHARING_POLICY_CHANGED: {
+                    g.writeString("media_hub_link_sharing_policy_changed");
+                    break;
+                }
                 case MEMBER_REQUESTS_CHANGE_POLICY: {
                     g.writeString("member_requests_change_policy");
                     break;
@@ -4571,6 +4663,10 @@ public enum EventTypeArg {
                 }
                 case MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY: {
                     g.writeString("microsoft_office_addin_change_policy");
+                    break;
+                }
+                case MULTI_TEAM_IDENTITY_POLICY_CHANGED: {
+                    g.writeString("multi_team_identity_policy_changed");
                     break;
                 }
                 case NETWORK_CONTROL_CHANGE_POLICY: {
@@ -5431,6 +5527,9 @@ public enum EventTypeArg {
             else if ("folder_overview_item_unpinned".equals(tag)) {
                 value = EventTypeArg.FOLDER_OVERVIEW_ITEM_UNPINNED;
             }
+            else if ("media_hub_file_downloaded".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_FILE_DOWNLOADED;
+            }
             else if ("object_label_added".equals(tag)) {
                 value = EventTypeArg.OBJECT_LABEL_ADDED;
             }
@@ -5928,6 +6027,27 @@ public enum EventTypeArg {
             }
             else if ("file_transfers_transfer_view".equals(tag)) {
                 value = EventTypeArg.FILE_TRANSFERS_TRANSFER_VIEW;
+            }
+            else if ("media_hub_project_team_add".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_PROJECT_TEAM_ADD;
+            }
+            else if ("media_hub_project_team_delete".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_PROJECT_TEAM_DELETE;
+            }
+            else if ("media_hub_project_team_role_changed".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED;
+            }
+            else if ("media_hub_shared_link_audience_changed".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED;
+            }
+            else if ("media_hub_shared_link_created".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_SHARED_LINK_CREATED;
+            }
+            else if ("media_hub_shared_link_download_setting_changed".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED;
+            }
+            else if ("media_hub_shared_link_revoked".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_SHARED_LINK_REVOKED;
             }
             else if ("note_acl_invite_only".equals(tag)) {
                 value = EventTypeArg.NOTE_ACL_INVITE_ONLY;
@@ -6487,6 +6607,15 @@ public enum EventTypeArg {
             else if ("invite_acceptance_email_policy_changed".equals(tag)) {
                 value = EventTypeArg.INVITE_ACCEPTANCE_EMAIL_POLICY_CHANGED;
             }
+            else if ("media_hub_adding_people_policy_changed".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED;
+            }
+            else if ("media_hub_download_policy_changed".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_DOWNLOAD_POLICY_CHANGED;
+            }
+            else if ("media_hub_link_sharing_policy_changed".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_LINK_SHARING_POLICY_CHANGED;
+            }
             else if ("member_requests_change_policy".equals(tag)) {
                 value = EventTypeArg.MEMBER_REQUESTS_CHANGE_POLICY;
             }
@@ -6513,6 +6642,9 @@ public enum EventTypeArg {
             }
             else if ("microsoft_office_addin_change_policy".equals(tag)) {
                 value = EventTypeArg.MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY;
+            }
+            else if ("multi_team_identity_policy_changed".equals(tag)) {
+                value = EventTypeArg.MULTI_TEAM_IDENTITY_POLICY_CHANGED;
             }
             else if ("network_control_change_policy".equals(tag)) {
                 value = EventTypeArg.NETWORK_CONTROL_CHANGE_POLICY;

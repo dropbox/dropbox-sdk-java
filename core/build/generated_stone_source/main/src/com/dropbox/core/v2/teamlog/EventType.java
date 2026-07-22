@@ -627,6 +627,10 @@ public final class EventType {
          */
         FOLDER_OVERVIEW_ITEM_UNPINNED, // FolderOverviewItemUnpinnedType
         /**
+         * (file_operations) Downloaded files in Media Hub
+         */
+        MEDIA_HUB_FILE_DOWNLOADED, // MediaHubFileDownloadedType
+        /**
          * (file_operations) Added a label
          */
         OBJECT_LABEL_ADDED, // ObjectLabelAddedType
@@ -1305,6 +1309,34 @@ public final class EventType {
          * (sharing) Viewed transfer
          */
         FILE_TRANSFERS_TRANSFER_VIEW, // FileTransfersTransferViewType
+        /**
+         * (sharing) Added member to Media Hub project
+         */
+        MEDIA_HUB_PROJECT_TEAM_ADD, // MediaHubProjectTeamAddType
+        /**
+         * (sharing) Removed member from Media Hub project
+         */
+        MEDIA_HUB_PROJECT_TEAM_DELETE, // MediaHubProjectTeamDeleteType
+        /**
+         * (sharing) Changed member role in Media Hub project
+         */
+        MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED, // MediaHubProjectTeamRoleChangedType
+        /**
+         * (sharing) Changed Media Hub shared link audience
+         */
+        MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED, // MediaHubSharedLinkAudienceChangedType
+        /**
+         * (sharing) Created Media Hub shared link
+         */
+        MEDIA_HUB_SHARED_LINK_CREATED, // MediaHubSharedLinkCreatedType
+        /**
+         * (sharing) Changed Media Hub shared link download setting
+         */
+        MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED, // MediaHubSharedLinkDownloadSettingChangedType
+        /**
+         * (sharing) Revoked Media Hub shared link
+         */
+        MEDIA_HUB_SHARED_LINK_REVOKED, // MediaHubSharedLinkRevokedType
         /**
          * (sharing) Changed Paper doc to invite-only (deprecated, no longer
          * logged)
@@ -2092,6 +2124,19 @@ public final class EventType {
          */
         INVITE_ACCEPTANCE_EMAIL_POLICY_CHANGED, // InviteAcceptanceEmailPolicyChangedType
         /**
+         * (team_policies) Changed the policy for adding people to Media Hub
+         * content
+         */
+        MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED, // MediaHubAddingPeoplePolicyChangedType
+        /**
+         * (team_policies) Changed the policy for downloading Media Hub content
+         */
+        MEDIA_HUB_DOWNLOAD_POLICY_CHANGED, // MediaHubDownloadPolicyChangedType
+        /**
+         * (team_policies) Changed the policy for sharing Media Hub content
+         */
+        MEDIA_HUB_LINK_SHARING_POLICY_CHANGED, // MediaHubLinkSharingPolicyChangedType
+        /**
          * (team_policies) Changed whether users can find team when not invited
          */
         MEMBER_REQUESTS_CHANGE_POLICY, // MemberRequestsChangePolicyType
@@ -2129,6 +2174,10 @@ public final class EventType {
          * (team_policies) Enabled/disabled Microsoft Office add-in
          */
         MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY, // MicrosoftOfficeAddinChangePolicyType
+        /**
+         * (team_policies) Changed multi-team identity policy for team
+         */
+        MULTI_TEAM_IDENTITY_POLICY_CHANGED, // MultiTeamIdentityPolicyChangedType
         /**
          * (team_policies) Enabled/disabled network control
          */
@@ -2729,6 +2778,7 @@ public final class EventType {
     private FolderOverviewDescriptionChangedType folderOverviewDescriptionChangedValue;
     private FolderOverviewItemPinnedType folderOverviewItemPinnedValue;
     private FolderOverviewItemUnpinnedType folderOverviewItemUnpinnedValue;
+    private MediaHubFileDownloadedType mediaHubFileDownloadedValue;
     private ObjectLabelAddedType objectLabelAddedValue;
     private ObjectLabelRemovedType objectLabelRemovedValue;
     private ObjectLabelUpdatedValueType objectLabelUpdatedValueValue;
@@ -2895,6 +2945,13 @@ public final class EventType {
     private FileTransfersTransferDownloadType fileTransfersTransferDownloadValue;
     private FileTransfersTransferSendType fileTransfersTransferSendValue;
     private FileTransfersTransferViewType fileTransfersTransferViewValue;
+    private MediaHubProjectTeamAddType mediaHubProjectTeamAddValue;
+    private MediaHubProjectTeamDeleteType mediaHubProjectTeamDeleteValue;
+    private MediaHubProjectTeamRoleChangedType mediaHubProjectTeamRoleChangedValue;
+    private MediaHubSharedLinkAudienceChangedType mediaHubSharedLinkAudienceChangedValue;
+    private MediaHubSharedLinkCreatedType mediaHubSharedLinkCreatedValue;
+    private MediaHubSharedLinkDownloadSettingChangedType mediaHubSharedLinkDownloadSettingChangedValue;
+    private MediaHubSharedLinkRevokedType mediaHubSharedLinkRevokedValue;
     private NoteAclInviteOnlyType noteAclInviteOnlyValue;
     private NoteAclLinkType noteAclLinkValue;
     private NoteAclTeamLinkType noteAclTeamLinkValue;
@@ -3081,6 +3138,9 @@ public final class EventType {
     private GroupUserManagementChangePolicyType groupUserManagementChangePolicyValue;
     private IntegrationPolicyChangedType integrationPolicyChangedValue;
     private InviteAcceptanceEmailPolicyChangedType inviteAcceptanceEmailPolicyChangedValue;
+    private MediaHubAddingPeoplePolicyChangedType mediaHubAddingPeoplePolicyChangedValue;
+    private MediaHubDownloadPolicyChangedType mediaHubDownloadPolicyChangedValue;
+    private MediaHubLinkSharingPolicyChangedType mediaHubLinkSharingPolicyChangedValue;
     private MemberRequestsChangePolicyType memberRequestsChangePolicyValue;
     private MemberSendInvitePolicyChangedType memberSendInvitePolicyChangedValue;
     private MemberSpaceLimitsAddExceptionType memberSpaceLimitsAddExceptionValue;
@@ -3090,6 +3150,7 @@ public final class EventType {
     private MemberSuggestionsChangePolicyType memberSuggestionsChangePolicyValue;
     private MicrosoftLoginChangePolicyType microsoftLoginChangePolicyValue;
     private MicrosoftOfficeAddinChangePolicyType microsoftOfficeAddinChangePolicyValue;
+    private MultiTeamIdentityPolicyChangedType multiTeamIdentityPolicyChangedValue;
     private NetworkControlChangePolicyType networkControlChangePolicyValue;
     private PaperChangeDeploymentPolicyType paperChangeDeploymentPolicyValue;
     private PaperChangeMemberLinkPolicyType paperChangeMemberLinkPolicyValue;
@@ -5695,6 +5756,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.folderOverviewItemUnpinnedValue = folderOverviewItemUnpinnedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubFileDownloadedValue  (file_operations) Downloaded files in
+     *     Media Hub. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubFileDownloaded(Tag _tag, MediaHubFileDownloadedType mediaHubFileDownloadedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubFileDownloadedValue = mediaHubFileDownloadedValue;
         return result;
     }
 
@@ -8525,6 +8603,125 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.fileTransfersTransferViewValue = fileTransfersTransferViewValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubProjectTeamAddValue  (sharing) Added member to Media Hub
+     *     project. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubProjectTeamAdd(Tag _tag, MediaHubProjectTeamAddType mediaHubProjectTeamAddValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubProjectTeamAddValue = mediaHubProjectTeamAddValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubProjectTeamDeleteValue  (sharing) Removed member from
+     *     Media Hub project. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubProjectTeamDelete(Tag _tag, MediaHubProjectTeamDeleteType mediaHubProjectTeamDeleteValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubProjectTeamDeleteValue = mediaHubProjectTeamDeleteValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubProjectTeamRoleChangedValue  (sharing) Changed member role
+     *     in Media Hub project. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubProjectTeamRoleChanged(Tag _tag, MediaHubProjectTeamRoleChangedType mediaHubProjectTeamRoleChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubProjectTeamRoleChangedValue = mediaHubProjectTeamRoleChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubSharedLinkAudienceChangedValue  (sharing) Changed Media
+     *     Hub shared link audience. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubSharedLinkAudienceChanged(Tag _tag, MediaHubSharedLinkAudienceChangedType mediaHubSharedLinkAudienceChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubSharedLinkAudienceChangedValue = mediaHubSharedLinkAudienceChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubSharedLinkCreatedValue  (sharing) Created Media Hub shared
+     *     link. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubSharedLinkCreated(Tag _tag, MediaHubSharedLinkCreatedType mediaHubSharedLinkCreatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubSharedLinkCreatedValue = mediaHubSharedLinkCreatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubSharedLinkDownloadSettingChangedValue  (sharing) Changed
+     *     Media Hub shared link download setting. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubSharedLinkDownloadSettingChanged(Tag _tag, MediaHubSharedLinkDownloadSettingChangedType mediaHubSharedLinkDownloadSettingChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubSharedLinkDownloadSettingChangedValue = mediaHubSharedLinkDownloadSettingChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubSharedLinkRevokedValue  (sharing) Revoked Media Hub shared
+     *     link. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubSharedLinkRevoked(Tag _tag, MediaHubSharedLinkRevokedType mediaHubSharedLinkRevokedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubSharedLinkRevokedValue = mediaHubSharedLinkRevokedValue;
         return result;
     }
 
@@ -11731,6 +11928,58 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param mediaHubAddingPeoplePolicyChangedValue  (team_policies) Changed
+     *     the policy for adding people to Media Hub content. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubAddingPeoplePolicyChanged(Tag _tag, MediaHubAddingPeoplePolicyChangedType mediaHubAddingPeoplePolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubAddingPeoplePolicyChangedValue = mediaHubAddingPeoplePolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubDownloadPolicyChangedValue  (team_policies) Changed the
+     *     policy for downloading Media Hub content. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubDownloadPolicyChanged(Tag _tag, MediaHubDownloadPolicyChangedType mediaHubDownloadPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubDownloadPolicyChangedValue = mediaHubDownloadPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubLinkSharingPolicyChangedValue  (team_policies) Changed the
+     *     policy for sharing Media Hub content. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubLinkSharingPolicyChanged(Tag _tag, MediaHubLinkSharingPolicyChangedType mediaHubLinkSharingPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubLinkSharingPolicyChangedValue = mediaHubLinkSharingPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param memberRequestsChangePolicyValue  (team_policies) Changed whether
      *     users can find team when not invited. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -11880,6 +12129,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.microsoftOfficeAddinChangePolicyValue = microsoftOfficeAddinChangePolicyValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param multiTeamIdentityPolicyChangedValue  (team_policies) Changed
+     *     multi-team identity policy for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMultiTeamIdentityPolicyChanged(Tag _tag, MultiTeamIdentityPolicyChangedType multiTeamIdentityPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.multiTeamIdentityPolicyChangedValue = multiTeamIdentityPolicyChangedValue;
         return result;
     }
 
@@ -21001,6 +21267,56 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_FILE_DOWNLOADED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_FILE_DOWNLOADED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubFileDownloaded() {
+        return this._tag == Tag.MEDIA_HUB_FILE_DOWNLOADED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_FILE_DOWNLOADED}.
+     *
+     * <p> (file_operations) Downloaded files in Media Hub </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_FILE_DOWNLOADED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubFileDownloaded(MediaHubFileDownloadedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubFileDownloaded(Tag.MEDIA_HUB_FILE_DOWNLOADED, value);
+    }
+
+    /**
+     * (file_operations) Downloaded files in Media Hub
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_FILE_DOWNLOADED}. </p>
+     *
+     * @return The {@link MediaHubFileDownloadedType} value associated with this
+     *     instance if {@link #isMediaHubFileDownloaded} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isMediaHubFileDownloaded} is
+     *     {@code false}.
+     */
+    public MediaHubFileDownloadedType getMediaHubFileDownloadedValue() {
+        if (this._tag != Tag.MEDIA_HUB_FILE_DOWNLOADED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_FILE_DOWNLOADED, but was Tag." + this._tag.name());
+        }
+        return mediaHubFileDownloadedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#OBJECT_LABEL_ADDED}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -29347,6 +29663,364 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.FILE_TRANSFERS_TRANSFER_VIEW, but was Tag." + this._tag.name());
         }
         return fileTransfersTransferViewValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_ADD}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_PROJECT_TEAM_ADD}, {@code false} otherwise.
+     */
+    public boolean isMediaHubProjectTeamAdd() {
+        return this._tag == Tag.MEDIA_HUB_PROJECT_TEAM_ADD;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_ADD}.
+     *
+     * <p> (sharing) Added member to Media Hub project </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_PROJECT_TEAM_ADD}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubProjectTeamAdd(MediaHubProjectTeamAddType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubProjectTeamAdd(Tag.MEDIA_HUB_PROJECT_TEAM_ADD, value);
+    }
+
+    /**
+     * (sharing) Added member to Media Hub project
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_ADD}. </p>
+     *
+     * @return The {@link MediaHubProjectTeamAddType} value associated with this
+     *     instance if {@link #isMediaHubProjectTeamAdd} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isMediaHubProjectTeamAdd} is
+     *     {@code false}.
+     */
+    public MediaHubProjectTeamAddType getMediaHubProjectTeamAddValue() {
+        if (this._tag != Tag.MEDIA_HUB_PROJECT_TEAM_ADD) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_PROJECT_TEAM_ADD, but was Tag." + this._tag.name());
+        }
+        return mediaHubProjectTeamAddValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_DELETE}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_PROJECT_TEAM_DELETE}, {@code false} otherwise.
+     */
+    public boolean isMediaHubProjectTeamDelete() {
+        return this._tag == Tag.MEDIA_HUB_PROJECT_TEAM_DELETE;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_DELETE}.
+     *
+     * <p> (sharing) Removed member from Media Hub project </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_PROJECT_TEAM_DELETE}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubProjectTeamDelete(MediaHubProjectTeamDeleteType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubProjectTeamDelete(Tag.MEDIA_HUB_PROJECT_TEAM_DELETE, value);
+    }
+
+    /**
+     * (sharing) Removed member from Media Hub project
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_DELETE}. </p>
+     *
+     * @return The {@link MediaHubProjectTeamDeleteType} value associated with
+     *     this instance if {@link #isMediaHubProjectTeamDelete} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isMediaHubProjectTeamDelete} is
+     *     {@code false}.
+     */
+    public MediaHubProjectTeamDeleteType getMediaHubProjectTeamDeleteValue() {
+        if (this._tag != Tag.MEDIA_HUB_PROJECT_TEAM_DELETE) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_PROJECT_TEAM_DELETE, but was Tag." + this._tag.name());
+        }
+        return mediaHubProjectTeamDeleteValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubProjectTeamRoleChanged() {
+        return this._tag == Tag.MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED}.
+     *
+     * <p> (sharing) Changed member role in Media Hub project </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubProjectTeamRoleChanged(MediaHubProjectTeamRoleChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubProjectTeamRoleChanged(Tag.MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED, value);
+    }
+
+    /**
+     * (sharing) Changed member role in Media Hub project
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED}. </p>
+     *
+     * @return The {@link MediaHubProjectTeamRoleChangedType} value associated
+     *     with this instance if {@link #isMediaHubProjectTeamRoleChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMediaHubProjectTeamRoleChanged} is {@code false}.
+     */
+    public MediaHubProjectTeamRoleChangedType getMediaHubProjectTeamRoleChangedValue() {
+        if (this._tag != Tag.MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED, but was Tag." + this._tag.name());
+        }
+        return mediaHubProjectTeamRoleChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubSharedLinkAudienceChanged() {
+        return this._tag == Tag.MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED}.
+     *
+     * <p> (sharing) Changed Media Hub shared link audience </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubSharedLinkAudienceChanged(MediaHubSharedLinkAudienceChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubSharedLinkAudienceChanged(Tag.MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED, value);
+    }
+
+    /**
+     * (sharing) Changed Media Hub shared link audience
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED}. </p>
+     *
+     * @return The {@link MediaHubSharedLinkAudienceChangedType} value
+     *     associated with this instance if {@link
+     *     #isMediaHubSharedLinkAudienceChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMediaHubSharedLinkAudienceChanged} is {@code false}.
+     */
+    public MediaHubSharedLinkAudienceChangedType getMediaHubSharedLinkAudienceChangedValue() {
+        if (this._tag != Tag.MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED, but was Tag." + this._tag.name());
+        }
+        return mediaHubSharedLinkAudienceChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_CREATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_CREATED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubSharedLinkCreated() {
+        return this._tag == Tag.MEDIA_HUB_SHARED_LINK_CREATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_CREATED}.
+     *
+     * <p> (sharing) Created Media Hub shared link </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_CREATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubSharedLinkCreated(MediaHubSharedLinkCreatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubSharedLinkCreated(Tag.MEDIA_HUB_SHARED_LINK_CREATED, value);
+    }
+
+    /**
+     * (sharing) Created Media Hub shared link
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_CREATED}. </p>
+     *
+     * @return The {@link MediaHubSharedLinkCreatedType} value associated with
+     *     this instance if {@link #isMediaHubSharedLinkCreated} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isMediaHubSharedLinkCreated} is
+     *     {@code false}.
+     */
+    public MediaHubSharedLinkCreatedType getMediaHubSharedLinkCreatedValue() {
+        if (this._tag != Tag.MEDIA_HUB_SHARED_LINK_CREATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_SHARED_LINK_CREATED, but was Tag." + this._tag.name());
+        }
+        return mediaHubSharedLinkCreatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED}, {@code false}
+     *     otherwise.
+     */
+    public boolean isMediaHubSharedLinkDownloadSettingChanged() {
+        return this._tag == Tag.MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED}.
+     *
+     * <p> (sharing) Changed Media Hub shared link download setting </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubSharedLinkDownloadSettingChanged(MediaHubSharedLinkDownloadSettingChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubSharedLinkDownloadSettingChanged(Tag.MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED, value);
+    }
+
+    /**
+     * (sharing) Changed Media Hub shared link download setting
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED}. </p>
+     *
+     * @return The {@link MediaHubSharedLinkDownloadSettingChangedType} value
+     *     associated with this instance if {@link
+     *     #isMediaHubSharedLinkDownloadSettingChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMediaHubSharedLinkDownloadSettingChanged} is {@code false}.
+     */
+    public MediaHubSharedLinkDownloadSettingChangedType getMediaHubSharedLinkDownloadSettingChangedValue() {
+        if (this._tag != Tag.MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED, but was Tag." + this._tag.name());
+        }
+        return mediaHubSharedLinkDownloadSettingChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_REVOKED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_REVOKED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubSharedLinkRevoked() {
+        return this._tag == Tag.MEDIA_HUB_SHARED_LINK_REVOKED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_REVOKED}.
+     *
+     * <p> (sharing) Revoked Media Hub shared link </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_REVOKED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubSharedLinkRevoked(MediaHubSharedLinkRevokedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubSharedLinkRevoked(Tag.MEDIA_HUB_SHARED_LINK_REVOKED, value);
+    }
+
+    /**
+     * (sharing) Revoked Media Hub shared link
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_REVOKED}. </p>
+     *
+     * @return The {@link MediaHubSharedLinkRevokedType} value associated with
+     *     this instance if {@link #isMediaHubSharedLinkRevoked} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isMediaHubSharedLinkRevoked} is
+     *     {@code false}.
+     */
+    public MediaHubSharedLinkRevokedType getMediaHubSharedLinkRevokedValue() {
+        if (this._tag != Tag.MEDIA_HUB_SHARED_LINK_REVOKED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_SHARED_LINK_REVOKED, but was Tag." + this._tag.name());
+        }
+        return mediaHubSharedLinkRevokedValue;
     }
 
     /**
@@ -38796,6 +39470,161 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubAddingPeoplePolicyChanged() {
+        return this._tag == Tag.MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed the policy for adding people to Media Hub
+     * content </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubAddingPeoplePolicyChanged(MediaHubAddingPeoplePolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubAddingPeoplePolicyChanged(Tag.MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed the policy for adding people to Media Hub content
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link MediaHubAddingPeoplePolicyChangedType} value
+     *     associated with this instance if {@link
+     *     #isMediaHubAddingPeoplePolicyChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMediaHubAddingPeoplePolicyChanged} is {@code false}.
+     */
+    public MediaHubAddingPeoplePolicyChangedType getMediaHubAddingPeoplePolicyChangedValue() {
+        if (this._tag != Tag.MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return mediaHubAddingPeoplePolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_DOWNLOAD_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_DOWNLOAD_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubDownloadPolicyChanged() {
+        return this._tag == Tag.MEDIA_HUB_DOWNLOAD_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_DOWNLOAD_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed the policy for downloading Media Hub content
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_DOWNLOAD_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubDownloadPolicyChanged(MediaHubDownloadPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubDownloadPolicyChanged(Tag.MEDIA_HUB_DOWNLOAD_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed the policy for downloading Media Hub content
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_DOWNLOAD_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link MediaHubDownloadPolicyChangedType} value associated
+     *     with this instance if {@link #isMediaHubDownloadPolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMediaHubDownloadPolicyChanged} is {@code false}.
+     */
+    public MediaHubDownloadPolicyChangedType getMediaHubDownloadPolicyChangedValue() {
+        if (this._tag != Tag.MEDIA_HUB_DOWNLOAD_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_DOWNLOAD_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return mediaHubDownloadPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_LINK_SHARING_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_LINK_SHARING_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubLinkSharingPolicyChanged() {
+        return this._tag == Tag.MEDIA_HUB_LINK_SHARING_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_LINK_SHARING_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed the policy for sharing Media Hub content </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_LINK_SHARING_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubLinkSharingPolicyChanged(MediaHubLinkSharingPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubLinkSharingPolicyChanged(Tag.MEDIA_HUB_LINK_SHARING_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed the policy for sharing Media Hub content
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_LINK_SHARING_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link MediaHubLinkSharingPolicyChangedType} value associated
+     *     with this instance if {@link #isMediaHubLinkSharingPolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMediaHubLinkSharingPolicyChanged} is {@code false}.
+     */
+    public MediaHubLinkSharingPolicyChangedType getMediaHubLinkSharingPolicyChangedValue() {
+        if (this._tag != Tag.MEDIA_HUB_LINK_SHARING_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_LINK_SHARING_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return mediaHubLinkSharingPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#MEMBER_REQUESTS_CHANGE_POLICY}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -39258,6 +40087,57 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY, but was Tag." + this._tag.name());
         }
         return microsoftOfficeAddinChangePolicyValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MULTI_TEAM_IDENTITY_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MULTI_TEAM_IDENTITY_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isMultiTeamIdentityPolicyChanged() {
+        return this._tag == Tag.MULTI_TEAM_IDENTITY_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MULTI_TEAM_IDENTITY_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed multi-team identity policy for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MULTI_TEAM_IDENTITY_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType multiTeamIdentityPolicyChanged(MultiTeamIdentityPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMultiTeamIdentityPolicyChanged(Tag.MULTI_TEAM_IDENTITY_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed multi-team identity policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MULTI_TEAM_IDENTITY_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link MultiTeamIdentityPolicyChangedType} value associated
+     *     with this instance if {@link #isMultiTeamIdentityPolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMultiTeamIdentityPolicyChanged} is {@code false}.
+     */
+    public MultiTeamIdentityPolicyChangedType getMultiTeamIdentityPolicyChangedValue() {
+        if (this._tag != Tag.MULTI_TEAM_IDENTITY_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MULTI_TEAM_IDENTITY_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return multiTeamIdentityPolicyChangedValue;
     }
 
     /**
@@ -44541,6 +45421,7 @@ public final class EventType {
             this.folderOverviewDescriptionChangedValue,
             this.folderOverviewItemPinnedValue,
             this.folderOverviewItemUnpinnedValue,
+            this.mediaHubFileDownloadedValue,
             this.objectLabelAddedValue,
             this.objectLabelRemovedValue,
             this.objectLabelUpdatedValueValue,
@@ -44707,6 +45588,13 @@ public final class EventType {
             this.fileTransfersTransferDownloadValue,
             this.fileTransfersTransferSendValue,
             this.fileTransfersTransferViewValue,
+            this.mediaHubProjectTeamAddValue,
+            this.mediaHubProjectTeamDeleteValue,
+            this.mediaHubProjectTeamRoleChangedValue,
+            this.mediaHubSharedLinkAudienceChangedValue,
+            this.mediaHubSharedLinkCreatedValue,
+            this.mediaHubSharedLinkDownloadSettingChangedValue,
+            this.mediaHubSharedLinkRevokedValue,
             this.noteAclInviteOnlyValue,
             this.noteAclLinkValue,
             this.noteAclTeamLinkValue,
@@ -44893,6 +45781,9 @@ public final class EventType {
             this.groupUserManagementChangePolicyValue,
             this.integrationPolicyChangedValue,
             this.inviteAcceptanceEmailPolicyChangedValue,
+            this.mediaHubAddingPeoplePolicyChangedValue,
+            this.mediaHubDownloadPolicyChangedValue,
+            this.mediaHubLinkSharingPolicyChangedValue,
             this.memberRequestsChangePolicyValue,
             this.memberSendInvitePolicyChangedValue,
             this.memberSpaceLimitsAddExceptionValue,
@@ -44902,6 +45793,7 @@ public final class EventType {
             this.memberSuggestionsChangePolicyValue,
             this.microsoftLoginChangePolicyValue,
             this.microsoftOfficeAddinChangePolicyValue,
+            this.multiTeamIdentityPolicyChangedValue,
             this.networkControlChangePolicyValue,
             this.paperChangeDeploymentPolicyValue,
             this.paperChangeMemberLinkPolicyValue,
@@ -45311,6 +46203,8 @@ public final class EventType {
                     return (this.folderOverviewItemPinnedValue == other.folderOverviewItemPinnedValue) || (this.folderOverviewItemPinnedValue.equals(other.folderOverviewItemPinnedValue));
                 case FOLDER_OVERVIEW_ITEM_UNPINNED:
                     return (this.folderOverviewItemUnpinnedValue == other.folderOverviewItemUnpinnedValue) || (this.folderOverviewItemUnpinnedValue.equals(other.folderOverviewItemUnpinnedValue));
+                case MEDIA_HUB_FILE_DOWNLOADED:
+                    return (this.mediaHubFileDownloadedValue == other.mediaHubFileDownloadedValue) || (this.mediaHubFileDownloadedValue.equals(other.mediaHubFileDownloadedValue));
                 case OBJECT_LABEL_ADDED:
                     return (this.objectLabelAddedValue == other.objectLabelAddedValue) || (this.objectLabelAddedValue.equals(other.objectLabelAddedValue));
                 case OBJECT_LABEL_REMOVED:
@@ -45643,6 +46537,20 @@ public final class EventType {
                     return (this.fileTransfersTransferSendValue == other.fileTransfersTransferSendValue) || (this.fileTransfersTransferSendValue.equals(other.fileTransfersTransferSendValue));
                 case FILE_TRANSFERS_TRANSFER_VIEW:
                     return (this.fileTransfersTransferViewValue == other.fileTransfersTransferViewValue) || (this.fileTransfersTransferViewValue.equals(other.fileTransfersTransferViewValue));
+                case MEDIA_HUB_PROJECT_TEAM_ADD:
+                    return (this.mediaHubProjectTeamAddValue == other.mediaHubProjectTeamAddValue) || (this.mediaHubProjectTeamAddValue.equals(other.mediaHubProjectTeamAddValue));
+                case MEDIA_HUB_PROJECT_TEAM_DELETE:
+                    return (this.mediaHubProjectTeamDeleteValue == other.mediaHubProjectTeamDeleteValue) || (this.mediaHubProjectTeamDeleteValue.equals(other.mediaHubProjectTeamDeleteValue));
+                case MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED:
+                    return (this.mediaHubProjectTeamRoleChangedValue == other.mediaHubProjectTeamRoleChangedValue) || (this.mediaHubProjectTeamRoleChangedValue.equals(other.mediaHubProjectTeamRoleChangedValue));
+                case MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED:
+                    return (this.mediaHubSharedLinkAudienceChangedValue == other.mediaHubSharedLinkAudienceChangedValue) || (this.mediaHubSharedLinkAudienceChangedValue.equals(other.mediaHubSharedLinkAudienceChangedValue));
+                case MEDIA_HUB_SHARED_LINK_CREATED:
+                    return (this.mediaHubSharedLinkCreatedValue == other.mediaHubSharedLinkCreatedValue) || (this.mediaHubSharedLinkCreatedValue.equals(other.mediaHubSharedLinkCreatedValue));
+                case MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED:
+                    return (this.mediaHubSharedLinkDownloadSettingChangedValue == other.mediaHubSharedLinkDownloadSettingChangedValue) || (this.mediaHubSharedLinkDownloadSettingChangedValue.equals(other.mediaHubSharedLinkDownloadSettingChangedValue));
+                case MEDIA_HUB_SHARED_LINK_REVOKED:
+                    return (this.mediaHubSharedLinkRevokedValue == other.mediaHubSharedLinkRevokedValue) || (this.mediaHubSharedLinkRevokedValue.equals(other.mediaHubSharedLinkRevokedValue));
                 case NOTE_ACL_INVITE_ONLY:
                     return (this.noteAclInviteOnlyValue == other.noteAclInviteOnlyValue) || (this.noteAclInviteOnlyValue.equals(other.noteAclInviteOnlyValue));
                 case NOTE_ACL_LINK:
@@ -46015,6 +46923,12 @@ public final class EventType {
                     return (this.integrationPolicyChangedValue == other.integrationPolicyChangedValue) || (this.integrationPolicyChangedValue.equals(other.integrationPolicyChangedValue));
                 case INVITE_ACCEPTANCE_EMAIL_POLICY_CHANGED:
                     return (this.inviteAcceptanceEmailPolicyChangedValue == other.inviteAcceptanceEmailPolicyChangedValue) || (this.inviteAcceptanceEmailPolicyChangedValue.equals(other.inviteAcceptanceEmailPolicyChangedValue));
+                case MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED:
+                    return (this.mediaHubAddingPeoplePolicyChangedValue == other.mediaHubAddingPeoplePolicyChangedValue) || (this.mediaHubAddingPeoplePolicyChangedValue.equals(other.mediaHubAddingPeoplePolicyChangedValue));
+                case MEDIA_HUB_DOWNLOAD_POLICY_CHANGED:
+                    return (this.mediaHubDownloadPolicyChangedValue == other.mediaHubDownloadPolicyChangedValue) || (this.mediaHubDownloadPolicyChangedValue.equals(other.mediaHubDownloadPolicyChangedValue));
+                case MEDIA_HUB_LINK_SHARING_POLICY_CHANGED:
+                    return (this.mediaHubLinkSharingPolicyChangedValue == other.mediaHubLinkSharingPolicyChangedValue) || (this.mediaHubLinkSharingPolicyChangedValue.equals(other.mediaHubLinkSharingPolicyChangedValue));
                 case MEMBER_REQUESTS_CHANGE_POLICY:
                     return (this.memberRequestsChangePolicyValue == other.memberRequestsChangePolicyValue) || (this.memberRequestsChangePolicyValue.equals(other.memberRequestsChangePolicyValue));
                 case MEMBER_SEND_INVITE_POLICY_CHANGED:
@@ -46033,6 +46947,8 @@ public final class EventType {
                     return (this.microsoftLoginChangePolicyValue == other.microsoftLoginChangePolicyValue) || (this.microsoftLoginChangePolicyValue.equals(other.microsoftLoginChangePolicyValue));
                 case MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY:
                     return (this.microsoftOfficeAddinChangePolicyValue == other.microsoftOfficeAddinChangePolicyValue) || (this.microsoftOfficeAddinChangePolicyValue.equals(other.microsoftOfficeAddinChangePolicyValue));
+                case MULTI_TEAM_IDENTITY_POLICY_CHANGED:
+                    return (this.multiTeamIdentityPolicyChangedValue == other.multiTeamIdentityPolicyChangedValue) || (this.multiTeamIdentityPolicyChangedValue.equals(other.multiTeamIdentityPolicyChangedValue));
                 case NETWORK_CONTROL_CHANGE_POLICY:
                     return (this.networkControlChangePolicyValue == other.networkControlChangePolicyValue) || (this.networkControlChangePolicyValue.equals(other.networkControlChangePolicyValue));
                 case PAPER_CHANGE_DEPLOYMENT_POLICY:
@@ -47290,6 +48206,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case MEDIA_HUB_FILE_DOWNLOADED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_file_downloaded", g);
+                    MediaHubFileDownloadedType.Serializer.INSTANCE.serialize(value.mediaHubFileDownloadedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case OBJECT_LABEL_ADDED: {
                     g.writeStartObject();
                     writeTag("object_label_added", g);
@@ -48449,6 +49372,55 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("file_transfers_transfer_view", g);
                     FileTransfersTransferViewType.Serializer.INSTANCE.serialize(value.fileTransfersTransferViewValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_PROJECT_TEAM_ADD: {
+                    g.writeStartObject();
+                    writeTag("media_hub_project_team_add", g);
+                    MediaHubProjectTeamAddType.Serializer.INSTANCE.serialize(value.mediaHubProjectTeamAddValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_PROJECT_TEAM_DELETE: {
+                    g.writeStartObject();
+                    writeTag("media_hub_project_team_delete", g);
+                    MediaHubProjectTeamDeleteType.Serializer.INSTANCE.serialize(value.mediaHubProjectTeamDeleteValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_project_team_role_changed", g);
+                    MediaHubProjectTeamRoleChangedType.Serializer.INSTANCE.serialize(value.mediaHubProjectTeamRoleChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_shared_link_audience_changed", g);
+                    MediaHubSharedLinkAudienceChangedType.Serializer.INSTANCE.serialize(value.mediaHubSharedLinkAudienceChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_CREATED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_shared_link_created", g);
+                    MediaHubSharedLinkCreatedType.Serializer.INSTANCE.serialize(value.mediaHubSharedLinkCreatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_shared_link_download_setting_changed", g);
+                    MediaHubSharedLinkDownloadSettingChangedType.Serializer.INSTANCE.serialize(value.mediaHubSharedLinkDownloadSettingChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_REVOKED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_shared_link_revoked", g);
+                    MediaHubSharedLinkRevokedType.Serializer.INSTANCE.serialize(value.mediaHubSharedLinkRevokedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -49754,6 +50726,27 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_adding_people_policy_changed", g);
+                    MediaHubAddingPeoplePolicyChangedType.Serializer.INSTANCE.serialize(value.mediaHubAddingPeoplePolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_DOWNLOAD_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_download_policy_changed", g);
+                    MediaHubDownloadPolicyChangedType.Serializer.INSTANCE.serialize(value.mediaHubDownloadPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_LINK_SHARING_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_link_sharing_policy_changed", g);
+                    MediaHubLinkSharingPolicyChangedType.Serializer.INSTANCE.serialize(value.mediaHubLinkSharingPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case MEMBER_REQUESTS_CHANGE_POLICY: {
                     g.writeStartObject();
                     writeTag("member_requests_change_policy", g);
@@ -49814,6 +50807,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("microsoft_office_addin_change_policy", g);
                     MicrosoftOfficeAddinChangePolicyType.Serializer.INSTANCE.serialize(value.microsoftOfficeAddinChangePolicyValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MULTI_TEAM_IDENTITY_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("multi_team_identity_policy_changed", g);
+                    MultiTeamIdentityPolicyChangedType.Serializer.INSTANCE.serialize(value.multiTeamIdentityPolicyChangedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -51264,6 +52264,11 @@ public final class EventType {
                 fieldValue = FolderOverviewItemUnpinnedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.folderOverviewItemUnpinned(fieldValue);
             }
+            else if ("media_hub_file_downloaded".equals(tag)) {
+                MediaHubFileDownloadedType fieldValue = null;
+                fieldValue = MediaHubFileDownloadedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubFileDownloaded(fieldValue);
+            }
             else if ("object_label_added".equals(tag)) {
                 ObjectLabelAddedType fieldValue = null;
                 fieldValue = ObjectLabelAddedType.Serializer.INSTANCE.deserialize(p, true);
@@ -52093,6 +53098,41 @@ public final class EventType {
                 FileTransfersTransferViewType fieldValue = null;
                 fieldValue = FileTransfersTransferViewType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.fileTransfersTransferView(fieldValue);
+            }
+            else if ("media_hub_project_team_add".equals(tag)) {
+                MediaHubProjectTeamAddType fieldValue = null;
+                fieldValue = MediaHubProjectTeamAddType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubProjectTeamAdd(fieldValue);
+            }
+            else if ("media_hub_project_team_delete".equals(tag)) {
+                MediaHubProjectTeamDeleteType fieldValue = null;
+                fieldValue = MediaHubProjectTeamDeleteType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubProjectTeamDelete(fieldValue);
+            }
+            else if ("media_hub_project_team_role_changed".equals(tag)) {
+                MediaHubProjectTeamRoleChangedType fieldValue = null;
+                fieldValue = MediaHubProjectTeamRoleChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubProjectTeamRoleChanged(fieldValue);
+            }
+            else if ("media_hub_shared_link_audience_changed".equals(tag)) {
+                MediaHubSharedLinkAudienceChangedType fieldValue = null;
+                fieldValue = MediaHubSharedLinkAudienceChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubSharedLinkAudienceChanged(fieldValue);
+            }
+            else if ("media_hub_shared_link_created".equals(tag)) {
+                MediaHubSharedLinkCreatedType fieldValue = null;
+                fieldValue = MediaHubSharedLinkCreatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubSharedLinkCreated(fieldValue);
+            }
+            else if ("media_hub_shared_link_download_setting_changed".equals(tag)) {
+                MediaHubSharedLinkDownloadSettingChangedType fieldValue = null;
+                fieldValue = MediaHubSharedLinkDownloadSettingChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubSharedLinkDownloadSettingChanged(fieldValue);
+            }
+            else if ("media_hub_shared_link_revoked".equals(tag)) {
+                MediaHubSharedLinkRevokedType fieldValue = null;
+                fieldValue = MediaHubSharedLinkRevokedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubSharedLinkRevoked(fieldValue);
             }
             else if ("note_acl_invite_only".equals(tag)) {
                 NoteAclInviteOnlyType fieldValue = null;
@@ -53024,6 +54064,21 @@ public final class EventType {
                 fieldValue = InviteAcceptanceEmailPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.inviteAcceptanceEmailPolicyChanged(fieldValue);
             }
+            else if ("media_hub_adding_people_policy_changed".equals(tag)) {
+                MediaHubAddingPeoplePolicyChangedType fieldValue = null;
+                fieldValue = MediaHubAddingPeoplePolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubAddingPeoplePolicyChanged(fieldValue);
+            }
+            else if ("media_hub_download_policy_changed".equals(tag)) {
+                MediaHubDownloadPolicyChangedType fieldValue = null;
+                fieldValue = MediaHubDownloadPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubDownloadPolicyChanged(fieldValue);
+            }
+            else if ("media_hub_link_sharing_policy_changed".equals(tag)) {
+                MediaHubLinkSharingPolicyChangedType fieldValue = null;
+                fieldValue = MediaHubLinkSharingPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubLinkSharingPolicyChanged(fieldValue);
+            }
             else if ("member_requests_change_policy".equals(tag)) {
                 MemberRequestsChangePolicyType fieldValue = null;
                 fieldValue = MemberRequestsChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
@@ -53068,6 +54123,11 @@ public final class EventType {
                 MicrosoftOfficeAddinChangePolicyType fieldValue = null;
                 fieldValue = MicrosoftOfficeAddinChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.microsoftOfficeAddinChangePolicy(fieldValue);
+            }
+            else if ("multi_team_identity_policy_changed".equals(tag)) {
+                MultiTeamIdentityPolicyChangedType fieldValue = null;
+                fieldValue = MultiTeamIdentityPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.multiTeamIdentityPolicyChanged(fieldValue);
             }
             else if ("network_control_change_policy".equals(tag)) {
                 NetworkControlChangePolicyType fieldValue = null;

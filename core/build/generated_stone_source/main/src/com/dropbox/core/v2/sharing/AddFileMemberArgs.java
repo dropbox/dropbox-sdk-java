@@ -62,7 +62,8 @@ class AddFileMemberArgs {
      *     level we want to give new members.
      * @param addMessageAsComment  If the custom message should be added as a
      *     comment on the file. Only meant for Paper files.
-     * @param fpSealedResult  The FingerprintJS Sealed Client Result value.
+     * @param fpSealedResult  Field is only returned for "internal" callers. The
+     *     FingerprintJS Sealed Client Result value.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -181,7 +182,8 @@ class AddFileMemberArgs {
     }
 
     /**
-     * The FingerprintJS Sealed Client Result value
+     * Field is only returned for "internal" callers. The FingerprintJS Sealed
+     * Client Result value
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -324,7 +326,8 @@ class AddFileMemberArgs {
         /**
          * Set value for optional field.
          *
-         * @param fpSealedResult  The FingerprintJS Sealed Client Result value.
+         * @param fpSealedResult  Field is only returned for "internal" callers.
+         *     The FingerprintJS Sealed Client Result value.
          *
          * @return this builder
          */
