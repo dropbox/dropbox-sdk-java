@@ -99,7 +99,8 @@ public class AddFileMemberBuilder {
     /**
      * Set value for optional field.
      *
-     * @param fpSealedResult  The FingerprintJS Sealed Client Result value.
+     * @param fpSealedResult  Field is only returned for "internal" callers. The
+     *     FingerprintJS Sealed Client Result value.
      *
      * @return this builder
      */

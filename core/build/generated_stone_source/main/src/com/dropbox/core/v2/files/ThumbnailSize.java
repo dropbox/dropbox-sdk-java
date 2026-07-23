@@ -55,7 +55,7 @@ public enum ThumbnailSize {
      */
     W2048H1536,
     /**
-     * 3200 by 2400 px.
+     * Field is only returned for "internal" callers. 3200 by 2400 px.
      */
     W3200H2400;
 
