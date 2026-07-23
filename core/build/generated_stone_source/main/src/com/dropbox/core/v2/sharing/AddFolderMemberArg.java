@@ -47,7 +47,8 @@ class AddFolderMemberArg {
      *     device notifications of their invite.
      * @param customMessage  Optional message to display to added members in
      *     their invitation. Must have length of at least 1.
-     * @param fpSealedResult  The FingerprintJS Sealed Client Result value.
+     * @param fpSealedResult  Field is only returned for "internal" callers. The
+     *     FingerprintJS Sealed Client Result value.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -140,7 +141,8 @@ class AddFolderMemberArg {
     }
 
     /**
-     * The FingerprintJS Sealed Client Result value
+     * Field is only returned for "internal" callers. The FingerprintJS Sealed
+     * Client Result value
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -246,7 +248,8 @@ class AddFolderMemberArg {
         /**
          * Set value for optional field.
          *
-         * @param fpSealedResult  The FingerprintJS Sealed Client Result value.
+         * @param fpSealedResult  Field is only returned for "internal" callers.
+         *     The FingerprintJS Sealed Client Result value.
          *
          * @return this builder
          */

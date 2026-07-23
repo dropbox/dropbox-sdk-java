@@ -51,6 +51,11 @@ public final class TeamFolderCreateError {
          */
         SYNC_SETTINGS_ERROR, // SyncSettingsError
         /**
+         * The team has reached the maximum number of team folders allowed by
+         * its plan.
+         */
+        FOLDER_COUNT_LIMIT_EXCEEDED,
+        /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
          *
@@ -73,6 +78,11 @@ public final class TeamFolderCreateError {
      * The provided name cannot be used because it is reserved.
      */
     public static final TeamFolderCreateError FOLDER_NAME_RESERVED = new TeamFolderCreateError().withTag(Tag.FOLDER_NAME_RESERVED);
+    /**
+     * The team has reached the maximum number of team folders allowed by its
+     * plan.
+     */
+    public static final TeamFolderCreateError FOLDER_COUNT_LIMIT_EXCEEDED = new TeamFolderCreateError().withTag(Tag.FOLDER_COUNT_LIMIT_EXCEEDED);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -219,6 +229,17 @@ public final class TeamFolderCreateError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#FOLDER_COUNT_LIMIT_EXCEEDED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#FOLDER_COUNT_LIMIT_EXCEEDED}, {@code false} otherwise.
+     */
+    public boolean isFolderCountLimitExceeded() {
+        return this._tag == Tag.FOLDER_COUNT_LIMIT_EXCEEDED;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -260,6 +281,8 @@ public final class TeamFolderCreateError {
                     return true;
                 case SYNC_SETTINGS_ERROR:
                     return (this.syncSettingsErrorValue == other.syncSettingsErrorValue) || (this.syncSettingsErrorValue.equals(other.syncSettingsErrorValue));
+                case FOLDER_COUNT_LIMIT_EXCEEDED:
+                    return true;
                 case OTHER:
                     return true;
                 default:
@@ -317,6 +340,10 @@ public final class TeamFolderCreateError {
                     g.writeEndObject();
                     break;
                 }
+                case FOLDER_COUNT_LIMIT_EXCEEDED: {
+                    g.writeString("folder_count_limit_exceeded");
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -355,6 +382,9 @@ public final class TeamFolderCreateError {
                 expectField("sync_settings_error", p);
                 fieldValue = SyncSettingsError.Serializer.INSTANCE.deserialize(p);
                 value = TeamFolderCreateError.syncSettingsError(fieldValue);
+            }
+            else if ("folder_count_limit_exceeded".equals(tag)) {
+                value = TeamFolderCreateError.FOLDER_COUNT_LIMIT_EXCEEDED;
             }
             else {
                 value = TeamFolderCreateError.OTHER;

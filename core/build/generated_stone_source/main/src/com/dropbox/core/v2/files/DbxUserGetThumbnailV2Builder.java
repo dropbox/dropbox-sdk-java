@@ -105,9 +105,9 @@ public class DbxUserGetThumbnailV2Builder extends DbxDownloadStyleBuilder<Previe
      * <p> If left unset or set to {@code null}, defaults to {@code
      * ThumbnailQuality.QUALITY_80}. </p>
      *
-     * @param quality  Quality of the thumbnail image. Must not be {@code null}.
-     *     Defaults to {@code ThumbnailQuality.QUALITY_80} when set to {@code
-     *     null}.
+     * @param quality  Field is only returned for "internal" callers. Quality of
+     *     the thumbnail image. Must not be {@code null}. Defaults to {@code
+     *     ThumbnailQuality.QUALITY_80} when set to {@code null}.
      *
      * @return this builder
      *

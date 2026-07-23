@@ -50,7 +50,8 @@ class ThumbnailV2Arg {
      * @param size  The size for the thumbnail image. Must not be {@code null}.
      * @param mode  How to resize and crop the image to achieve the desired
      *     size. Must not be {@code null}.
-     * @param quality  Quality of the thumbnail image. Must not be {@code null}.
+     * @param quality  Field is only returned for "internal" callers. Quality of
+     *     the thumbnail image. Must not be {@code null}.
      * @param excludeMediaInfo  Normally, {@link FileMetadata#getMediaInfo} is
      *     set for photo and video. When this flag is true, {@link
      *     FileMetadata#getMediaInfo} is not populated. This improves latency
@@ -148,7 +149,8 @@ class ThumbnailV2Arg {
     }
 
     /**
-     * Quality of the thumbnail image.
+     * Field is only returned for "internal" callers. Quality of the thumbnail
+     * image.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     ThumbnailQuality.QUALITY_80.
@@ -295,9 +297,10 @@ class ThumbnailV2Arg {
          * <p> If left unset or set to {@code null}, defaults to {@code
          * ThumbnailQuality.QUALITY_80}. </p>
          *
-         * @param quality  Quality of the thumbnail image. Must not be {@code
-         *     null}. Defaults to {@code ThumbnailQuality.QUALITY_80} when set
-         *     to {@code null}.
+         * @param quality  Field is only returned for "internal" callers.
+         *     Quality of the thumbnail image. Must not be {@code null}.
+         *     Defaults to {@code ThumbnailQuality.QUALITY_80} when set to
+         *     {@code null}.
          *
          * @return this builder
          *
