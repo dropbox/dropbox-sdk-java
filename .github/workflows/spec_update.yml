@@ -90,6 +90,8 @@ jobs:
           cd ../../../..
       - name: Generate Stone
         run: ./gradlew :core:generateStone
+      - name: Update API declarations
+        run: ./gradlew :core:apiDump :android:apiDump
 
       - name: Close Old Pull Requests
         id: close-old-prs
