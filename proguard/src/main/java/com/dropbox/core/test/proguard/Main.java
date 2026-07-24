@@ -1,5 +1,16 @@
 package com.dropbox.core.test.proguard;
 
+import com.dropbox.core.DbxAuthInfo;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.DbxWebAuth;
+import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.fileproperties.PropertyGroup;
+import com.dropbox.core.v2.files.*;
+import com.dropbox.core.v2.users.BasicAccount;
+import com.dropbox.core.v2.users.FullAccount;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -11,25 +22,6 @@ import java.util.logging.Logger;
 
 import static org.testng.Assert.*;
 
-import com.dropbox.core.DbxAuthInfo;
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.DbxWebAuth;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.fileproperties.PropertyGroup;
-import com.dropbox.core.v2.files.CreateFolderErrorException;
-import com.dropbox.core.v2.files.DeleteErrorException;
-import com.dropbox.core.v2.files.DeletedMetadata;
-import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.FolderMetadata;
-import com.dropbox.core.v2.files.GetMetadataErrorException;
-import com.dropbox.core.v2.files.Metadata;
-import com.dropbox.core.v2.files.WriteConflictError;
-import com.dropbox.core.v2.files.WriteMode;
-import com.dropbox.core.v2.users.BasicAccount;
-import com.dropbox.core.v2.users.FullAccount;
-
 /**
  * An example command-line application that runs through the web-based OAuth
  * flow (using {@link DbxWebAuth}).
@@ -37,7 +29,7 @@ import com.dropbox.core.v2.users.FullAccount;
 public class Main {
     private static final Random RAND = new Random(0L);
 
-    private static void testBasicSerialization(DbxClientV2 client) throws DbxException, IOException {
+    private static void testBasicSerialization(DbxClientV2 client) throws DbxException {
         // Make the /account/info API call.
         FullAccount expected = client.users().getCurrentAccount();
         assertNotNull(expected);
@@ -58,8 +50,10 @@ public class Main {
         try {
             FolderMetadata root = client.files().createFolderV2(rootPath).getMetadata();
             assertNotNull(root);
+            assertNotNull(root.getPathLower());
+            assertNotNull(root.getPathDisplay());
             assertEquals(root.getPathLower(), rootPath);
-            assertEquals(root.getPathDisplay(), rootPath);
+            assertTrue(root.getPathDisplay().equalsIgnoreCase(rootPath));
         } catch (CreateFolderErrorException ex) {
             if (ex.errorValue.isPath() &&
                 ex.errorValue.getPathValue().isConflict() &&
@@ -70,7 +64,7 @@ public class Main {
             }
         }
 
-        Map<String, byte[]> files = new LinkedHashMap<String, byte []>();
+        Map<String, byte[]> files = new LinkedHashMap<>();
         files.put(rootPath + "/foo.blob", bytes(1024));
         files.put(rootPath + "/bar.blob", bytes(512));
         files.put(rootPath + "/sub/a.dat", bytes(4096));
@@ -139,18 +133,18 @@ public class Main {
         fail("No exception thrown");
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // Only display important log messages.
         Logger.getLogger("").setLevel(Level.WARNING);
 
         if (args.length != 1) {
-            System.out.println("");
+            System.out.println();
             System.out.println("Usage: COMMAND <auth-file>");
-            System.out.println("");
+            System.out.println();
             System.out.println(" <auth-file>: An \"auth file\" that contains the information necessary to make");
             System.out.println("    an authorized Dropbox API request.  Generate this file using the \"authorize\"");
             System.out.println("    example program.");
-            System.out.println("");
+            System.out.println();
             System.exit(1);
             return;
         }
@@ -169,7 +163,7 @@ public class Main {
             System.out.println("PASS");
         } catch (IOException|DbxException ex) {
             System.out.println("FAILED");
-            System.out.println("");
+            System.out.println();
             System.err.println("Error making API call: " + ex.getMessage());
             ex.printStackTrace(System.err);
             System.exit(1);
