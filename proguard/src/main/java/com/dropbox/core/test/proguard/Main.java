@@ -1,5 +1,16 @@
 package com.dropbox.core.test.proguard;
 
+import com.dropbox.core.DbxAuthInfo;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.DbxWebAuth;
+import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.fileproperties.PropertyGroup;
+import com.dropbox.core.v2.files.*;
+import com.dropbox.core.v2.users.BasicAccount;
+import com.dropbox.core.v2.users.FullAccount;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -11,25 +22,6 @@ import java.util.logging.Logger;
 
 import static org.testng.Assert.*;
 
-import com.dropbox.core.DbxAuthInfo;
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.DbxWebAuth;
-import com.dropbox.core.json.JsonReader;
-import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.fileproperties.PropertyGroup;
-import com.dropbox.core.v2.files.CreateFolderErrorException;
-import com.dropbox.core.v2.files.DeleteErrorException;
-import com.dropbox.core.v2.files.DeletedMetadata;
-import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.FolderMetadata;
-import com.dropbox.core.v2.files.GetMetadataErrorException;
-import com.dropbox.core.v2.files.Metadata;
-import com.dropbox.core.v2.files.WriteConflictError;
-import com.dropbox.core.v2.files.WriteMode;
-import com.dropbox.core.v2.users.BasicAccount;
-import com.dropbox.core.v2.users.FullAccount;
-
 /**
  * An example command-line application that runs through the web-based OAuth
  * flow (using {@link DbxWebAuth}).
@@ -37,7 +29,7 @@ import com.dropbox.core.v2.users.FullAccount;
 public class Main {
     private static final Random RAND = new Random(0L);
 
-    private static void testBasicSerialization(DbxClientV2 client) throws DbxException, IOException {
+    private static void testBasicSerialization(DbxClientV2 client) throws DbxException {
         // Make the /account/info API call.
         FullAccount expected = client.users().getCurrentAccount();
         assertNotNull(expected);
@@ -53,7 +45,7 @@ public class Main {
     }
 
     private static void testEnumeratedSubtypeSerialization(DbxClientV2 client) throws DbxException, IOException {
-        String rootPath = "/test/proguard-tests";
+        String rootPath = "/javatest/proguard-tests";
 
         try {
             FolderMetadata root = client.files().createFolderV2(rootPath).getMetadata();
@@ -139,7 +131,7 @@ public class Main {
         fail("No exception thrown");
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // Only display important log messages.
         Logger.getLogger("").setLevel(Level.WARNING);
 
