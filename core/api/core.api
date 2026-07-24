@@ -827,6 +827,14 @@ public class com/dropbox/core/util/CountingOutputStream : java/io/OutputStream {
 	public fun write ([BII)V
 }
 
+public final class com/dropbox/core/util/DropboxContentHasher {
+	public static final field BLOCK_SIZE I
+	public static fun hash (Ljava/io/InputStream;)[B
+	public static fun hash ([B)[B
+	public static fun hashHex (Ljava/io/InputStream;)Ljava/lang/String;
+	public static fun hashHex ([B)Ljava/lang/String;
+}
+
 public abstract class com/dropbox/core/util/DumpWriter {
 	public fun <init> ()V
 	public abstract fun f (Ljava/lang/String;)Lcom/dropbox/core/util/DumpWriter;
