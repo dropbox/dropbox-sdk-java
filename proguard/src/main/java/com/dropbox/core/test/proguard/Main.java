@@ -37,7 +37,7 @@ import com.dropbox.core.v2.users.FullAccount;
 public class Main {
     private static final Random RAND = new Random(0L);
 
-    private static void testBasicSerialization(DbxClientV2 client) throws DbxException, IOException {
+    private static void testBasicSerialization(DbxClientV2 client) throws DbxException {
         // Make the /account/info API call.
         FullAccount expected = client.users().getCurrentAccount();
         assertNotNull(expected);
@@ -53,7 +53,7 @@ public class Main {
     }
 
     private static void testEnumeratedSubtypeSerialization(DbxClientV2 client) throws DbxException, IOException {
-        String rootPath = "/test/proguard-tests";
+        String rootPath = "/javatest/proguard-tests";
 
         try {
             FolderMetadata root = client.files().createFolderV2(rootPath).getMetadata();
@@ -139,7 +139,7 @@ public class Main {
         fail("No exception thrown");
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // Only display important log messages.
         Logger.getLogger("").setLevel(Level.WARNING);
 
