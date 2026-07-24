@@ -1,7 +1,16 @@
 package com.dropbox.core.v2;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
+import com.dropbox.core.BadRequestException;
+import com.dropbox.core.DbxApiException;
+import com.dropbox.core.DbxDownloader;
+import com.dropbox.core.ITUtil;
+import com.dropbox.core.util.DropboxContentHasher;
+import com.dropbox.core.util.IOUtil.ProgressListener;
+import com.dropbox.core.v2.fileproperties.PropertyGroup;
+import com.dropbox.core.v2.files.*;
+import com.dropbox.core.v2.users.BasicAccount;
+import com.dropbox.core.v2.users.FullAccount;
+import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,22 +18,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.dropbox.core.util.IOUtil.ProgressListener;
-import org.testng.annotations.Test;
-
-import com.dropbox.core.BadRequestException;
-import com.dropbox.core.DbxApiException;
-import com.dropbox.core.DbxDownloader;
-import com.dropbox.core.ITUtil;
-import com.dropbox.core.v2.fileproperties.PropertyGroup;
-import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.GetMetadataError;
-import com.dropbox.core.v2.files.GetMetadataErrorException;
-import com.dropbox.core.v2.files.LookupError;
-import com.dropbox.core.v2.files.Metadata;
-import com.dropbox.core.v2.files.WriteMode;
-import com.dropbox.core.v2.users.BasicAccount;
-import com.dropbox.core.v2.users.FullAccount;
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 public class DbxClientV2IT {
     @Test
@@ -99,6 +94,7 @@ public class DbxClientV2IT {
         assertThat(metadata.getName()).isEqualTo(filename);
         assertThat(metadata.getPathLower()).isEqualTo(path.toLowerCase());
         assertThat(metadata.getSize()).isEqualTo(contents.length);
+        assertThat(metadata.getContentHash()).isEqualTo(DropboxContentHasher.hashHex(contents));
 
         Metadata actual = client.files().getMetadata(path);
 
@@ -119,6 +115,7 @@ public class DbxClientV2IT {
             assertFileMetadataEquivalent(actualResult, metadata);
             assertThat(actualContents).isEqualTo(contents);
             assertThat(downloader.getContentType()).isEqualTo("application/octet-stream");
+            assertThat(DropboxContentHasher.hashHex(actualContents)).isEqualTo(metadata.getContentHash());
         } catch (AssertionError e) {
             // so subsequent tests don't fail due to file not being cleaned up
             client.files().deleteV2(path).getMetadata();
