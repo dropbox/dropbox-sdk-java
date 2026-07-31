@@ -1178,6 +1178,18 @@ public enum EventTypeArg {
      */
     PROTECT_INTERNAL_DOMAINS_CHANGED,
     /**
+     * (protect) Activated a Dropbox Protect policy
+     */
+    PROTECT_POLICY_ACTIVATED,
+    /**
+     * (protect) Deactivated a Dropbox Protect policy
+     */
+    PROTECT_POLICY_DEACTIVATED,
+    /**
+     * (protect) Updated a Dropbox Protect policy
+     */
+    PROTECT_POLICY_UPDATED,
+    /**
      * (reports) Created Classification report
      */
     CLASSIFICATION_CREATE_REPORT,
@@ -3765,6 +3777,18 @@ public enum EventTypeArg {
                     g.writeString("protect_internal_domains_changed");
                     break;
                 }
+                case PROTECT_POLICY_ACTIVATED: {
+                    g.writeString("protect_policy_activated");
+                    break;
+                }
+                case PROTECT_POLICY_DEACTIVATED: {
+                    g.writeString("protect_policy_deactivated");
+                    break;
+                }
+                case PROTECT_POLICY_UPDATED: {
+                    g.writeString("protect_policy_updated");
+                    break;
+                }
                 case CLASSIFICATION_CREATE_REPORT: {
                     g.writeString("classification_create_report");
                     break;
@@ -6007,6 +6031,15 @@ public enum EventTypeArg {
             }
             else if ("protect_internal_domains_changed".equals(tag)) {
                 value = EventTypeArg.PROTECT_INTERNAL_DOMAINS_CHANGED;
+            }
+            else if ("protect_policy_activated".equals(tag)) {
+                value = EventTypeArg.PROTECT_POLICY_ACTIVATED;
+            }
+            else if ("protect_policy_deactivated".equals(tag)) {
+                value = EventTypeArg.PROTECT_POLICY_DEACTIVATED;
+            }
+            else if ("protect_policy_updated".equals(tag)) {
+                value = EventTypeArg.PROTECT_POLICY_UPDATED;
             }
             else if ("classification_create_report".equals(tag)) {
                 value = EventTypeArg.CLASSIFICATION_CREATE_REPORT;

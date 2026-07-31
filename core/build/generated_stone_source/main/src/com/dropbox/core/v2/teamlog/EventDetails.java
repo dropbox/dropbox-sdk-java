@@ -320,6 +320,9 @@ public final class EventDetails {
         PROTECT_ACTION_REMOVE_LINK_DETAILS, // ProtectActionRemoveLinkDetails
         PROTECT_ACTION_STOP_SHARING_DETAILS, // ProtectActionStopSharingDetails
         PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS, // ProtectInternalDomainsChangedDetails
+        PROTECT_POLICY_ACTIVATED_DETAILS, // ProtectPolicyActivatedDetails
+        PROTECT_POLICY_DEACTIVATED_DETAILS, // ProtectPolicyDeactivatedDetails
+        PROTECT_POLICY_UPDATED_DETAILS, // ProtectPolicyUpdatedDetails
         CLASSIFICATION_CREATE_REPORT_DETAILS, // ClassificationCreateReportDetails
         CLASSIFICATION_CREATE_REPORT_FAIL_DETAILS, // ClassificationCreateReportFailDetails
         EMM_CREATE_EXCEPTIONS_REPORT_DETAILS, // EmmCreateExceptionsReportDetails
@@ -972,6 +975,9 @@ public final class EventDetails {
     private ProtectActionRemoveLinkDetails protectActionRemoveLinkDetailsValue;
     private ProtectActionStopSharingDetails protectActionStopSharingDetailsValue;
     private ProtectInternalDomainsChangedDetails protectInternalDomainsChangedDetailsValue;
+    private ProtectPolicyActivatedDetails protectPolicyActivatedDetailsValue;
+    private ProtectPolicyDeactivatedDetails protectPolicyDeactivatedDetailsValue;
+    private ProtectPolicyUpdatedDetails protectPolicyUpdatedDetailsValue;
     private ClassificationCreateReportDetails classificationCreateReportDetailsValue;
     private ClassificationCreateReportFailDetails classificationCreateReportFailDetailsValue;
     private EmmCreateExceptionsReportDetails emmCreateExceptionsReportDetailsValue;
@@ -5961,6 +5967,54 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.protectInternalDomainsChangedDetailsValue = protectInternalDomainsChangedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param protectPolicyActivatedDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndProtectPolicyActivatedDetails(Tag _tag, ProtectPolicyActivatedDetails protectPolicyActivatedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.protectPolicyActivatedDetailsValue = protectPolicyActivatedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param protectPolicyDeactivatedDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndProtectPolicyDeactivatedDetails(Tag _tag, ProtectPolicyDeactivatedDetails protectPolicyDeactivatedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.protectPolicyDeactivatedDetailsValue = protectPolicyDeactivatedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param protectPolicyUpdatedDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndProtectPolicyUpdatedDetails(Tag _tag, ProtectPolicyUpdatedDetails protectPolicyUpdatedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.protectPolicyUpdatedDetailsValue = protectPolicyUpdatedDetailsValue;
         return result;
     }
 
@@ -25505,6 +25559,153 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_POLICY_ACTIVATED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_POLICY_ACTIVATED_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isProtectPolicyActivatedDetails() {
+        return this._tag == Tag.PROTECT_POLICY_ACTIVATED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#PROTECT_POLICY_ACTIVATED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#PROTECT_POLICY_ACTIVATED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails protectPolicyActivatedDetails(ProtectPolicyActivatedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndProtectPolicyActivatedDetails(Tag.PROTECT_POLICY_ACTIVATED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#PROTECT_POLICY_ACTIVATED_DETAILS}.
+     *
+     * @return The {@link ProtectPolicyActivatedDetails} value associated with
+     *     this instance if {@link #isProtectPolicyActivatedDetails} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectPolicyActivatedDetails} is {@code false}.
+     */
+    public ProtectPolicyActivatedDetails getProtectPolicyActivatedDetailsValue() {
+        if (this._tag != Tag.PROTECT_POLICY_ACTIVATED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_POLICY_ACTIVATED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return protectPolicyActivatedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_POLICY_DEACTIVATED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_POLICY_DEACTIVATED_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isProtectPolicyDeactivatedDetails() {
+        return this._tag == Tag.PROTECT_POLICY_DEACTIVATED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#PROTECT_POLICY_DEACTIVATED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#PROTECT_POLICY_DEACTIVATED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails protectPolicyDeactivatedDetails(ProtectPolicyDeactivatedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndProtectPolicyDeactivatedDetails(Tag.PROTECT_POLICY_DEACTIVATED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#PROTECT_POLICY_DEACTIVATED_DETAILS}.
+     *
+     * @return The {@link ProtectPolicyDeactivatedDetails} value associated with
+     *     this instance if {@link #isProtectPolicyDeactivatedDetails} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectPolicyDeactivatedDetails} is {@code false}.
+     */
+    public ProtectPolicyDeactivatedDetails getProtectPolicyDeactivatedDetailsValue() {
+        if (this._tag != Tag.PROTECT_POLICY_DEACTIVATED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_POLICY_DEACTIVATED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return protectPolicyDeactivatedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_POLICY_UPDATED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_POLICY_UPDATED_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isProtectPolicyUpdatedDetails() {
+        return this._tag == Tag.PROTECT_POLICY_UPDATED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#PROTECT_POLICY_UPDATED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#PROTECT_POLICY_UPDATED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails protectPolicyUpdatedDetails(ProtectPolicyUpdatedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndProtectPolicyUpdatedDetails(Tag.PROTECT_POLICY_UPDATED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#PROTECT_POLICY_UPDATED_DETAILS}.
+     *
+     * @return The {@link ProtectPolicyUpdatedDetails} value associated with
+     *     this instance if {@link #isProtectPolicyUpdatedDetails} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectPolicyUpdatedDetails}
+     *     is {@code false}.
+     */
+    public ProtectPolicyUpdatedDetails getProtectPolicyUpdatedDetailsValue() {
+        if (this._tag != Tag.PROTECT_POLICY_UPDATED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_POLICY_UPDATED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return protectPolicyUpdatedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#CLASSIFICATION_CREATE_REPORT_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -42681,6 +42882,9 @@ public final class EventDetails {
             this.protectActionRemoveLinkDetailsValue,
             this.protectActionStopSharingDetailsValue,
             this.protectInternalDomainsChangedDetailsValue,
+            this.protectPolicyActivatedDetailsValue,
+            this.protectPolicyDeactivatedDetailsValue,
+            this.protectPolicyUpdatedDetailsValue,
             this.classificationCreateReportDetailsValue,
             this.classificationCreateReportFailDetailsValue,
             this.emmCreateExceptionsReportDetailsValue,
@@ -43611,6 +43815,12 @@ public final class EventDetails {
                     return (this.protectActionStopSharingDetailsValue == other.protectActionStopSharingDetailsValue) || (this.protectActionStopSharingDetailsValue.equals(other.protectActionStopSharingDetailsValue));
                 case PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS:
                     return (this.protectInternalDomainsChangedDetailsValue == other.protectInternalDomainsChangedDetailsValue) || (this.protectInternalDomainsChangedDetailsValue.equals(other.protectInternalDomainsChangedDetailsValue));
+                case PROTECT_POLICY_ACTIVATED_DETAILS:
+                    return (this.protectPolicyActivatedDetailsValue == other.protectPolicyActivatedDetailsValue) || (this.protectPolicyActivatedDetailsValue.equals(other.protectPolicyActivatedDetailsValue));
+                case PROTECT_POLICY_DEACTIVATED_DETAILS:
+                    return (this.protectPolicyDeactivatedDetailsValue == other.protectPolicyDeactivatedDetailsValue) || (this.protectPolicyDeactivatedDetailsValue.equals(other.protectPolicyDeactivatedDetailsValue));
+                case PROTECT_POLICY_UPDATED_DETAILS:
+                    return (this.protectPolicyUpdatedDetailsValue == other.protectPolicyUpdatedDetailsValue) || (this.protectPolicyUpdatedDetailsValue.equals(other.protectPolicyUpdatedDetailsValue));
                 case CLASSIFICATION_CREATE_REPORT_DETAILS:
                     return (this.classificationCreateReportDetailsValue == other.classificationCreateReportDetailsValue) || (this.classificationCreateReportDetailsValue.equals(other.classificationCreateReportDetailsValue));
                 case CLASSIFICATION_CREATE_REPORT_FAIL_DETAILS:
@@ -46324,6 +46534,27 @@ public final class EventDetails {
                     g.writeStartObject();
                     writeTag("protect_internal_domains_changed_details", g);
                     ProtectInternalDomainsChangedDetails.Serializer.INSTANCE.serialize(value.protectInternalDomainsChangedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_POLICY_ACTIVATED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("protect_policy_activated_details", g);
+                    ProtectPolicyActivatedDetails.Serializer.INSTANCE.serialize(value.protectPolicyActivatedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_POLICY_DEACTIVATED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("protect_policy_deactivated_details", g);
+                    ProtectPolicyDeactivatedDetails.Serializer.INSTANCE.serialize(value.protectPolicyDeactivatedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_POLICY_UPDATED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("protect_policy_updated_details", g);
+                    ProtectPolicyUpdatedDetails.Serializer.INSTANCE.serialize(value.protectPolicyUpdatedDetailsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -50169,6 +50400,21 @@ public final class EventDetails {
                 ProtectInternalDomainsChangedDetails fieldValue = null;
                 fieldValue = ProtectInternalDomainsChangedDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.protectInternalDomainsChangedDetails(fieldValue);
+            }
+            else if ("protect_policy_activated_details".equals(tag)) {
+                ProtectPolicyActivatedDetails fieldValue = null;
+                fieldValue = ProtectPolicyActivatedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.protectPolicyActivatedDetails(fieldValue);
+            }
+            else if ("protect_policy_deactivated_details".equals(tag)) {
+                ProtectPolicyDeactivatedDetails fieldValue = null;
+                fieldValue = ProtectPolicyDeactivatedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.protectPolicyDeactivatedDetails(fieldValue);
+            }
+            else if ("protect_policy_updated_details".equals(tag)) {
+                ProtectPolicyUpdatedDetails fieldValue = null;
+                fieldValue = ProtectPolicyUpdatedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.protectPolicyUpdatedDetails(fieldValue);
             }
             else if ("classification_create_report_details".equals(tag)) {
                 ClassificationCreateReportDetails fieldValue = null;

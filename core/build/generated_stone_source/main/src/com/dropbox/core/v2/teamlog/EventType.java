@@ -1198,6 +1198,18 @@ public final class EventType {
          */
         PROTECT_INTERNAL_DOMAINS_CHANGED, // ProtectInternalDomainsChangedType
         /**
+         * (protect) Activated a Dropbox Protect policy
+         */
+        PROTECT_POLICY_ACTIVATED, // ProtectPolicyActivatedType
+        /**
+         * (protect) Deactivated a Dropbox Protect policy
+         */
+        PROTECT_POLICY_DEACTIVATED, // ProtectPolicyDeactivatedType
+        /**
+         * (protect) Updated a Dropbox Protect policy
+         */
+        PROTECT_POLICY_UPDATED, // ProtectPolicyUpdatedType
+        /**
          * (reports) Created Classification report
          */
         CLASSIFICATION_CREATE_REPORT, // ClassificationCreateReportType
@@ -2949,6 +2961,9 @@ public final class EventType {
     private ProtectActionRemoveLinkType protectActionRemoveLinkValue;
     private ProtectActionStopSharingType protectActionStopSharingValue;
     private ProtectInternalDomainsChangedType protectInternalDomainsChangedValue;
+    private ProtectPolicyActivatedType protectPolicyActivatedValue;
+    private ProtectPolicyDeactivatedType protectPolicyDeactivatedValue;
+    private ProtectPolicyUpdatedType protectPolicyUpdatedValue;
     private ClassificationCreateReportType classificationCreateReportValue;
     private ClassificationCreateReportFailType classificationCreateReportFailValue;
     private EmmCreateExceptionsReportType emmCreateExceptionsReportValue;
@@ -8167,6 +8182,57 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.protectInternalDomainsChangedValue = protectInternalDomainsChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectPolicyActivatedValue  (protect) Activated a Dropbox Protect
+     *     policy. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectPolicyActivated(Tag _tag, ProtectPolicyActivatedType protectPolicyActivatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectPolicyActivatedValue = protectPolicyActivatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectPolicyDeactivatedValue  (protect) Deactivated a Dropbox
+     *     Protect policy. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectPolicyDeactivated(Tag _tag, ProtectPolicyDeactivatedType protectPolicyDeactivatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectPolicyDeactivatedValue = protectPolicyDeactivatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectPolicyUpdatedValue  (protect) Updated a Dropbox Protect
+     *     policy. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectPolicyUpdated(Tag _tag, ProtectPolicyUpdatedType protectPolicyUpdatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectPolicyUpdatedValue = protectPolicyUpdatedValue;
         return result;
     }
 
@@ -28415,6 +28481,156 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_POLICY_ACTIVATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_POLICY_ACTIVATED}, {@code false} otherwise.
+     */
+    public boolean isProtectPolicyActivated() {
+        return this._tag == Tag.PROTECT_POLICY_ACTIVATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_POLICY_ACTIVATED}.
+     *
+     * <p> (protect) Activated a Dropbox Protect policy </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_POLICY_ACTIVATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectPolicyActivated(ProtectPolicyActivatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectPolicyActivated(Tag.PROTECT_POLICY_ACTIVATED, value);
+    }
+
+    /**
+     * (protect) Activated a Dropbox Protect policy
+     *
+     * <p> This instance must be tagged as {@link Tag#PROTECT_POLICY_ACTIVATED}.
+     * </p>
+     *
+     * @return The {@link ProtectPolicyActivatedType} value associated with this
+     *     instance if {@link #isProtectPolicyActivated} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectPolicyActivated} is
+     *     {@code false}.
+     */
+    public ProtectPolicyActivatedType getProtectPolicyActivatedValue() {
+        if (this._tag != Tag.PROTECT_POLICY_ACTIVATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_POLICY_ACTIVATED, but was Tag." + this._tag.name());
+        }
+        return protectPolicyActivatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_POLICY_DEACTIVATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_POLICY_DEACTIVATED}, {@code false} otherwise.
+     */
+    public boolean isProtectPolicyDeactivated() {
+        return this._tag == Tag.PROTECT_POLICY_DEACTIVATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_POLICY_DEACTIVATED}.
+     *
+     * <p> (protect) Deactivated a Dropbox Protect policy </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_POLICY_DEACTIVATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectPolicyDeactivated(ProtectPolicyDeactivatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectPolicyDeactivated(Tag.PROTECT_POLICY_DEACTIVATED, value);
+    }
+
+    /**
+     * (protect) Deactivated a Dropbox Protect policy
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_POLICY_DEACTIVATED}. </p>
+     *
+     * @return The {@link ProtectPolicyDeactivatedType} value associated with
+     *     this instance if {@link #isProtectPolicyDeactivated} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectPolicyDeactivated} is
+     *     {@code false}.
+     */
+    public ProtectPolicyDeactivatedType getProtectPolicyDeactivatedValue() {
+        if (this._tag != Tag.PROTECT_POLICY_DEACTIVATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_POLICY_DEACTIVATED, but was Tag." + this._tag.name());
+        }
+        return protectPolicyDeactivatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_POLICY_UPDATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_POLICY_UPDATED}, {@code false} otherwise.
+     */
+    public boolean isProtectPolicyUpdated() {
+        return this._tag == Tag.PROTECT_POLICY_UPDATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_POLICY_UPDATED}.
+     *
+     * <p> (protect) Updated a Dropbox Protect policy </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_POLICY_UPDATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectPolicyUpdated(ProtectPolicyUpdatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectPolicyUpdated(Tag.PROTECT_POLICY_UPDATED, value);
+    }
+
+    /**
+     * (protect) Updated a Dropbox Protect policy
+     *
+     * <p> This instance must be tagged as {@link Tag#PROTECT_POLICY_UPDATED}.
+     * </p>
+     *
+     * @return The {@link ProtectPolicyUpdatedType} value associated with this
+     *     instance if {@link #isProtectPolicyUpdated} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectPolicyUpdated} is
+     *     {@code false}.
+     */
+    public ProtectPolicyUpdatedType getProtectPolicyUpdatedValue() {
+        if (this._tag != Tag.PROTECT_POLICY_UPDATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_POLICY_UPDATED, but was Tag." + this._tag.name());
+        }
+        return protectPolicyUpdatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#CLASSIFICATION_CREATE_REPORT}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -46139,6 +46355,9 @@ public final class EventType {
             this.protectActionRemoveLinkValue,
             this.protectActionStopSharingValue,
             this.protectInternalDomainsChangedValue,
+            this.protectPolicyActivatedValue,
+            this.protectPolicyDeactivatedValue,
+            this.protectPolicyUpdatedValue,
             this.classificationCreateReportValue,
             this.classificationCreateReportFailValue,
             this.emmCreateExceptionsReportValue,
@@ -47068,6 +47287,12 @@ public final class EventType {
                     return (this.protectActionStopSharingValue == other.protectActionStopSharingValue) || (this.protectActionStopSharingValue.equals(other.protectActionStopSharingValue));
                 case PROTECT_INTERNAL_DOMAINS_CHANGED:
                     return (this.protectInternalDomainsChangedValue == other.protectInternalDomainsChangedValue) || (this.protectInternalDomainsChangedValue.equals(other.protectInternalDomainsChangedValue));
+                case PROTECT_POLICY_ACTIVATED:
+                    return (this.protectPolicyActivatedValue == other.protectPolicyActivatedValue) || (this.protectPolicyActivatedValue.equals(other.protectPolicyActivatedValue));
+                case PROTECT_POLICY_DEACTIVATED:
+                    return (this.protectPolicyDeactivatedValue == other.protectPolicyDeactivatedValue) || (this.protectPolicyDeactivatedValue.equals(other.protectPolicyDeactivatedValue));
+                case PROTECT_POLICY_UPDATED:
+                    return (this.protectPolicyUpdatedValue == other.protectPolicyUpdatedValue) || (this.protectPolicyUpdatedValue.equals(other.protectPolicyUpdatedValue));
                 case CLASSIFICATION_CREATE_REPORT:
                     return (this.classificationCreateReportValue == other.classificationCreateReportValue) || (this.classificationCreateReportValue.equals(other.classificationCreateReportValue));
                 case CLASSIFICATION_CREATE_REPORT_FAIL:
@@ -49779,6 +50004,27 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("protect_internal_domains_changed", g);
                     ProtectInternalDomainsChangedType.Serializer.INSTANCE.serialize(value.protectInternalDomainsChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_POLICY_ACTIVATED: {
+                    g.writeStartObject();
+                    writeTag("protect_policy_activated", g);
+                    ProtectPolicyActivatedType.Serializer.INSTANCE.serialize(value.protectPolicyActivatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_POLICY_DEACTIVATED: {
+                    g.writeStartObject();
+                    writeTag("protect_policy_deactivated", g);
+                    ProtectPolicyDeactivatedType.Serializer.INSTANCE.serialize(value.protectPolicyDeactivatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_POLICY_UPDATED: {
+                    g.writeStartObject();
+                    writeTag("protect_policy_updated", g);
+                    ProtectPolicyUpdatedType.Serializer.INSTANCE.serialize(value.protectPolicyUpdatedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -53617,6 +53863,21 @@ public final class EventType {
                 ProtectInternalDomainsChangedType fieldValue = null;
                 fieldValue = ProtectInternalDomainsChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.protectInternalDomainsChanged(fieldValue);
+            }
+            else if ("protect_policy_activated".equals(tag)) {
+                ProtectPolicyActivatedType fieldValue = null;
+                fieldValue = ProtectPolicyActivatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectPolicyActivated(fieldValue);
+            }
+            else if ("protect_policy_deactivated".equals(tag)) {
+                ProtectPolicyDeactivatedType fieldValue = null;
+                fieldValue = ProtectPolicyDeactivatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectPolicyDeactivated(fieldValue);
+            }
+            else if ("protect_policy_updated".equals(tag)) {
+                ProtectPolicyUpdatedType fieldValue = null;
+                fieldValue = ProtectPolicyUpdatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectPolicyUpdated(fieldValue);
             }
             else if ("classification_create_report".equals(tag)) {
                 ClassificationCreateReportType fieldValue = null;
