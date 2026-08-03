@@ -20871,6 +20871,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getProtectInternalDomainsChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedDetails;
 	public fun getProtectPolicyActivatedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyActivatedDetails;
 	public fun getProtectPolicyDeactivatedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedDetails;
+	public fun getProtectPolicyScheduledDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyScheduledDetails;
 	public fun getProtectPolicyUpdatedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyUpdatedDetails;
 	public fun getRansomwareAlertCreateReportDetailsValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportDetails;
 	public fun getRansomwareAlertCreateReportFailedDetailsValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedDetails;
@@ -21538,6 +21539,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isProtectInternalDomainsChangedDetails ()Z
 	public fun isProtectPolicyActivatedDetails ()Z
 	public fun isProtectPolicyDeactivatedDetails ()Z
+	public fun isProtectPolicyScheduledDetails ()Z
 	public fun isProtectPolicyUpdatedDetails ()Z
 	public fun isRansomwareAlertCreateReportDetails ()Z
 	public fun isRansomwareAlertCreateReportFailedDetails ()Z
@@ -21938,6 +21940,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun protectInternalDomainsChangedDetails (Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun protectPolicyActivatedDetails (Lcom/dropbox/core/v2/teamlog/ProtectPolicyActivatedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun protectPolicyDeactivatedDetails (Lcom/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun protectPolicyScheduledDetails (Lcom/dropbox/core/v2/teamlog/ProtectPolicyScheduledDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun protectPolicyUpdatedDetails (Lcom/dropbox/core/v2/teamlog/ProtectPolicyUpdatedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun ransomwareAlertCreateReportDetails (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun ransomwareAlertCreateReportFailedDetails (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -22575,6 +22578,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PROTECT_POLICY_ACTIVATED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PROTECT_POLICY_DEACTIVATED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field PROTECT_POLICY_SCHEDULED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PROTECT_POLICY_UPDATED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT_FAILED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -23406,6 +23410,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getProtectInternalDomainsChangedValue ()Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedType;
 	public fun getProtectPolicyActivatedValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyActivatedType;
 	public fun getProtectPolicyDeactivatedValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedType;
+	public fun getProtectPolicyScheduledValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyScheduledType;
 	public fun getProtectPolicyUpdatedValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyUpdatedType;
 	public fun getRansomwareAlertCreateReportFailedValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedType;
 	public fun getRansomwareAlertCreateReportValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportType;
@@ -24072,6 +24077,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isProtectInternalDomainsChanged ()Z
 	public fun isProtectPolicyActivated ()Z
 	public fun isProtectPolicyDeactivated ()Z
+	public fun isProtectPolicyScheduled ()Z
 	public fun isProtectPolicyUpdated ()Z
 	public fun isRansomwareAlertCreateReport ()Z
 	public fun isRansomwareAlertCreateReportFailed ()Z
@@ -24471,6 +24477,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun protectInternalDomainsChanged (Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun protectPolicyActivated (Lcom/dropbox/core/v2/teamlog/ProtectPolicyActivatedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun protectPolicyDeactivated (Lcom/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun protectPolicyScheduled (Lcom/dropbox/core/v2/teamlog/ProtectPolicyScheduledType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun protectPolicyUpdated (Lcom/dropbox/core/v2/teamlog/ProtectPolicyUpdatedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun ransomwareAlertCreateReport (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun ransomwareAlertCreateReportFailed (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -25107,6 +25114,7 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field PROTECT_INTERNAL_DOMAINS_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PROTECT_POLICY_ACTIVATED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PROTECT_POLICY_DEACTIVATED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field PROTECT_POLICY_SCHEDULED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PROTECT_POLICY_UPDATED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT_FAILED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -25742,6 +25750,7 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field PROTECT_INTERNAL_DOMAINS_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PROTECT_POLICY_ACTIVATED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PROTECT_POLICY_DEACTIVATED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field PROTECT_POLICY_SCHEDULED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PROTECT_POLICY_UPDATED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT_FAILED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
@@ -32660,6 +32669,26 @@ public class com/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedDetails {
 }
 
 public class com/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectPolicyScheduledDetails {
+	protected final field policyId Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getPolicyId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectPolicyScheduledType {
 	protected final field description Ljava/lang/String;
 	public fun <init> (Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z

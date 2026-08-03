@@ -322,6 +322,7 @@ public final class EventDetails {
         PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS, // ProtectInternalDomainsChangedDetails
         PROTECT_POLICY_ACTIVATED_DETAILS, // ProtectPolicyActivatedDetails
         PROTECT_POLICY_DEACTIVATED_DETAILS, // ProtectPolicyDeactivatedDetails
+        PROTECT_POLICY_SCHEDULED_DETAILS, // ProtectPolicyScheduledDetails
         PROTECT_POLICY_UPDATED_DETAILS, // ProtectPolicyUpdatedDetails
         CLASSIFICATION_CREATE_REPORT_DETAILS, // ClassificationCreateReportDetails
         CLASSIFICATION_CREATE_REPORT_FAIL_DETAILS, // ClassificationCreateReportFailDetails
@@ -977,6 +978,7 @@ public final class EventDetails {
     private ProtectInternalDomainsChangedDetails protectInternalDomainsChangedDetailsValue;
     private ProtectPolicyActivatedDetails protectPolicyActivatedDetailsValue;
     private ProtectPolicyDeactivatedDetails protectPolicyDeactivatedDetailsValue;
+    private ProtectPolicyScheduledDetails protectPolicyScheduledDetailsValue;
     private ProtectPolicyUpdatedDetails protectPolicyUpdatedDetailsValue;
     private ClassificationCreateReportDetails classificationCreateReportDetailsValue;
     private ClassificationCreateReportFailDetails classificationCreateReportFailDetailsValue;
@@ -5999,6 +6001,22 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.protectPolicyDeactivatedDetailsValue = protectPolicyDeactivatedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param protectPolicyScheduledDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndProtectPolicyScheduledDetails(Tag _tag, ProtectPolicyScheduledDetails protectPolicyScheduledDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.protectPolicyScheduledDetailsValue = protectPolicyScheduledDetailsValue;
         return result;
     }
 
@@ -25657,6 +25675,55 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_POLICY_SCHEDULED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_POLICY_SCHEDULED_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isProtectPolicyScheduledDetails() {
+        return this._tag == Tag.PROTECT_POLICY_SCHEDULED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#PROTECT_POLICY_SCHEDULED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#PROTECT_POLICY_SCHEDULED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails protectPolicyScheduledDetails(ProtectPolicyScheduledDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndProtectPolicyScheduledDetails(Tag.PROTECT_POLICY_SCHEDULED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#PROTECT_POLICY_SCHEDULED_DETAILS}.
+     *
+     * @return The {@link ProtectPolicyScheduledDetails} value associated with
+     *     this instance if {@link #isProtectPolicyScheduledDetails} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectPolicyScheduledDetails} is {@code false}.
+     */
+    public ProtectPolicyScheduledDetails getProtectPolicyScheduledDetailsValue() {
+        if (this._tag != Tag.PROTECT_POLICY_SCHEDULED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_POLICY_SCHEDULED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return protectPolicyScheduledDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#PROTECT_POLICY_UPDATED_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -42884,6 +42951,7 @@ public final class EventDetails {
             this.protectInternalDomainsChangedDetailsValue,
             this.protectPolicyActivatedDetailsValue,
             this.protectPolicyDeactivatedDetailsValue,
+            this.protectPolicyScheduledDetailsValue,
             this.protectPolicyUpdatedDetailsValue,
             this.classificationCreateReportDetailsValue,
             this.classificationCreateReportFailDetailsValue,
@@ -43819,6 +43887,8 @@ public final class EventDetails {
                     return (this.protectPolicyActivatedDetailsValue == other.protectPolicyActivatedDetailsValue) || (this.protectPolicyActivatedDetailsValue.equals(other.protectPolicyActivatedDetailsValue));
                 case PROTECT_POLICY_DEACTIVATED_DETAILS:
                     return (this.protectPolicyDeactivatedDetailsValue == other.protectPolicyDeactivatedDetailsValue) || (this.protectPolicyDeactivatedDetailsValue.equals(other.protectPolicyDeactivatedDetailsValue));
+                case PROTECT_POLICY_SCHEDULED_DETAILS:
+                    return (this.protectPolicyScheduledDetailsValue == other.protectPolicyScheduledDetailsValue) || (this.protectPolicyScheduledDetailsValue.equals(other.protectPolicyScheduledDetailsValue));
                 case PROTECT_POLICY_UPDATED_DETAILS:
                     return (this.protectPolicyUpdatedDetailsValue == other.protectPolicyUpdatedDetailsValue) || (this.protectPolicyUpdatedDetailsValue.equals(other.protectPolicyUpdatedDetailsValue));
                 case CLASSIFICATION_CREATE_REPORT_DETAILS:
@@ -46548,6 +46618,13 @@ public final class EventDetails {
                     g.writeStartObject();
                     writeTag("protect_policy_deactivated_details", g);
                     ProtectPolicyDeactivatedDetails.Serializer.INSTANCE.serialize(value.protectPolicyDeactivatedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_POLICY_SCHEDULED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("protect_policy_scheduled_details", g);
+                    ProtectPolicyScheduledDetails.Serializer.INSTANCE.serialize(value.protectPolicyScheduledDetailsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -50410,6 +50487,11 @@ public final class EventDetails {
                 ProtectPolicyDeactivatedDetails fieldValue = null;
                 fieldValue = ProtectPolicyDeactivatedDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.protectPolicyDeactivatedDetails(fieldValue);
+            }
+            else if ("protect_policy_scheduled_details".equals(tag)) {
+                ProtectPolicyScheduledDetails fieldValue = null;
+                fieldValue = ProtectPolicyScheduledDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.protectPolicyScheduledDetails(fieldValue);
             }
             else if ("protect_policy_updated_details".equals(tag)) {
                 ProtectPolicyUpdatedDetails fieldValue = null;

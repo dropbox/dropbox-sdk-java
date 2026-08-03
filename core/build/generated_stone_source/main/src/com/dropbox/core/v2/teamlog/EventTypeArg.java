@@ -1186,6 +1186,10 @@ public enum EventTypeArg {
      */
     PROTECT_POLICY_DEACTIVATED,
     /**
+     * (protect) Scheduled a Dropbox Protect policy
+     */
+    PROTECT_POLICY_SCHEDULED,
+    /**
      * (protect) Updated a Dropbox Protect policy
      */
     PROTECT_POLICY_UPDATED,
@@ -3785,6 +3789,10 @@ public enum EventTypeArg {
                     g.writeString("protect_policy_deactivated");
                     break;
                 }
+                case PROTECT_POLICY_SCHEDULED: {
+                    g.writeString("protect_policy_scheduled");
+                    break;
+                }
                 case PROTECT_POLICY_UPDATED: {
                     g.writeString("protect_policy_updated");
                     break;
@@ -6037,6 +6045,9 @@ public enum EventTypeArg {
             }
             else if ("protect_policy_deactivated".equals(tag)) {
                 value = EventTypeArg.PROTECT_POLICY_DEACTIVATED;
+            }
+            else if ("protect_policy_scheduled".equals(tag)) {
+                value = EventTypeArg.PROTECT_POLICY_SCHEDULED;
             }
             else if ("protect_policy_updated".equals(tag)) {
                 value = EventTypeArg.PROTECT_POLICY_UPDATED;
