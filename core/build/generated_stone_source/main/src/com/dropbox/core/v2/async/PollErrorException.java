@@ -14,6 +14,8 @@ import com.dropbox.core.LocalizedText;
  * {@link
  * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getMetadataAsyncCheck(String)},
  * {@link
+ * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getOcrAsyncCheck(String)},
+ * {@link
  * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getTextAsyncCheck(String)},
  * {@link
  * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getTranscriptAsyncCheck(String)},
@@ -57,6 +59,7 @@ public class PollErrorException extends DbxApiException {
     // exception for routes:
     //     2/riviera/get_markdown_async/check
     //     2/riviera/get_metadata_async/check
+    //     2/riviera/get_ocr_async/check
     //     2/riviera/get_text_async/check
     //     2/riviera/get_transcript_async/check
     //     2/team/members/add/job_status/get
@@ -84,6 +87,8 @@ public class PollErrorException extends DbxApiException {
      * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getMarkdownAsyncCheck(String)},
      * {@link
      * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getMetadataAsyncCheck(String)},
+     * {@link
+     * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getOcrAsyncCheck(String)},
      * {@link
      * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getTextAsyncCheck(String)},
      * {@link

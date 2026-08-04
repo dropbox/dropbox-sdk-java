@@ -8300,6 +8300,9 @@ public class com/dropbox/core/v2/riviera/DbxAppRivieraRequests {
 	public fun getMetadataAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getMetadataAsync (Lcom/dropbox/core/v2/riviera/FileIdOrUrl;)Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getMetadataAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetMetadataAsyncCheckResult;
+	public fun getOcrAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun getOcrAsync (Lcom/dropbox/core/v2/riviera/FileIdOrUrl;)Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun getOcrAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetOcrAsyncCheckResult;
 	public fun getTextAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getTextAsync (Lcom/dropbox/core/v2/riviera/FileIdOrUrl;)Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getTextAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetTextAsyncCheckResult;
@@ -8331,6 +8334,9 @@ public class com/dropbox/core/v2/riviera/DbxUserRivieraRequests {
 	public fun getMetadataAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getMetadataAsync (Lcom/dropbox/core/v2/riviera/FileIdOrUrl;)Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getMetadataAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetMetadataAsyncCheckResult;
+	public fun getOcrAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun getOcrAsync (Lcom/dropbox/core/v2/riviera/FileIdOrUrl;)Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun getOcrAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetOcrAsyncCheckResult;
 	public fun getTextAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getTextAsync (Lcom/dropbox/core/v2/riviera/FileIdOrUrl;)Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getTextAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetTextAsyncCheckResult;
@@ -8453,6 +8459,56 @@ public class com/dropbox/core/v2/riviera/GetMetadataResult$Builder {
 	public fun build ()Lcom/dropbox/core/v2/riviera/GetMetadataResult;
 	public fun withMetadata (Lcom/dropbox/core/v2/riviera/MetadataUnion;)Lcom/dropbox/core/v2/riviera/GetMetadataResult$Builder;
 	public fun withMetadataType (Lcom/dropbox/core/v2/riviera/MetadataType;)Lcom/dropbox/core/v2/riviera/GetMetadataResult$Builder;
+}
+
+public final class com/dropbox/core/v2/riviera/GetOcrAsyncCheckResult {
+	public static final field IN_PROGRESS Lcom/dropbox/core/v2/riviera/GetOcrAsyncCheckResult;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/GetOcrAsyncCheckResult;
+	public static fun complete (Lcom/dropbox/core/v2/riviera/GetOcrResult;)Lcom/dropbox/core/v2/riviera/GetOcrAsyncCheckResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun failed (Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;)Lcom/dropbox/core/v2/riviera/GetOcrAsyncCheckResult;
+	public fun getCompleteValue ()Lcom/dropbox/core/v2/riviera/GetOcrResult;
+	public fun getFailedValue ()Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;
+	public fun hashCode ()I
+	public fun isComplete ()Z
+	public fun isFailed ()Z
+	public fun isInProgress ()Z
+	public fun isOther ()Z
+	public fun tag ()Lcom/dropbox/core/v2/riviera/GetOcrAsyncCheckResult$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/riviera/GetOcrAsyncCheckResult$Tag : java/lang/Enum {
+	public static final field COMPLETE Lcom/dropbox/core/v2/riviera/GetOcrAsyncCheckResult$Tag;
+	public static final field FAILED Lcom/dropbox/core/v2/riviera/GetOcrAsyncCheckResult$Tag;
+	public static final field IN_PROGRESS Lcom/dropbox/core/v2/riviera/GetOcrAsyncCheckResult$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/GetOcrAsyncCheckResult$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetOcrAsyncCheckResult$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/GetOcrAsyncCheckResult$Tag;
+}
+
+public class com/dropbox/core/v2/riviera/GetOcrResult {
+	protected final field hocr Ljava/lang/String;
+	protected final field text Ljava/lang/String;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getHocr ()Ljava/lang/String;
+	public fun getText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/riviera/GetOcrResult$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/riviera/GetOcrResult$Builder {
+	protected field hocr Ljava/lang/String;
+	protected field text Ljava/lang/String;
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/riviera/GetOcrResult;
+	public fun withHocr (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetOcrResult$Builder;
+	public fun withText (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetOcrResult$Builder;
 }
 
 public final class com/dropbox/core/v2/riviera/GetTextAsyncCheckResult {
@@ -8673,6 +8729,51 @@ public final class com/dropbox/core/v2/riviera/MetadataUnion$Tag : java/lang/Enu
 	public static final field PDF Lcom/dropbox/core/v2/riviera/MetadataUnion$Tag;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/MetadataUnion$Tag;
 	public static fun values ()[Lcom/dropbox/core/v2/riviera/MetadataUnion$Tag;
+}
+
+public final class com/dropbox/core/v2/riviera/OcrExtractionApiV2Error {
+	public static final field CONVERSION_FAILURE_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;
+	public static final field IS_A_FOLDER_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;
+	public static final field LIMIT_EXCEEDED_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;
+	public static final field LINK_DOWNLOAD_DISABLED_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;
+	public static final field NOT_FOUND_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;
+	public static final field SHARED_LINK_PASSWORD_PROTECTED Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;
+	public static final field UNSUPPORTED_FORMAT_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getServerErrorValue ()Ljava/lang/String;
+	public fun getUserErrorValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun isConversionFailureError ()Z
+	public fun isIsAFolderError ()Z
+	public fun isLimitExceededError ()Z
+	public fun isLinkDownloadDisabledError ()Z
+	public fun isNotFoundError ()Z
+	public fun isOther ()Z
+	public fun isServerError ()Z
+	public fun isSharedLinkPasswordProtected ()Z
+	public fun isUnsupportedFormatError ()Z
+	public fun isUserError ()Z
+	public static fun serverError (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;
+	public fun tag ()Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+	public static fun userError (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;
+}
+
+public final class com/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag : java/lang/Enum {
+	public static final field CONVERSION_FAILURE_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag;
+	public static final field IS_A_FOLDER_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag;
+	public static final field LIMIT_EXCEEDED_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag;
+	public static final field LINK_DOWNLOAD_DISABLED_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag;
+	public static final field NOT_FOUND_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag;
+	public static final field SERVER_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag;
+	public static final field SHARED_LINK_PASSWORD_PROTECTED Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag;
+	public static final field UNSUPPORTED_FORMAT_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag;
+	public static final field USER_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error$Tag;
 }
 
 public final class com/dropbox/core/v2/riviera/OfficeFileType : java/lang/Enum {
