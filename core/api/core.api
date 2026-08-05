@@ -20974,6 +20974,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getProtectPolicyDeactivatedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedDetails;
 	public fun getProtectPolicyScheduledDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyScheduledDetails;
 	public fun getProtectPolicyUpdatedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyUpdatedDetails;
+	public fun getProtectReportViewDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectReportViewDetails;
 	public fun getRansomwareAlertCreateReportDetailsValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportDetails;
 	public fun getRansomwareAlertCreateReportFailedDetailsValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedDetails;
 	public fun getRansomwareRestoreProcessCompletedDetailsValue ()Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedDetails;
@@ -21642,6 +21643,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isProtectPolicyDeactivatedDetails ()Z
 	public fun isProtectPolicyScheduledDetails ()Z
 	public fun isProtectPolicyUpdatedDetails ()Z
+	public fun isProtectReportViewDetails ()Z
 	public fun isRansomwareAlertCreateReportDetails ()Z
 	public fun isRansomwareAlertCreateReportFailedDetails ()Z
 	public fun isRansomwareRestoreProcessCompletedDetails ()Z
@@ -22043,6 +22045,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun protectPolicyDeactivatedDetails (Lcom/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun protectPolicyScheduledDetails (Lcom/dropbox/core/v2/teamlog/ProtectPolicyScheduledDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun protectPolicyUpdatedDetails (Lcom/dropbox/core/v2/teamlog/ProtectPolicyUpdatedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun protectReportViewDetails (Lcom/dropbox/core/v2/teamlog/ProtectReportViewDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun ransomwareAlertCreateReportDetails (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun ransomwareAlertCreateReportFailedDetails (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun ransomwareRestoreProcessCompletedDetails (Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -22681,6 +22684,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field PROTECT_POLICY_DEACTIVATED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PROTECT_POLICY_SCHEDULED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PROTECT_POLICY_UPDATED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field PROTECT_REPORT_VIEW_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT_FAILED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field RANSOMWARE_RESTORE_PROCESS_COMPLETED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -23513,6 +23517,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getProtectPolicyDeactivatedValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedType;
 	public fun getProtectPolicyScheduledValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyScheduledType;
 	public fun getProtectPolicyUpdatedValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyUpdatedType;
+	public fun getProtectReportViewValue ()Lcom/dropbox/core/v2/teamlog/ProtectReportViewType;
 	public fun getRansomwareAlertCreateReportFailedValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedType;
 	public fun getRansomwareAlertCreateReportValue ()Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportType;
 	public fun getRansomwareRestoreProcessCompletedValue ()Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedType;
@@ -24180,6 +24185,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isProtectPolicyDeactivated ()Z
 	public fun isProtectPolicyScheduled ()Z
 	public fun isProtectPolicyUpdated ()Z
+	public fun isProtectReportView ()Z
 	public fun isRansomwareAlertCreateReport ()Z
 	public fun isRansomwareAlertCreateReportFailed ()Z
 	public fun isRansomwareRestoreProcessCompleted ()Z
@@ -24580,6 +24586,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun protectPolicyDeactivated (Lcom/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun protectPolicyScheduled (Lcom/dropbox/core/v2/teamlog/ProtectPolicyScheduledType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun protectPolicyUpdated (Lcom/dropbox/core/v2/teamlog/ProtectPolicyUpdatedType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun protectReportView (Lcom/dropbox/core/v2/teamlog/ProtectReportViewType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun ransomwareAlertCreateReport (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun ransomwareAlertCreateReportFailed (Lcom/dropbox/core/v2/teamlog/RansomwareAlertCreateReportFailedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun ransomwareRestoreProcessCompleted (Lcom/dropbox/core/v2/teamlog/RansomwareRestoreProcessCompletedType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -25217,6 +25224,7 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field PROTECT_POLICY_DEACTIVATED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PROTECT_POLICY_SCHEDULED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PROTECT_POLICY_UPDATED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field PROTECT_REPORT_VIEW Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT_FAILED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field RANSOMWARE_RESTORE_PROCESS_COMPLETED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -25853,6 +25861,7 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field PROTECT_POLICY_DEACTIVATED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PROTECT_POLICY_SCHEDULED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PROTECT_POLICY_UPDATED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field PROTECT_REPORT_VIEW Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field RANSOMWARE_ALERT_CREATE_REPORT_FAILED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field RANSOMWARE_RESTORE_PROCESS_COMPLETED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
@@ -32810,6 +32819,124 @@ public class com/dropbox/core/v2/teamlog/ProtectPolicyUpdatedDetails {
 }
 
 public class com/dropbox/core/v2/teamlog/ProtectPolicyUpdatedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/teamlog/ProtectReportCategory : java/lang/Enum {
+	public static final field OTHER Lcom/dropbox/core/v2/teamlog/ProtectReportCategory;
+	public static final field OVERVIEW Lcom/dropbox/core/v2/teamlog/ProtectReportCategory;
+	public static final field STALE_ACCESS Lcom/dropbox/core/v2/teamlog/ProtectReportCategory;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/ProtectReportCategory;
+	public static fun values ()[Lcom/dropbox/core/v2/teamlog/ProtectReportCategory;
+}
+
+public final class com/dropbox/core/v2/teamlog/ProtectReportMetric : java/lang/Enum {
+	public static final field EXTERNAL_MODIFIED_OVER_1_YEAR Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_1_YEAR_COMPANY Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_1_YEAR_OUTSIDE Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_1_YEAR_PERSONAL Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_1_YEAR_PUBLIC Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_2_YEARS Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_2_YEARS_COMPANY Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_2_YEARS_OUTSIDE Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_2_YEARS_PERSONAL Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_2_YEARS_PUBLIC Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_3_YEARS Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_3_YEARS_COMPANY Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_3_YEARS_OUTSIDE Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_3_YEARS_PERSONAL Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_3_YEARS_PUBLIC Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_5_YEARS Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_5_YEARS_COMPANY Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_5_YEARS_OUTSIDE Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_5_YEARS_PERSONAL Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field EXTERNAL_MODIFIED_OVER_5_YEARS_PUBLIC Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field FOLDERS_COMPANY Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field FOLDERS_INTERNAL Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field FOLDERS_OUTSIDE Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field FOLDERS_PERSONAL Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field FOLDERS_PUBLIC Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_1_YEAR Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_1_YEAR_COMPANY Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_1_YEAR_OUTSIDE Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_1_YEAR_PERSONAL Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_1_YEAR_PUBLIC Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_2_YEARS Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_2_YEARS_COMPANY Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_2_YEARS_OUTSIDE Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_2_YEARS_PERSONAL Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_2_YEARS_PUBLIC Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_3_YEARS Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_3_YEARS_COMPANY Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_3_YEARS_OUTSIDE Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_3_YEARS_PERSONAL Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_3_YEARS_PUBLIC Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_5_YEARS Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_5_YEARS_COMPANY Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_5_YEARS_OUTSIDE Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_5_YEARS_PERSONAL Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field INTERNAL_MODIFIED_OVER_5_YEARS_PUBLIC Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field ITEMS_ALL Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field ITEMS_COMPANY_ACCESS Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field ITEMS_INTERNALLY_OWNED Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field ITEMS_MODIFIED_OVER_1_YEAR Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field ITEMS_MODIFIED_OVER_3_YEARS Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field ITEMS_OUTSIDE_ACCESS Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field ITEMS_PERSONAL_ACCESS Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field ITEMS_PUBLIC_LINKS Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field OTHER Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field OTHER_FOLDERS Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field OTHER_SHARED_DRIVES Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field SHARED_DRIVES_INTERNAL Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field SHARED_DRIVES_OUTSIDE Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static final field SHARED_DRIVES_PERSONAL Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public static fun values ()[Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+}
+
+public final class com/dropbox/core/v2/teamlog/ProtectReportSection : java/lang/Enum {
+	public static final field ITEMS Lcom/dropbox/core/v2/teamlog/ProtectReportSection;
+	public static final field OTHER Lcom/dropbox/core/v2/teamlog/ProtectReportSection;
+	public static final field OVERVIEW_OTHER Lcom/dropbox/core/v2/teamlog/ProtectReportSection;
+	public static final field OWNED_EXTERNALLY Lcom/dropbox/core/v2/teamlog/ProtectReportSection;
+	public static final field OWNED_INTERNALLY Lcom/dropbox/core/v2/teamlog/ProtectReportSection;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/ProtectReportSection;
+	public static fun values ()[Lcom/dropbox/core/v2/teamlog/ProtectReportSection;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectReportViewDetails {
+	protected final field reportCategory Lcom/dropbox/core/v2/teamlog/ProtectReportCategory;
+	protected final field reportMetric Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	protected final field reportSection Lcom/dropbox/core/v2/teamlog/ProtectReportSection;
+	public fun <init> (Lcom/dropbox/core/v2/teamlog/ProtectReportCategory;)V
+	public fun <init> (Lcom/dropbox/core/v2/teamlog/ProtectReportCategory;Lcom/dropbox/core/v2/teamlog/ProtectReportSection;Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getReportCategory ()Lcom/dropbox/core/v2/teamlog/ProtectReportCategory;
+	public fun getReportMetric ()Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	public fun getReportSection ()Lcom/dropbox/core/v2/teamlog/ProtectReportSection;
+	public fun hashCode ()I
+	public static fun newBuilder (Lcom/dropbox/core/v2/teamlog/ProtectReportCategory;)Lcom/dropbox/core/v2/teamlog/ProtectReportViewDetails$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectReportViewDetails$Builder {
+	protected final field reportCategory Lcom/dropbox/core/v2/teamlog/ProtectReportCategory;
+	protected field reportMetric Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;
+	protected field reportSection Lcom/dropbox/core/v2/teamlog/ProtectReportSection;
+	protected fun <init> (Lcom/dropbox/core/v2/teamlog/ProtectReportCategory;)V
+	public fun build ()Lcom/dropbox/core/v2/teamlog/ProtectReportViewDetails;
+	public fun withReportMetric (Lcom/dropbox/core/v2/teamlog/ProtectReportMetric;)Lcom/dropbox/core/v2/teamlog/ProtectReportViewDetails$Builder;
+	public fun withReportSection (Lcom/dropbox/core/v2/teamlog/ProtectReportSection;)Lcom/dropbox/core/v2/teamlog/ProtectReportViewDetails$Builder;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectReportViewType {
 	protected final field description Ljava/lang/String;
 	public fun <init> (Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z

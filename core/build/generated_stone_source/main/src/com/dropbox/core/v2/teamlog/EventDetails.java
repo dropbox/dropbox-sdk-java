@@ -324,6 +324,7 @@ public final class EventDetails {
         PROTECT_POLICY_DEACTIVATED_DETAILS, // ProtectPolicyDeactivatedDetails
         PROTECT_POLICY_SCHEDULED_DETAILS, // ProtectPolicyScheduledDetails
         PROTECT_POLICY_UPDATED_DETAILS, // ProtectPolicyUpdatedDetails
+        PROTECT_REPORT_VIEW_DETAILS, // ProtectReportViewDetails
         CLASSIFICATION_CREATE_REPORT_DETAILS, // ClassificationCreateReportDetails
         CLASSIFICATION_CREATE_REPORT_FAIL_DETAILS, // ClassificationCreateReportFailDetails
         EMM_CREATE_EXCEPTIONS_REPORT_DETAILS, // EmmCreateExceptionsReportDetails
@@ -980,6 +981,7 @@ public final class EventDetails {
     private ProtectPolicyDeactivatedDetails protectPolicyDeactivatedDetailsValue;
     private ProtectPolicyScheduledDetails protectPolicyScheduledDetailsValue;
     private ProtectPolicyUpdatedDetails protectPolicyUpdatedDetailsValue;
+    private ProtectReportViewDetails protectReportViewDetailsValue;
     private ClassificationCreateReportDetails classificationCreateReportDetailsValue;
     private ClassificationCreateReportFailDetails classificationCreateReportFailDetailsValue;
     private EmmCreateExceptionsReportDetails emmCreateExceptionsReportDetailsValue;
@@ -6033,6 +6035,22 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.protectPolicyUpdatedDetailsValue = protectPolicyUpdatedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param protectReportViewDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndProtectReportViewDetails(Tag _tag, ProtectReportViewDetails protectReportViewDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.protectReportViewDetailsValue = protectReportViewDetailsValue;
         return result;
     }
 
@@ -25773,6 +25791,53 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_REPORT_VIEW_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_REPORT_VIEW_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isProtectReportViewDetails() {
+        return this._tag == Tag.PROTECT_REPORT_VIEW_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#PROTECT_REPORT_VIEW_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#PROTECT_REPORT_VIEW_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails protectReportViewDetails(ProtectReportViewDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndProtectReportViewDetails(Tag.PROTECT_REPORT_VIEW_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link Tag#PROTECT_REPORT_VIEW_DETAILS}.
+     *
+     * @return The {@link ProtectReportViewDetails} value associated with this
+     *     instance if {@link #isProtectReportViewDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectReportViewDetails} is
+     *     {@code false}.
+     */
+    public ProtectReportViewDetails getProtectReportViewDetailsValue() {
+        if (this._tag != Tag.PROTECT_REPORT_VIEW_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_REPORT_VIEW_DETAILS, but was Tag." + this._tag.name());
+        }
+        return protectReportViewDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#CLASSIFICATION_CREATE_REPORT_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -42953,6 +43018,7 @@ public final class EventDetails {
             this.protectPolicyDeactivatedDetailsValue,
             this.protectPolicyScheduledDetailsValue,
             this.protectPolicyUpdatedDetailsValue,
+            this.protectReportViewDetailsValue,
             this.classificationCreateReportDetailsValue,
             this.classificationCreateReportFailDetailsValue,
             this.emmCreateExceptionsReportDetailsValue,
@@ -43891,6 +43957,8 @@ public final class EventDetails {
                     return (this.protectPolicyScheduledDetailsValue == other.protectPolicyScheduledDetailsValue) || (this.protectPolicyScheduledDetailsValue.equals(other.protectPolicyScheduledDetailsValue));
                 case PROTECT_POLICY_UPDATED_DETAILS:
                     return (this.protectPolicyUpdatedDetailsValue == other.protectPolicyUpdatedDetailsValue) || (this.protectPolicyUpdatedDetailsValue.equals(other.protectPolicyUpdatedDetailsValue));
+                case PROTECT_REPORT_VIEW_DETAILS:
+                    return (this.protectReportViewDetailsValue == other.protectReportViewDetailsValue) || (this.protectReportViewDetailsValue.equals(other.protectReportViewDetailsValue));
                 case CLASSIFICATION_CREATE_REPORT_DETAILS:
                     return (this.classificationCreateReportDetailsValue == other.classificationCreateReportDetailsValue) || (this.classificationCreateReportDetailsValue.equals(other.classificationCreateReportDetailsValue));
                 case CLASSIFICATION_CREATE_REPORT_FAIL_DETAILS:
@@ -46632,6 +46700,13 @@ public final class EventDetails {
                     g.writeStartObject();
                     writeTag("protect_policy_updated_details", g);
                     ProtectPolicyUpdatedDetails.Serializer.INSTANCE.serialize(value.protectPolicyUpdatedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_REPORT_VIEW_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("protect_report_view_details", g);
+                    ProtectReportViewDetails.Serializer.INSTANCE.serialize(value.protectReportViewDetailsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -50497,6 +50572,11 @@ public final class EventDetails {
                 ProtectPolicyUpdatedDetails fieldValue = null;
                 fieldValue = ProtectPolicyUpdatedDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.protectPolicyUpdatedDetails(fieldValue);
+            }
+            else if ("protect_report_view_details".equals(tag)) {
+                ProtectReportViewDetails fieldValue = null;
+                fieldValue = ProtectReportViewDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.protectReportViewDetails(fieldValue);
             }
             else if ("classification_create_report_details".equals(tag)) {
                 ClassificationCreateReportDetails fieldValue = null;

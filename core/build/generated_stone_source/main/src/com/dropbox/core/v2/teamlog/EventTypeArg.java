@@ -1194,6 +1194,10 @@ public enum EventTypeArg {
      */
     PROTECT_POLICY_UPDATED,
     /**
+     * (protect) Viewed a Dropbox Protect report
+     */
+    PROTECT_REPORT_VIEW,
+    /**
      * (reports) Created Classification report
      */
     CLASSIFICATION_CREATE_REPORT,
@@ -3797,6 +3801,10 @@ public enum EventTypeArg {
                     g.writeString("protect_policy_updated");
                     break;
                 }
+                case PROTECT_REPORT_VIEW: {
+                    g.writeString("protect_report_view");
+                    break;
+                }
                 case CLASSIFICATION_CREATE_REPORT: {
                     g.writeString("classification_create_report");
                     break;
@@ -6051,6 +6059,9 @@ public enum EventTypeArg {
             }
             else if ("protect_policy_updated".equals(tag)) {
                 value = EventTypeArg.PROTECT_POLICY_UPDATED;
+            }
+            else if ("protect_report_view".equals(tag)) {
+                value = EventTypeArg.PROTECT_REPORT_VIEW;
             }
             else if ("classification_create_report".equals(tag)) {
                 value = EventTypeArg.CLASSIFICATION_CREATE_REPORT;

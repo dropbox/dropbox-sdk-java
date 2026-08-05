@@ -1214,6 +1214,10 @@ public final class EventType {
          */
         PROTECT_POLICY_UPDATED, // ProtectPolicyUpdatedType
         /**
+         * (protect) Viewed a Dropbox Protect report
+         */
+        PROTECT_REPORT_VIEW, // ProtectReportViewType
+        /**
          * (reports) Created Classification report
          */
         CLASSIFICATION_CREATE_REPORT, // ClassificationCreateReportType
@@ -2969,6 +2973,7 @@ public final class EventType {
     private ProtectPolicyDeactivatedType protectPolicyDeactivatedValue;
     private ProtectPolicyScheduledType protectPolicyScheduledValue;
     private ProtectPolicyUpdatedType protectPolicyUpdatedValue;
+    private ProtectReportViewType protectReportViewValue;
     private ClassificationCreateReportType classificationCreateReportValue;
     private ClassificationCreateReportFailType classificationCreateReportFailValue;
     private EmmCreateExceptionsReportType emmCreateExceptionsReportValue;
@@ -8255,6 +8260,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.protectPolicyUpdatedValue = protectPolicyUpdatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectReportViewValue  (protect) Viewed a Dropbox Protect report.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectReportView(Tag _tag, ProtectReportViewType protectReportViewValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectReportViewValue = protectReportViewValue;
         return result;
     }
 
@@ -28703,6 +28725,55 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_REPORT_VIEW}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_REPORT_VIEW}, {@code false} otherwise.
+     */
+    public boolean isProtectReportView() {
+        return this._tag == Tag.PROTECT_REPORT_VIEW;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_REPORT_VIEW}.
+     *
+     * <p> (protect) Viewed a Dropbox Protect report </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_REPORT_VIEW}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectReportView(ProtectReportViewType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectReportView(Tag.PROTECT_REPORT_VIEW, value);
+    }
+
+    /**
+     * (protect) Viewed a Dropbox Protect report
+     *
+     * <p> This instance must be tagged as {@link Tag#PROTECT_REPORT_VIEW}. </p>
+     *
+     * @return The {@link ProtectReportViewType} value associated with this
+     *     instance if {@link #isProtectReportView} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectReportView} is {@code
+     *     false}.
+     */
+    public ProtectReportViewType getProtectReportViewValue() {
+        if (this._tag != Tag.PROTECT_REPORT_VIEW) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_REPORT_VIEW, but was Tag." + this._tag.name());
+        }
+        return protectReportViewValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#CLASSIFICATION_CREATE_REPORT}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -46431,6 +46502,7 @@ public final class EventType {
             this.protectPolicyDeactivatedValue,
             this.protectPolicyScheduledValue,
             this.protectPolicyUpdatedValue,
+            this.protectReportViewValue,
             this.classificationCreateReportValue,
             this.classificationCreateReportFailValue,
             this.emmCreateExceptionsReportValue,
@@ -47368,6 +47440,8 @@ public final class EventType {
                     return (this.protectPolicyScheduledValue == other.protectPolicyScheduledValue) || (this.protectPolicyScheduledValue.equals(other.protectPolicyScheduledValue));
                 case PROTECT_POLICY_UPDATED:
                     return (this.protectPolicyUpdatedValue == other.protectPolicyUpdatedValue) || (this.protectPolicyUpdatedValue.equals(other.protectPolicyUpdatedValue));
+                case PROTECT_REPORT_VIEW:
+                    return (this.protectReportViewValue == other.protectReportViewValue) || (this.protectReportViewValue.equals(other.protectReportViewValue));
                 case CLASSIFICATION_CREATE_REPORT:
                     return (this.classificationCreateReportValue == other.classificationCreateReportValue) || (this.classificationCreateReportValue.equals(other.classificationCreateReportValue));
                 case CLASSIFICATION_CREATE_REPORT_FAIL:
@@ -50107,6 +50181,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("protect_policy_updated", g);
                     ProtectPolicyUpdatedType.Serializer.INSTANCE.serialize(value.protectPolicyUpdatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_REPORT_VIEW: {
+                    g.writeStartObject();
+                    writeTag("protect_report_view", g);
+                    ProtectReportViewType.Serializer.INSTANCE.serialize(value.protectReportViewValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -53965,6 +54046,11 @@ public final class EventType {
                 ProtectPolicyUpdatedType fieldValue = null;
                 fieldValue = ProtectPolicyUpdatedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.protectPolicyUpdated(fieldValue);
+            }
+            else if ("protect_report_view".equals(tag)) {
+                ProtectReportViewType fieldValue = null;
+                fieldValue = ProtectReportViewType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectReportView(fieldValue);
             }
             else if ("classification_create_report".equals(tag)) {
                 ClassificationCreateReportType fieldValue = null;
