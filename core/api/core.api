@@ -29499,14 +29499,26 @@ public final class com/dropbox/core/v2/teamlog/MediaHubProjectRole : java/lang/E
 }
 
 public class com/dropbox/core/v2/teamlog/MediaHubProjectTeamAddDetails {
+	protected final field invitee Ljava/lang/String;
 	protected final field project Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;
 	public fun <init> ()V
-	public fun <init> (Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;)V
+	public fun <init> (Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
+	public fun getInvitee ()Ljava/lang/String;
 	public fun getProject ()Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;
 	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/teamlog/MediaHubProjectTeamAddDetails$Builder;
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/MediaHubProjectTeamAddDetails$Builder {
+	protected field invitee Ljava/lang/String;
+	protected field project Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/teamlog/MediaHubProjectTeamAddDetails;
+	public fun withInvitee (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/MediaHubProjectTeamAddDetails$Builder;
+	public fun withProject (Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;)Lcom/dropbox/core/v2/teamlog/MediaHubProjectTeamAddDetails$Builder;
 }
 
 public class com/dropbox/core/v2/teamlog/MediaHubProjectTeamAddType {
@@ -29520,14 +29532,26 @@ public class com/dropbox/core/v2/teamlog/MediaHubProjectTeamAddType {
 }
 
 public class com/dropbox/core/v2/teamlog/MediaHubProjectTeamDeleteDetails {
+	protected final field invitee Ljava/lang/String;
 	protected final field project Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;
 	public fun <init> ()V
-	public fun <init> (Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;)V
+	public fun <init> (Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
+	public fun getInvitee ()Ljava/lang/String;
 	public fun getProject ()Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;
 	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/teamlog/MediaHubProjectTeamDeleteDetails$Builder;
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/MediaHubProjectTeamDeleteDetails$Builder {
+	protected field invitee Ljava/lang/String;
+	protected field project Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/teamlog/MediaHubProjectTeamDeleteDetails;
+	public fun withInvitee (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/MediaHubProjectTeamDeleteDetails$Builder;
+	public fun withProject (Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;)Lcom/dropbox/core/v2/teamlog/MediaHubProjectTeamDeleteDetails$Builder;
 }
 
 public class com/dropbox/core/v2/teamlog/MediaHubProjectTeamDeleteType {
@@ -29541,18 +29565,32 @@ public class com/dropbox/core/v2/teamlog/MediaHubProjectTeamDeleteType {
 }
 
 public class com/dropbox/core/v2/teamlog/MediaHubProjectTeamRoleChangedDetails {
+	protected final field invitee Ljava/lang/String;
 	protected final field newRole Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;
 	protected final field previousRole Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;
 	protected final field project Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;
 	public fun <init> (Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;)V
-	public fun <init> (Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;)V
+	public fun <init> (Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
+	public fun getInvitee ()Ljava/lang/String;
 	public fun getNewRole ()Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;
 	public fun getPreviousRole ()Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;
 	public fun getProject ()Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;
 	public fun hashCode ()I
+	public static fun newBuilder (Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;)Lcom/dropbox/core/v2/teamlog/MediaHubProjectTeamRoleChangedDetails$Builder;
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/MediaHubProjectTeamRoleChangedDetails$Builder {
+	protected field invitee Ljava/lang/String;
+	protected final field newRole Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;
+	protected final field previousRole Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;
+	protected field project Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;
+	protected fun <init> (Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;Lcom/dropbox/core/v2/teamlog/MediaHubProjectRole;)V
+	public fun build ()Lcom/dropbox/core/v2/teamlog/MediaHubProjectTeamRoleChangedDetails;
+	public fun withInvitee (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/MediaHubProjectTeamRoleChangedDetails$Builder;
+	public fun withProject (Lcom/dropbox/core/v2/teamlog/MediaHubProjectLogInfo;)Lcom/dropbox/core/v2/teamlog/MediaHubProjectTeamRoleChangedDetails$Builder;
 }
 
 public class com/dropbox/core/v2/teamlog/MediaHubProjectTeamRoleChangedType {
