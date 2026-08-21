@@ -2407,6 +2407,15 @@ public final class EventType {
          */
         TEAM_EXTENSIONS_POLICY_CHANGED, // TeamExtensionsPolicyChangedType
         /**
+         * (team_policies) Changed external sharing controls activation state
+         */
+        TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED, // TeamExternalSharingControlsActivationStateChangedType
+        /**
+         * (team_policies) Changed approved or blocked entries for external
+         * sharing controls
+         */
+        TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED, // TeamExternalSharingControlsRecipientListsChangedType
+        /**
          * (team_policies) Changed team member storage request policy for team
          */
         TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED, // TeamMemberStorageRequestPolicyChangedType
@@ -3256,6 +3265,8 @@ public final class EventType {
     private StackCrossTeamAccessPolicyChangedType stackCrossTeamAccessPolicyChangedValue;
     private TeamBrandingPolicyChangedType teamBrandingPolicyChangedValue;
     private TeamExtensionsPolicyChangedType teamExtensionsPolicyChangedValue;
+    private TeamExternalSharingControlsActivationStateChangedType teamExternalSharingControlsActivationStateChangedValue;
+    private TeamExternalSharingControlsRecipientListsChangedType teamExternalSharingControlsRecipientListsChangedValue;
     private TeamMemberStorageRequestPolicyChangedType teamMemberStorageRequestPolicyChangedValue;
     private TeamSelectiveSyncPolicyChangedType teamSelectiveSyncPolicyChangedValue;
     private TeamSharingWhitelistSubjectsChangedType teamSharingWhitelistSubjectsChangedValue;
@@ -13129,6 +13140,42 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.teamExtensionsPolicyChangedValue = teamExtensionsPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param teamExternalSharingControlsActivationStateChangedValue
+     *     (team_policies) Changed external sharing controls activation state.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamExternalSharingControlsActivationStateChanged(Tag _tag, TeamExternalSharingControlsActivationStateChangedType teamExternalSharingControlsActivationStateChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamExternalSharingControlsActivationStateChangedValue = teamExternalSharingControlsActivationStateChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param teamExternalSharingControlsRecipientListsChangedValue
+     *     (team_policies) Changed approved or blocked entries for external
+     *     sharing controls. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamExternalSharingControlsRecipientListsChanged(Tag _tag, TeamExternalSharingControlsRecipientListsChangedType teamExternalSharingControlsRecipientListsChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamExternalSharingControlsRecipientListsChangedValue = teamExternalSharingControlsRecipientListsChangedValue;
         return result;
     }
 
@@ -43153,6 +43200,118 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED}, {@code
+     * false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED}, {@code
+     *     false} otherwise.
+     */
+    public boolean isTeamExternalSharingControlsActivationStateChanged() {
+        return this._tag == Tag.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED}.
+     *
+     * <p> (team_policies) Changed external sharing controls activation state
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamExternalSharingControlsActivationStateChanged(TeamExternalSharingControlsActivationStateChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamExternalSharingControlsActivationStateChanged(Tag.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed external sharing controls activation state
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED}. </p>
+     *
+     * @return The {@link TeamExternalSharingControlsActivationStateChangedType}
+     *     value associated with this instance if {@link
+     *     #isTeamExternalSharingControlsActivationStateChanged} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamExternalSharingControlsActivationStateChanged} is {@code
+     *     false}.
+     */
+    public TeamExternalSharingControlsActivationStateChangedType getTeamExternalSharingControlsActivationStateChangedValue() {
+        if (this._tag != Tag.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED, but was Tag." + this._tag.name());
+        }
+        return teamExternalSharingControlsActivationStateChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED}, {@code
+     * false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED}, {@code
+     *     false} otherwise.
+     */
+    public boolean isTeamExternalSharingControlsRecipientListsChanged() {
+        return this._tag == Tag.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED}.
+     *
+     * <p> (team_policies) Changed approved or blocked entries for external
+     * sharing controls </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamExternalSharingControlsRecipientListsChanged(TeamExternalSharingControlsRecipientListsChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamExternalSharingControlsRecipientListsChanged(Tag.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed approved or blocked entries for external sharing
+     * controls
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED}. </p>
+     *
+     * @return The {@link TeamExternalSharingControlsRecipientListsChangedType}
+     *     value associated with this instance if {@link
+     *     #isTeamExternalSharingControlsRecipientListsChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamExternalSharingControlsRecipientListsChanged} is {@code
+     *     false}.
+     */
+    public TeamExternalSharingControlsRecipientListsChangedType getTeamExternalSharingControlsRecipientListsChangedValue() {
+        if (this._tag != Tag.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED, but was Tag." + this._tag.name());
+        }
+        return teamExternalSharingControlsRecipientListsChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -46785,6 +46944,8 @@ public final class EventType {
             this.stackCrossTeamAccessPolicyChangedValue,
             this.teamBrandingPolicyChangedValue,
             this.teamExtensionsPolicyChangedValue,
+            this.teamExternalSharingControlsActivationStateChangedValue,
+            this.teamExternalSharingControlsRecipientListsChangedValue,
             this.teamMemberStorageRequestPolicyChangedValue,
             this.teamSelectiveSyncPolicyChangedValue,
             this.teamSharingWhitelistSubjectsChangedValue,
@@ -48006,6 +48167,10 @@ public final class EventType {
                     return (this.teamBrandingPolicyChangedValue == other.teamBrandingPolicyChangedValue) || (this.teamBrandingPolicyChangedValue.equals(other.teamBrandingPolicyChangedValue));
                 case TEAM_EXTENSIONS_POLICY_CHANGED:
                     return (this.teamExtensionsPolicyChangedValue == other.teamExtensionsPolicyChangedValue) || (this.teamExtensionsPolicyChangedValue.equals(other.teamExtensionsPolicyChangedValue));
+                case TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED:
+                    return (this.teamExternalSharingControlsActivationStateChangedValue == other.teamExternalSharingControlsActivationStateChangedValue) || (this.teamExternalSharingControlsActivationStateChangedValue.equals(other.teamExternalSharingControlsActivationStateChangedValue));
+                case TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED:
+                    return (this.teamExternalSharingControlsRecipientListsChangedValue == other.teamExternalSharingControlsRecipientListsChangedValue) || (this.teamExternalSharingControlsRecipientListsChangedValue.equals(other.teamExternalSharingControlsRecipientListsChangedValue));
                 case TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED:
                     return (this.teamMemberStorageRequestPolicyChangedValue == other.teamMemberStorageRequestPolicyChangedValue) || (this.teamMemberStorageRequestPolicyChangedValue.equals(other.teamMemberStorageRequestPolicyChangedValue));
                 case TEAM_SELECTIVE_SYNC_POLICY_CHANGED:
@@ -52165,6 +52330,20 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("team_external_sharing_controls_activation_state_changed", g);
+                    TeamExternalSharingControlsActivationStateChangedType.Serializer.INSTANCE.serialize(value.teamExternalSharingControlsActivationStateChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("team_external_sharing_controls_recipient_lists_changed", g);
+                    TeamExternalSharingControlsRecipientListsChangedType.Serializer.INSTANCE.serialize(value.teamExternalSharingControlsRecipientListsChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED: {
                     g.writeStartObject();
                     writeTag("team_member_storage_request_policy_changed", g);
@@ -55461,6 +55640,16 @@ public final class EventType {
                 TeamExtensionsPolicyChangedType fieldValue = null;
                 fieldValue = TeamExtensionsPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.teamExtensionsPolicyChanged(fieldValue);
+            }
+            else if ("team_external_sharing_controls_activation_state_changed".equals(tag)) {
+                TeamExternalSharingControlsActivationStateChangedType fieldValue = null;
+                fieldValue = TeamExternalSharingControlsActivationStateChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamExternalSharingControlsActivationStateChanged(fieldValue);
+            }
+            else if ("team_external_sharing_controls_recipient_lists_changed".equals(tag)) {
+                TeamExternalSharingControlsRecipientListsChangedType fieldValue = null;
+                fieldValue = TeamExternalSharingControlsRecipientListsChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamExternalSharingControlsRecipientListsChanged(fieldValue);
             }
             else if ("team_member_storage_request_policy_changed".equals(tag)) {
                 TeamMemberStorageRequestPolicyChangedType fieldValue = null;

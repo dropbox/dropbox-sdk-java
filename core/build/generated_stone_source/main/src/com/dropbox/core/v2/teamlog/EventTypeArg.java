@@ -2376,6 +2376,15 @@ public enum EventTypeArg {
      */
     TEAM_EXTENSIONS_POLICY_CHANGED,
     /**
+     * (team_policies) Changed external sharing controls activation state
+     */
+    TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED,
+    /**
+     * (team_policies) Changed approved or blocked entries for external sharing
+     * controls
+     */
+    TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED,
+    /**
      * (team_policies) Changed team member storage request policy for team
      */
     TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED,
@@ -4933,6 +4942,14 @@ public enum EventTypeArg {
                     g.writeString("team_extensions_policy_changed");
                     break;
                 }
+                case TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED: {
+                    g.writeString("team_external_sharing_controls_activation_state_changed");
+                    break;
+                }
+                case TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED: {
+                    g.writeString("team_external_sharing_controls_recipient_lists_changed");
+                    break;
+                }
                 case TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED: {
                     g.writeString("team_member_storage_request_policy_changed");
                     break;
@@ -6908,6 +6925,12 @@ public enum EventTypeArg {
             }
             else if ("team_extensions_policy_changed".equals(tag)) {
                 value = EventTypeArg.TEAM_EXTENSIONS_POLICY_CHANGED;
+            }
+            else if ("team_external_sharing_controls_activation_state_changed".equals(tag)) {
+                value = EventTypeArg.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED;
+            }
+            else if ("team_external_sharing_controls_recipient_lists_changed".equals(tag)) {
+                value = EventTypeArg.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED;
             }
             else if ("team_member_storage_request_policy_changed".equals(tag)) {
                 value = EventTypeArg.TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED;

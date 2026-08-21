@@ -21159,6 +21159,8 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getTeamEncryptionKeyRotateKeyDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyRotateKeyDetails;
 	public fun getTeamEncryptionKeyScheduleKeyDeletionDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyScheduleKeyDeletionDetails;
 	public fun getTeamExtensionsPolicyChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamExtensionsPolicyChangedDetails;
+	public fun getTeamExternalSharingControlsActivationStateChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsActivationStateChangedDetails;
+	public fun getTeamExternalSharingControlsRecipientListsChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsRecipientListsChangedDetails;
 	public fun getTeamFolderChangeStatusDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamFolderChangeStatusDetails;
 	public fun getTeamFolderCreateDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamFolderCreateDetails;
 	public fun getTeamFolderDowngradeDetailsValue ()Lcom/dropbox/core/v2/teamlog/TeamFolderDowngradeDetails;
@@ -21828,6 +21830,8 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isTeamEncryptionKeyRotateKeyDetails ()Z
 	public fun isTeamEncryptionKeyScheduleKeyDeletionDetails ()Z
 	public fun isTeamExtensionsPolicyChangedDetails ()Z
+	public fun isTeamExternalSharingControlsActivationStateChangedDetails ()Z
+	public fun isTeamExternalSharingControlsRecipientListsChangedDetails ()Z
 	public fun isTeamFolderChangeStatusDetails ()Z
 	public fun isTeamFolderCreateDetails ()Z
 	public fun isTeamFolderDowngradeDetails ()Z
@@ -22231,6 +22235,8 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun teamEncryptionKeyRotateKeyDetails (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyRotateKeyDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun teamEncryptionKeyScheduleKeyDeletionDetails (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyScheduleKeyDeletionDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun teamExtensionsPolicyChangedDetails (Lcom/dropbox/core/v2/teamlog/TeamExtensionsPolicyChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun teamExternalSharingControlsActivationStateChangedDetails (Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsActivationStateChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun teamExternalSharingControlsRecipientListsChangedDetails (Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsRecipientListsChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun teamFolderChangeStatusDetails (Lcom/dropbox/core/v2/teamlog/TeamFolderChangeStatusDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun teamFolderCreateDetails (Lcom/dropbox/core/v2/teamlog/TeamFolderCreateDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun teamFolderDowngradeDetails (Lcom/dropbox/core/v2/teamlog/TeamFolderDowngradeDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -22869,6 +22875,8 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field TEAM_ENCRYPTION_KEY_ROTATE_KEY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field TEAM_ENCRYPTION_KEY_SCHEDULE_KEY_DELETION_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field TEAM_EXTENSIONS_POLICY_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field TEAM_FOLDERS_CREATE_REPORT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field TEAM_FOLDERS_CREATE_REPORT_FAILED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field TEAM_FOLDER_CHANGE_STATUS_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -23702,6 +23710,8 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getTeamEncryptionKeyRotateKeyValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyRotateKeyType;
 	public fun getTeamEncryptionKeyScheduleKeyDeletionValue ()Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyScheduleKeyDeletionType;
 	public fun getTeamExtensionsPolicyChangedValue ()Lcom/dropbox/core/v2/teamlog/TeamExtensionsPolicyChangedType;
+	public fun getTeamExternalSharingControlsActivationStateChangedValue ()Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsActivationStateChangedType;
+	public fun getTeamExternalSharingControlsRecipientListsChangedValue ()Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsRecipientListsChangedType;
 	public fun getTeamFolderChangeStatusValue ()Lcom/dropbox/core/v2/teamlog/TeamFolderChangeStatusType;
 	public fun getTeamFolderCreateValue ()Lcom/dropbox/core/v2/teamlog/TeamFolderCreateType;
 	public fun getTeamFolderDowngradeValue ()Lcom/dropbox/core/v2/teamlog/TeamFolderDowngradeType;
@@ -24370,6 +24380,8 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isTeamEncryptionKeyRotateKey ()Z
 	public fun isTeamEncryptionKeyScheduleKeyDeletion ()Z
 	public fun isTeamExtensionsPolicyChanged ()Z
+	public fun isTeamExternalSharingControlsActivationStateChanged ()Z
+	public fun isTeamExternalSharingControlsRecipientListsChanged ()Z
 	public fun isTeamFolderChangeStatus ()Z
 	public fun isTeamFolderCreate ()Z
 	public fun isTeamFolderDowngrade ()Z
@@ -24772,6 +24784,8 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun teamEncryptionKeyRotateKey (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyRotateKeyType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun teamEncryptionKeyScheduleKeyDeletion (Lcom/dropbox/core/v2/teamlog/TeamEncryptionKeyScheduleKeyDeletionType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun teamExtensionsPolicyChanged (Lcom/dropbox/core/v2/teamlog/TeamExtensionsPolicyChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun teamExternalSharingControlsActivationStateChanged (Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsActivationStateChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun teamExternalSharingControlsRecipientListsChanged (Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsRecipientListsChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun teamFolderChangeStatus (Lcom/dropbox/core/v2/teamlog/TeamFolderChangeStatusType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun teamFolderCreate (Lcom/dropbox/core/v2/teamlog/TeamFolderCreateType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun teamFolderDowngrade (Lcom/dropbox/core/v2/teamlog/TeamFolderDowngradeType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -25409,6 +25423,8 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field TEAM_ENCRYPTION_KEY_ROTATE_KEY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field TEAM_ENCRYPTION_KEY_SCHEDULE_KEY_DELETION Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field TEAM_EXTENSIONS_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field TEAM_FOLDERS_CREATE_REPORT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field TEAM_FOLDERS_CREATE_REPORT_FAILED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field TEAM_FOLDER_CHANGE_STATUS Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -26046,6 +26062,8 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field TEAM_ENCRYPTION_KEY_ROTATE_KEY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field TEAM_ENCRYPTION_KEY_SCHEDULE_KEY_DELETION Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field TEAM_EXTENSIONS_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field TEAM_FOLDERS_CREATE_REPORT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field TEAM_FOLDERS_CREATE_REPORT_FAILED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field TEAM_FOLDER_CHANGE_STATUS Lcom/dropbox/core/v2/teamlog/EventTypeArg;
@@ -26284,6 +26302,15 @@ public class com/dropbox/core/v2/teamlog/ExternalDriveBackupStatusChangedType {
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/teamlog/ExternalSharingControlsActivationState : java/lang/Enum {
+	public static final field ACTIVE Lcom/dropbox/core/v2/teamlog/ExternalSharingControlsActivationState;
+	public static final field DISABLED Lcom/dropbox/core/v2/teamlog/ExternalSharingControlsActivationState;
+	public static final field LEGACY Lcom/dropbox/core/v2/teamlog/ExternalSharingControlsActivationState;
+	public static final field OTHER Lcom/dropbox/core/v2/teamlog/ExternalSharingControlsActivationState;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/ExternalSharingControlsActivationState;
+	public static fun values ()[Lcom/dropbox/core/v2/teamlog/ExternalSharingControlsActivationState;
 }
 
 public class com/dropbox/core/v2/teamlog/ExternalSharingCreateReportDetails {
@@ -37535,6 +37562,69 @@ public class com/dropbox/core/v2/teamlog/TeamExtensionsPolicyChangedDetails {
 }
 
 public class com/dropbox/core/v2/teamlog/TeamExtensionsPolicyChangedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamExternalSharingControlsActivationStateChangedDetails {
+	protected final field newActivationState Lcom/dropbox/core/v2/teamlog/ExternalSharingControlsActivationState;
+	protected final field previousActivationState Lcom/dropbox/core/v2/teamlog/ExternalSharingControlsActivationState;
+	public fun <init> (Lcom/dropbox/core/v2/teamlog/ExternalSharingControlsActivationState;Lcom/dropbox/core/v2/teamlog/ExternalSharingControlsActivationState;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getNewActivationState ()Lcom/dropbox/core/v2/teamlog/ExternalSharingControlsActivationState;
+	public fun getPreviousActivationState ()Lcom/dropbox/core/v2/teamlog/ExternalSharingControlsActivationState;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamExternalSharingControlsActivationStateChangedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamExternalSharingControlsRecipientListsChangedDetails {
+	protected final field addedApprovedEntries Ljava/util/List;
+	protected final field addedBlockedEntries Ljava/util/List;
+	protected final field removedApprovedEntries Ljava/util/List;
+	protected final field removedBlockedEntries Ljava/util/List;
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAddedApprovedEntries ()Ljava/util/List;
+	public fun getAddedBlockedEntries ()Ljava/util/List;
+	public fun getRemovedApprovedEntries ()Ljava/util/List;
+	public fun getRemovedBlockedEntries ()Ljava/util/List;
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsRecipientListsChangedDetails$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamExternalSharingControlsRecipientListsChangedDetails$Builder {
+	protected field addedApprovedEntries Ljava/util/List;
+	protected field addedBlockedEntries Ljava/util/List;
+	protected field removedApprovedEntries Ljava/util/List;
+	protected field removedBlockedEntries Ljava/util/List;
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsRecipientListsChangedDetails;
+	public fun withAddedApprovedEntries (Ljava/util/List;)Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsRecipientListsChangedDetails$Builder;
+	public fun withAddedBlockedEntries (Ljava/util/List;)Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsRecipientListsChangedDetails$Builder;
+	public fun withRemovedApprovedEntries (Ljava/util/List;)Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsRecipientListsChangedDetails$Builder;
+	public fun withRemovedBlockedEntries (Ljava/util/List;)Lcom/dropbox/core/v2/teamlog/TeamExternalSharingControlsRecipientListsChangedDetails$Builder;
+}
+
+public class com/dropbox/core/v2/teamlog/TeamExternalSharingControlsRecipientListsChangedType {
 	protected final field description Ljava/lang/String;
 	public fun <init> (Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z

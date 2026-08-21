@@ -607,6 +607,8 @@ public final class EventDetails {
         STACK_CROSS_TEAM_ACCESS_POLICY_CHANGED_DETAILS, // StackCrossTeamAccessPolicyChangedDetails
         TEAM_BRANDING_POLICY_CHANGED_DETAILS, // TeamBrandingPolicyChangedDetails
         TEAM_EXTENSIONS_POLICY_CHANGED_DETAILS, // TeamExtensionsPolicyChangedDetails
+        TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED_DETAILS, // TeamExternalSharingControlsActivationStateChangedDetails
+        TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED_DETAILS, // TeamExternalSharingControlsRecipientListsChangedDetails
         TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED_DETAILS, // TeamMemberStorageRequestPolicyChangedDetails
         TEAM_SELECTIVE_SYNC_POLICY_CHANGED_DETAILS, // TeamSelectiveSyncPolicyChangedDetails
         TEAM_SHARING_WHITELIST_SUBJECTS_CHANGED_DETAILS, // TeamSharingWhitelistSubjectsChangedDetails
@@ -1264,6 +1266,8 @@ public final class EventDetails {
     private StackCrossTeamAccessPolicyChangedDetails stackCrossTeamAccessPolicyChangedDetailsValue;
     private TeamBrandingPolicyChangedDetails teamBrandingPolicyChangedDetailsValue;
     private TeamExtensionsPolicyChangedDetails teamExtensionsPolicyChangedDetailsValue;
+    private TeamExternalSharingControlsActivationStateChangedDetails teamExternalSharingControlsActivationStateChangedDetailsValue;
+    private TeamExternalSharingControlsRecipientListsChangedDetails teamExternalSharingControlsRecipientListsChangedDetailsValue;
     private TeamMemberStorageRequestPolicyChangedDetails teamMemberStorageRequestPolicyChangedDetailsValue;
     private TeamSelectiveSyncPolicyChangedDetails teamSelectiveSyncPolicyChangedDetailsValue;
     private TeamSharingWhitelistSubjectsChangedDetails teamSharingWhitelistSubjectsChangedDetailsValue;
@@ -10676,6 +10680,40 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.teamExtensionsPolicyChangedDetailsValue = teamExtensionsPolicyChangedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param teamExternalSharingControlsActivationStateChangedDetailsValue
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndTeamExternalSharingControlsActivationStateChangedDetails(Tag _tag, TeamExternalSharingControlsActivationStateChangedDetails teamExternalSharingControlsActivationStateChangedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.teamExternalSharingControlsActivationStateChangedDetailsValue = teamExternalSharingControlsActivationStateChangedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param teamExternalSharingControlsRecipientListsChangedDetailsValue  Must
+     *     not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndTeamExternalSharingControlsRecipientListsChangedDetails(Tag _tag, TeamExternalSharingControlsRecipientListsChangedDetails teamExternalSharingControlsRecipientListsChangedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.teamExternalSharingControlsRecipientListsChangedDetailsValue = teamExternalSharingControlsRecipientListsChangedDetailsValue;
         return result;
     }
 
@@ -39729,6 +39767,116 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED_DETAILS},
+     * {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED_DETAILS},
+     *     {@code false} otherwise.
+     */
+    public boolean isTeamExternalSharingControlsActivationStateChangedDetails() {
+        return this._tag == Tag.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails teamExternalSharingControlsActivationStateChangedDetails(TeamExternalSharingControlsActivationStateChangedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndTeamExternalSharingControlsActivationStateChangedDetails(Tag.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED_DETAILS}.
+     *
+     * @return The {@link
+     *     TeamExternalSharingControlsActivationStateChangedDetails} value
+     *     associated with this instance if {@link
+     *     #isTeamExternalSharingControlsActivationStateChangedDetails} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamExternalSharingControlsActivationStateChangedDetails} is
+     *     {@code false}.
+     */
+    public TeamExternalSharingControlsActivationStateChangedDetails getTeamExternalSharingControlsActivationStateChangedDetailsValue() {
+        if (this._tag != Tag.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return teamExternalSharingControlsActivationStateChangedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED_DETAILS},
+     * {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED_DETAILS},
+     *     {@code false} otherwise.
+     */
+    public boolean isTeamExternalSharingControlsRecipientListsChangedDetails() {
+        return this._tag == Tag.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails teamExternalSharingControlsRecipientListsChangedDetails(TeamExternalSharingControlsRecipientListsChangedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndTeamExternalSharingControlsRecipientListsChangedDetails(Tag.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED_DETAILS}.
+     *
+     * @return The {@link
+     *     TeamExternalSharingControlsRecipientListsChangedDetails} value
+     *     associated with this instance if {@link
+     *     #isTeamExternalSharingControlsRecipientListsChangedDetails} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamExternalSharingControlsRecipientListsChangedDetails} is {@code
+     *     false}.
+     */
+    public TeamExternalSharingControlsRecipientListsChangedDetails getTeamExternalSharingControlsRecipientListsChangedDetailsValue() {
+        if (this._tag != Tag.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return teamExternalSharingControlsRecipientListsChangedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED_DETAILS}, {@code false}
      * otherwise.
      *
@@ -43301,6 +43449,8 @@ public final class EventDetails {
             this.stackCrossTeamAccessPolicyChangedDetailsValue,
             this.teamBrandingPolicyChangedDetailsValue,
             this.teamExtensionsPolicyChangedDetailsValue,
+            this.teamExternalSharingControlsActivationStateChangedDetailsValue,
+            this.teamExternalSharingControlsRecipientListsChangedDetailsValue,
             this.teamMemberStorageRequestPolicyChangedDetailsValue,
             this.teamSelectiveSyncPolicyChangedDetailsValue,
             this.teamSharingWhitelistSubjectsChangedDetailsValue,
@@ -44523,6 +44673,10 @@ public final class EventDetails {
                     return (this.teamBrandingPolicyChangedDetailsValue == other.teamBrandingPolicyChangedDetailsValue) || (this.teamBrandingPolicyChangedDetailsValue.equals(other.teamBrandingPolicyChangedDetailsValue));
                 case TEAM_EXTENSIONS_POLICY_CHANGED_DETAILS:
                     return (this.teamExtensionsPolicyChangedDetailsValue == other.teamExtensionsPolicyChangedDetailsValue) || (this.teamExtensionsPolicyChangedDetailsValue.equals(other.teamExtensionsPolicyChangedDetailsValue));
+                case TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED_DETAILS:
+                    return (this.teamExternalSharingControlsActivationStateChangedDetailsValue == other.teamExternalSharingControlsActivationStateChangedDetailsValue) || (this.teamExternalSharingControlsActivationStateChangedDetailsValue.equals(other.teamExternalSharingControlsActivationStateChangedDetailsValue));
+                case TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED_DETAILS:
+                    return (this.teamExternalSharingControlsRecipientListsChangedDetailsValue == other.teamExternalSharingControlsRecipientListsChangedDetailsValue) || (this.teamExternalSharingControlsRecipientListsChangedDetailsValue.equals(other.teamExternalSharingControlsRecipientListsChangedDetailsValue));
                 case TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED_DETAILS:
                     return (this.teamMemberStorageRequestPolicyChangedDetailsValue == other.teamMemberStorageRequestPolicyChangedDetailsValue) || (this.teamMemberStorageRequestPolicyChangedDetailsValue.equals(other.teamMemberStorageRequestPolicyChangedDetailsValue));
                 case TEAM_SELECTIVE_SYNC_POLICY_CHANGED_DETAILS:
@@ -48684,6 +48838,20 @@ public final class EventDetails {
                     g.writeEndObject();
                     break;
                 }
+                case TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("team_external_sharing_controls_activation_state_changed_details", g);
+                    TeamExternalSharingControlsActivationStateChangedDetails.Serializer.INSTANCE.serialize(value.teamExternalSharingControlsActivationStateChangedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("team_external_sharing_controls_recipient_lists_changed_details", g);
+                    TeamExternalSharingControlsRecipientListsChangedDetails.Serializer.INSTANCE.serialize(value.teamExternalSharingControlsRecipientListsChangedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED_DETAILS: {
                     g.writeStartObject();
                     writeTag("team_member_storage_request_policy_changed_details", g);
@@ -51987,6 +52155,16 @@ public final class EventDetails {
                 TeamExtensionsPolicyChangedDetails fieldValue = null;
                 fieldValue = TeamExtensionsPolicyChangedDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.teamExtensionsPolicyChangedDetails(fieldValue);
+            }
+            else if ("team_external_sharing_controls_activation_state_changed_details".equals(tag)) {
+                TeamExternalSharingControlsActivationStateChangedDetails fieldValue = null;
+                fieldValue = TeamExternalSharingControlsActivationStateChangedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.teamExternalSharingControlsActivationStateChangedDetails(fieldValue);
+            }
+            else if ("team_external_sharing_controls_recipient_lists_changed_details".equals(tag)) {
+                TeamExternalSharingControlsRecipientListsChangedDetails fieldValue = null;
+                fieldValue = TeamExternalSharingControlsRecipientListsChangedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.teamExternalSharingControlsRecipientListsChangedDetails(fieldValue);
             }
             else if ("team_member_storage_request_policy_changed_details".equals(tag)) {
                 TeamMemberStorageRequestPolicyChangedDetails fieldValue = null;
