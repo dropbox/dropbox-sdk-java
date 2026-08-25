@@ -1166,6 +1166,10 @@ public enum EventTypeArg {
      */
     PROTECT_ACTION_REMOVE_COLLABORATOR,
     /**
+     * (protect) Removed domains via Dropbox Protect
+     */
+    PROTECT_ACTION_REMOVE_DOMAINS,
+    /**
      * (protect) Removed a link via Dropbox Protect
      */
     PROTECT_ACTION_REMOVE_LINK,
@@ -3782,6 +3786,10 @@ public enum EventTypeArg {
                     g.writeString("protect_action_remove_collaborator");
                     break;
                 }
+                case PROTECT_ACTION_REMOVE_DOMAINS: {
+                    g.writeString("protect_action_remove_domains");
+                    break;
+                }
                 case PROTECT_ACTION_REMOVE_LINK: {
                     g.writeString("protect_action_remove_link");
                     break;
@@ -6055,6 +6063,9 @@ public enum EventTypeArg {
             }
             else if ("protect_action_remove_collaborator".equals(tag)) {
                 value = EventTypeArg.PROTECT_ACTION_REMOVE_COLLABORATOR;
+            }
+            else if ("protect_action_remove_domains".equals(tag)) {
+                value = EventTypeArg.PROTECT_ACTION_REMOVE_DOMAINS;
             }
             else if ("protect_action_remove_link".equals(tag)) {
                 value = EventTypeArg.PROTECT_ACTION_REMOVE_LINK;

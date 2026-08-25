@@ -317,6 +317,7 @@ public final class EventDetails {
         PROTECT_ACTION_DELETE_DETAILS, // ProtectActionDeleteDetails
         PROTECT_ACTION_EXPORT_DETAILS, // ProtectActionExportDetails
         PROTECT_ACTION_REMOVE_COLLABORATOR_DETAILS, // ProtectActionRemoveCollaboratorDetails
+        PROTECT_ACTION_REMOVE_DOMAINS_DETAILS, // ProtectActionRemoveDomainsDetails
         PROTECT_ACTION_REMOVE_LINK_DETAILS, // ProtectActionRemoveLinkDetails
         PROTECT_ACTION_STOP_SHARING_DETAILS, // ProtectActionStopSharingDetails
         PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS, // ProtectInternalDomainsChangedDetails
@@ -976,6 +977,7 @@ public final class EventDetails {
     private ProtectActionDeleteDetails protectActionDeleteDetailsValue;
     private ProtectActionExportDetails protectActionExportDetailsValue;
     private ProtectActionRemoveCollaboratorDetails protectActionRemoveCollaboratorDetailsValue;
+    private ProtectActionRemoveDomainsDetails protectActionRemoveDomainsDetailsValue;
     private ProtectActionRemoveLinkDetails protectActionRemoveLinkDetailsValue;
     private ProtectActionStopSharingDetails protectActionStopSharingDetailsValue;
     private ProtectInternalDomainsChangedDetails protectInternalDomainsChangedDetailsValue;
@@ -5926,6 +5928,22 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.protectActionRemoveCollaboratorDetailsValue = protectActionRemoveCollaboratorDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param protectActionRemoveDomainsDetailsValue  Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndProtectActionRemoveDomainsDetails(Tag _tag, ProtectActionRemoveDomainsDetails protectActionRemoveDomainsDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.protectActionRemoveDomainsDetailsValue = protectActionRemoveDomainsDetailsValue;
         return result;
     }
 
@@ -25485,6 +25503,55 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_ACTION_REMOVE_DOMAINS_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_ACTION_REMOVE_DOMAINS_DETAILS}, {@code false} otherwise.
+     */
+    public boolean isProtectActionRemoveDomainsDetails() {
+        return this._tag == Tag.PROTECT_ACTION_REMOVE_DOMAINS_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#PROTECT_ACTION_REMOVE_DOMAINS_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#PROTECT_ACTION_REMOVE_DOMAINS_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails protectActionRemoveDomainsDetails(ProtectActionRemoveDomainsDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndProtectActionRemoveDomainsDetails(Tag.PROTECT_ACTION_REMOVE_DOMAINS_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#PROTECT_ACTION_REMOVE_DOMAINS_DETAILS}.
+     *
+     * @return The {@link ProtectActionRemoveDomainsDetails} value associated
+     *     with this instance if {@link #isProtectActionRemoveDomainsDetails} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectActionRemoveDomainsDetails} is {@code false}.
+     */
+    public ProtectActionRemoveDomainsDetails getProtectActionRemoveDomainsDetailsValue() {
+        if (this._tag != Tag.PROTECT_ACTION_REMOVE_DOMAINS_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_ACTION_REMOVE_DOMAINS_DETAILS, but was Tag." + this._tag.name());
+        }
+        return protectActionRemoveDomainsDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#PROTECT_ACTION_REMOVE_LINK_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -43159,6 +43226,7 @@ public final class EventDetails {
             this.protectActionDeleteDetailsValue,
             this.protectActionExportDetailsValue,
             this.protectActionRemoveCollaboratorDetailsValue,
+            this.protectActionRemoveDomainsDetailsValue,
             this.protectActionRemoveLinkDetailsValue,
             this.protectActionStopSharingDetailsValue,
             this.protectInternalDomainsChangedDetailsValue,
@@ -44093,6 +44161,8 @@ public final class EventDetails {
                     return (this.protectActionExportDetailsValue == other.protectActionExportDetailsValue) || (this.protectActionExportDetailsValue.equals(other.protectActionExportDetailsValue));
                 case PROTECT_ACTION_REMOVE_COLLABORATOR_DETAILS:
                     return (this.protectActionRemoveCollaboratorDetailsValue == other.protectActionRemoveCollaboratorDetailsValue) || (this.protectActionRemoveCollaboratorDetailsValue.equals(other.protectActionRemoveCollaboratorDetailsValue));
+                case PROTECT_ACTION_REMOVE_DOMAINS_DETAILS:
+                    return (this.protectActionRemoveDomainsDetailsValue == other.protectActionRemoveDomainsDetailsValue) || (this.protectActionRemoveDomainsDetailsValue.equals(other.protectActionRemoveDomainsDetailsValue));
                 case PROTECT_ACTION_REMOVE_LINK_DETAILS:
                     return (this.protectActionRemoveLinkDetailsValue == other.protectActionRemoveLinkDetailsValue) || (this.protectActionRemoveLinkDetailsValue.equals(other.protectActionRemoveLinkDetailsValue));
                 case PROTECT_ACTION_STOP_SHARING_DETAILS:
@@ -46805,6 +46875,13 @@ public final class EventDetails {
                     g.writeStartObject();
                     writeTag("protect_action_remove_collaborator_details", g);
                     ProtectActionRemoveCollaboratorDetails.Serializer.INSTANCE.serialize(value.protectActionRemoveCollaboratorDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_ACTION_REMOVE_DOMAINS_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("protect_action_remove_domains_details", g);
+                    ProtectActionRemoveDomainsDetails.Serializer.INSTANCE.serialize(value.protectActionRemoveDomainsDetailsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -50705,6 +50782,11 @@ public final class EventDetails {
                 ProtectActionRemoveCollaboratorDetails fieldValue = null;
                 fieldValue = ProtectActionRemoveCollaboratorDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.protectActionRemoveCollaboratorDetails(fieldValue);
+            }
+            else if ("protect_action_remove_domains_details".equals(tag)) {
+                ProtectActionRemoveDomainsDetails fieldValue = null;
+                fieldValue = ProtectActionRemoveDomainsDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.protectActionRemoveDomainsDetails(fieldValue);
             }
             else if ("protect_action_remove_link_details".equals(tag)) {
                 ProtectActionRemoveLinkDetails fieldValue = null;

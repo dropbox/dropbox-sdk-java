@@ -1186,6 +1186,10 @@ public final class EventType {
          */
         PROTECT_ACTION_REMOVE_COLLABORATOR, // ProtectActionRemoveCollaboratorType
         /**
+         * (protect) Removed domains via Dropbox Protect
+         */
+        PROTECT_ACTION_REMOVE_DOMAINS, // ProtectActionRemoveDomainsType
+        /**
          * (protect) Removed a link via Dropbox Protect
          */
         PROTECT_ACTION_REMOVE_LINK, // ProtectActionRemoveLinkType
@@ -2975,6 +2979,7 @@ public final class EventType {
     private ProtectActionDeleteType protectActionDeleteValue;
     private ProtectActionExportType protectActionExportValue;
     private ProtectActionRemoveCollaboratorType protectActionRemoveCollaboratorValue;
+    private ProtectActionRemoveDomainsType protectActionRemoveDomainsValue;
     private ProtectActionRemoveLinkType protectActionRemoveLinkValue;
     private ProtectActionStopSharingType protectActionStopSharingValue;
     private ProtectInternalDomainsChangedType protectInternalDomainsChangedValue;
@@ -8152,6 +8157,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.protectActionRemoveCollaboratorValue = protectActionRemoveCollaboratorValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectActionRemoveDomainsValue  (protect) Removed domains via
+     *     Dropbox Protect. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectActionRemoveDomains(Tag _tag, ProtectActionRemoveDomainsType protectActionRemoveDomainsValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectActionRemoveDomainsValue = protectActionRemoveDomainsValue;
         return result;
     }
 
@@ -28421,6 +28443,57 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_ACTION_REMOVE_DOMAINS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_ACTION_REMOVE_DOMAINS}, {@code false} otherwise.
+     */
+    public boolean isProtectActionRemoveDomains() {
+        return this._tag == Tag.PROTECT_ACTION_REMOVE_DOMAINS;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_ACTION_REMOVE_DOMAINS}.
+     *
+     * <p> (protect) Removed domains via Dropbox Protect </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_ACTION_REMOVE_DOMAINS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectActionRemoveDomains(ProtectActionRemoveDomainsType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectActionRemoveDomains(Tag.PROTECT_ACTION_REMOVE_DOMAINS, value);
+    }
+
+    /**
+     * (protect) Removed domains via Dropbox Protect
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_ACTION_REMOVE_DOMAINS}. </p>
+     *
+     * @return The {@link ProtectActionRemoveDomainsType} value associated with
+     *     this instance if {@link #isProtectActionRemoveDomains} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectActionRemoveDomains}
+     *     is {@code false}.
+     */
+    public ProtectActionRemoveDomainsType getProtectActionRemoveDomainsValue() {
+        if (this._tag != Tag.PROTECT_ACTION_REMOVE_DOMAINS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_ACTION_REMOVE_DOMAINS, but was Tag." + this._tag.name());
+        }
+        return protectActionRemoveDomainsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#PROTECT_ACTION_REMOVE_LINK}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -46654,6 +46727,7 @@ public final class EventType {
             this.protectActionDeleteValue,
             this.protectActionExportValue,
             this.protectActionRemoveCollaboratorValue,
+            this.protectActionRemoveDomainsValue,
             this.protectActionRemoveLinkValue,
             this.protectActionStopSharingValue,
             this.protectInternalDomainsChangedValue,
@@ -47587,6 +47661,8 @@ public final class EventType {
                     return (this.protectActionExportValue == other.protectActionExportValue) || (this.protectActionExportValue.equals(other.protectActionExportValue));
                 case PROTECT_ACTION_REMOVE_COLLABORATOR:
                     return (this.protectActionRemoveCollaboratorValue == other.protectActionRemoveCollaboratorValue) || (this.protectActionRemoveCollaboratorValue.equals(other.protectActionRemoveCollaboratorValue));
+                case PROTECT_ACTION_REMOVE_DOMAINS:
+                    return (this.protectActionRemoveDomainsValue == other.protectActionRemoveDomainsValue) || (this.protectActionRemoveDomainsValue.equals(other.protectActionRemoveDomainsValue));
                 case PROTECT_ACTION_REMOVE_LINK:
                     return (this.protectActionRemoveLinkValue == other.protectActionRemoveLinkValue) || (this.protectActionRemoveLinkValue.equals(other.protectActionRemoveLinkValue));
                 case PROTECT_ACTION_STOP_SHARING:
@@ -50297,6 +50373,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("protect_action_remove_collaborator", g);
                     ProtectActionRemoveCollaboratorType.Serializer.INSTANCE.serialize(value.protectActionRemoveCollaboratorValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_ACTION_REMOVE_DOMAINS: {
+                    g.writeStartObject();
+                    writeTag("protect_action_remove_domains", g);
+                    ProtectActionRemoveDomainsType.Serializer.INSTANCE.serialize(value.protectActionRemoveDomainsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -54190,6 +54273,11 @@ public final class EventType {
                 ProtectActionRemoveCollaboratorType fieldValue = null;
                 fieldValue = ProtectActionRemoveCollaboratorType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.protectActionRemoveCollaborator(fieldValue);
+            }
+            else if ("protect_action_remove_domains".equals(tag)) {
+                ProtectActionRemoveDomainsType fieldValue = null;
+                fieldValue = ProtectActionRemoveDomainsType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectActionRemoveDomains(fieldValue);
             }
             else if ("protect_action_remove_link".equals(tag)) {
                 ProtectActionRemoveLinkType fieldValue = null;
