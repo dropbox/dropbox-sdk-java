@@ -1771,8 +1771,7 @@ public class DbxUserFilesRequests {
      * exist for a specific upload path at any given time.  The POST request on
      * the temporary upload link must have its Content-Type set to
      * "application/octet-stream".  Example temporary upload link consumption
-     * request:  curl -X POST
-     * https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND --header
+     * request:  curl -X POST &lt;temporary_upload_link_url&gt; --header
      * "Content-Type: application/octet-stream" --data-binary @local_file.txt  A
      * successful temporary upload link consumption request returns the content
      * hash of the uploaded data in JSON format. Example successful temporary
@@ -1818,8 +1817,7 @@ public class DbxUserFilesRequests {
      * exist for a specific upload path at any given time.  The POST request on
      * the temporary upload link must have its Content-Type set to
      * "application/octet-stream".  Example temporary upload link consumption
-     * request:  curl -X POST
-     * https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND --header
+     * request:  curl -X POST &lt;temporary_upload_link_url&gt; --header
      * "Content-Type: application/octet-stream" --data-binary @local_file.txt  A
      * successful temporary upload link consumption request returns the content
      * hash of the uploaded data in JSON format. Example successful temporary
@@ -1864,8 +1862,7 @@ public class DbxUserFilesRequests {
      * exist for a specific upload path at any given time.  The POST request on
      * the temporary upload link must have its Content-Type set to
      * "application/octet-stream".  Example temporary upload link consumption
-     * request:  curl -X POST
-     * https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND --header
+     * request:  curl -X POST &lt;temporary_upload_link_url&gt; --header
      * "Content-Type: application/octet-stream" --data-binary @local_file.txt  A
      * successful temporary upload link consumption request returns the content
      * hash of the uploaded data in JSON format. Example successful temporary
