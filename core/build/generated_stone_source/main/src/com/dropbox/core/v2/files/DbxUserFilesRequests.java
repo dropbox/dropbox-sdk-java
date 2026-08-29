@@ -4073,7 +4073,7 @@ public class DbxUserFilesRequests {
      * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * @param entries  Append information for each file in the batch. Must
-     *     contain at most 1000 items, not contain a {@code null} item, and not
+     *     contain at most 500 items, not contain a {@code null} item, and not
      *     be {@code null}.
      *
      * @return Uploader used to upload the request body and finish request.
@@ -4101,7 +4101,7 @@ public class DbxUserFilesRequests {
      * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * @param entries  Append information for each file in the batch. Must
-     *     contain at most 1000 items, not contain a {@code null} item, and not
+     *     contain at most 500 items, not contain a {@code null} item, and not
      *     be {@code null}.
      * @param contentHash  A hash of the entire request body which is all the
      *     concatenated pieces of file content that were uploaded in this call.
