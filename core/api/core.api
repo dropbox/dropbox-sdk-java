@@ -8007,6 +8007,33 @@ public class com/dropbox/core/v2/riviera/ApiExifMetadata$Builder {
 	public fun withOrientation (Ljava/lang/Long;)Lcom/dropbox/core/v2/riviera/ApiExifMetadata$Builder;
 }
 
+public class com/dropbox/core/v2/riviera/ApiKeyframe {
+	protected final field imageBase64 Ljava/lang/String;
+	protected final field sceneScore D
+	protected final field timestamp D
+	public fun <init> ()V
+	public fun <init> (DDLjava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getImageBase64 ()Ljava/lang/String;
+	public fun getSceneScore ()D
+	public fun getTimestamp ()D
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/riviera/ApiKeyframe$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/riviera/ApiKeyframe$Builder {
+	protected field imageBase64 Ljava/lang/String;
+	protected field sceneScore D
+	protected field timestamp D
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/riviera/ApiKeyframe;
+	public fun withImageBase64 (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/ApiKeyframe$Builder;
+	public fun withSceneScore (Ljava/lang/Double;)Lcom/dropbox/core/v2/riviera/ApiKeyframe$Builder;
+	public fun withTimestamp (Ljava/lang/Double;)Lcom/dropbox/core/v2/riviera/ApiKeyframe$Builder;
+}
+
 public class com/dropbox/core/v2/riviera/ApiMediaMetadata {
 	protected final field bitrateBps J
 	protected final field creationTime Ljava/lang/String;
@@ -8295,6 +8322,13 @@ public final class com/dropbox/core/v2/riviera/ContentApiV2Error$Tag : java/lang
 	public static fun values ()[Lcom/dropbox/core/v2/riviera/ContentApiV2Error$Tag;
 }
 
+public class com/dropbox/core/v2/riviera/DbxAppGetKeyframesAsyncBuilder {
+	public fun start ()Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun withFileIdOrUrl (Lcom/dropbox/core/v2/riviera/FileIdOrUrl;)Lcom/dropbox/core/v2/riviera/DbxAppGetKeyframesAsyncBuilder;
+	public fun withIncludeImages (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/riviera/DbxAppGetKeyframesAsyncBuilder;
+	public fun withSceneChangeThreshold (Ljava/lang/Double;)Lcom/dropbox/core/v2/riviera/DbxAppGetKeyframesAsyncBuilder;
+}
+
 public class com/dropbox/core/v2/riviera/DbxAppGetMarkdownAsyncBuilder {
 	public fun start ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun withEmbedImages (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/riviera/DbxAppGetMarkdownAsyncBuilder;
@@ -8312,6 +8346,9 @@ public class com/dropbox/core/v2/riviera/DbxAppGetTranscriptAsyncBuilder {
 
 public class com/dropbox/core/v2/riviera/DbxAppRivieraRequests {
 	public fun <init> (Lcom/dropbox/core/v2/DbxRawClientV2;)V
+	public fun getKeyframesAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun getKeyframesAsyncBuilder ()Lcom/dropbox/core/v2/riviera/DbxAppGetKeyframesAsyncBuilder;
+	public fun getKeyframesAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult;
 	public fun getMarkdownAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getMarkdownAsyncBuilder ()Lcom/dropbox/core/v2/riviera/DbxAppGetMarkdownAsyncBuilder;
 	public fun getMarkdownAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetMarkdownAsyncCheckResult;
@@ -8327,6 +8364,13 @@ public class com/dropbox/core/v2/riviera/DbxAppRivieraRequests {
 	public fun getTranscriptAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getTranscriptAsyncBuilder ()Lcom/dropbox/core/v2/riviera/DbxAppGetTranscriptAsyncBuilder;
 	public fun getTranscriptAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetTranscriptAsyncCheckResult;
+}
+
+public class com/dropbox/core/v2/riviera/DbxUserGetKeyframesAsyncBuilder {
+	public fun start ()Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun withFileIdOrUrl (Lcom/dropbox/core/v2/riviera/FileIdOrUrl;)Lcom/dropbox/core/v2/riviera/DbxUserGetKeyframesAsyncBuilder;
+	public fun withIncludeImages (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/riviera/DbxUserGetKeyframesAsyncBuilder;
+	public fun withSceneChangeThreshold (Ljava/lang/Double;)Lcom/dropbox/core/v2/riviera/DbxUserGetKeyframesAsyncBuilder;
 }
 
 public class com/dropbox/core/v2/riviera/DbxUserGetMarkdownAsyncBuilder {
@@ -8346,6 +8390,9 @@ public class com/dropbox/core/v2/riviera/DbxUserGetTranscriptAsyncBuilder {
 
 public class com/dropbox/core/v2/riviera/DbxUserRivieraRequests {
 	public fun <init> (Lcom/dropbox/core/v2/DbxRawClientV2;)V
+	public fun getKeyframesAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun getKeyframesAsyncBuilder ()Lcom/dropbox/core/v2/riviera/DbxUserGetKeyframesAsyncBuilder;
+	public fun getKeyframesAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult;
 	public fun getMarkdownAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getMarkdownAsyncBuilder ()Lcom/dropbox/core/v2/riviera/DbxUserGetMarkdownAsyncBuilder;
 	public fun getMarkdownAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetMarkdownAsyncCheckResult;
@@ -8389,6 +8436,44 @@ public final class com/dropbox/core/v2/riviera/FileIdOrUrl$Tag : java/lang/Enum 
 	public static final field URL Lcom/dropbox/core/v2/riviera/FileIdOrUrl$Tag;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/FileIdOrUrl$Tag;
 	public static fun values ()[Lcom/dropbox/core/v2/riviera/FileIdOrUrl$Tag;
+}
+
+public final class com/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult {
+	public static final field IN_PROGRESS Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult;
+	public static fun complete (Lcom/dropbox/core/v2/riviera/GetKeyframesResult;)Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun failed (Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;)Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult;
+	public fun getCompleteValue ()Lcom/dropbox/core/v2/riviera/GetKeyframesResult;
+	public fun getFailedValue ()Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;
+	public fun hashCode ()I
+	public fun isComplete ()Z
+	public fun isFailed ()Z
+	public fun isInProgress ()Z
+	public fun isOther ()Z
+	public fun tag ()Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult$Tag : java/lang/Enum {
+	public static final field COMPLETE Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult$Tag;
+	public static final field FAILED Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult$Tag;
+	public static final field IN_PROGRESS Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult$Tag;
+}
+
+public class com/dropbox/core/v2/riviera/GetKeyframesResult {
+	protected final field frames Ljava/util/List;
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getFrames ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
 }
 
 public final class com/dropbox/core/v2/riviera/GetMarkdownAsyncCheckResult {
@@ -8603,6 +8688,51 @@ public class com/dropbox/core/v2/riviera/GetTranscriptResult {
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error {
+	public static final field CONVERSION_FAILURE_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;
+	public static final field IS_A_FOLDER_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;
+	public static final field LIMIT_EXCEEDED_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;
+	public static final field LINK_DOWNLOAD_DISABLED_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;
+	public static final field NOT_FOUND_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;
+	public static final field SHARED_LINK_PASSWORD_PROTECTED Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;
+	public static final field UNSUPPORTED_FORMAT_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getServerErrorValue ()Ljava/lang/String;
+	public fun getUserErrorValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun isConversionFailureError ()Z
+	public fun isIsAFolderError ()Z
+	public fun isLimitExceededError ()Z
+	public fun isLinkDownloadDisabledError ()Z
+	public fun isNotFoundError ()Z
+	public fun isOther ()Z
+	public fun isServerError ()Z
+	public fun isSharedLinkPasswordProtected ()Z
+	public fun isUnsupportedFormatError ()Z
+	public fun isUserError ()Z
+	public static fun serverError (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;
+	public fun tag ()Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+	public static fun userError (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;
+}
+
+public final class com/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag : java/lang/Enum {
+	public static final field CONVERSION_FAILURE_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag;
+	public static final field IS_A_FOLDER_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag;
+	public static final field LIMIT_EXCEEDED_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag;
+	public static final field LINK_DOWNLOAD_DISABLED_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag;
+	public static final field NOT_FOUND_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag;
+	public static final field SERVER_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag;
+	public static final field SHARED_LINK_PASSWORD_PROTECTED Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag;
+	public static final field UNSUPPORTED_FORMAT_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag;
+	public static final field USER_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error$Tag;
 }
 
 public final class com/dropbox/core/v2/riviera/MarkdownConversionApiV2Error {

@@ -19,8 +19,7 @@ import java.util.Arrays;
 public enum InvalidAccountTypeError {
     // union auth.InvalidAccountTypeError (auth.stone)
     /**
-     * Current account type doesn't have permission to access this route
-     * endpoint.
+     * Current account type doesn't have permission to access this endpoint.
      */
     ENDPOINT,
     /**
