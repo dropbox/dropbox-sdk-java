@@ -3746,6 +3746,7 @@ public class com/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder : com/dropbox
 	public fun withExcludeMediaInfo (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder;
 	public fun withFormat (Lcom/dropbox/core/v2/files/ThumbnailFormat;)Lcom/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder;
 	public fun withMode (Lcom/dropbox/core/v2/files/ThumbnailMode;)Lcom/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder;
+	public fun withPreserveTransparency (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder;
 	public fun withQuality (Lcom/dropbox/core/v2/files/ThumbnailQuality;)Lcom/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder;
 	public fun withSize (Lcom/dropbox/core/v2/files/ThumbnailSize;)Lcom/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder;
 }
@@ -3880,6 +3881,7 @@ public class com/dropbox/core/v2/files/DbxUserGetThumbnailV2Builder : com/dropbo
 	public fun withExcludeMediaInfo (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxUserGetThumbnailV2Builder;
 	public fun withFormat (Lcom/dropbox/core/v2/files/ThumbnailFormat;)Lcom/dropbox/core/v2/files/DbxUserGetThumbnailV2Builder;
 	public fun withMode (Lcom/dropbox/core/v2/files/ThumbnailMode;)Lcom/dropbox/core/v2/files/DbxUserGetThumbnailV2Builder;
+	public fun withPreserveTransparency (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxUserGetThumbnailV2Builder;
 	public fun withQuality (Lcom/dropbox/core/v2/files/ThumbnailQuality;)Lcom/dropbox/core/v2/files/DbxUserGetThumbnailV2Builder;
 	public fun withSize (Lcom/dropbox/core/v2/files/ThumbnailSize;)Lcom/dropbox/core/v2/files/DbxUserGetThumbnailV2Builder;
 }
@@ -6589,6 +6591,7 @@ public final class com/dropbox/core/v2/files/ThumbnailV2Error {
 	public static final field OTHER Lcom/dropbox/core/v2/files/ThumbnailV2Error;
 	public static final field UNSUPPORTED_EXTENSION Lcom/dropbox/core/v2/files/ThumbnailV2Error;
 	public static final field UNSUPPORTED_IMAGE Lcom/dropbox/core/v2/files/ThumbnailV2Error;
+	public static final field UNSUPPORTED_OUTPUT_FORMAT Lcom/dropbox/core/v2/files/ThumbnailV2Error;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getPathValue ()Lcom/dropbox/core/v2/files/LookupError;
 	public fun hashCode ()I
@@ -6600,6 +6603,7 @@ public final class com/dropbox/core/v2/files/ThumbnailV2Error {
 	public fun isPath ()Z
 	public fun isUnsupportedExtension ()Z
 	public fun isUnsupportedImage ()Z
+	public fun isUnsupportedOutputFormat ()Z
 	public static fun path (Lcom/dropbox/core/v2/files/LookupError;)Lcom/dropbox/core/v2/files/ThumbnailV2Error;
 	public fun tag ()Lcom/dropbox/core/v2/files/ThumbnailV2Error$Tag;
 	public fun toString ()Ljava/lang/String;
@@ -6615,6 +6619,7 @@ public final class com/dropbox/core/v2/files/ThumbnailV2Error$Tag : java/lang/En
 	public static final field PATH Lcom/dropbox/core/v2/files/ThumbnailV2Error$Tag;
 	public static final field UNSUPPORTED_EXTENSION Lcom/dropbox/core/v2/files/ThumbnailV2Error$Tag;
 	public static final field UNSUPPORTED_IMAGE Lcom/dropbox/core/v2/files/ThumbnailV2Error$Tag;
+	public static final field UNSUPPORTED_OUTPUT_FORMAT Lcom/dropbox/core/v2/files/ThumbnailV2Error$Tag;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/files/ThumbnailV2Error$Tag;
 	public static fun values ()[Lcom/dropbox/core/v2/files/ThumbnailV2Error$Tag;
 }

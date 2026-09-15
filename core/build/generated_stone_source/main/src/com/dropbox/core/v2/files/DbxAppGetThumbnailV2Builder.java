@@ -134,6 +134,23 @@ public class DbxAppGetThumbnailV2Builder extends DbxDownloadStyleBuilder<Preview
         return this;
     }
 
+    /**
+     * Set value for optional field.
+     *
+     * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
+     *
+     * @param preserveTransparency  Whether to preserve the original image's
+     *     transparency in the thumbnail. This is supported only when the output
+     *     format is PNG or WebP. Requests that set this flag with JPEG output
+     *     return an error. Defaults to {@code false} when set to {@code null}.
+     *
+     * @return this builder
+     */
+    public DbxAppGetThumbnailV2Builder withPreserveTransparency(Boolean preserveTransparency) {
+        this._builder.withPreserveTransparency(preserveTransparency);
+        return this;
+    }
+
     @Override
     public DbxDownloader<PreviewResult> start() throws ThumbnailV2ErrorException, DbxException {
         ThumbnailV2Arg arg_ = this._builder.build();

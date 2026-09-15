@@ -62,6 +62,10 @@ public final class ThumbnailV2Error {
          */
         NOT_FOUND,
         /**
+         * Transparency preservation is supported only for PNG and WebP output.
+         */
+        UNSUPPORTED_OUTPUT_FORMAT,
+        /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
          *
@@ -96,6 +100,10 @@ public final class ThumbnailV2Error {
      * The shared link does not exist.
      */
     public static final ThumbnailV2Error NOT_FOUND = new ThumbnailV2Error().withTag(Tag.NOT_FOUND);
+    /**
+     * Transparency preservation is supported only for PNG and WebP output.
+     */
+    public static final ThumbnailV2Error UNSUPPORTED_OUTPUT_FORMAT = new ThumbnailV2Error().withTag(Tag.UNSUPPORTED_OUTPUT_FORMAT);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -274,6 +282,17 @@ public final class ThumbnailV2Error {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#UNSUPPORTED_OUTPUT_FORMAT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#UNSUPPORTED_OUTPUT_FORMAT}, {@code false} otherwise.
+     */
+    public boolean isUnsupportedOutputFormat() {
+        return this._tag == Tag.UNSUPPORTED_OUTPUT_FORMAT;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -320,6 +339,8 @@ public final class ThumbnailV2Error {
                 case ACCESS_DENIED:
                     return true;
                 case NOT_FOUND:
+                    return true;
+                case UNSUPPORTED_OUTPUT_FORMAT:
                     return true;
                 case OTHER:
                     return true;
@@ -390,6 +411,10 @@ public final class ThumbnailV2Error {
                     g.writeString("not_found");
                     break;
                 }
+                case UNSUPPORTED_OUTPUT_FORMAT: {
+                    g.writeString("unsupported_output_format");
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -437,6 +462,9 @@ public final class ThumbnailV2Error {
             }
             else if ("not_found".equals(tag)) {
                 value = ThumbnailV2Error.NOT_FOUND;
+            }
+            else if ("unsupported_output_format".equals(tag)) {
+                value = ThumbnailV2Error.UNSUPPORTED_OUTPUT_FORMAT;
             }
             else {
                 value = ThumbnailV2Error.OTHER;
