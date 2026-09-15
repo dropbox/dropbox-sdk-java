@@ -102,26 +102,6 @@ public class DbxAppGetThumbnailV2Builder extends DbxDownloadStyleBuilder<Preview
     /**
      * Set value for optional field.
      *
-     * <p> If left unset or set to {@code null}, defaults to {@code
-     * ThumbnailQuality.QUALITY_80}. </p>
-     *
-     * @param quality  Field is only returned for "internal" callers. Quality of
-     *     the thumbnail image. Must not be {@code null}. Defaults to {@code
-     *     ThumbnailQuality.QUALITY_80} when set to {@code null}.
-     *
-     * @return this builder
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public DbxAppGetThumbnailV2Builder withQuality(ThumbnailQuality quality) {
-        this._builder.withQuality(quality);
-        return this;
-    }
-
-    /**
-     * Set value for optional field.
-     *
      * @param excludeMediaInfo  Normally, {@link FileMetadata#getMediaInfo} is
      *     set for photo and video. When this flag is true, {@link
      *     FileMetadata#getMediaInfo} is not populated. This improves latency

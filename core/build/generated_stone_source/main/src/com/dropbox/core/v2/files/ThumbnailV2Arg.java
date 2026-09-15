@@ -30,8 +30,6 @@ class ThumbnailV2Arg {
     protected final ThumbnailSize size;
     @Nonnull
     protected final ThumbnailMode mode;
-    @Nonnull
-    protected final ThumbnailQuality quality;
     @Nullable
     protected final Boolean excludeMediaInfo;
     protected final boolean preserveTransparency;
@@ -51,8 +49,6 @@ class ThumbnailV2Arg {
      * @param size  The size for the thumbnail image. Must not be {@code null}.
      * @param mode  How to resize and crop the image to achieve the desired
      *     size. Must not be {@code null}.
-     * @param quality  Field is only returned for "internal" callers. Quality of
-     *     the thumbnail image. Must not be {@code null}.
      * @param excludeMediaInfo  Normally, {@link FileMetadata#getMediaInfo} is
      *     set for photo and video. When this flag is true, {@link
      *     FileMetadata#getMediaInfo} is not populated. This improves latency
@@ -65,7 +61,7 @@ class ThumbnailV2Arg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailV2Arg(@Nonnull PathOrLink resource, @Nonnull ThumbnailFormat format, @Nonnull ThumbnailSize size, @Nonnull ThumbnailMode mode, @Nonnull ThumbnailQuality quality, @Nullable Boolean excludeMediaInfo, boolean preserveTransparency) {
+    public ThumbnailV2Arg(@Nonnull PathOrLink resource, @Nonnull ThumbnailFormat format, @Nonnull ThumbnailSize size, @Nonnull ThumbnailMode mode, @Nullable Boolean excludeMediaInfo, boolean preserveTransparency) {
         if (resource == null) {
             throw new IllegalArgumentException("Required value for 'resource' is null");
         }
@@ -82,10 +78,6 @@ class ThumbnailV2Arg {
             throw new IllegalArgumentException("Required value for 'mode' is null");
         }
         this.mode = mode;
-        if (quality == null) {
-            throw new IllegalArgumentException("Required value for 'quality' is null");
-        }
-        this.quality = quality;
         this.excludeMediaInfo = excludeMediaInfo;
         this.preserveTransparency = preserveTransparency;
     }
@@ -104,7 +96,7 @@ class ThumbnailV2Arg {
      *     preconditions.
      */
     public ThumbnailV2Arg(@Nonnull PathOrLink resource) {
-        this(resource, ThumbnailFormat.JPEG, ThumbnailSize.W64H64, ThumbnailMode.STRICT, ThumbnailQuality.QUALITY_80, null, false);
+        this(resource, ThumbnailFormat.JPEG, ThumbnailSize.W64H64, ThumbnailMode.STRICT, null, false);
     }
 
     /**
@@ -152,18 +144,6 @@ class ThumbnailV2Arg {
     @Nonnull
     public ThumbnailMode getMode() {
         return mode;
-    }
-
-    /**
-     * Field is only returned for "internal" callers. Quality of the thumbnail
-     * image.
-     *
-     * @return value for this field, or {@code null} if not present. Defaults to
-     *     ThumbnailQuality.QUALITY_80.
-     */
-    @Nonnull
-    public ThumbnailQuality getQuality() {
-        return quality;
     }
 
     /**
@@ -217,7 +197,6 @@ class ThumbnailV2Arg {
         protected ThumbnailFormat format;
         protected ThumbnailSize size;
         protected ThumbnailMode mode;
-        protected ThumbnailQuality quality;
         protected Boolean excludeMediaInfo;
         protected boolean preserveTransparency;
 
@@ -229,7 +208,6 @@ class ThumbnailV2Arg {
             this.format = ThumbnailFormat.JPEG;
             this.size = ThumbnailSize.W64H64;
             this.mode = ThumbnailMode.STRICT;
-            this.quality = ThumbnailQuality.QUALITY_80;
             this.excludeMediaInfo = null;
             this.preserveTransparency = false;
         }
@@ -314,32 +292,6 @@ class ThumbnailV2Arg {
         /**
          * Set value for optional field.
          *
-         * <p> If left unset or set to {@code null}, defaults to {@code
-         * ThumbnailQuality.QUALITY_80}. </p>
-         *
-         * @param quality  Field is only returned for "internal" callers.
-         *     Quality of the thumbnail image. Must not be {@code null}.
-         *     Defaults to {@code ThumbnailQuality.QUALITY_80} when set to
-         *     {@code null}.
-         *
-         * @return this builder
-         *
-         * @throws IllegalArgumentException  If any argument does not meet its
-         *     preconditions.
-         */
-        public Builder withQuality(ThumbnailQuality quality) {
-            if (quality != null) {
-                this.quality = quality;
-            }
-            else {
-                this.quality = ThumbnailQuality.QUALITY_80;
-            }
-            return this;
-        }
-
-        /**
-         * Set value for optional field.
-         *
          * @param excludeMediaInfo  Normally, {@link FileMetadata#getMediaInfo}
          *     is set for photo and video. When this flag is true, {@link
          *     FileMetadata#getMediaInfo} is not populated. This improves
@@ -383,7 +335,7 @@ class ThumbnailV2Arg {
          * @return new instance of {@link ThumbnailV2Arg}
          */
         public ThumbnailV2Arg build() {
-            return new ThumbnailV2Arg(resource, format, size, mode, quality, excludeMediaInfo, preserveTransparency);
+            return new ThumbnailV2Arg(resource, format, size, mode, excludeMediaInfo, preserveTransparency);
         }
     }
 
@@ -394,7 +346,6 @@ class ThumbnailV2Arg {
             this.format,
             this.size,
             this.mode,
-            this.quality,
             this.excludeMediaInfo,
             this.preserveTransparency
         });
@@ -416,7 +367,6 @@ class ThumbnailV2Arg {
                 && ((this.format == other.format) || (this.format.equals(other.format)))
                 && ((this.size == other.size) || (this.size.equals(other.size)))
                 && ((this.mode == other.mode) || (this.mode.equals(other.mode)))
-                && ((this.quality == other.quality) || (this.quality.equals(other.quality)))
                 && ((this.excludeMediaInfo == other.excludeMediaInfo) || (this.excludeMediaInfo != null && this.excludeMediaInfo.equals(other.excludeMediaInfo)))
                 && (this.preserveTransparency == other.preserveTransparency)
                 ;
@@ -462,8 +412,6 @@ class ThumbnailV2Arg {
             ThumbnailSize.Serializer.INSTANCE.serialize(value.size, g);
             g.writeFieldName("mode");
             ThumbnailMode.Serializer.INSTANCE.serialize(value.mode, g);
-            g.writeFieldName("quality");
-            ThumbnailQuality.Serializer.INSTANCE.serialize(value.quality, g);
             if (value.excludeMediaInfo != null) {
                 g.writeFieldName("exclude_media_info");
                 StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.excludeMediaInfo, g);
@@ -488,7 +436,6 @@ class ThumbnailV2Arg {
                 ThumbnailFormat f_format = ThumbnailFormat.JPEG;
                 ThumbnailSize f_size = ThumbnailSize.W64H64;
                 ThumbnailMode f_mode = ThumbnailMode.STRICT;
-                ThumbnailQuality f_quality = ThumbnailQuality.QUALITY_80;
                 Boolean f_excludeMediaInfo = null;
                 Boolean f_preserveTransparency = false;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -506,9 +453,6 @@ class ThumbnailV2Arg {
                     else if ("mode".equals(field)) {
                         f_mode = ThumbnailMode.Serializer.INSTANCE.deserialize(p);
                     }
-                    else if ("quality".equals(field)) {
-                        f_quality = ThumbnailQuality.Serializer.INSTANCE.deserialize(p);
-                    }
                     else if ("exclude_media_info".equals(field)) {
                         f_excludeMediaInfo = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
                     }
@@ -522,7 +466,7 @@ class ThumbnailV2Arg {
                 if (f_resource == null) {
                     throw new JsonParseException(p, "Required field \"resource\" missing.");
                 }
-                value = new ThumbnailV2Arg(f_resource, f_format, f_size, f_mode, f_quality, f_excludeMediaInfo, f_preserveTransparency);
+                value = new ThumbnailV2Arg(f_resource, f_format, f_size, f_mode, f_excludeMediaInfo, f_preserveTransparency);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

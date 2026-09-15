@@ -31,8 +31,6 @@ class AddFolderMemberArg {
     protected final boolean quiet;
     @Nullable
     protected final String customMessage;
-    @Nullable
-    protected final String fpSealedResult;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -47,13 +45,11 @@ class AddFolderMemberArg {
      *     device notifications of their invite.
      * @param customMessage  Optional message to display to added members in
      *     their invitation. Must have length of at least 1.
-     * @param fpSealedResult  Field is only returned for "internal" callers. The
-     *     FingerprintJS Sealed Client Result value.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFolderMemberArg(@Nonnull String sharedFolderId, @Nonnull List<AddMember> members, boolean quiet, @Nullable String customMessage, @Nullable String fpSealedResult) {
+    public AddFolderMemberArg(@Nonnull String sharedFolderId, @Nonnull List<AddMember> members, boolean quiet, @Nullable String customMessage) {
         if (sharedFolderId == null) {
             throw new IllegalArgumentException("Required value for 'sharedFolderId' is null");
         }
@@ -77,7 +73,6 @@ class AddFolderMemberArg {
             }
         }
         this.customMessage = customMessage;
-        this.fpSealedResult = fpSealedResult;
     }
 
     /**
@@ -95,7 +90,7 @@ class AddFolderMemberArg {
      *     preconditions.
      */
     public AddFolderMemberArg(@Nonnull String sharedFolderId, @Nonnull List<AddMember> members) {
-        this(sharedFolderId, members, false, null, null);
+        this(sharedFolderId, members, false, null);
     }
 
     /**
@@ -141,17 +136,6 @@ class AddFolderMemberArg {
     }
 
     /**
-     * Field is only returned for "internal" callers. The FingerprintJS Sealed
-     * Client Result value
-     *
-     * @return value for this field, or {@code null} if not present.
-     */
-    @Nullable
-    public String getFpSealedResult() {
-        return fpSealedResult;
-    }
-
-    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param sharedFolderId  The ID for the shared folder. Must match pattern
@@ -178,7 +162,6 @@ class AddFolderMemberArg {
 
         protected boolean quiet;
         protected String customMessage;
-        protected String fpSealedResult;
 
         protected Builder(String sharedFolderId, List<AddMember> members) {
             if (sharedFolderId == null) {
@@ -199,7 +182,6 @@ class AddFolderMemberArg {
             this.members = members;
             this.quiet = false;
             this.customMessage = null;
-            this.fpSealedResult = null;
         }
 
         /**
@@ -246,26 +228,13 @@ class AddFolderMemberArg {
         }
 
         /**
-         * Set value for optional field.
-         *
-         * @param fpSealedResult  Field is only returned for "internal" callers.
-         *     The FingerprintJS Sealed Client Result value.
-         *
-         * @return this builder
-         */
-        public Builder withFpSealedResult(String fpSealedResult) {
-            this.fpSealedResult = fpSealedResult;
-            return this;
-        }
-
-        /**
          * Builds an instance of {@link AddFolderMemberArg} configured with this
          * builder's values
          *
          * @return new instance of {@link AddFolderMemberArg}
          */
         public AddFolderMemberArg build() {
-            return new AddFolderMemberArg(sharedFolderId, members, quiet, customMessage, fpSealedResult);
+            return new AddFolderMemberArg(sharedFolderId, members, quiet, customMessage);
         }
     }
 
@@ -275,8 +244,7 @@ class AddFolderMemberArg {
             this.sharedFolderId,
             this.members,
             this.quiet,
-            this.customMessage,
-            this.fpSealedResult
+            this.customMessage
         });
         return hash;
     }
@@ -296,7 +264,6 @@ class AddFolderMemberArg {
                 && ((this.members == other.members) || (this.members.equals(other.members)))
                 && (this.quiet == other.quiet)
                 && ((this.customMessage == other.customMessage) || (this.customMessage != null && this.customMessage.equals(other.customMessage)))
-                && ((this.fpSealedResult == other.fpSealedResult) || (this.fpSealedResult != null && this.fpSealedResult.equals(other.fpSealedResult)))
                 ;
         }
         else {
@@ -342,10 +309,6 @@ class AddFolderMemberArg {
                 g.writeFieldName("custom_message");
                 StoneSerializers.nullable(StoneSerializers.string()).serialize(value.customMessage, g);
             }
-            if (value.fpSealedResult != null) {
-                g.writeFieldName("fp_sealed_result");
-                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.fpSealedResult, g);
-            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -364,7 +327,6 @@ class AddFolderMemberArg {
                 List<AddMember> f_members = null;
                 Boolean f_quiet = false;
                 String f_customMessage = null;
-                String f_fpSealedResult = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -380,9 +342,6 @@ class AddFolderMemberArg {
                     else if ("custom_message".equals(field)) {
                         f_customMessage = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
                     }
-                    else if ("fp_sealed_result".equals(field)) {
-                        f_fpSealedResult = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
-                    }
                     else {
                         skipValue(p);
                     }
@@ -393,7 +352,7 @@ class AddFolderMemberArg {
                 if (f_members == null) {
                     throw new JsonParseException(p, "Required field \"members\" missing.");
                 }
-                value = new AddFolderMemberArg(f_sharedFolderId, f_members, f_quiet, f_customMessage, f_fpSealedResult);
+                value = new AddFolderMemberArg(f_sharedFolderId, f_members, f_quiet, f_customMessage);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

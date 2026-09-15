@@ -97,19 +97,6 @@ public class AddFileMemberBuilder {
     }
 
     /**
-     * Set value for optional field.
-     *
-     * @param fpSealedResult  Field is only returned for "internal" callers. The
-     *     FingerprintJS Sealed Client Result value.
-     *
-     * @return this builder
-     */
-    public AddFileMemberBuilder withFpSealedResult(String fpSealedResult) {
-        this._builder.withFpSealedResult(fpSealedResult);
-        return this;
-    }
-
-    /**
      * Issues the request.
      */
     public List<FileMemberActionResult> start() throws AddFileMemberErrorException, DbxException {

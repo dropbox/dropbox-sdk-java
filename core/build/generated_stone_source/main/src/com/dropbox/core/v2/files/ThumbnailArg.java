@@ -31,8 +31,6 @@ public class ThumbnailArg {
     protected final ThumbnailSize size;
     @Nonnull
     protected final ThumbnailMode mode;
-    @Nonnull
-    protected final ThumbnailQuality quality;
     @Nullable
     protected final Boolean excludeMediaInfo;
 
@@ -51,8 +49,6 @@ public class ThumbnailArg {
      * @param size  The size for the thumbnail image. Must not be {@code null}.
      * @param mode  How to resize and crop the image to achieve the desired
      *     size. Must not be {@code null}.
-     * @param quality  Field is only returned for "internal" callers. Quality of
-     *     the thumbnail image. Must not be {@code null}.
      * @param excludeMediaInfo  Normally, {@link FileMetadata#getMediaInfo} is
      *     set for photo and video. When this flag is true, {@link
      *     FileMetadata#getMediaInfo} is not populated. This improves latency
@@ -61,7 +57,7 @@ public class ThumbnailArg {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailArg(@Nonnull String path, @Nonnull ThumbnailFormat format, @Nonnull ThumbnailSize size, @Nonnull ThumbnailMode mode, @Nonnull ThumbnailQuality quality, @Nullable Boolean excludeMediaInfo) {
+    public ThumbnailArg(@Nonnull String path, @Nonnull ThumbnailFormat format, @Nonnull ThumbnailSize size, @Nonnull ThumbnailMode mode, @Nullable Boolean excludeMediaInfo) {
         if (path == null) {
             throw new IllegalArgumentException("Required value for 'path' is null");
         }
@@ -81,10 +77,6 @@ public class ThumbnailArg {
             throw new IllegalArgumentException("Required value for 'mode' is null");
         }
         this.mode = mode;
-        if (quality == null) {
-            throw new IllegalArgumentException("Required value for 'quality' is null");
-        }
-        this.quality = quality;
         this.excludeMediaInfo = excludeMediaInfo;
     }
 
@@ -102,7 +94,7 @@ public class ThumbnailArg {
      *     preconditions.
      */
     public ThumbnailArg(@Nonnull String path) {
-        this(path, ThumbnailFormat.JPEG, ThumbnailSize.W64H64, ThumbnailMode.STRICT, ThumbnailQuality.QUALITY_80, null);
+        this(path, ThumbnailFormat.JPEG, ThumbnailSize.W64H64, ThumbnailMode.STRICT, null);
     }
 
     /**
@@ -151,18 +143,6 @@ public class ThumbnailArg {
     }
 
     /**
-     * Field is only returned for "internal" callers. Quality of the thumbnail
-     * image.
-     *
-     * @return value for this field, or {@code null} if not present. Defaults to
-     *     ThumbnailQuality.QUALITY_80.
-     */
-    @Nonnull
-    public ThumbnailQuality getQuality() {
-        return quality;
-    }
-
-    /**
      * Normally, {@link FileMetadata#getMediaInfo} is set for photo and video.
      * When this flag is true, {@link FileMetadata#getMediaInfo} is not
      * populated. This improves latency for use cases where `media_info` is not
@@ -201,7 +181,6 @@ public class ThumbnailArg {
         protected ThumbnailFormat format;
         protected ThumbnailSize size;
         protected ThumbnailMode mode;
-        protected ThumbnailQuality quality;
         protected Boolean excludeMediaInfo;
 
         protected Builder(String path) {
@@ -215,7 +194,6 @@ public class ThumbnailArg {
             this.format = ThumbnailFormat.JPEG;
             this.size = ThumbnailSize.W64H64;
             this.mode = ThumbnailMode.STRICT;
-            this.quality = ThumbnailQuality.QUALITY_80;
             this.excludeMediaInfo = null;
         }
 
@@ -299,32 +277,6 @@ public class ThumbnailArg {
         /**
          * Set value for optional field.
          *
-         * <p> If left unset or set to {@code null}, defaults to {@code
-         * ThumbnailQuality.QUALITY_80}. </p>
-         *
-         * @param quality  Field is only returned for "internal" callers.
-         *     Quality of the thumbnail image. Must not be {@code null}.
-         *     Defaults to {@code ThumbnailQuality.QUALITY_80} when set to
-         *     {@code null}.
-         *
-         * @return this builder
-         *
-         * @throws IllegalArgumentException  If any argument does not meet its
-         *     preconditions.
-         */
-        public Builder withQuality(ThumbnailQuality quality) {
-            if (quality != null) {
-                this.quality = quality;
-            }
-            else {
-                this.quality = ThumbnailQuality.QUALITY_80;
-            }
-            return this;
-        }
-
-        /**
-         * Set value for optional field.
-         *
          * @param excludeMediaInfo  Normally, {@link FileMetadata#getMediaInfo}
          *     is set for photo and video. When this flag is true, {@link
          *     FileMetadata#getMediaInfo} is not populated. This improves
@@ -344,7 +296,7 @@ public class ThumbnailArg {
          * @return new instance of {@link ThumbnailArg}
          */
         public ThumbnailArg build() {
-            return new ThumbnailArg(path, format, size, mode, quality, excludeMediaInfo);
+            return new ThumbnailArg(path, format, size, mode, excludeMediaInfo);
         }
     }
 
@@ -355,7 +307,6 @@ public class ThumbnailArg {
             this.format,
             this.size,
             this.mode,
-            this.quality,
             this.excludeMediaInfo
         });
         return hash;
@@ -376,7 +327,6 @@ public class ThumbnailArg {
                 && ((this.format == other.format) || (this.format.equals(other.format)))
                 && ((this.size == other.size) || (this.size.equals(other.size)))
                 && ((this.mode == other.mode) || (this.mode.equals(other.mode)))
-                && ((this.quality == other.quality) || (this.quality.equals(other.quality)))
                 && ((this.excludeMediaInfo == other.excludeMediaInfo) || (this.excludeMediaInfo != null && this.excludeMediaInfo.equals(other.excludeMediaInfo)))
                 ;
         }
@@ -421,8 +371,6 @@ public class ThumbnailArg {
             ThumbnailSize.Serializer.INSTANCE.serialize(value.size, g);
             g.writeFieldName("mode");
             ThumbnailMode.Serializer.INSTANCE.serialize(value.mode, g);
-            g.writeFieldName("quality");
-            ThumbnailQuality.Serializer.INSTANCE.serialize(value.quality, g);
             if (value.excludeMediaInfo != null) {
                 g.writeFieldName("exclude_media_info");
                 StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.excludeMediaInfo, g);
@@ -445,7 +393,6 @@ public class ThumbnailArg {
                 ThumbnailFormat f_format = ThumbnailFormat.JPEG;
                 ThumbnailSize f_size = ThumbnailSize.W64H64;
                 ThumbnailMode f_mode = ThumbnailMode.STRICT;
-                ThumbnailQuality f_quality = ThumbnailQuality.QUALITY_80;
                 Boolean f_excludeMediaInfo = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
@@ -462,9 +409,6 @@ public class ThumbnailArg {
                     else if ("mode".equals(field)) {
                         f_mode = ThumbnailMode.Serializer.INSTANCE.deserialize(p);
                     }
-                    else if ("quality".equals(field)) {
-                        f_quality = ThumbnailQuality.Serializer.INSTANCE.deserialize(p);
-                    }
                     else if ("exclude_media_info".equals(field)) {
                         f_excludeMediaInfo = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
                     }
@@ -475,7 +419,7 @@ public class ThumbnailArg {
                 if (f_path == null) {
                     throw new JsonParseException(p, "Required field \"path\" missing.");
                 }
-                value = new ThumbnailArg(f_path, f_format, f_size, f_mode, f_quality, f_excludeMediaInfo);
+                value = new ThumbnailArg(f_path, f_format, f_size, f_mode, f_excludeMediaInfo);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
