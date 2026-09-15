@@ -34,6 +34,7 @@ class ThumbnailV2Arg {
     protected final ThumbnailQuality quality;
     @Nullable
     protected final Boolean excludeMediaInfo;
+    protected final boolean preserveTransparency;
 
     /**
      * Use {@link newBuilder} to create instances of this class without
@@ -56,11 +57,15 @@ class ThumbnailV2Arg {
      *     set for photo and video. When this flag is true, {@link
      *     FileMetadata#getMediaInfo} is not populated. This improves latency
      *     for use cases where `media_info` is not needed.
+     * @param preserveTransparency  Whether to preserve the original image's
+     *     transparency in the thumbnail. This is supported only when the output
+     *     format is PNG or WebP. Requests that set this flag with JPEG output
+     *     return an error.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public ThumbnailV2Arg(@Nonnull PathOrLink resource, @Nonnull ThumbnailFormat format, @Nonnull ThumbnailSize size, @Nonnull ThumbnailMode mode, @Nonnull ThumbnailQuality quality, @Nullable Boolean excludeMediaInfo) {
+    public ThumbnailV2Arg(@Nonnull PathOrLink resource, @Nonnull ThumbnailFormat format, @Nonnull ThumbnailSize size, @Nonnull ThumbnailMode mode, @Nonnull ThumbnailQuality quality, @Nullable Boolean excludeMediaInfo, boolean preserveTransparency) {
         if (resource == null) {
             throw new IllegalArgumentException("Required value for 'resource' is null");
         }
@@ -82,6 +87,7 @@ class ThumbnailV2Arg {
         }
         this.quality = quality;
         this.excludeMediaInfo = excludeMediaInfo;
+        this.preserveTransparency = preserveTransparency;
     }
 
     /**
@@ -98,7 +104,7 @@ class ThumbnailV2Arg {
      *     preconditions.
      */
     public ThumbnailV2Arg(@Nonnull PathOrLink resource) {
-        this(resource, ThumbnailFormat.JPEG, ThumbnailSize.W64H64, ThumbnailMode.STRICT, ThumbnailQuality.QUALITY_80, null);
+        this(resource, ThumbnailFormat.JPEG, ThumbnailSize.W64H64, ThumbnailMode.STRICT, ThumbnailQuality.QUALITY_80, null, false);
     }
 
     /**
@@ -174,6 +180,18 @@ class ThumbnailV2Arg {
     }
 
     /**
+     * Whether to preserve the original image's transparency in the thumbnail.
+     * This is supported only when the output format is PNG or WebP. Requests
+     * that set this flag with JPEG output return an error.
+     *
+     * @return value for this field, or {@code null} if not present. Defaults to
+     *     false.
+     */
+    public boolean getPreserveTransparency() {
+        return preserveTransparency;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param resource  Information specifying which file to preview. This could
@@ -201,6 +219,7 @@ class ThumbnailV2Arg {
         protected ThumbnailMode mode;
         protected ThumbnailQuality quality;
         protected Boolean excludeMediaInfo;
+        protected boolean preserveTransparency;
 
         protected Builder(PathOrLink resource) {
             if (resource == null) {
@@ -212,6 +231,7 @@ class ThumbnailV2Arg {
             this.mode = ThumbnailMode.STRICT;
             this.quality = ThumbnailQuality.QUALITY_80;
             this.excludeMediaInfo = null;
+            this.preserveTransparency = false;
         }
 
         /**
@@ -333,13 +353,37 @@ class ThumbnailV2Arg {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * <p> If left unset or set to {@code null}, defaults to {@code false}.
+         * </p>
+         *
+         * @param preserveTransparency  Whether to preserve the original image's
+         *     transparency in the thumbnail. This is supported only when the
+         *     output format is PNG or WebP. Requests that set this flag with
+         *     JPEG output return an error. Defaults to {@code false} when set
+         *     to {@code null}.
+         *
+         * @return this builder
+         */
+        public Builder withPreserveTransparency(Boolean preserveTransparency) {
+            if (preserveTransparency != null) {
+                this.preserveTransparency = preserveTransparency;
+            }
+            else {
+                this.preserveTransparency = false;
+            }
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link ThumbnailV2Arg} configured with this
          * builder's values
          *
          * @return new instance of {@link ThumbnailV2Arg}
          */
         public ThumbnailV2Arg build() {
-            return new ThumbnailV2Arg(resource, format, size, mode, quality, excludeMediaInfo);
+            return new ThumbnailV2Arg(resource, format, size, mode, quality, excludeMediaInfo, preserveTransparency);
         }
     }
 
@@ -351,7 +395,8 @@ class ThumbnailV2Arg {
             this.size,
             this.mode,
             this.quality,
-            this.excludeMediaInfo
+            this.excludeMediaInfo,
+            this.preserveTransparency
         });
         return hash;
     }
@@ -373,6 +418,7 @@ class ThumbnailV2Arg {
                 && ((this.mode == other.mode) || (this.mode.equals(other.mode)))
                 && ((this.quality == other.quality) || (this.quality.equals(other.quality)))
                 && ((this.excludeMediaInfo == other.excludeMediaInfo) || (this.excludeMediaInfo != null && this.excludeMediaInfo.equals(other.excludeMediaInfo)))
+                && (this.preserveTransparency == other.preserveTransparency)
                 ;
         }
         else {
@@ -422,6 +468,8 @@ class ThumbnailV2Arg {
                 g.writeFieldName("exclude_media_info");
                 StoneSerializers.nullable(StoneSerializers.boolean_()).serialize(value.excludeMediaInfo, g);
             }
+            g.writeFieldName("preserve_transparency");
+            StoneSerializers.boolean_().serialize(value.preserveTransparency, g);
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -442,6 +490,7 @@ class ThumbnailV2Arg {
                 ThumbnailMode f_mode = ThumbnailMode.STRICT;
                 ThumbnailQuality f_quality = ThumbnailQuality.QUALITY_80;
                 Boolean f_excludeMediaInfo = null;
+                Boolean f_preserveTransparency = false;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -463,6 +512,9 @@ class ThumbnailV2Arg {
                     else if ("exclude_media_info".equals(field)) {
                         f_excludeMediaInfo = StoneSerializers.nullable(StoneSerializers.boolean_()).deserialize(p);
                     }
+                    else if ("preserve_transparency".equals(field)) {
+                        f_preserveTransparency = StoneSerializers.boolean_().deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -470,7 +522,7 @@ class ThumbnailV2Arg {
                 if (f_resource == null) {
                     throw new JsonParseException(p, "Required field \"resource\" missing.");
                 }
-                value = new ThumbnailV2Arg(f_resource, f_format, f_size, f_mode, f_quality, f_excludeMediaInfo);
+                value = new ThumbnailV2Arg(f_resource, f_format, f_size, f_mode, f_quality, f_excludeMediaInfo, f_preserveTransparency);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");
