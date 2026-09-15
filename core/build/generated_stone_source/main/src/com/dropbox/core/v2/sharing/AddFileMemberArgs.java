@@ -37,8 +37,6 @@ class AddFileMemberArgs {
     @Nullable
     protected final AccessLevel accessLevel;
     protected final boolean addMessageAsComment;
-    @Nullable
-    protected final String fpSealedResult;
 
     /**
      * Arguments for {@link DbxUserSharingRequests#addFileMember(String,List)}.
@@ -62,13 +60,11 @@ class AddFileMemberArgs {
      *     level we want to give new members.
      * @param addMessageAsComment  If the custom message should be added as a
      *     comment on the file. Only meant for Paper files.
-     * @param fpSealedResult  Field is only returned for "internal" callers. The
-     *     FingerprintJS Sealed Client Result value.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public AddFileMemberArgs(@Nonnull String file, @Nonnull List<MemberSelector> members, @Nullable String customMessage, boolean quiet, @Nullable AccessLevel accessLevel, boolean addMessageAsComment, @Nullable String fpSealedResult) {
+    public AddFileMemberArgs(@Nonnull String file, @Nonnull List<MemberSelector> members, @Nullable String customMessage, boolean quiet, @Nullable AccessLevel accessLevel, boolean addMessageAsComment) {
         if (file == null) {
             throw new IllegalArgumentException("Required value for 'file' is null");
         }
@@ -92,7 +88,6 @@ class AddFileMemberArgs {
         this.quiet = quiet;
         this.accessLevel = accessLevel;
         this.addMessageAsComment = addMessageAsComment;
-        this.fpSealedResult = fpSealedResult;
     }
 
     /**
@@ -113,7 +108,7 @@ class AddFileMemberArgs {
      *     preconditions.
      */
     public AddFileMemberArgs(@Nonnull String file, @Nonnull List<MemberSelector> members) {
-        this(file, members, null, false, null, false, null);
+        this(file, members, null, false, null, false);
     }
 
     /**
@@ -182,17 +177,6 @@ class AddFileMemberArgs {
     }
 
     /**
-     * Field is only returned for "internal" callers. The FingerprintJS Sealed
-     * Client Result value
-     *
-     * @return value for this field, or {@code null} if not present.
-     */
-    @Nullable
-    public String getFpSealedResult() {
-        return fpSealedResult;
-    }
-
-    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param file  File to which to add members. Must have length of at least
@@ -224,7 +208,6 @@ class AddFileMemberArgs {
         protected boolean quiet;
         protected AccessLevel accessLevel;
         protected boolean addMessageAsComment;
-        protected String fpSealedResult;
 
         protected Builder(String file, List<MemberSelector> members) {
             if (file == null) {
@@ -250,7 +233,6 @@ class AddFileMemberArgs {
             this.quiet = false;
             this.accessLevel = null;
             this.addMessageAsComment = false;
-            this.fpSealedResult = null;
         }
 
         /**
@@ -324,26 +306,13 @@ class AddFileMemberArgs {
         }
 
         /**
-         * Set value for optional field.
-         *
-         * @param fpSealedResult  Field is only returned for "internal" callers.
-         *     The FingerprintJS Sealed Client Result value.
-         *
-         * @return this builder
-         */
-        public Builder withFpSealedResult(String fpSealedResult) {
-            this.fpSealedResult = fpSealedResult;
-            return this;
-        }
-
-        /**
          * Builds an instance of {@link AddFileMemberArgs} configured with this
          * builder's values
          *
          * @return new instance of {@link AddFileMemberArgs}
          */
         public AddFileMemberArgs build() {
-            return new AddFileMemberArgs(file, members, customMessage, quiet, accessLevel, addMessageAsComment, fpSealedResult);
+            return new AddFileMemberArgs(file, members, customMessage, quiet, accessLevel, addMessageAsComment);
         }
     }
 
@@ -355,8 +324,7 @@ class AddFileMemberArgs {
             this.customMessage,
             this.quiet,
             this.accessLevel,
-            this.addMessageAsComment,
-            this.fpSealedResult
+            this.addMessageAsComment
         });
         return hash;
     }
@@ -378,7 +346,6 @@ class AddFileMemberArgs {
                 && (this.quiet == other.quiet)
                 && ((this.accessLevel == other.accessLevel) || (this.accessLevel != null && this.accessLevel.equals(other.accessLevel)))
                 && (this.addMessageAsComment == other.addMessageAsComment)
-                && ((this.fpSealedResult == other.fpSealedResult) || (this.fpSealedResult != null && this.fpSealedResult.equals(other.fpSealedResult)))
                 ;
         }
         else {
@@ -430,10 +397,6 @@ class AddFileMemberArgs {
             }
             g.writeFieldName("add_message_as_comment");
             StoneSerializers.boolean_().serialize(value.addMessageAsComment, g);
-            if (value.fpSealedResult != null) {
-                g.writeFieldName("fp_sealed_result");
-                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.fpSealedResult, g);
-            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -454,7 +417,6 @@ class AddFileMemberArgs {
                 Boolean f_quiet = false;
                 AccessLevel f_accessLevel = null;
                 Boolean f_addMessageAsComment = false;
-                String f_fpSealedResult = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -476,9 +438,6 @@ class AddFileMemberArgs {
                     else if ("add_message_as_comment".equals(field)) {
                         f_addMessageAsComment = StoneSerializers.boolean_().deserialize(p);
                     }
-                    else if ("fp_sealed_result".equals(field)) {
-                        f_fpSealedResult = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
-                    }
                     else {
                         skipValue(p);
                     }
@@ -489,7 +448,7 @@ class AddFileMemberArgs {
                 if (f_members == null) {
                     throw new JsonParseException(p, "Required field \"members\" missing.");
                 }
-                value = new AddFileMemberArgs(f_file, f_members, f_customMessage, f_quiet, f_accessLevel, f_addMessageAsComment, f_fpSealedResult);
+                value = new AddFileMemberArgs(f_file, f_members, f_customMessage, f_quiet, f_accessLevel, f_addMessageAsComment);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

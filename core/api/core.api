@@ -3747,7 +3747,6 @@ public class com/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder : com/dropbox
 	public fun withFormat (Lcom/dropbox/core/v2/files/ThumbnailFormat;)Lcom/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder;
 	public fun withMode (Lcom/dropbox/core/v2/files/ThumbnailMode;)Lcom/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder;
 	public fun withPreserveTransparency (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder;
-	public fun withQuality (Lcom/dropbox/core/v2/files/ThumbnailQuality;)Lcom/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder;
 	public fun withSize (Lcom/dropbox/core/v2/files/ThumbnailSize;)Lcom/dropbox/core/v2/files/DbxAppGetThumbnailV2Builder;
 }
 
@@ -3882,7 +3881,6 @@ public class com/dropbox/core/v2/files/DbxUserGetThumbnailV2Builder : com/dropbo
 	public fun withFormat (Lcom/dropbox/core/v2/files/ThumbnailFormat;)Lcom/dropbox/core/v2/files/DbxUserGetThumbnailV2Builder;
 	public fun withMode (Lcom/dropbox/core/v2/files/ThumbnailMode;)Lcom/dropbox/core/v2/files/DbxUserGetThumbnailV2Builder;
 	public fun withPreserveTransparency (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/DbxUserGetThumbnailV2Builder;
-	public fun withQuality (Lcom/dropbox/core/v2/files/ThumbnailQuality;)Lcom/dropbox/core/v2/files/DbxUserGetThumbnailV2Builder;
 	public fun withSize (Lcom/dropbox/core/v2/files/ThumbnailSize;)Lcom/dropbox/core/v2/files/DbxUserGetThumbnailV2Builder;
 }
 
@@ -4797,7 +4795,6 @@ public class com/dropbox/core/v2/files/GetThumbnailBuilder : com/dropbox/core/v2
 	public fun withExcludeMediaInfo (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/GetThumbnailBuilder;
 	public fun withFormat (Lcom/dropbox/core/v2/files/ThumbnailFormat;)Lcom/dropbox/core/v2/files/GetThumbnailBuilder;
 	public fun withMode (Lcom/dropbox/core/v2/files/ThumbnailMode;)Lcom/dropbox/core/v2/files/GetThumbnailBuilder;
-	public fun withQuality (Lcom/dropbox/core/v2/files/ThumbnailQuality;)Lcom/dropbox/core/v2/files/GetThumbnailBuilder;
 	public fun withSize (Lcom/dropbox/core/v2/files/ThumbnailSize;)Lcom/dropbox/core/v2/files/GetThumbnailBuilder;
 }
 
@@ -6477,16 +6474,14 @@ public class com/dropbox/core/v2/files/ThumbnailArg {
 	protected final field format Lcom/dropbox/core/v2/files/ThumbnailFormat;
 	protected final field mode Lcom/dropbox/core/v2/files/ThumbnailMode;
 	protected final field path Ljava/lang/String;
-	protected final field quality Lcom/dropbox/core/v2/files/ThumbnailQuality;
 	protected final field size Lcom/dropbox/core/v2/files/ThumbnailSize;
 	public fun <init> (Ljava/lang/String;)V
-	public fun <init> (Ljava/lang/String;Lcom/dropbox/core/v2/files/ThumbnailFormat;Lcom/dropbox/core/v2/files/ThumbnailSize;Lcom/dropbox/core/v2/files/ThumbnailMode;Lcom/dropbox/core/v2/files/ThumbnailQuality;Ljava/lang/Boolean;)V
+	public fun <init> (Ljava/lang/String;Lcom/dropbox/core/v2/files/ThumbnailFormat;Lcom/dropbox/core/v2/files/ThumbnailSize;Lcom/dropbox/core/v2/files/ThumbnailMode;Ljava/lang/Boolean;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getExcludeMediaInfo ()Ljava/lang/Boolean;
 	public fun getFormat ()Lcom/dropbox/core/v2/files/ThumbnailFormat;
 	public fun getMode ()Lcom/dropbox/core/v2/files/ThumbnailMode;
 	public fun getPath ()Ljava/lang/String;
-	public fun getQuality ()Lcom/dropbox/core/v2/files/ThumbnailQuality;
 	public fun getSize ()Lcom/dropbox/core/v2/files/ThumbnailSize;
 	public fun hashCode ()I
 	public static fun newBuilder (Ljava/lang/String;)Lcom/dropbox/core/v2/files/ThumbnailArg$Builder;
@@ -6499,14 +6494,12 @@ public class com/dropbox/core/v2/files/ThumbnailArg$Builder {
 	protected field format Lcom/dropbox/core/v2/files/ThumbnailFormat;
 	protected field mode Lcom/dropbox/core/v2/files/ThumbnailMode;
 	protected final field path Ljava/lang/String;
-	protected field quality Lcom/dropbox/core/v2/files/ThumbnailQuality;
 	protected field size Lcom/dropbox/core/v2/files/ThumbnailSize;
 	protected fun <init> (Ljava/lang/String;)V
 	public fun build ()Lcom/dropbox/core/v2/files/ThumbnailArg;
 	public fun withExcludeMediaInfo (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/ThumbnailArg$Builder;
 	public fun withFormat (Lcom/dropbox/core/v2/files/ThumbnailFormat;)Lcom/dropbox/core/v2/files/ThumbnailArg$Builder;
 	public fun withMode (Lcom/dropbox/core/v2/files/ThumbnailMode;)Lcom/dropbox/core/v2/files/ThumbnailArg$Builder;
-	public fun withQuality (Lcom/dropbox/core/v2/files/ThumbnailQuality;)Lcom/dropbox/core/v2/files/ThumbnailArg$Builder;
 	public fun withSize (Lcom/dropbox/core/v2/files/ThumbnailSize;)Lcom/dropbox/core/v2/files/ThumbnailArg$Builder;
 }
 
@@ -6561,19 +6554,11 @@ public final class com/dropbox/core/v2/files/ThumbnailMode : java/lang/Enum {
 	public static fun values ()[Lcom/dropbox/core/v2/files/ThumbnailMode;
 }
 
-public final class com/dropbox/core/v2/files/ThumbnailQuality : java/lang/Enum {
-	public static final field QUALITY_80 Lcom/dropbox/core/v2/files/ThumbnailQuality;
-	public static final field QUALITY_90 Lcom/dropbox/core/v2/files/ThumbnailQuality;
-	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/files/ThumbnailQuality;
-	public static fun values ()[Lcom/dropbox/core/v2/files/ThumbnailQuality;
-}
-
 public final class com/dropbox/core/v2/files/ThumbnailSize : java/lang/Enum {
 	public static final field W1024H768 Lcom/dropbox/core/v2/files/ThumbnailSize;
 	public static final field W128H128 Lcom/dropbox/core/v2/files/ThumbnailSize;
 	public static final field W2048H1536 Lcom/dropbox/core/v2/files/ThumbnailSize;
 	public static final field W256H256 Lcom/dropbox/core/v2/files/ThumbnailSize;
-	public static final field W3200H2400 Lcom/dropbox/core/v2/files/ThumbnailSize;
 	public static final field W32H32 Lcom/dropbox/core/v2/files/ThumbnailSize;
 	public static final field W480H320 Lcom/dropbox/core/v2/files/ThumbnailSize;
 	public static final field W640H480 Lcom/dropbox/core/v2/files/ThumbnailSize;
@@ -9086,7 +9071,6 @@ public class com/dropbox/core/v2/sharing/AddFileMemberBuilder {
 	public fun withAccessLevel (Lcom/dropbox/core/v2/sharing/AccessLevel;)Lcom/dropbox/core/v2/sharing/AddFileMemberBuilder;
 	public fun withAddMessageAsComment (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/sharing/AddFileMemberBuilder;
 	public fun withCustomMessage (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/AddFileMemberBuilder;
-	public fun withFpSealedResult (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/AddFileMemberBuilder;
 	public fun withQuiet (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/sharing/AddFileMemberBuilder;
 }
 
@@ -9131,7 +9115,6 @@ public class com/dropbox/core/v2/sharing/AddFileMemberErrorException : com/dropb
 public class com/dropbox/core/v2/sharing/AddFolderMemberBuilder {
 	public fun start ()V
 	public fun withCustomMessage (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/AddFolderMemberBuilder;
-	public fun withFpSealedResult (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/AddFolderMemberBuilder;
 	public fun withQuiet (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/sharing/AddFolderMemberBuilder;
 }
 
