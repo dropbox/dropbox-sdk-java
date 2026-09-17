@@ -85,6 +85,10 @@ public final class WriteError {
          */
         MEMBER_FOLDER_INSUFFICIENT_SPACE,
         /**
+         * The user has reached their monthly upload traffic limit.
+         */
+        UPLOAD_TRAFFIC_LIMIT_REACHED,
+        /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
          *
@@ -133,6 +137,10 @@ public final class WriteError {
      * The user's member folder has reached its storage limit.
      */
     public static final WriteError MEMBER_FOLDER_INSUFFICIENT_SPACE = new WriteError().withTag(Tag.MEMBER_FOLDER_INSUFFICIENT_SPACE);
+    /**
+     * The user has reached their monthly upload traffic limit.
+     */
+    public static final WriteError UPLOAD_TRAFFIC_LIMIT_REACHED = new WriteError().withTag(Tag.UPLOAD_TRAFFIC_LIMIT_REACHED);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -427,6 +435,17 @@ public final class WriteError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#UPLOAD_TRAFFIC_LIMIT_REACHED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#UPLOAD_TRAFFIC_LIMIT_REACHED}, {@code false} otherwise.
+     */
+    public boolean isUploadTrafficLimitReached() {
+        return this._tag == Tag.UPLOAD_TRAFFIC_LIMIT_REACHED;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -482,6 +501,8 @@ public final class WriteError {
                 case TEAM_FOLDER_INSUFFICIENT_SPACE:
                     return true;
                 case MEMBER_FOLDER_INSUFFICIENT_SPACE:
+                    return true;
+                case UPLOAD_TRAFFIC_LIMIT_REACHED:
                     return true;
                 case OTHER:
                     return true;
@@ -572,6 +593,10 @@ public final class WriteError {
                     g.writeString("member_folder_insufficient_space");
                     break;
                 }
+                case UPLOAD_TRAFFIC_LIMIT_REACHED: {
+                    g.writeString("upload_traffic_limit_reached");
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -641,6 +666,9 @@ public final class WriteError {
             }
             else if ("member_folder_insufficient_space".equals(tag)) {
                 value = WriteError.MEMBER_FOLDER_INSUFFICIENT_SPACE;
+            }
+            else if ("upload_traffic_limit_reached".equals(tag)) {
+                value = WriteError.UPLOAD_TRAFFIC_LIMIT_REACHED;
             }
             else {
                 value = WriteError.OTHER;
