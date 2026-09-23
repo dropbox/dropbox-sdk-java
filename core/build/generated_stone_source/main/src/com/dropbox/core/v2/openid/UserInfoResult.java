@@ -39,15 +39,22 @@ public class UserInfoResult {
      * Use {@link newBuilder} to create instances of this class without
      * specifying values for all optional fields.
      *
-     * @param familyName  Last name of user.
-     * @param givenName  First name of user.
-     * @param email  Email address of user.
-     * @param emailVerified  If user is email verified.
-     * @param iss  Issuer of token (in this case Dropbox). Must not be {@code
-     *     null}.
+     * @param familyName  Last name of the user.
+     * @param givenName  First name of the user.
+     * @param email  The user's email address. Be aware it's possible that the
+     *     user has since lost access to their email. Note: email is not a
+     *     unique or stable identifier for a Dropbox account. Users can change
+     *     their email, and emails can be reused by different accounts. Apps
+     *     should not use email as a key for account identification; use {@link
+     *     UserInfoResult#getSub} instead.
+     * @param emailVerified  If the user's email address is verified.
+     * @param iss  Issuer of the token (in this case Dropbox). Must not be
+     *     {@code null}.
      * @param sub  An identifier for the user. This is the Dropbox account_id, a
-     *     string value such as dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc. Must
-     *     not be {@code null}.
+     *     string value such as dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc. The
+     *     account_id is a unique and stable identifier for a Dropbox account,
+     *     suitable for use as a key in authentication and account management.
+     *     Must not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
@@ -77,7 +84,7 @@ public class UserInfoResult {
     }
 
     /**
-     * Last name of user.
+     * Last name of the user.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -87,7 +94,7 @@ public class UserInfoResult {
     }
 
     /**
-     * First name of user.
+     * First name of the user.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -97,7 +104,12 @@ public class UserInfoResult {
     }
 
     /**
-     * Email address of user.
+     * The user's email address. Be aware it's possible that the user has since
+     * lost access to their email. Note: email is not a unique or stable
+     * identifier for a Dropbox account. Users can change their email, and
+     * emails can be reused by different accounts. Apps should not use email as
+     * a key for account identification; use {@link UserInfoResult#getSub}
+     * instead.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -107,7 +119,7 @@ public class UserInfoResult {
     }
 
     /**
-     * If user is email verified.
+     * If the user's email address is verified.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -117,7 +129,7 @@ public class UserInfoResult {
     }
 
     /**
-     * Issuer of token (in this case Dropbox).
+     * Issuer of the token (in this case Dropbox).
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     "".
@@ -129,7 +141,9 @@ public class UserInfoResult {
 
     /**
      * An identifier for the user. This is the Dropbox account_id, a string
-     * value such as dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc.
+     * value such as dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc. The account_id is
+     * a unique and stable identifier for a Dropbox account, suitable for use as
+     * a key in authentication and account management.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     "".
@@ -172,7 +186,7 @@ public class UserInfoResult {
         /**
          * Set value for optional field.
          *
-         * @param familyName  Last name of user.
+         * @param familyName  Last name of the user.
          *
          * @return this builder
          */
@@ -184,7 +198,7 @@ public class UserInfoResult {
         /**
          * Set value for optional field.
          *
-         * @param givenName  First name of user.
+         * @param givenName  First name of the user.
          *
          * @return this builder
          */
@@ -196,7 +210,12 @@ public class UserInfoResult {
         /**
          * Set value for optional field.
          *
-         * @param email  Email address of user.
+         * @param email  The user's email address. Be aware it's possible that
+         *     the user has since lost access to their email. Note: email is not
+         *     a unique or stable identifier for a Dropbox account. Users can
+         *     change their email, and emails can be reused by different
+         *     accounts. Apps should not use email as a key for account
+         *     identification; use {@link UserInfoResult#getSub} instead.
          *
          * @return this builder
          */
@@ -208,7 +227,7 @@ public class UserInfoResult {
         /**
          * Set value for optional field.
          *
-         * @param emailVerified  If user is email verified.
+         * @param emailVerified  If the user's email address is verified.
          *
          * @return this builder
          */
@@ -223,7 +242,7 @@ public class UserInfoResult {
          * <p> If left unset or set to {@code null}, defaults to {@code ""}.
          * </p>
          *
-         * @param iss  Issuer of token (in this case Dropbox). Must not be
+         * @param iss  Issuer of the token (in this case Dropbox). Must not be
          *     {@code null}. Defaults to {@code ""} when set to {@code null}.
          *
          * @return this builder
@@ -249,8 +268,10 @@ public class UserInfoResult {
          *
          * @param sub  An identifier for the user. This is the Dropbox
          *     account_id, a string value such as
-         *     dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc. Must not be {@code
-         *     null}. Defaults to {@code ""} when set to {@code null}.
+         *     dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc. The account_id is a
+         *     unique and stable identifier for a Dropbox account, suitable for
+         *     use as a key in authentication and account management. Must not
+         *     be {@code null}. Defaults to {@code ""} when set to {@code null}.
          *
          * @return this builder
          *
