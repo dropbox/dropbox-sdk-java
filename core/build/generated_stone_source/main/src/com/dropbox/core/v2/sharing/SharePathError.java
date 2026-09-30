@@ -88,11 +88,13 @@ public final class SharePathError {
          */
         INSIDE_OSX_PACKAGE,
         /**
-         * We do not support sharing the Vault folder.
+         * Field is deprecated. We do not support sharing the Vault folder.
+         * Deprecated: Vault sharing errors are no longer emitted.
          */
         IS_VAULT,
         /**
-         * We do not support sharing a folder inside a locked Vault.
+         * Field is deprecated. We do not support sharing a folder inside a
+         * locked Vault. Deprecated: Vault sharing errors are no longer emitted.
          */
         IS_VAULT_LOCKED,
         /**
@@ -160,11 +162,13 @@ public final class SharePathError {
      */
     public static final SharePathError INSIDE_OSX_PACKAGE = new SharePathError().withTag(Tag.INSIDE_OSX_PACKAGE);
     /**
-     * We do not support sharing the Vault folder.
+     * Field is deprecated. We do not support sharing the Vault folder.
+     * Deprecated: Vault sharing errors are no longer emitted.
      */
     public static final SharePathError IS_VAULT = new SharePathError().withTag(Tag.IS_VAULT);
     /**
-     * We do not support sharing a folder inside a locked Vault.
+     * Field is deprecated. We do not support sharing a folder inside a locked
+     * Vault. Deprecated: Vault sharing errors are no longer emitted.
      */
     public static final SharePathError IS_VAULT_LOCKED = new SharePathError().withTag(Tag.IS_VAULT_LOCKED);
     /**
