@@ -80,8 +80,9 @@ public final class RelocationError {
          */
         CANT_MOVE_SHARED_FOLDER,
         /**
-         * Some content cannot be moved into Vault under certain circumstances,
-         * see detailed error.
+         * Field is deprecated. Some content cannot be moved into Vault under
+         * certain circumstances, see detailed error. Deprecated: the server no
+         * longer emits this error.
          */
         CANT_MOVE_INTO_VAULT, // MoveIntoVaultError
         /**
@@ -238,8 +239,9 @@ public final class RelocationError {
 
     /**
      *
-     * @param cantMoveIntoVaultValue  Some content cannot be moved into Vault
-     *     under certain circumstances, see detailed error. Must not be {@code
+     * @param cantMoveIntoVaultValue  Field is deprecated. Some content cannot
+     *     be moved into Vault under certain circumstances, see detailed error.
+     *     Deprecated: the server no longer emits this error. Must not be {@code
      *     null}.
      * @param _tag  Discriminating tag for this instance.
      *
@@ -540,8 +542,9 @@ public final class RelocationError {
      * Returns an instance of {@code RelocationError} that has its tag set to
      * {@link Tag#CANT_MOVE_INTO_VAULT}.
      *
-     * <p> Some content cannot be moved into Vault under certain circumstances,
-     * see detailed error. </p>
+     * <p> Field is deprecated. Some content cannot be moved into Vault under
+     * certain circumstances, see detailed error. Deprecated: the server no
+     * longer emits this error. </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -558,8 +561,9 @@ public final class RelocationError {
     }
 
     /**
-     * Some content cannot be moved into Vault under certain circumstances, see
-     * detailed error.
+     * Field is deprecated. Some content cannot be moved into Vault under
+     * certain circumstances, see detailed error. Deprecated: the server no
+     * longer emits this error.
      *
      * <p> This instance must be tagged as {@link Tag#CANT_MOVE_INTO_VAULT}.
      * </p>

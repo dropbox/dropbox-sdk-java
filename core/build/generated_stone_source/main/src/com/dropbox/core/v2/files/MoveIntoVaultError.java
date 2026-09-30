@@ -16,6 +16,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * Deprecated: the server no longer emits this error.
+ */
 public enum MoveIntoVaultError {
     // union files.MoveIntoVaultError (files.stone)
     /**

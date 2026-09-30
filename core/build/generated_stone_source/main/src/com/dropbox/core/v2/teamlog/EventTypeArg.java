@@ -2247,6 +2247,10 @@ public enum EventTypeArg {
      */
     PAPER_ENABLED_USERS_GROUP_REMOVAL,
     /**
+     * (team_policies) Enabled/disabled Paper offline mode for team
+     */
+    PAPER_OFFLINE_MODE_POLICY_CHANGED,
+    /**
      * (team_policies) Changed passkey login policy for team
      */
     PASSKEY_LOGIN_POLICY_CHANGED,
@@ -4826,6 +4830,10 @@ public enum EventTypeArg {
                     g.writeString("paper_enabled_users_group_removal");
                     break;
                 }
+                case PAPER_OFFLINE_MODE_POLICY_CHANGED: {
+                    g.writeString("paper_offline_mode_policy_changed");
+                    break;
+                }
                 case PASSKEY_LOGIN_POLICY_CHANGED: {
                     g.writeString("passkey_login_policy_changed");
                     break;
@@ -6843,6 +6851,9 @@ public enum EventTypeArg {
             }
             else if ("paper_enabled_users_group_removal".equals(tag)) {
                 value = EventTypeArg.PAPER_ENABLED_USERS_GROUP_REMOVAL;
+            }
+            else if ("paper_offline_mode_policy_changed".equals(tag)) {
+                value = EventTypeArg.PAPER_OFFLINE_MODE_POLICY_CHANGED;
             }
             else if ("passkey_login_policy_changed".equals(tag)) {
                 value = EventTypeArg.PASSKEY_LOGIN_POLICY_CHANGED;

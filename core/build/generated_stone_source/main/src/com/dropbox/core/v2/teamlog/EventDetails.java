@@ -577,6 +577,7 @@ public final class EventDetails {
         PAPER_DESKTOP_POLICY_CHANGED_DETAILS, // PaperDesktopPolicyChangedDetails
         PAPER_ENABLED_USERS_GROUP_ADDITION_DETAILS, // PaperEnabledUsersGroupAdditionDetails
         PAPER_ENABLED_USERS_GROUP_REMOVAL_DETAILS, // PaperEnabledUsersGroupRemovalDetails
+        PAPER_OFFLINE_MODE_POLICY_CHANGED_DETAILS, // PaperOfflineModePolicyChangedDetails
         PASSKEY_LOGIN_POLICY_CHANGED_DETAILS, // PasskeyLoginPolicyChangedDetails
         PASSWORD_STRENGTH_REQUIREMENTS_CHANGE_POLICY_DETAILS, // PasswordStrengthRequirementsChangePolicyDetails
         PERMANENT_DELETE_CHANGE_POLICY_DETAILS, // PermanentDeleteChangePolicyDetails
@@ -1237,6 +1238,7 @@ public final class EventDetails {
     private PaperDesktopPolicyChangedDetails paperDesktopPolicyChangedDetailsValue;
     private PaperEnabledUsersGroupAdditionDetails paperEnabledUsersGroupAdditionDetailsValue;
     private PaperEnabledUsersGroupRemovalDetails paperEnabledUsersGroupRemovalDetailsValue;
+    private PaperOfflineModePolicyChangedDetails paperOfflineModePolicyChangedDetailsValue;
     private PasskeyLoginPolicyChangedDetails passkeyLoginPolicyChangedDetailsValue;
     private PasswordStrengthRequirementsChangePolicyDetails passwordStrengthRequirementsChangePolicyDetailsValue;
     private PermanentDeleteChangePolicyDetails permanentDeleteChangePolicyDetailsValue;
@@ -10187,6 +10189,23 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.paperEnabledUsersGroupRemovalDetailsValue = paperEnabledUsersGroupRemovalDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param paperOfflineModePolicyChangedDetailsValue  Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndPaperOfflineModePolicyChangedDetails(Tag _tag, PaperOfflineModePolicyChangedDetails paperOfflineModePolicyChangedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.paperOfflineModePolicyChangedDetailsValue = paperOfflineModePolicyChangedDetailsValue;
         return result;
     }
 
@@ -38292,6 +38311,56 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isPaperOfflineModePolicyChangedDetails() {
+        return this._tag == Tag.PAPER_OFFLINE_MODE_POLICY_CHANGED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails paperOfflineModePolicyChangedDetails(PaperOfflineModePolicyChangedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndPaperOfflineModePolicyChangedDetails(Tag.PAPER_OFFLINE_MODE_POLICY_CHANGED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED_DETAILS}.
+     *
+     * @return The {@link PaperOfflineModePolicyChangedDetails} value associated
+     *     with this instance if {@link #isPaperOfflineModePolicyChangedDetails}
+     *     is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isPaperOfflineModePolicyChangedDetails} is {@code false}.
+     */
+    public PaperOfflineModePolicyChangedDetails getPaperOfflineModePolicyChangedDetailsValue() {
+        if (this._tag != Tag.PAPER_OFFLINE_MODE_POLICY_CHANGED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PAPER_OFFLINE_MODE_POLICY_CHANGED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return paperOfflineModePolicyChangedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#PASSKEY_LOGIN_POLICY_CHANGED_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -43486,6 +43555,7 @@ public final class EventDetails {
             this.paperDesktopPolicyChangedDetailsValue,
             this.paperEnabledUsersGroupAdditionDetailsValue,
             this.paperEnabledUsersGroupRemovalDetailsValue,
+            this.paperOfflineModePolicyChangedDetailsValue,
             this.passkeyLoginPolicyChangedDetailsValue,
             this.passwordStrengthRequirementsChangePolicyDetailsValue,
             this.permanentDeleteChangePolicyDetailsValue,
@@ -44681,6 +44751,8 @@ public final class EventDetails {
                     return (this.paperEnabledUsersGroupAdditionDetailsValue == other.paperEnabledUsersGroupAdditionDetailsValue) || (this.paperEnabledUsersGroupAdditionDetailsValue.equals(other.paperEnabledUsersGroupAdditionDetailsValue));
                 case PAPER_ENABLED_USERS_GROUP_REMOVAL_DETAILS:
                     return (this.paperEnabledUsersGroupRemovalDetailsValue == other.paperEnabledUsersGroupRemovalDetailsValue) || (this.paperEnabledUsersGroupRemovalDetailsValue.equals(other.paperEnabledUsersGroupRemovalDetailsValue));
+                case PAPER_OFFLINE_MODE_POLICY_CHANGED_DETAILS:
+                    return (this.paperOfflineModePolicyChangedDetailsValue == other.paperOfflineModePolicyChangedDetailsValue) || (this.paperOfflineModePolicyChangedDetailsValue.equals(other.paperOfflineModePolicyChangedDetailsValue));
                 case PASSKEY_LOGIN_POLICY_CHANGED_DETAILS:
                     return (this.passkeyLoginPolicyChangedDetailsValue == other.passkeyLoginPolicyChangedDetailsValue) || (this.passkeyLoginPolicyChangedDetailsValue.equals(other.passkeyLoginPolicyChangedDetailsValue));
                 case PASSWORD_STRENGTH_REQUIREMENTS_CHANGE_POLICY_DETAILS:
@@ -48698,6 +48770,13 @@ public final class EventDetails {
                     g.writeEndObject();
                     break;
                 }
+                case PAPER_OFFLINE_MODE_POLICY_CHANGED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("paper_offline_mode_policy_changed_details", g);
+                    PaperOfflineModePolicyChangedDetails.Serializer.INSTANCE.serialize(value.paperOfflineModePolicyChangedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case PASSKEY_LOGIN_POLICY_CHANGED_DETAILS: {
                     g.writeStartObject();
                     writeTag("passkey_login_policy_changed_details", g);
@@ -52082,6 +52161,11 @@ public final class EventDetails {
                 PaperEnabledUsersGroupRemovalDetails fieldValue = null;
                 fieldValue = PaperEnabledUsersGroupRemovalDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.paperEnabledUsersGroupRemovalDetails(fieldValue);
+            }
+            else if ("paper_offline_mode_policy_changed_details".equals(tag)) {
+                PaperOfflineModePolicyChangedDetails fieldValue = null;
+                fieldValue = PaperOfflineModePolicyChangedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.paperOfflineModePolicyChangedDetails(fieldValue);
             }
             else if ("passkey_login_policy_changed_details".equals(tag)) {
                 PasskeyLoginPolicyChangedDetails fieldValue = null;

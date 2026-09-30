@@ -21085,6 +21085,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getPaperFolderDeletedDetailsValue ()Lcom/dropbox/core/v2/teamlog/PaperFolderDeletedDetails;
 	public fun getPaperFolderFollowedDetailsValue ()Lcom/dropbox/core/v2/teamlog/PaperFolderFollowedDetails;
 	public fun getPaperFolderTeamInviteDetailsValue ()Lcom/dropbox/core/v2/teamlog/PaperFolderTeamInviteDetails;
+	public fun getPaperOfflineModePolicyChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicyChangedDetails;
 	public fun getPaperPublishedLinkChangePermissionDetailsValue ()Lcom/dropbox/core/v2/teamlog/PaperPublishedLinkChangePermissionDetails;
 	public fun getPaperPublishedLinkCreateDetailsValue ()Lcom/dropbox/core/v2/teamlog/PaperPublishedLinkCreateDetails;
 	public fun getPaperPublishedLinkDisabledDetailsValue ()Lcom/dropbox/core/v2/teamlog/PaperPublishedLinkDisabledDetails;
@@ -21757,6 +21758,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isPaperFolderDeletedDetails ()Z
 	public fun isPaperFolderFollowedDetails ()Z
 	public fun isPaperFolderTeamInviteDetails ()Z
+	public fun isPaperOfflineModePolicyChangedDetails ()Z
 	public fun isPaperPublishedLinkChangePermissionDetails ()Z
 	public fun isPaperPublishedLinkCreateDetails ()Z
 	public fun isPaperPublishedLinkDisabledDetails ()Z
@@ -22162,6 +22164,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun paperFolderDeletedDetails (Lcom/dropbox/core/v2/teamlog/PaperFolderDeletedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun paperFolderFollowedDetails (Lcom/dropbox/core/v2/teamlog/PaperFolderFollowedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun paperFolderTeamInviteDetails (Lcom/dropbox/core/v2/teamlog/PaperFolderTeamInviteDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun paperOfflineModePolicyChangedDetails (Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicyChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun paperPublishedLinkChangePermissionDetails (Lcom/dropbox/core/v2/teamlog/PaperPublishedLinkChangePermissionDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun paperPublishedLinkCreateDetails (Lcom/dropbox/core/v2/teamlog/PaperPublishedLinkCreateDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun paperPublishedLinkDisabledDetails (Lcom/dropbox/core/v2/teamlog/PaperPublishedLinkDisabledDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -22804,6 +22807,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field PAPER_FOLDER_DELETED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PAPER_FOLDER_FOLLOWED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PAPER_FOLDER_TEAM_INVITE_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field PAPER_OFFLINE_MODE_POLICY_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PAPER_PUBLISHED_LINK_CHANGE_PERMISSION_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PAPER_PUBLISHED_LINK_CREATE_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PAPER_PUBLISHED_LINK_DISABLED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -23640,6 +23644,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getPaperFolderDeletedValue ()Lcom/dropbox/core/v2/teamlog/PaperFolderDeletedType;
 	public fun getPaperFolderFollowedValue ()Lcom/dropbox/core/v2/teamlog/PaperFolderFollowedType;
 	public fun getPaperFolderTeamInviteValue ()Lcom/dropbox/core/v2/teamlog/PaperFolderTeamInviteType;
+	public fun getPaperOfflineModePolicyChangedValue ()Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicyChangedType;
 	public fun getPaperPublishedLinkChangePermissionValue ()Lcom/dropbox/core/v2/teamlog/PaperPublishedLinkChangePermissionType;
 	public fun getPaperPublishedLinkCreateValue ()Lcom/dropbox/core/v2/teamlog/PaperPublishedLinkCreateType;
 	public fun getPaperPublishedLinkDisabledValue ()Lcom/dropbox/core/v2/teamlog/PaperPublishedLinkDisabledType;
@@ -24311,6 +24316,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isPaperFolderDeleted ()Z
 	public fun isPaperFolderFollowed ()Z
 	public fun isPaperFolderTeamInvite ()Z
+	public fun isPaperOfflineModePolicyChanged ()Z
 	public fun isPaperPublishedLinkChangePermission ()Z
 	public fun isPaperPublishedLinkCreate ()Z
 	public fun isPaperPublishedLinkDisabled ()Z
@@ -24715,6 +24721,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun paperFolderDeleted (Lcom/dropbox/core/v2/teamlog/PaperFolderDeletedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun paperFolderFollowed (Lcom/dropbox/core/v2/teamlog/PaperFolderFollowedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun paperFolderTeamInvite (Lcom/dropbox/core/v2/teamlog/PaperFolderTeamInviteType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun paperOfflineModePolicyChanged (Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicyChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun paperPublishedLinkChangePermission (Lcom/dropbox/core/v2/teamlog/PaperPublishedLinkChangePermissionType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun paperPublishedLinkCreate (Lcom/dropbox/core/v2/teamlog/PaperPublishedLinkCreateType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun paperPublishedLinkDisabled (Lcom/dropbox/core/v2/teamlog/PaperPublishedLinkDisabledType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -25356,6 +25363,7 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field PAPER_FOLDER_DELETED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PAPER_FOLDER_FOLLOWED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PAPER_FOLDER_TEAM_INVITE Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field PAPER_OFFLINE_MODE_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PAPER_PUBLISHED_LINK_CHANGE_PERMISSION Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PAPER_PUBLISHED_LINK_CREATE Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PAPER_PUBLISHED_LINK_DISABLED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -25996,6 +26004,7 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field PAPER_FOLDER_DELETED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PAPER_FOLDER_FOLLOWED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PAPER_FOLDER_TEAM_INVITE Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field PAPER_OFFLINE_MODE_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PAPER_PUBLISHED_LINK_CHANGE_PERMISSION Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PAPER_PUBLISHED_LINK_CREATE Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PAPER_PUBLISHED_LINK_DISABLED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
@@ -32316,6 +32325,37 @@ public final class com/dropbox/core/v2/teamlog/PaperMemberPolicy : java/lang/Enu
 	public static final field TEAM_AND_EXPLICITLY_SHARED Lcom/dropbox/core/v2/teamlog/PaperMemberPolicy;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/PaperMemberPolicy;
 	public static fun values ()[Lcom/dropbox/core/v2/teamlog/PaperMemberPolicy;
+}
+
+public final class com/dropbox/core/v2/teamlog/PaperOfflineModePolicy : java/lang/Enum {
+	public static final field DEFAULT Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicy;
+	public static final field DISABLED Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicy;
+	public static final field ENABLED Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicy;
+	public static final field OTHER Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicy;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicy;
+	public static fun values ()[Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicy;
+}
+
+public class com/dropbox/core/v2/teamlog/PaperOfflineModePolicyChangedDetails {
+	protected final field newValue Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicy;
+	protected final field previousValue Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicy;
+	public fun <init> (Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicy;Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicy;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getNewValue ()Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicy;
+	public fun getPreviousValue ()Lcom/dropbox/core/v2/teamlog/PaperOfflineModePolicy;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/PaperOfflineModePolicyChangedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
 }
 
 public class com/dropbox/core/v2/teamlog/PaperPublishedLinkChangePermissionDetails {

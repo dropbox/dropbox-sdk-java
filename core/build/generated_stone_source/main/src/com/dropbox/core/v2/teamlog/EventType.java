@@ -2275,6 +2275,10 @@ public final class EventType {
          */
         PAPER_ENABLED_USERS_GROUP_REMOVAL, // PaperEnabledUsersGroupRemovalType
         /**
+         * (team_policies) Enabled/disabled Paper offline mode for team
+         */
+        PAPER_OFFLINE_MODE_POLICY_CHANGED, // PaperOfflineModePolicyChangedType
+        /**
          * (team_policies) Changed passkey login policy for team
          */
         PASSKEY_LOGIN_POLICY_CHANGED, // PasskeyLoginPolicyChangedType
@@ -3239,6 +3243,7 @@ public final class EventType {
     private PaperDesktopPolicyChangedType paperDesktopPolicyChangedValue;
     private PaperEnabledUsersGroupAdditionType paperEnabledUsersGroupAdditionValue;
     private PaperEnabledUsersGroupRemovalType paperEnabledUsersGroupRemovalValue;
+    private PaperOfflineModePolicyChangedType paperOfflineModePolicyChangedValue;
     private PasskeyLoginPolicyChangedType passkeyLoginPolicyChangedValue;
     private PasswordStrengthRequirementsChangePolicyType passwordStrengthRequirementsChangePolicyValue;
     private PermanentDeleteChangePolicyType permanentDeleteChangePolicyValue;
@@ -12622,6 +12627,24 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.paperEnabledUsersGroupRemovalValue = paperEnabledUsersGroupRemovalValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param paperOfflineModePolicyChangedValue  (team_policies)
+     *     Enabled/disabled Paper offline mode for team. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndPaperOfflineModePolicyChanged(Tag _tag, PaperOfflineModePolicyChangedType paperOfflineModePolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.paperOfflineModePolicyChangedValue = paperOfflineModePolicyChangedValue;
         return result;
     }
 
@@ -41665,6 +41688,57 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isPaperOfflineModePolicyChanged() {
+        return this._tag == Tag.PAPER_OFFLINE_MODE_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Enabled/disabled Paper offline mode for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType paperOfflineModePolicyChanged(PaperOfflineModePolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndPaperOfflineModePolicyChanged(Tag.PAPER_OFFLINE_MODE_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Enabled/disabled Paper offline mode for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link PaperOfflineModePolicyChangedType} value associated
+     *     with this instance if {@link #isPaperOfflineModePolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isPaperOfflineModePolicyChanged} is {@code false}.
+     */
+    public PaperOfflineModePolicyChangedType getPaperOfflineModePolicyChangedValue() {
+        if (this._tag != Tag.PAPER_OFFLINE_MODE_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PAPER_OFFLINE_MODE_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return paperOfflineModePolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#PASSKEY_LOGIN_POLICY_CHANGED}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -46987,6 +47061,7 @@ public final class EventType {
             this.paperDesktopPolicyChangedValue,
             this.paperEnabledUsersGroupAdditionValue,
             this.paperEnabledUsersGroupRemovalValue,
+            this.paperOfflineModePolicyChangedValue,
             this.passkeyLoginPolicyChangedValue,
             this.passwordStrengthRequirementsChangePolicyValue,
             this.permanentDeleteChangePolicyValue,
@@ -48181,6 +48256,8 @@ public final class EventType {
                     return (this.paperEnabledUsersGroupAdditionValue == other.paperEnabledUsersGroupAdditionValue) || (this.paperEnabledUsersGroupAdditionValue.equals(other.paperEnabledUsersGroupAdditionValue));
                 case PAPER_ENABLED_USERS_GROUP_REMOVAL:
                     return (this.paperEnabledUsersGroupRemovalValue == other.paperEnabledUsersGroupRemovalValue) || (this.paperEnabledUsersGroupRemovalValue.equals(other.paperEnabledUsersGroupRemovalValue));
+                case PAPER_OFFLINE_MODE_POLICY_CHANGED:
+                    return (this.paperOfflineModePolicyChangedValue == other.paperOfflineModePolicyChangedValue) || (this.paperOfflineModePolicyChangedValue.equals(other.paperOfflineModePolicyChangedValue));
                 case PASSKEY_LOGIN_POLICY_CHANGED:
                     return (this.passkeyLoginPolicyChangedValue == other.passkeyLoginPolicyChangedValue) || (this.passkeyLoginPolicyChangedValue.equals(other.passkeyLoginPolicyChangedValue));
                 case PASSWORD_STRENGTH_REQUIREMENTS_CHANGE_POLICY:
@@ -52196,6 +52273,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case PAPER_OFFLINE_MODE_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("paper_offline_mode_policy_changed", g);
+                    PaperOfflineModePolicyChangedType.Serializer.INSTANCE.serialize(value.paperOfflineModePolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case PASSKEY_LOGIN_POLICY_CHANGED: {
                     g.writeStartObject();
                     writeTag("passkey_login_policy_changed", g);
@@ -55573,6 +55657,11 @@ public final class EventType {
                 PaperEnabledUsersGroupRemovalType fieldValue = null;
                 fieldValue = PaperEnabledUsersGroupRemovalType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.paperEnabledUsersGroupRemoval(fieldValue);
+            }
+            else if ("paper_offline_mode_policy_changed".equals(tag)) {
+                PaperOfflineModePolicyChangedType fieldValue = null;
+                fieldValue = PaperOfflineModePolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.paperOfflineModePolicyChanged(fieldValue);
             }
             else if ("passkey_login_policy_changed".equals(tag)) {
                 PasskeyLoginPolicyChangedType fieldValue = null;
