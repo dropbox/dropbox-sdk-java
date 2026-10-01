@@ -10156,6 +10156,7 @@ public final class com/dropbox/core/v2/sharing/LinkAudience : java/lang/Enum {
 	public static final field OTHER Lcom/dropbox/core/v2/sharing/LinkAudience;
 	public static final field PASSWORD Lcom/dropbox/core/v2/sharing/LinkAudience;
 	public static final field PUBLIC Lcom/dropbox/core/v2/sharing/LinkAudience;
+	public static final field PUBLIC_LOGGED_IN_ONLY Lcom/dropbox/core/v2/sharing/LinkAudience;
 	public static final field TEAM Lcom/dropbox/core/v2/sharing/LinkAudience;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/LinkAudience;
 	public static fun values ()[Lcom/dropbox/core/v2/sharing/LinkAudience;

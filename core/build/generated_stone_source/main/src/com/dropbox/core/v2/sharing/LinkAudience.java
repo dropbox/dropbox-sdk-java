@@ -43,6 +43,12 @@ public enum LinkAudience {
      */
     MEMBERS,
     /**
+     * Link is accessible only by signed-in Dropbox users. This audience is
+     * currently read-only through API v2: API v2 write methods reject requests
+     * that set it.
+     */
+    PUBLIC_LOGGED_IN_ONLY,
+    /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
      * <p> Receiving a catch-all value typically indicates this SDK version is
@@ -78,6 +84,10 @@ public enum LinkAudience {
                 }
                 case MEMBERS: {
                     g.writeString("members");
+                    break;
+                }
+                case PUBLIC_LOGGED_IN_ONLY: {
+                    g.writeString("public_logged_in_only");
                     break;
                 }
                 default: {
@@ -118,6 +128,9 @@ public enum LinkAudience {
             }
             else if ("members".equals(tag)) {
                 value = LinkAudience.MEMBERS;
+            }
+            else if ("public_logged_in_only".equals(tag)) {
+                value = LinkAudience.PUBLIC_LOGGED_IN_ONLY;
             }
             else {
                 value = LinkAudience.OTHER;
