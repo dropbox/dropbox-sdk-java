@@ -8315,6 +8315,10 @@ public final class com/dropbox/core/v2/riviera/ContentApiV2Error$Tag : java/lang
 	public static fun values ()[Lcom/dropbox/core/v2/riviera/ContentApiV2Error$Tag;
 }
 
+public class com/dropbox/core/v2/riviera/DbxAppDownloadTransformOutputBuilder : com/dropbox/core/v2/DbxDownloadStyleBuilder {
+	public fun start ()Lcom/dropbox/core/DbxDownloader;
+}
+
 public class com/dropbox/core/v2/riviera/DbxAppGetKeyframesAsyncBuilder {
 	public fun start ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun withFileIdOrUrl (Lcom/dropbox/core/v2/riviera/FileIdOrUrl;)Lcom/dropbox/core/v2/riviera/DbxAppGetKeyframesAsyncBuilder;
@@ -8337,8 +8341,18 @@ public class com/dropbox/core/v2/riviera/DbxAppGetTranscriptAsyncBuilder {
 	public fun withTimestampLevel (Lcom/dropbox/core/v2/riviera/TimestampLevel;)Lcom/dropbox/core/v2/riviera/DbxAppGetTranscriptAsyncBuilder;
 }
 
+public class com/dropbox/core/v2/riviera/DbxAppGetTransformAsyncBuilder {
+	public fun start ()Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun withFileIdOrUrl (Lcom/dropbox/core/v2/riviera/FileIdOrUrl;)Lcom/dropbox/core/v2/riviera/DbxAppGetTransformAsyncBuilder;
+	public fun withImage (Lcom/dropbox/core/v2/riviera/ImageOptions;)Lcom/dropbox/core/v2/riviera/DbxAppGetTransformAsyncBuilder;
+	public fun withThumbnail (Lcom/dropbox/core/v2/riviera/ThumbnailOptions;)Lcom/dropbox/core/v2/riviera/DbxAppGetTransformAsyncBuilder;
+	public fun withVideoFrame (Lcom/dropbox/core/v2/riviera/VideoFrameOptions;)Lcom/dropbox/core/v2/riviera/DbxAppGetTransformAsyncBuilder;
+}
+
 public class com/dropbox/core/v2/riviera/DbxAppRivieraRequests {
 	public fun <init> (Lcom/dropbox/core/v2/DbxRawClientV2;)V
+	public fun downloadTransformOutput (Ljava/lang/String;)Lcom/dropbox/core/DbxDownloader;
+	public fun downloadTransformOutputBuilder (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/DbxAppDownloadTransformOutputBuilder;
 	public fun getKeyframesAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getKeyframesAsyncBuilder ()Lcom/dropbox/core/v2/riviera/DbxAppGetKeyframesAsyncBuilder;
 	public fun getKeyframesAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult;
@@ -8357,6 +8371,13 @@ public class com/dropbox/core/v2/riviera/DbxAppRivieraRequests {
 	public fun getTranscriptAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getTranscriptAsyncBuilder ()Lcom/dropbox/core/v2/riviera/DbxAppGetTranscriptAsyncBuilder;
 	public fun getTranscriptAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetTranscriptAsyncCheckResult;
+	public fun getTransformAsync (Lcom/dropbox/core/v2/riviera/TransformType;)Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun getTransformAsyncBuilder (Lcom/dropbox/core/v2/riviera/TransformType;)Lcom/dropbox/core/v2/riviera/DbxAppGetTransformAsyncBuilder;
+	public fun getTransformAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetTransformAsyncCheckResult;
+}
+
+public class com/dropbox/core/v2/riviera/DbxUserDownloadTransformOutputBuilder : com/dropbox/core/v2/DbxDownloadStyleBuilder {
+	public fun start ()Lcom/dropbox/core/DbxDownloader;
 }
 
 public class com/dropbox/core/v2/riviera/DbxUserGetKeyframesAsyncBuilder {
@@ -8381,8 +8402,18 @@ public class com/dropbox/core/v2/riviera/DbxUserGetTranscriptAsyncBuilder {
 	public fun withTimestampLevel (Lcom/dropbox/core/v2/riviera/TimestampLevel;)Lcom/dropbox/core/v2/riviera/DbxUserGetTranscriptAsyncBuilder;
 }
 
+public class com/dropbox/core/v2/riviera/DbxUserGetTransformAsyncBuilder {
+	public fun start ()Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun withFileIdOrUrl (Lcom/dropbox/core/v2/riviera/FileIdOrUrl;)Lcom/dropbox/core/v2/riviera/DbxUserGetTransformAsyncBuilder;
+	public fun withImage (Lcom/dropbox/core/v2/riviera/ImageOptions;)Lcom/dropbox/core/v2/riviera/DbxUserGetTransformAsyncBuilder;
+	public fun withThumbnail (Lcom/dropbox/core/v2/riviera/ThumbnailOptions;)Lcom/dropbox/core/v2/riviera/DbxUserGetTransformAsyncBuilder;
+	public fun withVideoFrame (Lcom/dropbox/core/v2/riviera/VideoFrameOptions;)Lcom/dropbox/core/v2/riviera/DbxUserGetTransformAsyncBuilder;
+}
+
 public class com/dropbox/core/v2/riviera/DbxUserRivieraRequests {
 	public fun <init> (Lcom/dropbox/core/v2/DbxRawClientV2;)V
+	public fun downloadTransformOutput (Ljava/lang/String;)Lcom/dropbox/core/DbxDownloader;
+	public fun downloadTransformOutputBuilder (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/DbxUserDownloadTransformOutputBuilder;
 	public fun getKeyframesAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getKeyframesAsyncBuilder ()Lcom/dropbox/core/v2/riviera/DbxUserGetKeyframesAsyncBuilder;
 	public fun getKeyframesAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult;
@@ -8401,6 +8432,36 @@ public class com/dropbox/core/v2/riviera/DbxUserRivieraRequests {
 	public fun getTranscriptAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getTranscriptAsyncBuilder ()Lcom/dropbox/core/v2/riviera/DbxUserGetTranscriptAsyncBuilder;
 	public fun getTranscriptAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetTranscriptAsyncCheckResult;
+	public fun getTransformAsync (Lcom/dropbox/core/v2/riviera/TransformType;)Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun getTransformAsyncBuilder (Lcom/dropbox/core/v2/riviera/TransformType;)Lcom/dropbox/core/v2/riviera/DbxUserGetTransformAsyncBuilder;
+	public fun getTransformAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetTransformAsyncCheckResult;
+}
+
+public class com/dropbox/core/v2/riviera/DownloadTransformOutputResult {
+	protected final field format Ljava/lang/String;
+	protected final field mimeType Ljava/lang/String;
+	protected final field size J
+	public fun <init> ()V
+	public fun <init> (JLjava/lang/String;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getFormat ()Ljava/lang/String;
+	public fun getMimeType ()Ljava/lang/String;
+	public fun getSize ()J
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/riviera/DownloadTransformOutputResult$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/riviera/DownloadTransformOutputResult$Builder {
+	protected field format Ljava/lang/String;
+	protected field mimeType Ljava/lang/String;
+	protected field size J
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/riviera/DownloadTransformOutputResult;
+	public fun withFormat (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/DownloadTransformOutputResult$Builder;
+	public fun withMimeType (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/DownloadTransformOutputResult$Builder;
+	public fun withSize (Ljava/lang/Long;)Lcom/dropbox/core/v2/riviera/DownloadTransformOutputResult$Builder;
 }
 
 public final class com/dropbox/core/v2/riviera/FileIdOrUrl {
@@ -8681,6 +8742,56 @@ public class com/dropbox/core/v2/riviera/GetTranscriptResult {
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/riviera/GetTransformAsyncCheckResult {
+	public static final field IN_PROGRESS Lcom/dropbox/core/v2/riviera/GetTransformAsyncCheckResult;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/GetTransformAsyncCheckResult;
+	public static fun complete (Lcom/dropbox/core/v2/riviera/TransformOutput;)Lcom/dropbox/core/v2/riviera/GetTransformAsyncCheckResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun failed (Lcom/dropbox/core/v2/riviera/TransformApiV2Error;)Lcom/dropbox/core/v2/riviera/GetTransformAsyncCheckResult;
+	public fun getCompleteValue ()Lcom/dropbox/core/v2/riviera/TransformOutput;
+	public fun getFailedValue ()Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+	public fun hashCode ()I
+	public fun isComplete ()Z
+	public fun isFailed ()Z
+	public fun isInProgress ()Z
+	public fun isOther ()Z
+	public fun tag ()Lcom/dropbox/core/v2/riviera/GetTransformAsyncCheckResult$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/riviera/GetTransformAsyncCheckResult$Tag : java/lang/Enum {
+	public static final field COMPLETE Lcom/dropbox/core/v2/riviera/GetTransformAsyncCheckResult$Tag;
+	public static final field FAILED Lcom/dropbox/core/v2/riviera/GetTransformAsyncCheckResult$Tag;
+	public static final field IN_PROGRESS Lcom/dropbox/core/v2/riviera/GetTransformAsyncCheckResult$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/GetTransformAsyncCheckResult$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetTransformAsyncCheckResult$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/GetTransformAsyncCheckResult$Tag;
+}
+
+public class com/dropbox/core/v2/riviera/ImageOptions {
+	protected final field pageNumber J
+	protected final field scalePercent J
+	public fun <init> ()V
+	public fun <init> (JJ)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getPageNumber ()J
+	public fun getScalePercent ()J
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/riviera/ImageOptions$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/riviera/ImageOptions$Builder {
+	protected field pageNumber J
+	protected field scalePercent J
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/riviera/ImageOptions;
+	public fun withPageNumber (Ljava/lang/Long;)Lcom/dropbox/core/v2/riviera/ImageOptions$Builder;
+	public fun withScalePercent (Ljava/lang/Long;)Lcom/dropbox/core/v2/riviera/ImageOptions$Builder;
 }
 
 public final class com/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error {
@@ -8972,12 +9083,199 @@ public final class com/dropbox/core/v2/riviera/TextExtractionApiV2Error$Tag : ja
 	public static fun values ()[Lcom/dropbox/core/v2/riviera/TextExtractionApiV2Error$Tag;
 }
 
+public final class com/dropbox/core/v2/riviera/ThumbnailFormat : java/lang/Enum {
+	public static final field JPEG Lcom/dropbox/core/v2/riviera/ThumbnailFormat;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/ThumbnailFormat;
+	public static final field PNG Lcom/dropbox/core/v2/riviera/ThumbnailFormat;
+	public static final field WEBP Lcom/dropbox/core/v2/riviera/ThumbnailFormat;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/ThumbnailFormat;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/ThumbnailFormat;
+}
+
+public final class com/dropbox/core/v2/riviera/ThumbnailMode : java/lang/Enum {
+	public static final field BESTFIT Lcom/dropbox/core/v2/riviera/ThumbnailMode;
+	public static final field FITONE_BESTFIT Lcom/dropbox/core/v2/riviera/ThumbnailMode;
+	public static final field ORIGINAL Lcom/dropbox/core/v2/riviera/ThumbnailMode;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/ThumbnailMode;
+	public static final field STRICT Lcom/dropbox/core/v2/riviera/ThumbnailMode;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/ThumbnailMode;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/ThumbnailMode;
+}
+
+public class com/dropbox/core/v2/riviera/ThumbnailOptions {
+	protected final field format Lcom/dropbox/core/v2/riviera/ThumbnailFormat;
+	protected final field mode Lcom/dropbox/core/v2/riviera/ThumbnailMode;
+	protected final field size Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	public fun <init> ()V
+	public fun <init> (Lcom/dropbox/core/v2/riviera/ThumbnailSize;Lcom/dropbox/core/v2/riviera/ThumbnailMode;Lcom/dropbox/core/v2/riviera/ThumbnailFormat;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getFormat ()Lcom/dropbox/core/v2/riviera/ThumbnailFormat;
+	public fun getMode ()Lcom/dropbox/core/v2/riviera/ThumbnailMode;
+	public fun getSize ()Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/riviera/ThumbnailOptions$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/riviera/ThumbnailOptions$Builder {
+	protected field format Lcom/dropbox/core/v2/riviera/ThumbnailFormat;
+	protected field mode Lcom/dropbox/core/v2/riviera/ThumbnailMode;
+	protected field size Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/riviera/ThumbnailOptions;
+	public fun withFormat (Lcom/dropbox/core/v2/riviera/ThumbnailFormat;)Lcom/dropbox/core/v2/riviera/ThumbnailOptions$Builder;
+	public fun withMode (Lcom/dropbox/core/v2/riviera/ThumbnailMode;)Lcom/dropbox/core/v2/riviera/ThumbnailOptions$Builder;
+	public fun withSize (Lcom/dropbox/core/v2/riviera/ThumbnailSize;)Lcom/dropbox/core/v2/riviera/ThumbnailOptions$Builder;
+}
+
+public final class com/dropbox/core/v2/riviera/ThumbnailSize : java/lang/Enum {
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	public static final field W1024H768 Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	public static final field W128H128 Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	public static final field W2048H1536 Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	public static final field W256H256 Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	public static final field W32H32 Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	public static final field W480H320 Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	public static final field W640H480 Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	public static final field W64H64 Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	public static final field W960H640 Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/ThumbnailSize;
+}
+
 public final class com/dropbox/core/v2/riviera/TimestampLevel : java/lang/Enum {
 	public static final field OTHER Lcom/dropbox/core/v2/riviera/TimestampLevel;
 	public static final field SENTENCE Lcom/dropbox/core/v2/riviera/TimestampLevel;
 	public static final field WORD Lcom/dropbox/core/v2/riviera/TimestampLevel;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/TimestampLevel;
 	public static fun values ()[Lcom/dropbox/core/v2/riviera/TimestampLevel;
+}
+
+public final class com/dropbox/core/v2/riviera/TransformApiV2Error {
+	public static final field CONVERSION_FAILURE_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+	public static final field EXPIRED_HANDLE_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+	public static final field INVALID_OPTIONS_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+	public static final field IS_A_FOLDER_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+	public static final field LIMIT_EXCEEDED_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+	public static final field LINK_DOWNLOAD_DISABLED_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+	public static final field NOT_FOUND_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+	public static final field SHARED_LINK_PASSWORD_PROTECTED Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+	public static final field UNSUPPORTED_FORMAT_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getServerErrorValue ()Ljava/lang/String;
+	public fun getUserErrorValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun isConversionFailureError ()Z
+	public fun isExpiredHandleError ()Z
+	public fun isInvalidOptionsError ()Z
+	public fun isIsAFolderError ()Z
+	public fun isLimitExceededError ()Z
+	public fun isLinkDownloadDisabledError ()Z
+	public fun isNotFoundError ()Z
+	public fun isOther ()Z
+	public fun isServerError ()Z
+	public fun isSharedLinkPasswordProtected ()Z
+	public fun isUnsupportedFormatError ()Z
+	public fun isUserError ()Z
+	public static fun serverError (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+	public fun tag ()Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+	public static fun userError (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+}
+
+public final class com/dropbox/core/v2/riviera/TransformApiV2Error$Tag : java/lang/Enum {
+	public static final field CONVERSION_FAILURE_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public static final field EXPIRED_HANDLE_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public static final field INVALID_OPTIONS_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public static final field IS_A_FOLDER_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public static final field LIMIT_EXCEEDED_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public static final field LINK_DOWNLOAD_DISABLED_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public static final field NOT_FOUND_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public static final field SERVER_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public static final field SHARED_LINK_PASSWORD_PROTECTED Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public static final field UNSUPPORTED_FORMAT_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public static final field USER_ERROR Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/TransformApiV2Error$Tag;
+}
+
+public class com/dropbox/core/v2/riviera/TransformApiV2ErrorException : com/dropbox/core/DbxApiException {
+	public final field errorValue Lcom/dropbox/core/v2/riviera/TransformApiV2Error;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/riviera/TransformApiV2Error;)V
+}
+
+public class com/dropbox/core/v2/riviera/TransformOutput {
+	protected final field expiresTs J
+	protected final field format Ljava/lang/String;
+	protected final field mimeType Ljava/lang/String;
+	protected final field outputHandle Ljava/lang/String;
+	protected final field size J
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;J)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getExpiresTs ()J
+	public fun getFormat ()Ljava/lang/String;
+	public fun getMimeType ()Ljava/lang/String;
+	public fun getOutputHandle ()Ljava/lang/String;
+	public fun getSize ()J
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/riviera/TransformOutput$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/riviera/TransformOutput$Builder {
+	protected field expiresTs J
+	protected field format Ljava/lang/String;
+	protected field mimeType Ljava/lang/String;
+	protected field outputHandle Ljava/lang/String;
+	protected field size J
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/riviera/TransformOutput;
+	public fun withExpiresTs (Ljava/lang/Long;)Lcom/dropbox/core/v2/riviera/TransformOutput$Builder;
+	public fun withFormat (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/TransformOutput$Builder;
+	public fun withMimeType (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/TransformOutput$Builder;
+	public fun withOutputHandle (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/TransformOutput$Builder;
+	public fun withSize (Ljava/lang/Long;)Lcom/dropbox/core/v2/riviera/TransformOutput$Builder;
+}
+
+public final class com/dropbox/core/v2/riviera/TransformType : java/lang/Enum {
+	public static final field HTML Lcom/dropbox/core/v2/riviera/TransformType;
+	public static final field IMAGE Lcom/dropbox/core/v2/riviera/TransformType;
+	public static final field IMAGE_PDF Lcom/dropbox/core/v2/riviera/TransformType;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/TransformType;
+	public static final field PDF Lcom/dropbox/core/v2/riviera/TransformType;
+	public static final field THUMBNAIL Lcom/dropbox/core/v2/riviera/TransformType;
+	public static final field VIDEO_FRAME Lcom/dropbox/core/v2/riviera/TransformType;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/TransformType;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/TransformType;
+}
+
+public class com/dropbox/core/v2/riviera/VideoFrameOptions {
+	protected final field offsetInSeconds D
+	protected final field scalePercent J
+	public fun <init> ()V
+	public fun <init> (DJ)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getOffsetInSeconds ()D
+	public fun getScalePercent ()J
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/riviera/VideoFrameOptions$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/riviera/VideoFrameOptions$Builder {
+	protected field offsetInSeconds D
+	protected field scalePercent J
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/riviera/VideoFrameOptions;
+	public fun withOffsetInSeconds (Ljava/lang/Double;)Lcom/dropbox/core/v2/riviera/VideoFrameOptions$Builder;
+	public fun withScalePercent (Ljava/lang/Long;)Lcom/dropbox/core/v2/riviera/VideoFrameOptions$Builder;
 }
 
 public class com/dropbox/core/v2/secondaryemails/SecondaryEmail {
