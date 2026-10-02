@@ -13100,6 +13100,8 @@ public class com/dropbox/core/v2/team/DbxTeamTeamRequests {
 	public fun membersSetProfileV2Builder (Lcom/dropbox/core/v2/team/UserSelectorArg;)Lcom/dropbox/core/v2/team/MembersSetProfileV2Builder;
 	public fun membersSuspend (Lcom/dropbox/core/v2/team/UserSelectorArg;)V
 	public fun membersSuspend (Lcom/dropbox/core/v2/team/UserSelectorArg;Z)V
+	public fun membersSuspendBatch (Ljava/util/List;)Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun membersSuspendBatchJobStatusCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/team/MembersSuspendBatchJobStatus;
 	public fun membersUnsuspend (Lcom/dropbox/core/v2/team/UserSelectorArg;)V
 	public fun namespacesList ()Lcom/dropbox/core/v2/team/TeamNamespacesListResult;
 	public fun namespacesList (J)Lcom/dropbox/core/v2/team/TeamNamespacesListResult;
@@ -15278,6 +15280,96 @@ public class com/dropbox/core/v2/team/MembersSetProfileV2Builder {
 	public fun withNewIsDirectoryRestricted (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/team/MembersSetProfileV2Builder;
 	public fun withNewPersistentId (Ljava/lang/String;)Lcom/dropbox/core/v2/team/MembersSetProfileV2Builder;
 	public fun withNewSurname (Ljava/lang/String;)Lcom/dropbox/core/v2/team/MembersSetProfileV2Builder;
+}
+
+public class com/dropbox/core/v2/team/MembersSuspendBatchComplete {
+	protected final field failed J
+	protected final field reportDelivery Lcom/dropbox/core/v2/team/MembersSuspendBatchReportDeliveryStatus;
+	protected final field requested J
+	protected final field suspended J
+	protected final field unknown J
+	public fun <init> (JJJJLcom/dropbox/core/v2/team/MembersSuspendBatchReportDeliveryStatus;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getFailed ()J
+	public fun getReportDelivery ()Lcom/dropbox/core/v2/team/MembersSuspendBatchReportDeliveryStatus;
+	public fun getRequested ()J
+	public fun getSuspended ()J
+	public fun getUnknown ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/team/MembersSuspendBatchError : java/lang/Enum {
+	public static final field ACTING_ADMIN Lcom/dropbox/core/v2/team/MembersSuspendBatchError;
+	public static final field DUPLICATE_CLIENT_ITEM_ID Lcom/dropbox/core/v2/team/MembersSuspendBatchError;
+	public static final field DUPLICATE_TEAM_MEMBER_ID Lcom/dropbox/core/v2/team/MembersSuspendBatchError;
+	public static final field LAST_ADMIN Lcom/dropbox/core/v2/team/MembersSuspendBatchError;
+	public static final field OTHER Lcom/dropbox/core/v2/team/MembersSuspendBatchError;
+	public static final field TOO_MANY_MEMBERS Lcom/dropbox/core/v2/team/MembersSuspendBatchError;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/MembersSuspendBatchError;
+	public static fun values ()[Lcom/dropbox/core/v2/team/MembersSuspendBatchError;
+}
+
+public class com/dropbox/core/v2/team/MembersSuspendBatchErrorException : com/dropbox/core/DbxApiException {
+	public final field errorValue Lcom/dropbox/core/v2/team/MembersSuspendBatchError;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/MembersSuspendBatchError;)V
+}
+
+public final class com/dropbox/core/v2/team/MembersSuspendBatchJobStatus {
+	public static final field IN_PROGRESS Lcom/dropbox/core/v2/team/MembersSuspendBatchJobStatus;
+	public static final field OTHER Lcom/dropbox/core/v2/team/MembersSuspendBatchJobStatus;
+	public static fun complete (Lcom/dropbox/core/v2/team/MembersSuspendBatchComplete;)Lcom/dropbox/core/v2/team/MembersSuspendBatchJobStatus;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun failed (Lcom/dropbox/core/v2/team/MembersSuspendBatchTaskFailure;)Lcom/dropbox/core/v2/team/MembersSuspendBatchJobStatus;
+	public fun getCompleteValue ()Lcom/dropbox/core/v2/team/MembersSuspendBatchComplete;
+	public fun getFailedValue ()Lcom/dropbox/core/v2/team/MembersSuspendBatchTaskFailure;
+	public fun hashCode ()I
+	public fun isComplete ()Z
+	public fun isFailed ()Z
+	public fun isInProgress ()Z
+	public fun isOther ()Z
+	public fun tag ()Lcom/dropbox/core/v2/team/MembersSuspendBatchJobStatus$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/team/MembersSuspendBatchJobStatus$Tag : java/lang/Enum {
+	public static final field COMPLETE Lcom/dropbox/core/v2/team/MembersSuspendBatchJobStatus$Tag;
+	public static final field FAILED Lcom/dropbox/core/v2/team/MembersSuspendBatchJobStatus$Tag;
+	public static final field IN_PROGRESS Lcom/dropbox/core/v2/team/MembersSuspendBatchJobStatus$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/team/MembersSuspendBatchJobStatus$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/MembersSuspendBatchJobStatus$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/team/MembersSuspendBatchJobStatus$Tag;
+}
+
+public final class com/dropbox/core/v2/team/MembersSuspendBatchReportDeliveryStatus : java/lang/Enum {
+	public static final field MEMBERS_SUSPEND_BATCH_REPORT_DELIVERY_STATUS_DELIVERED Lcom/dropbox/core/v2/team/MembersSuspendBatchReportDeliveryStatus;
+	public static final field MEMBERS_SUSPEND_BATCH_REPORT_DELIVERY_STATUS_FAILED Lcom/dropbox/core/v2/team/MembersSuspendBatchReportDeliveryStatus;
+	public static final field MEMBERS_SUSPEND_BATCH_REPORT_DELIVERY_STATUS_PENDING Lcom/dropbox/core/v2/team/MembersSuspendBatchReportDeliveryStatus;
+	public static final field MEMBERS_SUSPEND_BATCH_REPORT_DELIVERY_STATUS_UNSPECIFIED Lcom/dropbox/core/v2/team/MembersSuspendBatchReportDeliveryStatus;
+	public static final field OTHER Lcom/dropbox/core/v2/team/MembersSuspendBatchReportDeliveryStatus;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/MembersSuspendBatchReportDeliveryStatus;
+	public static fun values ()[Lcom/dropbox/core/v2/team/MembersSuspendBatchReportDeliveryStatus;
+}
+
+public class com/dropbox/core/v2/team/MembersSuspendBatchTarget {
+	protected final field clientItemId Ljava/lang/String;
+	protected final field suspendArg Lcom/dropbox/core/v2/team/MembersDeactivateArg;
+	public fun <init> (Ljava/lang/String;Lcom/dropbox/core/v2/team/MembersDeactivateArg;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getClientItemId ()Ljava/lang/String;
+	public fun getSuspendArg ()Lcom/dropbox/core/v2/team/MembersDeactivateArg;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/team/MembersSuspendBatchTaskFailure : java/lang/Enum {
+	public static final field OTHER Lcom/dropbox/core/v2/team/MembersSuspendBatchTaskFailure;
+	public static final field UNUSABLE_RESULT Lcom/dropbox/core/v2/team/MembersSuspendBatchTaskFailure;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/MembersSuspendBatchTaskFailure;
+	public static fun values ()[Lcom/dropbox/core/v2/team/MembersSuspendBatchTaskFailure;
 }
 
 public final class com/dropbox/core/v2/team/MembersSuspendError : java/lang/Enum {
