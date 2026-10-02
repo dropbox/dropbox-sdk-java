@@ -34,6 +34,8 @@ import com.dropbox.core.LocalizedText;
  * {@link
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersRemoveJobStatusGet(String)},
  * {@link
+ * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersSuspendBatchJobStatusCheck(String)},
+ * {@link
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#teamFolderArchiveCheck(String)},
  * {@link
  * com.dropbox.core.v2.files.DbxUserFilesRequests#copyBatchCheck(String)},
@@ -73,6 +75,7 @@ public class PollErrorException extends DbxApiException {
     //     2/team/members/bulk_suspend/job_status/check
     //     2/team/members/move_former_member_files/job_status/check
     //     2/team/members/remove/job_status/get
+    //     2/team/members/suspend_batch/job_status/check
     //     2/team/team_folder/archive/check
     //     2/files/copy_batch/check
     //     2/files/copy_batch/check_v2
@@ -113,6 +116,8 @@ public class PollErrorException extends DbxApiException {
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersMoveFormerMemberFilesJobStatusCheck(String)},
      * {@link
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersRemoveJobStatusGet(String)},
+     * {@link
+     * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersSuspendBatchJobStatusCheck(String)},
      * {@link
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#teamFolderArchiveCheck(String)},
      * {@link

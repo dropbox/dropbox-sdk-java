@@ -3606,6 +3606,108 @@ public class DbxTeamTeamRequests {
     }
 
     //
+    // route 2/team/members/suspend_batch
+    //
+
+    /**
+     * Launch a member suspension batch. The server enforces a maximum of 500
+     * members.
+     *
+     * @param arg  Launches one action-specific member suspension batch job.
+     *
+     * @return Result returned by methods that launch an asynchronous job. A
+     *     method who may either launch an asynchronous job, or complete the
+     *     request synchronously, can use this union by extending it, and adding
+     *     a 'complete' field with the type of the synchronous response. See
+     *     {@link LaunchEmptyResult} for an example.
+     */
+    LaunchResultBase membersSuspendBatch(MembersSuspendBatchArg arg) throws MembersSuspendBatchErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/team/members/suspend_batch",
+                                        arg,
+                                        false,
+                                        MembersSuspendBatchArg.Serializer.INSTANCE,
+                                        LaunchResultBase.Serializer.INSTANCE,
+                                        MembersSuspendBatchError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new MembersSuspendBatchErrorException("2/team/members/suspend_batch", ex.getRequestId(), ex.getUserMessage(), (MembersSuspendBatchError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Launch a member suspension batch. The server enforces a maximum of 500
+     * members.
+     *
+     * @param members  Must contain between 1 and 500 targets. The launch
+     *     handler also rejects duplicate client item IDs and duplicate member
+     *     selectors. Must contain at least 1 items, contain at most 500 items,
+     *     not contain a {@code null} item, and not be {@code null}.
+     *
+     * @return Result returned by methods that launch an asynchronous job. A
+     *     method who may either launch an asynchronous job, or complete the
+     *     request synchronously, can use this union by extending it, and adding
+     *     a 'complete' field with the type of the synchronous response. See
+     *     {@link LaunchEmptyResult} for an example.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public LaunchResultBase membersSuspendBatch(List<MembersSuspendBatchTarget> members) throws MembersSuspendBatchErrorException, DbxException {
+        MembersSuspendBatchArg _arg = new MembersSuspendBatchArg(members);
+        return membersSuspendBatch(_arg);
+    }
+
+    //
+    // route 2/team/members/suspend_batch/job_status/check
+    //
+
+    /**
+     * Poll a previously launched member suspension batch job.
+     *
+     * @param arg  Arguments for methods that poll the status of an asynchronous
+     *     job.
+     *
+     * @return Coarse job state. Live row progress and report contents are
+     *     intentionally omitted; the authorized team admin who initiated the
+     *     batch receives row details in the terminal email report.
+     */
+    MembersSuspendBatchJobStatus membersSuspendBatchJobStatusCheck(PollArg arg) throws PollErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/team/members/suspend_batch/job_status/check",
+                                        arg,
+                                        false,
+                                        PollArg.Serializer.INSTANCE,
+                                        MembersSuspendBatchJobStatus.Serializer.INSTANCE,
+                                        PollError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw new PollErrorException("2/team/members/suspend_batch/job_status/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+        }
+    }
+
+    /**
+     * Poll a previously launched member suspension batch job.
+     *
+     * @param asyncJobId  Id of the asynchronous job. This is the value of a
+     *     response returned from the method that launched the job. Must have
+     *     length of at least 1 and not be {@code null}.
+     *
+     * @return Coarse job state. Live row progress and report contents are
+     *     intentionally omitted; the authorized team admin who initiated the
+     *     batch receives row details in the terminal email report.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public MembersSuspendBatchJobStatus membersSuspendBatchJobStatusCheck(String asyncJobId) throws PollErrorException, DbxException {
+        PollArg _arg = new PollArg(asyncJobId);
+        return membersSuspendBatchJobStatusCheck(_arg);
+    }
+
+    //
     // route 2/team/members/unsuspend
     //
 
