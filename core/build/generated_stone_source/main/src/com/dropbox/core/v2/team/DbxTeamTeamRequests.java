@@ -2225,9 +2225,9 @@ public class DbxTeamTeamRequests {
     //
 
     /**
-     * Launch a bulk suspend job. The server enforces a maximum of 500 members.
+     * Deprecated compatibility alias for MembersSuspendBatch.
      *
-     * @param arg  Launches one action-specific bulk suspend job.
+     * @param arg  Launches one action-specific member suspension batch job.
      *
      * @return Result returned by methods that launch an asynchronous job. A
      *     method who may either launch an asynchronous job, or complete the
@@ -2235,28 +2235,28 @@ public class DbxTeamTeamRequests {
      *     a 'complete' field with the type of the synchronous response. See
      *     {@link LaunchEmptyResult} for an example.
      */
-    LaunchResultBase membersBulkSuspend(BulkSuspendArg arg) throws BulkSuspendErrorException, DbxException {
+    LaunchResultBase membersBulkSuspend(MembersSuspendBatchArg arg) throws MembersSuspendBatchErrorException, DbxException {
         try {
             return this.client.rpcStyle(this.client.getHost().getApi(),
                                         "2/team/members/bulk_suspend",
                                         arg,
                                         false,
-                                        BulkSuspendArg.Serializer.INSTANCE,
+                                        MembersSuspendBatchArg.Serializer.INSTANCE,
                                         LaunchResultBase.Serializer.INSTANCE,
-                                        BulkSuspendError.Serializer.INSTANCE);
+                                        MembersSuspendBatchError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new BulkSuspendErrorException("2/team/members/bulk_suspend", ex.getRequestId(), ex.getUserMessage(), (BulkSuspendError) ex.getErrorValue());
+            throw new MembersSuspendBatchErrorException("2/team/members/bulk_suspend", ex.getRequestId(), ex.getUserMessage(), (MembersSuspendBatchError) ex.getErrorValue());
         }
     }
 
     /**
-     * Launch a bulk suspend job. The server enforces a maximum of 500 members.
+     * Deprecated compatibility alias for MembersSuspendBatch.
      *
      * @param members  Must contain between 1 and 500 targets. The launch
      *     handler also rejects duplicate client item IDs and duplicate member
-     *     selectors. Must not contain a {@code null} item and not be {@code
-     *     null}.
+     *     selectors. Must contain at least 1 items, contain at most 500 items,
+     *     not contain a {@code null} item, and not be {@code null}.
      *
      * @return Result returned by methods that launch an asynchronous job. A
      *     method who may either launch an asynchronous job, or complete the
@@ -2266,9 +2266,12 @@ public class DbxTeamTeamRequests {
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
+     *
+     * @deprecated
      */
-    public LaunchResultBase membersBulkSuspend(List<BulkSuspendMemberTarget> members) throws BulkSuspendErrorException, DbxException {
-        BulkSuspendArg _arg = new BulkSuspendArg(members);
+    @Deprecated
+    public LaunchResultBase membersBulkSuspend(List<MembersSuspendBatchTarget> members) throws MembersSuspendBatchErrorException, DbxException {
+        MembersSuspendBatchArg _arg = new MembersSuspendBatchArg(members);
         return membersBulkSuspend(_arg);
     }
 
@@ -2277,23 +2280,23 @@ public class DbxTeamTeamRequests {
     //
 
     /**
-     * Poll a previously launched bulk suspend job.
+     * Deprecated compatibility alias for MembersSuspendBatchJobStatusCheck.
      *
      * @param arg  Arguments for methods that poll the status of an asynchronous
      *     job.
      *
      * @return Coarse job state. Live row progress and report contents are
-     *     intentionally omitted; callers receive row details in the terminal
-     *     email report.
+     *     intentionally omitted; the authorized team admin who initiated the
+     *     batch receives row details in the terminal email report.
      */
-    BulkSuspendJobStatus membersBulkSuspendJobStatusCheck(PollArg arg) throws PollErrorException, DbxException {
+    MembersSuspendBatchJobStatus membersBulkSuspendJobStatusCheck(PollArg arg) throws PollErrorException, DbxException {
         try {
             return this.client.rpcStyle(this.client.getHost().getApi(),
                                         "2/team/members/bulk_suspend/job_status/check",
                                         arg,
                                         false,
                                         PollArg.Serializer.INSTANCE,
-                                        BulkSuspendJobStatus.Serializer.INSTANCE,
+                                        MembersSuspendBatchJobStatus.Serializer.INSTANCE,
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
@@ -2302,20 +2305,23 @@ public class DbxTeamTeamRequests {
     }
 
     /**
-     * Poll a previously launched bulk suspend job.
+     * Deprecated compatibility alias for MembersSuspendBatchJobStatusCheck.
      *
      * @param asyncJobId  Id of the asynchronous job. This is the value of a
      *     response returned from the method that launched the job. Must have
      *     length of at least 1 and not be {@code null}.
      *
      * @return Coarse job state. Live row progress and report contents are
-     *     intentionally omitted; callers receive row details in the terminal
-     *     email report.
+     *     intentionally omitted; the authorized team admin who initiated the
+     *     batch receives row details in the terminal email report.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
+     *
+     * @deprecated
      */
-    public BulkSuspendJobStatus membersBulkSuspendJobStatusCheck(String asyncJobId) throws PollErrorException, DbxException {
+    @Deprecated
+    public MembersSuspendBatchJobStatus membersBulkSuspendJobStatusCheck(String asyncJobId) throws PollErrorException, DbxException {
         PollArg _arg = new PollArg(asyncJobId);
         return membersBulkSuspendJobStatusCheck(_arg);
     }
