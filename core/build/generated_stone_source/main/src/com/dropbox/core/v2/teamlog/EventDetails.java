@@ -320,6 +320,11 @@ public final class EventDetails {
         PROTECT_ACTION_REMOVE_DOMAINS_DETAILS, // ProtectActionRemoveDomainsDetails
         PROTECT_ACTION_REMOVE_LINK_DETAILS, // ProtectActionRemoveLinkDetails
         PROTECT_ACTION_STOP_SHARING_DETAILS, // ProtectActionStopSharingDetails
+        PROTECT_CUSTOM_DATA_TYPE_CREATED_DETAILS, // ProtectCustomDataTypeCreatedDetails
+        PROTECT_CUSTOM_DATA_TYPE_DELETED_DETAILS, // ProtectCustomDataTypeDeletedDetails
+        PROTECT_CUSTOM_DATA_TYPE_DISABLED_DETAILS, // ProtectCustomDataTypeDisabledDetails
+        PROTECT_CUSTOM_DATA_TYPE_ENABLED_DETAILS, // ProtectCustomDataTypeEnabledDetails
+        PROTECT_CUSTOM_DATA_TYPE_MODIFIED_DETAILS, // ProtectCustomDataTypeModifiedDetails
         PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS, // ProtectInternalDomainsChangedDetails
         PROTECT_POLICY_ACTIVATED_DETAILS, // ProtectPolicyActivatedDetails
         PROTECT_POLICY_DEACTIVATED_DETAILS, // ProtectPolicyDeactivatedDetails
@@ -981,6 +986,11 @@ public final class EventDetails {
     private ProtectActionRemoveDomainsDetails protectActionRemoveDomainsDetailsValue;
     private ProtectActionRemoveLinkDetails protectActionRemoveLinkDetailsValue;
     private ProtectActionStopSharingDetails protectActionStopSharingDetailsValue;
+    private ProtectCustomDataTypeCreatedDetails protectCustomDataTypeCreatedDetailsValue;
+    private ProtectCustomDataTypeDeletedDetails protectCustomDataTypeDeletedDetailsValue;
+    private ProtectCustomDataTypeDisabledDetails protectCustomDataTypeDisabledDetailsValue;
+    private ProtectCustomDataTypeEnabledDetails protectCustomDataTypeEnabledDetailsValue;
+    private ProtectCustomDataTypeModifiedDetails protectCustomDataTypeModifiedDetailsValue;
     private ProtectInternalDomainsChangedDetails protectInternalDomainsChangedDetailsValue;
     private ProtectPolicyActivatedDetails protectPolicyActivatedDetailsValue;
     private ProtectPolicyDeactivatedDetails protectPolicyDeactivatedDetailsValue;
@@ -5978,6 +5988,91 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.protectActionStopSharingDetailsValue = protectActionStopSharingDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param protectCustomDataTypeCreatedDetailsValue  Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndProtectCustomDataTypeCreatedDetails(Tag _tag, ProtectCustomDataTypeCreatedDetails protectCustomDataTypeCreatedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.protectCustomDataTypeCreatedDetailsValue = protectCustomDataTypeCreatedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param protectCustomDataTypeDeletedDetailsValue  Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndProtectCustomDataTypeDeletedDetails(Tag _tag, ProtectCustomDataTypeDeletedDetails protectCustomDataTypeDeletedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.protectCustomDataTypeDeletedDetailsValue = protectCustomDataTypeDeletedDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param protectCustomDataTypeDisabledDetailsValue  Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndProtectCustomDataTypeDisabledDetails(Tag _tag, ProtectCustomDataTypeDisabledDetails protectCustomDataTypeDisabledDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.protectCustomDataTypeDisabledDetailsValue = protectCustomDataTypeDisabledDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param protectCustomDataTypeEnabledDetailsValue  Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndProtectCustomDataTypeEnabledDetails(Tag _tag, ProtectCustomDataTypeEnabledDetails protectCustomDataTypeEnabledDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.protectCustomDataTypeEnabledDetailsValue = protectCustomDataTypeEnabledDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param protectCustomDataTypeModifiedDetailsValue  Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndProtectCustomDataTypeModifiedDetails(Tag _tag, ProtectCustomDataTypeModifiedDetails protectCustomDataTypeModifiedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.protectCustomDataTypeModifiedDetailsValue = protectCustomDataTypeModifiedDetailsValue;
         return result;
     }
 
@@ -25669,6 +25764,256 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isProtectCustomDataTypeCreatedDetails() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_CREATED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails protectCustomDataTypeCreatedDetails(ProtectCustomDataTypeCreatedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndProtectCustomDataTypeCreatedDetails(Tag.PROTECT_CUSTOM_DATA_TYPE_CREATED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED_DETAILS}.
+     *
+     * @return The {@link ProtectCustomDataTypeCreatedDetails} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeCreatedDetails}
+     *     is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectCustomDataTypeCreatedDetails} is {@code false}.
+     */
+    public ProtectCustomDataTypeCreatedDetails getProtectCustomDataTypeCreatedDetailsValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_CREATED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_CREATED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeCreatedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isProtectCustomDataTypeDeletedDetails() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_DELETED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails protectCustomDataTypeDeletedDetails(ProtectCustomDataTypeDeletedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndProtectCustomDataTypeDeletedDetails(Tag.PROTECT_CUSTOM_DATA_TYPE_DELETED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED_DETAILS}.
+     *
+     * @return The {@link ProtectCustomDataTypeDeletedDetails} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeDeletedDetails}
+     *     is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectCustomDataTypeDeletedDetails} is {@code false}.
+     */
+    public ProtectCustomDataTypeDeletedDetails getProtectCustomDataTypeDeletedDetailsValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_DELETED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_DELETED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeDeletedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isProtectCustomDataTypeDisabledDetails() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_DISABLED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails protectCustomDataTypeDisabledDetails(ProtectCustomDataTypeDisabledDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndProtectCustomDataTypeDisabledDetails(Tag.PROTECT_CUSTOM_DATA_TYPE_DISABLED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED_DETAILS}.
+     *
+     * @return The {@link ProtectCustomDataTypeDisabledDetails} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeDisabledDetails}
+     *     is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectCustomDataTypeDisabledDetails} is {@code false}.
+     */
+    public ProtectCustomDataTypeDisabledDetails getProtectCustomDataTypeDisabledDetailsValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_DISABLED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_DISABLED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeDisabledDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isProtectCustomDataTypeEnabledDetails() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_ENABLED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails protectCustomDataTypeEnabledDetails(ProtectCustomDataTypeEnabledDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndProtectCustomDataTypeEnabledDetails(Tag.PROTECT_CUSTOM_DATA_TYPE_ENABLED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED_DETAILS}.
+     *
+     * @return The {@link ProtectCustomDataTypeEnabledDetails} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeEnabledDetails}
+     *     is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectCustomDataTypeEnabledDetails} is {@code false}.
+     */
+    public ProtectCustomDataTypeEnabledDetails getProtectCustomDataTypeEnabledDetailsValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_ENABLED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_ENABLED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeEnabledDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isProtectCustomDataTypeModifiedDetails() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_MODIFIED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails protectCustomDataTypeModifiedDetails(ProtectCustomDataTypeModifiedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndProtectCustomDataTypeModifiedDetails(Tag.PROTECT_CUSTOM_DATA_TYPE_MODIFIED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED_DETAILS}.
+     *
+     * @return The {@link ProtectCustomDataTypeModifiedDetails} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeModifiedDetails}
+     *     is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectCustomDataTypeModifiedDetails} is {@code false}.
+     */
+    public ProtectCustomDataTypeModifiedDetails getProtectCustomDataTypeModifiedDetailsValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_MODIFIED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_MODIFIED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeModifiedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -43298,6 +43643,11 @@ public final class EventDetails {
             this.protectActionRemoveDomainsDetailsValue,
             this.protectActionRemoveLinkDetailsValue,
             this.protectActionStopSharingDetailsValue,
+            this.protectCustomDataTypeCreatedDetailsValue,
+            this.protectCustomDataTypeDeletedDetailsValue,
+            this.protectCustomDataTypeDisabledDetailsValue,
+            this.protectCustomDataTypeEnabledDetailsValue,
+            this.protectCustomDataTypeModifiedDetailsValue,
             this.protectInternalDomainsChangedDetailsValue,
             this.protectPolicyActivatedDetailsValue,
             this.protectPolicyDeactivatedDetailsValue,
@@ -44237,6 +44587,16 @@ public final class EventDetails {
                     return (this.protectActionRemoveLinkDetailsValue == other.protectActionRemoveLinkDetailsValue) || (this.protectActionRemoveLinkDetailsValue.equals(other.protectActionRemoveLinkDetailsValue));
                 case PROTECT_ACTION_STOP_SHARING_DETAILS:
                     return (this.protectActionStopSharingDetailsValue == other.protectActionStopSharingDetailsValue) || (this.protectActionStopSharingDetailsValue.equals(other.protectActionStopSharingDetailsValue));
+                case PROTECT_CUSTOM_DATA_TYPE_CREATED_DETAILS:
+                    return (this.protectCustomDataTypeCreatedDetailsValue == other.protectCustomDataTypeCreatedDetailsValue) || (this.protectCustomDataTypeCreatedDetailsValue.equals(other.protectCustomDataTypeCreatedDetailsValue));
+                case PROTECT_CUSTOM_DATA_TYPE_DELETED_DETAILS:
+                    return (this.protectCustomDataTypeDeletedDetailsValue == other.protectCustomDataTypeDeletedDetailsValue) || (this.protectCustomDataTypeDeletedDetailsValue.equals(other.protectCustomDataTypeDeletedDetailsValue));
+                case PROTECT_CUSTOM_DATA_TYPE_DISABLED_DETAILS:
+                    return (this.protectCustomDataTypeDisabledDetailsValue == other.protectCustomDataTypeDisabledDetailsValue) || (this.protectCustomDataTypeDisabledDetailsValue.equals(other.protectCustomDataTypeDisabledDetailsValue));
+                case PROTECT_CUSTOM_DATA_TYPE_ENABLED_DETAILS:
+                    return (this.protectCustomDataTypeEnabledDetailsValue == other.protectCustomDataTypeEnabledDetailsValue) || (this.protectCustomDataTypeEnabledDetailsValue.equals(other.protectCustomDataTypeEnabledDetailsValue));
+                case PROTECT_CUSTOM_DATA_TYPE_MODIFIED_DETAILS:
+                    return (this.protectCustomDataTypeModifiedDetailsValue == other.protectCustomDataTypeModifiedDetailsValue) || (this.protectCustomDataTypeModifiedDetailsValue.equals(other.protectCustomDataTypeModifiedDetailsValue));
                 case PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS:
                     return (this.protectInternalDomainsChangedDetailsValue == other.protectInternalDomainsChangedDetailsValue) || (this.protectInternalDomainsChangedDetailsValue.equals(other.protectInternalDomainsChangedDetailsValue));
                 case PROTECT_POLICY_ACTIVATED_DETAILS:
@@ -46968,6 +47328,41 @@ public final class EventDetails {
                     g.writeStartObject();
                     writeTag("protect_action_stop_sharing_details", g);
                     ProtectActionStopSharingDetails.Serializer.INSTANCE.serialize(value.protectActionStopSharingDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_CREATED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_created_details", g);
+                    ProtectCustomDataTypeCreatedDetails.Serializer.INSTANCE.serialize(value.protectCustomDataTypeCreatedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_DELETED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_deleted_details", g);
+                    ProtectCustomDataTypeDeletedDetails.Serializer.INSTANCE.serialize(value.protectCustomDataTypeDeletedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_DISABLED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_disabled_details", g);
+                    ProtectCustomDataTypeDisabledDetails.Serializer.INSTANCE.serialize(value.protectCustomDataTypeDisabledDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_ENABLED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_enabled_details", g);
+                    ProtectCustomDataTypeEnabledDetails.Serializer.INSTANCE.serialize(value.protectCustomDataTypeEnabledDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_MODIFIED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_modified_details", g);
+                    ProtectCustomDataTypeModifiedDetails.Serializer.INSTANCE.serialize(value.protectCustomDataTypeModifiedDetailsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -50876,6 +51271,31 @@ public final class EventDetails {
                 ProtectActionStopSharingDetails fieldValue = null;
                 fieldValue = ProtectActionStopSharingDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.protectActionStopSharingDetails(fieldValue);
+            }
+            else if ("protect_custom_data_type_created_details".equals(tag)) {
+                ProtectCustomDataTypeCreatedDetails fieldValue = null;
+                fieldValue = ProtectCustomDataTypeCreatedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.protectCustomDataTypeCreatedDetails(fieldValue);
+            }
+            else if ("protect_custom_data_type_deleted_details".equals(tag)) {
+                ProtectCustomDataTypeDeletedDetails fieldValue = null;
+                fieldValue = ProtectCustomDataTypeDeletedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.protectCustomDataTypeDeletedDetails(fieldValue);
+            }
+            else if ("protect_custom_data_type_disabled_details".equals(tag)) {
+                ProtectCustomDataTypeDisabledDetails fieldValue = null;
+                fieldValue = ProtectCustomDataTypeDisabledDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.protectCustomDataTypeDisabledDetails(fieldValue);
+            }
+            else if ("protect_custom_data_type_enabled_details".equals(tag)) {
+                ProtectCustomDataTypeEnabledDetails fieldValue = null;
+                fieldValue = ProtectCustomDataTypeEnabledDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.protectCustomDataTypeEnabledDetails(fieldValue);
+            }
+            else if ("protect_custom_data_type_modified_details".equals(tag)) {
+                ProtectCustomDataTypeModifiedDetails fieldValue = null;
+                fieldValue = ProtectCustomDataTypeModifiedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.protectCustomDataTypeModifiedDetails(fieldValue);
             }
             else if ("protect_internal_domains_changed_details".equals(tag)) {
                 ProtectInternalDomainsChangedDetails fieldValue = null;

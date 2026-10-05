@@ -1178,6 +1178,26 @@ public enum EventTypeArg {
      */
     PROTECT_ACTION_STOP_SHARING,
     /**
+     * (protect) Created a Dropbox Protect custom data type
+     */
+    PROTECT_CUSTOM_DATA_TYPE_CREATED,
+    /**
+     * (protect) Deleted a Dropbox Protect custom data type
+     */
+    PROTECT_CUSTOM_DATA_TYPE_DELETED,
+    /**
+     * (protect) Disabled a Dropbox Protect custom data type
+     */
+    PROTECT_CUSTOM_DATA_TYPE_DISABLED,
+    /**
+     * (protect) Enabled a Dropbox Protect custom data type
+     */
+    PROTECT_CUSTOM_DATA_TYPE_ENABLED,
+    /**
+     * (protect) Modified a Dropbox Protect custom data type
+     */
+    PROTECT_CUSTOM_DATA_TYPE_MODIFIED,
+    /**
      * (protect) Modified Protect internal domains list
      */
     PROTECT_INTERNAL_DOMAINS_CHANGED,
@@ -3802,6 +3822,26 @@ public enum EventTypeArg {
                     g.writeString("protect_action_stop_sharing");
                     break;
                 }
+                case PROTECT_CUSTOM_DATA_TYPE_CREATED: {
+                    g.writeString("protect_custom_data_type_created");
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_DELETED: {
+                    g.writeString("protect_custom_data_type_deleted");
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_DISABLED: {
+                    g.writeString("protect_custom_data_type_disabled");
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_ENABLED: {
+                    g.writeString("protect_custom_data_type_enabled");
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_MODIFIED: {
+                    g.writeString("protect_custom_data_type_modified");
+                    break;
+                }
                 case PROTECT_INTERNAL_DOMAINS_CHANGED: {
                     g.writeString("protect_internal_domains_changed");
                     break;
@@ -6080,6 +6120,21 @@ public enum EventTypeArg {
             }
             else if ("protect_action_stop_sharing".equals(tag)) {
                 value = EventTypeArg.PROTECT_ACTION_STOP_SHARING;
+            }
+            else if ("protect_custom_data_type_created".equals(tag)) {
+                value = EventTypeArg.PROTECT_CUSTOM_DATA_TYPE_CREATED;
+            }
+            else if ("protect_custom_data_type_deleted".equals(tag)) {
+                value = EventTypeArg.PROTECT_CUSTOM_DATA_TYPE_DELETED;
+            }
+            else if ("protect_custom_data_type_disabled".equals(tag)) {
+                value = EventTypeArg.PROTECT_CUSTOM_DATA_TYPE_DISABLED;
+            }
+            else if ("protect_custom_data_type_enabled".equals(tag)) {
+                value = EventTypeArg.PROTECT_CUSTOM_DATA_TYPE_ENABLED;
+            }
+            else if ("protect_custom_data_type_modified".equals(tag)) {
+                value = EventTypeArg.PROTECT_CUSTOM_DATA_TYPE_MODIFIED;
             }
             else if ("protect_internal_domains_changed".equals(tag)) {
                 value = EventTypeArg.PROTECT_INTERNAL_DOMAINS_CHANGED;

@@ -21410,6 +21410,11 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getProtectActionRemoveDomainsDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectActionRemoveDomainsDetails;
 	public fun getProtectActionRemoveLinkDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectActionRemoveLinkDetails;
 	public fun getProtectActionStopSharingDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectActionStopSharingDetails;
+	public fun getProtectCustomDataTypeCreatedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeCreatedDetails;
+	public fun getProtectCustomDataTypeDeletedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeDeletedDetails;
+	public fun getProtectCustomDataTypeDisabledDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeDisabledDetails;
+	public fun getProtectCustomDataTypeEnabledDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeEnabledDetails;
+	public fun getProtectCustomDataTypeModifiedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeModifiedDetails;
 	public fun getProtectInternalDomainsChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedDetails;
 	public fun getProtectPolicyActivatedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyActivatedDetails;
 	public fun getProtectPolicyDeactivatedDetailsValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedDetails;
@@ -22083,6 +22088,11 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isProtectActionRemoveDomainsDetails ()Z
 	public fun isProtectActionRemoveLinkDetails ()Z
 	public fun isProtectActionStopSharingDetails ()Z
+	public fun isProtectCustomDataTypeCreatedDetails ()Z
+	public fun isProtectCustomDataTypeDeletedDetails ()Z
+	public fun isProtectCustomDataTypeDisabledDetails ()Z
+	public fun isProtectCustomDataTypeEnabledDetails ()Z
+	public fun isProtectCustomDataTypeModifiedDetails ()Z
 	public fun isProtectInternalDomainsChangedDetails ()Z
 	public fun isProtectPolicyActivatedDetails ()Z
 	public fun isProtectPolicyDeactivatedDetails ()Z
@@ -22489,6 +22499,11 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun protectActionRemoveDomainsDetails (Lcom/dropbox/core/v2/teamlog/ProtectActionRemoveDomainsDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun protectActionRemoveLinkDetails (Lcom/dropbox/core/v2/teamlog/ProtectActionRemoveLinkDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun protectActionStopSharingDetails (Lcom/dropbox/core/v2/teamlog/ProtectActionStopSharingDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun protectCustomDataTypeCreatedDetails (Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeCreatedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun protectCustomDataTypeDeletedDetails (Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeDeletedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun protectCustomDataTypeDisabledDetails (Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeDisabledDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun protectCustomDataTypeEnabledDetails (Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeEnabledDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun protectCustomDataTypeModifiedDetails (Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeModifiedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun protectInternalDomainsChangedDetails (Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun protectPolicyActivatedDetails (Lcom/dropbox/core/v2/teamlog/ProtectPolicyActivatedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun protectPolicyDeactivatedDetails (Lcom/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -23132,6 +23147,11 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field PROTECT_ACTION_REMOVE_DOMAINS_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PROTECT_ACTION_REMOVE_LINK_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PROTECT_ACTION_STOP_SHARING_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_CREATED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_DELETED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_DISABLED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_ENABLED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_MODIFIED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PROTECT_INTERNAL_DOMAINS_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PROTECT_POLICY_ACTIVATED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field PROTECT_POLICY_DEACTIVATED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -23969,6 +23989,11 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getProtectActionRemoveDomainsValue ()Lcom/dropbox/core/v2/teamlog/ProtectActionRemoveDomainsType;
 	public fun getProtectActionRemoveLinkValue ()Lcom/dropbox/core/v2/teamlog/ProtectActionRemoveLinkType;
 	public fun getProtectActionStopSharingValue ()Lcom/dropbox/core/v2/teamlog/ProtectActionStopSharingType;
+	public fun getProtectCustomDataTypeCreatedValue ()Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeCreatedType;
+	public fun getProtectCustomDataTypeDeletedValue ()Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeDeletedType;
+	public fun getProtectCustomDataTypeDisabledValue ()Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeDisabledType;
+	public fun getProtectCustomDataTypeEnabledValue ()Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeEnabledType;
+	public fun getProtectCustomDataTypeModifiedValue ()Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeModifiedType;
 	public fun getProtectInternalDomainsChangedValue ()Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedType;
 	public fun getProtectPolicyActivatedValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyActivatedType;
 	public fun getProtectPolicyDeactivatedValue ()Lcom/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedType;
@@ -24641,6 +24666,11 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isProtectActionRemoveDomains ()Z
 	public fun isProtectActionRemoveLink ()Z
 	public fun isProtectActionStopSharing ()Z
+	public fun isProtectCustomDataTypeCreated ()Z
+	public fun isProtectCustomDataTypeDeleted ()Z
+	public fun isProtectCustomDataTypeDisabled ()Z
+	public fun isProtectCustomDataTypeEnabled ()Z
+	public fun isProtectCustomDataTypeModified ()Z
 	public fun isProtectInternalDomainsChanged ()Z
 	public fun isProtectPolicyActivated ()Z
 	public fun isProtectPolicyDeactivated ()Z
@@ -25046,6 +25076,11 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun protectActionRemoveDomains (Lcom/dropbox/core/v2/teamlog/ProtectActionRemoveDomainsType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun protectActionRemoveLink (Lcom/dropbox/core/v2/teamlog/ProtectActionRemoveLinkType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun protectActionStopSharing (Lcom/dropbox/core/v2/teamlog/ProtectActionStopSharingType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun protectCustomDataTypeCreated (Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeCreatedType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun protectCustomDataTypeDeleted (Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeDeletedType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun protectCustomDataTypeDisabled (Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeDisabledType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun protectCustomDataTypeEnabled (Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeEnabledType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun protectCustomDataTypeModified (Lcom/dropbox/core/v2/teamlog/ProtectCustomDataTypeModifiedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun protectInternalDomainsChanged (Lcom/dropbox/core/v2/teamlog/ProtectInternalDomainsChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun protectPolicyActivated (Lcom/dropbox/core/v2/teamlog/ProtectPolicyActivatedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun protectPolicyDeactivated (Lcom/dropbox/core/v2/teamlog/ProtectPolicyDeactivatedType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -25688,6 +25723,11 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field PROTECT_ACTION_REMOVE_DOMAINS Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PROTECT_ACTION_REMOVE_LINK Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PROTECT_ACTION_STOP_SHARING Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_CREATED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_DELETED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_DISABLED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_ENABLED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_MODIFIED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PROTECT_INTERNAL_DOMAINS_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PROTECT_POLICY_ACTIVATED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field PROTECT_POLICY_DEACTIVATED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -26329,6 +26369,11 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field PROTECT_ACTION_REMOVE_DOMAINS Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PROTECT_ACTION_REMOVE_LINK Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PROTECT_ACTION_STOP_SHARING Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_CREATED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_DELETED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_DISABLED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_ENABLED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field PROTECT_CUSTOM_DATA_TYPE_MODIFIED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PROTECT_INTERNAL_DOMAINS_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PROTECT_POLICY_ACTIVATED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field PROTECT_POLICY_DEACTIVATED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
@@ -33280,6 +33325,116 @@ public class com/dropbox/core/v2/teamlog/ProtectActionStopSharingDetails {
 }
 
 public class com/dropbox/core/v2/teamlog/ProtectActionStopSharingType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectCustomDataTypeCreatedDetails {
+	protected final field customDataTypeId Ljava/lang/String;
+	protected final field name Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCustomDataTypeId ()Ljava/lang/String;
+	public fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectCustomDataTypeCreatedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectCustomDataTypeDeletedDetails {
+	protected final field customDataTypeId Ljava/lang/String;
+	protected final field name Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCustomDataTypeId ()Ljava/lang/String;
+	public fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectCustomDataTypeDeletedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectCustomDataTypeDisabledDetails {
+	protected final field customDataTypeId Ljava/lang/String;
+	protected final field name Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCustomDataTypeId ()Ljava/lang/String;
+	public fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectCustomDataTypeDisabledType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectCustomDataTypeEnabledDetails {
+	protected final field customDataTypeId Ljava/lang/String;
+	protected final field name Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCustomDataTypeId ()Ljava/lang/String;
+	public fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectCustomDataTypeEnabledType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectCustomDataTypeModifiedDetails {
+	protected final field customDataTypeId Ljava/lang/String;
+	protected final field name Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCustomDataTypeId ()Ljava/lang/String;
+	public fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/ProtectCustomDataTypeModifiedType {
 	protected final field description Ljava/lang/String;
 	public fun <init> (Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z

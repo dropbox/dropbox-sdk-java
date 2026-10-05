@@ -1198,6 +1198,26 @@ public final class EventType {
          */
         PROTECT_ACTION_STOP_SHARING, // ProtectActionStopSharingType
         /**
+         * (protect) Created a Dropbox Protect custom data type
+         */
+        PROTECT_CUSTOM_DATA_TYPE_CREATED, // ProtectCustomDataTypeCreatedType
+        /**
+         * (protect) Deleted a Dropbox Protect custom data type
+         */
+        PROTECT_CUSTOM_DATA_TYPE_DELETED, // ProtectCustomDataTypeDeletedType
+        /**
+         * (protect) Disabled a Dropbox Protect custom data type
+         */
+        PROTECT_CUSTOM_DATA_TYPE_DISABLED, // ProtectCustomDataTypeDisabledType
+        /**
+         * (protect) Enabled a Dropbox Protect custom data type
+         */
+        PROTECT_CUSTOM_DATA_TYPE_ENABLED, // ProtectCustomDataTypeEnabledType
+        /**
+         * (protect) Modified a Dropbox Protect custom data type
+         */
+        PROTECT_CUSTOM_DATA_TYPE_MODIFIED, // ProtectCustomDataTypeModifiedType
+        /**
          * (protect) Modified Protect internal domains list
          */
         PROTECT_INTERNAL_DOMAINS_CHANGED, // ProtectInternalDomainsChangedType
@@ -2986,6 +3006,11 @@ public final class EventType {
     private ProtectActionRemoveDomainsType protectActionRemoveDomainsValue;
     private ProtectActionRemoveLinkType protectActionRemoveLinkValue;
     private ProtectActionStopSharingType protectActionStopSharingValue;
+    private ProtectCustomDataTypeCreatedType protectCustomDataTypeCreatedValue;
+    private ProtectCustomDataTypeDeletedType protectCustomDataTypeDeletedValue;
+    private ProtectCustomDataTypeDisabledType protectCustomDataTypeDisabledValue;
+    private ProtectCustomDataTypeEnabledType protectCustomDataTypeEnabledValue;
+    private ProtectCustomDataTypeModifiedType protectCustomDataTypeModifiedValue;
     private ProtectInternalDomainsChangedType protectInternalDomainsChangedValue;
     private ProtectPolicyActivatedType protectPolicyActivatedValue;
     private ProtectPolicyDeactivatedType protectPolicyDeactivatedValue;
@@ -8213,6 +8238,91 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.protectActionStopSharingValue = protectActionStopSharingValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectCustomDataTypeCreatedValue  (protect) Created a Dropbox
+     *     Protect custom data type. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectCustomDataTypeCreated(Tag _tag, ProtectCustomDataTypeCreatedType protectCustomDataTypeCreatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectCustomDataTypeCreatedValue = protectCustomDataTypeCreatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectCustomDataTypeDeletedValue  (protect) Deleted a Dropbox
+     *     Protect custom data type. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectCustomDataTypeDeleted(Tag _tag, ProtectCustomDataTypeDeletedType protectCustomDataTypeDeletedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectCustomDataTypeDeletedValue = protectCustomDataTypeDeletedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectCustomDataTypeDisabledValue  (protect) Disabled a Dropbox
+     *     Protect custom data type. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectCustomDataTypeDisabled(Tag _tag, ProtectCustomDataTypeDisabledType protectCustomDataTypeDisabledValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectCustomDataTypeDisabledValue = protectCustomDataTypeDisabledValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectCustomDataTypeEnabledValue  (protect) Enabled a Dropbox
+     *     Protect custom data type. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectCustomDataTypeEnabled(Tag _tag, ProtectCustomDataTypeEnabledType protectCustomDataTypeEnabledValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectCustomDataTypeEnabledValue = protectCustomDataTypeEnabledValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectCustomDataTypeModifiedValue  (protect) Modified a Dropbox
+     *     Protect custom data type. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectCustomDataTypeModified(Tag _tag, ProtectCustomDataTypeModifiedType protectCustomDataTypeModifiedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectCustomDataTypeModifiedValue = protectCustomDataTypeModifiedValue;
         return result;
     }
 
@@ -28617,6 +28727,261 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED}, {@code false} otherwise.
+     */
+    public boolean isProtectCustomDataTypeCreated() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_CREATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED}.
+     *
+     * <p> (protect) Created a Dropbox Protect custom data type </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectCustomDataTypeCreated(ProtectCustomDataTypeCreatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectCustomDataTypeCreated(Tag.PROTECT_CUSTOM_DATA_TYPE_CREATED, value);
+    }
+
+    /**
+     * (protect) Created a Dropbox Protect custom data type
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED}. </p>
+     *
+     * @return The {@link ProtectCustomDataTypeCreatedType} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeCreated} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectCustomDataTypeCreated}
+     *     is {@code false}.
+     */
+    public ProtectCustomDataTypeCreatedType getProtectCustomDataTypeCreatedValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_CREATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_CREATED, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeCreatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED}, {@code false} otherwise.
+     */
+    public boolean isProtectCustomDataTypeDeleted() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_DELETED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED}.
+     *
+     * <p> (protect) Deleted a Dropbox Protect custom data type </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectCustomDataTypeDeleted(ProtectCustomDataTypeDeletedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectCustomDataTypeDeleted(Tag.PROTECT_CUSTOM_DATA_TYPE_DELETED, value);
+    }
+
+    /**
+     * (protect) Deleted a Dropbox Protect custom data type
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED}. </p>
+     *
+     * @return The {@link ProtectCustomDataTypeDeletedType} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeDeleted} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectCustomDataTypeDeleted}
+     *     is {@code false}.
+     */
+    public ProtectCustomDataTypeDeletedType getProtectCustomDataTypeDeletedValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_DELETED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_DELETED, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeDeletedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED}, {@code false} otherwise.
+     */
+    public boolean isProtectCustomDataTypeDisabled() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_DISABLED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED}.
+     *
+     * <p> (protect) Disabled a Dropbox Protect custom data type </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectCustomDataTypeDisabled(ProtectCustomDataTypeDisabledType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectCustomDataTypeDisabled(Tag.PROTECT_CUSTOM_DATA_TYPE_DISABLED, value);
+    }
+
+    /**
+     * (protect) Disabled a Dropbox Protect custom data type
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED}. </p>
+     *
+     * @return The {@link ProtectCustomDataTypeDisabledType} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeDisabled} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectCustomDataTypeDisabled} is {@code false}.
+     */
+    public ProtectCustomDataTypeDisabledType getProtectCustomDataTypeDisabledValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_DISABLED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_DISABLED, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeDisabledValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED}, {@code false} otherwise.
+     */
+    public boolean isProtectCustomDataTypeEnabled() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_ENABLED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED}.
+     *
+     * <p> (protect) Enabled a Dropbox Protect custom data type </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectCustomDataTypeEnabled(ProtectCustomDataTypeEnabledType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectCustomDataTypeEnabled(Tag.PROTECT_CUSTOM_DATA_TYPE_ENABLED, value);
+    }
+
+    /**
+     * (protect) Enabled a Dropbox Protect custom data type
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED}. </p>
+     *
+     * @return The {@link ProtectCustomDataTypeEnabledType} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeEnabled} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectCustomDataTypeEnabled}
+     *     is {@code false}.
+     */
+    public ProtectCustomDataTypeEnabledType getProtectCustomDataTypeEnabledValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_ENABLED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_ENABLED, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeEnabledValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED}, {@code false} otherwise.
+     */
+    public boolean isProtectCustomDataTypeModified() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_MODIFIED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED}.
+     *
+     * <p> (protect) Modified a Dropbox Protect custom data type </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectCustomDataTypeModified(ProtectCustomDataTypeModifiedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectCustomDataTypeModified(Tag.PROTECT_CUSTOM_DATA_TYPE_MODIFIED, value);
+    }
+
+    /**
+     * (protect) Modified a Dropbox Protect custom data type
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED}. </p>
+     *
+     * @return The {@link ProtectCustomDataTypeModifiedType} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeModified} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectCustomDataTypeModified} is {@code false}.
+     */
+    public ProtectCustomDataTypeModifiedType getProtectCustomDataTypeModifiedValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_MODIFIED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_MODIFIED, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeModifiedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#PROTECT_INTERNAL_DOMAINS_CHANGED}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -46804,6 +47169,11 @@ public final class EventType {
             this.protectActionRemoveDomainsValue,
             this.protectActionRemoveLinkValue,
             this.protectActionStopSharingValue,
+            this.protectCustomDataTypeCreatedValue,
+            this.protectCustomDataTypeDeletedValue,
+            this.protectCustomDataTypeDisabledValue,
+            this.protectCustomDataTypeEnabledValue,
+            this.protectCustomDataTypeModifiedValue,
             this.protectInternalDomainsChangedValue,
             this.protectPolicyActivatedValue,
             this.protectPolicyDeactivatedValue,
@@ -47742,6 +48112,16 @@ public final class EventType {
                     return (this.protectActionRemoveLinkValue == other.protectActionRemoveLinkValue) || (this.protectActionRemoveLinkValue.equals(other.protectActionRemoveLinkValue));
                 case PROTECT_ACTION_STOP_SHARING:
                     return (this.protectActionStopSharingValue == other.protectActionStopSharingValue) || (this.protectActionStopSharingValue.equals(other.protectActionStopSharingValue));
+                case PROTECT_CUSTOM_DATA_TYPE_CREATED:
+                    return (this.protectCustomDataTypeCreatedValue == other.protectCustomDataTypeCreatedValue) || (this.protectCustomDataTypeCreatedValue.equals(other.protectCustomDataTypeCreatedValue));
+                case PROTECT_CUSTOM_DATA_TYPE_DELETED:
+                    return (this.protectCustomDataTypeDeletedValue == other.protectCustomDataTypeDeletedValue) || (this.protectCustomDataTypeDeletedValue.equals(other.protectCustomDataTypeDeletedValue));
+                case PROTECT_CUSTOM_DATA_TYPE_DISABLED:
+                    return (this.protectCustomDataTypeDisabledValue == other.protectCustomDataTypeDisabledValue) || (this.protectCustomDataTypeDisabledValue.equals(other.protectCustomDataTypeDisabledValue));
+                case PROTECT_CUSTOM_DATA_TYPE_ENABLED:
+                    return (this.protectCustomDataTypeEnabledValue == other.protectCustomDataTypeEnabledValue) || (this.protectCustomDataTypeEnabledValue.equals(other.protectCustomDataTypeEnabledValue));
+                case PROTECT_CUSTOM_DATA_TYPE_MODIFIED:
+                    return (this.protectCustomDataTypeModifiedValue == other.protectCustomDataTypeModifiedValue) || (this.protectCustomDataTypeModifiedValue.equals(other.protectCustomDataTypeModifiedValue));
                 case PROTECT_INTERNAL_DOMAINS_CHANGED:
                     return (this.protectInternalDomainsChangedValue == other.protectInternalDomainsChangedValue) || (this.protectInternalDomainsChangedValue.equals(other.protectInternalDomainsChangedValue));
                 case PROTECT_POLICY_ACTIVATED:
@@ -50471,6 +50851,41 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("protect_action_stop_sharing", g);
                     ProtectActionStopSharingType.Serializer.INSTANCE.serialize(value.protectActionStopSharingValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_CREATED: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_created", g);
+                    ProtectCustomDataTypeCreatedType.Serializer.INSTANCE.serialize(value.protectCustomDataTypeCreatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_DELETED: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_deleted", g);
+                    ProtectCustomDataTypeDeletedType.Serializer.INSTANCE.serialize(value.protectCustomDataTypeDeletedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_DISABLED: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_disabled", g);
+                    ProtectCustomDataTypeDisabledType.Serializer.INSTANCE.serialize(value.protectCustomDataTypeDisabledValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_ENABLED: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_enabled", g);
+                    ProtectCustomDataTypeEnabledType.Serializer.INSTANCE.serialize(value.protectCustomDataTypeEnabledValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_MODIFIED: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_modified", g);
+                    ProtectCustomDataTypeModifiedType.Serializer.INSTANCE.serialize(value.protectCustomDataTypeModifiedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -54372,6 +54787,31 @@ public final class EventType {
                 ProtectActionStopSharingType fieldValue = null;
                 fieldValue = ProtectActionStopSharingType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.protectActionStopSharing(fieldValue);
+            }
+            else if ("protect_custom_data_type_created".equals(tag)) {
+                ProtectCustomDataTypeCreatedType fieldValue = null;
+                fieldValue = ProtectCustomDataTypeCreatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectCustomDataTypeCreated(fieldValue);
+            }
+            else if ("protect_custom_data_type_deleted".equals(tag)) {
+                ProtectCustomDataTypeDeletedType fieldValue = null;
+                fieldValue = ProtectCustomDataTypeDeletedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectCustomDataTypeDeleted(fieldValue);
+            }
+            else if ("protect_custom_data_type_disabled".equals(tag)) {
+                ProtectCustomDataTypeDisabledType fieldValue = null;
+                fieldValue = ProtectCustomDataTypeDisabledType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectCustomDataTypeDisabled(fieldValue);
+            }
+            else if ("protect_custom_data_type_enabled".equals(tag)) {
+                ProtectCustomDataTypeEnabledType fieldValue = null;
+                fieldValue = ProtectCustomDataTypeEnabledType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectCustomDataTypeEnabled(fieldValue);
+            }
+            else if ("protect_custom_data_type_modified".equals(tag)) {
+                ProtectCustomDataTypeModifiedType fieldValue = null;
+                fieldValue = ProtectCustomDataTypeModifiedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectCustomDataTypeModified(fieldValue);
             }
             else if ("protect_internal_domains_changed".equals(tag)) {
                 ProtectInternalDomainsChangedType fieldValue = null;
