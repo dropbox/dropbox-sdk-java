@@ -19,6 +19,13 @@ import java.util.Arrays;
 public enum FileStatus {
     // union files.FileStatus (files.stone)
     ACTIVE,
+    /**
+     * Field is deprecated. Deprecated. Deleted-file search does not work and
+     * should not be used. Use {@link DbxUserFilesRequests#listFolder(String)}
+     * with {@link ListFolderArg#getIncludeDeleted} set to {@code true} to
+     * enumerate deleted entries; this does not provide equivalent full-text
+     * search.
+     */
     DELETED,
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
