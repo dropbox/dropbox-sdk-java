@@ -20775,6 +20775,38 @@ public final class com/dropbox/core/v2/teamlog/EnforceLinkPasswordPolicy : java/
 	public static fun values ()[Lcom/dropbox/core/v2/teamlog/EnforceLinkPasswordPolicy;
 }
 
+public final class com/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy : java/lang/Enum {
+	public static final field DEFAULT Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy;
+	public static final field DISABLED Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy;
+	public static final field ENABLED Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy;
+	public static final field OTHER Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy;
+	public static fun values ()[Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy;
+}
+
+public class com/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicyChangedDetails {
+	protected final field newValue Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy;
+	protected final field previousValue Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy;
+	public fun <init> (Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy;)V
+	public fun <init> (Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy;Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getNewValue ()Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy;
+	public fun getPreviousValue ()Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicy;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicyChangedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
 public class com/dropbox/core/v2/teamlog/EnterpriseSettingsLockingDetails {
 	protected final field newSettingsPageLockingState Ljava/lang/String;
 	protected final field previousSettingsPageLockingState Ljava/lang/String;
@@ -20974,6 +21006,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun encryptedFolderUnenrollClientDetails (Lcom/dropbox/core/v2/teamlog/EncryptedFolderUnenrollClientDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun endedEnterpriseAdminSessionDeprecatedDetails (Lcom/dropbox/core/v2/teamlog/EndedEnterpriseAdminSessionDeprecatedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun endedEnterpriseAdminSessionDetails (Lcom/dropbox/core/v2/teamlog/EndedEnterpriseAdminSessionDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun enterpriseManagedAuthPolicyChangedDetails (Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicyChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun enterpriseSettingsLockingDetails (Lcom/dropbox/core/v2/teamlog/EnterpriseSettingsLockingDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public fun equals (Ljava/lang/Object;)Z
 	public static fun exportMembersReportDetails (Lcom/dropbox/core/v2/teamlog/ExportMembersReportDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -21170,6 +21203,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getEncryptedFolderUnenrollClientDetailsValue ()Lcom/dropbox/core/v2/teamlog/EncryptedFolderUnenrollClientDetails;
 	public fun getEndedEnterpriseAdminSessionDeprecatedDetailsValue ()Lcom/dropbox/core/v2/teamlog/EndedEnterpriseAdminSessionDeprecatedDetails;
 	public fun getEndedEnterpriseAdminSessionDetailsValue ()Lcom/dropbox/core/v2/teamlog/EndedEnterpriseAdminSessionDetails;
+	public fun getEnterpriseManagedAuthPolicyChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicyChangedDetails;
 	public fun getEnterpriseSettingsLockingDetailsValue ()Lcom/dropbox/core/v2/teamlog/EnterpriseSettingsLockingDetails;
 	public fun getExportMembersReportDetailsValue ()Lcom/dropbox/core/v2/teamlog/ExportMembersReportDetails;
 	public fun getExportMembersReportFailDetailsValue ()Lcom/dropbox/core/v2/teamlog/ExportMembersReportFailDetails;
@@ -21847,6 +21881,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isEncryptedFolderUnenrollClientDetails ()Z
 	public fun isEndedEnterpriseAdminSessionDeprecatedDetails ()Z
 	public fun isEndedEnterpriseAdminSessionDetails ()Z
+	public fun isEnterpriseManagedAuthPolicyChangedDetails ()Z
 	public fun isEnterpriseSettingsLockingDetails ()Z
 	public fun isExportMembersReportDetails ()Z
 	public fun isExportMembersReportFailDetails ()Z
@@ -22906,6 +22941,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field ENCRYPTED_FOLDER_UNENROLL_CLIENT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field ENDED_ENTERPRISE_ADMIN_SESSION_DEPRECATED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field ENDED_ENTERPRISE_ADMIN_SESSION_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field ENTERPRISE_SETTINGS_LOCKING_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field EXPORT_MEMBERS_REPORT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field EXPORT_MEMBERS_REPORT_FAIL_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -23554,6 +23590,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun encryptedFolderUnenrollClient (Lcom/dropbox/core/v2/teamlog/EncryptedFolderUnenrollClientType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun endedEnterpriseAdminSession (Lcom/dropbox/core/v2/teamlog/EndedEnterpriseAdminSessionType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun endedEnterpriseAdminSessionDeprecated (Lcom/dropbox/core/v2/teamlog/EndedEnterpriseAdminSessionDeprecatedType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun enterpriseManagedAuthPolicyChanged (Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicyChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun enterpriseSettingsLocking (Lcom/dropbox/core/v2/teamlog/EnterpriseSettingsLockingType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public fun equals (Ljava/lang/Object;)Z
 	public static fun exportMembersReport (Lcom/dropbox/core/v2/teamlog/ExportMembersReportType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -23750,6 +23787,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getEncryptedFolderUnenrollClientValue ()Lcom/dropbox/core/v2/teamlog/EncryptedFolderUnenrollClientType;
 	public fun getEndedEnterpriseAdminSessionDeprecatedValue ()Lcom/dropbox/core/v2/teamlog/EndedEnterpriseAdminSessionDeprecatedType;
 	public fun getEndedEnterpriseAdminSessionValue ()Lcom/dropbox/core/v2/teamlog/EndedEnterpriseAdminSessionType;
+	public fun getEnterpriseManagedAuthPolicyChangedValue ()Lcom/dropbox/core/v2/teamlog/EnterpriseManagedAuthPolicyChangedType;
 	public fun getEnterpriseSettingsLockingValue ()Lcom/dropbox/core/v2/teamlog/EnterpriseSettingsLockingType;
 	public fun getExportMembersReportFailValue ()Lcom/dropbox/core/v2/teamlog/ExportMembersReportFailType;
 	public fun getExportMembersReportValue ()Lcom/dropbox/core/v2/teamlog/ExportMembersReportType;
@@ -24426,6 +24464,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isEncryptedFolderUnenrollClient ()Z
 	public fun isEndedEnterpriseAdminSession ()Z
 	public fun isEndedEnterpriseAdminSessionDeprecated ()Z
+	public fun isEnterpriseManagedAuthPolicyChanged ()Z
 	public fun isEnterpriseSettingsLocking ()Z
 	public fun isExportMembersReport ()Z
 	public fun isExportMembersReportFail ()Z
@@ -25483,6 +25522,7 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field ENCRYPTED_FOLDER_UNENROLL_CLIENT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field ENDED_ENTERPRISE_ADMIN_SESSION Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field ENDED_ENTERPRISE_ADMIN_SESSION_DEPRECATED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field ENTERPRISE_SETTINGS_LOCKING Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field EXPORT_MEMBERS_REPORT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field EXPORT_MEMBERS_REPORT_FAIL Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -26129,6 +26169,7 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field ENCRYPTED_FOLDER_UNENROLL_CLIENT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field ENDED_ENTERPRISE_ADMIN_SESSION Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field ENDED_ENTERPRISE_ADMIN_SESSION_DEPRECATED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field ENTERPRISE_SETTINGS_LOCKING Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field EXPORT_MEMBERS_REPORT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field EXPORT_MEMBERS_REPORT_FAIL Lcom/dropbox/core/v2/teamlog/EventTypeArg;

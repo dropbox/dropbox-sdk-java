@@ -2112,6 +2112,10 @@ public enum EventTypeArg {
      */
     EMM_REMOVE_EXCEPTION,
     /**
+     * (team_policies) Changed enterprise managed authorization policy for team
+     */
+    ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED,
+    /**
      * (team_policies) Accepted/opted out of extended version history
      */
     EXTENDED_VERSION_HISTORY_CHANGE_POLICY,
@@ -4722,6 +4726,10 @@ public enum EventTypeArg {
                     g.writeString("emm_remove_exception");
                     break;
                 }
+                case ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED: {
+                    g.writeString("enterprise_managed_auth_policy_changed");
+                    break;
+                }
                 case EXTENDED_VERSION_HISTORY_CHANGE_POLICY: {
                     g.writeString("extended_version_history_change_policy");
                     break;
@@ -6795,6 +6803,9 @@ public enum EventTypeArg {
             }
             else if ("emm_remove_exception".equals(tag)) {
                 value = EventTypeArg.EMM_REMOVE_EXCEPTION;
+            }
+            else if ("enterprise_managed_auth_policy_changed".equals(tag)) {
+                value = EventTypeArg.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED;
             }
             else if ("extended_version_history_change_policy".equals(tag)) {
                 value = EventTypeArg.EXTENDED_VERSION_HISTORY_CHANGE_POLICY;

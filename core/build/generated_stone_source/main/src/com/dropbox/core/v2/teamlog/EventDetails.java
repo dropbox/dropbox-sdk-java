@@ -545,6 +545,7 @@ public final class EventDetails {
         EMM_ADD_EXCEPTION_DETAILS, // EmmAddExceptionDetails
         EMM_CHANGE_POLICY_DETAILS, // EmmChangePolicyDetails
         EMM_REMOVE_EXCEPTION_DETAILS, // EmmRemoveExceptionDetails
+        ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED_DETAILS, // EnterpriseManagedAuthPolicyChangedDetails
         EXTENDED_VERSION_HISTORY_CHANGE_POLICY_DETAILS, // ExtendedVersionHistoryChangePolicyDetails
         EXTERNAL_DRIVE_BACKUP_POLICY_CHANGED_DETAILS, // ExternalDriveBackupPolicyChangedDetails
         FILE_COMMENTS_CHANGE_POLICY_DETAILS, // FileCommentsChangePolicyDetails
@@ -1211,6 +1212,7 @@ public final class EventDetails {
     private EmmAddExceptionDetails emmAddExceptionDetailsValue;
     private EmmChangePolicyDetails emmChangePolicyDetailsValue;
     private EmmRemoveExceptionDetails emmRemoveExceptionDetailsValue;
+    private EnterpriseManagedAuthPolicyChangedDetails enterpriseManagedAuthPolicyChangedDetailsValue;
     private ExtendedVersionHistoryChangePolicyDetails extendedVersionHistoryChangePolicyDetailsValue;
     private ExternalDriveBackupPolicyChangedDetails externalDriveBackupPolicyChangedDetailsValue;
     private FileCommentsChangePolicyDetails fileCommentsChangePolicyDetailsValue;
@@ -9670,6 +9672,23 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.emmRemoveExceptionDetailsValue = emmRemoveExceptionDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param enterpriseManagedAuthPolicyChangedDetailsValue  Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndEnterpriseManagedAuthPolicyChangedDetails(Tag _tag, EnterpriseManagedAuthPolicyChangedDetails enterpriseManagedAuthPolicyChangedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.enterpriseManagedAuthPolicyChangedDetailsValue = enterpriseManagedAuthPolicyChangedDetailsValue;
         return result;
     }
 
@@ -36809,6 +36828,57 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED_DETAILS}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isEnterpriseManagedAuthPolicyChangedDetails() {
+        return this._tag == Tag.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails enterpriseManagedAuthPolicyChangedDetails(EnterpriseManagedAuthPolicyChangedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndEnterpriseManagedAuthPolicyChangedDetails(Tag.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED_DETAILS}.
+     *
+     * @return The {@link EnterpriseManagedAuthPolicyChangedDetails} value
+     *     associated with this instance if {@link
+     *     #isEnterpriseManagedAuthPolicyChangedDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isEnterpriseManagedAuthPolicyChangedDetails} is {@code false}.
+     */
+    public EnterpriseManagedAuthPolicyChangedDetails getEnterpriseManagedAuthPolicyChangedDetailsValue() {
+        if (this._tag != Tag.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return enterpriseManagedAuthPolicyChangedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#EXTENDED_VERSION_HISTORY_CHANGE_POLICY_DETAILS}, {@code false}
      * otherwise.
      *
@@ -43868,6 +43938,7 @@ public final class EventDetails {
             this.emmAddExceptionDetailsValue,
             this.emmChangePolicyDetailsValue,
             this.emmRemoveExceptionDetailsValue,
+            this.enterpriseManagedAuthPolicyChangedDetailsValue,
             this.extendedVersionHistoryChangePolicyDetailsValue,
             this.externalDriveBackupPolicyChangedDetailsValue,
             this.fileCommentsChangePolicyDetailsValue,
@@ -45037,6 +45108,8 @@ public final class EventDetails {
                     return (this.emmChangePolicyDetailsValue == other.emmChangePolicyDetailsValue) || (this.emmChangePolicyDetailsValue.equals(other.emmChangePolicyDetailsValue));
                 case EMM_REMOVE_EXCEPTION_DETAILS:
                     return (this.emmRemoveExceptionDetailsValue == other.emmRemoveExceptionDetailsValue) || (this.emmRemoveExceptionDetailsValue.equals(other.emmRemoveExceptionDetailsValue));
+                case ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED_DETAILS:
+                    return (this.enterpriseManagedAuthPolicyChangedDetailsValue == other.enterpriseManagedAuthPolicyChangedDetailsValue) || (this.enterpriseManagedAuthPolicyChangedDetailsValue.equals(other.enterpriseManagedAuthPolicyChangedDetailsValue));
                 case EXTENDED_VERSION_HISTORY_CHANGE_POLICY_DETAILS:
                     return (this.extendedVersionHistoryChangePolicyDetailsValue == other.extendedVersionHistoryChangePolicyDetailsValue) || (this.extendedVersionHistoryChangePolicyDetailsValue.equals(other.extendedVersionHistoryChangePolicyDetailsValue));
                 case EXTERNAL_DRIVE_BACKUP_POLICY_CHANGED_DETAILS:
@@ -48906,6 +48979,13 @@ public final class EventDetails {
                     g.writeEndObject();
                     break;
                 }
+                case ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("enterprise_managed_auth_policy_changed_details", g);
+                    EnterpriseManagedAuthPolicyChangedDetails.Serializer.INSTANCE.serialize(value.enterpriseManagedAuthPolicyChangedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case EXTENDED_VERSION_HISTORY_CHANGE_POLICY_DETAILS: {
                     g.writeStartObject();
                     writeTag("extended_version_history_change_policy_details", g);
@@ -52396,6 +52476,11 @@ public final class EventDetails {
                 EmmRemoveExceptionDetails fieldValue = null;
                 fieldValue = EmmRemoveExceptionDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.emmRemoveExceptionDetails(fieldValue);
+            }
+            else if ("enterprise_managed_auth_policy_changed_details".equals(tag)) {
+                EnterpriseManagedAuthPolicyChangedDetails fieldValue = null;
+                fieldValue = EnterpriseManagedAuthPolicyChangedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.enterpriseManagedAuthPolicyChangedDetails(fieldValue);
             }
             else if ("extended_version_history_change_policy_details".equals(tag)) {
                 ExtendedVersionHistoryChangePolicyDetails fieldValue = null;

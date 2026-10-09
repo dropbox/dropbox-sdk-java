@@ -2138,6 +2138,11 @@ public final class EventType {
          */
         EMM_REMOVE_EXCEPTION, // EmmRemoveExceptionType
         /**
+         * (team_policies) Changed enterprise managed authorization policy for
+         * team
+         */
+        ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED, // EnterpriseManagedAuthPolicyChangedType
+        /**
          * (team_policies) Accepted/opted out of extended version history
          */
         EXTENDED_VERSION_HISTORY_CHANGE_POLICY, // ExtendedVersionHistoryChangePolicyType
@@ -3231,6 +3236,7 @@ public final class EventType {
     private EmmAddExceptionType emmAddExceptionValue;
     private EmmChangePolicyType emmChangePolicyValue;
     private EmmRemoveExceptionType emmRemoveExceptionValue;
+    private EnterpriseManagedAuthPolicyChangedType enterpriseManagedAuthPolicyChangedValue;
     private ExtendedVersionHistoryChangePolicyType extendedVersionHistoryChangePolicyValue;
     private ExternalDriveBackupPolicyChangedType externalDriveBackupPolicyChangedValue;
     private FileCommentsChangePolicyType fileCommentsChangePolicyValue;
@@ -12098,6 +12104,24 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.emmRemoveExceptionValue = emmRemoveExceptionValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param enterpriseManagedAuthPolicyChangedValue  (team_policies) Changed
+     *     enterprise managed authorization policy for team. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndEnterpriseManagedAuthPolicyChanged(Tag _tag, EnterpriseManagedAuthPolicyChangedType enterpriseManagedAuthPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.enterpriseManagedAuthPolicyChangedValue = enterpriseManagedAuthPolicyChangedValue;
         return result;
     }
 
@@ -40150,6 +40174,58 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isEnterpriseManagedAuthPolicyChanged() {
+        return this._tag == Tag.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed enterprise managed authorization policy for
+     * team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType enterpriseManagedAuthPolicyChanged(EnterpriseManagedAuthPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndEnterpriseManagedAuthPolicyChanged(Tag.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed enterprise managed authorization policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link EnterpriseManagedAuthPolicyChangedType} value
+     *     associated with this instance if {@link
+     *     #isEnterpriseManagedAuthPolicyChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isEnterpriseManagedAuthPolicyChanged} is {@code false}.
+     */
+    public EnterpriseManagedAuthPolicyChangedType getEnterpriseManagedAuthPolicyChangedValue() {
+        if (this._tag != Tag.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return enterpriseManagedAuthPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#EXTENDED_VERSION_HISTORY_CHANGE_POLICY}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -47394,6 +47470,7 @@ public final class EventType {
             this.emmAddExceptionValue,
             this.emmChangePolicyValue,
             this.emmRemoveExceptionValue,
+            this.enterpriseManagedAuthPolicyChangedValue,
             this.extendedVersionHistoryChangePolicyValue,
             this.externalDriveBackupPolicyChangedValue,
             this.fileCommentsChangePolicyValue,
@@ -48562,6 +48639,8 @@ public final class EventType {
                     return (this.emmChangePolicyValue == other.emmChangePolicyValue) || (this.emmChangePolicyValue.equals(other.emmChangePolicyValue));
                 case EMM_REMOVE_EXCEPTION:
                     return (this.emmRemoveExceptionValue == other.emmRemoveExceptionValue) || (this.emmRemoveExceptionValue.equals(other.emmRemoveExceptionValue));
+                case ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED:
+                    return (this.enterpriseManagedAuthPolicyChangedValue == other.enterpriseManagedAuthPolicyChangedValue) || (this.enterpriseManagedAuthPolicyChangedValue.equals(other.enterpriseManagedAuthPolicyChangedValue));
                 case EXTENDED_VERSION_HISTORY_CHANGE_POLICY:
                     return (this.extendedVersionHistoryChangePolicyValue == other.extendedVersionHistoryChangePolicyValue) || (this.extendedVersionHistoryChangePolicyValue.equals(other.extendedVersionHistoryChangePolicyValue));
                 case EXTERNAL_DRIVE_BACKUP_POLICY_CHANGED:
@@ -52429,6 +52508,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("enterprise_managed_auth_policy_changed", g);
+                    EnterpriseManagedAuthPolicyChangedType.Serializer.INSTANCE.serialize(value.enterpriseManagedAuthPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case EXTENDED_VERSION_HISTORY_CHANGE_POLICY: {
                     g.writeStartObject();
                     writeTag("extended_version_history_change_policy", g);
@@ -55912,6 +55998,11 @@ public final class EventType {
                 EmmRemoveExceptionType fieldValue = null;
                 fieldValue = EmmRemoveExceptionType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.emmRemoveException(fieldValue);
+            }
+            else if ("enterprise_managed_auth_policy_changed".equals(tag)) {
+                EnterpriseManagedAuthPolicyChangedType fieldValue = null;
+                fieldValue = EnterpriseManagedAuthPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.enterpriseManagedAuthPolicyChanged(fieldValue);
             }
             else if ("extended_version_history_change_policy".equals(tag)) {
                 ExtendedVersionHistoryChangePolicyType fieldValue = null;
