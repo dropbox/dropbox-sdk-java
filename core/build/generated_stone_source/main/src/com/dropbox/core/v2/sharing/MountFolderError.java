@@ -64,6 +64,10 @@ public final class MountFolderError {
          */
         MUST_AUTOMOUNT,
         /**
+         * User will have too many mounts after this operation.
+         */
+        TOO_MANY_MOUNTS, // TooManyMountsError
+        /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
          *
@@ -110,6 +114,7 @@ public final class MountFolderError {
     private Tag _tag;
     private SharedFolderAccessError accessErrorValue;
     private InsufficientQuotaAmounts insufficientQuotaValue;
+    private TooManyMountsError tooManyMountsValue;
 
     /**
      * Private default constructor, so that object is uninitializable publicly.
@@ -156,6 +161,22 @@ public final class MountFolderError {
         MountFolderError result = new MountFolderError();
         result._tag = _tag;
         result.insufficientQuotaValue = insufficientQuotaValue;
+        return result;
+    }
+
+    /**
+     *
+     * @param tooManyMountsValue  User will have too many mounts after this
+     *     operation. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private MountFolderError withTagAndTooManyMounts(Tag _tag, TooManyMountsError tooManyMountsValue) {
+        MountFolderError result = new MountFolderError();
+        result._tag = _tag;
+        result.tooManyMountsValue = tooManyMountsValue;
         return result;
     }
 
@@ -330,6 +351,55 @@ public final class MountFolderError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TOO_MANY_MOUNTS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TOO_MANY_MOUNTS}, {@code false} otherwise.
+     */
+    public boolean isTooManyMounts() {
+        return this._tag == Tag.TOO_MANY_MOUNTS;
+    }
+
+    /**
+     * Returns an instance of {@code MountFolderError} that has its tag set to
+     * {@link Tag#TOO_MANY_MOUNTS}.
+     *
+     * <p> User will have too many mounts after this operation. </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code MountFolderError} with its tag set to {@link
+     *     Tag#TOO_MANY_MOUNTS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static MountFolderError tooManyMounts(TooManyMountsError value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new MountFolderError().withTagAndTooManyMounts(Tag.TOO_MANY_MOUNTS, value);
+    }
+
+    /**
+     * User will have too many mounts after this operation.
+     *
+     * <p> This instance must be tagged as {@link Tag#TOO_MANY_MOUNTS}. </p>
+     *
+     * @return The {@link TooManyMountsError} value associated with this
+     *     instance if {@link #isTooManyMounts} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isTooManyMounts} is {@code
+     *     false}.
+     */
+    public TooManyMountsError getTooManyMountsValue() {
+        if (this._tag != Tag.TOO_MANY_MOUNTS) {
+            throw new IllegalStateException("Invalid tag: required Tag.TOO_MANY_MOUNTS, but was Tag." + this._tag.name());
+        }
+        return tooManyMountsValue;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -345,7 +415,8 @@ public final class MountFolderError {
         int hash = Arrays.hashCode(new Object [] {
             this._tag,
             this.accessErrorValue,
-            this.insufficientQuotaValue
+            this.insufficientQuotaValue,
+            this.tooManyMountsValue
         });
         return hash;
     }
@@ -378,6 +449,8 @@ public final class MountFolderError {
                     return true;
                 case MUST_AUTOMOUNT:
                     return true;
+                case TOO_MANY_MOUNTS:
+                    return (this.tooManyMountsValue == other.tooManyMountsValue) || (this.tooManyMountsValue.equals(other.tooManyMountsValue));
                 case OTHER:
                     return true;
                 default:
@@ -450,6 +523,14 @@ public final class MountFolderError {
                     g.writeString("must_automount");
                     break;
                 }
+                case TOO_MANY_MOUNTS: {
+                    g.writeStartObject();
+                    writeTag("too_many_mounts", g);
+                    g.writeFieldName("too_many_mounts");
+                    TooManyMountsError.Serializer.INSTANCE.serialize(value.tooManyMountsValue, g);
+                    g.writeEndObject();
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -499,6 +580,12 @@ public final class MountFolderError {
             }
             else if ("must_automount".equals(tag)) {
                 value = MountFolderError.MUST_AUTOMOUNT;
+            }
+            else if ("too_many_mounts".equals(tag)) {
+                TooManyMountsError fieldValue = null;
+                expectField("too_many_mounts", p);
+                fieldValue = TooManyMountsError.Serializer.INSTANCE.deserialize(p);
+                value = MountFolderError.tooManyMounts(fieldValue);
             }
             else {
                 value = MountFolderError.OTHER;

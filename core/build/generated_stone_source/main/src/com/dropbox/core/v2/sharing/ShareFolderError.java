@@ -51,6 +51,10 @@ public final class ShareFolderError {
          */
         DISALLOWED_SHARED_LINK_POLICY,
         /**
+         * User will have too many mounts after the operation.
+         */
+        TOO_MANY_MOUNTS, // TooManyMountsError
+        /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
          *
@@ -96,6 +100,7 @@ public final class ShareFolderError {
 
     private Tag _tag;
     private SharePathError badPathValue;
+    private TooManyMountsError tooManyMountsValue;
 
     /**
      * Private default constructor, so that object is uninitializable publicly.
@@ -127,6 +132,22 @@ public final class ShareFolderError {
         ShareFolderError result = new ShareFolderError();
         result._tag = _tag;
         result.badPathValue = badPathValue;
+        return result;
+    }
+
+    /**
+     *
+     * @param tooManyMountsValue  User will have too many mounts after the
+     *     operation. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private ShareFolderError withTagAndTooManyMounts(Tag _tag, TooManyMountsError tooManyMountsValue) {
+        ShareFolderError result = new ShareFolderError();
+        result._tag = _tag;
+        result.tooManyMountsValue = tooManyMountsValue;
         return result;
     }
 
@@ -227,6 +248,55 @@ public final class ShareFolderError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TOO_MANY_MOUNTS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TOO_MANY_MOUNTS}, {@code false} otherwise.
+     */
+    public boolean isTooManyMounts() {
+        return this._tag == Tag.TOO_MANY_MOUNTS;
+    }
+
+    /**
+     * Returns an instance of {@code ShareFolderError} that has its tag set to
+     * {@link Tag#TOO_MANY_MOUNTS}.
+     *
+     * <p> User will have too many mounts after the operation. </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code ShareFolderError} with its tag set to {@link
+     *     Tag#TOO_MANY_MOUNTS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static ShareFolderError tooManyMounts(TooManyMountsError value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new ShareFolderError().withTagAndTooManyMounts(Tag.TOO_MANY_MOUNTS, value);
+    }
+
+    /**
+     * User will have too many mounts after the operation.
+     *
+     * <p> This instance must be tagged as {@link Tag#TOO_MANY_MOUNTS}. </p>
+     *
+     * @return The {@link TooManyMountsError} value associated with this
+     *     instance if {@link #isTooManyMounts} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isTooManyMounts} is {@code
+     *     false}.
+     */
+    public TooManyMountsError getTooManyMountsValue() {
+        if (this._tag != Tag.TOO_MANY_MOUNTS) {
+            throw new IllegalStateException("Invalid tag: required Tag.TOO_MANY_MOUNTS, but was Tag." + this._tag.name());
+        }
+        return tooManyMountsValue;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -252,7 +322,8 @@ public final class ShareFolderError {
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
             this._tag,
-            this.badPathValue
+            this.badPathValue,
+            this.tooManyMountsValue
         });
         hash = (31 * super.hashCode()) + hash;
         return hash;
@@ -280,6 +351,8 @@ public final class ShareFolderError {
                     return true;
                 case DISALLOWED_SHARED_LINK_POLICY:
                     return true;
+                case TOO_MANY_MOUNTS:
+                    return (this.tooManyMountsValue == other.tooManyMountsValue) || (this.tooManyMountsValue.equals(other.tooManyMountsValue));
                 case OTHER:
                     return true;
                 case NO_PERMISSION:
@@ -339,6 +412,14 @@ public final class ShareFolderError {
                     g.writeString("disallowed_shared_link_policy");
                     break;
                 }
+                case TOO_MANY_MOUNTS: {
+                    g.writeStartObject();
+                    writeTag("too_many_mounts", g);
+                    g.writeFieldName("too_many_mounts");
+                    TooManyMountsError.Serializer.INSTANCE.serialize(value.tooManyMountsValue, g);
+                    g.writeEndObject();
+                    break;
+                }
                 case OTHER: {
                     g.writeString("other");
                     break;
@@ -385,6 +466,12 @@ public final class ShareFolderError {
             }
             else if ("disallowed_shared_link_policy".equals(tag)) {
                 value = ShareFolderError.DISALLOWED_SHARED_LINK_POLICY;
+            }
+            else if ("too_many_mounts".equals(tag)) {
+                TooManyMountsError fieldValue = null;
+                expectField("too_many_mounts", p);
+                fieldValue = TooManyMountsError.Serializer.INSTANCE.deserialize(p);
+                value = ShareFolderError.tooManyMounts(fieldValue);
             }
             else if ("other".equals(tag)) {
                 value = ShareFolderError.OTHER;
