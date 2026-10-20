@@ -11176,6 +11176,7 @@ public final class com/dropbox/core/v2/sharing/MountFolderError {
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getAccessErrorValue ()Lcom/dropbox/core/v2/sharing/SharedFolderAccessError;
 	public fun getInsufficientQuotaValue ()Lcom/dropbox/core/v2/sharing/InsufficientQuotaAmounts;
+	public fun getTooManyMountsValue ()Lcom/dropbox/core/v2/sharing/TooManyMountsError;
 	public fun hashCode ()I
 	public static fun insufficientQuota (Lcom/dropbox/core/v2/sharing/InsufficientQuotaAmounts;)Lcom/dropbox/core/v2/sharing/MountFolderError;
 	public fun isAccessError ()Z
@@ -11186,9 +11187,11 @@ public final class com/dropbox/core/v2/sharing/MountFolderError {
 	public fun isNoPermission ()Z
 	public fun isNotMountable ()Z
 	public fun isOther ()Z
+	public fun isTooManyMounts ()Z
 	public fun tag ()Lcom/dropbox/core/v2/sharing/MountFolderError$Tag;
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
+	public static fun tooManyMounts (Lcom/dropbox/core/v2/sharing/TooManyMountsError;)Lcom/dropbox/core/v2/sharing/MountFolderError;
 }
 
 public final class com/dropbox/core/v2/sharing/MountFolderError$Tag : java/lang/Enum {
@@ -11200,6 +11203,7 @@ public final class com/dropbox/core/v2/sharing/MountFolderError$Tag : java/lang/
 	public static final field NOT_MOUNTABLE Lcom/dropbox/core/v2/sharing/MountFolderError$Tag;
 	public static final field NO_PERMISSION Lcom/dropbox/core/v2/sharing/MountFolderError$Tag;
 	public static final field OTHER Lcom/dropbox/core/v2/sharing/MountFolderError$Tag;
+	public static final field TOO_MANY_MOUNTS Lcom/dropbox/core/v2/sharing/MountFolderError$Tag;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/MountFolderError$Tag;
 	public static fun values ()[Lcom/dropbox/core/v2/sharing/MountFolderError$Tag;
 }
@@ -11207,6 +11211,20 @@ public final class com/dropbox/core/v2/sharing/MountFolderError$Tag : java/lang/
 public class com/dropbox/core/v2/sharing/MountFolderErrorException : com/dropbox/core/DbxApiException {
 	public final field errorValue Lcom/dropbox/core/v2/sharing/MountFolderError;
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/sharing/MountFolderError;)V
+}
+
+public class com/dropbox/core/v2/sharing/MountLimitsInfo {
+	protected final field currentCount J
+	protected final field limit J
+	protected final field newCount J
+	public fun <init> (JJJ)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCurrentCount ()J
+	public fun getLimit ()J
+	public fun getNewCount ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
 }
 
 public class com/dropbox/core/v2/sharing/ParentFolderAccessInfo {
@@ -11604,6 +11622,7 @@ public final class com/dropbox/core/v2/sharing/ShareFolderError {
 	public static fun badPath (Lcom/dropbox/core/v2/sharing/SharePathError;)Lcom/dropbox/core/v2/sharing/ShareFolderError;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getBadPathValue ()Lcom/dropbox/core/v2/sharing/SharePathError;
+	public fun getTooManyMountsValue ()Lcom/dropbox/core/v2/sharing/TooManyMountsError;
 	public fun hashCode ()I
 	public fun isBadPath ()Z
 	public fun isDisallowedSharedLinkPolicy ()Z
@@ -11611,9 +11630,11 @@ public final class com/dropbox/core/v2/sharing/ShareFolderError {
 	public fun isNoPermission ()Z
 	public fun isOther ()Z
 	public fun isTeamPolicyDisallowsMemberPolicy ()Z
+	public fun isTooManyMounts ()Z
 	public fun tag ()Lcom/dropbox/core/v2/sharing/ShareFolderError$Tag;
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
+	public static fun tooManyMounts (Lcom/dropbox/core/v2/sharing/TooManyMountsError;)Lcom/dropbox/core/v2/sharing/ShareFolderError;
 }
 
 public final class com/dropbox/core/v2/sharing/ShareFolderError$Tag : java/lang/Enum {
@@ -11623,6 +11644,7 @@ public final class com/dropbox/core/v2/sharing/ShareFolderError$Tag : java/lang/
 	public static final field NO_PERMISSION Lcom/dropbox/core/v2/sharing/ShareFolderError$Tag;
 	public static final field OTHER Lcom/dropbox/core/v2/sharing/ShareFolderError$Tag;
 	public static final field TEAM_POLICY_DISALLOWS_MEMBER_POLICY Lcom/dropbox/core/v2/sharing/ShareFolderError$Tag;
+	public static final field TOO_MANY_MOUNTS Lcom/dropbox/core/v2/sharing/ShareFolderError$Tag;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/ShareFolderError$Tag;
 	public static fun values ()[Lcom/dropbox/core/v2/sharing/ShareFolderError$Tag;
 }
@@ -12270,6 +12292,34 @@ public class com/dropbox/core/v2/sharing/TeamMemberInfo {
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/sharing/TooManyMountsError {
+	public static final field OTHER Lcom/dropbox/core/v2/sharing/TooManyMountsError;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getHomeMountsExceededValue ()Lcom/dropbox/core/v2/sharing/MountLimitsInfo;
+	public fun getTotalMountsExceededValue ()Lcom/dropbox/core/v2/sharing/MountLimitsInfo;
+	public fun getTreeSizeExceededValue ()Lcom/dropbox/core/v2/sharing/MountLimitsInfo;
+	public fun hashCode ()I
+	public static fun homeMountsExceeded (Lcom/dropbox/core/v2/sharing/MountLimitsInfo;)Lcom/dropbox/core/v2/sharing/TooManyMountsError;
+	public fun isHomeMountsExceeded ()Z
+	public fun isOther ()Z
+	public fun isTotalMountsExceeded ()Z
+	public fun isTreeSizeExceeded ()Z
+	public fun tag ()Lcom/dropbox/core/v2/sharing/TooManyMountsError$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+	public static fun totalMountsExceeded (Lcom/dropbox/core/v2/sharing/MountLimitsInfo;)Lcom/dropbox/core/v2/sharing/TooManyMountsError;
+	public static fun treeSizeExceeded (Lcom/dropbox/core/v2/sharing/MountLimitsInfo;)Lcom/dropbox/core/v2/sharing/TooManyMountsError;
+}
+
+public final class com/dropbox/core/v2/sharing/TooManyMountsError$Tag : java/lang/Enum {
+	public static final field HOME_MOUNTS_EXCEEDED Lcom/dropbox/core/v2/sharing/TooManyMountsError$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/sharing/TooManyMountsError$Tag;
+	public static final field TOTAL_MOUNTS_EXCEEDED Lcom/dropbox/core/v2/sharing/TooManyMountsError$Tag;
+	public static final field TREE_SIZE_EXCEEDED Lcom/dropbox/core/v2/sharing/TooManyMountsError$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/TooManyMountsError$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/sharing/TooManyMountsError$Tag;
 }
 
 public final class com/dropbox/core/v2/sharing/TransferFolderError {
