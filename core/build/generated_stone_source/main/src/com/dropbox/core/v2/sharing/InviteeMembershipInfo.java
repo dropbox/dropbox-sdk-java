@@ -46,13 +46,15 @@ public class InviteeMembershipInfo extends MembershipInfo {
      *     the request. Must not contain a {@code null} item.
      * @param initials  Field is deprecated. Never set.
      * @param isInherited  True if the member has access on a parent folder.
+     * @param inheritedAccessType  The access type from parent folder for this
+     *     member.
      * @param user  The user this invitation is tied to, if available.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public InviteeMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull InviteeInfo invitee, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited, @Nullable UserInfo user) {
-        super(accessType, permissions, initials, isInherited);
+    public InviteeMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull InviteeInfo invitee, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited, @Nullable AccessLevel inheritedAccessType, @Nullable UserInfo user) {
+        super(accessType, permissions, initials, isInherited, inheritedAccessType);
         if (invitee == null) {
             throw new IllegalArgumentException("Required value for 'invitee' is null");
         }
@@ -74,7 +76,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
      *     preconditions.
      */
     public InviteeMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull InviteeInfo invitee) {
-        this(accessType, invitee, null, null, false, null);
+        this(accessType, invitee, null, null, false, null, null);
     }
 
     /**
@@ -130,6 +132,16 @@ public class InviteeMembershipInfo extends MembershipInfo {
      */
     public boolean getIsInherited() {
         return isInherited;
+    }
+
+    /**
+     * The access type from parent folder for this member.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public AccessLevel getInheritedAccessType() {
+        return inheritedAccessType;
     }
 
     /**
@@ -237,13 +249,26 @@ public class InviteeMembershipInfo extends MembershipInfo {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param inheritedAccessType  The access type from parent folder for
+         *     this member.
+         *
+         * @return this builder
+         */
+        public Builder withInheritedAccessType(AccessLevel inheritedAccessType) {
+            super.withInheritedAccessType(inheritedAccessType);
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link InviteeMembershipInfo} configured with
          * this builder's values
          *
          * @return new instance of {@link InviteeMembershipInfo}
          */
         public InviteeMembershipInfo build() {
-            return new InviteeMembershipInfo(accessType, invitee, permissions, initials, isInherited, user);
+            return new InviteeMembershipInfo(accessType, invitee, permissions, initials, isInherited, inheritedAccessType, user);
         }
     }
 
@@ -273,6 +298,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
                 && ((this.permissions == other.permissions) || (this.permissions != null && this.permissions.equals(other.permissions)))
                 && ((this.initials == other.initials) || (this.initials != null && this.initials.equals(other.initials)))
                 && (this.isInherited == other.isInherited)
+                && ((this.inheritedAccessType == other.inheritedAccessType) || (this.inheritedAccessType != null && this.inheritedAccessType.equals(other.inheritedAccessType)))
                 && ((this.user == other.user) || (this.user != null && this.user.equals(other.user)))
                 ;
         }
@@ -323,6 +349,10 @@ public class InviteeMembershipInfo extends MembershipInfo {
             }
             g.writeFieldName("is_inherited");
             StoneSerializers.boolean_().serialize(value.isInherited, g);
+            if (value.inheritedAccessType != null) {
+                g.writeFieldName("inherited_access_type");
+                StoneSerializers.nullable(AccessLevel.Serializer.INSTANCE).serialize(value.inheritedAccessType, g);
+            }
             if (value.user != null) {
                 g.writeFieldName("user");
                 StoneSerializers.nullableStruct(UserInfo.Serializer.INSTANCE).serialize(value.user, g);
@@ -346,6 +376,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
                 List<MemberPermission> f_permissions = null;
                 String f_initials = null;
                 Boolean f_isInherited = false;
+                AccessLevel f_inheritedAccessType = null;
                 UserInfo f_user = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
@@ -365,6 +396,9 @@ public class InviteeMembershipInfo extends MembershipInfo {
                     else if ("is_inherited".equals(field)) {
                         f_isInherited = StoneSerializers.boolean_().deserialize(p);
                     }
+                    else if ("inherited_access_type".equals(field)) {
+                        f_inheritedAccessType = StoneSerializers.nullable(AccessLevel.Serializer.INSTANCE).deserialize(p);
+                    }
                     else if ("user".equals(field)) {
                         f_user = StoneSerializers.nullableStruct(UserInfo.Serializer.INSTANCE).deserialize(p);
                     }
@@ -378,7 +412,7 @@ public class InviteeMembershipInfo extends MembershipInfo {
                 if (f_invitee == null) {
                     throw new JsonParseException(p, "Required field \"invitee\" missing.");
                 }
-                value = new InviteeMembershipInfo(f_accessType, f_invitee, f_permissions, f_initials, f_isInherited, f_user);
+                value = new InviteeMembershipInfo(f_accessType, f_invitee, f_permissions, f_initials, f_isInherited, f_inheritedAccessType, f_user);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

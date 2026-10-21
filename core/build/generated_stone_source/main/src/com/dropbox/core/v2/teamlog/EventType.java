@@ -2081,6 +2081,10 @@ public final class EventType {
          */
         DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY, // DataPlacementRestrictionSatisfyPolicyType
         /**
+         * (team_policies) Changed the default sync setting for new team folders
+         */
+        DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED, // DefaultTeamFolderSyncPolicyChangedType
+        /**
          * (team_policies) Added members to device approvals exception list
          */
         DEVICE_APPROVALS_ADD_EXCEPTION, // DeviceApprovalsAddExceptionType
@@ -3223,6 +3227,7 @@ public final class EventType {
     private DashExternalSharingPolicyChangedType dashExternalSharingPolicyChangedValue;
     private DataPlacementRestrictionChangePolicyType dataPlacementRestrictionChangePolicyValue;
     private DataPlacementRestrictionSatisfyPolicyType dataPlacementRestrictionSatisfyPolicyValue;
+    private DefaultTeamFolderSyncPolicyChangedType defaultTeamFolderSyncPolicyChangedValue;
     private DeviceApprovalsAddExceptionType deviceApprovalsAddExceptionValue;
     private DeviceApprovalsChangeDesktopPolicyType deviceApprovalsChangeDesktopPolicyValue;
     private DeviceApprovalsChangeMobilePolicyType deviceApprovalsChangeMobilePolicyValue;
@@ -11878,6 +11883,24 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.dataPlacementRestrictionSatisfyPolicyValue = dataPlacementRestrictionSatisfyPolicyValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param defaultTeamFolderSyncPolicyChangedValue  (team_policies) Changed
+     *     the default sync setting for new team folders. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDefaultTeamFolderSyncPolicyChanged(Tag _tag, DefaultTeamFolderSyncPolicyChangedType defaultTeamFolderSyncPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.defaultTeamFolderSyncPolicyChangedValue = defaultTeamFolderSyncPolicyChangedValue;
         return result;
     }
 
@@ -39506,6 +39529,59 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED}, {@code false}
+     *     otherwise.
+     */
+    public boolean isDefaultTeamFolderSyncPolicyChanged() {
+        return this._tag == Tag.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed the default sync setting for new team folders
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType defaultTeamFolderSyncPolicyChanged(DefaultTeamFolderSyncPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDefaultTeamFolderSyncPolicyChanged(Tag.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed the default sync setting for new team folders
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link DefaultTeamFolderSyncPolicyChangedType} value
+     *     associated with this instance if {@link
+     *     #isDefaultTeamFolderSyncPolicyChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isDefaultTeamFolderSyncPolicyChanged} is {@code false}.
+     */
+    public DefaultTeamFolderSyncPolicyChangedType getDefaultTeamFolderSyncPolicyChangedValue() {
+        if (this._tag != Tag.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return defaultTeamFolderSyncPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#DEVICE_APPROVALS_ADD_EXCEPTION}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -47457,6 +47533,7 @@ public final class EventType {
             this.dashExternalSharingPolicyChangedValue,
             this.dataPlacementRestrictionChangePolicyValue,
             this.dataPlacementRestrictionSatisfyPolicyValue,
+            this.defaultTeamFolderSyncPolicyChangedValue,
             this.deviceApprovalsAddExceptionValue,
             this.deviceApprovalsChangeDesktopPolicyValue,
             this.deviceApprovalsChangeMobilePolicyValue,
@@ -48613,6 +48690,8 @@ public final class EventType {
                     return (this.dataPlacementRestrictionChangePolicyValue == other.dataPlacementRestrictionChangePolicyValue) || (this.dataPlacementRestrictionChangePolicyValue.equals(other.dataPlacementRestrictionChangePolicyValue));
                 case DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY:
                     return (this.dataPlacementRestrictionSatisfyPolicyValue == other.dataPlacementRestrictionSatisfyPolicyValue) || (this.dataPlacementRestrictionSatisfyPolicyValue.equals(other.dataPlacementRestrictionSatisfyPolicyValue));
+                case DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED:
+                    return (this.defaultTeamFolderSyncPolicyChangedValue == other.defaultTeamFolderSyncPolicyChangedValue) || (this.defaultTeamFolderSyncPolicyChangedValue.equals(other.defaultTeamFolderSyncPolicyChangedValue));
                 case DEVICE_APPROVALS_ADD_EXCEPTION:
                     return (this.deviceApprovalsAddExceptionValue == other.deviceApprovalsAddExceptionValue) || (this.deviceApprovalsAddExceptionValue.equals(other.deviceApprovalsAddExceptionValue));
                 case DEVICE_APPROVALS_CHANGE_DESKTOP_POLICY:
@@ -52417,6 +52496,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("default_team_folder_sync_policy_changed", g);
+                    DefaultTeamFolderSyncPolicyChangedType.Serializer.INSTANCE.serialize(value.defaultTeamFolderSyncPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case DEVICE_APPROVALS_ADD_EXCEPTION: {
                     g.writeStartObject();
                     writeTag("device_approvals_add_exception", g);
@@ -55933,6 +56019,11 @@ public final class EventType {
                 DataPlacementRestrictionSatisfyPolicyType fieldValue = null;
                 fieldValue = DataPlacementRestrictionSatisfyPolicyType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.dataPlacementRestrictionSatisfyPolicy(fieldValue);
+            }
+            else if ("default_team_folder_sync_policy_changed".equals(tag)) {
+                DefaultTeamFolderSyncPolicyChangedType fieldValue = null;
+                fieldValue = DefaultTeamFolderSyncPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.defaultTeamFolderSyncPolicyChanged(fieldValue);
             }
             else if ("device_approvals_add_exception".equals(tag)) {
                 DeviceApprovalsAddExceptionType fieldValue = null;
