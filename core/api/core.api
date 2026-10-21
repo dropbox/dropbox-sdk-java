@@ -9762,7 +9762,6 @@ public class com/dropbox/core/v2/sharing/DbxUserSharingRequests {
 	public fun relinquishFileMembership (Ljava/lang/String;)V
 	public fun relinquishFolderMembership (Ljava/lang/String;)Lcom/dropbox/core/v2/async/LaunchEmptyResult;
 	public fun relinquishFolderMembership (Ljava/lang/String;Z)Lcom/dropbox/core/v2/async/LaunchEmptyResult;
-	public fun removeFileMember (Ljava/lang/String;Lcom/dropbox/core/v2/sharing/MemberSelector;)Lcom/dropbox/core/v2/sharing/FileMemberActionIndividualResult;
 	public fun removeFileMember2 (Ljava/lang/String;Lcom/dropbox/core/v2/sharing/MemberSelector;)Lcom/dropbox/core/v2/sharing/FileMemberRemoveActionResult;
 	public fun removeFolderMember (Ljava/lang/String;Lcom/dropbox/core/v2/sharing/MemberSelector;Z)Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun revokeSharedLink (Ljava/lang/String;)V

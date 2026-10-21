@@ -1854,54 +1854,6 @@ public class DbxUserSharingRequests {
     }
 
     //
-    // route 2/sharing/remove_file_member
-    //
-
-    /**
-     * Identical to remove_file_member_2 but with less information returned.
-     *
-     * @param arg  Arguments for {@link
-     *     DbxUserSharingRequests#removeFileMember2(String,MemberSelector)}.
-     */
-    FileMemberActionIndividualResult removeFileMember(RemoveFileMemberArg arg) throws RemoveFileMemberErrorException, DbxException {
-        try {
-            return this.client.rpcStyle(this.client.getHost().getApi(),
-                                        "2/sharing/remove_file_member",
-                                        arg,
-                                        false,
-                                        RemoveFileMemberArg.Serializer.INSTANCE,
-                                        FileMemberActionIndividualResult.Serializer.INSTANCE,
-                                        RemoveFileMemberError.Serializer.INSTANCE);
-        }
-        catch (DbxWrappedException ex) {
-            throw new RemoveFileMemberErrorException("2/sharing/remove_file_member", ex.getRequestId(), ex.getUserMessage(), (RemoveFileMemberError) ex.getErrorValue());
-        }
-    }
-
-    /**
-     * Identical to remove_file_member_2 but with less information returned.
-     *
-     * @param file  File from which to remove members. Must have length of at
-     *     least 1, match pattern "{@code
-     *     ((/|id:).*|nspath:[0-9]+:.*)|ns:[0-9]+(/.*)?}", and not be {@code
-     *     null}.
-     * @param member  Member to remove from this file. Note that even if an
-     *     email is specified, it may result in the removal of a user (not an
-     *     invitee) if the user's main account corresponds to that email
-     *     address. Must not be {@code null}.
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     *
-     * @deprecated
-     */
-    @Deprecated
-    public FileMemberActionIndividualResult removeFileMember(String file, MemberSelector member) throws RemoveFileMemberErrorException, DbxException {
-        RemoveFileMemberArg _arg = new RemoveFileMemberArg(file, member);
-        return removeFileMember(_arg);
-    }
-
-    //
     // route 2/sharing/remove_file_member_2
     //
 

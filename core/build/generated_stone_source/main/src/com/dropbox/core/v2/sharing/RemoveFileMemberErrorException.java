@@ -11,20 +11,20 @@ import com.dropbox.core.LocalizedText;
  * RemoveFileMemberError} error.
  *
  * <p> This exception is raised by {@link
- * DbxUserSharingRequests#removeFileMember(String,MemberSelector)} and {@link
- * DbxUserSharingRequests#removeFileMember2(String,MemberSelector)}. </p>
+ * DbxUserSharingRequests#removeFileMember2(String,MemberSelector)} and {@link
+ * DbxUserSharingRequests#removeFileMember(String,MemberSelector)}. </p>
  */
 public class RemoveFileMemberErrorException extends DbxApiException {
     // exception for routes:
-    //     2/sharing/remove_file_member
     //     2/sharing/remove_file_member_2
+    //     2/sharing/remove_file_member
 
     private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
-     * DbxUserSharingRequests#removeFileMember(String,MemberSelector)} and
-     * {@link DbxUserSharingRequests#removeFileMember2(String,MemberSelector)}.
+     * DbxUserSharingRequests#removeFileMember2(String,MemberSelector)} and
+     * {@link DbxUserSharingRequests#removeFileMember(String,MemberSelector)}.
      */
     public final RemoveFileMemberError errorValue;
 
