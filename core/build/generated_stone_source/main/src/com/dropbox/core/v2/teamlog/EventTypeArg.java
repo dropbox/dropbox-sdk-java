@@ -2055,6 +2055,10 @@ public enum EventTypeArg {
      */
     DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY,
     /**
+     * (team_policies) Changed the default sync setting for new team folders
+     */
+    DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED,
+    /**
      * (team_policies) Added members to device approvals exception list
      */
     DEVICE_APPROVALS_ADD_EXCEPTION,
@@ -4674,6 +4678,10 @@ public enum EventTypeArg {
                     g.writeString("data_placement_restriction_satisfy_policy");
                     break;
                 }
+                case DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED: {
+                    g.writeString("default_team_folder_sync_policy_changed");
+                    break;
+                }
                 case DEVICE_APPROVALS_ADD_EXCEPTION: {
                     g.writeString("device_approvals_add_exception");
                     break;
@@ -6764,6 +6772,9 @@ public enum EventTypeArg {
             }
             else if ("data_placement_restriction_satisfy_policy".equals(tag)) {
                 value = EventTypeArg.DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY;
+            }
+            else if ("default_team_folder_sync_policy_changed".equals(tag)) {
+                value = EventTypeArg.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED;
             }
             else if ("device_approvals_add_exception".equals(tag)) {
                 value = EventTypeArg.DEVICE_APPROVALS_ADD_EXCEPTION;

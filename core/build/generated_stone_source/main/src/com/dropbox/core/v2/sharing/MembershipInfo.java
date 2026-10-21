@@ -33,6 +33,8 @@ public class MembershipInfo {
     @Nullable
     protected final String initials;
     protected final boolean isInherited;
+    @Nullable
+    protected final AccessLevel inheritedAccessType;
 
     /**
      * The information about a member of the shared content.
@@ -48,11 +50,13 @@ public class MembershipInfo {
      *     the request. Must not contain a {@code null} item.
      * @param initials  Field is deprecated. Never set.
      * @param isInherited  True if the member has access on a parent folder.
+     * @param inheritedAccessType  The access type from parent folder for this
+     *     member.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public MembershipInfo(@Nonnull AccessLevel accessType, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited) {
+    public MembershipInfo(@Nonnull AccessLevel accessType, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited, @Nullable AccessLevel inheritedAccessType) {
         if (accessType == null) {
             throw new IllegalArgumentException("Required value for 'accessType' is null");
         }
@@ -67,6 +71,7 @@ public class MembershipInfo {
         this.permissions = permissions;
         this.initials = initials;
         this.isInherited = isInherited;
+        this.inheritedAccessType = inheritedAccessType;
     }
 
     /**
@@ -82,7 +87,7 @@ public class MembershipInfo {
      *     preconditions.
      */
     public MembershipInfo(@Nonnull AccessLevel accessType) {
-        this(accessType, null, null, false);
+        this(accessType, null, null, false, null);
     }
 
     /**
@@ -131,6 +136,16 @@ public class MembershipInfo {
     }
 
     /**
+     * The access type from parent folder for this member.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public AccessLevel getInheritedAccessType() {
+        return inheritedAccessType;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param accessType  The access type for this member. It contains inherited
@@ -155,6 +170,7 @@ public class MembershipInfo {
         protected List<MemberPermission> permissions;
         protected String initials;
         protected boolean isInherited;
+        protected AccessLevel inheritedAccessType;
 
         protected Builder(AccessLevel accessType) {
             if (accessType == null) {
@@ -164,6 +180,7 @@ public class MembershipInfo {
             this.permissions = null;
             this.initials = null;
             this.isInherited = false;
+            this.inheritedAccessType = null;
         }
 
         /**
@@ -227,13 +244,26 @@ public class MembershipInfo {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param inheritedAccessType  The access type from parent folder for
+         *     this member.
+         *
+         * @return this builder
+         */
+        public Builder withInheritedAccessType(AccessLevel inheritedAccessType) {
+            this.inheritedAccessType = inheritedAccessType;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link MembershipInfo} configured with this
          * builder's values
          *
          * @return new instance of {@link MembershipInfo}
          */
         public MembershipInfo build() {
-            return new MembershipInfo(accessType, permissions, initials, isInherited);
+            return new MembershipInfo(accessType, permissions, initials, isInherited, inheritedAccessType);
         }
     }
 
@@ -243,7 +273,8 @@ public class MembershipInfo {
             this.accessType,
             this.permissions,
             this.initials,
-            this.isInherited
+            this.isInherited,
+            this.inheritedAccessType
         });
         return hash;
     }
@@ -263,6 +294,7 @@ public class MembershipInfo {
                 && ((this.permissions == other.permissions) || (this.permissions != null && this.permissions.equals(other.permissions)))
                 && ((this.initials == other.initials) || (this.initials != null && this.initials.equals(other.initials)))
                 && (this.isInherited == other.isInherited)
+                && ((this.inheritedAccessType == other.inheritedAccessType) || (this.inheritedAccessType != null && this.inheritedAccessType.equals(other.inheritedAccessType)))
                 ;
         }
         else {
@@ -310,6 +342,10 @@ public class MembershipInfo {
             }
             g.writeFieldName("is_inherited");
             StoneSerializers.boolean_().serialize(value.isInherited, g);
+            if (value.inheritedAccessType != null) {
+                g.writeFieldName("inherited_access_type");
+                StoneSerializers.nullable(AccessLevel.Serializer.INSTANCE).serialize(value.inheritedAccessType, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -328,6 +364,7 @@ public class MembershipInfo {
                 List<MemberPermission> f_permissions = null;
                 String f_initials = null;
                 Boolean f_isInherited = false;
+                AccessLevel f_inheritedAccessType = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -343,6 +380,9 @@ public class MembershipInfo {
                     else if ("is_inherited".equals(field)) {
                         f_isInherited = StoneSerializers.boolean_().deserialize(p);
                     }
+                    else if ("inherited_access_type".equals(field)) {
+                        f_inheritedAccessType = StoneSerializers.nullable(AccessLevel.Serializer.INSTANCE).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -350,7 +390,7 @@ public class MembershipInfo {
                 if (f_accessType == null) {
                     throw new JsonParseException(p, "Required field \"access_type\" missing.");
                 }
-                value = new MembershipInfo(f_accessType, f_permissions, f_initials, f_isInherited);
+                value = new MembershipInfo(f_accessType, f_permissions, f_initials, f_isInherited, f_inheritedAccessType);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

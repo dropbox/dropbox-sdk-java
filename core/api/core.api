@@ -9835,15 +9835,17 @@ public class com/dropbox/core/v2/sharing/FileLinkMetadata : com/dropbox/core/v2/
 	protected final field serverModified Ljava/util/Date;
 	protected final field size J
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/LinkPermissions;Ljava/util/Date;Ljava/util/Date;Ljava/lang/String;J)V
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/LinkPermissions;Ljava/util/Date;Ljava/util/Date;Ljava/lang/String;JLjava/lang/String;Ljava/util/Date;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/TeamMemberInfo;Lcom/dropbox/core/v2/users/Team;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/LinkPermissions;Ljava/util/Date;Ljava/util/Date;Ljava/lang/String;JLjava/lang/String;Ljava/util/Date;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/TeamMemberInfo;Lcom/dropbox/core/v2/users/Team;Ljava/lang/String;Ljava/util/Date;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getClientModified ()Ljava/util/Date;
 	public fun getContentOwnerTeamInfo ()Lcom/dropbox/core/v2/users/Team;
+	public fun getCreatedTimestamp ()Ljava/util/Date;
 	public fun getExpires ()Ljava/util/Date;
 	public fun getId ()Ljava/lang/String;
 	public fun getLinkPermissions ()Lcom/dropbox/core/v2/sharing/LinkPermissions;
 	public fun getName ()Ljava/lang/String;
 	public fun getPathLower ()Ljava/lang/String;
+	public fun getPreviewType ()Ljava/lang/String;
 	public fun getRev ()Ljava/lang/String;
 	public fun getServerModified ()Ljava/util/Date;
 	public fun getSize ()J
@@ -9865,12 +9867,16 @@ public class com/dropbox/core/v2/sharing/FileLinkMetadata$Builder : com/dropbox/
 	public synthetic fun build ()Lcom/dropbox/core/v2/sharing/SharedLinkMetadata;
 	public fun withContentOwnerTeamInfo (Lcom/dropbox/core/v2/users/Team;)Lcom/dropbox/core/v2/sharing/FileLinkMetadata$Builder;
 	public synthetic fun withContentOwnerTeamInfo (Lcom/dropbox/core/v2/users/Team;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
+	public fun withCreatedTimestamp (Ljava/util/Date;)Lcom/dropbox/core/v2/sharing/FileLinkMetadata$Builder;
+	public synthetic fun withCreatedTimestamp (Ljava/util/Date;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 	public fun withExpires (Ljava/util/Date;)Lcom/dropbox/core/v2/sharing/FileLinkMetadata$Builder;
 	public synthetic fun withExpires (Ljava/util/Date;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 	public fun withId (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/FileLinkMetadata$Builder;
 	public synthetic fun withId (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 	public fun withPathLower (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/FileLinkMetadata$Builder;
 	public synthetic fun withPathLower (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
+	public fun withPreviewType (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/FileLinkMetadata$Builder;
+	public synthetic fun withPreviewType (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 	public fun withTeamMemberInfo (Lcom/dropbox/core/v2/sharing/TeamMemberInfo;)Lcom/dropbox/core/v2/sharing/FileLinkMetadata$Builder;
 	public synthetic fun withTeamMemberInfo (Lcom/dropbox/core/v2/sharing/TeamMemberInfo;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 }
@@ -10024,14 +10030,16 @@ public final class com/dropbox/core/v2/sharing/FolderAction : java/lang/Enum {
 
 public class com/dropbox/core/v2/sharing/FolderLinkMetadata : com/dropbox/core/v2/sharing/SharedLinkMetadata {
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/LinkPermissions;)V
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/LinkPermissions;Ljava/lang/String;Ljava/util/Date;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/TeamMemberInfo;Lcom/dropbox/core/v2/users/Team;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/LinkPermissions;Ljava/lang/String;Ljava/util/Date;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/TeamMemberInfo;Lcom/dropbox/core/v2/users/Team;Ljava/lang/String;Ljava/util/Date;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getContentOwnerTeamInfo ()Lcom/dropbox/core/v2/users/Team;
+	public fun getCreatedTimestamp ()Ljava/util/Date;
 	public fun getExpires ()Ljava/util/Date;
 	public fun getId ()Ljava/lang/String;
 	public fun getLinkPermissions ()Lcom/dropbox/core/v2/sharing/LinkPermissions;
 	public fun getName ()Ljava/lang/String;
 	public fun getPathLower ()Ljava/lang/String;
+	public fun getPreviewType ()Ljava/lang/String;
 	public fun getTeamMemberInfo ()Lcom/dropbox/core/v2/sharing/TeamMemberInfo;
 	public fun getUrl ()Ljava/lang/String;
 	public fun hashCode ()I
@@ -10046,12 +10054,16 @@ public class com/dropbox/core/v2/sharing/FolderLinkMetadata$Builder : com/dropbo
 	public synthetic fun build ()Lcom/dropbox/core/v2/sharing/SharedLinkMetadata;
 	public fun withContentOwnerTeamInfo (Lcom/dropbox/core/v2/users/Team;)Lcom/dropbox/core/v2/sharing/FolderLinkMetadata$Builder;
 	public synthetic fun withContentOwnerTeamInfo (Lcom/dropbox/core/v2/users/Team;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
+	public fun withCreatedTimestamp (Ljava/util/Date;)Lcom/dropbox/core/v2/sharing/FolderLinkMetadata$Builder;
+	public synthetic fun withCreatedTimestamp (Ljava/util/Date;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 	public fun withExpires (Ljava/util/Date;)Lcom/dropbox/core/v2/sharing/FolderLinkMetadata$Builder;
 	public synthetic fun withExpires (Ljava/util/Date;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 	public fun withId (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/FolderLinkMetadata$Builder;
 	public synthetic fun withId (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 	public fun withPathLower (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/FolderLinkMetadata$Builder;
 	public synthetic fun withPathLower (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
+	public fun withPreviewType (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/FolderLinkMetadata$Builder;
+	public synthetic fun withPreviewType (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 	public fun withTeamMemberInfo (Lcom/dropbox/core/v2/sharing/TeamMemberInfo;)Lcom/dropbox/core/v2/sharing/FolderLinkMetadata$Builder;
 	public synthetic fun withTeamMemberInfo (Lcom/dropbox/core/v2/sharing/TeamMemberInfo;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 }
@@ -10261,10 +10273,11 @@ public class com/dropbox/core/v2/sharing/GroupInfo$Builder : com/dropbox/core/v2
 public class com/dropbox/core/v2/sharing/GroupMembershipInfo : com/dropbox/core/v2/sharing/MembershipInfo {
 	protected final field group Lcom/dropbox/core/v2/sharing/GroupInfo;
 	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/GroupInfo;)V
-	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/GroupInfo;Ljava/util/List;Ljava/lang/String;Z)V
+	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/GroupInfo;Ljava/util/List;Ljava/lang/String;ZLcom/dropbox/core/v2/sharing/AccessLevel;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getAccessType ()Lcom/dropbox/core/v2/sharing/AccessLevel;
 	public fun getGroup ()Lcom/dropbox/core/v2/sharing/GroupInfo;
+	public fun getInheritedAccessType ()Lcom/dropbox/core/v2/sharing/AccessLevel;
 	public fun getInitials ()Ljava/lang/String;
 	public fun getIsInherited ()Z
 	public fun getPermissions ()Ljava/util/List;
@@ -10279,6 +10292,8 @@ public class com/dropbox/core/v2/sharing/GroupMembershipInfo$Builder : com/dropb
 	protected fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/GroupInfo;)V
 	public fun build ()Lcom/dropbox/core/v2/sharing/GroupMembershipInfo;
 	public synthetic fun build ()Lcom/dropbox/core/v2/sharing/MembershipInfo;
+	public fun withInheritedAccessType (Lcom/dropbox/core/v2/sharing/AccessLevel;)Lcom/dropbox/core/v2/sharing/GroupMembershipInfo$Builder;
+	public synthetic fun withInheritedAccessType (Lcom/dropbox/core/v2/sharing/AccessLevel;)Lcom/dropbox/core/v2/sharing/MembershipInfo$Builder;
 	public fun withInitials (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/GroupMembershipInfo$Builder;
 	public synthetic fun withInitials (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/MembershipInfo$Builder;
 	public fun withIsInherited (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/sharing/GroupMembershipInfo$Builder;
@@ -10347,9 +10362,10 @@ public class com/dropbox/core/v2/sharing/InviteeMembershipInfo : com/dropbox/cor
 	protected final field invitee Lcom/dropbox/core/v2/sharing/InviteeInfo;
 	protected final field user Lcom/dropbox/core/v2/sharing/UserInfo;
 	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/InviteeInfo;)V
-	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/InviteeInfo;Ljava/util/List;Ljava/lang/String;ZLcom/dropbox/core/v2/sharing/UserInfo;)V
+	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/InviteeInfo;Ljava/util/List;Ljava/lang/String;ZLcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/UserInfo;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getAccessType ()Lcom/dropbox/core/v2/sharing/AccessLevel;
+	public fun getInheritedAccessType ()Lcom/dropbox/core/v2/sharing/AccessLevel;
 	public fun getInitials ()Ljava/lang/String;
 	public fun getInvitee ()Lcom/dropbox/core/v2/sharing/InviteeInfo;
 	public fun getIsInherited ()Z
@@ -10367,6 +10383,8 @@ public class com/dropbox/core/v2/sharing/InviteeMembershipInfo$Builder : com/dro
 	protected fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/InviteeInfo;)V
 	public fun build ()Lcom/dropbox/core/v2/sharing/InviteeMembershipInfo;
 	public synthetic fun build ()Lcom/dropbox/core/v2/sharing/MembershipInfo;
+	public fun withInheritedAccessType (Lcom/dropbox/core/v2/sharing/AccessLevel;)Lcom/dropbox/core/v2/sharing/InviteeMembershipInfo$Builder;
+	public synthetic fun withInheritedAccessType (Lcom/dropbox/core/v2/sharing/AccessLevel;)Lcom/dropbox/core/v2/sharing/MembershipInfo$Builder;
 	public fun withInitials (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/InviteeMembershipInfo$Builder;
 	public synthetic fun withInitials (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/MembershipInfo$Builder;
 	public fun withIsInherited (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/sharing/InviteeMembershipInfo$Builder;
@@ -10948,12 +10966,14 @@ public class com/dropbox/core/v2/sharing/ListSharedLinksBuilder {
 
 public final class com/dropbox/core/v2/sharing/ListSharedLinksError {
 	public static final field OTHER Lcom/dropbox/core/v2/sharing/ListSharedLinksError;
+	public static final field PERMISSION_DENIED Lcom/dropbox/core/v2/sharing/ListSharedLinksError;
 	public static final field RESET Lcom/dropbox/core/v2/sharing/ListSharedLinksError;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getPathValue ()Lcom/dropbox/core/v2/files/LookupError;
 	public fun hashCode ()I
 	public fun isOther ()Z
 	public fun isPath ()Z
+	public fun isPermissionDenied ()Z
 	public fun isReset ()Z
 	public static fun path (Lcom/dropbox/core/v2/files/LookupError;)Lcom/dropbox/core/v2/sharing/ListSharedLinksError;
 	public fun tag ()Lcom/dropbox/core/v2/sharing/ListSharedLinksError$Tag;
@@ -10964,6 +10984,7 @@ public final class com/dropbox/core/v2/sharing/ListSharedLinksError {
 public final class com/dropbox/core/v2/sharing/ListSharedLinksError$Tag : java/lang/Enum {
 	public static final field OTHER Lcom/dropbox/core/v2/sharing/ListSharedLinksError$Tag;
 	public static final field PATH Lcom/dropbox/core/v2/sharing/ListSharedLinksError$Tag;
+	public static final field PERMISSION_DENIED Lcom/dropbox/core/v2/sharing/ListSharedLinksError$Tag;
 	public static final field RESET Lcom/dropbox/core/v2/sharing/ListSharedLinksError$Tag;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/ListSharedLinksError$Tag;
 	public static fun values ()[Lcom/dropbox/core/v2/sharing/ListSharedLinksError$Tag;
@@ -11096,13 +11117,15 @@ public final class com/dropbox/core/v2/sharing/MemberSelector$Tag : java/lang/En
 
 public class com/dropbox/core/v2/sharing/MembershipInfo {
 	protected final field accessType Lcom/dropbox/core/v2/sharing/AccessLevel;
+	protected final field inheritedAccessType Lcom/dropbox/core/v2/sharing/AccessLevel;
 	protected final field initials Ljava/lang/String;
 	protected final field isInherited Z
 	protected final field permissions Ljava/util/List;
 	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;)V
-	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Ljava/util/List;Ljava/lang/String;Z)V
+	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Ljava/util/List;Ljava/lang/String;ZLcom/dropbox/core/v2/sharing/AccessLevel;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getAccessType ()Lcom/dropbox/core/v2/sharing/AccessLevel;
+	public fun getInheritedAccessType ()Lcom/dropbox/core/v2/sharing/AccessLevel;
 	public fun getInitials ()Ljava/lang/String;
 	public fun getIsInherited ()Z
 	public fun getPermissions ()Ljava/util/List;
@@ -11114,11 +11137,13 @@ public class com/dropbox/core/v2/sharing/MembershipInfo {
 
 public class com/dropbox/core/v2/sharing/MembershipInfo$Builder {
 	protected final field accessType Lcom/dropbox/core/v2/sharing/AccessLevel;
+	protected field inheritedAccessType Lcom/dropbox/core/v2/sharing/AccessLevel;
 	protected field initials Ljava/lang/String;
 	protected field isInherited Z
 	protected field permissions Ljava/util/List;
 	protected fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;)V
 	public fun build ()Lcom/dropbox/core/v2/sharing/MembershipInfo;
+	public fun withInheritedAccessType (Lcom/dropbox/core/v2/sharing/AccessLevel;)Lcom/dropbox/core/v2/sharing/MembershipInfo$Builder;
 	public fun withInitials (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/MembershipInfo$Builder;
 	public fun withIsInherited (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/sharing/MembershipInfo$Builder;
 	public fun withPermissions (Ljava/util/List;)Lcom/dropbox/core/v2/sharing/MembershipInfo$Builder;
@@ -12130,22 +12155,26 @@ public final class com/dropbox/core/v2/sharing/SharedLinkAlreadyExistsMetadata$T
 
 public class com/dropbox/core/v2/sharing/SharedLinkMetadata {
 	protected final field contentOwnerTeamInfo Lcom/dropbox/core/v2/users/Team;
+	protected final field createdTimestamp Ljava/util/Date;
 	protected final field expires Ljava/util/Date;
 	protected final field id Ljava/lang/String;
 	protected final field linkPermissions Lcom/dropbox/core/v2/sharing/LinkPermissions;
 	protected final field name Ljava/lang/String;
 	protected final field pathLower Ljava/lang/String;
+	protected final field previewType Ljava/lang/String;
 	protected final field teamMemberInfo Lcom/dropbox/core/v2/sharing/TeamMemberInfo;
 	protected final field url Ljava/lang/String;
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/LinkPermissions;)V
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/LinkPermissions;Ljava/lang/String;Ljava/util/Date;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/TeamMemberInfo;Lcom/dropbox/core/v2/users/Team;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/LinkPermissions;Ljava/lang/String;Ljava/util/Date;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/TeamMemberInfo;Lcom/dropbox/core/v2/users/Team;Ljava/lang/String;Ljava/util/Date;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getContentOwnerTeamInfo ()Lcom/dropbox/core/v2/users/Team;
+	public fun getCreatedTimestamp ()Ljava/util/Date;
 	public fun getExpires ()Ljava/util/Date;
 	public fun getId ()Ljava/lang/String;
 	public fun getLinkPermissions ()Lcom/dropbox/core/v2/sharing/LinkPermissions;
 	public fun getName ()Ljava/lang/String;
 	public fun getPathLower ()Ljava/lang/String;
+	public fun getPreviewType ()Ljava/lang/String;
 	public fun getTeamMemberInfo ()Lcom/dropbox/core/v2/sharing/TeamMemberInfo;
 	public fun getUrl ()Ljava/lang/String;
 	public fun hashCode ()I
@@ -12156,19 +12185,23 @@ public class com/dropbox/core/v2/sharing/SharedLinkMetadata {
 
 public class com/dropbox/core/v2/sharing/SharedLinkMetadata$Builder {
 	protected field contentOwnerTeamInfo Lcom/dropbox/core/v2/users/Team;
+	protected field createdTimestamp Ljava/util/Date;
 	protected field expires Ljava/util/Date;
 	protected field id Ljava/lang/String;
 	protected final field linkPermissions Lcom/dropbox/core/v2/sharing/LinkPermissions;
 	protected final field name Ljava/lang/String;
 	protected field pathLower Ljava/lang/String;
+	protected field previewType Ljava/lang/String;
 	protected field teamMemberInfo Lcom/dropbox/core/v2/sharing/TeamMemberInfo;
 	protected final field url Ljava/lang/String;
 	protected fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/LinkPermissions;)V
 	public fun build ()Lcom/dropbox/core/v2/sharing/SharedLinkMetadata;
 	public fun withContentOwnerTeamInfo (Lcom/dropbox/core/v2/users/Team;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
+	public fun withCreatedTimestamp (Ljava/util/Date;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 	public fun withExpires (Ljava/util/Date;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 	public fun withId (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 	public fun withPathLower (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
+	public fun withPreviewType (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 	public fun withTeamMemberInfo (Lcom/dropbox/core/v2/sharing/TeamMemberInfo;)Lcom/dropbox/core/v2/sharing/SharedLinkMetadata$Builder;
 }
 
@@ -12589,9 +12622,10 @@ public class com/dropbox/core/v2/sharing/UserFileMembershipInfo : com/dropbox/co
 	protected final field platformType Lcom/dropbox/core/v2/seenstate/PlatformType;
 	protected final field timeLastSeen Ljava/util/Date;
 	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/UserInfo;)V
-	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/UserInfo;Ljava/util/List;Ljava/lang/String;ZLjava/util/Date;Lcom/dropbox/core/v2/seenstate/PlatformType;)V
+	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/UserInfo;Ljava/util/List;Ljava/lang/String;ZLcom/dropbox/core/v2/sharing/AccessLevel;Ljava/util/Date;Lcom/dropbox/core/v2/seenstate/PlatformType;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getAccessType ()Lcom/dropbox/core/v2/sharing/AccessLevel;
+	public fun getInheritedAccessType ()Lcom/dropbox/core/v2/sharing/AccessLevel;
 	public fun getInitials ()Ljava/lang/String;
 	public fun getIsInherited ()Z
 	public fun getPermissions ()Ljava/util/List;
@@ -12611,6 +12645,9 @@ public class com/dropbox/core/v2/sharing/UserFileMembershipInfo$Builder : com/dr
 	public synthetic fun build ()Lcom/dropbox/core/v2/sharing/MembershipInfo;
 	public fun build ()Lcom/dropbox/core/v2/sharing/UserFileMembershipInfo;
 	public synthetic fun build ()Lcom/dropbox/core/v2/sharing/UserMembershipInfo;
+	public synthetic fun withInheritedAccessType (Lcom/dropbox/core/v2/sharing/AccessLevel;)Lcom/dropbox/core/v2/sharing/MembershipInfo$Builder;
+	public fun withInheritedAccessType (Lcom/dropbox/core/v2/sharing/AccessLevel;)Lcom/dropbox/core/v2/sharing/UserFileMembershipInfo$Builder;
+	public synthetic fun withInheritedAccessType (Lcom/dropbox/core/v2/sharing/AccessLevel;)Lcom/dropbox/core/v2/sharing/UserMembershipInfo$Builder;
 	public synthetic fun withInitials (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/MembershipInfo$Builder;
 	public fun withInitials (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/UserFileMembershipInfo$Builder;
 	public synthetic fun withInitials (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/UserMembershipInfo$Builder;
@@ -12655,9 +12692,10 @@ public class com/dropbox/core/v2/sharing/UserInfo$Serializer : com/dropbox/core/
 public class com/dropbox/core/v2/sharing/UserMembershipInfo : com/dropbox/core/v2/sharing/MembershipInfo {
 	protected final field user Lcom/dropbox/core/v2/sharing/UserInfo;
 	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/UserInfo;)V
-	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/UserInfo;Ljava/util/List;Ljava/lang/String;Z)V
+	public fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/UserInfo;Ljava/util/List;Ljava/lang/String;ZLcom/dropbox/core/v2/sharing/AccessLevel;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getAccessType ()Lcom/dropbox/core/v2/sharing/AccessLevel;
+	public fun getInheritedAccessType ()Lcom/dropbox/core/v2/sharing/AccessLevel;
 	public fun getInitials ()Ljava/lang/String;
 	public fun getIsInherited ()Z
 	public fun getPermissions ()Ljava/util/List;
@@ -12673,6 +12711,8 @@ public class com/dropbox/core/v2/sharing/UserMembershipInfo$Builder : com/dropbo
 	protected fun <init> (Lcom/dropbox/core/v2/sharing/AccessLevel;Lcom/dropbox/core/v2/sharing/UserInfo;)V
 	public synthetic fun build ()Lcom/dropbox/core/v2/sharing/MembershipInfo;
 	public fun build ()Lcom/dropbox/core/v2/sharing/UserMembershipInfo;
+	public synthetic fun withInheritedAccessType (Lcom/dropbox/core/v2/sharing/AccessLevel;)Lcom/dropbox/core/v2/sharing/MembershipInfo$Builder;
+	public fun withInheritedAccessType (Lcom/dropbox/core/v2/sharing/AccessLevel;)Lcom/dropbox/core/v2/sharing/UserMembershipInfo$Builder;
 	public synthetic fun withInitials (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/MembershipInfo$Builder;
 	public fun withInitials (Ljava/lang/String;)Lcom/dropbox/core/v2/sharing/UserMembershipInfo$Builder;
 	public synthetic fun withIsInherited (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/sharing/MembershipInfo$Builder;
@@ -19463,6 +19503,36 @@ public final class com/dropbox/core/v2/teamlog/DefaultLinkExpirationDaysPolicy :
 	public static fun values ()[Lcom/dropbox/core/v2/teamlog/DefaultLinkExpirationDaysPolicy;
 }
 
+public final class com/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicy : java/lang/Enum {
+	public static final field DO_NOT_SYNC Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicy;
+	public static final field OTHER Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicy;
+	public static final field SYNC Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicy;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicy;
+	public static fun values ()[Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicy;
+}
+
+public class com/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicyChangedDetails {
+	protected final field newValue Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicy;
+	protected final field previousValue Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicy;
+	public fun <init> (Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicy;Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicy;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getNewValue ()Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicy;
+	public fun getPreviousValue ()Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicy;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicyChangedType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
 public class com/dropbox/core/v2/teamlog/DeleteTeamInviteLinkDetails {
 	protected final field linkUrl Ljava/lang/String;
 	public fun <init> (Ljava/lang/String;)V
@@ -21000,6 +21070,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun dataPlacementRestrictionSatisfyPolicyDetails (Lcom/dropbox/core/v2/teamlog/DataPlacementRestrictionSatisfyPolicyDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun dataResidencyMigrationRequestSuccessfulDetails (Lcom/dropbox/core/v2/teamlog/DataResidencyMigrationRequestSuccessfulDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun dataResidencyMigrationRequestUnsuccessfulDetails (Lcom/dropbox/core/v2/teamlog/DataResidencyMigrationRequestUnsuccessfulDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun defaultTeamFolderSyncPolicyChangedDetails (Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicyChangedDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun deleteTeamInviteLinkDetails (Lcom/dropbox/core/v2/teamlog/DeleteTeamInviteLinkDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun deviceApprovalsAddExceptionDetails (Lcom/dropbox/core/v2/teamlog/DeviceApprovalsAddExceptionDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun deviceApprovalsChangeDesktopPolicyDetails (Lcom/dropbox/core/v2/teamlog/DeviceApprovalsChangeDesktopPolicyDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -21197,6 +21268,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getDataPlacementRestrictionSatisfyPolicyDetailsValue ()Lcom/dropbox/core/v2/teamlog/DataPlacementRestrictionSatisfyPolicyDetails;
 	public fun getDataResidencyMigrationRequestSuccessfulDetailsValue ()Lcom/dropbox/core/v2/teamlog/DataResidencyMigrationRequestSuccessfulDetails;
 	public fun getDataResidencyMigrationRequestUnsuccessfulDetailsValue ()Lcom/dropbox/core/v2/teamlog/DataResidencyMigrationRequestUnsuccessfulDetails;
+	public fun getDefaultTeamFolderSyncPolicyChangedDetailsValue ()Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicyChangedDetails;
 	public fun getDeleteTeamInviteLinkDetailsValue ()Lcom/dropbox/core/v2/teamlog/DeleteTeamInviteLinkDetails;
 	public fun getDeviceApprovalsAddExceptionDetailsValue ()Lcom/dropbox/core/v2/teamlog/DeviceApprovalsAddExceptionDetails;
 	public fun getDeviceApprovalsChangeDesktopPolicyDetailsValue ()Lcom/dropbox/core/v2/teamlog/DeviceApprovalsChangeDesktopPolicyDetails;
@@ -21875,6 +21947,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isDataPlacementRestrictionSatisfyPolicyDetails ()Z
 	public fun isDataResidencyMigrationRequestSuccessfulDetails ()Z
 	public fun isDataResidencyMigrationRequestUnsuccessfulDetails ()Z
+	public fun isDefaultTeamFolderSyncPolicyChangedDetails ()Z
 	public fun isDeleteTeamInviteLinkDetails ()Z
 	public fun isDeviceApprovalsAddExceptionDetails ()Z
 	public fun isDeviceApprovalsChangeDesktopPolicyDetails ()Z
@@ -22935,6 +23008,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field DATA_RESIDENCY_MIGRATION_REQUEST_SUCCESSFUL_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field DATA_RESIDENCY_MIGRATION_REQUEST_UNSUCCESSFUL_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field DELETE_TEAM_INVITE_LINK_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field DEVICE_APPROVALS_ADD_EXCEPTION_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field DEVICE_APPROVALS_CHANGE_DESKTOP_POLICY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -23584,6 +23658,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun dataPlacementRestrictionSatisfyPolicy (Lcom/dropbox/core/v2/teamlog/DataPlacementRestrictionSatisfyPolicyType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun dataResidencyMigrationRequestSuccessful (Lcom/dropbox/core/v2/teamlog/DataResidencyMigrationRequestSuccessfulType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun dataResidencyMigrationRequestUnsuccessful (Lcom/dropbox/core/v2/teamlog/DataResidencyMigrationRequestUnsuccessfulType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun defaultTeamFolderSyncPolicyChanged (Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicyChangedType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun deleteTeamInviteLink (Lcom/dropbox/core/v2/teamlog/DeleteTeamInviteLinkType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun deviceApprovalsAddException (Lcom/dropbox/core/v2/teamlog/DeviceApprovalsAddExceptionType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun deviceApprovalsChangeDesktopPolicy (Lcom/dropbox/core/v2/teamlog/DeviceApprovalsChangeDesktopPolicyType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -23781,6 +23856,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getDataPlacementRestrictionSatisfyPolicyValue ()Lcom/dropbox/core/v2/teamlog/DataPlacementRestrictionSatisfyPolicyType;
 	public fun getDataResidencyMigrationRequestSuccessfulValue ()Lcom/dropbox/core/v2/teamlog/DataResidencyMigrationRequestSuccessfulType;
 	public fun getDataResidencyMigrationRequestUnsuccessfulValue ()Lcom/dropbox/core/v2/teamlog/DataResidencyMigrationRequestUnsuccessfulType;
+	public fun getDefaultTeamFolderSyncPolicyChangedValue ()Lcom/dropbox/core/v2/teamlog/DefaultTeamFolderSyncPolicyChangedType;
 	public fun getDeleteTeamInviteLinkValue ()Lcom/dropbox/core/v2/teamlog/DeleteTeamInviteLinkType;
 	public fun getDeviceApprovalsAddExceptionValue ()Lcom/dropbox/core/v2/teamlog/DeviceApprovalsAddExceptionType;
 	public fun getDeviceApprovalsChangeDesktopPolicyValue ()Lcom/dropbox/core/v2/teamlog/DeviceApprovalsChangeDesktopPolicyType;
@@ -24458,6 +24534,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isDataPlacementRestrictionSatisfyPolicy ()Z
 	public fun isDataResidencyMigrationRequestSuccessful ()Z
 	public fun isDataResidencyMigrationRequestUnsuccessful ()Z
+	public fun isDefaultTeamFolderSyncPolicyChanged ()Z
 	public fun isDeleteTeamInviteLink ()Z
 	public fun isDeviceApprovalsAddException ()Z
 	public fun isDeviceApprovalsChangeDesktopPolicy ()Z
@@ -25516,6 +25593,7 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field DATA_RESIDENCY_MIGRATION_REQUEST_SUCCESSFUL Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field DATA_RESIDENCY_MIGRATION_REQUEST_UNSUCCESSFUL Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field DELETE_TEAM_INVITE_LINK Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field DEVICE_APPROVALS_ADD_EXCEPTION Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field DEVICE_APPROVALS_CHANGE_DESKTOP_POLICY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -26163,6 +26241,7 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field DATA_RESIDENCY_MIGRATION_REQUEST_SUCCESSFUL Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field DATA_RESIDENCY_MIGRATION_REQUEST_UNSUCCESSFUL Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field DELETE_TEAM_INVITE_LINK Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field DEVICE_APPROVALS_ADD_EXCEPTION Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field DEVICE_APPROVALS_CHANGE_DESKTOP_POLICY Lcom/dropbox/core/v2/teamlog/EventTypeArg;

@@ -532,6 +532,7 @@ public final class EventDetails {
         DASH_EXTERNAL_SHARING_POLICY_CHANGED_DETAILS, // DashExternalSharingPolicyChangedDetails
         DATA_PLACEMENT_RESTRICTION_CHANGE_POLICY_DETAILS, // DataPlacementRestrictionChangePolicyDetails
         DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY_DETAILS, // DataPlacementRestrictionSatisfyPolicyDetails
+        DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED_DETAILS, // DefaultTeamFolderSyncPolicyChangedDetails
         DEVICE_APPROVALS_ADD_EXCEPTION_DETAILS, // DeviceApprovalsAddExceptionDetails
         DEVICE_APPROVALS_CHANGE_DESKTOP_POLICY_DETAILS, // DeviceApprovalsChangeDesktopPolicyDetails
         DEVICE_APPROVALS_CHANGE_MOBILE_POLICY_DETAILS, // DeviceApprovalsChangeMobilePolicyDetails
@@ -1199,6 +1200,7 @@ public final class EventDetails {
     private DashExternalSharingPolicyChangedDetails dashExternalSharingPolicyChangedDetailsValue;
     private DataPlacementRestrictionChangePolicyDetails dataPlacementRestrictionChangePolicyDetailsValue;
     private DataPlacementRestrictionSatisfyPolicyDetails dataPlacementRestrictionSatisfyPolicyDetailsValue;
+    private DefaultTeamFolderSyncPolicyChangedDetails defaultTeamFolderSyncPolicyChangedDetailsValue;
     private DeviceApprovalsAddExceptionDetails deviceApprovalsAddExceptionDetailsValue;
     private DeviceApprovalsChangeDesktopPolicyDetails deviceApprovalsChangeDesktopPolicyDetailsValue;
     private DeviceApprovalsChangeMobilePolicyDetails deviceApprovalsChangeMobilePolicyDetailsValue;
@@ -9456,6 +9458,23 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.dataPlacementRestrictionSatisfyPolicyDetailsValue = dataPlacementRestrictionSatisfyPolicyDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param defaultTeamFolderSyncPolicyChangedDetailsValue  Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndDefaultTeamFolderSyncPolicyChangedDetails(Tag _tag, DefaultTeamFolderSyncPolicyChangedDetails defaultTeamFolderSyncPolicyChangedDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.defaultTeamFolderSyncPolicyChangedDetailsValue = defaultTeamFolderSyncPolicyChangedDetailsValue;
         return result;
     }
 
@@ -36184,6 +36203,57 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED_DETAILS}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isDefaultTeamFolderSyncPolicyChangedDetails() {
+        return this._tag == Tag.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails defaultTeamFolderSyncPolicyChangedDetails(DefaultTeamFolderSyncPolicyChangedDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndDefaultTeamFolderSyncPolicyChangedDetails(Tag.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED_DETAILS}.
+     *
+     * @return The {@link DefaultTeamFolderSyncPolicyChangedDetails} value
+     *     associated with this instance if {@link
+     *     #isDefaultTeamFolderSyncPolicyChangedDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isDefaultTeamFolderSyncPolicyChangedDetails} is {@code false}.
+     */
+    public DefaultTeamFolderSyncPolicyChangedDetails getDefaultTeamFolderSyncPolicyChangedDetailsValue() {
+        if (this._tag != Tag.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED_DETAILS, but was Tag." + this._tag.name());
+        }
+        return defaultTeamFolderSyncPolicyChangedDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#DEVICE_APPROVALS_ADD_EXCEPTION_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -43925,6 +43995,7 @@ public final class EventDetails {
             this.dashExternalSharingPolicyChangedDetailsValue,
             this.dataPlacementRestrictionChangePolicyDetailsValue,
             this.dataPlacementRestrictionSatisfyPolicyDetailsValue,
+            this.defaultTeamFolderSyncPolicyChangedDetailsValue,
             this.deviceApprovalsAddExceptionDetailsValue,
             this.deviceApprovalsChangeDesktopPolicyDetailsValue,
             this.deviceApprovalsChangeMobilePolicyDetailsValue,
@@ -45082,6 +45153,8 @@ public final class EventDetails {
                     return (this.dataPlacementRestrictionChangePolicyDetailsValue == other.dataPlacementRestrictionChangePolicyDetailsValue) || (this.dataPlacementRestrictionChangePolicyDetailsValue.equals(other.dataPlacementRestrictionChangePolicyDetailsValue));
                 case DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY_DETAILS:
                     return (this.dataPlacementRestrictionSatisfyPolicyDetailsValue == other.dataPlacementRestrictionSatisfyPolicyDetailsValue) || (this.dataPlacementRestrictionSatisfyPolicyDetailsValue.equals(other.dataPlacementRestrictionSatisfyPolicyDetailsValue));
+                case DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED_DETAILS:
+                    return (this.defaultTeamFolderSyncPolicyChangedDetailsValue == other.defaultTeamFolderSyncPolicyChangedDetailsValue) || (this.defaultTeamFolderSyncPolicyChangedDetailsValue.equals(other.defaultTeamFolderSyncPolicyChangedDetailsValue));
                 case DEVICE_APPROVALS_ADD_EXCEPTION_DETAILS:
                     return (this.deviceApprovalsAddExceptionDetailsValue == other.deviceApprovalsAddExceptionDetailsValue) || (this.deviceApprovalsAddExceptionDetailsValue.equals(other.deviceApprovalsAddExceptionDetailsValue));
                 case DEVICE_APPROVALS_CHANGE_DESKTOP_POLICY_DETAILS:
@@ -48888,6 +48961,13 @@ public final class EventDetails {
                     g.writeEndObject();
                     break;
                 }
+                case DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("default_team_folder_sync_policy_changed_details", g);
+                    DefaultTeamFolderSyncPolicyChangedDetails.Serializer.INSTANCE.serialize(value.defaultTeamFolderSyncPolicyChangedDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case DEVICE_APPROVALS_ADD_EXCEPTION_DETAILS: {
                     g.writeStartObject();
                     writeTag("device_approvals_add_exception_details", g);
@@ -52411,6 +52491,11 @@ public final class EventDetails {
                 DataPlacementRestrictionSatisfyPolicyDetails fieldValue = null;
                 fieldValue = DataPlacementRestrictionSatisfyPolicyDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.dataPlacementRestrictionSatisfyPolicyDetails(fieldValue);
+            }
+            else if ("default_team_folder_sync_policy_changed_details".equals(tag)) {
+                DefaultTeamFolderSyncPolicyChangedDetails fieldValue = null;
+                fieldValue = DefaultTeamFolderSyncPolicyChangedDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.defaultTeamFolderSyncPolicyChangedDetails(fieldValue);
             }
             else if ("device_approvals_add_exception_details".equals(tag)) {
                 DeviceApprovalsAddExceptionDetails fieldValue = null;
