@@ -1670,6 +1670,10 @@ public enum EventTypeArg {
      */
     SHARED_FOLDER_NEST,
     /**
+     * (sharing) Transferred shared folder membership to another member
+     */
+    SHARED_FOLDER_TRANSFER_MEMBERSHIP,
+    /**
      * (sharing) Transferred ownership of shared folder to another member
      */
     SHARED_FOLDER_TRANSFER_OWNERSHIP,
@@ -4298,6 +4302,10 @@ public enum EventTypeArg {
                     g.writeString("shared_folder_nest");
                     break;
                 }
+                case SHARED_FOLDER_TRANSFER_MEMBERSHIP: {
+                    g.writeString("shared_folder_transfer_membership");
+                    break;
+                }
                 case SHARED_FOLDER_TRANSFER_OWNERSHIP: {
                     g.writeString("shared_folder_transfer_ownership");
                     break;
@@ -6487,6 +6495,9 @@ public enum EventTypeArg {
             }
             else if ("shared_folder_nest".equals(tag)) {
                 value = EventTypeArg.SHARED_FOLDER_NEST;
+            }
+            else if ("shared_folder_transfer_membership".equals(tag)) {
+                value = EventTypeArg.SHARED_FOLDER_TRANSFER_MEMBERSHIP;
             }
             else if ("shared_folder_transfer_ownership".equals(tag)) {
                 value = EventTypeArg.SHARED_FOLDER_TRANSFER_OWNERSHIP;

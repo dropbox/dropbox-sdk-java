@@ -437,6 +437,7 @@ public final class EventDetails {
         SHARED_FOLDER_DECLINE_INVITATION_DETAILS, // SharedFolderDeclineInvitationDetails
         SHARED_FOLDER_MOUNT_DETAILS, // SharedFolderMountDetails
         SHARED_FOLDER_NEST_DETAILS, // SharedFolderNestDetails
+        SHARED_FOLDER_TRANSFER_MEMBERSHIP_DETAILS, // SharedFolderTransferMembershipDetails
         SHARED_FOLDER_TRANSFER_OWNERSHIP_DETAILS, // SharedFolderTransferOwnershipDetails
         SHARED_FOLDER_UNMOUNT_DETAILS, // SharedFolderUnmountDetails
         SHARED_LINK_ADD_EXPIRY_DETAILS, // SharedLinkAddExpiryDetails
@@ -1105,6 +1106,7 @@ public final class EventDetails {
     private SharedFolderDeclineInvitationDetails sharedFolderDeclineInvitationDetailsValue;
     private SharedFolderMountDetails sharedFolderMountDetailsValue;
     private SharedFolderNestDetails sharedFolderNestDetailsValue;
+    private SharedFolderTransferMembershipDetails sharedFolderTransferMembershipDetailsValue;
     private SharedFolderTransferOwnershipDetails sharedFolderTransferOwnershipDetailsValue;
     private SharedFolderUnmountDetails sharedFolderUnmountDetailsValue;
     private SharedLinkAddExpiryDetails sharedLinkAddExpiryDetailsValue;
@@ -7912,6 +7914,23 @@ public final class EventDetails {
         EventDetails result = new EventDetails();
         result._tag = _tag;
         result.sharedFolderNestDetailsValue = sharedFolderNestDetailsValue;
+        return result;
+    }
+
+    /**
+     * Additional fields depending on the event type.
+     *
+     * @param sharedFolderTransferMembershipDetailsValue  Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventDetails withTagAndSharedFolderTransferMembershipDetails(Tag _tag, SharedFolderTransferMembershipDetails sharedFolderTransferMembershipDetailsValue) {
+        EventDetails result = new EventDetails();
+        result._tag = _tag;
+        result.sharedFolderTransferMembershipDetailsValue = sharedFolderTransferMembershipDetailsValue;
         return result;
     }
 
@@ -31568,6 +31587,56 @@ public final class EventDetails {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP_DETAILS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP_DETAILS}, {@code false}
+     *     otherwise.
+     */
+    public boolean isSharedFolderTransferMembershipDetails() {
+        return this._tag == Tag.SHARED_FOLDER_TRANSFER_MEMBERSHIP_DETAILS;
+    }
+
+    /**
+     * Returns an instance of {@code EventDetails} that has its tag set to
+     * {@link Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP_DETAILS}.
+     *
+     * <p> None </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventDetails} with its tag set to {@link
+     *     Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP_DETAILS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventDetails sharedFolderTransferMembershipDetails(SharedFolderTransferMembershipDetails value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventDetails().withTagAndSharedFolderTransferMembershipDetails(Tag.SHARED_FOLDER_TRANSFER_MEMBERSHIP_DETAILS, value);
+    }
+
+    /**
+     * This instance must be tagged as {@link
+     * Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP_DETAILS}.
+     *
+     * @return The {@link SharedFolderTransferMembershipDetails} value
+     *     associated with this instance if {@link
+     *     #isSharedFolderTransferMembershipDetails} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isSharedFolderTransferMembershipDetails} is {@code false}.
+     */
+    public SharedFolderTransferMembershipDetails getSharedFolderTransferMembershipDetailsValue() {
+        if (this._tag != Tag.SHARED_FOLDER_TRANSFER_MEMBERSHIP_DETAILS) {
+            throw new IllegalStateException("Invalid tag: required Tag.SHARED_FOLDER_TRANSFER_MEMBERSHIP_DETAILS, but was Tag." + this._tag.name());
+        }
+        return sharedFolderTransferMembershipDetailsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#SHARED_FOLDER_TRANSFER_OWNERSHIP_DETAILS}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -43900,6 +43969,7 @@ public final class EventDetails {
             this.sharedFolderDeclineInvitationDetailsValue,
             this.sharedFolderMountDetailsValue,
             this.sharedFolderNestDetailsValue,
+            this.sharedFolderTransferMembershipDetailsValue,
             this.sharedFolderTransferOwnershipDetailsValue,
             this.sharedFolderUnmountDetailsValue,
             this.sharedLinkAddExpiryDetailsValue,
@@ -44963,6 +45033,8 @@ public final class EventDetails {
                     return (this.sharedFolderMountDetailsValue == other.sharedFolderMountDetailsValue) || (this.sharedFolderMountDetailsValue.equals(other.sharedFolderMountDetailsValue));
                 case SHARED_FOLDER_NEST_DETAILS:
                     return (this.sharedFolderNestDetailsValue == other.sharedFolderNestDetailsValue) || (this.sharedFolderNestDetailsValue.equals(other.sharedFolderNestDetailsValue));
+                case SHARED_FOLDER_TRANSFER_MEMBERSHIP_DETAILS:
+                    return (this.sharedFolderTransferMembershipDetailsValue == other.sharedFolderTransferMembershipDetailsValue) || (this.sharedFolderTransferMembershipDetailsValue.equals(other.sharedFolderTransferMembershipDetailsValue));
                 case SHARED_FOLDER_TRANSFER_OWNERSHIP_DETAILS:
                     return (this.sharedFolderTransferOwnershipDetailsValue == other.sharedFolderTransferOwnershipDetailsValue) || (this.sharedFolderTransferOwnershipDetailsValue.equals(other.sharedFolderTransferOwnershipDetailsValue));
                 case SHARED_FOLDER_UNMOUNT_DETAILS:
@@ -48293,6 +48365,13 @@ public final class EventDetails {
                     g.writeStartObject();
                     writeTag("shared_folder_nest_details", g);
                     SharedFolderNestDetails.Serializer.INSTANCE.serialize(value.sharedFolderNestDetailsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SHARED_FOLDER_TRANSFER_MEMBERSHIP_DETAILS: {
+                    g.writeStartObject();
+                    writeTag("shared_folder_transfer_membership_details", g);
+                    SharedFolderTransferMembershipDetails.Serializer.INSTANCE.serialize(value.sharedFolderTransferMembershipDetailsValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -52016,6 +52095,11 @@ public final class EventDetails {
                 SharedFolderNestDetails fieldValue = null;
                 fieldValue = SharedFolderNestDetails.Serializer.INSTANCE.deserialize(p, true);
                 value = EventDetails.sharedFolderNestDetails(fieldValue);
+            }
+            else if ("shared_folder_transfer_membership_details".equals(tag)) {
+                SharedFolderTransferMembershipDetails fieldValue = null;
+                fieldValue = SharedFolderTransferMembershipDetails.Serializer.INSTANCE.deserialize(p, true);
+                value = EventDetails.sharedFolderTransferMembershipDetails(fieldValue);
             }
             else if ("shared_folder_transfer_ownership_details".equals(tag)) {
                 SharedFolderTransferOwnershipDetails fieldValue = null;

@@ -21654,6 +21654,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun getSharedFolderDeclineInvitationDetailsValue ()Lcom/dropbox/core/v2/teamlog/SharedFolderDeclineInvitationDetails;
 	public fun getSharedFolderMountDetailsValue ()Lcom/dropbox/core/v2/teamlog/SharedFolderMountDetails;
 	public fun getSharedFolderNestDetailsValue ()Lcom/dropbox/core/v2/teamlog/SharedFolderNestDetails;
+	public fun getSharedFolderTransferMembershipDetailsValue ()Lcom/dropbox/core/v2/teamlog/SharedFolderTransferMembershipDetails;
 	public fun getSharedFolderTransferOwnershipDetailsValue ()Lcom/dropbox/core/v2/teamlog/SharedFolderTransferOwnershipDetails;
 	public fun getSharedFolderUnmountDetailsValue ()Lcom/dropbox/core/v2/teamlog/SharedFolderUnmountDetails;
 	public fun getSharedFoldersCreateReportDetailsValue ()Lcom/dropbox/core/v2/teamlog/SharedFoldersCreateReportDetails;
@@ -22334,6 +22335,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public fun isSharedFolderDeclineInvitationDetails ()Z
 	public fun isSharedFolderMountDetails ()Z
 	public fun isSharedFolderNestDetails ()Z
+	public fun isSharedFolderTransferMembershipDetails ()Z
 	public fun isSharedFolderTransferOwnershipDetails ()Z
 	public fun isSharedFolderUnmountDetails ()Z
 	public fun isSharedFoldersCreateReportDetails ()Z
@@ -22745,6 +22747,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails {
 	public static fun sharedFolderDeclineInvitationDetails (Lcom/dropbox/core/v2/teamlog/SharedFolderDeclineInvitationDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun sharedFolderMountDetails (Lcom/dropbox/core/v2/teamlog/SharedFolderMountDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun sharedFolderNestDetails (Lcom/dropbox/core/v2/teamlog/SharedFolderNestDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
+	public static fun sharedFolderTransferMembershipDetails (Lcom/dropbox/core/v2/teamlog/SharedFolderTransferMembershipDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun sharedFolderTransferOwnershipDetails (Lcom/dropbox/core/v2/teamlog/SharedFolderTransferOwnershipDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun sharedFolderUnmountDetails (Lcom/dropbox/core/v2/teamlog/SharedFolderUnmountDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
 	public static fun sharedFoldersCreateReportDetails (Lcom/dropbox/core/v2/teamlog/SharedFoldersCreateReportDetails;)Lcom/dropbox/core/v2/teamlog/EventDetails;
@@ -23397,6 +23400,7 @@ public final class com/dropbox/core/v2/teamlog/EventDetails$Tag : java/lang/Enum
 	public static final field SHARED_FOLDER_DECLINE_INVITATION_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field SHARED_FOLDER_MOUNT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field SHARED_FOLDER_NEST_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
+	public static final field SHARED_FOLDER_TRANSFER_MEMBERSHIP_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field SHARED_FOLDER_TRANSFER_OWNERSHIP_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field SHARED_FOLDER_UNMOUNT_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
 	public static final field SHARED_LINK_ADD_EXPIRY_DETAILS Lcom/dropbox/core/v2/teamlog/EventDetails$Tag;
@@ -24241,6 +24245,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun getSharedFolderDeclineInvitationValue ()Lcom/dropbox/core/v2/teamlog/SharedFolderDeclineInvitationType;
 	public fun getSharedFolderMountValue ()Lcom/dropbox/core/v2/teamlog/SharedFolderMountType;
 	public fun getSharedFolderNestValue ()Lcom/dropbox/core/v2/teamlog/SharedFolderNestType;
+	public fun getSharedFolderTransferMembershipValue ()Lcom/dropbox/core/v2/teamlog/SharedFolderTransferMembershipType;
 	public fun getSharedFolderTransferOwnershipValue ()Lcom/dropbox/core/v2/teamlog/SharedFolderTransferOwnershipType;
 	public fun getSharedFolderUnmountValue ()Lcom/dropbox/core/v2/teamlog/SharedFolderUnmountType;
 	public fun getSharedFoldersCreateReportFailedValue ()Lcom/dropbox/core/v2/teamlog/SharedFoldersCreateReportFailedType;
@@ -24920,6 +24925,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public fun isSharedFolderDeclineInvitation ()Z
 	public fun isSharedFolderMount ()Z
 	public fun isSharedFolderNest ()Z
+	public fun isSharedFolderTransferMembership ()Z
 	public fun isSharedFolderTransferOwnership ()Z
 	public fun isSharedFolderUnmount ()Z
 	public fun isSharedFoldersCreateReport ()Z
@@ -25330,6 +25336,7 @@ public final class com/dropbox/core/v2/teamlog/EventType {
 	public static fun sharedFolderDeclineInvitation (Lcom/dropbox/core/v2/teamlog/SharedFolderDeclineInvitationType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun sharedFolderMount (Lcom/dropbox/core/v2/teamlog/SharedFolderMountType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun sharedFolderNest (Lcom/dropbox/core/v2/teamlog/SharedFolderNestType;)Lcom/dropbox/core/v2/teamlog/EventType;
+	public static fun sharedFolderTransferMembership (Lcom/dropbox/core/v2/teamlog/SharedFolderTransferMembershipType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun sharedFolderTransferOwnership (Lcom/dropbox/core/v2/teamlog/SharedFolderTransferOwnershipType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun sharedFolderUnmount (Lcom/dropbox/core/v2/teamlog/SharedFolderUnmountType;)Lcom/dropbox/core/v2/teamlog/EventType;
 	public static fun sharedFoldersCreateReport (Lcom/dropbox/core/v2/teamlog/SharedFoldersCreateReportType;)Lcom/dropbox/core/v2/teamlog/EventType;
@@ -25981,6 +25988,7 @@ public final class com/dropbox/core/v2/teamlog/EventType$Tag : java/lang/Enum {
 	public static final field SHARED_FOLDER_DECLINE_INVITATION Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field SHARED_FOLDER_MOUNT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field SHARED_FOLDER_NEST Lcom/dropbox/core/v2/teamlog/EventType$Tag;
+	public static final field SHARED_FOLDER_TRANSFER_MEMBERSHIP Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field SHARED_FOLDER_TRANSFER_OWNERSHIP Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field SHARED_FOLDER_UNMOUNT Lcom/dropbox/core/v2/teamlog/EventType$Tag;
 	public static final field SHARED_LINK_ADD_EXPIRY Lcom/dropbox/core/v2/teamlog/EventType$Tag;
@@ -26629,6 +26637,7 @@ public final class com/dropbox/core/v2/teamlog/EventTypeArg : java/lang/Enum {
 	public static final field SHARED_FOLDER_DECLINE_INVITATION Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field SHARED_FOLDER_MOUNT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field SHARED_FOLDER_NEST Lcom/dropbox/core/v2/teamlog/EventTypeArg;
+	public static final field SHARED_FOLDER_TRANSFER_MEMBERSHIP Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field SHARED_FOLDER_TRANSFER_OWNERSHIP Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field SHARED_FOLDER_UNMOUNT Lcom/dropbox/core/v2/teamlog/EventTypeArg;
 	public static final field SHARED_LINK_ADD_EXPIRY Lcom/dropbox/core/v2/teamlog/EventTypeArg;
@@ -35827,6 +35836,30 @@ public class com/dropbox/core/v2/teamlog/SharedFolderNestDetails$Builder {
 }
 
 public class com/dropbox/core/v2/teamlog/SharedFolderNestType {
+	protected final field description Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDescription ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/SharedFolderTransferMembershipDetails {
+	protected final field newMemberAccountId Ljava/lang/String;
+	protected final field previousMemberAccountId Ljava/lang/String;
+	protected final field sharedContentAccessLevel Lcom/dropbox/core/v2/sharing/AccessLevel;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/v2/sharing/AccessLevel;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getNewMemberAccountId ()Ljava/lang/String;
+	public fun getPreviousMemberAccountId ()Ljava/lang/String;
+	public fun getSharedContentAccessLevel ()Lcom/dropbox/core/v2/sharing/AccessLevel;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/SharedFolderTransferMembershipType {
 	protected final field description Ljava/lang/String;
 	public fun <init> (Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
