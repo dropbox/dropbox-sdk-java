@@ -1696,6 +1696,10 @@ public final class EventType {
          */
         SHARED_FOLDER_NEST, // SharedFolderNestType
         /**
+         * (sharing) Transferred shared folder membership to another member
+         */
+        SHARED_FOLDER_TRANSFER_MEMBERSHIP, // SharedFolderTransferMembershipType
+        /**
          * (sharing) Transferred ownership of shared folder to another member
          */
         SHARED_FOLDER_TRANSFER_OWNERSHIP, // SharedFolderTransferOwnershipType
@@ -3132,6 +3136,7 @@ public final class EventType {
     private SharedFolderDeclineInvitationType sharedFolderDeclineInvitationValue;
     private SharedFolderMountType sharedFolderMountValue;
     private SharedFolderNestType sharedFolderNestValue;
+    private SharedFolderTransferMembershipType sharedFolderTransferMembershipValue;
     private SharedFolderTransferOwnershipType sharedFolderTransferOwnershipValue;
     private SharedFolderUnmountType sharedFolderUnmountValue;
     private SharedLinkAddExpiryType sharedLinkAddExpiryValue;
@@ -10259,6 +10264,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.sharedFolderNestValue = sharedFolderNestValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param sharedFolderTransferMembershipValue  (sharing) Transferred shared
+     *     folder membership to another member. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSharedFolderTransferMembership(Tag _tag, SharedFolderTransferMembershipType sharedFolderTransferMembershipValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sharedFolderTransferMembershipValue = sharedFolderTransferMembershipValue;
         return result;
     }
 
@@ -34740,6 +34762,57 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP}, {@code false} otherwise.
+     */
+    public boolean isSharedFolderTransferMembership() {
+        return this._tag == Tag.SHARED_FOLDER_TRANSFER_MEMBERSHIP;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP}.
+     *
+     * <p> (sharing) Transferred shared folder membership to another member </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sharedFolderTransferMembership(SharedFolderTransferMembershipType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSharedFolderTransferMembership(Tag.SHARED_FOLDER_TRANSFER_MEMBERSHIP, value);
+    }
+
+    /**
+     * (sharing) Transferred shared folder membership to another member
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP}. </p>
+     *
+     * @return The {@link SharedFolderTransferMembershipType} value associated
+     *     with this instance if {@link #isSharedFolderTransferMembership} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isSharedFolderTransferMembership} is {@code false}.
+     */
+    public SharedFolderTransferMembershipType getSharedFolderTransferMembershipValue() {
+        if (this._tag != Tag.SHARED_FOLDER_TRANSFER_MEMBERSHIP) {
+            throw new IllegalStateException("Invalid tag: required Tag.SHARED_FOLDER_TRANSFER_MEMBERSHIP, but was Tag." + this._tag.name());
+        }
+        return sharedFolderTransferMembershipValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#SHARED_FOLDER_TRANSFER_OWNERSHIP}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -47438,6 +47511,7 @@ public final class EventType {
             this.sharedFolderDeclineInvitationValue,
             this.sharedFolderMountValue,
             this.sharedFolderNestValue,
+            this.sharedFolderTransferMembershipValue,
             this.sharedFolderTransferOwnershipValue,
             this.sharedFolderUnmountValue,
             this.sharedLinkAddExpiryValue,
@@ -48500,6 +48574,8 @@ public final class EventType {
                     return (this.sharedFolderMountValue == other.sharedFolderMountValue) || (this.sharedFolderMountValue.equals(other.sharedFolderMountValue));
                 case SHARED_FOLDER_NEST:
                     return (this.sharedFolderNestValue == other.sharedFolderNestValue) || (this.sharedFolderNestValue.equals(other.sharedFolderNestValue));
+                case SHARED_FOLDER_TRANSFER_MEMBERSHIP:
+                    return (this.sharedFolderTransferMembershipValue == other.sharedFolderTransferMembershipValue) || (this.sharedFolderTransferMembershipValue.equals(other.sharedFolderTransferMembershipValue));
                 case SHARED_FOLDER_TRANSFER_OWNERSHIP:
                     return (this.sharedFolderTransferOwnershipValue == other.sharedFolderTransferOwnershipValue) || (this.sharedFolderTransferOwnershipValue.equals(other.sharedFolderTransferOwnershipValue));
                 case SHARED_FOLDER_UNMOUNT:
@@ -51828,6 +51904,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("shared_folder_nest", g);
                     SharedFolderNestType.Serializer.INSTANCE.serialize(value.sharedFolderNestValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SHARED_FOLDER_TRANSFER_MEMBERSHIP: {
+                    g.writeStartObject();
+                    writeTag("shared_folder_transfer_membership", g);
+                    SharedFolderTransferMembershipType.Serializer.INSTANCE.serialize(value.sharedFolderTransferMembershipValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -55544,6 +55627,11 @@ public final class EventType {
                 SharedFolderNestType fieldValue = null;
                 fieldValue = SharedFolderNestType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.sharedFolderNest(fieldValue);
+            }
+            else if ("shared_folder_transfer_membership".equals(tag)) {
+                SharedFolderTransferMembershipType fieldValue = null;
+                fieldValue = SharedFolderTransferMembershipType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sharedFolderTransferMembership(fieldValue);
             }
             else if ("shared_folder_transfer_ownership".equals(tag)) {
                 SharedFolderTransferOwnershipType fieldValue = null;
