@@ -13063,8 +13063,6 @@ public class com/dropbox/core/v2/team/DbxTeamTeamRequests {
 	public fun membersAddJobStatusGetV2 (Ljava/lang/String;)Lcom/dropbox/core/v2/team/MembersAddJobStatusV2Result;
 	public fun membersAddV2 (Ljava/util/List;)Lcom/dropbox/core/v2/team/MembersAddLaunchV2Result;
 	public fun membersAddV2 (Ljava/util/List;Z)Lcom/dropbox/core/v2/team/MembersAddLaunchV2Result;
-	public fun membersBulkSuspend (Ljava/util/List;)Lcom/dropbox/core/v2/async/LaunchResultBase;
-	public fun membersBulkSuspendJobStatusCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/team/MembersSuspendBatchJobStatus;
 	public fun membersDeleteFormerMemberFiles (Lcom/dropbox/core/v2/team/UserSelectorArg;)V
 	public fun membersDeleteProfilePhoto (Lcom/dropbox/core/v2/team/UserSelectorArg;)Lcom/dropbox/core/v2/team/TeamMemberInfo;
 	public fun membersDeleteProfilePhotoV2 (Lcom/dropbox/core/v2/team/UserSelectorArg;)Lcom/dropbox/core/v2/team/TeamMemberInfoV2Result;
@@ -13114,13 +13112,6 @@ public class com/dropbox/core/v2/team/DbxTeamTeamRequests {
 	public fun reportsGetMembershipBuilder ()Lcom/dropbox/core/v2/team/ReportsGetMembershipBuilder;
 	public fun reportsGetStorage ()Lcom/dropbox/core/v2/team/GetStorageReport;
 	public fun reportsGetStorageBuilder ()Lcom/dropbox/core/v2/team/ReportsGetStorageBuilder;
-	public fun sharingAllowlistAdd ()Lcom/dropbox/core/v2/team/SharingAllowlistAddResponse;
-	public fun sharingAllowlistAddBuilder ()Lcom/dropbox/core/v2/team/SharingAllowlistAddBuilder;
-	public fun sharingAllowlistList ()Lcom/dropbox/core/v2/team/SharingAllowlistListResponse;
-	public fun sharingAllowlistList (J)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse;
-	public fun sharingAllowlistListContinue (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse;
-	public fun sharingAllowlistRemove ()Lcom/dropbox/core/v2/team/SharingAllowlistRemoveResponse;
-	public fun sharingAllowlistRemoveBuilder ()Lcom/dropbox/core/v2/team/SharingAllowlistRemoveBuilder;
 	public fun teamFolderActivate (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderMetadata;
 	public fun teamFolderArchive (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderArchiveLaunch;
 	public fun teamFolderArchive (Ljava/lang/String;Z)Lcom/dropbox/core/v2/team/TeamFolderArchiveLaunch;
@@ -15797,167 +15788,6 @@ public final class com/dropbox/core/v2/team/SetCustomQuotaError : java/lang/Enum
 public class com/dropbox/core/v2/team/SetCustomQuotaErrorException : com/dropbox/core/DbxApiException {
 	public final field errorValue Lcom/dropbox/core/v2/team/SetCustomQuotaError;
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SetCustomQuotaError;)V
-}
-
-public class com/dropbox/core/v2/team/SharingAllowlistAddBuilder {
-	public fun start ()Lcom/dropbox/core/v2/team/SharingAllowlistAddResponse;
-	public fun withDomains (Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistAddBuilder;
-	public fun withEmails (Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistAddBuilder;
-}
-
-public final class com/dropbox/core/v2/team/SharingAllowlistAddError {
-	public static final field NO_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
-	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
-	public static final field TEAM_LIMIT_REACHED Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
-	public static final field TOO_MANY_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
-	public static final field UNKNOWN_ERROR Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
-	public static fun entriesAlreadyExist (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getEntriesAlreadyExistValue ()Ljava/lang/String;
-	public fun getMalformedEntryValue ()Ljava/lang/String;
-	public fun hashCode ()I
-	public fun isEntriesAlreadyExist ()Z
-	public fun isMalformedEntry ()Z
-	public fun isNoEntriesProvided ()Z
-	public fun isOther ()Z
-	public fun isTeamLimitReached ()Z
-	public fun isTooManyEntriesProvided ()Z
-	public fun isUnknownError ()Z
-	public static fun malformedEntry (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
-	public fun tag ()Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
-	public fun toString ()Ljava/lang/String;
-	public fun toStringMultiline ()Ljava/lang/String;
-}
-
-public final class com/dropbox/core/v2/team/SharingAllowlistAddError$Tag : java/lang/Enum {
-	public static final field ENTRIES_ALREADY_EXIST Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
-	public static final field MALFORMED_ENTRY Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
-	public static final field NO_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
-	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
-	public static final field TEAM_LIMIT_REACHED Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
-	public static final field TOO_MANY_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
-	public static final field UNKNOWN_ERROR Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
-	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
-	public static fun values ()[Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
-}
-
-public class com/dropbox/core/v2/team/SharingAllowlistAddErrorException : com/dropbox/core/DbxApiException {
-	public final field errorValue Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SharingAllowlistAddError;)V
-}
-
-public class com/dropbox/core/v2/team/SharingAllowlistAddResponse {
-	public fun <init> ()V
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-	public fun toStringMultiline ()Ljava/lang/String;
-}
-
-public final class com/dropbox/core/v2/team/SharingAllowlistListContinueError : java/lang/Enum {
-	public static final field INVALID_CURSOR Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
-	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
-	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
-	public static fun values ()[Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
-}
-
-public class com/dropbox/core/v2/team/SharingAllowlistListContinueErrorException : com/dropbox/core/DbxApiException {
-	public final field errorValue Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;)V
-}
-
-public class com/dropbox/core/v2/team/SharingAllowlistListError {
-	public fun <init> ()V
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-	public fun toStringMultiline ()Ljava/lang/String;
-}
-
-public class com/dropbox/core/v2/team/SharingAllowlistListErrorException : com/dropbox/core/DbxApiException {
-	public final field errorValue Lcom/dropbox/core/v2/team/SharingAllowlistListError;
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SharingAllowlistListError;)V
-}
-
-public class com/dropbox/core/v2/team/SharingAllowlistListResponse {
-	protected final field cursor Ljava/lang/String;
-	protected final field domains Ljava/util/List;
-	protected final field emails Ljava/util/List;
-	protected final field hasMore Z
-	public fun <init> (Ljava/util/List;Ljava/util/List;)V
-	public fun <init> (Ljava/util/List;Ljava/util/List;Ljava/lang/String;Z)V
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getCursor ()Ljava/lang/String;
-	public fun getDomains ()Ljava/util/List;
-	public fun getEmails ()Ljava/util/List;
-	public fun getHasMore ()Z
-	public fun hashCode ()I
-	public static fun newBuilder (Ljava/util/List;Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse$Builder;
-	public fun toString ()Ljava/lang/String;
-	public fun toStringMultiline ()Ljava/lang/String;
-}
-
-public class com/dropbox/core/v2/team/SharingAllowlistListResponse$Builder {
-	protected field cursor Ljava/lang/String;
-	protected final field domains Ljava/util/List;
-	protected final field emails Ljava/util/List;
-	protected field hasMore Z
-	protected fun <init> (Ljava/util/List;Ljava/util/List;)V
-	public fun build ()Lcom/dropbox/core/v2/team/SharingAllowlistListResponse;
-	public fun withCursor (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse$Builder;
-	public fun withHasMore (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse$Builder;
-}
-
-public class com/dropbox/core/v2/team/SharingAllowlistRemoveBuilder {
-	public fun start ()Lcom/dropbox/core/v2/team/SharingAllowlistRemoveResponse;
-	public fun withDomains (Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveBuilder;
-	public fun withEmails (Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveBuilder;
-}
-
-public final class com/dropbox/core/v2/team/SharingAllowlistRemoveError {
-	public static final field NO_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
-	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
-	public static final field TOO_MANY_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
-	public static final field UNKNOWN_ERROR Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
-	public static fun entriesDoNotExist (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getEntriesDoNotExistValue ()Ljava/lang/String;
-	public fun getMalformedEntryValue ()Ljava/lang/String;
-	public fun hashCode ()I
-	public fun isEntriesDoNotExist ()Z
-	public fun isMalformedEntry ()Z
-	public fun isNoEntriesProvided ()Z
-	public fun isOther ()Z
-	public fun isTooManyEntriesProvided ()Z
-	public fun isUnknownError ()Z
-	public static fun malformedEntry (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
-	public fun tag ()Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
-	public fun toString ()Ljava/lang/String;
-	public fun toStringMultiline ()Ljava/lang/String;
-}
-
-public final class com/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag : java/lang/Enum {
-	public static final field ENTRIES_DO_NOT_EXIST Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
-	public static final field MALFORMED_ENTRY Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
-	public static final field NO_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
-	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
-	public static final field TOO_MANY_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
-	public static final field UNKNOWN_ERROR Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
-	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
-	public static fun values ()[Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
-}
-
-public class com/dropbox/core/v2/team/SharingAllowlistRemoveErrorException : com/dropbox/core/DbxApiException {
-	public final field errorValue Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;)V
-}
-
-public class com/dropbox/core/v2/team/SharingAllowlistRemoveResponse {
-	public fun <init> ()V
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-	public fun toStringMultiline ()Ljava/lang/String;
 }
 
 public class com/dropbox/core/v2/team/StorageBucket {
