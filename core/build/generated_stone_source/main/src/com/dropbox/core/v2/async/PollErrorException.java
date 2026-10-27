@@ -28,8 +28,6 @@ import com.dropbox.core.LocalizedText;
  * {@link
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersAddJobStatusGetV2(String)},
  * {@link
- * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersBulkSuspendJobStatusCheck(String)},
- * {@link
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersMoveFormerMemberFilesJobStatusCheck(String)},
  * {@link
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersRemoveJobStatusGet(String)},
@@ -57,8 +55,10 @@ import com.dropbox.core.LocalizedText;
  * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkJobStatus(String)},
  * {@link
  * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkRemoveMemberJobStatus(String)},
+ * {@link
+ * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkShareJobStatus(String)},
  * and {@link
- * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkShareJobStatus(String)}.
+ * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersBulkSuspendJobStatusCheck(String)}.
  * </p>
  */
 public class PollErrorException extends DbxApiException {
@@ -72,7 +72,6 @@ public class PollErrorException extends DbxApiException {
     //     2/riviera/get_transform_async/check
     //     2/team/members/add/job_status/get
     //     2/team/members/add/job_status/get_v2
-    //     2/team/members/bulk_suspend/job_status/check
     //     2/team/members/move_former_member_files/job_status/check
     //     2/team/members/remove/job_status/get
     //     2/team/members/suspend_batch/job_status/check
@@ -88,6 +87,7 @@ public class PollErrorException extends DbxApiException {
     //     2/sharing/check_job_status
     //     2/sharing/check_remove_member_job_status
     //     2/sharing/check_share_job_status
+    //     2/team/members/bulk_suspend/job_status/check
 
     private static final long serialVersionUID = 0L;
 
@@ -110,8 +110,6 @@ public class PollErrorException extends DbxApiException {
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersAddJobStatusGet(String)},
      * {@link
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersAddJobStatusGetV2(String)},
-     * {@link
-     * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersBulkSuspendJobStatusCheck(String)},
      * {@link
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersMoveFormerMemberFilesJobStatusCheck(String)},
      * {@link
@@ -140,8 +138,10 @@ public class PollErrorException extends DbxApiException {
      * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkJobStatus(String)},
      * {@link
      * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkRemoveMemberJobStatus(String)},
+     * {@link
+     * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkShareJobStatus(String)},
      * and {@link
-     * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkShareJobStatus(String)}.
+     * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersBulkSuspendJobStatusCheck(String)}.
      */
     public final PollError errorValue;
 
