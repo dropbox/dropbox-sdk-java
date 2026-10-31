@@ -36350,13 +36350,25 @@ public class com/dropbox/core/v2/teamlog/SharedLinkShareType {
 
 public class com/dropbox/core/v2/teamlog/SharedLinkViewDetails {
 	protected final field sharedLinkOwner Lcom/dropbox/core/v2/teamlog/UserLogInfo;
+	protected final field subdomain Ljava/lang/String;
 	public fun <init> ()V
-	public fun <init> (Lcom/dropbox/core/v2/teamlog/UserLogInfo;)V
+	public fun <init> (Lcom/dropbox/core/v2/teamlog/UserLogInfo;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getSharedLinkOwner ()Lcom/dropbox/core/v2/teamlog/UserLogInfo;
+	public fun getSubdomain ()Ljava/lang/String;
 	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/teamlog/SharedLinkViewDetails$Builder;
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/teamlog/SharedLinkViewDetails$Builder {
+	protected field sharedLinkOwner Lcom/dropbox/core/v2/teamlog/UserLogInfo;
+	protected field subdomain Ljava/lang/String;
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/teamlog/SharedLinkViewDetails;
+	public fun withSharedLinkOwner (Lcom/dropbox/core/v2/teamlog/UserLogInfo;)Lcom/dropbox/core/v2/teamlog/SharedLinkViewDetails$Builder;
+	public fun withSubdomain (Ljava/lang/String;)Lcom/dropbox/core/v2/teamlog/SharedLinkViewDetails$Builder;
 }
 
 public class com/dropbox/core/v2/teamlog/SharedLinkViewType {
