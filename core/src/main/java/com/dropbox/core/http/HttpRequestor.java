@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -170,7 +171,7 @@ public abstract class HttpRequestor
                 if (entry.getKey() == null || entry.getKey().trim().length() == 0) {
                     continue;
                 }
-                insensitive.put(entry.getKey(), Collections.unmodifiableList(entry.getValue()));
+                insensitive.put(entry.getKey(), Collections.unmodifiableList(new ArrayList<String>(entry.getValue())));
             }
             return Collections.unmodifiableMap(insensitive);
         }

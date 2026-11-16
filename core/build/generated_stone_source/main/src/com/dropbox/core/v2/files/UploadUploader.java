@@ -34,6 +34,6 @@ public class UploadUploader extends DbxUploader<FileMetadata, UploadError, Uploa
     }
 
     protected UploadErrorException newException(DbxWrappedException error) {
-        return new UploadErrorException("2/files/upload", error.getRequestId(), error.getUserMessage(), (UploadError) error.getErrorValue());
+        return error.withResponseMetadata(new UploadErrorException("2/files/upload", error.getRequestId(), error.getUserMessage(), (UploadError) error.getErrorValue()));
     }
 }

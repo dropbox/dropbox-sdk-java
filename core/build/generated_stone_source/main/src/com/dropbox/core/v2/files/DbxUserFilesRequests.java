@@ -67,7 +67,7 @@ public class DbxUserFilesRequests {
                                         AlphaGetMetadataError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new AlphaGetMetadataErrorException("2/files/alpha/get_metadata", ex.getRequestId(), ex.getUserMessage(), (AlphaGetMetadataError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new AlphaGetMetadataErrorException("2/files/alpha/get_metadata", ex.getRequestId(), ex.getUserMessage(), (AlphaGetMetadataError) ex.getErrorValue()));
         }
     }
 
@@ -217,7 +217,7 @@ public class DbxUserFilesRequests {
                                         RelocationError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RelocationErrorException("2/files/copy", ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RelocationErrorException("2/files/copy", ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue()));
         }
     }
 
@@ -297,7 +297,7 @@ public class DbxUserFilesRequests {
                                         RelocationError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RelocationErrorException("2/files/copy_v2", ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RelocationErrorException("2/files/copy_v2", ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue()));
         }
     }
 
@@ -375,7 +375,7 @@ public class DbxUserFilesRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"copy_batch\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"copy_batch\":" + ex.getErrorValue()));
         }
     }
 
@@ -464,7 +464,7 @@ public class DbxUserFilesRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"copy_batch_v2\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"copy_batch_v2\":" + ex.getErrorValue()));
         }
     }
 
@@ -551,7 +551,7 @@ public class DbxUserFilesRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/files/copy_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/files/copy_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -602,7 +602,7 @@ public class DbxUserFilesRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/files/copy_batch/check_v2", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/files/copy_batch/check_v2", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -649,7 +649,7 @@ public class DbxUserFilesRequests {
                                         GetCopyReferenceError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GetCopyReferenceErrorException("2/files/copy_reference/get", ex.getRequestId(), ex.getUserMessage(), (GetCopyReferenceError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GetCopyReferenceErrorException("2/files/copy_reference/get", ex.getRequestId(), ex.getUserMessage(), (GetCopyReferenceError) ex.getErrorValue()));
         }
     }
 
@@ -691,7 +691,7 @@ public class DbxUserFilesRequests {
                                         SaveCopyReferenceError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SaveCopyReferenceErrorException("2/files/copy_reference/save", ex.getRequestId(), ex.getUserMessage(), (SaveCopyReferenceError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SaveCopyReferenceErrorException("2/files/copy_reference/save", ex.getRequestId(), ex.getUserMessage(), (SaveCopyReferenceError) ex.getErrorValue()));
         }
     }
 
@@ -732,7 +732,7 @@ public class DbxUserFilesRequests {
                                         CreateFolderError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new CreateFolderErrorException("2/files/create_folder", ex.getRequestId(), ex.getUserMessage(), (CreateFolderError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new CreateFolderErrorException("2/files/create_folder", ex.getRequestId(), ex.getUserMessage(), (CreateFolderError) ex.getErrorValue()));
         }
     }
 
@@ -796,7 +796,7 @@ public class DbxUserFilesRequests {
                                         CreateFolderError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new CreateFolderErrorException("2/files/create_folder_v2", ex.getRequestId(), ex.getUserMessage(), (CreateFolderError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new CreateFolderErrorException("2/files/create_folder_v2", ex.getRequestId(), ex.getUserMessage(), (CreateFolderError) ex.getErrorValue()));
         }
     }
 
@@ -864,7 +864,7 @@ public class DbxUserFilesRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"create_folder_batch\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"create_folder_batch\":" + ex.getErrorValue()));
         }
     }
 
@@ -945,7 +945,7 @@ public class DbxUserFilesRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/files/create_folder_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/files/create_folder_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -991,7 +991,7 @@ public class DbxUserFilesRequests {
                                         DeleteError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DeleteErrorException("2/files/delete", ex.getRequestId(), ex.getUserMessage(), (DeleteError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DeleteErrorException("2/files/delete", ex.getRequestId(), ex.getUserMessage(), (DeleteError) ex.getErrorValue()));
         }
     }
 
@@ -1077,7 +1077,7 @@ public class DbxUserFilesRequests {
                                         DeleteError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DeleteErrorException("2/files/delete_v2", ex.getRequestId(), ex.getUserMessage(), (DeleteError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DeleteErrorException("2/files/delete_v2", ex.getRequestId(), ex.getUserMessage(), (DeleteError) ex.getErrorValue()));
         }
     }
 
@@ -1155,7 +1155,7 @@ public class DbxUserFilesRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"delete_batch\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"delete_batch\":" + ex.getErrorValue()));
         }
     }
 
@@ -1202,7 +1202,7 @@ public class DbxUserFilesRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/files/delete_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/files/delete_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -1247,7 +1247,7 @@ public class DbxUserFilesRequests {
                                              DownloadError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DownloadErrorException("2/files/download", ex.getRequestId(), ex.getUserMessage(), (DownloadError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DownloadErrorException("2/files/download", ex.getRequestId(), ex.getUserMessage(), (DownloadError) ex.getErrorValue()));
         }
     }
 
@@ -1344,7 +1344,7 @@ public class DbxUserFilesRequests {
                                              DownloadZipError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DownloadZipErrorException("2/files/download_zip", ex.getRequestId(), ex.getUserMessage(), (DownloadZipError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DownloadZipErrorException("2/files/download_zip", ex.getRequestId(), ex.getUserMessage(), (DownloadZipError) ex.getErrorValue()));
         }
     }
 
@@ -1419,7 +1419,7 @@ public class DbxUserFilesRequests {
                                              ExportError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ExportErrorException("2/files/export", ex.getRequestId(), ex.getUserMessage(), (ExportError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ExportErrorException("2/files/export", ex.getRequestId(), ex.getUserMessage(), (ExportError) ex.getErrorValue()));
         }
     }
 
@@ -1510,7 +1510,7 @@ public class DbxUserFilesRequests {
                                         LockFileError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new LockFileErrorException("2/files/get_file_lock_batch", ex.getRequestId(), ex.getUserMessage(), (LockFileError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new LockFileErrorException("2/files/get_file_lock_batch", ex.getRequestId(), ex.getUserMessage(), (LockFileError) ex.getErrorValue()));
         }
     }
 
@@ -1552,7 +1552,7 @@ public class DbxUserFilesRequests {
                                         GetMetadataError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GetMetadataErrorException("2/files/get_metadata", ex.getRequestId(), ex.getUserMessage(), (GetMetadataError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GetMetadataErrorException("2/files/get_metadata", ex.getRequestId(), ex.getUserMessage(), (GetMetadataError) ex.getErrorValue()));
         }
     }
 
@@ -1626,7 +1626,7 @@ public class DbxUserFilesRequests {
                                              PreviewError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PreviewErrorException("2/files/get_preview", ex.getRequestId(), ex.getUserMessage(), (PreviewError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PreviewErrorException("2/files/get_preview", ex.getRequestId(), ex.getUserMessage(), (PreviewError) ex.getErrorValue()));
         }
     }
 
@@ -1729,7 +1729,7 @@ public class DbxUserFilesRequests {
                                         GetTemporaryLinkError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GetTemporaryLinkErrorException("2/files/get_temporary_link", ex.getRequestId(), ex.getUserMessage(), (GetTemporaryLinkError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GetTemporaryLinkErrorException("2/files/get_temporary_link", ex.getRequestId(), ex.getUserMessage(), (GetTemporaryLinkError) ex.getErrorValue()));
         }
     }
 
@@ -1799,7 +1799,7 @@ public class DbxUserFilesRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"get_temporary_upload_link\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"get_temporary_upload_link\":" + ex.getErrorValue()));
         }
     }
 
@@ -1929,7 +1929,7 @@ public class DbxUserFilesRequests {
                                              ThumbnailError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ThumbnailErrorException("2/files/get_thumbnail", ex.getRequestId(), ex.getUserMessage(), (ThumbnailError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ThumbnailErrorException("2/files/get_thumbnail", ex.getRequestId(), ex.getUserMessage(), (ThumbnailError) ex.getErrorValue()));
         }
     }
 
@@ -2007,7 +2007,7 @@ public class DbxUserFilesRequests {
                                              ThumbnailV2Error.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ThumbnailV2ErrorException("2/files/get_thumbnail_v2", ex.getRequestId(), ex.getUserMessage(), (ThumbnailV2Error) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ThumbnailV2ErrorException("2/files/get_thumbnail_v2", ex.getRequestId(), ex.getUserMessage(), (ThumbnailV2Error) ex.getErrorValue()));
         }
     }
 
@@ -2083,7 +2083,7 @@ public class DbxUserFilesRequests {
                                         GetThumbnailBatchError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GetThumbnailBatchErrorException("2/files/get_thumbnail_batch", ex.getRequestId(), ex.getUserMessage(), (GetThumbnailBatchError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GetThumbnailBatchErrorException("2/files/get_thumbnail_batch", ex.getRequestId(), ex.getUserMessage(), (GetThumbnailBatchError) ex.getErrorValue()));
         }
     }
 
@@ -2146,7 +2146,7 @@ public class DbxUserFilesRequests {
                                         ListFolderError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFolderErrorException("2/files/list_folder", ex.getRequestId(), ex.getUserMessage(), (ListFolderError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFolderErrorException("2/files/list_folder", ex.getRequestId(), ex.getUserMessage(), (ListFolderError) ex.getErrorValue()));
         }
     }
 
@@ -2252,7 +2252,7 @@ public class DbxUserFilesRequests {
                                         ListFolderContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFolderContinueErrorException("2/files/list_folder/continue", ex.getRequestId(), ex.getUserMessage(), (ListFolderContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFolderContinueErrorException("2/files/list_folder/continue", ex.getRequestId(), ex.getUserMessage(), (ListFolderContinueError) ex.getErrorValue()));
         }
     }
 
@@ -2299,7 +2299,7 @@ public class DbxUserFilesRequests {
                                         ListFolderError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFolderErrorException("2/files/list_folder/get_latest_cursor", ex.getRequestId(), ex.getUserMessage(), (ListFolderError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFolderErrorException("2/files/list_folder/get_latest_cursor", ex.getRequestId(), ex.getUserMessage(), (ListFolderError) ex.getErrorValue()));
         }
     }
 
@@ -2372,7 +2372,7 @@ public class DbxUserFilesRequests {
                                         ListFolderLongpollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFolderLongpollErrorException("2/files/list_folder/longpoll", ex.getRequestId(), ex.getUserMessage(), (ListFolderLongpollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFolderLongpollErrorException("2/files/list_folder/longpoll", ex.getRequestId(), ex.getUserMessage(), (ListFolderLongpollError) ex.getErrorValue()));
         }
     }
 
@@ -2462,7 +2462,7 @@ public class DbxUserFilesRequests {
                                         ListRevisionsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListRevisionsErrorException("2/files/list_revisions", ex.getRequestId(), ex.getUserMessage(), (ListRevisionsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListRevisionsErrorException("2/files/list_revisions", ex.getRequestId(), ex.getUserMessage(), (ListRevisionsError) ex.getErrorValue()));
         }
     }
 
@@ -2542,7 +2542,7 @@ public class DbxUserFilesRequests {
                                         LockFileError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new LockFileErrorException("2/files/lock_file_batch", ex.getRequestId(), ex.getUserMessage(), (LockFileError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new LockFileErrorException("2/files/lock_file_batch", ex.getRequestId(), ex.getUserMessage(), (LockFileError) ex.getErrorValue()));
         }
     }
 
@@ -2587,7 +2587,7 @@ public class DbxUserFilesRequests {
                                         RelocationError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RelocationErrorException("2/files/move", ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RelocationErrorException("2/files/move", ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue()));
         }
     }
 
@@ -2668,7 +2668,7 @@ public class DbxUserFilesRequests {
                                         RelocationError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RelocationErrorException("2/files/move_v2", ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RelocationErrorException("2/files/move_v2", ex.getRequestId(), ex.getUserMessage(), (RelocationError) ex.getErrorValue()));
         }
     }
 
@@ -2748,7 +2748,7 @@ public class DbxUserFilesRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"move_batch\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"move_batch\":" + ex.getErrorValue()));
         }
     }
 
@@ -2837,7 +2837,7 @@ public class DbxUserFilesRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"move_batch_v2\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"move_batch_v2\":" + ex.getErrorValue()));
         }
     }
 
@@ -2920,7 +2920,7 @@ public class DbxUserFilesRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/files/move_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/files/move_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -2971,7 +2971,7 @@ public class DbxUserFilesRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/files/move_batch/check_v2", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/files/move_batch/check_v2", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -3127,7 +3127,7 @@ public class DbxUserFilesRequests {
                                  DeleteError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DeleteErrorException("2/files/permanently_delete", ex.getRequestId(), ex.getUserMessage(), (DeleteError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DeleteErrorException("2/files/permanently_delete", ex.getRequestId(), ex.getUserMessage(), (DeleteError) ex.getErrorValue()));
         }
     }
 
@@ -3200,7 +3200,7 @@ public class DbxUserFilesRequests {
                                  AddPropertiesError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new AddPropertiesErrorException("2/files/properties/add", ex.getRequestId(), ex.getUserMessage(), (AddPropertiesError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new AddPropertiesErrorException("2/files/properties/add", ex.getRequestId(), ex.getUserMessage(), (AddPropertiesError) ex.getErrorValue()));
         }
     }
 
@@ -3248,7 +3248,7 @@ public class DbxUserFilesRequests {
                                  InvalidPropertyGroupError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new InvalidPropertyGroupErrorException("2/files/properties/overwrite", ex.getRequestId(), ex.getUserMessage(), (InvalidPropertyGroupError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new InvalidPropertyGroupErrorException("2/files/properties/overwrite", ex.getRequestId(), ex.getUserMessage(), (InvalidPropertyGroupError) ex.getErrorValue()));
         }
     }
 
@@ -3298,7 +3298,7 @@ public class DbxUserFilesRequests {
                                  UpdatePropertiesError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new UpdatePropertiesErrorException("2/files/properties/update", ex.getRequestId(), ex.getUserMessage(), (UpdatePropertiesError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new UpdatePropertiesErrorException("2/files/properties/update", ex.getRequestId(), ex.getUserMessage(), (UpdatePropertiesError) ex.getErrorValue()));
         }
     }
 
@@ -3344,7 +3344,7 @@ public class DbxUserFilesRequests {
                                         RestoreError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RestoreErrorException("2/files/restore", ex.getRequestId(), ex.getUserMessage(), (RestoreError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RestoreErrorException("2/files/restore", ex.getRequestId(), ex.getUserMessage(), (RestoreError) ex.getErrorValue()));
         }
     }
 
@@ -3386,7 +3386,7 @@ public class DbxUserFilesRequests {
                                         SaveUrlError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SaveUrlErrorException("2/files/save_url", ex.getRequestId(), ex.getUserMessage(), (SaveUrlError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SaveUrlErrorException("2/files/save_url", ex.getRequestId(), ex.getUserMessage(), (SaveUrlError) ex.getErrorValue()));
         }
     }
 
@@ -3429,7 +3429,7 @@ public class DbxUserFilesRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/files/save_url/check_job_status", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/files/save_url/check_job_status", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -3470,7 +3470,7 @@ public class DbxUserFilesRequests {
                                         SearchError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SearchErrorException("2/files/search", ex.getRequestId(), ex.getUserMessage(), (SearchError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SearchErrorException("2/files/search", ex.getRequestId(), ex.getUserMessage(), (SearchError) ex.getErrorValue()));
         }
     }
 
@@ -3557,7 +3557,7 @@ public class DbxUserFilesRequests {
                                         SearchError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SearchErrorException("2/files/search_v2", ex.getRequestId(), ex.getUserMessage(), (SearchError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SearchErrorException("2/files/search_v2", ex.getRequestId(), ex.getUserMessage(), (SearchError) ex.getErrorValue()));
         }
     }
 
@@ -3632,7 +3632,7 @@ public class DbxUserFilesRequests {
                                         SearchError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SearchErrorException("2/files/search/continue_v2", ex.getRequestId(), ex.getUserMessage(), (SearchError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SearchErrorException("2/files/search/continue_v2", ex.getRequestId(), ex.getUserMessage(), (SearchError) ex.getErrorValue()));
         }
     }
 
@@ -3679,7 +3679,7 @@ public class DbxUserFilesRequests {
                                  AddTagError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new AddTagErrorException("2/files/tags/add", ex.getRequestId(), ex.getUserMessage(), (AddTagError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new AddTagErrorException("2/files/tags/add", ex.getRequestId(), ex.getUserMessage(), (AddTagError) ex.getErrorValue()));
         }
     }
 
@@ -3722,7 +3722,7 @@ public class DbxUserFilesRequests {
                                         BaseTagError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new BaseTagErrorException("2/files/tags/get", ex.getRequestId(), ex.getUserMessage(), (BaseTagError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new BaseTagErrorException("2/files/tags/get", ex.getRequestId(), ex.getUserMessage(), (BaseTagError) ex.getErrorValue()));
         }
     }
 
@@ -3759,7 +3759,7 @@ public class DbxUserFilesRequests {
                                  RemoveTagError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RemoveTagErrorException("2/files/tags/remove", ex.getRequestId(), ex.getUserMessage(), (RemoveTagError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RemoveTagErrorException("2/files/tags/remove", ex.getRequestId(), ex.getUserMessage(), (RemoveTagError) ex.getErrorValue()));
         }
     }
 
@@ -3802,7 +3802,7 @@ public class DbxUserFilesRequests {
                                         LockFileError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new LockFileErrorException("2/files/unlock_file_batch", ex.getRequestId(), ex.getUserMessage(), (LockFileError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new LockFileErrorException("2/files/unlock_file_batch", ex.getRequestId(), ex.getUserMessage(), (LockFileError) ex.getErrorValue()));
         }
     }
 
@@ -4267,7 +4267,7 @@ public class DbxUserFilesRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"upload_session/finish_batch\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"upload_session/finish_batch\":" + ex.getErrorValue()));
         }
     }
 
@@ -4352,7 +4352,7 @@ public class DbxUserFilesRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"upload_session/finish_batch_v2\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"upload_session/finish_batch_v2\":" + ex.getErrorValue()));
         }
     }
 
@@ -4412,7 +4412,7 @@ public class DbxUserFilesRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/files/upload_session/finish_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/files/upload_session/finish_batch/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -4641,7 +4641,7 @@ public class DbxUserFilesRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"upload_session/start_batch\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"upload_session/start_batch\":" + ex.getErrorValue()));
         }
     }
 

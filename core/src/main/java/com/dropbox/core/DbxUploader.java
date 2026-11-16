@@ -293,8 +293,10 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
                 String requestId = DbxRequestUtil.getRequestId(response);
                 throw new BadResponseException(requestId, "Bad JSON in response: " + ex, ex);
             }
+        } catch (DbxException ex) {
+            throw DbxRequestUtil.withResponseMetadata(ex, response);
         } catch (IOException ex) {
-            throw new NetworkIOException(ex);
+            throw DbxRequestUtil.withResponseMetadata(new NetworkIOException(ex), response);
         } finally {
             // Make sure input stream is closed
             if (response != null) {

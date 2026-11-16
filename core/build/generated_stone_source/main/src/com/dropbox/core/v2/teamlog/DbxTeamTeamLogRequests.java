@@ -53,7 +53,7 @@ public class DbxTeamTeamLogRequests {
                                         GetTeamEventsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GetTeamEventsErrorException("2/team_log/get_events", ex.getRequestId(), ex.getUserMessage(), (GetTeamEventsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GetTeamEventsErrorException("2/team_log/get_events", ex.getRequestId(), ex.getUserMessage(), (GetTeamEventsError) ex.getErrorValue()));
         }
     }
 
@@ -122,7 +122,7 @@ public class DbxTeamTeamLogRequests {
                                         GetTeamEventsContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GetTeamEventsContinueErrorException("2/team_log/get_events/continue", ex.getRequestId(), ex.getUserMessage(), (GetTeamEventsContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GetTeamEventsContinueErrorException("2/team_log/get_events/continue", ex.getRequestId(), ex.getUserMessage(), (GetTeamEventsContinueError) ex.getErrorValue()));
         }
     }
 

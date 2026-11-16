@@ -3060,7 +3060,7 @@ class JavaCodeGenerationInstance:
                 after=';',
             )
         with self.g.block('catch (DbxWrappedException ex)'):
-            w.out('throw %s' % self.translate_error_wrapper(route, 'ex'))
+            w.out('throw ex.withResponseMetadata(%s);' % self.translate_error_wrapper(route, 'ex')[:-1])
 
     def generate_route_rpc_call(self, route, arg_var):
         assert isinstance(route, ApiRoute), repr(route)
@@ -3769,7 +3769,7 @@ class JavaCodeGenerationInstance:
 
                 w.out('')
                 with w.block('protected %s newException(DbxWrappedException error)', exception_class):
-                    w.out('return %s', self.translate_error_wrapper(route, 'error'))
+                    w.out('return error.withResponseMetadata(%s);', self.translate_error_wrapper(route, 'error')[:-1])
 
     def generate_route_builder(self, route):
         assert isinstance(route, ApiRoute), repr(route)

@@ -52,7 +52,7 @@ public class DbxAppSharingRequests {
                                              GetSharedLinkFileError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GetSharedLinkFileErrorException("2/sharing/get_shared_link_file", ex.getRequestId(), ex.getUserMessage(), (GetSharedLinkFileError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GetSharedLinkFileErrorException("2/sharing/get_shared_link_file", ex.getRequestId(), ex.getUserMessage(), (GetSharedLinkFileError) ex.getErrorValue()));
         }
     }
 
@@ -111,7 +111,7 @@ public class DbxAppSharingRequests {
                                         SharedLinkMetadataError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SharedLinkMetadataErrorException("2/sharing/get_shared_link_metadata", ex.getRequestId(), ex.getUserMessage(), (SharedLinkMetadataError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SharedLinkMetadataErrorException("2/sharing/get_shared_link_metadata", ex.getRequestId(), ex.getUserMessage(), (SharedLinkMetadataError) ex.getErrorValue()));
         }
     }
 

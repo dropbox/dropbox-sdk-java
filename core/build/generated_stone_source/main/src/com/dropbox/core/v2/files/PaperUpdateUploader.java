@@ -34,6 +34,6 @@ public class PaperUpdateUploader extends DbxUploader<PaperUpdateResult, PaperUpd
     }
 
     protected PaperUpdateErrorException newException(DbxWrappedException error) {
-        return new PaperUpdateErrorException("2/files/paper/update", error.getRequestId(), error.getUserMessage(), (PaperUpdateError) error.getErrorValue());
+        return error.withResponseMetadata(new PaperUpdateErrorException("2/files/paper/update", error.getRequestId(), error.getUserMessage(), (PaperUpdateError) error.getErrorValue()));
     }
 }

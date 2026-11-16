@@ -34,6 +34,6 @@ public class TestUploadV3Uploader extends DbxUploader<Void, ParentUnion, ParentU
     }
 
     protected ParentUnionException newException(DbxWrappedException error) {
-        return new ParentUnionException("2/test/test_upload_v3", error.getRequestId(), error.getUserMessage(), (ParentUnion) error.getErrorValue());
+        return error.withResponseMetadata(new ParentUnionException("2/test/test_upload_v3", error.getRequestId(), error.getUserMessage(), (ParentUnion) error.getErrorValue()));
     }
 }

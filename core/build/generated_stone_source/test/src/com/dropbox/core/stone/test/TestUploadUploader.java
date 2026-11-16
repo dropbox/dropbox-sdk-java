@@ -35,6 +35,6 @@ public class TestUploadUploader extends DbxUploader<Void, Void, DbxApiException>
     }
 
     protected DbxApiException newException(DbxWrappedException error) {
-        return new DbxApiException(error.getRequestId(), error.getUserMessage(), "Unexpected error response for \"test_upload\":" + error.getErrorValue());
+        return error.withResponseMetadata(new DbxApiException(error.getRequestId(), error.getUserMessage(), "Unexpected error response for \"test_upload\":" + error.getErrorValue()));
     }
 }

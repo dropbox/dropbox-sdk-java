@@ -34,6 +34,6 @@ public class UploadSessionFinishUploader extends DbxUploader<FileMetadata, Uploa
     }
 
     protected UploadSessionFinishErrorException newException(DbxWrappedException error) {
-        return new UploadSessionFinishErrorException("2/files/upload_session/finish", error.getRequestId(), error.getUserMessage(), (UploadSessionFinishError) error.getErrorValue());
+        return error.withResponseMetadata(new UploadSessionFinishErrorException("2/files/upload_session/finish", error.getRequestId(), error.getUserMessage(), (UploadSessionFinishError) error.getErrorValue()));
     }
 }

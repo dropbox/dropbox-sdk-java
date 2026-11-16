@@ -164,6 +164,26 @@ public class Main {
 }
 ```
 
+## HTTP error metadata
+
+Catch `DbxException` to inspect the request ID, HTTP status, and a deeply immutable
+snapshot of response headers. Header lookup is case-insensitive and preserves multiple
+values, including after the response is closed. Without an HTTP response, the status
+is `null` and the headers are empty. Existing exception types and retry behavior apply.
+
+```java
+try {
+    client.files().getMetadata("/file.txt");
+} catch (DbxException ex) {
+    String requestId = ex.getRequestId();
+    Integer status = ex.getResponseStatusCode();
+    java.util.List<String> timing = ex.getResponseHeaders().get("X-Server-Response-Time");
+    if (timing != null) {
+        // Inspect all values of this optional header as needed.
+    }
+}
+```
+
 ## Full examples
 
 Some more complete examples can be found here:

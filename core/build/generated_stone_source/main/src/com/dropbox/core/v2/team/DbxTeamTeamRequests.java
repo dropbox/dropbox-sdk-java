@@ -60,7 +60,7 @@ public class DbxTeamTeamRequests {
                                         ListMemberDevicesError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListMemberDevicesErrorException("2/team/devices/list_member_devices", ex.getRequestId(), ex.getUserMessage(), (ListMemberDevicesError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListMemberDevicesErrorException("2/team/devices/list_member_devices", ex.getRequestId(), ex.getUserMessage(), (ListMemberDevicesError) ex.getErrorValue()));
         }
     }
 
@@ -115,7 +115,7 @@ public class DbxTeamTeamRequests {
                                         ListMembersDevicesError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListMembersDevicesErrorException("2/team/devices/list_members_devices", ex.getRequestId(), ex.getUserMessage(), (ListMembersDevicesError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListMembersDevicesErrorException("2/team/devices/list_members_devices", ex.getRequestId(), ex.getUserMessage(), (ListMembersDevicesError) ex.getErrorValue()));
         }
     }
 
@@ -160,7 +160,7 @@ public class DbxTeamTeamRequests {
                                         ListTeamDevicesError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListTeamDevicesErrorException("2/team/devices/list_team_devices", ex.getRequestId(), ex.getUserMessage(), (ListTeamDevicesError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListTeamDevicesErrorException("2/team/devices/list_team_devices", ex.getRequestId(), ex.getUserMessage(), (ListTeamDevicesError) ex.getErrorValue()));
         }
     }
 
@@ -211,7 +211,7 @@ public class DbxTeamTeamRequests {
                                  RevokeDeviceSessionError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RevokeDeviceSessionErrorException("2/team/devices/revoke_device_session", ex.getRequestId(), ex.getUserMessage(), (RevokeDeviceSessionError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RevokeDeviceSessionErrorException("2/team/devices/revoke_device_session", ex.getRequestId(), ex.getUserMessage(), (RevokeDeviceSessionError) ex.getErrorValue()));
         }
     }
 
@@ -234,7 +234,7 @@ public class DbxTeamTeamRequests {
                                         RevokeDeviceSessionBatchError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RevokeDeviceSessionBatchErrorException("2/team/devices/revoke_device_session_batch", ex.getRequestId(), ex.getUserMessage(), (RevokeDeviceSessionBatchError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RevokeDeviceSessionBatchErrorException("2/team/devices/revoke_device_session_batch", ex.getRequestId(), ex.getUserMessage(), (RevokeDeviceSessionBatchError) ex.getErrorValue()));
         }
     }
 
@@ -273,7 +273,7 @@ public class DbxTeamTeamRequests {
                                         FeaturesGetValuesBatchError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new FeaturesGetValuesBatchErrorException("2/team/features/get_values", ex.getRequestId(), ex.getUserMessage(), (FeaturesGetValuesBatchError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new FeaturesGetValuesBatchErrorException("2/team/features/get_values", ex.getRequestId(), ex.getUserMessage(), (FeaturesGetValuesBatchError) ex.getErrorValue()));
         }
     }
 
@@ -312,7 +312,7 @@ public class DbxTeamTeamRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"get_info\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"get_info\":" + ex.getErrorValue()));
         }
     }
 
@@ -338,7 +338,7 @@ public class DbxTeamTeamRequests {
                                         GroupCreateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GroupCreateErrorException("2/team/groups/create", ex.getRequestId(), ex.getUserMessage(), (GroupCreateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GroupCreateErrorException("2/team/groups/create", ex.getRequestId(), ex.getUserMessage(), (GroupCreateError) ex.getErrorValue()));
         }
     }
 
@@ -406,7 +406,7 @@ public class DbxTeamTeamRequests {
                                         GroupDeleteError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GroupDeleteErrorException("2/team/groups/delete", ex.getRequestId(), ex.getUserMessage(), (GroupDeleteError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GroupDeleteErrorException("2/team/groups/delete", ex.getRequestId(), ex.getUserMessage(), (GroupDeleteError) ex.getErrorValue()));
         }
     }
 
@@ -433,7 +433,7 @@ public class DbxTeamTeamRequests {
                                         GroupsGetInfoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GroupsGetInfoErrorException("2/team/groups/get_info", ex.getRequestId(), ex.getUserMessage(), (GroupsGetInfoError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GroupsGetInfoErrorException("2/team/groups/get_info", ex.getRequestId(), ex.getUserMessage(), (GroupsGetInfoError) ex.getErrorValue()));
         }
     }
 
@@ -468,7 +468,7 @@ public class DbxTeamTeamRequests {
                                         GroupsPollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GroupsPollErrorException("2/team/groups/job_status/get", ex.getRequestId(), ex.getUserMessage(), (GroupsPollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GroupsPollErrorException("2/team/groups/job_status/get", ex.getRequestId(), ex.getUserMessage(), (GroupsPollError) ex.getErrorValue()));
         }
     }
 
@@ -516,7 +516,7 @@ public class DbxTeamTeamRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"groups/list\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"groups/list\":" + ex.getErrorValue()));
         }
     }
 
@@ -572,7 +572,7 @@ public class DbxTeamTeamRequests {
                                         GroupsListContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GroupsListContinueErrorException("2/team/groups/list/continue", ex.getRequestId(), ex.getUserMessage(), (GroupsListContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GroupsListContinueErrorException("2/team/groups/list/continue", ex.getRequestId(), ex.getUserMessage(), (GroupsListContinueError) ex.getErrorValue()));
         }
     }
 
@@ -619,7 +619,7 @@ public class DbxTeamTeamRequests {
                                         GroupMembersAddError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GroupMembersAddErrorException("2/team/groups/members/add", ex.getRequestId(), ex.getUserMessage(), (GroupMembersAddError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GroupMembersAddErrorException("2/team/groups/members/add", ex.getRequestId(), ex.getUserMessage(), (GroupMembersAddError) ex.getErrorValue()));
         }
     }
 
@@ -696,7 +696,7 @@ public class DbxTeamTeamRequests {
                                         GroupSelectorError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GroupSelectorErrorException("2/team/groups/members/list", ex.getRequestId(), ex.getUserMessage(), (GroupSelectorError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GroupSelectorErrorException("2/team/groups/members/list", ex.getRequestId(), ex.getUserMessage(), (GroupSelectorError) ex.getErrorValue()));
         }
     }
 
@@ -760,7 +760,7 @@ public class DbxTeamTeamRequests {
                                         GroupsMembersListContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GroupsMembersListContinueErrorException("2/team/groups/members/list/continue", ex.getRequestId(), ex.getUserMessage(), (GroupsMembersListContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GroupsMembersListContinueErrorException("2/team/groups/members/list/continue", ex.getRequestId(), ex.getUserMessage(), (GroupsMembersListContinueError) ex.getErrorValue()));
         }
     }
 
@@ -809,7 +809,7 @@ public class DbxTeamTeamRequests {
                                         GroupMembersRemoveError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GroupMembersRemoveErrorException("2/team/groups/members/remove", ex.getRequestId(), ex.getUserMessage(), (GroupMembersRemoveError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GroupMembersRemoveErrorException("2/team/groups/members/remove", ex.getRequestId(), ex.getUserMessage(), (GroupMembersRemoveError) ex.getErrorValue()));
         }
     }
 
@@ -892,7 +892,7 @@ public class DbxTeamTeamRequests {
                                         GroupMemberSetAccessTypeError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GroupMemberSetAccessTypeErrorException("2/team/groups/members/set_access_type", ex.getRequestId(), ex.getUserMessage(), (GroupMemberSetAccessTypeError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GroupMemberSetAccessTypeErrorException("2/team/groups/members/set_access_type", ex.getRequestId(), ex.getUserMessage(), (GroupMemberSetAccessTypeError) ex.getErrorValue()));
         }
     }
 
@@ -966,7 +966,7 @@ public class DbxTeamTeamRequests {
                                         GroupUpdateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GroupUpdateErrorException("2/team/groups/update", ex.getRequestId(), ex.getUserMessage(), (GroupUpdateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GroupUpdateErrorException("2/team/groups/update", ex.getRequestId(), ex.getUserMessage(), (GroupUpdateError) ex.getErrorValue()));
         }
     }
 
@@ -1026,7 +1026,7 @@ public class DbxTeamTeamRequests {
                                         LegalHoldsPolicyCreateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new LegalHoldsPolicyCreateErrorException("2/team/legal_holds/create_policy", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsPolicyCreateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new LegalHoldsPolicyCreateErrorException("2/team/legal_holds/create_policy", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsPolicyCreateError) ex.getErrorValue()));
         }
     }
 
@@ -1087,7 +1087,7 @@ public class DbxTeamTeamRequests {
                                         LegalHoldsGetPolicyError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new LegalHoldsGetPolicyErrorException("2/team/legal_holds/get_policy", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsGetPolicyError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new LegalHoldsGetPolicyErrorException("2/team/legal_holds/get_policy", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsGetPolicyError) ex.getErrorValue()));
         }
     }
 
@@ -1127,7 +1127,7 @@ public class DbxTeamTeamRequests {
                                         LegalHoldsListHeldRevisionsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new LegalHoldsListHeldRevisionsErrorException("2/team/legal_holds/list_held_revisions", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsListHeldRevisionsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new LegalHoldsListHeldRevisionsErrorException("2/team/legal_holds/list_held_revisions", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsListHeldRevisionsError) ex.getErrorValue()));
         }
     }
 
@@ -1168,7 +1168,7 @@ public class DbxTeamTeamRequests {
                                         LegalHoldsListHeldRevisionsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new LegalHoldsListHeldRevisionsErrorException("2/team/legal_holds/list_held_revisions_continue", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsListHeldRevisionsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new LegalHoldsListHeldRevisionsErrorException("2/team/legal_holds/list_held_revisions_continue", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsListHeldRevisionsError) ex.getErrorValue()));
         }
     }
 
@@ -1232,7 +1232,7 @@ public class DbxTeamTeamRequests {
                                         LegalHoldsListPoliciesError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new LegalHoldsListPoliciesErrorException("2/team/legal_holds/list_policies", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsListPoliciesError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new LegalHoldsListPoliciesErrorException("2/team/legal_holds/list_policies", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsListPoliciesError) ex.getErrorValue()));
         }
     }
 
@@ -1279,7 +1279,7 @@ public class DbxTeamTeamRequests {
                                  LegalHoldsPolicyReleaseError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new LegalHoldsPolicyReleaseErrorException("2/team/legal_holds/release_policy", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsPolicyReleaseError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new LegalHoldsPolicyReleaseErrorException("2/team/legal_holds/release_policy", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsPolicyReleaseError) ex.getErrorValue()));
         }
     }
 
@@ -1318,7 +1318,7 @@ public class DbxTeamTeamRequests {
                                         LegalHoldsPolicyUpdateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new LegalHoldsPolicyUpdateErrorException("2/team/legal_holds/update_policy", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsPolicyUpdateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new LegalHoldsPolicyUpdateErrorException("2/team/legal_holds/update_policy", ex.getRequestId(), ex.getUserMessage(), (LegalHoldsPolicyUpdateError) ex.getErrorValue()));
         }
     }
 
@@ -1375,7 +1375,7 @@ public class DbxTeamTeamRequests {
                                         ListMemberAppsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListMemberAppsErrorException("2/team/linked_apps/list_member_linked_apps", ex.getRequestId(), ex.getUserMessage(), (ListMemberAppsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListMemberAppsErrorException("2/team/linked_apps/list_member_linked_apps", ex.getRequestId(), ex.getUserMessage(), (ListMemberAppsError) ex.getErrorValue()));
         }
     }
 
@@ -1418,7 +1418,7 @@ public class DbxTeamTeamRequests {
                                         ListMembersAppsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListMembersAppsErrorException("2/team/linked_apps/list_members_linked_apps", ex.getRequestId(), ex.getUserMessage(), (ListMembersAppsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListMembersAppsErrorException("2/team/linked_apps/list_members_linked_apps", ex.getRequestId(), ex.getUserMessage(), (ListMembersAppsError) ex.getErrorValue()));
         }
     }
 
@@ -1477,7 +1477,7 @@ public class DbxTeamTeamRequests {
                                         ListTeamAppsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListTeamAppsErrorException("2/team/linked_apps/list_team_linked_apps", ex.getRequestId(), ex.getUserMessage(), (ListTeamAppsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListTeamAppsErrorException("2/team/linked_apps/list_team_linked_apps", ex.getRequestId(), ex.getUserMessage(), (ListTeamAppsError) ex.getErrorValue()));
         }
     }
 
@@ -1536,7 +1536,7 @@ public class DbxTeamTeamRequests {
                                  RevokeLinkedAppError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RevokeLinkedAppErrorException("2/team/linked_apps/revoke_linked_app", ex.getRequestId(), ex.getUserMessage(), (RevokeLinkedAppError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RevokeLinkedAppErrorException("2/team/linked_apps/revoke_linked_app", ex.getRequestId(), ex.getUserMessage(), (RevokeLinkedAppError) ex.getErrorValue()));
         }
     }
 
@@ -1596,7 +1596,7 @@ public class DbxTeamTeamRequests {
                                         RevokeLinkedAppBatchError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RevokeLinkedAppBatchErrorException("2/team/linked_apps/revoke_linked_app_batch", ex.getRequestId(), ex.getUserMessage(), (RevokeLinkedAppBatchError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RevokeLinkedAppBatchErrorException("2/team/linked_apps/revoke_linked_app_batch", ex.getRequestId(), ex.getUserMessage(), (RevokeLinkedAppBatchError) ex.getErrorValue()));
         }
     }
 
@@ -1638,7 +1638,7 @@ public class DbxTeamTeamRequests {
                                         ExcludedUsersUpdateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ExcludedUsersUpdateErrorException("2/team/member_space_limits/excluded_users/add", ex.getRequestId(), ex.getUserMessage(), (ExcludedUsersUpdateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ExcludedUsersUpdateErrorException("2/team/member_space_limits/excluded_users/add", ex.getRequestId(), ex.getUserMessage(), (ExcludedUsersUpdateError) ex.getErrorValue()));
         }
     }
 
@@ -1697,7 +1697,7 @@ public class DbxTeamTeamRequests {
                                         ExcludedUsersListError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ExcludedUsersListErrorException("2/team/member_space_limits/excluded_users/list", ex.getRequestId(), ex.getUserMessage(), (ExcludedUsersListError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ExcludedUsersListErrorException("2/team/member_space_limits/excluded_users/list", ex.getRequestId(), ex.getUserMessage(), (ExcludedUsersListError) ex.getErrorValue()));
         }
     }
 
@@ -1758,7 +1758,7 @@ public class DbxTeamTeamRequests {
                                         ExcludedUsersListContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ExcludedUsersListContinueErrorException("2/team/member_space_limits/excluded_users/list/continue", ex.getRequestId(), ex.getUserMessage(), (ExcludedUsersListContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ExcludedUsersListContinueErrorException("2/team/member_space_limits/excluded_users/list/continue", ex.getRequestId(), ex.getUserMessage(), (ExcludedUsersListContinueError) ex.getErrorValue()));
         }
     }
 
@@ -1802,7 +1802,7 @@ public class DbxTeamTeamRequests {
                                         ExcludedUsersUpdateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ExcludedUsersUpdateErrorException("2/team/member_space_limits/excluded_users/remove", ex.getRequestId(), ex.getUserMessage(), (ExcludedUsersUpdateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ExcludedUsersUpdateErrorException("2/team/member_space_limits/excluded_users/remove", ex.getRequestId(), ex.getUserMessage(), (ExcludedUsersUpdateError) ex.getErrorValue()));
         }
     }
 
@@ -1861,7 +1861,7 @@ public class DbxTeamTeamRequests {
                                         CustomQuotaError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new CustomQuotaErrorException("2/team/member_space_limits/get_custom_quota", ex.getRequestId(), ex.getUserMessage(), (CustomQuotaError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new CustomQuotaErrorException("2/team/member_space_limits/get_custom_quota", ex.getRequestId(), ex.getUserMessage(), (CustomQuotaError) ex.getErrorValue()));
         }
     }
 
@@ -1904,7 +1904,7 @@ public class DbxTeamTeamRequests {
                                         CustomQuotaError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new CustomQuotaErrorException("2/team/member_space_limits/remove_custom_quota", ex.getRequestId(), ex.getUserMessage(), (CustomQuotaError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new CustomQuotaErrorException("2/team/member_space_limits/remove_custom_quota", ex.getRequestId(), ex.getUserMessage(), (CustomQuotaError) ex.getErrorValue()));
         }
     }
 
@@ -1948,7 +1948,7 @@ public class DbxTeamTeamRequests {
                                         SetCustomQuotaError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SetCustomQuotaErrorException("2/team/member_space_limits/set_custom_quota", ex.getRequestId(), ex.getUserMessage(), (SetCustomQuotaError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SetCustomQuotaErrorException("2/team/member_space_limits/set_custom_quota", ex.getRequestId(), ex.getUserMessage(), (SetCustomQuotaError) ex.getErrorValue()));
         }
     }
 
@@ -1999,7 +1999,7 @@ public class DbxTeamTeamRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/add\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/add\":" + ex.getErrorValue()));
         }
     }
 
@@ -2081,7 +2081,7 @@ public class DbxTeamTeamRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/add_v2\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/add_v2\":" + ex.getErrorValue()));
         }
     }
 
@@ -2154,7 +2154,7 @@ public class DbxTeamTeamRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/team/members/add/job_status/get", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/team/members/add/job_status/get", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -2198,7 +2198,7 @@ public class DbxTeamTeamRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/team/members/add/job_status/get_v2", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/team/members/add/job_status/get_v2", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -2244,7 +2244,7 @@ public class DbxTeamTeamRequests {
                                  MembersDeleteFormerMemberFilesError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersDeleteFormerMemberFilesErrorException("2/team/members/delete_former_member_files", ex.getRequestId(), ex.getUserMessage(), (MembersDeleteFormerMemberFilesError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersDeleteFormerMemberFilesErrorException("2/team/members/delete_former_member_files", ex.getRequestId(), ex.getUserMessage(), (MembersDeleteFormerMemberFilesError) ex.getErrorValue()));
         }
     }
 
@@ -2288,7 +2288,7 @@ public class DbxTeamTeamRequests {
                                         MembersDeleteProfilePhotoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersDeleteProfilePhotoErrorException("2/team/members/delete_profile_photo", ex.getRequestId(), ex.getUserMessage(), (MembersDeleteProfilePhotoError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersDeleteProfilePhotoErrorException("2/team/members/delete_profile_photo", ex.getRequestId(), ex.getUserMessage(), (MembersDeleteProfilePhotoError) ex.getErrorValue()));
         }
     }
 
@@ -2332,7 +2332,7 @@ public class DbxTeamTeamRequests {
                                         MembersDeleteProfilePhotoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersDeleteProfilePhotoErrorException("2/team/members/delete_profile_photo_v2", ex.getRequestId(), ex.getUserMessage(), (MembersDeleteProfilePhotoError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersDeleteProfilePhotoErrorException("2/team/members/delete_profile_photo_v2", ex.getRequestId(), ex.getUserMessage(), (MembersDeleteProfilePhotoError) ex.getErrorValue()));
         }
     }
 
@@ -2379,7 +2379,7 @@ public class DbxTeamTeamRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/get_available_team_member_roles\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/get_available_team_member_roles\":" + ex.getErrorValue()));
         }
     }
 
@@ -2405,7 +2405,7 @@ public class DbxTeamTeamRequests {
                                         MembersGetInfoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersGetInfoErrorException("2/team/members/get_info", ex.getRequestId(), ex.getUserMessage(), (MembersGetInfoError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersGetInfoErrorException("2/team/members/get_info", ex.getRequestId(), ex.getUserMessage(), (MembersGetInfoError) ex.getErrorValue()));
         }
     }
 
@@ -2448,7 +2448,7 @@ public class DbxTeamTeamRequests {
                                         MembersGetInfoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersGetInfoErrorException("2/team/members/get_info_v2", ex.getRequestId(), ex.getUserMessage(), (MembersGetInfoError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersGetInfoErrorException("2/team/members/get_info_v2", ex.getRequestId(), ex.getUserMessage(), (MembersGetInfoError) ex.getErrorValue()));
         }
     }
 
@@ -2488,7 +2488,7 @@ public class DbxTeamTeamRequests {
                                         MembersListError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersListErrorException("2/team/members/list", ex.getRequestId(), ex.getUserMessage(), (MembersListError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersListErrorException("2/team/members/list", ex.getRequestId(), ex.getUserMessage(), (MembersListError) ex.getErrorValue()));
         }
     }
 
@@ -2533,7 +2533,7 @@ public class DbxTeamTeamRequests {
                                         MembersListError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersListErrorException("2/team/members/list_v2", ex.getRequestId(), ex.getUserMessage(), (MembersListError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersListErrorException("2/team/members/list_v2", ex.getRequestId(), ex.getUserMessage(), (MembersListError) ex.getErrorValue()));
         }
     }
 
@@ -2580,7 +2580,7 @@ public class DbxTeamTeamRequests {
                                         MembersListContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersListContinueErrorException("2/team/members/list/continue", ex.getRequestId(), ex.getUserMessage(), (MembersListContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersListContinueErrorException("2/team/members/list/continue", ex.getRequestId(), ex.getUserMessage(), (MembersListContinueError) ex.getErrorValue()));
         }
     }
 
@@ -2621,7 +2621,7 @@ public class DbxTeamTeamRequests {
                                         MembersListContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersListContinueErrorException("2/team/members/list/continue_v2", ex.getRequestId(), ex.getUserMessage(), (MembersListContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersListContinueErrorException("2/team/members/list/continue_v2", ex.getRequestId(), ex.getUserMessage(), (MembersListContinueError) ex.getErrorValue()));
         }
     }
 
@@ -2668,7 +2668,7 @@ public class DbxTeamTeamRequests {
                                         MembersTransferFormerMembersFilesError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersTransferFormerMembersFilesErrorException("2/team/members/move_former_member_files", ex.getRequestId(), ex.getUserMessage(), (MembersTransferFormerMembersFilesError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersTransferFormerMembersFilesErrorException("2/team/members/move_former_member_files", ex.getRequestId(), ex.getUserMessage(), (MembersTransferFormerMembersFilesError) ex.getErrorValue()));
         }
     }
 
@@ -2726,7 +2726,7 @@ public class DbxTeamTeamRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/team/members/move_former_member_files/job_status/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/team/members/move_former_member_files/job_status/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -2775,7 +2775,7 @@ public class DbxTeamTeamRequests {
                                  MembersRecoverError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersRecoverErrorException("2/team/members/recover", ex.getRequestId(), ex.getUserMessage(), (MembersRecoverError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersRecoverErrorException("2/team/members/recover", ex.getRequestId(), ex.getUserMessage(), (MembersRecoverError) ex.getErrorValue()));
         }
     }
 
@@ -2832,7 +2832,7 @@ public class DbxTeamTeamRequests {
                                         MembersRemoveError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersRemoveErrorException("2/team/members/remove", ex.getRequestId(), ex.getUserMessage(), (MembersRemoveError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersRemoveErrorException("2/team/members/remove", ex.getRequestId(), ex.getUserMessage(), (MembersRemoveError) ex.getErrorValue()));
         }
     }
 
@@ -2932,7 +2932,7 @@ public class DbxTeamTeamRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/team/members/remove/job_status/get", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/team/members/remove/job_status/get", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -2980,7 +2980,7 @@ public class DbxTeamTeamRequests {
                                         AddSecondaryEmailsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new AddSecondaryEmailsErrorException("2/team/members/secondary_emails/add", ex.getRequestId(), ex.getUserMessage(), (AddSecondaryEmailsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new AddSecondaryEmailsErrorException("2/team/members/secondary_emails/add", ex.getRequestId(), ex.getUserMessage(), (AddSecondaryEmailsError) ex.getErrorValue()));
         }
     }
 
@@ -3022,7 +3022,7 @@ public class DbxTeamTeamRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/secondary_emails/delete\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/secondary_emails/delete\":" + ex.getErrorValue()));
         }
     }
 
@@ -3064,7 +3064,7 @@ public class DbxTeamTeamRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/secondary_emails/resend_verification_emails\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"members/secondary_emails/resend_verification_emails\":" + ex.getErrorValue()));
         }
     }
 
@@ -3110,7 +3110,7 @@ public class DbxTeamTeamRequests {
                                  MembersSendWelcomeError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersSendWelcomeErrorException("2/team/members/send_welcome_email", ex.getRequestId(), ex.getUserMessage(), (MembersSendWelcomeError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersSendWelcomeErrorException("2/team/members/send_welcome_email", ex.getRequestId(), ex.getUserMessage(), (MembersSendWelcomeError) ex.getErrorValue()));
         }
     }
 
@@ -3135,7 +3135,7 @@ public class DbxTeamTeamRequests {
                                         MembersSetPermissionsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersSetPermissionsErrorException("2/team/members/set_admin_permissions", ex.getRequestId(), ex.getUserMessage(), (MembersSetPermissionsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersSetPermissionsErrorException("2/team/members/set_admin_permissions", ex.getRequestId(), ex.getUserMessage(), (MembersSetPermissionsError) ex.getErrorValue()));
         }
     }
 
@@ -3175,7 +3175,7 @@ public class DbxTeamTeamRequests {
                                         MembersSetPermissions2Error.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersSetPermissions2ErrorException("2/team/members/set_admin_permissions_v2", ex.getRequestId(), ex.getUserMessage(), (MembersSetPermissions2Error) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersSetPermissions2ErrorException("2/team/members/set_admin_permissions_v2", ex.getRequestId(), ex.getUserMessage(), (MembersSetPermissions2Error) ex.getErrorValue()));
         }
     }
 
@@ -3250,7 +3250,7 @@ public class DbxTeamTeamRequests {
                                         MembersSetProfileError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersSetProfileErrorException("2/team/members/set_profile", ex.getRequestId(), ex.getUserMessage(), (MembersSetProfileError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersSetProfileErrorException("2/team/members/set_profile", ex.getRequestId(), ex.getUserMessage(), (MembersSetProfileError) ex.getErrorValue()));
         }
     }
 
@@ -3312,7 +3312,7 @@ public class DbxTeamTeamRequests {
                                         MembersSetProfileError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersSetProfileErrorException("2/team/members/set_profile_v2", ex.getRequestId(), ex.getUserMessage(), (MembersSetProfileError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersSetProfileErrorException("2/team/members/set_profile_v2", ex.getRequestId(), ex.getUserMessage(), (MembersSetProfileError) ex.getErrorValue()));
         }
     }
 
@@ -3372,7 +3372,7 @@ public class DbxTeamTeamRequests {
                                         MembersSetProfilePhotoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersSetProfilePhotoErrorException("2/team/members/set_profile_photo", ex.getRequestId(), ex.getUserMessage(), (MembersSetProfilePhotoError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersSetProfilePhotoErrorException("2/team/members/set_profile_photo", ex.getRequestId(), ex.getUserMessage(), (MembersSetProfilePhotoError) ex.getErrorValue()));
         }
     }
 
@@ -3418,7 +3418,7 @@ public class DbxTeamTeamRequests {
                                         MembersSetProfilePhotoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersSetProfilePhotoErrorException("2/team/members/set_profile_photo_v2", ex.getRequestId(), ex.getUserMessage(), (MembersSetProfilePhotoError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersSetProfilePhotoErrorException("2/team/members/set_profile_photo_v2", ex.getRequestId(), ex.getUserMessage(), (MembersSetProfilePhotoError) ex.getErrorValue()));
         }
     }
 
@@ -3463,7 +3463,7 @@ public class DbxTeamTeamRequests {
                                  MembersSuspendError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersSuspendErrorException("2/team/members/suspend", ex.getRequestId(), ex.getUserMessage(), (MembersSuspendError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersSuspendErrorException("2/team/members/suspend", ex.getRequestId(), ex.getUserMessage(), (MembersSuspendError) ex.getErrorValue()));
         }
     }
 
@@ -3527,7 +3527,7 @@ public class DbxTeamTeamRequests {
                                  MembersUnsuspendError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MembersUnsuspendErrorException("2/team/members/unsuspend", ex.getRequestId(), ex.getUserMessage(), (MembersUnsuspendError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MembersUnsuspendErrorException("2/team/members/unsuspend", ex.getRequestId(), ex.getUserMessage(), (MembersUnsuspendError) ex.getErrorValue()));
         }
     }
 
@@ -3572,7 +3572,7 @@ public class DbxTeamTeamRequests {
                                         TeamNamespacesListError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TeamNamespacesListErrorException("2/team/namespaces/list", ex.getRequestId(), ex.getUserMessage(), (TeamNamespacesListError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TeamNamespacesListErrorException("2/team/namespaces/list", ex.getRequestId(), ex.getUserMessage(), (TeamNamespacesListError) ex.getErrorValue()));
         }
     }
 
@@ -3644,7 +3644,7 @@ public class DbxTeamTeamRequests {
                                         TeamNamespacesListContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TeamNamespacesListContinueErrorException("2/team/namespaces/list/continue", ex.getRequestId(), ex.getUserMessage(), (TeamNamespacesListContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TeamNamespacesListContinueErrorException("2/team/namespaces/list/continue", ex.getRequestId(), ex.getUserMessage(), (TeamNamespacesListContinueError) ex.getErrorValue()));
         }
     }
 
@@ -3685,7 +3685,7 @@ public class DbxTeamTeamRequests {
                                         ModifyTemplateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ModifyTemplateErrorException("2/team/properties/template/add", ex.getRequestId(), ex.getUserMessage(), (ModifyTemplateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ModifyTemplateErrorException("2/team/properties/template/add", ex.getRequestId(), ex.getUserMessage(), (ModifyTemplateError) ex.getErrorValue()));
         }
     }
 
@@ -3731,7 +3731,7 @@ public class DbxTeamTeamRequests {
                                         TemplateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TemplateErrorException("2/team/properties/template/get", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TemplateErrorException("2/team/properties/template/get", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue()));
         }
     }
 
@@ -3782,7 +3782,7 @@ public class DbxTeamTeamRequests {
                                         DateRangeError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DateRangeErrorException("2/team/reports/get_activity", ex.getRequestId(), ex.getUserMessage(), (DateRangeError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DateRangeErrorException("2/team/reports/get_activity", ex.getRequestId(), ex.getUserMessage(), (DateRangeError) ex.getErrorValue()));
         }
     }
 
@@ -3843,7 +3843,7 @@ public class DbxTeamTeamRequests {
                                         DateRangeError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DateRangeErrorException("2/team/reports/get_devices", ex.getRequestId(), ex.getUserMessage(), (DateRangeError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DateRangeErrorException("2/team/reports/get_devices", ex.getRequestId(), ex.getUserMessage(), (DateRangeError) ex.getErrorValue()));
         }
     }
 
@@ -3904,7 +3904,7 @@ public class DbxTeamTeamRequests {
                                         DateRangeError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DateRangeErrorException("2/team/reports/get_membership", ex.getRequestId(), ex.getUserMessage(), (DateRangeError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DateRangeErrorException("2/team/reports/get_membership", ex.getRequestId(), ex.getUserMessage(), (DateRangeError) ex.getErrorValue()));
         }
     }
 
@@ -3964,7 +3964,7 @@ public class DbxTeamTeamRequests {
                                         DateRangeError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DateRangeErrorException("2/team/reports/get_storage", ex.getRequestId(), ex.getUserMessage(), (DateRangeError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DateRangeErrorException("2/team/reports/get_storage", ex.getRequestId(), ex.getUserMessage(), (DateRangeError) ex.getErrorValue()));
         }
     }
 
@@ -4028,7 +4028,7 @@ public class DbxTeamTeamRequests {
                                         SharingAllowlistAddError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SharingAllowlistAddErrorException("2/team/sharing_allowlist/add", ex.getRequestId(), ex.getUserMessage(), (SharingAllowlistAddError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SharingAllowlistAddErrorException("2/team/sharing_allowlist/add", ex.getRequestId(), ex.getUserMessage(), (SharingAllowlistAddError) ex.getErrorValue()));
         }
     }
 
@@ -4085,7 +4085,7 @@ public class DbxTeamTeamRequests {
                                         SharingAllowlistListError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SharingAllowlistListErrorException("2/team/sharing_allowlist/list", ex.getRequestId(), ex.getUserMessage(), (SharingAllowlistListError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SharingAllowlistListErrorException("2/team/sharing_allowlist/list", ex.getRequestId(), ex.getUserMessage(), (SharingAllowlistListError) ex.getErrorValue()));
         }
     }
 
@@ -4148,7 +4148,7 @@ public class DbxTeamTeamRequests {
                                         SharingAllowlistListContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SharingAllowlistListContinueErrorException("2/team/sharing_allowlist/list/continue", ex.getRequestId(), ex.getUserMessage(), (SharingAllowlistListContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SharingAllowlistListContinueErrorException("2/team/sharing_allowlist/list/continue", ex.getRequestId(), ex.getUserMessage(), (SharingAllowlistListContinueError) ex.getErrorValue()));
         }
     }
 
@@ -4195,7 +4195,7 @@ public class DbxTeamTeamRequests {
                                         SharingAllowlistRemoveError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SharingAllowlistRemoveErrorException("2/team/sharing_allowlist/remove", ex.getRequestId(), ex.getUserMessage(), (SharingAllowlistRemoveError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SharingAllowlistRemoveErrorException("2/team/sharing_allowlist/remove", ex.getRequestId(), ex.getUserMessage(), (SharingAllowlistRemoveError) ex.getErrorValue()));
         }
     }
 
@@ -4251,7 +4251,7 @@ public class DbxTeamTeamRequests {
                                         TeamFolderActivateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TeamFolderActivateErrorException("2/team/team_folder/activate", ex.getRequestId(), ex.getUserMessage(), (TeamFolderActivateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TeamFolderActivateErrorException("2/team/team_folder/activate", ex.getRequestId(), ex.getUserMessage(), (TeamFolderActivateError) ex.getErrorValue()));
         }
     }
 
@@ -4296,7 +4296,7 @@ public class DbxTeamTeamRequests {
                                         TeamFolderArchiveError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TeamFolderArchiveErrorException("2/team/team_folder/archive", ex.getRequestId(), ex.getUserMessage(), (TeamFolderArchiveError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TeamFolderArchiveErrorException("2/team/team_folder/archive", ex.getRequestId(), ex.getUserMessage(), (TeamFolderArchiveError) ex.getErrorValue()));
         }
     }
 
@@ -4370,7 +4370,7 @@ public class DbxTeamTeamRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/team/team_folder/archive/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/team/team_folder/archive/check", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -4418,7 +4418,7 @@ public class DbxTeamTeamRequests {
                                         TeamFolderCreateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TeamFolderCreateErrorException("2/team/team_folder/create", ex.getRequestId(), ex.getUserMessage(), (TeamFolderCreateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TeamFolderCreateErrorException("2/team/team_folder/create", ex.getRequestId(), ex.getUserMessage(), (TeamFolderCreateError) ex.getErrorValue()));
         }
     }
 
@@ -4478,7 +4478,7 @@ public class DbxTeamTeamRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"team_folder/get_info\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"team_folder/get_info\":" + ex.getErrorValue()));
         }
     }
 
@@ -4519,7 +4519,7 @@ public class DbxTeamTeamRequests {
                                         TeamFolderListError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TeamFolderListErrorException("2/team/team_folder/list", ex.getRequestId(), ex.getUserMessage(), (TeamFolderListError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TeamFolderListErrorException("2/team/team_folder/list", ex.getRequestId(), ex.getUserMessage(), (TeamFolderListError) ex.getErrorValue()));
         }
     }
 
@@ -4584,7 +4584,7 @@ public class DbxTeamTeamRequests {
                                         TeamFolderListContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TeamFolderListContinueErrorException("2/team/team_folder/list/continue", ex.getRequestId(), ex.getUserMessage(), (TeamFolderListContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TeamFolderListContinueErrorException("2/team/team_folder/list/continue", ex.getRequestId(), ex.getUserMessage(), (TeamFolderListContinueError) ex.getErrorValue()));
         }
     }
 
@@ -4628,7 +4628,7 @@ public class DbxTeamTeamRequests {
                                  TeamFolderPermanentlyDeleteError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TeamFolderPermanentlyDeleteErrorException("2/team/team_folder/permanently_delete", ex.getRequestId(), ex.getUserMessage(), (TeamFolderPermanentlyDeleteError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TeamFolderPermanentlyDeleteErrorException("2/team/team_folder/permanently_delete", ex.getRequestId(), ex.getUserMessage(), (TeamFolderPermanentlyDeleteError) ex.getErrorValue()));
         }
     }
 
@@ -4670,7 +4670,7 @@ public class DbxTeamTeamRequests {
                                         TeamFolderRenameError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TeamFolderRenameErrorException("2/team/team_folder/rename", ex.getRequestId(), ex.getUserMessage(), (TeamFolderRenameError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TeamFolderRenameErrorException("2/team/team_folder/rename", ex.getRequestId(), ex.getUserMessage(), (TeamFolderRenameError) ex.getErrorValue()));
         }
     }
 
@@ -4714,7 +4714,7 @@ public class DbxTeamTeamRequests {
                                         TeamFolderRestoreError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TeamFolderRestoreErrorException("2/team/team_folder/restore", ex.getRequestId(), ex.getUserMessage(), (TeamFolderRestoreError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TeamFolderRestoreErrorException("2/team/team_folder/restore", ex.getRequestId(), ex.getUserMessage(), (TeamFolderRestoreError) ex.getErrorValue()));
         }
     }
 
@@ -4757,7 +4757,7 @@ public class DbxTeamTeamRequests {
                                         TeamFolderUpdateSyncSettingsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TeamFolderUpdateSyncSettingsErrorException("2/team/team_folder/update_sync_settings", ex.getRequestId(), ex.getUserMessage(), (TeamFolderUpdateSyncSettingsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TeamFolderUpdateSyncSettingsErrorException("2/team/team_folder/update_sync_settings", ex.getRequestId(), ex.getUserMessage(), (TeamFolderUpdateSyncSettingsError) ex.getErrorValue()));
         }
     }
 
@@ -4818,7 +4818,7 @@ public class DbxTeamTeamRequests {
                                         TokenGetAuthenticatedAdminError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TokenGetAuthenticatedAdminErrorException("2/team/token/get_authenticated_admin", ex.getRequestId(), ex.getUserMessage(), (TokenGetAuthenticatedAdminError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TokenGetAuthenticatedAdminErrorException("2/team/token/get_authenticated_admin", ex.getRequestId(), ex.getUserMessage(), (TokenGetAuthenticatedAdminError) ex.getErrorValue()));
         }
     }
 }

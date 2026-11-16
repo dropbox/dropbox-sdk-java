@@ -51,7 +51,7 @@ public class DbxUserAccountRequests {
                                         DeleteProfilePhotoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DeleteProfilePhotoErrorException("2/account/delete_profile_photo", ex.getRequestId(), ex.getUserMessage(), (DeleteProfilePhotoError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DeleteProfilePhotoErrorException("2/account/delete_profile_photo", ex.getRequestId(), ex.getUserMessage(), (DeleteProfilePhotoError) ex.getErrorValue()));
         }
     }
 
@@ -90,7 +90,7 @@ public class DbxUserAccountRequests {
                                              AccountPhotoGetError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new AccountPhotoGetErrorException("2/account/get_photo", ex.getRequestId(), ex.getUserMessage(), (AccountPhotoGetError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new AccountPhotoGetErrorException("2/account/get_photo", ex.getRequestId(), ex.getUserMessage(), (AccountPhotoGetError) ex.getErrorValue()));
         }
     }
 
@@ -156,7 +156,7 @@ public class DbxUserAccountRequests {
                                         SetProfilePhotoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SetProfilePhotoErrorException("2/account/set_profile_photo", ex.getRequestId(), ex.getUserMessage(), (SetProfilePhotoError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SetProfilePhotoErrorException("2/account/set_profile_photo", ex.getRequestId(), ex.getUserMessage(), (SetProfilePhotoError) ex.getErrorValue()));
         }
     }
 

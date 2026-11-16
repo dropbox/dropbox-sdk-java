@@ -34,6 +34,6 @@ public class AlphaUploadUploader extends DbxUploader<FileMetadata, UploadError, 
     }
 
     protected UploadErrorException newException(DbxWrappedException error) {
-        return new UploadErrorException("2/files/alpha/upload", error.getRequestId(), error.getUserMessage(), (UploadError) error.getErrorValue());
+        return error.withResponseMetadata(new UploadErrorException("2/files/alpha/upload", error.getRequestId(), error.getUserMessage(), (UploadError) error.getErrorValue()));
     }
 }

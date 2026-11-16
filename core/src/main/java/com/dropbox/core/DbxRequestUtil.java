@@ -328,6 +328,25 @@ public final class DbxRequestUtil {
     public static DbxException unexpectedStatus(HttpRequestor.Response response, String userId)
         throws NetworkIOException, BadResponseException {
 
+        try {
+            return unexpectedStatusImpl(response, userId);
+        } catch (NetworkIOException ex) {
+            throw withResponseMetadata(ex, response);
+        } catch (BadResponseException ex) {
+            throw withResponseMetadata(ex, response);
+        }
+    }
+
+    /** For internal use only. Attaches a snapshot without changing the exception type. */
+    public static <T extends DbxException> T withResponseMetadata(T exception, HttpRequestor.Response response) {
+        if (response != null) {
+            exception.setResponseMetadata(response);
+        }
+        return exception;
+    }
+
+    private static DbxException unexpectedStatusImpl(HttpRequestor.Response response, String userId)
+        throws NetworkIOException, BadResponseException {
         String requestId = getRequestId(response);
         String message = null;
         DbxException networkError;
@@ -418,6 +437,7 @@ public final class DbxRequestUtil {
                 );
         }
 
+        withResponseMetadata(networkError, response);
         DbxGlobalCallbackFactory factory = DbxRequestUtil.sharedCallbackFactory;
         if (factory != null) {
             DbxNetworkErrorCallback callback = factory.createNetworkErrorCallback(userId);
@@ -439,9 +459,9 @@ public final class DbxRequestUtil {
             return reader.readFully(response.getBody());
         } catch (JsonReadException ex) {
             String requestId = getRequestId(response);
-            throw new BadResponseException(requestId, "error in response JSON: " + ex.getMessage(), ex);
+            throw withResponseMetadata(new BadResponseException(requestId, "error in response JSON: " + ex.getMessage(), ex), response);
         } catch (IOException ex) {
-            throw new NetworkIOException(ex);
+            throw withResponseMetadata(new NetworkIOException(ex), response);
         }
     }
 
@@ -470,12 +490,14 @@ public final class DbxRequestUtil {
                 HttpRequestor.Response response = startGet(requestConfig, accessToken, sdkUserAgentIdentifier, host, path, params, headers);
                 try {
                     return handler.handle(response);
+                } catch (DbxException ex) {
+                    throw withResponseMetadata(ex, response);
                 } finally {
                     try {
                         response.getBody().close();
                     } catch (IOException ex) {
                         //noinspection ThrowFromFinallyBlock
-                        throw new NetworkIOException(ex);
+                        throw withResponseMetadata(new NetworkIOException(ex), response);
                     }
                 }
             }
@@ -516,6 +538,8 @@ public final class DbxRequestUtil {
     public static <T> T finishResponse(HttpRequestor.Response response, ResponseHandler<T> handler) throws DbxException {
         try {
             return handler.handle(response);
+        } catch (DbxException ex) {
+            throw withResponseMetadata(ex, response);
         } finally {
             if (response != null) {
                 IOUtil.closeInput(response.getBody());
@@ -526,7 +550,7 @@ public final class DbxRequestUtil {
     public static String getFirstHeader(HttpRequestor.Response response, String name) throws BadResponseException {
         List<String> values = response.getHeaders().get(name);
         if (values == null || values.isEmpty()) {
-            throw new BadResponseException(getRequestId(response), "missing HTTP header \"" + name + "\"");
+            throw withResponseMetadata(new BadResponseException(getRequestId(response), "missing HTTP header \"" + name + "\""), response);
         }
         return values.get(0);
     }
