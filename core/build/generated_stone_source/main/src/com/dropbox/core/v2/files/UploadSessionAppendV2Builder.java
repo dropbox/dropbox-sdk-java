@@ -81,4 +81,9 @@ public class UploadSessionAppendV2Builder extends DbxUploadStyleBuilder<Void, Up
         UploadSessionAppendArg arg_ = this._builder.build();
         return _client.uploadSessionAppendV2(arg_);
     }
+
+    @Override
+    protected boolean needsAutoContentHash() {
+        return _client.isAutoContentHashEnabled() && this._builder.build().getContentHash() == null;
+    }
 }

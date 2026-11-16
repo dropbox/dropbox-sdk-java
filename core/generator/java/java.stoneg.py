@@ -1983,6 +1983,11 @@ class JavaApi:
         assert isinstance(route, ApiRoute), repr(route)
         return route.attrs.get('host', 'api')
 
+    def has_content_hash(self, route):
+        return (self.request_style(route) == 'upload' and route.deprecated is None
+                and is_struct_type(route.arg_data_type)
+                and any(f.name == 'content_hash' for f in route.arg_data_type.all_fields))
+
     def has_builder(self, stone_elem):
         assert isinstance(stone_elem, (ApiRoute, DataType)), repr(stone_elem)
         if isinstance(stone_elem, DataType):
@@ -1990,7 +1995,8 @@ class JavaApi:
             return is_struct_type(data_type) and len(data_type.all_optional_fields) > 1
         else:
             route = stone_elem
-            return self.request_style(route) == 'download' or self.has_builder(route.arg_data_type)
+            return (self.request_style(route) == 'download' or self.has_builder(route.arg_data_type)
+                    or self.has_content_hash(route))
 
     @staticmethod
     def route_method(route):
@@ -2685,6 +2691,11 @@ class JavaCodeGenerationInstance:
                 with w.block('public %s(DbxRawClientV2 client)', j.java_class(namespace)):
                     w.out('this.client = client;')
 
+                if any(j.has_content_hash(r) for r in namespace.routes):
+                    w.out('')
+                    with w.block('boolean isAutoContentHashEnabled()'):
+                        w.out('return client.getRequestConfig().isAutoContentHashEnabled();')
+
                 for route in namespace.routes:
                     w.out('')
                     w.out('//')
@@ -2962,7 +2973,10 @@ class JavaCodeGenerationInstance:
         )
 
         w.out('')
-        w.javadoc(route, fields=required_fields, returns=returns)
+        if j.has_content_hash(route) and not j.has_builder(arg):
+            w.javadoc('Creates a builder for %s.' % w.javadoc_ref(route), fields=required_fields, returns=returns)
+        else:
+            w.javadoc(route, fields=required_fields, returns=returns)
         with w.block('public %s %s(%s)', j.builder_class(route), j.route_builder_method(route), args):
             builder_args = ', '.join(j.param_name(f) for f in required_fields)
             if j.has_builder(arg):
@@ -3634,7 +3648,7 @@ class JavaCodeGenerationInstance:
                 build_args = ', '.join(j.param_name(f) for f in data_type.all_fields)
                 w.out('return new %s(%s);', j.java_class(data_type), build_args)
 
-    def generate_builder_methods(self, builder_class, fields, wrapped_builder_name=None):
+    def generate_builder_methods(self, builder_class, fields, wrapped_builder_name=None, inherit_doc=False):
         assert isinstance(builder_class, JavaClass), repr(builder_class)
         assert isinstance(fields, Sequence), repr(fields)
         assert all(isinstance(f, StructField) for f in fields), repr(fields)
@@ -3662,7 +3676,10 @@ class JavaCodeGenerationInstance:
             # withFieldName(FieldType fieldValue);
             #
             w.out('')
-            w.javadoc(doc, stone_elem=field, fields=(field,), returns='this builder')
+            if inherit_doc:
+                w.out('/** {@inheritDoc} */')
+            else:
+                w.javadoc(doc, stone_elem=field, fields=(field,), returns='this builder')
             with w.block('public %s %s(%s %s)',
                          builder_class,
                          j.field_builder_method(field),
@@ -3842,12 +3859,13 @@ class JavaCodeGenerationInstance:
                                  ))
 
                 w.out('')
-                w.javadoc(
-                    'Creates a new instance of this builder.',
-                    params=params,
-                    fields=fields,
-                    returns='instsance of this builder',
-                )
+                if not (j.has_content_hash(route) and not j.has_builder(arg)):
+                    w.javadoc(
+                        'Creates a new instance of this builder.',
+                        params=params,
+                        fields=fields,
+                        returns='instsance of this builder',
+                    )
                 # package private
                 with w.block('%s(%s)', j.builder_class(route), args):
                     with w.block('if (_client == null)'):
@@ -3873,7 +3891,8 @@ class JavaCodeGenerationInstance:
 
                 wrapped_builder_name = '_builder' if j.has_builder(arg) else None
                 self.generate_builder_methods(j.builder_class(route), arg.all_fields,
-                                              wrapped_builder_name=wrapped_builder_name)
+                                              wrapped_builder_name=wrapped_builder_name,
+                                              inherit_doc=j.has_content_hash(route) and not j.has_builder(arg))
 
                 #
                 # BUILD method to start request
@@ -3903,6 +3922,14 @@ class JavaCodeGenerationInstance:
                         w.out('return _client.%s(%s);', j.route_method(route), ', '.join(args))
                     else:
                         w.out('_client.%s(%s);', j.route_method(route), ', '.join(args))
+
+                if j.has_content_hash(route):
+                    w.out('')
+                    w.out('@Override')
+                    with w.block('protected boolean needsAutoContentHash()'):
+                        existing = ('this._builder.build().getContentHash()' if j.has_builder(arg)
+                                    else 'this.contentHash')
+                        w.out('return _client.isAutoContentHashEnabled() && %s == null;', existing)
 
                 if self.g.args.generate_request:
                     self._emit_request_method_body(route, '', '', return_class,

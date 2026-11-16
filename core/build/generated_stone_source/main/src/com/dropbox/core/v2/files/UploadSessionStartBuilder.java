@@ -94,4 +94,9 @@ public class UploadSessionStartBuilder extends DbxUploadStyleBuilder<UploadSessi
         UploadSessionStartArg arg_ = this._builder.build();
         return _client.uploadSessionStart(arg_);
     }
+
+    @Override
+    protected boolean needsAutoContentHash() {
+        return _client.isAutoContentHashEnabled() && this._builder.build().getContentHash() == null;
+    }
 }

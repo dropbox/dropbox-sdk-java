@@ -175,4 +175,9 @@ public class UploadBuilder extends DbxUploadStyleBuilder<FileMetadata, UploadErr
         UploadArg arg_ = this._builder.build();
         return _client.upload(arg_);
     }
+
+    @Override
+    protected boolean needsAutoContentHash() {
+        return _client.isAutoContentHashEnabled() && this._builder.build().getContentHash() == null;
+    }
 }

@@ -1449,11 +1449,13 @@ public class com/dropbox/core/v2/DbxTeamClientV2Base {
 
 public abstract class com/dropbox/core/v2/DbxUploadStyleBuilder {
 	public fun <init> ()V
+	protected fun needsAutoContentHash ()Z
 	public abstract fun start ()Lcom/dropbox/core/DbxUploader;
 	public fun uploadAndFinish (Ljava/io/InputStream;)Ljava/lang/Object;
 	public fun uploadAndFinish (Ljava/io/InputStream;J)Ljava/lang/Object;
 	public fun uploadAndFinish (Ljava/io/InputStream;JLcom/dropbox/core/util/IOUtil$ProgressListener;)Ljava/lang/Object;
 	public fun uploadAndFinish (Ljava/io/InputStream;Lcom/dropbox/core/util/IOUtil$ProgressListener;)Ljava/lang/Object;
+	protected fun withContentHash (Ljava/lang/String;)Lcom/dropbox/core/v2/DbxUploadStyleBuilder;
 }
 
 public final class com/dropbox/core/v2/account/AccountPhotoGetError {
@@ -3437,6 +3439,7 @@ public class com/dropbox/core/v2/files/AlphaUploadBuilder : com/dropbox/core/v2/
 	public fun start ()Lcom/dropbox/core/v2/files/AlphaUploadUploader;
 	public fun withAutorename (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/AlphaUploadBuilder;
 	public fun withClientModified (Ljava/util/Date;)Lcom/dropbox/core/v2/files/AlphaUploadBuilder;
+	public synthetic fun withContentHash (Ljava/lang/String;)Lcom/dropbox/core/v2/DbxUploadStyleBuilder;
 	public fun withContentHash (Ljava/lang/String;)Lcom/dropbox/core/v2/files/AlphaUploadBuilder;
 	public fun withMode (Lcom/dropbox/core/v2/files/WriteMode;)Lcom/dropbox/core/v2/files/AlphaUploadBuilder;
 	public fun withMute (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/AlphaUploadBuilder;
@@ -3867,6 +3870,7 @@ public class com/dropbox/core/v2/files/DbxUserFilesRequests {
 	public fun uploadSessionAppend (Ljava/lang/String;J)Lcom/dropbox/core/v2/files/UploadSessionAppendUploader;
 	public fun uploadSessionAppendBatch (Ljava/util/List;)Lcom/dropbox/core/v2/files/UploadSessionAppendBatchUploader;
 	public fun uploadSessionAppendBatch (Ljava/util/List;Ljava/lang/String;)Lcom/dropbox/core/v2/files/UploadSessionAppendBatchUploader;
+	public fun uploadSessionAppendBatchBuilder (Ljava/util/List;)Lcom/dropbox/core/v2/files/UploadSessionAppendBatchBuilder;
 	public fun uploadSessionAppendV2 (Lcom/dropbox/core/v2/files/UploadSessionCursor;)Lcom/dropbox/core/v2/files/UploadSessionAppendV2Uploader;
 	public fun uploadSessionAppendV2Builder (Lcom/dropbox/core/v2/files/UploadSessionCursor;)Lcom/dropbox/core/v2/files/UploadSessionAppendV2Builder;
 	public fun uploadSessionFinish (Lcom/dropbox/core/v2/files/UploadSessionCursor;Lcom/dropbox/core/v2/files/CommitInfo;)Lcom/dropbox/core/v2/files/UploadSessionFinishUploader;
@@ -3874,6 +3878,7 @@ public class com/dropbox/core/v2/files/DbxUserFilesRequests {
 	public fun uploadSessionFinishBatch (Ljava/util/List;)Lcom/dropbox/core/v2/files/UploadSessionFinishBatchLaunch;
 	public fun uploadSessionFinishBatchCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/files/UploadSessionFinishBatchJobStatus;
 	public fun uploadSessionFinishBatchV2 (Ljava/util/List;)Lcom/dropbox/core/v2/files/UploadSessionFinishBatchResult;
+	public fun uploadSessionFinishBuilder (Lcom/dropbox/core/v2/files/UploadSessionCursor;Lcom/dropbox/core/v2/files/CommitInfo;)Lcom/dropbox/core/v2/files/UploadSessionFinishBuilder;
 	public fun uploadSessionStart ()Lcom/dropbox/core/v2/files/UploadSessionStartUploader;
 	public fun uploadSessionStartBatch (J)Lcom/dropbox/core/v2/files/UploadSessionStartBatchResult;
 	public fun uploadSessionStartBatch (JLcom/dropbox/core/v2/files/UploadSessionType;)Lcom/dropbox/core/v2/files/UploadSessionStartBatchResult;
@@ -6630,10 +6635,12 @@ public class com/dropbox/core/v2/files/UnlockFileArg {
 }
 
 public class com/dropbox/core/v2/files/UploadBuilder : com/dropbox/core/v2/DbxUploadStyleBuilder {
+	protected fun needsAutoContentHash ()Z
 	public synthetic fun start ()Lcom/dropbox/core/DbxUploader;
 	public fun start ()Lcom/dropbox/core/v2/files/UploadUploader;
 	public fun withAutorename (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/UploadBuilder;
 	public fun withClientModified (Ljava/util/Date;)Lcom/dropbox/core/v2/files/UploadBuilder;
+	public synthetic fun withContentHash (Ljava/lang/String;)Lcom/dropbox/core/v2/DbxUploadStyleBuilder;
 	public fun withContentHash (Ljava/lang/String;)Lcom/dropbox/core/v2/files/UploadBuilder;
 	public fun withMode (Lcom/dropbox/core/v2/files/WriteMode;)Lcom/dropbox/core/v2/files/UploadBuilder;
 	public fun withMute (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/UploadBuilder;
@@ -6692,6 +6699,14 @@ public class com/dropbox/core/v2/files/UploadSessionAppendBatchArgEntry {
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/files/UploadSessionAppendBatchBuilder : com/dropbox/core/v2/DbxUploadStyleBuilder {
+	protected fun needsAutoContentHash ()Z
+	public synthetic fun start ()Lcom/dropbox/core/DbxUploader;
+	public fun start ()Lcom/dropbox/core/v2/files/UploadSessionAppendBatchUploader;
+	public synthetic fun withContentHash (Ljava/lang/String;)Lcom/dropbox/core/v2/DbxUploadStyleBuilder;
+	public fun withContentHash (Ljava/lang/String;)Lcom/dropbox/core/v2/files/UploadSessionAppendBatchBuilder;
 }
 
 public final class com/dropbox/core/v2/files/UploadSessionAppendBatchEntryError {
@@ -6832,9 +6847,11 @@ public class com/dropbox/core/v2/files/UploadSessionAppendUploader : com/dropbox
 }
 
 public class com/dropbox/core/v2/files/UploadSessionAppendV2Builder : com/dropbox/core/v2/DbxUploadStyleBuilder {
+	protected fun needsAutoContentHash ()Z
 	public synthetic fun start ()Lcom/dropbox/core/DbxUploader;
 	public fun start ()Lcom/dropbox/core/v2/files/UploadSessionAppendV2Uploader;
 	public fun withClose (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/UploadSessionAppendV2Builder;
+	public synthetic fun withContentHash (Ljava/lang/String;)Lcom/dropbox/core/v2/DbxUploadStyleBuilder;
 	public fun withContentHash (Ljava/lang/String;)Lcom/dropbox/core/v2/files/UploadSessionAppendV2Builder;
 }
 
@@ -6944,6 +6961,14 @@ public final class com/dropbox/core/v2/files/UploadSessionFinishBatchResultEntry
 	public static final field SUCCESS Lcom/dropbox/core/v2/files/UploadSessionFinishBatchResultEntry$Tag;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/files/UploadSessionFinishBatchResultEntry$Tag;
 	public static fun values ()[Lcom/dropbox/core/v2/files/UploadSessionFinishBatchResultEntry$Tag;
+}
+
+public class com/dropbox/core/v2/files/UploadSessionFinishBuilder : com/dropbox/core/v2/DbxUploadStyleBuilder {
+	protected fun needsAutoContentHash ()Z
+	public synthetic fun start ()Lcom/dropbox/core/DbxUploader;
+	public fun start ()Lcom/dropbox/core/v2/files/UploadSessionFinishUploader;
+	public synthetic fun withContentHash (Ljava/lang/String;)Lcom/dropbox/core/v2/DbxUploadStyleBuilder;
+	public fun withContentHash (Ljava/lang/String;)Lcom/dropbox/core/v2/files/UploadSessionFinishBuilder;
 }
 
 public final class com/dropbox/core/v2/files/UploadSessionFinishError {
@@ -7071,9 +7096,11 @@ public class com/dropbox/core/v2/files/UploadSessionStartBatchResult {
 }
 
 public class com/dropbox/core/v2/files/UploadSessionStartBuilder : com/dropbox/core/v2/DbxUploadStyleBuilder {
+	protected fun needsAutoContentHash ()Z
 	public synthetic fun start ()Lcom/dropbox/core/DbxUploader;
 	public fun start ()Lcom/dropbox/core/v2/files/UploadSessionStartUploader;
 	public fun withClose (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/files/UploadSessionStartBuilder;
+	public synthetic fun withContentHash (Ljava/lang/String;)Lcom/dropbox/core/v2/DbxUploadStyleBuilder;
 	public fun withContentHash (Ljava/lang/String;)Lcom/dropbox/core/v2/files/UploadSessionStartBuilder;
 	public fun withSessionType (Lcom/dropbox/core/v2/files/UploadSessionType;)Lcom/dropbox/core/v2/files/UploadSessionStartBuilder;
 }

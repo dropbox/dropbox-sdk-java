@@ -116,14 +116,17 @@ try (InputStream in = new FileInputStream("test.txt")) {
 
 ### Upload content hashes
 
-Automatic content hashing is enabled by default. The SDK sends a Dropbox
-`content_hash` for file uploads and upload-session
-start, append v2, append batch, and finish requests when `uploadAndFinish` receives a
-`FileInputStream` or `ByteArrayInputStream`. The server rejects the request if the uploaded
-bytes do not match the hash. Hashing reads the payload once before the upload, restores the
-current input position, then uploads it. A byte limit applies to both reads.
+Automatic content hashing is enabled by default for upload-builder convenience calls:
 
-To disable automatic hashing and avoid the extra read (for example, for network-backed files):
+```java
+client.files().uploadBuilder("/test.txt").uploadAndFinish(input);
+client.files().uploadSessionAppendV2Builder(cursor).uploadAndFinish(input, chunkSize);
+client.files().uploadSessionFinishBuilder(cursor, commit).uploadAndFinish(input);
+```
+
+Session start and append batch also have builders. The hash is supplied through the normal
+`content_hash` argument before HTTP creation, using the existing Stone serializer. A manually
+supplied `.withContentHash(...)` always takes precedence. To disable the extra read:
 
 ```java
 DbxRequestConfig config = DbxRequestConfig.newBuilder("my-app")
@@ -131,17 +134,24 @@ DbxRequestConfig config = DbxRequestConfig.newBuilder("my-app")
     .build();
 ```
 
-For upload-session start, append v2, and finish, the hash covers only the bytes sent in
-that request, not the entire session. Append batch hashes the concatenation of all entries
-as one payload, without restarting the hash at entry boundaries. These semantics are
-specified in the [Dropbox API schema](https://github.com/dropbox/dropbox-api-spec/blob/main/files.stone).
-The deprecated append endpoint does not support a content hash.
+`FileInputStream` is rewound with its file channel. `ByteArrayInputStream` retains its position
+and existing mark. These inputs support arbitrary upload sizes without loading the payload
+into memory. `BufferedInputStream` and other streams honoring `mark/reset` are hashed only
+when the upload has an explicit limit of at most 16 KiB; this bounds mark-buffer growth and
+replaces their existing mark. Larger or unbounded mark/reset streams, and non-rewindable
+streams, are uploaded without an automatic hash. A zero-byte upload has a known empty hash
+and requires no pre-read. The same byte limit applies to hashing and uploading. Read/reset
+failures stop the request before HTTP creation rather than uploading from a changed position.
 
-A manually supplied `.withContentHash(...)` is always preserved, including when automatic
-hashing is disabled. Other input streams and uploads through `getOutputStream()` are sent
-without an automatic hash; no full-payload buffering or temporary file is used. When automatic
-hashing is enabled for an eligible request, the HTTP connection opens when upload data is
-supplied or `finish()` is called.
+For session start, append v2, and finish, the hash covers only this request's payload. Append
+batch hashes all entries as one concatenated payload, without restarting at entry boundaries.
+See the [Dropbox API schema](https://github.com/dropbox/dropbox-api-spec/blob/main/files.stone).
+The deprecated append endpoint has no content-hash argument.
+
+Direct uploader calls, `builder.start()`, and `getOutputStream()` retain their original eager
+HTTP lifecycle. These APIs receive no input before starting the request, so they do not
+compute a hash automatically. Supply a hash explicitly when needed, or use a builder's
+`uploadAndFinish(...)` convenience method. Caller-supplied input streams are never closed.
 
 For manual or incremental hashing, use `DropboxContentHasher.hashHex(input)` or a
 `new DropboxContentHasher()` with the standard `MessageDigest` methods and

@@ -281,12 +281,8 @@ public abstract class DbxRawClientV2 {
         addPathRootHeader(headers, this.pathRoot);
         headers.add(new HttpRequestor.Header("Content-Type", "application/octet-stream"));
         headers = DbxRequestUtil.addUserAgentHeader(headers, requestConfig, USER_AGENT_ID);
-        String json = headerSafeJson(argSerializer, arg);
-        headers.add(new HttpRequestor.Header("Dropbox-API-Arg", json));
+        headers.add(new HttpRequestor.Header("Dropbox-API-Arg", headerSafeJson(argSerializer, arg)));
         try {
-            if (requestConfig.isAutoContentHashEnabled() && AutoContentHashUploader.needsContentHash(path, json)) {
-                return new AutoContentHashUploader(requestConfig.getHttpRequestor(), uri, headers);
-            }
             return requestConfig.getHttpRequestor().startPostInStreamingMode(uri, headers);
         }
         catch (IOException ex) {

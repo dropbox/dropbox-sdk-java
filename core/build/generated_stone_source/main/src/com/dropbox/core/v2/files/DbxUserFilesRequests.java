@@ -44,6 +44,10 @@ public class DbxUserFilesRequests {
         this.client = client;
     }
 
+    boolean isAutoContentHashEnabled() {
+        return client.getRequestConfig().isAutoContentHashEnabled();
+    }
+
     //
     // route 2/files/alpha/get_metadata
     //
@@ -4130,6 +4134,24 @@ public class DbxUserFilesRequests {
         return uploadSessionAppendBatch(_arg);
     }
 
+    /**
+     * Creates a builder for {@link
+     * DbxUserFilesRequests#uploadSessionAppendBatch(List,String)}.
+     *
+     * @param entries  Append information for each file in the batch. Must
+     *     contain at most 500 items, not contain a {@code null} item, and not
+     *     be {@code null}.
+     *
+     * @return Uploader builder for configuring request parameters and
+     *     instantiating an uploader.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public UploadSessionAppendBatchBuilder uploadSessionAppendBatchBuilder(List<UploadSessionAppendBatchArgEntry> entries) {
+        return new UploadSessionAppendBatchBuilder(this, entries);
+    }
+
     //
     // route 2/files/upload_session/finish
     //
@@ -4219,6 +4241,25 @@ public class DbxUserFilesRequests {
         }
         UploadSessionFinishArg _arg = new UploadSessionFinishArg(cursor, commit, contentHash);
         return uploadSessionFinish(_arg);
+    }
+
+    /**
+     * Creates a builder for {@link
+     * DbxUserFilesRequests#uploadSessionFinish(UploadSessionCursor,CommitInfo,String)}.
+     *
+     * @param cursor  Contains the upload session ID and the offset. Must not be
+     *     {@code null}.
+     * @param commit  Contains the path and other optional modifiers for the
+     *     commit. Must not be {@code null}.
+     *
+     * @return Uploader builder for configuring request parameters and
+     *     instantiating an uploader.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public UploadSessionFinishBuilder uploadSessionFinishBuilder(UploadSessionCursor cursor, CommitInfo commit) {
+        return new UploadSessionFinishBuilder(this, cursor, commit);
     }
 
     //

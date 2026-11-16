@@ -159,12 +159,14 @@ public class DbxRequestConfig {
     }
 
     /**
-     * Returns whether upload requests automatically include a content hash. Defaults to true.
+     * Returns whether upload-builder convenience calls calculate content hashes. Defaults to true.
      *
-     * <p>Only file and byte-array input streams are automatically hashed. The SDK reads the
-     * payload before sending it and restores the input position. Limited uploads hash only the
-     * bytes being uploaded. Other streams and uploads through an output stream are not hashed.
-     * Explicitly supplied content hashes are always preserved.</p>
+     * <p>File and byte-array inputs can be rewound without buffering the payload. Other mark/reset
+     * streams, including buffered streams, are supported for explicit limits up to 16 KiB (their
+     * mark is replaced). Larger or unbounded mark/reset streams and non-rewindable inputs skip
+     * automatic hashing. Hashing respects the upload limit and restores the input position before
+     * HTTP creation. Explicit content hashes are preserved. Direct uploaders, builder start(),
+     * and output-stream uploads retain their original lifecycle without automatic hashing.</p>
      *
      * @return whether automatic content hashing is enabled
      */

@@ -112,20 +112,10 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
     public R uploadAndFinish(InputStream in, IOUtil.ProgressListener progressListener) throws X, DbxException, IOException {
-        return uploadAndFinishWithLimit(in, null, progressListener);
-    }
-
-    private R uploadAndFinishWithLimit(InputStream in, Long limit, IOUtil.ProgressListener progressListener)
-            throws X, DbxException, IOException {
-        assertOpenAndUnfinished();
         try {
             try {
                 httpUploader.setProgressListener(progressListener);
-                if (limit == null) {
-                    httpUploader.upload(in);
-                } else {
-                    httpUploader.upload(in, limit);
-                }
+                httpUploader.upload(in);
             } catch (IOUtil.ReadException ex) {
                 throw ex.getCause();
             } catch (IOException ex) {
@@ -174,7 +164,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
     public R uploadAndFinish(InputStream in, long limit) throws X, DbxException, IOException {
-        return uploadAndFinishWithLimit(in, limit, null);
+        return uploadAndFinish(IOUtil.limit(in, limit));
     }
 
     /**
@@ -194,7 +184,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
     public R uploadAndFinish(InputStream in, long limit, IOUtil.ProgressListener progressListener) throws X, DbxException, IOException {
-        return uploadAndFinishWithLimit(in, limit, progressListener);
+        return uploadAndFinish(IOUtil.limit(in, limit), progressListener);
     }
 
     /**
