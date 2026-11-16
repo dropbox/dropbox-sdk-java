@@ -77,13 +77,10 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
                 delegate.setProgressListener(progressListener);
             } catch (IOException | RuntimeException ex) {
                 // Never retry initialization implicitly on a later write, flush, or close.
-                closed = true;
-                if (delegate != null) {
-                    try {
-                        delegate.close();
-                    } catch (RuntimeException cleanup) {
-                        ex.addSuppressed(cleanup);
-                    }
+                try {
+                    close();
+                } catch (RuntimeException cleanup) {
+                    ex.addSuppressed(cleanup);
                 }
                 throw ex;
             }
@@ -232,6 +229,13 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
                     } else if (!closed && !finished) {
                         output().close();
                     }
+                } catch (IOException | RuntimeException ex) {
+                    try {
+                        AutoContentHashUploader.this.close();
+                    } catch (RuntimeException cleanup) {
+                        ex.addSuppressed(cleanup);
+                    }
+                    throw ex;
                 } finally {
                     streamClosed = true;
                 }
@@ -242,8 +246,18 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
 
     @Override
     public HttpRequestor.Response finish() throws IOException {
+        HttpRequestor.Uploader uploader = start();
         try {
-            return start().finish();
+            // Keep a successful response alive until DbxUploader consumes it and the caller
+            // closes this uploader. Custom requestors may close the response in close().
+            return uploader.finish();
+        } catch (IOException | RuntimeException ex) {
+            try {
+                close();
+            } catch (RuntimeException cleanup) {
+                ex.addSuppressed(cleanup);
+            }
+            throw ex;
         } finally {
             finished = true;
         }
@@ -252,24 +266,33 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
     @Override
     public void close() {
         if (!closed) {
-            closed = true;
+            // Even when cleanup fails, prevent further I/O while allowing close() to be retried,
+            // matching DbxUploader.close(), which marks itself closed only after cleanup succeeds.
+            finished = true;
             if (delegate != null) {
                 delegate.close();
             }
+            closed = true;
         }
     }
 
     @Override
     public void abort() {
         if (!closed) {
-            closed = true;
-            if (delegate != null) {
+            if (!finished && delegate != null) {
+                finished = true;
                 try {
                     delegate.abort();
-                } finally {
-                    delegate.close();
+                } catch (RuntimeException ex) {
+                    try {
+                        close();
+                    } catch (RuntimeException cleanup) {
+                        ex.addSuppressed(cleanup);
+                    }
+                    throw ex;
                 }
             }
+            close();
         }
     }
 

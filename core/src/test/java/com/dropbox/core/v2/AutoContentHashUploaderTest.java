@@ -413,6 +413,183 @@ public class AutoContentHashUploaderTest {
         }
     }
 
+    @Test
+    public void testFinishSuccessKeepsResponseAliveUntilExplicitClose() throws Exception {
+        RecordingRequestor requestor = new RecordingRequestor();
+        AutoContentHashUploader uploader = lazyUploader(requestor, "{}");
+        HttpRequestor.Response response = uploader.finish();
+        assertEquals(requestor.closes, 0, "custom requestors may own a still-readable response");
+        expectThrows(IOException.class, uploader::finish);
+        assertFalse(requestor.responseClosed);
+        assertEquals(response.getBody().read(), 'n');
+        uploader.close();
+        uploader.close();
+        uploader.abort();
+        assertTrue(requestor.responseClosed);
+        assertEquals(requestor.closes, 1);
+        assertEquals(requestor.aborts, 0);
+        assertEquals(requestor.finishCalls, 1);
+    }
+
+    @Test
+    public void testFinishIOExceptionReleasesDelegateWithoutCallerCleanup() throws Exception {
+        RecordingRequestor requestor = new RecordingRequestor();
+        requestor.finishFailure = new IOException("finish failed");
+        AutoContentHashUploader uploader = lazyUploader(requestor, "{}");
+        assertSame(expectThrows(IOException.class, uploader::finish), requestor.finishFailure);
+        assertEquals(requestor.closes, 1);
+        expectThrows(IOException.class, uploader::finish);
+        uploader.close();
+        uploader.abort();
+        assertEquals(requestor.closes, 1);
+        assertEquals(requestor.aborts, 0);
+        assertEquals(requestor.finishCalls, 1);
+    }
+
+    @Test
+    public void testBodyCloseFailureReleasesDelegateWithoutCallerCleanup() throws Exception {
+        RecordingRequestor requestor = new RecordingRequestor();
+        requestor.bodyCloseFailure = new IOException("body close failed");
+        AutoContentHashUploader uploader = lazyUploader(requestor, "{}");
+        OutputStream output = uploader.getBody();
+        assertSame(expectThrows(IOException.class, output::close), requestor.bodyCloseFailure);
+        assertEquals(requestor.closes, 1);
+        output.close();
+        uploader.close();
+        uploader.abort();
+        expectThrows(IOException.class, uploader::finish);
+        assertEquals(requestor.bodyCloses, 1);
+        assertEquals(requestor.closes, 1);
+        assertEquals(requestor.aborts, 0);
+    }
+
+    @Test
+    public void testCleanupFailureIsSuppressedAndCloseCanBeRetried() throws Exception {
+        for (boolean failFinish : new boolean[]{true, false}) {
+            RecordingRequestor requestor = new RecordingRequestor();
+            IOException failure = new IOException("operation failed");
+            if (failFinish) requestor.finishFailure = failure;
+            else requestor.bodyCloseFailure = failure;
+            requestor.closeFailuresRemaining = 1;
+            AutoContentHashUploader uploader = lazyUploader(requestor, "{}");
+            IOException thrown = expectThrows(IOException.class, () -> {
+                if (failFinish) uploader.finish();
+                else uploader.getBody().close();
+            });
+            assertSame(thrown, failure);
+            assertEquals(thrown.getSuppressed().length, 1);
+            assertSame(thrown.getSuppressed()[0], requestor.closeFailure);
+            assertEquals(requestor.closes, 1);
+            uploader.close();
+            uploader.close();
+            uploader.abort();
+            assertEquals(requestor.closes, 2);
+            assertEquals(requestor.aborts, 0);
+            assertEquals(requestor.starts, 1);
+        }
+    }
+
+    @Test
+    public void testExplicitCloseFailureIsTerminalButCleanupCanBeRetried() throws Exception {
+        RecordingRequestor requestor = new RecordingRequestor();
+        requestor.closeFailuresRemaining = 1;
+        AutoContentHashUploader uploader = lazyUploader(requestor, "{}");
+        OutputStream output = uploader.getBody();
+        output.write(1);
+        assertSame(expectThrows(IllegalStateException.class, uploader::close), requestor.closeFailure);
+        expectThrows(IOException.class, () -> output.write(2));
+        expectThrows(IOException.class, uploader::finish);
+        uploader.close();
+        uploader.close();
+        uploader.abort();
+        assertEquals(requestor.closes, 2);
+        assertEquals(requestor.aborts, 0);
+        assertEquals(requestor.starts, 1);
+    }
+
+    @Test
+    public void testAbortPreservesFailureAndRetriesOnlyCleanup() throws Exception {
+        RecordingRequestor requestor = new RecordingRequestor();
+        requestor.abortFailure = new IllegalStateException("abort failed");
+        requestor.closeFailuresRemaining = 1;
+        AutoContentHashUploader uploader = lazyUploader(requestor, "{}");
+        uploader.getBody().write(1);
+        RuntimeException thrown = expectThrows(IllegalStateException.class, uploader::abort);
+        assertSame(thrown, requestor.abortFailure);
+        assertEquals(thrown.getSuppressed().length, 1);
+        assertSame(thrown.getSuppressed()[0], requestor.closeFailure);
+        uploader.abort();
+        uploader.abort();
+        uploader.close();
+        expectThrows(IOException.class, uploader::finish);
+        assertEquals(requestor.aborts, 1);
+        assertEquals(requestor.closes, 2);
+        assertEquals(requestor.starts, 1);
+    }
+
+    @Test
+    public void testAbortAfterSuccessfulFinishOnlyClosesDelegate() throws Exception {
+        RecordingRequestor requestor = new RecordingRequestor();
+        requestor.abortFailure = new IllegalStateException("transport already finished");
+        AutoContentHashUploader uploader = lazyUploader(requestor, "{}");
+        uploader.finish();
+        uploader.abort();
+        uploader.abort();
+        uploader.close();
+        assertEquals(requestor.closes, 1);
+        assertEquals(requestor.aborts, 0);
+        assertEquals(requestor.starts, 1);
+    }
+
+    @Test
+    public void testInitializationCleanupFailureCanBeRetried() throws Exception {
+        RecordingRequestor requestor = new RecordingRequestor();
+        requestor.listenerFailure = new IllegalStateException("listener failed");
+        requestor.closeFailuresRemaining = 1;
+        AutoContentHashUploader uploader = lazyUploader(requestor, "{}");
+        RuntimeException thrown = expectThrows(IllegalStateException.class, () -> uploader.getBody().write(1));
+        assertSame(thrown, requestor.listenerFailure);
+        assertSame(thrown.getSuppressed()[0], requestor.closeFailure);
+        uploader.close();
+        uploader.abort();
+        expectThrows(IOException.class, uploader::finish);
+        assertEquals(requestor.closes, 2);
+        assertEquals(requestor.aborts, 0);
+        assertEquals(requestor.starts, 1);
+    }
+
+    @Test
+    public void testManualDbxUploaderFinishLifecycle() throws Exception {
+        for (boolean failFinish : new boolean[]{false, true}) {
+            RecordingRequestor requestor = new RecordingRequestor();
+            if (failFinish) requestor.finishFailure = new IOException("finish failed");
+            UploadSessionAppendV2Uploader uploader = client(requestor, true).files().uploadSessionAppendV2(CURSOR);
+            try {
+                OutputStream output = uploader.getOutputStream();
+                output.write(DATA);
+                output.close();
+                if (failFinish) {
+                    NetworkIOException thrown = expectThrows(NetworkIOException.class, uploader::finish);
+                    assertSame(thrown.getCause(), requestor.finishFailure);
+                    assertEquals(requestor.closes, 1);
+                } else {
+                    uploader.finish();
+                    assertTrue(requestor.responseClosed, "DbxUploader must consume and close the response");
+                    assertEquals(requestor.closes, 0, "delegate stays open until caller cleanup");
+                }
+                expectThrows(IllegalStateException.class, uploader::finish);
+                uploader.abort();
+                uploader.abort();
+            } finally {
+                uploader.close();
+                uploader.close();
+            }
+            assertEquals(requestor.closes, 1);
+            assertEquals(requestor.aborts, 0);
+            assertEquals(requestor.finishCalls, 1);
+        }
+    }
+
     private static AutoContentHashUploader lazyUploader(RecordingRequestor requestor, String json) {
         return new AutoContentHashUploader(requestor, "https://example.test/upload",
                 Collections.singletonList(new HttpRequestor.Header("Dropbox-API-Arg", json)));
@@ -443,6 +620,13 @@ public class AutoContentHashUploaderTest {
         RuntimeException bodyFailure;
         IOException writeFailure;
         IOException finishFailure;
+        IOException bodyCloseFailure;
+        final RuntimeException closeFailure = new IllegalStateException("close failed");
+        RuntimeException abortFailure;
+        int closeFailuresRemaining;
+        int aborts;
+        int finishCalls;
+        boolean responseClosed;
 
         @Override public Uploader startPost(String url, Iterable<Header> headers) throws IOException {
             starts++;
@@ -463,19 +647,44 @@ public class AutoContentHashUploaderTest {
                             body.write(b, off, len);
                         }
                         @Override public void flush() { flushes++; }
-                        @Override public void close() { bodyCloses++; }
+                        @Override public void close() throws IOException {
+                            bodyCloses++;
+                            if (bodyCloseFailure != null) throw bodyCloseFailure;
+                        }
                     };
                 }
                 @Override public void upload(InputStream in) throws IOException {
                     input = in;
                     super.upload(in);
                 }
-                @Override public void close() { closes++; }
-                @Override public void abort() { }
+                @Override public void close() {
+                    closes++;
+                    if (closeFailuresRemaining > 0) {
+                        closeFailuresRemaining--;
+                        throw closeFailure;
+                    }
+                    responseClosed = true;
+                }
+                @Override public void abort() {
+                    aborts++;
+                    if (abortFailure != null) throw abortFailure;
+                }
                 @Override public Response finish() throws IOException {
+                    finishCalls++;
                     if (finishFailure != null) throw finishFailure;
-                    return new Response(200, new ByteArrayInputStream(response.getBytes(StandardCharsets.UTF_8)),
-                            Collections.emptyMap());
+                    responseClosed = false;
+                    InputStream responseBody = new ByteArrayInputStream(response.getBytes(StandardCharsets.UTF_8)) {
+                        @Override public synchronized int read() {
+                            if (responseClosed) throw new IllegalStateException("response closed");
+                            return super.read();
+                        }
+                        @Override public synchronized int read(byte[] bytes, int offset, int length) {
+                            if (responseClosed) throw new IllegalStateException("response closed");
+                            return super.read(bytes, offset, length);
+                        }
+                        @Override public void close() { responseClosed = true; }
+                    };
+                    return new Response(200, responseBody, Collections.emptyMap());
                 }
                 @Override public void setProgressListener(IOUtil.ProgressListener value) {
                     if (listenerFailure != null) throw listenerFailure;
