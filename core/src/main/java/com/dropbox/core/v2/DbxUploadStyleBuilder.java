@@ -198,7 +198,7 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
 
     /**
      * Returns a hash after rewinding the input, or null when safe, bounded rewinding is unavailable.
-     * File and byte-array inputs need no payload buffering. Other mark/reset streams are supported
+     * File and plain byte-array inputs need no payload buffering. Other mark/reset streams are supported
      * only for explicit limits up to 16 KiB, bounding any mark buffer growth. Their mark is replaced.
      * A failed read/reset aborts the request; a consumed input is never silently uploaded.
      */
@@ -218,6 +218,8 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
             }
         }
         if (input instanceof ByteArrayInputStream) {
+            // A subclass can override available/reset/skip; then the position cannot be inferred safely.
+            if (input.getClass() != ByteArrayInputStream.class) return null;
             int remaining = input.available();
             try (Closeable rewind = () -> {
                 input.reset();

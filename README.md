@@ -134,10 +134,11 @@ DbxRequestConfig config = DbxRequestConfig.newBuilder("my-app")
     .build();
 ```
 
-`FileInputStream` is rewound with its file channel. `ByteArrayInputStream` retains its position
-and existing mark. These inputs support arbitrary upload sizes without loading the payload
-into memory. `BufferedInputStream` and other streams honoring `mark/reset` are hashed only
-when the upload has an explicit limit of at most 16 KiB; this bounds mark-buffer growth and
+`FileInputStream` is rewound with its file channel. A plain `ByteArrayInputStream` retains its
+position and existing mark. These inputs support arbitrary upload sizes without loading the
+payload into memory. Custom `ByteArrayInputStream` subclasses are not pre-read because their
+overridden `available`, `skip`, or `reset` methods cannot guarantee position restoration.
+`BufferedInputStream` and other streams honoring `mark/reset` are hashed only when the upload has an explicit limit of at most 16 KiB; this bounds mark-buffer growth and
 replaces their existing mark. Larger or unbounded mark/reset streams, and non-rewindable
 streams, are uploaded without an automatic hash. A zero-byte upload has a known empty hash
 and requires no pre-read. The same byte limit applies to hashing and uploading. Read/reset

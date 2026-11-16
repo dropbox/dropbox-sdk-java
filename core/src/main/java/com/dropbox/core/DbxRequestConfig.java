@@ -161,7 +161,8 @@ public class DbxRequestConfig {
     /**
      * Returns whether upload-builder convenience calls calculate content hashes. Defaults to true.
      *
-     * <p>File and byte-array inputs can be rewound without buffering the payload. Other mark/reset
+     * <p>File and plain byte-array inputs can be rewound without buffering the payload. Custom
+     * byte-array subclasses are not pre-read because rewind behavior may differ. Other mark/reset
      * streams, including buffered streams, are supported for explicit limits up to 16 KiB (their
      * mark is replaced). Larger or unbounded mark/reset streams and non-rewindable inputs skip
      * automatic hashing. Hashing respects the upload limit and restores the input position before
