@@ -171,7 +171,13 @@ public abstract class HttpRequestor
                 if (entry.getKey() == null || entry.getKey().trim().length() == 0) {
                     continue;
                 }
-                insensitive.put(entry.getKey(), Collections.unmodifiableList(new ArrayList<String>(entry.getValue())));
+                List<String> values = new ArrayList<String>(entry.getValue());
+                List<String> previous = insensitive.get(entry.getKey());
+                if (previous != null) {
+                    // Keep the existing last-entry precedence for request IDs and Retry-After.
+                    values.addAll(previous);
+                }
+                insensitive.put(entry.getKey(), Collections.unmodifiableList(values));
             }
             return Collections.unmodifiableMap(insensitive);
         }

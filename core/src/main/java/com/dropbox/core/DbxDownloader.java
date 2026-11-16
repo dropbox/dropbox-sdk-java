@@ -1,5 +1,6 @@
 package com.dropbox.core;
 
+import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.util.ProgressOutputStream;
 
@@ -7,6 +8,9 @@ import java.io.Closeable;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class for handling download requests.
@@ -41,19 +45,34 @@ public class DbxDownloader<R> implements Closeable {
     private final R result;
     private final InputStream body;
     private final String contentType;
+    private final Integer responseStatusCode;
+    private final Map<String, List<String>> responseHeaders;
 
     private boolean closed;
 
     public DbxDownloader(R result, InputStream body, String contentType) {
+        this(result, body, contentType, null, Collections.<String, List<String>>emptyMap());
+    }
+
+    private DbxDownloader(R result, InputStream body, String contentType,
+                          Integer responseStatusCode, Map<String, List<String>> responseHeaders) {
         this.result = result;
         this.body = body;
         this.contentType = contentType;
+        this.responseStatusCode = responseStatusCode;
+        this.responseHeaders = responseHeaders;
 
         this.closed = false;
     }
 
     public DbxDownloader(R result, InputStream body) {
         this(result, body, null);
+    }
+
+    /** For internal use only. Creates a downloader retaining an HTTP metadata snapshot. */
+    public static <R> DbxDownloader<R> fromResponse(R result, HttpRequestor.Response response) {
+        return new DbxDownloader<R>(result, response.getBody(), DbxRequestUtil.getContentType(response),
+                                    response.getStatusCode(), response.getHeaders());
     }
 
     /**
@@ -128,7 +147,9 @@ public class DbxDownloader<R> implements Closeable {
             throw ex.getCause();
         } catch (IOException ex) {
             // everything else is a Network I/O problem
-            throw new NetworkIOException(ex);
+            NetworkIOException exception = new NetworkIOException(ex);
+            exception.setResponseMetadata(responseStatusCode, responseHeaders);
+            throw exception;
         } finally {
             close();
         }

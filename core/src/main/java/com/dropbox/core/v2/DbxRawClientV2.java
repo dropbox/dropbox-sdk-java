@@ -202,7 +202,6 @@ public abstract class DbxRawClientV2 {
                 }
                 HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
                 String requestId = DbxRequestUtil.getRequestId(response);
-                String contentType = DbxRequestUtil.getContentType(response);
                 boolean downloading = false;
 
                 try {
@@ -224,7 +223,7 @@ public abstract class DbxRawClientV2 {
 
                             ResT result = responseSerializer.deserialize(resultHeader);
                             downloading = true;
-                            return new DbxDownloader<ResT>(result, response.getBody(), contentType);
+                            return DbxDownloader.fromResponse(result, response);
                         case 409:
                             throw DbxWrappedException.fromResponse(errorSerializer, response, userIdAnon);
                         default:

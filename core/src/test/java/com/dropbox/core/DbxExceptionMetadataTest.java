@@ -11,11 +11,14 @@ import org.testng.annotations.Test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -27,6 +30,9 @@ import static org.testng.Assert.fail;
 
 public class DbxExceptionMetadataTest {
     private static final String OTHER = "{\"error\":{\".tag\":\"other\"}}";
+    private static final String FILE_METADATA = "{\"name\":\"x.txt\",\"id\":\"id:x\","
+        + "\"client_modified\":\"2020-01-01T00:00:00Z\",\"server_modified\":\"2020-01-01T00:00:00Z\","
+        + "\"rev\":\"123456789\",\"size\":1}";
 
     private static class Response extends ByteArrayInputStream {
         boolean closed;
@@ -244,5 +250,129 @@ public class DbxExceptionMetadataTest {
         assertMetadata(ex, 400, "original-id");
         assertThat(ex.getMessage()).isEqualTo("original-message");
         assertThat(response.closed).isTrue();
+    }
+
+
+    @Test
+    public void differentlyCasedHeaderNamesPreserveAllValues() throws Exception {
+        List<String> first = new ArrayList<String>(Arrays.asList("private-first", "second"));
+        List<String> second = new ArrayList<String>(Arrays.asList("third", "fourth"));
+        Map<String, List<String>> headers = new LinkedHashMap<String, List<String>>();
+        headers.put("X-Test", first);
+        headers.put("x-test", second);
+        Response body = new Response(400, "", "unused");
+        HttpRequestor.Response response = new HttpRequestor.Response(400, body, headers);
+        first.clear();
+        second.clear();
+        headers.clear();
+
+        DbxException ex = invoke(client(requestor(response), 0), "rpc");
+        assertThat(body.closed).isTrue();
+        assertThat(ex.getResponseHeaders()).hasSize(1);
+        assertThat(ex.getResponseHeaders().get("X-TEST"))
+            .containsExactly("third", "fourth", "private-first", "second").inOrder();
+        expectThrows(UnsupportedOperationException.class, () -> ex.getResponseHeaders().get("x-test").set(0, "changed"));
+        expectThrows(UnsupportedOperationException.class, () -> ex.getResponseHeaders().remove("X-Test"));
+        assertThat(ex.toString()).doesNotContain("private-first");
+    }
+
+    private static HttpRequestor.Response downloadResponse(int status, InputStream body, Response source) {
+        Map<String, List<String>> headers = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
+        headers.putAll(source.response.getHeaders());
+        headers.put("Dropbox-API-Result", Collections.singletonList(FILE_METADATA));
+        headers.put("Content-Type", Collections.singletonList("application/octet-stream"));
+        return new HttpRequestor.Response(status, body, headers);
+    }
+
+    @DataProvider
+    public Object[][] downloads() {
+        return new Object[][]{{200, false}, {200, true}, {206, false}, {206, true}};
+    }
+
+    @Test(dataProvider = "downloads")
+    public void downloadBodyReadFailureRetainsMetadata(int status, boolean progress) throws Exception {
+        IOException cause = new IOException("connection reset");
+        Response source = new Response(status, "", "download-read");
+        InputStream body = new InputStream() {
+            @Override
+            public int read() throws IOException {
+                throw cause;
+            }
+
+            @Override
+            public void close() {
+                source.close();
+            }
+        };
+        HttpRequestor requestor = requestor(downloadResponse(status, body, source));
+        DbxDownloader<?> downloader = client(requestor, 1).files().download("/x.txt");
+        assertThat(source.closed).isFalse();
+        assertThat(downloader.getContentType()).isEqualTo("application/octet-stream");
+        NetworkIOException ex = expectThrows(NetworkIOException.class, () -> {
+            if (progress) {
+                downloader.download(new ByteArrayOutputStream(), bytes -> { });
+            } else {
+                downloader.download(new ByteArrayOutputStream());
+            }
+        });
+        assertMetadata(ex, status, null);
+        assertThat(ex.getResponseHeaders().get("X-Dropbox-Request-Id")).containsExactly("download-read");
+        assertThat(ex.getCause()).isInstanceOf(com.dropbox.core.util.IOUtil.ReadException.class);
+        assertThat(ex.getCause().getCause()).isSameInstanceAs(cause);
+        assertThat(source.closed).isTrue();
+        verify(requestor, times(1)).startPost(anyString(), any());
+    }
+
+    @Test
+    public void downloadWriteFailuresRemainLocalIoExceptions() throws Exception {
+        IOException cause = new IOException("disk full");
+        Response source = new Response(200, "content", "download-write");
+        DbxDownloader<?> downloader = client(requestor(downloadResponse(200, source, source)), 0)
+            .files().download("/x.txt");
+        IOException ex = expectThrows(IOException.class, () -> downloader.download(new OutputStream() {
+            @Override
+            public void write(int value) throws IOException {
+                throw cause;
+            }
+        }));
+        assertThat(ex).isSameInstanceAs(cause);
+        assertThat(source.closed).isTrue();
+    }
+
+    @Test
+    public void legacyDownloadersHaveNoHttpMetadata() throws Exception {
+        for (boolean contentType : new boolean[]{false, true}) {
+            InputStream body = new InputStream() {
+                @Override
+                public int read() throws IOException {
+                    throw new IOException("read failed");
+                }
+            };
+            DbxDownloader<?> downloader = contentType ? new DbxDownloader<Object>(null, body, "text/plain")
+                : new DbxDownloader<Object>(null, body);
+            NetworkIOException ex = expectThrows(NetworkIOException.class,
+                () -> downloader.download(new ByteArrayOutputStream()));
+            assertThat(ex.getRequestId()).isNull();
+            assertThat(ex.getResponseStatusCode()).isNull();
+            assertThat(ex.getResponseHeaders()).isEmpty();
+        }
+    }
+
+
+    @Test
+    public void duplicateHeaderNamesPreserveRequestIdAndRetryPrecedence() throws Exception {
+        Map<String, List<String>> headers = new LinkedHashMap<String, List<String>>();
+        headers.put("X-Dropbox-Request-Id", Collections.singletonList("first-id"));
+        headers.put("x-dropbox-request-id", Collections.singletonList("last-id"));
+        headers.put("Retry-After", Collections.singletonList("1"));
+        headers.put("retry-after", Collections.singletonList("2"));
+        HttpRequestor.Response response = new HttpRequestor.Response(429,
+            new ByteArrayInputStream(new byte[0]), headers);
+        DbxException ex = invoke(client(requestor(response), 0), "rpc");
+        assertThat(ex.getRequestId()).isEqualTo("last-id");
+        assertThat(((RateLimitException) ex).getBackoffMillis()).isEqualTo(2000);
+        assertThat(ex.getResponseHeaders().get("X-Dropbox-Request-Id"))
+            .containsExactly("last-id", "first-id").inOrder();
+        assertThat(ex.getResponseHeaders().get("Retry-After")).containsExactly("2", "1").inOrder();
     }
 }
