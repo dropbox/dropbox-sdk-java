@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  * Exactly one of team_member_id, email, or external_id must be provided to
  * identify the user account.
  */
-class MembersDeactivateBaseArg {
+public class MembersDeactivateBaseArg {
     // struct team.MembersDeactivateBaseArg (team.stone)
 
     @Nonnull

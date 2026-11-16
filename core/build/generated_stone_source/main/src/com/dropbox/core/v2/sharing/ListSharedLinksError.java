@@ -41,6 +41,10 @@ public final class ListSharedLinksError {
          */
         RESET,
         /**
+         * The user does not have permissions to list links to the content.
+         */
+        PERMISSION_DENIED,
+        /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
          *
@@ -56,6 +60,10 @@ public final class ListSharedLinksError {
      * DbxUserSharingRequests#listSharedLinks} to obtain a new cursor.
      */
     public static final ListSharedLinksError RESET = new ListSharedLinksError().withTag(Tag.RESET);
+    /**
+     * The user does not have permissions to list links to the content.
+     */
+    public static final ListSharedLinksError PERMISSION_DENIED = new ListSharedLinksError().withTag(Tag.PERMISSION_DENIED);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -176,6 +184,17 @@ public final class ListSharedLinksError {
     }
 
     /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PERMISSION_DENIED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PERMISSION_DENIED}, {@code false} otherwise.
+     */
+    public boolean isPermissionDenied() {
+        return this._tag == Tag.PERMISSION_DENIED;
+    }
+
+    /**
      * Returns {@code true} if this instance has the tag {@link Tag#OTHER},
      * {@code false} otherwise.
      *
@@ -212,6 +231,8 @@ public final class ListSharedLinksError {
                 case PATH:
                     return (this.pathValue == other.pathValue) || (this.pathValue.equals(other.pathValue));
                 case RESET:
+                    return true;
+                case PERMISSION_DENIED:
                     return true;
                 case OTHER:
                     return true;
@@ -262,6 +283,10 @@ public final class ListSharedLinksError {
                     g.writeString("reset");
                     break;
                 }
+                case PERMISSION_DENIED: {
+                    g.writeString("permission_denied");
+                    break;
+                }
                 default: {
                     g.writeString("other");
                 }
@@ -294,6 +319,9 @@ public final class ListSharedLinksError {
             }
             else if ("reset".equals(tag)) {
                 value = ListSharedLinksError.RESET;
+            }
+            else if ("permission_denied".equals(tag)) {
+                value = ListSharedLinksError.PERMISSION_DENIED;
             }
             else {
                 value = ListSharedLinksError.OTHER;

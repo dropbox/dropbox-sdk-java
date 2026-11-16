@@ -102,26 +102,6 @@ public class DbxUserGetThumbnailV2Builder extends DbxDownloadStyleBuilder<Previe
     /**
      * Set value for optional field.
      *
-     * <p> If left unset or set to {@code null}, defaults to {@code
-     * ThumbnailQuality.QUALITY_80}. </p>
-     *
-     * @param quality  Quality of the thumbnail image. Must not be {@code null}.
-     *     Defaults to {@code ThumbnailQuality.QUALITY_80} when set to {@code
-     *     null}.
-     *
-     * @return this builder
-     *
-     * @throws IllegalArgumentException  If any argument does not meet its
-     *     preconditions.
-     */
-    public DbxUserGetThumbnailV2Builder withQuality(ThumbnailQuality quality) {
-        this._builder.withQuality(quality);
-        return this;
-    }
-
-    /**
-     * Set value for optional field.
-     *
      * @param excludeMediaInfo  Normally, {@link FileMetadata#getMediaInfo} is
      *     set for photo and video. When this flag is true, {@link
      *     FileMetadata#getMediaInfo} is not populated. This improves latency
@@ -131,6 +111,23 @@ public class DbxUserGetThumbnailV2Builder extends DbxDownloadStyleBuilder<Previe
      */
     public DbxUserGetThumbnailV2Builder withExcludeMediaInfo(Boolean excludeMediaInfo) {
         this._builder.withExcludeMediaInfo(excludeMediaInfo);
+        return this;
+    }
+
+    /**
+     * Set value for optional field.
+     *
+     * <p> If left unset or set to {@code null}, defaults to {@code false}. </p>
+     *
+     * @param preserveTransparency  Whether to preserve the original image's
+     *     transparency in the thumbnail. This is supported only when the output
+     *     format is PNG or WebP. Requests that set this flag with JPEG output
+     *     return an error. Defaults to {@code false} when set to {@code null}.
+     *
+     * @return this builder
+     */
+    public DbxUserGetThumbnailV2Builder withPreserveTransparency(Boolean preserveTransparency) {
+        this._builder.withPreserveTransparency(preserveTransparency);
         return this;
     }
 

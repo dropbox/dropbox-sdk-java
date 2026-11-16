@@ -27,15 +27,22 @@ public class SharedLinkViewDetails {
 
     @Nullable
     protected final UserLogInfo sharedLinkOwner;
+    @Nullable
+    protected final String subdomain;
 
     /**
      * Opened shared link.
      *
+     * <p> Use {@link newBuilder} to create instances of this class without
+     * specifying values for all optional fields. </p>
+     *
      * @param sharedLinkOwner  Shared link owner details. Might be missing due
      *     to historical data gap.
+     * @param subdomain  Team subdomain used to access the shared link.
      */
-    public SharedLinkViewDetails(@Nullable UserLogInfo sharedLinkOwner) {
+    public SharedLinkViewDetails(@Nullable UserLogInfo sharedLinkOwner, @Nullable String subdomain) {
         this.sharedLinkOwner = sharedLinkOwner;
+        this.subdomain = subdomain;
     }
 
     /**
@@ -44,7 +51,7 @@ public class SharedLinkViewDetails {
      * <p> The default values for unset fields will be used. </p>
      */
     public SharedLinkViewDetails() {
-        this(null);
+        this(null, null);
     }
 
     /**
@@ -57,10 +64,79 @@ public class SharedLinkViewDetails {
         return sharedLinkOwner;
     }
 
+    /**
+     * Team subdomain used to access the shared link.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public String getSubdomain() {
+        return subdomain;
+    }
+
+    /**
+     * Returns a new builder for creating an instance of this class.
+     *
+     * @return builder for this class.
+     */
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    /**
+     * Builder for {@link SharedLinkViewDetails}.
+     */
+    public static class Builder {
+
+        protected UserLogInfo sharedLinkOwner;
+        protected String subdomain;
+
+        protected Builder() {
+            this.sharedLinkOwner = null;
+            this.subdomain = null;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param sharedLinkOwner  Shared link owner details. Might be missing
+         *     due to historical data gap.
+         *
+         * @return this builder
+         */
+        public Builder withSharedLinkOwner(UserLogInfo sharedLinkOwner) {
+            this.sharedLinkOwner = sharedLinkOwner;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param subdomain  Team subdomain used to access the shared link.
+         *
+         * @return this builder
+         */
+        public Builder withSubdomain(String subdomain) {
+            this.subdomain = subdomain;
+            return this;
+        }
+
+        /**
+         * Builds an instance of {@link SharedLinkViewDetails} configured with
+         * this builder's values
+         *
+         * @return new instance of {@link SharedLinkViewDetails}
+         */
+        public SharedLinkViewDetails build() {
+            return new SharedLinkViewDetails(sharedLinkOwner, subdomain);
+        }
+    }
+
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
-            this.sharedLinkOwner
+            this.sharedLinkOwner,
+            this.subdomain
         });
         return hash;
     }
@@ -76,7 +152,9 @@ public class SharedLinkViewDetails {
         // be careful with inheritance
         else if (obj.getClass().equals(this.getClass())) {
             SharedLinkViewDetails other = (SharedLinkViewDetails) obj;
-            return (this.sharedLinkOwner == other.sharedLinkOwner) || (this.sharedLinkOwner != null && this.sharedLinkOwner.equals(other.sharedLinkOwner));
+            return ((this.sharedLinkOwner == other.sharedLinkOwner) || (this.sharedLinkOwner != null && this.sharedLinkOwner.equals(other.sharedLinkOwner)))
+                && ((this.subdomain == other.subdomain) || (this.subdomain != null && this.subdomain.equals(other.subdomain)))
+                ;
         }
         else {
             return false;
@@ -115,6 +193,10 @@ public class SharedLinkViewDetails {
                 g.writeFieldName("shared_link_owner");
                 StoneSerializers.nullableStruct(UserLogInfo.Serializer.INSTANCE).serialize(value.sharedLinkOwner, g);
             }
+            if (value.subdomain != null) {
+                g.writeFieldName("subdomain");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.subdomain, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -130,17 +212,21 @@ public class SharedLinkViewDetails {
             }
             if (tag == null) {
                 UserLogInfo f_sharedLinkOwner = null;
+                String f_subdomain = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
                     if ("shared_link_owner".equals(field)) {
                         f_sharedLinkOwner = StoneSerializers.nullableStruct(UserLogInfo.Serializer.INSTANCE).deserialize(p);
                     }
+                    else if ("subdomain".equals(field)) {
+                        f_subdomain = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
                 }
-                value = new SharedLinkViewDetails(f_sharedLinkOwner);
+                value = new SharedLinkViewDetails(f_sharedLinkOwner, f_subdomain);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

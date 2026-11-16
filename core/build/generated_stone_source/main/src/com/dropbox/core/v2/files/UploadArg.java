@@ -63,7 +63,8 @@ class UploadArg extends CommitInfo {
      *     the target path refers to a file with identical contents.
      * @param contentHash  A hash of the file content uploaded in this call. If
      *     provided and the uploaded content does not match this hash, an error
-     *     will be returned. For more information see our <a
+     *     will be returned. Optional, but recommended to avoid committing data
+     *     corrupted in transit. For more information see our <a
      *     href="https://www.dropbox.com/developers/reference/content-hash">Content
      *     hash</a> page. Must have length of at least 64 and have length of at
      *     most 64.
@@ -187,8 +188,9 @@ class UploadArg extends CommitInfo {
 
     /**
      * A hash of the file content uploaded in this call. If provided and the
-     * uploaded content does not match this hash, an error will be returned. For
-     * more information see our <a
+     * uploaded content does not match this hash, an error will be returned.
+     * Optional, but recommended to avoid committing data corrupted in transit.
+     * For more information see our <a
      * href="https://www.dropbox.com/developers/reference/content-hash">Content
      * hash</a> page.
      *
@@ -233,7 +235,9 @@ class UploadArg extends CommitInfo {
          *
          * @param contentHash  A hash of the file content uploaded in this call.
          *     If provided and the uploaded content does not match this hash, an
-         *     error will be returned. For more information see our <a
+         *     error will be returned. Optional, but recommended to avoid
+         *     committing data corrupted in transit. For more information see
+         *     our <a
          *     href="https://www.dropbox.com/developers/reference/content-hash">Content
          *     hash</a> page. Must have length of at least 64 and have length of
          *     at most 64.

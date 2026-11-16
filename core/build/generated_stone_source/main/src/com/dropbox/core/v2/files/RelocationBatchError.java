@@ -76,8 +76,9 @@ public final class RelocationBatchError {
          */
         CANT_MOVE_SHARED_FOLDER,
         /**
-         * Some content cannot be moved into Vault under certain circumstances,
-         * see detailed error.
+         * Field is deprecated. Some content cannot be moved into Vault under
+         * certain circumstances, see detailed error. Deprecated: the server no
+         * longer emits this error.
          */
         CANT_MOVE_INTO_VAULT, // MoveIntoVaultError
         /**
@@ -85,6 +86,14 @@ public final class RelocationBatchError {
          * certain circumstances, see detailed error.
          */
         CANT_MOVE_INTO_FAMILY, // MoveIntoFamilyError
+        /**
+         * The destination team folder has reached its storage limit.
+         */
+        TEAM_FOLDER_INSUFFICIENT_QUOTA,
+        /**
+         * The user's member folder has reached its storage limit.
+         */
+        MEMBER_FOLDER_INSUFFICIENT_QUOTA,
         /**
          * Catch-all used for unknown tag values returned by the Dropbox
          * servers.
@@ -143,6 +152,14 @@ public final class RelocationBatchError {
      * Can't move the shared folder to the given destination.
      */
     public static final RelocationBatchError CANT_MOVE_SHARED_FOLDER = new RelocationBatchError().withTag(Tag.CANT_MOVE_SHARED_FOLDER);
+    /**
+     * The destination team folder has reached its storage limit.
+     */
+    public static final RelocationBatchError TEAM_FOLDER_INSUFFICIENT_QUOTA = new RelocationBatchError().withTag(Tag.TEAM_FOLDER_INSUFFICIENT_QUOTA);
+    /**
+     * The user's member folder has reached its storage limit.
+     */
+    public static final RelocationBatchError MEMBER_FOLDER_INSUFFICIENT_QUOTA = new RelocationBatchError().withTag(Tag.MEMBER_FOLDER_INSUFFICIENT_QUOTA);
     /**
      * Catch-all used for unknown tag values returned by the Dropbox servers.
      *
@@ -228,8 +245,9 @@ public final class RelocationBatchError {
 
     /**
      *
-     * @param cantMoveIntoVaultValue  Some content cannot be moved into Vault
-     *     under certain circumstances, see detailed error. Must not be {@code
+     * @param cantMoveIntoVaultValue  Field is deprecated. Some content cannot
+     *     be moved into Vault under certain circumstances, see detailed error.
+     *     Deprecated: the server no longer emits this error. Must not be {@code
      *     null}.
      * @param _tag  Discriminating tag for this instance.
      *
@@ -527,8 +545,9 @@ public final class RelocationBatchError {
      * Returns an instance of {@code RelocationBatchError} that has its tag set
      * to {@link Tag#CANT_MOVE_INTO_VAULT}.
      *
-     * <p> Some content cannot be moved into Vault under certain circumstances,
-     * see detailed error. </p>
+     * <p> Field is deprecated. Some content cannot be moved into Vault under
+     * certain circumstances, see detailed error. Deprecated: the server no
+     * longer emits this error. </p>
      *
      * @param value  value to assign to this instance.
      *
@@ -545,8 +564,9 @@ public final class RelocationBatchError {
     }
 
     /**
-     * Some content cannot be moved into Vault under certain circumstances, see
-     * detailed error.
+     * Field is deprecated. Some content cannot be moved into Vault under
+     * certain circumstances, see detailed error. Deprecated: the server no
+     * longer emits this error.
      *
      * <p> This instance must be tagged as {@link Tag#CANT_MOVE_INTO_VAULT}.
      * </p>
@@ -614,6 +634,28 @@ public final class RelocationBatchError {
             throw new IllegalStateException("Invalid tag: required Tag.CANT_MOVE_INTO_FAMILY, but was Tag." + this._tag.name());
         }
         return cantMoveIntoFamilyValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_FOLDER_INSUFFICIENT_QUOTA}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_FOLDER_INSUFFICIENT_QUOTA}, {@code false} otherwise.
+     */
+    public boolean isTeamFolderInsufficientQuota() {
+        return this._tag == Tag.TEAM_FOLDER_INSUFFICIENT_QUOTA;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEMBER_FOLDER_INSUFFICIENT_QUOTA}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEMBER_FOLDER_INSUFFICIENT_QUOTA}, {@code false} otherwise.
+     */
+    public boolean isMemberFolderInsufficientQuota() {
+        return this._tag == Tag.MEMBER_FOLDER_INSUFFICIENT_QUOTA;
     }
 
     /**
@@ -694,6 +736,10 @@ public final class RelocationBatchError {
                     return (this.cantMoveIntoVaultValue == other.cantMoveIntoVaultValue) || (this.cantMoveIntoVaultValue.equals(other.cantMoveIntoVaultValue));
                 case CANT_MOVE_INTO_FAMILY:
                     return (this.cantMoveIntoFamilyValue == other.cantMoveIntoFamilyValue) || (this.cantMoveIntoFamilyValue.equals(other.cantMoveIntoFamilyValue));
+                case TEAM_FOLDER_INSUFFICIENT_QUOTA:
+                    return true;
+                case MEMBER_FOLDER_INSUFFICIENT_QUOTA:
+                    return true;
                 case OTHER:
                     return true;
                 case TOO_MANY_WRITE_OPERATIONS:
@@ -809,6 +855,14 @@ public final class RelocationBatchError {
                     g.writeEndObject();
                     break;
                 }
+                case TEAM_FOLDER_INSUFFICIENT_QUOTA: {
+                    g.writeString("team_folder_insufficient_quota");
+                    break;
+                }
+                case MEMBER_FOLDER_INSUFFICIENT_QUOTA: {
+                    g.writeString("member_folder_insufficient_quota");
+                    break;
+                }
                 case OTHER: {
                     g.writeString("other");
                     break;
@@ -897,6 +951,12 @@ public final class RelocationBatchError {
                 expectField("cant_move_into_family", p);
                 fieldValue = MoveIntoFamilyError.Serializer.INSTANCE.deserialize(p);
                 value = RelocationBatchError.cantMoveIntoFamily(fieldValue);
+            }
+            else if ("team_folder_insufficient_quota".equals(tag)) {
+                value = RelocationBatchError.TEAM_FOLDER_INSUFFICIENT_QUOTA;
+            }
+            else if ("member_folder_insufficient_quota".equals(tag)) {
+                value = RelocationBatchError.MEMBER_FOLDER_INSUFFICIENT_QUOTA;
             }
             else if ("other".equals(tag)) {
                 value = RelocationBatchError.OTHER;

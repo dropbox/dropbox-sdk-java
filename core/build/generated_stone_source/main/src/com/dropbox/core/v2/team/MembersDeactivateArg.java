@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
-class MembersDeactivateArg extends MembersDeactivateBaseArg {
+public class MembersDeactivateArg extends MembersDeactivateBaseArg {
     // struct team.MembersDeactivateArg (team.stone)
 
     protected final boolean wipeData;

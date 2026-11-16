@@ -1771,8 +1771,7 @@ public class DbxUserFilesRequests {
      * exist for a specific upload path at any given time.  The POST request on
      * the temporary upload link must have its Content-Type set to
      * "application/octet-stream".  Example temporary upload link consumption
-     * request:  curl -X POST
-     * https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND --header
+     * request:  curl -X POST &lt;temporary_upload_link_url&gt; --header
      * "Content-Type: application/octet-stream" --data-binary @local_file.txt  A
      * successful temporary upload link consumption request returns the content
      * hash of the uploaded data in JSON format. Example successful temporary
@@ -1818,8 +1817,7 @@ public class DbxUserFilesRequests {
      * exist for a specific upload path at any given time.  The POST request on
      * the temporary upload link must have its Content-Type set to
      * "application/octet-stream".  Example temporary upload link consumption
-     * request:  curl -X POST
-     * https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND --header
+     * request:  curl -X POST &lt;temporary_upload_link_url&gt; --header
      * "Content-Type: application/octet-stream" --data-binary @local_file.txt  A
      * successful temporary upload link consumption request returns the content
      * hash of the uploaded data in JSON format. Example successful temporary
@@ -1864,8 +1862,7 @@ public class DbxUserFilesRequests {
      * exist for a specific upload path at any given time.  The POST request on
      * the temporary upload link must have its Content-Type set to
      * "application/octet-stream".  Example temporary upload link consumption
-     * request:  curl -X POST
-     * https://content.dropboxapi.com/apitul/1/bNi2uIYF51cVBND --header
+     * request:  curl -X POST &lt;temporary_upload_link_url&gt; --header
      * "Content-Type: application/octet-stream" --data-binary @local_file.txt  A
      * successful temporary upload link consumption request returns the content
      * hash of the uploaded data in JSON format. Example successful temporary
@@ -4076,7 +4073,7 @@ public class DbxUserFilesRequests {
      * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * @param entries  Append information for each file in the batch. Must
-     *     contain at most 1000 items, not contain a {@code null} item, and not
+     *     contain at most 500 items, not contain a {@code null} item, and not
      *     be {@code null}.
      *
      * @return Uploader used to upload the request body and finish request.
@@ -4104,12 +4101,13 @@ public class DbxUserFilesRequests {
      * https://www.dropbox.com/developers/reference/data-transport-limit.
      *
      * @param entries  Append information for each file in the batch. Must
-     *     contain at most 1000 items, not contain a {@code null} item, and not
+     *     contain at most 500 items, not contain a {@code null} item, and not
      *     be {@code null}.
-     * @param contentHash  A hash of the entire request body which is all the
-     *     concatenated pieces of file content that were uploaded in this call.
-     *     If provided and the uploaded content does not match this hash, an
-     *     error will be returned. For more information see our <a
+     * @param contentHash  A single hash of all the concatenated file contents
+     *     uploaded in this call. If provided and the uploaded content does not
+     *     match this hash, an error will be returned. Optional, but recommended
+     *     to avoid committing data corrupted in transit. For more information
+     *     see our <a
      *     href="https://www.dropbox.com/developers/reference/content-hash">Content
      *     hash</a> page. Must have length of at least 64 and have length of at
      *     most 64.
@@ -4199,7 +4197,8 @@ public class DbxUserFilesRequests {
      *     commit. Must not be {@code null}.
      * @param contentHash  A hash of the file content uploaded in this call. If
      *     provided and the uploaded content does not match this hash, an error
-     *     will be returned. For more information see our <a
+     *     will be returned. Optional, but recommended to avoid committing data
+     *     corrupted in transit. For more information see our <a
      *     href="https://www.dropbox.com/developers/reference/content-hash">Content
      *     hash</a> page. Must have length of at least 64 and have length of at
      *     most 64.

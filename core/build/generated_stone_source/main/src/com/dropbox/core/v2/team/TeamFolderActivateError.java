@@ -40,7 +40,12 @@ public final class TeamFolderActivateError {
          * is not up to date. Consider updating your SDK version to handle the
          * new tags. </p>
          */
-        OTHER;
+        OTHER,
+        /**
+         * The team has reached the maximum number of team folders allowed by
+         * its plan.
+         */
+        FOLDER_COUNT_LIMIT_EXCEEDED;
     }
 
     /**
@@ -51,6 +56,11 @@ public final class TeamFolderActivateError {
      * tags. </p>
      */
     public static final TeamFolderActivateError OTHER = new TeamFolderActivateError().withTag(Tag.OTHER);
+    /**
+     * The team has reached the maximum number of team folders allowed by its
+     * plan.
+     */
+    public static final TeamFolderActivateError FOLDER_COUNT_LIMIT_EXCEEDED = new TeamFolderActivateError().withTag(Tag.FOLDER_COUNT_LIMIT_EXCEEDED);
 
     private Tag _tag;
     private TeamFolderAccessError accessErrorValue;
@@ -287,6 +297,17 @@ public final class TeamFolderActivateError {
         return this._tag == Tag.OTHER;
     }
 
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#FOLDER_COUNT_LIMIT_EXCEEDED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#FOLDER_COUNT_LIMIT_EXCEEDED}, {@code false} otherwise.
+     */
+    public boolean isFolderCountLimitExceeded() {
+        return this._tag == Tag.FOLDER_COUNT_LIMIT_EXCEEDED;
+    }
+
     @Override
     public int hashCode() {
         int hash = Arrays.hashCode(new Object [] {
@@ -320,6 +341,8 @@ public final class TeamFolderActivateError {
                 case TEAM_SHARED_DROPBOX_ERROR:
                     return (this.teamSharedDropboxErrorValue == other.teamSharedDropboxErrorValue) || (this.teamSharedDropboxErrorValue.equals(other.teamSharedDropboxErrorValue));
                 case OTHER:
+                    return true;
+                case FOLDER_COUNT_LIMIT_EXCEEDED:
                     return true;
                 default:
                     return false;
@@ -384,6 +407,10 @@ public final class TeamFolderActivateError {
                     g.writeString("other");
                     break;
                 }
+                case FOLDER_COUNT_LIMIT_EXCEEDED: {
+                    g.writeString("folder_count_limit_exceeded");
+                    break;
+                }
                 default: {
                     throw new IllegalArgumentException("Unrecognized tag: " + value.tag());
                 }
@@ -428,6 +455,9 @@ public final class TeamFolderActivateError {
             }
             else if ("other".equals(tag)) {
                 value = TeamFolderActivateError.OTHER;
+            }
+            else if ("folder_count_limit_exceeded".equals(tag)) {
+                value = TeamFolderActivateError.FOLDER_COUNT_LIMIT_EXCEEDED;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);

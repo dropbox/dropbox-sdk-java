@@ -54,7 +54,7 @@ public class SharedLinkSettings {
      *     `link_access_level` field of `LinkPermissions`. This is used in
      *     conjunction with team policies and shared folder policies to
      *     determine the final effective audience type in the
-     *     `effective_audience` field of `LinkPermissions.
+     *     `effective_audience` field of `LinkPermissions`.
      * @param access  Requested access level you want the audience to gain from
      *     this link. Note, modifying access level for an existing link is not
      *     supported.
@@ -119,7 +119,7 @@ public class SharedLinkSettings {
      * link's access level specified in the `link_access_level` field of
      * `LinkPermissions`. This is used in conjunction with team policies and
      * shared folder policies to determine the final effective audience type in
-     * the `effective_audience` field of `LinkPermissions.
+     * the `effective_audience` field of `LinkPermissions`.
      *
      * @return value for this field, or {@code null} if not present.
      */
@@ -243,7 +243,7 @@ public class SharedLinkSettings {
          *     `link_access_level` field of `LinkPermissions`. This is used in
          *     conjunction with team policies and shared folder policies to
          *     determine the final effective audience type in the
-         *     `effective_audience` field of `LinkPermissions.
+         *     `effective_audience` field of `LinkPermissions`.
          *
          * @return this builder
          */

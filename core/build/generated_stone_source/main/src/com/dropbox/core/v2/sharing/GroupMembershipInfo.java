@@ -45,12 +45,14 @@ public class GroupMembershipInfo extends MembershipInfo {
      *     the request. Must not contain a {@code null} item.
      * @param initials  Field is deprecated. Never set.
      * @param isInherited  True if the member has access on a parent folder.
+     * @param inheritedAccessType  The access type from parent folder for this
+     *     member.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public GroupMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull GroupInfo group, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited) {
-        super(accessType, permissions, initials, isInherited);
+    public GroupMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull GroupInfo group, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited, @Nullable AccessLevel inheritedAccessType) {
+        super(accessType, permissions, initials, isInherited, inheritedAccessType);
         if (group == null) {
             throw new IllegalArgumentException("Required value for 'group' is null");
         }
@@ -72,7 +74,7 @@ public class GroupMembershipInfo extends MembershipInfo {
      *     preconditions.
      */
     public GroupMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull GroupInfo group) {
-        this(accessType, group, null, null, false);
+        this(accessType, group, null, null, false, null);
     }
 
     /**
@@ -128,6 +130,16 @@ public class GroupMembershipInfo extends MembershipInfo {
      */
     public boolean getIsInherited() {
         return isInherited;
+    }
+
+    /**
+     * The access type from parent folder for this member.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public AccessLevel getInheritedAccessType() {
+        return inheritedAccessType;
     }
 
     /**
@@ -211,13 +223,26 @@ public class GroupMembershipInfo extends MembershipInfo {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param inheritedAccessType  The access type from parent folder for
+         *     this member.
+         *
+         * @return this builder
+         */
+        public Builder withInheritedAccessType(AccessLevel inheritedAccessType) {
+            super.withInheritedAccessType(inheritedAccessType);
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link GroupMembershipInfo} configured with
          * this builder's values
          *
          * @return new instance of {@link GroupMembershipInfo}
          */
         public GroupMembershipInfo build() {
-            return new GroupMembershipInfo(accessType, group, permissions, initials, isInherited);
+            return new GroupMembershipInfo(accessType, group, permissions, initials, isInherited, inheritedAccessType);
         }
     }
 
@@ -246,6 +271,7 @@ public class GroupMembershipInfo extends MembershipInfo {
                 && ((this.permissions == other.permissions) || (this.permissions != null && this.permissions.equals(other.permissions)))
                 && ((this.initials == other.initials) || (this.initials != null && this.initials.equals(other.initials)))
                 && (this.isInherited == other.isInherited)
+                && ((this.inheritedAccessType == other.inheritedAccessType) || (this.inheritedAccessType != null && this.inheritedAccessType.equals(other.inheritedAccessType)))
                 ;
         }
         else {
@@ -295,6 +321,10 @@ public class GroupMembershipInfo extends MembershipInfo {
             }
             g.writeFieldName("is_inherited");
             StoneSerializers.boolean_().serialize(value.isInherited, g);
+            if (value.inheritedAccessType != null) {
+                g.writeFieldName("inherited_access_type");
+                StoneSerializers.nullable(AccessLevel.Serializer.INSTANCE).serialize(value.inheritedAccessType, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -314,6 +344,7 @@ public class GroupMembershipInfo extends MembershipInfo {
                 List<MemberPermission> f_permissions = null;
                 String f_initials = null;
                 Boolean f_isInherited = false;
+                AccessLevel f_inheritedAccessType = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -332,6 +363,9 @@ public class GroupMembershipInfo extends MembershipInfo {
                     else if ("is_inherited".equals(field)) {
                         f_isInherited = StoneSerializers.boolean_().deserialize(p);
                     }
+                    else if ("inherited_access_type".equals(field)) {
+                        f_inheritedAccessType = StoneSerializers.nullable(AccessLevel.Serializer.INSTANCE).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -342,7 +376,7 @@ public class GroupMembershipInfo extends MembershipInfo {
                 if (f_group == null) {
                     throw new JsonParseException(p, "Required field \"group\" missing.");
                 }
-                value = new GroupMembershipInfo(f_accessType, f_group, f_permissions, f_initials, f_isInherited);
+                value = new GroupMembershipInfo(f_accessType, f_group, f_permissions, f_initials, f_isInherited, f_inheritedAccessType);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

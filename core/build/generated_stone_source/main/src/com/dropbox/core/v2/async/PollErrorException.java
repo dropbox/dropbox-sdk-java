@@ -10,9 +10,19 @@ import com.dropbox.core.LocalizedText;
  * Exception thrown when the server responds with a {@link PollError} error.
  *
  * <p> This exception is raised by {@link
+ * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getKeyframesAsyncCheck(String)},
+ * {@link
  * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getMarkdownAsyncCheck(String)},
  * {@link
+ * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getMetadataAsyncCheck(String)},
+ * {@link
+ * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getOcrAsyncCheck(String)},
+ * {@link
+ * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getTextAsyncCheck(String)},
+ * {@link
  * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getTranscriptAsyncCheck(String)},
+ * {@link
+ * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getTransformAsyncCheck(String)},
  * {@link
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersAddJobStatusGet(String)},
  * {@link
@@ -21,6 +31,8 @@ import com.dropbox.core.LocalizedText;
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersMoveFormerMemberFilesJobStatusCheck(String)},
  * {@link
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersRemoveJobStatusGet(String)},
+ * {@link
+ * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersSuspendBatchJobStatusCheck(String)},
  * {@link
  * com.dropbox.core.v2.team.DbxTeamTeamRequests#teamFolderArchiveCheck(String)},
  * {@link
@@ -43,18 +55,26 @@ import com.dropbox.core.LocalizedText;
  * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkJobStatus(String)},
  * {@link
  * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkRemoveMemberJobStatus(String)},
+ * {@link
+ * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkShareJobStatus(String)},
  * and {@link
- * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkShareJobStatus(String)}.
+ * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersBulkSuspendJobStatusCheck(String)}.
  * </p>
  */
 public class PollErrorException extends DbxApiException {
     // exception for routes:
+    //     2/riviera/get_keyframes_async/check
     //     2/riviera/get_markdown_async/check
+    //     2/riviera/get_metadata_async/check
+    //     2/riviera/get_ocr_async/check
+    //     2/riviera/get_text_async/check
     //     2/riviera/get_transcript_async/check
+    //     2/riviera/get_transform_async/check
     //     2/team/members/add/job_status/get
     //     2/team/members/add/job_status/get_v2
     //     2/team/members/move_former_member_files/job_status/check
     //     2/team/members/remove/job_status/get
+    //     2/team/members/suspend_batch/job_status/check
     //     2/team/team_folder/archive/check
     //     2/files/copy_batch/check
     //     2/files/copy_batch/check_v2
@@ -67,14 +87,25 @@ public class PollErrorException extends DbxApiException {
     //     2/sharing/check_job_status
     //     2/sharing/check_remove_member_job_status
     //     2/sharing/check_share_job_status
+    //     2/team/members/bulk_suspend/job_status/check
 
     private static final long serialVersionUID = 0L;
 
     /**
      * The error reported by {@link
+     * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getKeyframesAsyncCheck(String)},
+     * {@link
      * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getMarkdownAsyncCheck(String)},
      * {@link
+     * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getMetadataAsyncCheck(String)},
+     * {@link
+     * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getOcrAsyncCheck(String)},
+     * {@link
+     * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getTextAsyncCheck(String)},
+     * {@link
      * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getTranscriptAsyncCheck(String)},
+     * {@link
+     * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getTransformAsyncCheck(String)},
      * {@link
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersAddJobStatusGet(String)},
      * {@link
@@ -83,6 +114,8 @@ public class PollErrorException extends DbxApiException {
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersMoveFormerMemberFilesJobStatusCheck(String)},
      * {@link
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersRemoveJobStatusGet(String)},
+     * {@link
+     * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersSuspendBatchJobStatusCheck(String)},
      * {@link
      * com.dropbox.core.v2.team.DbxTeamTeamRequests#teamFolderArchiveCheck(String)},
      * {@link
@@ -105,8 +138,10 @@ public class PollErrorException extends DbxApiException {
      * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkJobStatus(String)},
      * {@link
      * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkRemoveMemberJobStatus(String)},
+     * {@link
+     * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkShareJobStatus(String)},
      * and {@link
-     * com.dropbox.core.v2.sharing.DbxUserSharingRequests#checkShareJobStatus(String)}.
+     * com.dropbox.core.v2.team.DbxTeamTeamRequests#membersBulkSuspendJobStatusCheck(String)}.
      */
     public final PollError errorValue;
 

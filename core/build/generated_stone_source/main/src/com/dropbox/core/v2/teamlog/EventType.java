@@ -627,6 +627,10 @@ public final class EventType {
          */
         FOLDER_OVERVIEW_ITEM_UNPINNED, // FolderOverviewItemUnpinnedType
         /**
+         * (file_operations) Downloaded files in Replay
+         */
+        MEDIA_HUB_FILE_DOWNLOADED, // MediaHubFileDownloadedType
+        /**
          * (file_operations) Added a label
          */
         OBJECT_LABEL_ADDED, // ObjectLabelAddedType
@@ -877,6 +881,10 @@ public final class EventType {
          * (members) Deleted team member profile photo
          */
         MEMBER_DELETE_PROFILE_PHOTO, // MemberDeleteProfilePhotoType
+        /**
+         * (members) Admin browsed a team member's folder contents
+         */
+        MEMBER_FOLDER_CONTENTS_ACCESSED, // MemberFolderContentsAccessedType
         /**
          * (members) Permanently deleted contents of deleted team member account
          */
@@ -1158,9 +1166,81 @@ public final class EventType {
          */
         PASSWORD_RESET_ALL, // PasswordResetAllType
         /**
+         * (protect) Added collaborators via Dropbox Protect
+         */
+        PROTECT_ACTION_ADD_COLLABORATOR, // ProtectActionAddCollaboratorType
+        /**
+         * (protect) Added a link via Dropbox Protect
+         */
+        PROTECT_ACTION_ADD_LINK, // ProtectActionAddLinkType
+        /**
+         * (protect) Deleted content via Dropbox Protect
+         */
+        PROTECT_ACTION_DELETE, // ProtectActionDeleteType
+        /**
+         * (protect) Exported content via Dropbox Protect
+         */
+        PROTECT_ACTION_EXPORT, // ProtectActionExportType
+        /**
+         * (protect) Removed collaborators via Dropbox Protect
+         */
+        PROTECT_ACTION_REMOVE_COLLABORATOR, // ProtectActionRemoveCollaboratorType
+        /**
+         * (protect) Removed domains via Dropbox Protect
+         */
+        PROTECT_ACTION_REMOVE_DOMAINS, // ProtectActionRemoveDomainsType
+        /**
+         * (protect) Removed a link via Dropbox Protect
+         */
+        PROTECT_ACTION_REMOVE_LINK, // ProtectActionRemoveLinkType
+        /**
+         * (protect) Stopped sharing content via Dropbox Protect
+         */
+        PROTECT_ACTION_STOP_SHARING, // ProtectActionStopSharingType
+        /**
+         * (protect) Created a Dropbox Protect custom data type
+         */
+        PROTECT_CUSTOM_DATA_TYPE_CREATED, // ProtectCustomDataTypeCreatedType
+        /**
+         * (protect) Deleted a Dropbox Protect custom data type
+         */
+        PROTECT_CUSTOM_DATA_TYPE_DELETED, // ProtectCustomDataTypeDeletedType
+        /**
+         * (protect) Disabled a Dropbox Protect custom data type
+         */
+        PROTECT_CUSTOM_DATA_TYPE_DISABLED, // ProtectCustomDataTypeDisabledType
+        /**
+         * (protect) Enabled a Dropbox Protect custom data type
+         */
+        PROTECT_CUSTOM_DATA_TYPE_ENABLED, // ProtectCustomDataTypeEnabledType
+        /**
+         * (protect) Modified a Dropbox Protect custom data type
+         */
+        PROTECT_CUSTOM_DATA_TYPE_MODIFIED, // ProtectCustomDataTypeModifiedType
+        /**
          * (protect) Modified Protect internal domains list
          */
         PROTECT_INTERNAL_DOMAINS_CHANGED, // ProtectInternalDomainsChangedType
+        /**
+         * (protect) Activated a Dropbox Protect policy
+         */
+        PROTECT_POLICY_ACTIVATED, // ProtectPolicyActivatedType
+        /**
+         * (protect) Deactivated a Dropbox Protect policy
+         */
+        PROTECT_POLICY_DEACTIVATED, // ProtectPolicyDeactivatedType
+        /**
+         * (protect) Scheduled a Dropbox Protect policy
+         */
+        PROTECT_POLICY_SCHEDULED, // ProtectPolicyScheduledType
+        /**
+         * (protect) Updated a Dropbox Protect policy
+         */
+        PROTECT_POLICY_UPDATED, // ProtectPolicyUpdatedType
+        /**
+         * (protect) Viewed a Dropbox Protect report
+         */
+        PROTECT_REPORT_VIEW, // ProtectReportViewType
         /**
          * (reports) Created Classification report
          */
@@ -1305,6 +1385,34 @@ public final class EventType {
          * (sharing) Viewed transfer
          */
         FILE_TRANSFERS_TRANSFER_VIEW, // FileTransfersTransferViewType
+        /**
+         * (sharing) Added member to Replay project
+         */
+        MEDIA_HUB_PROJECT_TEAM_ADD, // MediaHubProjectTeamAddType
+        /**
+         * (sharing) Removed member from Replay project
+         */
+        MEDIA_HUB_PROJECT_TEAM_DELETE, // MediaHubProjectTeamDeleteType
+        /**
+         * (sharing) Changed member role in Replay project
+         */
+        MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED, // MediaHubProjectTeamRoleChangedType
+        /**
+         * (sharing) Changed Replay shared link audience
+         */
+        MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED, // MediaHubSharedLinkAudienceChangedType
+        /**
+         * (sharing) Created Replay shared link
+         */
+        MEDIA_HUB_SHARED_LINK_CREATED, // MediaHubSharedLinkCreatedType
+        /**
+         * (sharing) Changed Replay shared link download setting
+         */
+        MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED, // MediaHubSharedLinkDownloadSettingChangedType
+        /**
+         * (sharing) Revoked Replay shared link
+         */
+        MEDIA_HUB_SHARED_LINK_REVOKED, // MediaHubSharedLinkRevokedType
         /**
          * (sharing) Changed Paper doc to invite-only (deprecated, no longer
          * logged)
@@ -1587,6 +1695,10 @@ public final class EventType {
          * (sharing) Changed parent of shared folder
          */
         SHARED_FOLDER_NEST, // SharedFolderNestType
+        /**
+         * (sharing) Transferred shared folder membership to another member
+         */
+        SHARED_FOLDER_TRANSFER_MEMBERSHIP, // SharedFolderTransferMembershipType
         /**
          * (sharing) Transferred ownership of shared folder to another member
          */
@@ -1973,6 +2085,10 @@ public final class EventType {
          */
         DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY, // DataPlacementRestrictionSatisfyPolicyType
         /**
+         * (team_policies) Changed the default sync setting for new team folders
+         */
+        DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED, // DefaultTeamFolderSyncPolicyChangedType
+        /**
          * (team_policies) Added members to device approvals exception list
          */
         DEVICE_APPROVALS_ADD_EXCEPTION, // DeviceApprovalsAddExceptionType
@@ -2029,6 +2145,11 @@ public final class EventType {
          * (team_policies) Removed members from EMM exception list
          */
         EMM_REMOVE_EXCEPTION, // EmmRemoveExceptionType
+        /**
+         * (team_policies) Changed enterprise managed authorization policy for
+         * team
+         */
+        ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED, // EnterpriseManagedAuthPolicyChangedType
         /**
          * (team_policies) Accepted/opted out of extended version history
          */
@@ -2092,6 +2213,19 @@ public final class EventType {
          */
         INVITE_ACCEPTANCE_EMAIL_POLICY_CHANGED, // InviteAcceptanceEmailPolicyChangedType
         /**
+         * (team_policies) Changed the policy for adding people to Replay
+         * content
+         */
+        MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED, // MediaHubAddingPeoplePolicyChangedType
+        /**
+         * (team_policies) Changed the policy for downloading Replay content
+         */
+        MEDIA_HUB_DOWNLOAD_POLICY_CHANGED, // MediaHubDownloadPolicyChangedType
+        /**
+         * (team_policies) Changed the policy for sharing Replay content
+         */
+        MEDIA_HUB_LINK_SHARING_POLICY_CHANGED, // MediaHubLinkSharingPolicyChangedType
+        /**
          * (team_policies) Changed whether users can find team when not invited
          */
         MEMBER_REQUESTS_CHANGE_POLICY, // MemberRequestsChangePolicyType
@@ -2129,6 +2263,10 @@ public final class EventType {
          * (team_policies) Enabled/disabled Microsoft Office add-in
          */
         MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY, // MicrosoftOfficeAddinChangePolicyType
+        /**
+         * (team_policies) Changed multi-team identity policy for team
+         */
+        MULTI_TEAM_IDENTITY_POLICY_CHANGED, // MultiTeamIdentityPolicyChangedType
         /**
          * (team_policies) Enabled/disabled network control
          */
@@ -2169,6 +2307,10 @@ public final class EventType {
          * (team_policies) Removed users from Paper-enabled users list
          */
         PAPER_ENABLED_USERS_GROUP_REMOVAL, // PaperEnabledUsersGroupRemovalType
+        /**
+         * (team_policies) Enabled/disabled Paper offline mode for team
+         */
+        PAPER_OFFLINE_MODE_POLICY_CHANGED, // PaperOfflineModePolicyChangedType
         /**
          * (team_policies) Changed passkey login policy for team
          */
@@ -2305,6 +2447,15 @@ public final class EventType {
          * (team_policies) Changed App Integrations setting for team
          */
         TEAM_EXTENSIONS_POLICY_CHANGED, // TeamExtensionsPolicyChangedType
+        /**
+         * (team_policies) Changed external sharing controls activation state
+         */
+        TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED, // TeamExternalSharingControlsActivationStateChangedType
+        /**
+         * (team_policies) Changed approved or blocked entries for external
+         * sharing controls
+         */
+        TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED, // TeamExternalSharingControlsRecipientListsChangedType
         /**
          * (team_policies) Changed team member storage request policy for team
          */
@@ -2729,6 +2880,7 @@ public final class EventType {
     private FolderOverviewDescriptionChangedType folderOverviewDescriptionChangedValue;
     private FolderOverviewItemPinnedType folderOverviewItemPinnedValue;
     private FolderOverviewItemUnpinnedType folderOverviewItemUnpinnedValue;
+    private MediaHubFileDownloadedType mediaHubFileDownloadedValue;
     private ObjectLabelAddedType objectLabelAddedValue;
     private ObjectLabelRemovedType objectLabelRemovedValue;
     private ObjectLabelUpdatedValueType objectLabelUpdatedValueValue;
@@ -2791,6 +2943,7 @@ public final class EventType {
     private MemberChangeStatusType memberChangeStatusValue;
     private MemberDeleteManualContactsType memberDeleteManualContactsValue;
     private MemberDeleteProfilePhotoType memberDeleteProfilePhotoValue;
+    private MemberFolderContentsAccessedType memberFolderContentsAccessedValue;
     private MemberPermanentlyDeleteAccountContentsType memberPermanentlyDeleteAccountContentsValue;
     private MemberRemoveExternalIdType memberRemoveExternalIdValue;
     private MemberSetProfilePhotoType memberSetProfilePhotoValue;
@@ -2858,7 +3011,25 @@ public final class EventType {
     private PasswordChangeType passwordChangeValue;
     private PasswordResetType passwordResetValue;
     private PasswordResetAllType passwordResetAllValue;
+    private ProtectActionAddCollaboratorType protectActionAddCollaboratorValue;
+    private ProtectActionAddLinkType protectActionAddLinkValue;
+    private ProtectActionDeleteType protectActionDeleteValue;
+    private ProtectActionExportType protectActionExportValue;
+    private ProtectActionRemoveCollaboratorType protectActionRemoveCollaboratorValue;
+    private ProtectActionRemoveDomainsType protectActionRemoveDomainsValue;
+    private ProtectActionRemoveLinkType protectActionRemoveLinkValue;
+    private ProtectActionStopSharingType protectActionStopSharingValue;
+    private ProtectCustomDataTypeCreatedType protectCustomDataTypeCreatedValue;
+    private ProtectCustomDataTypeDeletedType protectCustomDataTypeDeletedValue;
+    private ProtectCustomDataTypeDisabledType protectCustomDataTypeDisabledValue;
+    private ProtectCustomDataTypeEnabledType protectCustomDataTypeEnabledValue;
+    private ProtectCustomDataTypeModifiedType protectCustomDataTypeModifiedValue;
     private ProtectInternalDomainsChangedType protectInternalDomainsChangedValue;
+    private ProtectPolicyActivatedType protectPolicyActivatedValue;
+    private ProtectPolicyDeactivatedType protectPolicyDeactivatedValue;
+    private ProtectPolicyScheduledType protectPolicyScheduledValue;
+    private ProtectPolicyUpdatedType protectPolicyUpdatedValue;
+    private ProtectReportViewType protectReportViewValue;
     private ClassificationCreateReportType classificationCreateReportValue;
     private ClassificationCreateReportFailType classificationCreateReportFailValue;
     private EmmCreateExceptionsReportType emmCreateExceptionsReportValue;
@@ -2895,6 +3066,13 @@ public final class EventType {
     private FileTransfersTransferDownloadType fileTransfersTransferDownloadValue;
     private FileTransfersTransferSendType fileTransfersTransferSendValue;
     private FileTransfersTransferViewType fileTransfersTransferViewValue;
+    private MediaHubProjectTeamAddType mediaHubProjectTeamAddValue;
+    private MediaHubProjectTeamDeleteType mediaHubProjectTeamDeleteValue;
+    private MediaHubProjectTeamRoleChangedType mediaHubProjectTeamRoleChangedValue;
+    private MediaHubSharedLinkAudienceChangedType mediaHubSharedLinkAudienceChangedValue;
+    private MediaHubSharedLinkCreatedType mediaHubSharedLinkCreatedValue;
+    private MediaHubSharedLinkDownloadSettingChangedType mediaHubSharedLinkDownloadSettingChangedValue;
+    private MediaHubSharedLinkRevokedType mediaHubSharedLinkRevokedValue;
     private NoteAclInviteOnlyType noteAclInviteOnlyValue;
     private NoteAclLinkType noteAclLinkValue;
     private NoteAclTeamLinkType noteAclTeamLinkValue;
@@ -2958,6 +3136,7 @@ public final class EventType {
     private SharedFolderDeclineInvitationType sharedFolderDeclineInvitationValue;
     private SharedFolderMountType sharedFolderMountValue;
     private SharedFolderNestType sharedFolderNestValue;
+    private SharedFolderTransferMembershipType sharedFolderTransferMembershipValue;
     private SharedFolderTransferOwnershipType sharedFolderTransferOwnershipValue;
     private SharedFolderUnmountType sharedFolderUnmountValue;
     private SharedLinkAddExpiryType sharedLinkAddExpiryValue;
@@ -3053,6 +3232,7 @@ public final class EventType {
     private DashExternalSharingPolicyChangedType dashExternalSharingPolicyChangedValue;
     private DataPlacementRestrictionChangePolicyType dataPlacementRestrictionChangePolicyValue;
     private DataPlacementRestrictionSatisfyPolicyType dataPlacementRestrictionSatisfyPolicyValue;
+    private DefaultTeamFolderSyncPolicyChangedType defaultTeamFolderSyncPolicyChangedValue;
     private DeviceApprovalsAddExceptionType deviceApprovalsAddExceptionValue;
     private DeviceApprovalsChangeDesktopPolicyType deviceApprovalsChangeDesktopPolicyValue;
     private DeviceApprovalsChangeMobilePolicyType deviceApprovalsChangeMobilePolicyValue;
@@ -3066,6 +3246,7 @@ public final class EventType {
     private EmmAddExceptionType emmAddExceptionValue;
     private EmmChangePolicyType emmChangePolicyValue;
     private EmmRemoveExceptionType emmRemoveExceptionValue;
+    private EnterpriseManagedAuthPolicyChangedType enterpriseManagedAuthPolicyChangedValue;
     private ExtendedVersionHistoryChangePolicyType extendedVersionHistoryChangePolicyValue;
     private ExternalDriveBackupPolicyChangedType externalDriveBackupPolicyChangedValue;
     private FileCommentsChangePolicyType fileCommentsChangePolicyValue;
@@ -3081,6 +3262,9 @@ public final class EventType {
     private GroupUserManagementChangePolicyType groupUserManagementChangePolicyValue;
     private IntegrationPolicyChangedType integrationPolicyChangedValue;
     private InviteAcceptanceEmailPolicyChangedType inviteAcceptanceEmailPolicyChangedValue;
+    private MediaHubAddingPeoplePolicyChangedType mediaHubAddingPeoplePolicyChangedValue;
+    private MediaHubDownloadPolicyChangedType mediaHubDownloadPolicyChangedValue;
+    private MediaHubLinkSharingPolicyChangedType mediaHubLinkSharingPolicyChangedValue;
     private MemberRequestsChangePolicyType memberRequestsChangePolicyValue;
     private MemberSendInvitePolicyChangedType memberSendInvitePolicyChangedValue;
     private MemberSpaceLimitsAddExceptionType memberSpaceLimitsAddExceptionValue;
@@ -3090,6 +3274,7 @@ public final class EventType {
     private MemberSuggestionsChangePolicyType memberSuggestionsChangePolicyValue;
     private MicrosoftLoginChangePolicyType microsoftLoginChangePolicyValue;
     private MicrosoftOfficeAddinChangePolicyType microsoftOfficeAddinChangePolicyValue;
+    private MultiTeamIdentityPolicyChangedType multiTeamIdentityPolicyChangedValue;
     private NetworkControlChangePolicyType networkControlChangePolicyValue;
     private PaperChangeDeploymentPolicyType paperChangeDeploymentPolicyValue;
     private PaperChangeMemberLinkPolicyType paperChangeMemberLinkPolicyValue;
@@ -3099,6 +3284,7 @@ public final class EventType {
     private PaperDesktopPolicyChangedType paperDesktopPolicyChangedValue;
     private PaperEnabledUsersGroupAdditionType paperEnabledUsersGroupAdditionValue;
     private PaperEnabledUsersGroupRemovalType paperEnabledUsersGroupRemovalValue;
+    private PaperOfflineModePolicyChangedType paperOfflineModePolicyChangedValue;
     private PasskeyLoginPolicyChangedType passkeyLoginPolicyChangedValue;
     private PasswordStrengthRequirementsChangePolicyType passwordStrengthRequirementsChangePolicyValue;
     private PermanentDeleteChangePolicyType permanentDeleteChangePolicyValue;
@@ -3130,6 +3316,8 @@ public final class EventType {
     private StackCrossTeamAccessPolicyChangedType stackCrossTeamAccessPolicyChangedValue;
     private TeamBrandingPolicyChangedType teamBrandingPolicyChangedValue;
     private TeamExtensionsPolicyChangedType teamExtensionsPolicyChangedValue;
+    private TeamExternalSharingControlsActivationStateChangedType teamExternalSharingControlsActivationStateChangedValue;
+    private TeamExternalSharingControlsRecipientListsChangedType teamExternalSharingControlsRecipientListsChangedValue;
     private TeamMemberStorageRequestPolicyChangedType teamMemberStorageRequestPolicyChangedValue;
     private TeamSelectiveSyncPolicyChangedType teamSelectiveSyncPolicyChangedValue;
     private TeamSharingWhitelistSubjectsChangedType teamSharingWhitelistSubjectsChangedValue;
@@ -5701,6 +5889,23 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param mediaHubFileDownloadedValue  (file_operations) Downloaded files in
+     *     Replay. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubFileDownloaded(Tag _tag, MediaHubFileDownloadedType mediaHubFileDownloadedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubFileDownloadedValue = mediaHubFileDownloadedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param objectLabelAddedValue  (file_operations) Added a label. Must not
      *     be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -6748,6 +6953,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.memberDeleteProfilePhotoValue = memberDeleteProfilePhotoValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param memberFolderContentsAccessedValue  (members) Admin browsed a team
+     *     member's folder contents. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMemberFolderContentsAccessed(Tag _tag, MemberFolderContentsAccessedType memberFolderContentsAccessedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.memberFolderContentsAccessedValue = memberFolderContentsAccessedValue;
         return result;
     }
 
@@ -7902,6 +8124,227 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param protectActionAddCollaboratorValue  (protect) Added collaborators
+     *     via Dropbox Protect. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectActionAddCollaborator(Tag _tag, ProtectActionAddCollaboratorType protectActionAddCollaboratorValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectActionAddCollaboratorValue = protectActionAddCollaboratorValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectActionAddLinkValue  (protect) Added a link via Dropbox
+     *     Protect. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectActionAddLink(Tag _tag, ProtectActionAddLinkType protectActionAddLinkValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectActionAddLinkValue = protectActionAddLinkValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectActionDeleteValue  (protect) Deleted content via Dropbox
+     *     Protect. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectActionDelete(Tag _tag, ProtectActionDeleteType protectActionDeleteValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectActionDeleteValue = protectActionDeleteValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectActionExportValue  (protect) Exported content via Dropbox
+     *     Protect. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectActionExport(Tag _tag, ProtectActionExportType protectActionExportValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectActionExportValue = protectActionExportValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectActionRemoveCollaboratorValue  (protect) Removed
+     *     collaborators via Dropbox Protect. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectActionRemoveCollaborator(Tag _tag, ProtectActionRemoveCollaboratorType protectActionRemoveCollaboratorValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectActionRemoveCollaboratorValue = protectActionRemoveCollaboratorValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectActionRemoveDomainsValue  (protect) Removed domains via
+     *     Dropbox Protect. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectActionRemoveDomains(Tag _tag, ProtectActionRemoveDomainsType protectActionRemoveDomainsValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectActionRemoveDomainsValue = protectActionRemoveDomainsValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectActionRemoveLinkValue  (protect) Removed a link via Dropbox
+     *     Protect. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectActionRemoveLink(Tag _tag, ProtectActionRemoveLinkType protectActionRemoveLinkValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectActionRemoveLinkValue = protectActionRemoveLinkValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectActionStopSharingValue  (protect) Stopped sharing content
+     *     via Dropbox Protect. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectActionStopSharing(Tag _tag, ProtectActionStopSharingType protectActionStopSharingValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectActionStopSharingValue = protectActionStopSharingValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectCustomDataTypeCreatedValue  (protect) Created a Dropbox
+     *     Protect custom data type. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectCustomDataTypeCreated(Tag _tag, ProtectCustomDataTypeCreatedType protectCustomDataTypeCreatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectCustomDataTypeCreatedValue = protectCustomDataTypeCreatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectCustomDataTypeDeletedValue  (protect) Deleted a Dropbox
+     *     Protect custom data type. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectCustomDataTypeDeleted(Tag _tag, ProtectCustomDataTypeDeletedType protectCustomDataTypeDeletedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectCustomDataTypeDeletedValue = protectCustomDataTypeDeletedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectCustomDataTypeDisabledValue  (protect) Disabled a Dropbox
+     *     Protect custom data type. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectCustomDataTypeDisabled(Tag _tag, ProtectCustomDataTypeDisabledType protectCustomDataTypeDisabledValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectCustomDataTypeDisabledValue = protectCustomDataTypeDisabledValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectCustomDataTypeEnabledValue  (protect) Enabled a Dropbox
+     *     Protect custom data type. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectCustomDataTypeEnabled(Tag _tag, ProtectCustomDataTypeEnabledType protectCustomDataTypeEnabledValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectCustomDataTypeEnabledValue = protectCustomDataTypeEnabledValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectCustomDataTypeModifiedValue  (protect) Modified a Dropbox
+     *     Protect custom data type. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectCustomDataTypeModified(Tag _tag, ProtectCustomDataTypeModifiedType protectCustomDataTypeModifiedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectCustomDataTypeModifiedValue = protectCustomDataTypeModifiedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param protectInternalDomainsChangedValue  (protect) Modified Protect
      *     internal domains list. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -7913,6 +8356,91 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.protectInternalDomainsChangedValue = protectInternalDomainsChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectPolicyActivatedValue  (protect) Activated a Dropbox Protect
+     *     policy. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectPolicyActivated(Tag _tag, ProtectPolicyActivatedType protectPolicyActivatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectPolicyActivatedValue = protectPolicyActivatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectPolicyDeactivatedValue  (protect) Deactivated a Dropbox
+     *     Protect policy. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectPolicyDeactivated(Tag _tag, ProtectPolicyDeactivatedType protectPolicyDeactivatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectPolicyDeactivatedValue = protectPolicyDeactivatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectPolicyScheduledValue  (protect) Scheduled a Dropbox Protect
+     *     policy. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectPolicyScheduled(Tag _tag, ProtectPolicyScheduledType protectPolicyScheduledValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectPolicyScheduledValue = protectPolicyScheduledValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectPolicyUpdatedValue  (protect) Updated a Dropbox Protect
+     *     policy. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectPolicyUpdated(Tag _tag, ProtectPolicyUpdatedType protectPolicyUpdatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectPolicyUpdatedValue = protectPolicyUpdatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param protectReportViewValue  (protect) Viewed a Dropbox Protect report.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndProtectReportView(Tag _tag, ProtectReportViewType protectReportViewValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.protectReportViewValue = protectReportViewValue;
         return result;
     }
 
@@ -8525,6 +9053,125 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.fileTransfersTransferViewValue = fileTransfersTransferViewValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubProjectTeamAddValue  (sharing) Added member to Replay
+     *     project. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubProjectTeamAdd(Tag _tag, MediaHubProjectTeamAddType mediaHubProjectTeamAddValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubProjectTeamAddValue = mediaHubProjectTeamAddValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubProjectTeamDeleteValue  (sharing) Removed member from
+     *     Replay project. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubProjectTeamDelete(Tag _tag, MediaHubProjectTeamDeleteType mediaHubProjectTeamDeleteValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubProjectTeamDeleteValue = mediaHubProjectTeamDeleteValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubProjectTeamRoleChangedValue  (sharing) Changed member role
+     *     in Replay project. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubProjectTeamRoleChanged(Tag _tag, MediaHubProjectTeamRoleChangedType mediaHubProjectTeamRoleChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubProjectTeamRoleChangedValue = mediaHubProjectTeamRoleChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubSharedLinkAudienceChangedValue  (sharing) Changed Replay
+     *     shared link audience. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubSharedLinkAudienceChanged(Tag _tag, MediaHubSharedLinkAudienceChangedType mediaHubSharedLinkAudienceChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubSharedLinkAudienceChangedValue = mediaHubSharedLinkAudienceChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubSharedLinkCreatedValue  (sharing) Created Replay shared
+     *     link. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubSharedLinkCreated(Tag _tag, MediaHubSharedLinkCreatedType mediaHubSharedLinkCreatedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubSharedLinkCreatedValue = mediaHubSharedLinkCreatedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubSharedLinkDownloadSettingChangedValue  (sharing) Changed
+     *     Replay shared link download setting. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubSharedLinkDownloadSettingChanged(Tag _tag, MediaHubSharedLinkDownloadSettingChangedType mediaHubSharedLinkDownloadSettingChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubSharedLinkDownloadSettingChangedValue = mediaHubSharedLinkDownloadSettingChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubSharedLinkRevokedValue  (sharing) Revoked Replay shared
+     *     link. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubSharedLinkRevoked(Tag _tag, MediaHubSharedLinkRevokedType mediaHubSharedLinkRevokedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubSharedLinkRevokedValue = mediaHubSharedLinkRevokedValue;
         return result;
     }
 
@@ -9617,6 +10264,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.sharedFolderNestValue = sharedFolderNestValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param sharedFolderTransferMembershipValue  (sharing) Transferred shared
+     *     folder membership to another member. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndSharedFolderTransferMembership(Tag _tag, SharedFolderTransferMembershipType sharedFolderTransferMembershipValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.sharedFolderTransferMembershipValue = sharedFolderTransferMembershipValue;
         return result;
     }
 
@@ -11247,6 +11911,24 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param defaultTeamFolderSyncPolicyChangedValue  (team_policies) Changed
+     *     the default sync setting for new team folders. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndDefaultTeamFolderSyncPolicyChanged(Tag _tag, DefaultTeamFolderSyncPolicyChangedType defaultTeamFolderSyncPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.defaultTeamFolderSyncPolicyChangedValue = defaultTeamFolderSyncPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param deviceApprovalsAddExceptionValue  (team_policies) Added members to
      *     device approvals exception list. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -11467,6 +12149,24 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.emmRemoveExceptionValue = emmRemoveExceptionValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param enterpriseManagedAuthPolicyChangedValue  (team_policies) Changed
+     *     enterprise managed authorization policy for team. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndEnterpriseManagedAuthPolicyChanged(Tag _tag, EnterpriseManagedAuthPolicyChangedType enterpriseManagedAuthPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.enterpriseManagedAuthPolicyChangedValue = enterpriseManagedAuthPolicyChangedValue;
         return result;
     }
 
@@ -11731,6 +12431,58 @@ public final class EventType {
     /**
      * The type of the event with description.
      *
+     * @param mediaHubAddingPeoplePolicyChangedValue  (team_policies) Changed
+     *     the policy for adding people to Replay content. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubAddingPeoplePolicyChanged(Tag _tag, MediaHubAddingPeoplePolicyChangedType mediaHubAddingPeoplePolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubAddingPeoplePolicyChangedValue = mediaHubAddingPeoplePolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubDownloadPolicyChangedValue  (team_policies) Changed the
+     *     policy for downloading Replay content. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubDownloadPolicyChanged(Tag _tag, MediaHubDownloadPolicyChangedType mediaHubDownloadPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubDownloadPolicyChangedValue = mediaHubDownloadPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param mediaHubLinkSharingPolicyChangedValue  (team_policies) Changed the
+     *     policy for sharing Replay content. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMediaHubLinkSharingPolicyChanged(Tag _tag, MediaHubLinkSharingPolicyChangedType mediaHubLinkSharingPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.mediaHubLinkSharingPolicyChangedValue = mediaHubLinkSharingPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
      * @param memberRequestsChangePolicyValue  (team_policies) Changed whether
      *     users can find team when not invited. Must not be {@code null}.
      * @param _tag  Discriminating tag for this instance.
@@ -11880,6 +12632,23 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.microsoftOfficeAddinChangePolicyValue = microsoftOfficeAddinChangePolicyValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param multiTeamIdentityPolicyChangedValue  (team_policies) Changed
+     *     multi-team identity policy for team. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndMultiTeamIdentityPolicyChanged(Tag _tag, MultiTeamIdentityPolicyChangedType multiTeamIdentityPolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.multiTeamIdentityPolicyChangedValue = multiTeamIdentityPolicyChangedValue;
         return result;
     }
 
@@ -12037,6 +12806,24 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.paperEnabledUsersGroupRemovalValue = paperEnabledUsersGroupRemovalValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param paperOfflineModePolicyChangedValue  (team_policies)
+     *     Enabled/disabled Paper offline mode for team. Must not be {@code
+     *     null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndPaperOfflineModePolicyChanged(Tag _tag, PaperOfflineModePolicyChangedType paperOfflineModePolicyChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.paperOfflineModePolicyChangedValue = paperOfflineModePolicyChangedValue;
         return result;
     }
 
@@ -12577,6 +13364,42 @@ public final class EventType {
         EventType result = new EventType();
         result._tag = _tag;
         result.teamExtensionsPolicyChangedValue = teamExtensionsPolicyChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param teamExternalSharingControlsActivationStateChangedValue
+     *     (team_policies) Changed external sharing controls activation state.
+     *     Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamExternalSharingControlsActivationStateChanged(Tag _tag, TeamExternalSharingControlsActivationStateChangedType teamExternalSharingControlsActivationStateChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamExternalSharingControlsActivationStateChangedValue = teamExternalSharingControlsActivationStateChangedValue;
+        return result;
+    }
+
+    /**
+     * The type of the event with description.
+     *
+     * @param teamExternalSharingControlsRecipientListsChangedValue
+     *     (team_policies) Changed approved or blocked entries for external
+     *     sharing controls. Must not be {@code null}.
+     * @param _tag  Discriminating tag for this instance.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    private EventType withTagAndTeamExternalSharingControlsRecipientListsChanged(Tag _tag, TeamExternalSharingControlsRecipientListsChangedType teamExternalSharingControlsRecipientListsChangedValue) {
+        EventType result = new EventType();
+        result._tag = _tag;
+        result.teamExternalSharingControlsRecipientListsChangedValue = teamExternalSharingControlsRecipientListsChangedValue;
         return result;
     }
 
@@ -21001,6 +21824,56 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_FILE_DOWNLOADED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_FILE_DOWNLOADED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubFileDownloaded() {
+        return this._tag == Tag.MEDIA_HUB_FILE_DOWNLOADED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_FILE_DOWNLOADED}.
+     *
+     * <p> (file_operations) Downloaded files in Replay </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_FILE_DOWNLOADED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubFileDownloaded(MediaHubFileDownloadedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubFileDownloaded(Tag.MEDIA_HUB_FILE_DOWNLOADED, value);
+    }
+
+    /**
+     * (file_operations) Downloaded files in Replay
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_FILE_DOWNLOADED}. </p>
+     *
+     * @return The {@link MediaHubFileDownloadedType} value associated with this
+     *     instance if {@link #isMediaHubFileDownloaded} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isMediaHubFileDownloaded} is
+     *     {@code false}.
+     */
+    public MediaHubFileDownloadedType getMediaHubFileDownloadedValue() {
+        if (this._tag != Tag.MEDIA_HUB_FILE_DOWNLOADED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_FILE_DOWNLOADED, but was Tag." + this._tag.name());
+        }
+        return mediaHubFileDownloadedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#OBJECT_LABEL_ADDED}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -24089,6 +24962,57 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.MEMBER_DELETE_PROFILE_PHOTO, but was Tag." + this._tag.name());
         }
         return memberDeleteProfilePhotoValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEMBER_FOLDER_CONTENTS_ACCESSED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEMBER_FOLDER_CONTENTS_ACCESSED}, {@code false} otherwise.
+     */
+    public boolean isMemberFolderContentsAccessed() {
+        return this._tag == Tag.MEMBER_FOLDER_CONTENTS_ACCESSED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEMBER_FOLDER_CONTENTS_ACCESSED}.
+     *
+     * <p> (members) Admin browsed a team member's folder contents </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEMBER_FOLDER_CONTENTS_ACCESSED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType memberFolderContentsAccessed(MemberFolderContentsAccessedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMemberFolderContentsAccessed(Tag.MEMBER_FOLDER_CONTENTS_ACCESSED, value);
+    }
+
+    /**
+     * (members) Admin browsed a team member's folder contents
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEMBER_FOLDER_CONTENTS_ACCESSED}. </p>
+     *
+     * @return The {@link MemberFolderContentsAccessedType} value associated
+     *     with this instance if {@link #isMemberFolderContentsAccessed} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isMemberFolderContentsAccessed}
+     *     is {@code false}.
+     */
+    public MemberFolderContentsAccessedType getMemberFolderContentsAccessedValue() {
+        if (this._tag != Tag.MEMBER_FOLDER_CONTENTS_ACCESSED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEMBER_FOLDER_CONTENTS_ACCESSED, but was Tag." + this._tag.name());
+        }
+        return memberFolderContentsAccessedValue;
     }
 
     /**
@@ -27469,6 +28393,664 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_ACTION_ADD_COLLABORATOR}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_ACTION_ADD_COLLABORATOR}, {@code false} otherwise.
+     */
+    public boolean isProtectActionAddCollaborator() {
+        return this._tag == Tag.PROTECT_ACTION_ADD_COLLABORATOR;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_ACTION_ADD_COLLABORATOR}.
+     *
+     * <p> (protect) Added collaborators via Dropbox Protect </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_ACTION_ADD_COLLABORATOR}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectActionAddCollaborator(ProtectActionAddCollaboratorType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectActionAddCollaborator(Tag.PROTECT_ACTION_ADD_COLLABORATOR, value);
+    }
+
+    /**
+     * (protect) Added collaborators via Dropbox Protect
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_ACTION_ADD_COLLABORATOR}. </p>
+     *
+     * @return The {@link ProtectActionAddCollaboratorType} value associated
+     *     with this instance if {@link #isProtectActionAddCollaborator} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectActionAddCollaborator}
+     *     is {@code false}.
+     */
+    public ProtectActionAddCollaboratorType getProtectActionAddCollaboratorValue() {
+        if (this._tag != Tag.PROTECT_ACTION_ADD_COLLABORATOR) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_ACTION_ADD_COLLABORATOR, but was Tag." + this._tag.name());
+        }
+        return protectActionAddCollaboratorValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_ACTION_ADD_LINK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_ACTION_ADD_LINK}, {@code false} otherwise.
+     */
+    public boolean isProtectActionAddLink() {
+        return this._tag == Tag.PROTECT_ACTION_ADD_LINK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_ACTION_ADD_LINK}.
+     *
+     * <p> (protect) Added a link via Dropbox Protect </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_ACTION_ADD_LINK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectActionAddLink(ProtectActionAddLinkType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectActionAddLink(Tag.PROTECT_ACTION_ADD_LINK, value);
+    }
+
+    /**
+     * (protect) Added a link via Dropbox Protect
+     *
+     * <p> This instance must be tagged as {@link Tag#PROTECT_ACTION_ADD_LINK}.
+     * </p>
+     *
+     * @return The {@link ProtectActionAddLinkType} value associated with this
+     *     instance if {@link #isProtectActionAddLink} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectActionAddLink} is
+     *     {@code false}.
+     */
+    public ProtectActionAddLinkType getProtectActionAddLinkValue() {
+        if (this._tag != Tag.PROTECT_ACTION_ADD_LINK) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_ACTION_ADD_LINK, but was Tag." + this._tag.name());
+        }
+        return protectActionAddLinkValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_ACTION_DELETE}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_ACTION_DELETE}, {@code false} otherwise.
+     */
+    public boolean isProtectActionDelete() {
+        return this._tag == Tag.PROTECT_ACTION_DELETE;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_ACTION_DELETE}.
+     *
+     * <p> (protect) Deleted content via Dropbox Protect </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_ACTION_DELETE}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectActionDelete(ProtectActionDeleteType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectActionDelete(Tag.PROTECT_ACTION_DELETE, value);
+    }
+
+    /**
+     * (protect) Deleted content via Dropbox Protect
+     *
+     * <p> This instance must be tagged as {@link Tag#PROTECT_ACTION_DELETE}.
+     * </p>
+     *
+     * @return The {@link ProtectActionDeleteType} value associated with this
+     *     instance if {@link #isProtectActionDelete} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectActionDelete} is
+     *     {@code false}.
+     */
+    public ProtectActionDeleteType getProtectActionDeleteValue() {
+        if (this._tag != Tag.PROTECT_ACTION_DELETE) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_ACTION_DELETE, but was Tag." + this._tag.name());
+        }
+        return protectActionDeleteValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_ACTION_EXPORT}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_ACTION_EXPORT}, {@code false} otherwise.
+     */
+    public boolean isProtectActionExport() {
+        return this._tag == Tag.PROTECT_ACTION_EXPORT;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_ACTION_EXPORT}.
+     *
+     * <p> (protect) Exported content via Dropbox Protect </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_ACTION_EXPORT}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectActionExport(ProtectActionExportType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectActionExport(Tag.PROTECT_ACTION_EXPORT, value);
+    }
+
+    /**
+     * (protect) Exported content via Dropbox Protect
+     *
+     * <p> This instance must be tagged as {@link Tag#PROTECT_ACTION_EXPORT}.
+     * </p>
+     *
+     * @return The {@link ProtectActionExportType} value associated with this
+     *     instance if {@link #isProtectActionExport} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectActionExport} is
+     *     {@code false}.
+     */
+    public ProtectActionExportType getProtectActionExportValue() {
+        if (this._tag != Tag.PROTECT_ACTION_EXPORT) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_ACTION_EXPORT, but was Tag." + this._tag.name());
+        }
+        return protectActionExportValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_ACTION_REMOVE_COLLABORATOR}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_ACTION_REMOVE_COLLABORATOR}, {@code false} otherwise.
+     */
+    public boolean isProtectActionRemoveCollaborator() {
+        return this._tag == Tag.PROTECT_ACTION_REMOVE_COLLABORATOR;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_ACTION_REMOVE_COLLABORATOR}.
+     *
+     * <p> (protect) Removed collaborators via Dropbox Protect </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_ACTION_REMOVE_COLLABORATOR}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectActionRemoveCollaborator(ProtectActionRemoveCollaboratorType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectActionRemoveCollaborator(Tag.PROTECT_ACTION_REMOVE_COLLABORATOR, value);
+    }
+
+    /**
+     * (protect) Removed collaborators via Dropbox Protect
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_ACTION_REMOVE_COLLABORATOR}. </p>
+     *
+     * @return The {@link ProtectActionRemoveCollaboratorType} value associated
+     *     with this instance if {@link #isProtectActionRemoveCollaborator} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectActionRemoveCollaborator} is {@code false}.
+     */
+    public ProtectActionRemoveCollaboratorType getProtectActionRemoveCollaboratorValue() {
+        if (this._tag != Tag.PROTECT_ACTION_REMOVE_COLLABORATOR) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_ACTION_REMOVE_COLLABORATOR, but was Tag." + this._tag.name());
+        }
+        return protectActionRemoveCollaboratorValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_ACTION_REMOVE_DOMAINS}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_ACTION_REMOVE_DOMAINS}, {@code false} otherwise.
+     */
+    public boolean isProtectActionRemoveDomains() {
+        return this._tag == Tag.PROTECT_ACTION_REMOVE_DOMAINS;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_ACTION_REMOVE_DOMAINS}.
+     *
+     * <p> (protect) Removed domains via Dropbox Protect </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_ACTION_REMOVE_DOMAINS}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectActionRemoveDomains(ProtectActionRemoveDomainsType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectActionRemoveDomains(Tag.PROTECT_ACTION_REMOVE_DOMAINS, value);
+    }
+
+    /**
+     * (protect) Removed domains via Dropbox Protect
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_ACTION_REMOVE_DOMAINS}. </p>
+     *
+     * @return The {@link ProtectActionRemoveDomainsType} value associated with
+     *     this instance if {@link #isProtectActionRemoveDomains} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectActionRemoveDomains}
+     *     is {@code false}.
+     */
+    public ProtectActionRemoveDomainsType getProtectActionRemoveDomainsValue() {
+        if (this._tag != Tag.PROTECT_ACTION_REMOVE_DOMAINS) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_ACTION_REMOVE_DOMAINS, but was Tag." + this._tag.name());
+        }
+        return protectActionRemoveDomainsValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_ACTION_REMOVE_LINK}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_ACTION_REMOVE_LINK}, {@code false} otherwise.
+     */
+    public boolean isProtectActionRemoveLink() {
+        return this._tag == Tag.PROTECT_ACTION_REMOVE_LINK;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_ACTION_REMOVE_LINK}.
+     *
+     * <p> (protect) Removed a link via Dropbox Protect </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_ACTION_REMOVE_LINK}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectActionRemoveLink(ProtectActionRemoveLinkType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectActionRemoveLink(Tag.PROTECT_ACTION_REMOVE_LINK, value);
+    }
+
+    /**
+     * (protect) Removed a link via Dropbox Protect
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_ACTION_REMOVE_LINK}. </p>
+     *
+     * @return The {@link ProtectActionRemoveLinkType} value associated with
+     *     this instance if {@link #isProtectActionRemoveLink} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectActionRemoveLink} is
+     *     {@code false}.
+     */
+    public ProtectActionRemoveLinkType getProtectActionRemoveLinkValue() {
+        if (this._tag != Tag.PROTECT_ACTION_REMOVE_LINK) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_ACTION_REMOVE_LINK, but was Tag." + this._tag.name());
+        }
+        return protectActionRemoveLinkValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_ACTION_STOP_SHARING}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_ACTION_STOP_SHARING}, {@code false} otherwise.
+     */
+    public boolean isProtectActionStopSharing() {
+        return this._tag == Tag.PROTECT_ACTION_STOP_SHARING;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_ACTION_STOP_SHARING}.
+     *
+     * <p> (protect) Stopped sharing content via Dropbox Protect </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_ACTION_STOP_SHARING}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectActionStopSharing(ProtectActionStopSharingType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectActionStopSharing(Tag.PROTECT_ACTION_STOP_SHARING, value);
+    }
+
+    /**
+     * (protect) Stopped sharing content via Dropbox Protect
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_ACTION_STOP_SHARING}. </p>
+     *
+     * @return The {@link ProtectActionStopSharingType} value associated with
+     *     this instance if {@link #isProtectActionStopSharing} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectActionStopSharing} is
+     *     {@code false}.
+     */
+    public ProtectActionStopSharingType getProtectActionStopSharingValue() {
+        if (this._tag != Tag.PROTECT_ACTION_STOP_SHARING) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_ACTION_STOP_SHARING, but was Tag." + this._tag.name());
+        }
+        return protectActionStopSharingValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED}, {@code false} otherwise.
+     */
+    public boolean isProtectCustomDataTypeCreated() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_CREATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED}.
+     *
+     * <p> (protect) Created a Dropbox Protect custom data type </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectCustomDataTypeCreated(ProtectCustomDataTypeCreatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectCustomDataTypeCreated(Tag.PROTECT_CUSTOM_DATA_TYPE_CREATED, value);
+    }
+
+    /**
+     * (protect) Created a Dropbox Protect custom data type
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_CREATED}. </p>
+     *
+     * @return The {@link ProtectCustomDataTypeCreatedType} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeCreated} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectCustomDataTypeCreated}
+     *     is {@code false}.
+     */
+    public ProtectCustomDataTypeCreatedType getProtectCustomDataTypeCreatedValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_CREATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_CREATED, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeCreatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED}, {@code false} otherwise.
+     */
+    public boolean isProtectCustomDataTypeDeleted() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_DELETED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED}.
+     *
+     * <p> (protect) Deleted a Dropbox Protect custom data type </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectCustomDataTypeDeleted(ProtectCustomDataTypeDeletedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectCustomDataTypeDeleted(Tag.PROTECT_CUSTOM_DATA_TYPE_DELETED, value);
+    }
+
+    /**
+     * (protect) Deleted a Dropbox Protect custom data type
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DELETED}. </p>
+     *
+     * @return The {@link ProtectCustomDataTypeDeletedType} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeDeleted} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectCustomDataTypeDeleted}
+     *     is {@code false}.
+     */
+    public ProtectCustomDataTypeDeletedType getProtectCustomDataTypeDeletedValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_DELETED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_DELETED, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeDeletedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED}, {@code false} otherwise.
+     */
+    public boolean isProtectCustomDataTypeDisabled() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_DISABLED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED}.
+     *
+     * <p> (protect) Disabled a Dropbox Protect custom data type </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectCustomDataTypeDisabled(ProtectCustomDataTypeDisabledType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectCustomDataTypeDisabled(Tag.PROTECT_CUSTOM_DATA_TYPE_DISABLED, value);
+    }
+
+    /**
+     * (protect) Disabled a Dropbox Protect custom data type
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_DISABLED}. </p>
+     *
+     * @return The {@link ProtectCustomDataTypeDisabledType} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeDisabled} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectCustomDataTypeDisabled} is {@code false}.
+     */
+    public ProtectCustomDataTypeDisabledType getProtectCustomDataTypeDisabledValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_DISABLED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_DISABLED, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeDisabledValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED}, {@code false} otherwise.
+     */
+    public boolean isProtectCustomDataTypeEnabled() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_ENABLED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED}.
+     *
+     * <p> (protect) Enabled a Dropbox Protect custom data type </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectCustomDataTypeEnabled(ProtectCustomDataTypeEnabledType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectCustomDataTypeEnabled(Tag.PROTECT_CUSTOM_DATA_TYPE_ENABLED, value);
+    }
+
+    /**
+     * (protect) Enabled a Dropbox Protect custom data type
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_ENABLED}. </p>
+     *
+     * @return The {@link ProtectCustomDataTypeEnabledType} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeEnabled} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectCustomDataTypeEnabled}
+     *     is {@code false}.
+     */
+    public ProtectCustomDataTypeEnabledType getProtectCustomDataTypeEnabledValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_ENABLED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_ENABLED, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeEnabledValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED}, {@code false} otherwise.
+     */
+    public boolean isProtectCustomDataTypeModified() {
+        return this._tag == Tag.PROTECT_CUSTOM_DATA_TYPE_MODIFIED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED}.
+     *
+     * <p> (protect) Modified a Dropbox Protect custom data type </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectCustomDataTypeModified(ProtectCustomDataTypeModifiedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectCustomDataTypeModified(Tag.PROTECT_CUSTOM_DATA_TYPE_MODIFIED, value);
+    }
+
+    /**
+     * (protect) Modified a Dropbox Protect custom data type
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_CUSTOM_DATA_TYPE_MODIFIED}. </p>
+     *
+     * @return The {@link ProtectCustomDataTypeModifiedType} value associated
+     *     with this instance if {@link #isProtectCustomDataTypeModified} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isProtectCustomDataTypeModified} is {@code false}.
+     */
+    public ProtectCustomDataTypeModifiedType getProtectCustomDataTypeModifiedValue() {
+        if (this._tag != Tag.PROTECT_CUSTOM_DATA_TYPE_MODIFIED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_CUSTOM_DATA_TYPE_MODIFIED, but was Tag." + this._tag.name());
+        }
+        return protectCustomDataTypeModifiedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#PROTECT_INTERNAL_DOMAINS_CHANGED}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -27516,6 +29098,255 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.PROTECT_INTERNAL_DOMAINS_CHANGED, but was Tag." + this._tag.name());
         }
         return protectInternalDomainsChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_POLICY_ACTIVATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_POLICY_ACTIVATED}, {@code false} otherwise.
+     */
+    public boolean isProtectPolicyActivated() {
+        return this._tag == Tag.PROTECT_POLICY_ACTIVATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_POLICY_ACTIVATED}.
+     *
+     * <p> (protect) Activated a Dropbox Protect policy </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_POLICY_ACTIVATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectPolicyActivated(ProtectPolicyActivatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectPolicyActivated(Tag.PROTECT_POLICY_ACTIVATED, value);
+    }
+
+    /**
+     * (protect) Activated a Dropbox Protect policy
+     *
+     * <p> This instance must be tagged as {@link Tag#PROTECT_POLICY_ACTIVATED}.
+     * </p>
+     *
+     * @return The {@link ProtectPolicyActivatedType} value associated with this
+     *     instance if {@link #isProtectPolicyActivated} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectPolicyActivated} is
+     *     {@code false}.
+     */
+    public ProtectPolicyActivatedType getProtectPolicyActivatedValue() {
+        if (this._tag != Tag.PROTECT_POLICY_ACTIVATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_POLICY_ACTIVATED, but was Tag." + this._tag.name());
+        }
+        return protectPolicyActivatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_POLICY_DEACTIVATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_POLICY_DEACTIVATED}, {@code false} otherwise.
+     */
+    public boolean isProtectPolicyDeactivated() {
+        return this._tag == Tag.PROTECT_POLICY_DEACTIVATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_POLICY_DEACTIVATED}.
+     *
+     * <p> (protect) Deactivated a Dropbox Protect policy </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_POLICY_DEACTIVATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectPolicyDeactivated(ProtectPolicyDeactivatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectPolicyDeactivated(Tag.PROTECT_POLICY_DEACTIVATED, value);
+    }
+
+    /**
+     * (protect) Deactivated a Dropbox Protect policy
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PROTECT_POLICY_DEACTIVATED}. </p>
+     *
+     * @return The {@link ProtectPolicyDeactivatedType} value associated with
+     *     this instance if {@link #isProtectPolicyDeactivated} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectPolicyDeactivated} is
+     *     {@code false}.
+     */
+    public ProtectPolicyDeactivatedType getProtectPolicyDeactivatedValue() {
+        if (this._tag != Tag.PROTECT_POLICY_DEACTIVATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_POLICY_DEACTIVATED, but was Tag." + this._tag.name());
+        }
+        return protectPolicyDeactivatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_POLICY_SCHEDULED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_POLICY_SCHEDULED}, {@code false} otherwise.
+     */
+    public boolean isProtectPolicyScheduled() {
+        return this._tag == Tag.PROTECT_POLICY_SCHEDULED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_POLICY_SCHEDULED}.
+     *
+     * <p> (protect) Scheduled a Dropbox Protect policy </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_POLICY_SCHEDULED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectPolicyScheduled(ProtectPolicyScheduledType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectPolicyScheduled(Tag.PROTECT_POLICY_SCHEDULED, value);
+    }
+
+    /**
+     * (protect) Scheduled a Dropbox Protect policy
+     *
+     * <p> This instance must be tagged as {@link Tag#PROTECT_POLICY_SCHEDULED}.
+     * </p>
+     *
+     * @return The {@link ProtectPolicyScheduledType} value associated with this
+     *     instance if {@link #isProtectPolicyScheduled} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectPolicyScheduled} is
+     *     {@code false}.
+     */
+    public ProtectPolicyScheduledType getProtectPolicyScheduledValue() {
+        if (this._tag != Tag.PROTECT_POLICY_SCHEDULED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_POLICY_SCHEDULED, but was Tag." + this._tag.name());
+        }
+        return protectPolicyScheduledValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_POLICY_UPDATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_POLICY_UPDATED}, {@code false} otherwise.
+     */
+    public boolean isProtectPolicyUpdated() {
+        return this._tag == Tag.PROTECT_POLICY_UPDATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_POLICY_UPDATED}.
+     *
+     * <p> (protect) Updated a Dropbox Protect policy </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_POLICY_UPDATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectPolicyUpdated(ProtectPolicyUpdatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectPolicyUpdated(Tag.PROTECT_POLICY_UPDATED, value);
+    }
+
+    /**
+     * (protect) Updated a Dropbox Protect policy
+     *
+     * <p> This instance must be tagged as {@link Tag#PROTECT_POLICY_UPDATED}.
+     * </p>
+     *
+     * @return The {@link ProtectPolicyUpdatedType} value associated with this
+     *     instance if {@link #isProtectPolicyUpdated} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectPolicyUpdated} is
+     *     {@code false}.
+     */
+    public ProtectPolicyUpdatedType getProtectPolicyUpdatedValue() {
+        if (this._tag != Tag.PROTECT_POLICY_UPDATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_POLICY_UPDATED, but was Tag." + this._tag.name());
+        }
+        return protectPolicyUpdatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PROTECT_REPORT_VIEW}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PROTECT_REPORT_VIEW}, {@code false} otherwise.
+     */
+    public boolean isProtectReportView() {
+        return this._tag == Tag.PROTECT_REPORT_VIEW;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PROTECT_REPORT_VIEW}.
+     *
+     * <p> (protect) Viewed a Dropbox Protect report </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PROTECT_REPORT_VIEW}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType protectReportView(ProtectReportViewType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndProtectReportView(Tag.PROTECT_REPORT_VIEW, value);
+    }
+
+    /**
+     * (protect) Viewed a Dropbox Protect report
+     *
+     * <p> This instance must be tagged as {@link Tag#PROTECT_REPORT_VIEW}. </p>
+     *
+     * @return The {@link ProtectReportViewType} value associated with this
+     *     instance if {@link #isProtectReportView} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isProtectReportView} is {@code
+     *     false}.
+     */
+    public ProtectReportViewType getProtectReportViewValue() {
+        if (this._tag != Tag.PROTECT_REPORT_VIEW) {
+            throw new IllegalStateException("Invalid tag: required Tag.PROTECT_REPORT_VIEW, but was Tag." + this._tag.name());
+        }
+        return protectReportViewValue;
     }
 
     /**
@@ -29347,6 +31178,364 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.FILE_TRANSFERS_TRANSFER_VIEW, but was Tag." + this._tag.name());
         }
         return fileTransfersTransferViewValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_ADD}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_PROJECT_TEAM_ADD}, {@code false} otherwise.
+     */
+    public boolean isMediaHubProjectTeamAdd() {
+        return this._tag == Tag.MEDIA_HUB_PROJECT_TEAM_ADD;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_ADD}.
+     *
+     * <p> (sharing) Added member to Replay project </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_PROJECT_TEAM_ADD}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubProjectTeamAdd(MediaHubProjectTeamAddType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubProjectTeamAdd(Tag.MEDIA_HUB_PROJECT_TEAM_ADD, value);
+    }
+
+    /**
+     * (sharing) Added member to Replay project
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_ADD}. </p>
+     *
+     * @return The {@link MediaHubProjectTeamAddType} value associated with this
+     *     instance if {@link #isMediaHubProjectTeamAdd} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link #isMediaHubProjectTeamAdd} is
+     *     {@code false}.
+     */
+    public MediaHubProjectTeamAddType getMediaHubProjectTeamAddValue() {
+        if (this._tag != Tag.MEDIA_HUB_PROJECT_TEAM_ADD) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_PROJECT_TEAM_ADD, but was Tag." + this._tag.name());
+        }
+        return mediaHubProjectTeamAddValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_DELETE}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_PROJECT_TEAM_DELETE}, {@code false} otherwise.
+     */
+    public boolean isMediaHubProjectTeamDelete() {
+        return this._tag == Tag.MEDIA_HUB_PROJECT_TEAM_DELETE;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_DELETE}.
+     *
+     * <p> (sharing) Removed member from Replay project </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_PROJECT_TEAM_DELETE}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubProjectTeamDelete(MediaHubProjectTeamDeleteType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubProjectTeamDelete(Tag.MEDIA_HUB_PROJECT_TEAM_DELETE, value);
+    }
+
+    /**
+     * (sharing) Removed member from Replay project
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_DELETE}. </p>
+     *
+     * @return The {@link MediaHubProjectTeamDeleteType} value associated with
+     *     this instance if {@link #isMediaHubProjectTeamDelete} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isMediaHubProjectTeamDelete} is
+     *     {@code false}.
+     */
+    public MediaHubProjectTeamDeleteType getMediaHubProjectTeamDeleteValue() {
+        if (this._tag != Tag.MEDIA_HUB_PROJECT_TEAM_DELETE) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_PROJECT_TEAM_DELETE, but was Tag." + this._tag.name());
+        }
+        return mediaHubProjectTeamDeleteValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubProjectTeamRoleChanged() {
+        return this._tag == Tag.MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED}.
+     *
+     * <p> (sharing) Changed member role in Replay project </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubProjectTeamRoleChanged(MediaHubProjectTeamRoleChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubProjectTeamRoleChanged(Tag.MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED, value);
+    }
+
+    /**
+     * (sharing) Changed member role in Replay project
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED}. </p>
+     *
+     * @return The {@link MediaHubProjectTeamRoleChangedType} value associated
+     *     with this instance if {@link #isMediaHubProjectTeamRoleChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMediaHubProjectTeamRoleChanged} is {@code false}.
+     */
+    public MediaHubProjectTeamRoleChangedType getMediaHubProjectTeamRoleChangedValue() {
+        if (this._tag != Tag.MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED, but was Tag." + this._tag.name());
+        }
+        return mediaHubProjectTeamRoleChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubSharedLinkAudienceChanged() {
+        return this._tag == Tag.MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED}.
+     *
+     * <p> (sharing) Changed Replay shared link audience </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubSharedLinkAudienceChanged(MediaHubSharedLinkAudienceChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubSharedLinkAudienceChanged(Tag.MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED, value);
+    }
+
+    /**
+     * (sharing) Changed Replay shared link audience
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED}. </p>
+     *
+     * @return The {@link MediaHubSharedLinkAudienceChangedType} value
+     *     associated with this instance if {@link
+     *     #isMediaHubSharedLinkAudienceChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMediaHubSharedLinkAudienceChanged} is {@code false}.
+     */
+    public MediaHubSharedLinkAudienceChangedType getMediaHubSharedLinkAudienceChangedValue() {
+        if (this._tag != Tag.MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED, but was Tag." + this._tag.name());
+        }
+        return mediaHubSharedLinkAudienceChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_CREATED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_CREATED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubSharedLinkCreated() {
+        return this._tag == Tag.MEDIA_HUB_SHARED_LINK_CREATED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_CREATED}.
+     *
+     * <p> (sharing) Created Replay shared link </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_CREATED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubSharedLinkCreated(MediaHubSharedLinkCreatedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubSharedLinkCreated(Tag.MEDIA_HUB_SHARED_LINK_CREATED, value);
+    }
+
+    /**
+     * (sharing) Created Replay shared link
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_CREATED}. </p>
+     *
+     * @return The {@link MediaHubSharedLinkCreatedType} value associated with
+     *     this instance if {@link #isMediaHubSharedLinkCreated} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isMediaHubSharedLinkCreated} is
+     *     {@code false}.
+     */
+    public MediaHubSharedLinkCreatedType getMediaHubSharedLinkCreatedValue() {
+        if (this._tag != Tag.MEDIA_HUB_SHARED_LINK_CREATED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_SHARED_LINK_CREATED, but was Tag." + this._tag.name());
+        }
+        return mediaHubSharedLinkCreatedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED}, {@code false}
+     * otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED}, {@code false}
+     *     otherwise.
+     */
+    public boolean isMediaHubSharedLinkDownloadSettingChanged() {
+        return this._tag == Tag.MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED}.
+     *
+     * <p> (sharing) Changed Replay shared link download setting </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubSharedLinkDownloadSettingChanged(MediaHubSharedLinkDownloadSettingChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubSharedLinkDownloadSettingChanged(Tag.MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED, value);
+    }
+
+    /**
+     * (sharing) Changed Replay shared link download setting
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED}. </p>
+     *
+     * @return The {@link MediaHubSharedLinkDownloadSettingChangedType} value
+     *     associated with this instance if {@link
+     *     #isMediaHubSharedLinkDownloadSettingChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMediaHubSharedLinkDownloadSettingChanged} is {@code false}.
+     */
+    public MediaHubSharedLinkDownloadSettingChangedType getMediaHubSharedLinkDownloadSettingChangedValue() {
+        if (this._tag != Tag.MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED, but was Tag." + this._tag.name());
+        }
+        return mediaHubSharedLinkDownloadSettingChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_REVOKED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_REVOKED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubSharedLinkRevoked() {
+        return this._tag == Tag.MEDIA_HUB_SHARED_LINK_REVOKED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_REVOKED}.
+     *
+     * <p> (sharing) Revoked Replay shared link </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_SHARED_LINK_REVOKED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubSharedLinkRevoked(MediaHubSharedLinkRevokedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubSharedLinkRevoked(Tag.MEDIA_HUB_SHARED_LINK_REVOKED, value);
+    }
+
+    /**
+     * (sharing) Revoked Replay shared link
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_SHARED_LINK_REVOKED}. </p>
+     *
+     * @return The {@link MediaHubSharedLinkRevokedType} value associated with
+     *     this instance if {@link #isMediaHubSharedLinkRevoked} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link #isMediaHubSharedLinkRevoked} is
+     *     {@code false}.
+     */
+    public MediaHubSharedLinkRevokedType getMediaHubSharedLinkRevokedValue() {
+        if (this._tag != Tag.MEDIA_HUB_SHARED_LINK_REVOKED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_SHARED_LINK_REVOKED, but was Tag." + this._tag.name());
+        }
+        return mediaHubSharedLinkRevokedValue;
     }
 
     /**
@@ -32569,6 +34758,57 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.SHARED_FOLDER_NEST, but was Tag." + this._tag.name());
         }
         return sharedFolderNestValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP}, {@code false} otherwise.
+     */
+    public boolean isSharedFolderTransferMembership() {
+        return this._tag == Tag.SHARED_FOLDER_TRANSFER_MEMBERSHIP;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP}.
+     *
+     * <p> (sharing) Transferred shared folder membership to another member </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType sharedFolderTransferMembership(SharedFolderTransferMembershipType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndSharedFolderTransferMembership(Tag.SHARED_FOLDER_TRANSFER_MEMBERSHIP, value);
+    }
+
+    /**
+     * (sharing) Transferred shared folder membership to another member
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#SHARED_FOLDER_TRANSFER_MEMBERSHIP}. </p>
+     *
+     * @return The {@link SharedFolderTransferMembershipType} value associated
+     *     with this instance if {@link #isSharedFolderTransferMembership} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isSharedFolderTransferMembership} is {@code false}.
+     */
+    public SharedFolderTransferMembershipType getSharedFolderTransferMembershipValue() {
+        if (this._tag != Tag.SHARED_FOLDER_TRANSFER_MEMBERSHIP) {
+            throw new IllegalStateException("Invalid tag: required Tag.SHARED_FOLDER_TRANSFER_MEMBERSHIP, but was Tag." + this._tag.name());
+        }
+        return sharedFolderTransferMembershipValue;
     }
 
     /**
@@ -37362,6 +39602,59 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED}, {@code false}
+     *     otherwise.
+     */
+    public boolean isDefaultTeamFolderSyncPolicyChanged() {
+        return this._tag == Tag.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed the default sync setting for new team folders
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType defaultTeamFolderSyncPolicyChanged(DefaultTeamFolderSyncPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndDefaultTeamFolderSyncPolicyChanged(Tag.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed the default sync setting for new team folders
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link DefaultTeamFolderSyncPolicyChangedType} value
+     *     associated with this instance if {@link
+     *     #isDefaultTeamFolderSyncPolicyChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isDefaultTeamFolderSyncPolicyChanged} is {@code false}.
+     */
+    public DefaultTeamFolderSyncPolicyChangedType getDefaultTeamFolderSyncPolicyChangedValue() {
+        if (this._tag != Tag.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return defaultTeamFolderSyncPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#DEVICE_APPROVALS_ADD_EXCEPTION}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -38026,6 +40319,58 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.EMM_REMOVE_EXCEPTION, but was Tag." + this._tag.name());
         }
         return emmRemoveExceptionValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isEnterpriseManagedAuthPolicyChanged() {
+        return this._tag == Tag.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed enterprise managed authorization policy for
+     * team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType enterpriseManagedAuthPolicyChanged(EnterpriseManagedAuthPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndEnterpriseManagedAuthPolicyChanged(Tag.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed enterprise managed authorization policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link EnterpriseManagedAuthPolicyChangedType} value
+     *     associated with this instance if {@link
+     *     #isEnterpriseManagedAuthPolicyChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isEnterpriseManagedAuthPolicyChanged} is {@code false}.
+     */
+    public EnterpriseManagedAuthPolicyChangedType getEnterpriseManagedAuthPolicyChangedValue() {
+        if (this._tag != Tag.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return enterpriseManagedAuthPolicyChangedValue;
     }
 
     /**
@@ -38796,6 +41141,161 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubAddingPeoplePolicyChanged() {
+        return this._tag == Tag.MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed the policy for adding people to Replay
+     * content </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubAddingPeoplePolicyChanged(MediaHubAddingPeoplePolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubAddingPeoplePolicyChanged(Tag.MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed the policy for adding people to Replay content
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link MediaHubAddingPeoplePolicyChangedType} value
+     *     associated with this instance if {@link
+     *     #isMediaHubAddingPeoplePolicyChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMediaHubAddingPeoplePolicyChanged} is {@code false}.
+     */
+    public MediaHubAddingPeoplePolicyChangedType getMediaHubAddingPeoplePolicyChangedValue() {
+        if (this._tag != Tag.MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return mediaHubAddingPeoplePolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_DOWNLOAD_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_DOWNLOAD_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubDownloadPolicyChanged() {
+        return this._tag == Tag.MEDIA_HUB_DOWNLOAD_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_DOWNLOAD_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed the policy for downloading Replay content
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_DOWNLOAD_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubDownloadPolicyChanged(MediaHubDownloadPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubDownloadPolicyChanged(Tag.MEDIA_HUB_DOWNLOAD_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed the policy for downloading Replay content
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_DOWNLOAD_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link MediaHubDownloadPolicyChangedType} value associated
+     *     with this instance if {@link #isMediaHubDownloadPolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMediaHubDownloadPolicyChanged} is {@code false}.
+     */
+    public MediaHubDownloadPolicyChangedType getMediaHubDownloadPolicyChangedValue() {
+        if (this._tag != Tag.MEDIA_HUB_DOWNLOAD_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_DOWNLOAD_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return mediaHubDownloadPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#MEDIA_HUB_LINK_SHARING_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MEDIA_HUB_LINK_SHARING_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isMediaHubLinkSharingPolicyChanged() {
+        return this._tag == Tag.MEDIA_HUB_LINK_SHARING_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MEDIA_HUB_LINK_SHARING_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed the policy for sharing Replay content </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MEDIA_HUB_LINK_SHARING_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType mediaHubLinkSharingPolicyChanged(MediaHubLinkSharingPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMediaHubLinkSharingPolicyChanged(Tag.MEDIA_HUB_LINK_SHARING_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed the policy for sharing Replay content
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MEDIA_HUB_LINK_SHARING_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link MediaHubLinkSharingPolicyChangedType} value associated
+     *     with this instance if {@link #isMediaHubLinkSharingPolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMediaHubLinkSharingPolicyChanged} is {@code false}.
+     */
+    public MediaHubLinkSharingPolicyChangedType getMediaHubLinkSharingPolicyChangedValue() {
+        if (this._tag != Tag.MEDIA_HUB_LINK_SHARING_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MEDIA_HUB_LINK_SHARING_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return mediaHubLinkSharingPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#MEMBER_REQUESTS_CHANGE_POLICY}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -39262,6 +41762,57 @@ public final class EventType {
 
     /**
      * Returns {@code true} if this instance has the tag {@link
+     * Tag#MULTI_TEAM_IDENTITY_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#MULTI_TEAM_IDENTITY_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isMultiTeamIdentityPolicyChanged() {
+        return this._tag == Tag.MULTI_TEAM_IDENTITY_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#MULTI_TEAM_IDENTITY_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Changed multi-team identity policy for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#MULTI_TEAM_IDENTITY_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType multiTeamIdentityPolicyChanged(MultiTeamIdentityPolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndMultiTeamIdentityPolicyChanged(Tag.MULTI_TEAM_IDENTITY_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed multi-team identity policy for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#MULTI_TEAM_IDENTITY_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link MultiTeamIdentityPolicyChangedType} value associated
+     *     with this instance if {@link #isMultiTeamIdentityPolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isMultiTeamIdentityPolicyChanged} is {@code false}.
+     */
+    public MultiTeamIdentityPolicyChangedType getMultiTeamIdentityPolicyChangedValue() {
+        if (this._tag != Tag.MULTI_TEAM_IDENTITY_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.MULTI_TEAM_IDENTITY_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return multiTeamIdentityPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
      * Tag#NETWORK_CONTROL_CHANGE_POLICY}, {@code false} otherwise.
      *
      * @return {@code true} if this instance is tagged as {@link
@@ -39723,6 +42274,57 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.PAPER_ENABLED_USERS_GROUP_REMOVAL, but was Tag." + this._tag.name());
         }
         return paperEnabledUsersGroupRemovalValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED}, {@code false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED}, {@code false} otherwise.
+     */
+    public boolean isPaperOfflineModePolicyChanged() {
+        return this._tag == Tag.PAPER_OFFLINE_MODE_POLICY_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED}.
+     *
+     * <p> (team_policies) Enabled/disabled Paper offline mode for team </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType paperOfflineModePolicyChanged(PaperOfflineModePolicyChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndPaperOfflineModePolicyChanged(Tag.PAPER_OFFLINE_MODE_POLICY_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Enabled/disabled Paper offline mode for team
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#PAPER_OFFLINE_MODE_POLICY_CHANGED}. </p>
+     *
+     * @return The {@link PaperOfflineModePolicyChangedType} value associated
+     *     with this instance if {@link #isPaperOfflineModePolicyChanged} is
+     *     {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isPaperOfflineModePolicyChanged} is {@code false}.
+     */
+    public PaperOfflineModePolicyChangedType getPaperOfflineModePolicyChangedValue() {
+        if (this._tag != Tag.PAPER_OFFLINE_MODE_POLICY_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.PAPER_OFFLINE_MODE_POLICY_CHANGED, but was Tag." + this._tag.name());
+        }
+        return paperOfflineModePolicyChangedValue;
     }
 
     /**
@@ -41331,6 +43933,118 @@ public final class EventType {
             throw new IllegalStateException("Invalid tag: required Tag.TEAM_EXTENSIONS_POLICY_CHANGED, but was Tag." + this._tag.name());
         }
         return teamExtensionsPolicyChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED}, {@code
+     * false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED}, {@code
+     *     false} otherwise.
+     */
+    public boolean isTeamExternalSharingControlsActivationStateChanged() {
+        return this._tag == Tag.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED}.
+     *
+     * <p> (team_policies) Changed external sharing controls activation state
+     * </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamExternalSharingControlsActivationStateChanged(TeamExternalSharingControlsActivationStateChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamExternalSharingControlsActivationStateChanged(Tag.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed external sharing controls activation state
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED}. </p>
+     *
+     * @return The {@link TeamExternalSharingControlsActivationStateChangedType}
+     *     value associated with this instance if {@link
+     *     #isTeamExternalSharingControlsActivationStateChanged} is {@code
+     *     true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamExternalSharingControlsActivationStateChanged} is {@code
+     *     false}.
+     */
+    public TeamExternalSharingControlsActivationStateChangedType getTeamExternalSharingControlsActivationStateChangedValue() {
+        if (this._tag != Tag.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED, but was Tag." + this._tag.name());
+        }
+        return teamExternalSharingControlsActivationStateChangedValue;
+    }
+
+    /**
+     * Returns {@code true} if this instance has the tag {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED}, {@code
+     * false} otherwise.
+     *
+     * @return {@code true} if this instance is tagged as {@link
+     *     Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED}, {@code
+     *     false} otherwise.
+     */
+    public boolean isTeamExternalSharingControlsRecipientListsChanged() {
+        return this._tag == Tag.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED;
+    }
+
+    /**
+     * Returns an instance of {@code EventType} that has its tag set to {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED}.
+     *
+     * <p> (team_policies) Changed approved or blocked entries for external
+     * sharing controls </p>
+     *
+     * @param value  value to assign to this instance.
+     *
+     * @return Instance of {@code EventType} with its tag set to {@link
+     *     Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED}.
+     *
+     * @throws IllegalArgumentException  if {@code value} is {@code null}.
+     */
+    public static EventType teamExternalSharingControlsRecipientListsChanged(TeamExternalSharingControlsRecipientListsChangedType value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Value is null");
+        }
+        return new EventType().withTagAndTeamExternalSharingControlsRecipientListsChanged(Tag.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED, value);
+    }
+
+    /**
+     * (team_policies) Changed approved or blocked entries for external sharing
+     * controls
+     *
+     * <p> This instance must be tagged as {@link
+     * Tag#TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED}. </p>
+     *
+     * @return The {@link TeamExternalSharingControlsRecipientListsChangedType}
+     *     value associated with this instance if {@link
+     *     #isTeamExternalSharingControlsRecipientListsChanged} is {@code true}.
+     *
+     * @throws IllegalStateException  If {@link
+     *     #isTeamExternalSharingControlsRecipientListsChanged} is {@code
+     *     false}.
+     */
+    public TeamExternalSharingControlsRecipientListsChangedType getTeamExternalSharingControlsRecipientListsChangedValue() {
+        if (this._tag != Tag.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED) {
+            throw new IllegalStateException("Invalid tag: required Tag.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED, but was Tag." + this._tag.name());
+        }
+        return teamExternalSharingControlsRecipientListsChangedValue;
     }
 
     /**
@@ -44541,6 +47255,7 @@ public final class EventType {
             this.folderOverviewDescriptionChangedValue,
             this.folderOverviewItemPinnedValue,
             this.folderOverviewItemUnpinnedValue,
+            this.mediaHubFileDownloadedValue,
             this.objectLabelAddedValue,
             this.objectLabelRemovedValue,
             this.objectLabelUpdatedValueValue,
@@ -44603,6 +47318,7 @@ public final class EventType {
             this.memberChangeStatusValue,
             this.memberDeleteManualContactsValue,
             this.memberDeleteProfilePhotoValue,
+            this.memberFolderContentsAccessedValue,
             this.memberPermanentlyDeleteAccountContentsValue,
             this.memberRemoveExternalIdValue,
             this.memberSetProfilePhotoValue,
@@ -44670,7 +47386,25 @@ public final class EventType {
             this.passwordChangeValue,
             this.passwordResetValue,
             this.passwordResetAllValue,
+            this.protectActionAddCollaboratorValue,
+            this.protectActionAddLinkValue,
+            this.protectActionDeleteValue,
+            this.protectActionExportValue,
+            this.protectActionRemoveCollaboratorValue,
+            this.protectActionRemoveDomainsValue,
+            this.protectActionRemoveLinkValue,
+            this.protectActionStopSharingValue,
+            this.protectCustomDataTypeCreatedValue,
+            this.protectCustomDataTypeDeletedValue,
+            this.protectCustomDataTypeDisabledValue,
+            this.protectCustomDataTypeEnabledValue,
+            this.protectCustomDataTypeModifiedValue,
             this.protectInternalDomainsChangedValue,
+            this.protectPolicyActivatedValue,
+            this.protectPolicyDeactivatedValue,
+            this.protectPolicyScheduledValue,
+            this.protectPolicyUpdatedValue,
+            this.protectReportViewValue,
             this.classificationCreateReportValue,
             this.classificationCreateReportFailValue,
             this.emmCreateExceptionsReportValue,
@@ -44707,6 +47441,13 @@ public final class EventType {
             this.fileTransfersTransferDownloadValue,
             this.fileTransfersTransferSendValue,
             this.fileTransfersTransferViewValue,
+            this.mediaHubProjectTeamAddValue,
+            this.mediaHubProjectTeamDeleteValue,
+            this.mediaHubProjectTeamRoleChangedValue,
+            this.mediaHubSharedLinkAudienceChangedValue,
+            this.mediaHubSharedLinkCreatedValue,
+            this.mediaHubSharedLinkDownloadSettingChangedValue,
+            this.mediaHubSharedLinkRevokedValue,
             this.noteAclInviteOnlyValue,
             this.noteAclLinkValue,
             this.noteAclTeamLinkValue,
@@ -44770,6 +47511,7 @@ public final class EventType {
             this.sharedFolderDeclineInvitationValue,
             this.sharedFolderMountValue,
             this.sharedFolderNestValue,
+            this.sharedFolderTransferMembershipValue,
             this.sharedFolderTransferOwnershipValue,
             this.sharedFolderUnmountValue,
             this.sharedLinkAddExpiryValue,
@@ -44865,6 +47607,7 @@ public final class EventType {
             this.dashExternalSharingPolicyChangedValue,
             this.dataPlacementRestrictionChangePolicyValue,
             this.dataPlacementRestrictionSatisfyPolicyValue,
+            this.defaultTeamFolderSyncPolicyChangedValue,
             this.deviceApprovalsAddExceptionValue,
             this.deviceApprovalsChangeDesktopPolicyValue,
             this.deviceApprovalsChangeMobilePolicyValue,
@@ -44878,6 +47621,7 @@ public final class EventType {
             this.emmAddExceptionValue,
             this.emmChangePolicyValue,
             this.emmRemoveExceptionValue,
+            this.enterpriseManagedAuthPolicyChangedValue,
             this.extendedVersionHistoryChangePolicyValue,
             this.externalDriveBackupPolicyChangedValue,
             this.fileCommentsChangePolicyValue,
@@ -44893,6 +47637,9 @@ public final class EventType {
             this.groupUserManagementChangePolicyValue,
             this.integrationPolicyChangedValue,
             this.inviteAcceptanceEmailPolicyChangedValue,
+            this.mediaHubAddingPeoplePolicyChangedValue,
+            this.mediaHubDownloadPolicyChangedValue,
+            this.mediaHubLinkSharingPolicyChangedValue,
             this.memberRequestsChangePolicyValue,
             this.memberSendInvitePolicyChangedValue,
             this.memberSpaceLimitsAddExceptionValue,
@@ -44902,6 +47649,7 @@ public final class EventType {
             this.memberSuggestionsChangePolicyValue,
             this.microsoftLoginChangePolicyValue,
             this.microsoftOfficeAddinChangePolicyValue,
+            this.multiTeamIdentityPolicyChangedValue,
             this.networkControlChangePolicyValue,
             this.paperChangeDeploymentPolicyValue,
             this.paperChangeMemberLinkPolicyValue,
@@ -44911,6 +47659,7 @@ public final class EventType {
             this.paperDesktopPolicyChangedValue,
             this.paperEnabledUsersGroupAdditionValue,
             this.paperEnabledUsersGroupRemovalValue,
+            this.paperOfflineModePolicyChangedValue,
             this.passkeyLoginPolicyChangedValue,
             this.passwordStrengthRequirementsChangePolicyValue,
             this.permanentDeleteChangePolicyValue,
@@ -44942,6 +47691,8 @@ public final class EventType {
             this.stackCrossTeamAccessPolicyChangedValue,
             this.teamBrandingPolicyChangedValue,
             this.teamExtensionsPolicyChangedValue,
+            this.teamExternalSharingControlsActivationStateChangedValue,
+            this.teamExternalSharingControlsRecipientListsChangedValue,
             this.teamMemberStorageRequestPolicyChangedValue,
             this.teamSelectiveSyncPolicyChangedValue,
             this.teamSharingWhitelistSubjectsChangedValue,
@@ -45311,6 +48062,8 @@ public final class EventType {
                     return (this.folderOverviewItemPinnedValue == other.folderOverviewItemPinnedValue) || (this.folderOverviewItemPinnedValue.equals(other.folderOverviewItemPinnedValue));
                 case FOLDER_OVERVIEW_ITEM_UNPINNED:
                     return (this.folderOverviewItemUnpinnedValue == other.folderOverviewItemUnpinnedValue) || (this.folderOverviewItemUnpinnedValue.equals(other.folderOverviewItemUnpinnedValue));
+                case MEDIA_HUB_FILE_DOWNLOADED:
+                    return (this.mediaHubFileDownloadedValue == other.mediaHubFileDownloadedValue) || (this.mediaHubFileDownloadedValue.equals(other.mediaHubFileDownloadedValue));
                 case OBJECT_LABEL_ADDED:
                     return (this.objectLabelAddedValue == other.objectLabelAddedValue) || (this.objectLabelAddedValue.equals(other.objectLabelAddedValue));
                 case OBJECT_LABEL_REMOVED:
@@ -45435,6 +48188,8 @@ public final class EventType {
                     return (this.memberDeleteManualContactsValue == other.memberDeleteManualContactsValue) || (this.memberDeleteManualContactsValue.equals(other.memberDeleteManualContactsValue));
                 case MEMBER_DELETE_PROFILE_PHOTO:
                     return (this.memberDeleteProfilePhotoValue == other.memberDeleteProfilePhotoValue) || (this.memberDeleteProfilePhotoValue.equals(other.memberDeleteProfilePhotoValue));
+                case MEMBER_FOLDER_CONTENTS_ACCESSED:
+                    return (this.memberFolderContentsAccessedValue == other.memberFolderContentsAccessedValue) || (this.memberFolderContentsAccessedValue.equals(other.memberFolderContentsAccessedValue));
                 case MEMBER_PERMANENTLY_DELETE_ACCOUNT_CONTENTS:
                     return (this.memberPermanentlyDeleteAccountContentsValue == other.memberPermanentlyDeleteAccountContentsValue) || (this.memberPermanentlyDeleteAccountContentsValue.equals(other.memberPermanentlyDeleteAccountContentsValue));
                 case MEMBER_REMOVE_EXTERNAL_ID:
@@ -45569,8 +48324,44 @@ public final class EventType {
                     return (this.passwordResetValue == other.passwordResetValue) || (this.passwordResetValue.equals(other.passwordResetValue));
                 case PASSWORD_RESET_ALL:
                     return (this.passwordResetAllValue == other.passwordResetAllValue) || (this.passwordResetAllValue.equals(other.passwordResetAllValue));
+                case PROTECT_ACTION_ADD_COLLABORATOR:
+                    return (this.protectActionAddCollaboratorValue == other.protectActionAddCollaboratorValue) || (this.protectActionAddCollaboratorValue.equals(other.protectActionAddCollaboratorValue));
+                case PROTECT_ACTION_ADD_LINK:
+                    return (this.protectActionAddLinkValue == other.protectActionAddLinkValue) || (this.protectActionAddLinkValue.equals(other.protectActionAddLinkValue));
+                case PROTECT_ACTION_DELETE:
+                    return (this.protectActionDeleteValue == other.protectActionDeleteValue) || (this.protectActionDeleteValue.equals(other.protectActionDeleteValue));
+                case PROTECT_ACTION_EXPORT:
+                    return (this.protectActionExportValue == other.protectActionExportValue) || (this.protectActionExportValue.equals(other.protectActionExportValue));
+                case PROTECT_ACTION_REMOVE_COLLABORATOR:
+                    return (this.protectActionRemoveCollaboratorValue == other.protectActionRemoveCollaboratorValue) || (this.protectActionRemoveCollaboratorValue.equals(other.protectActionRemoveCollaboratorValue));
+                case PROTECT_ACTION_REMOVE_DOMAINS:
+                    return (this.protectActionRemoveDomainsValue == other.protectActionRemoveDomainsValue) || (this.protectActionRemoveDomainsValue.equals(other.protectActionRemoveDomainsValue));
+                case PROTECT_ACTION_REMOVE_LINK:
+                    return (this.protectActionRemoveLinkValue == other.protectActionRemoveLinkValue) || (this.protectActionRemoveLinkValue.equals(other.protectActionRemoveLinkValue));
+                case PROTECT_ACTION_STOP_SHARING:
+                    return (this.protectActionStopSharingValue == other.protectActionStopSharingValue) || (this.protectActionStopSharingValue.equals(other.protectActionStopSharingValue));
+                case PROTECT_CUSTOM_DATA_TYPE_CREATED:
+                    return (this.protectCustomDataTypeCreatedValue == other.protectCustomDataTypeCreatedValue) || (this.protectCustomDataTypeCreatedValue.equals(other.protectCustomDataTypeCreatedValue));
+                case PROTECT_CUSTOM_DATA_TYPE_DELETED:
+                    return (this.protectCustomDataTypeDeletedValue == other.protectCustomDataTypeDeletedValue) || (this.protectCustomDataTypeDeletedValue.equals(other.protectCustomDataTypeDeletedValue));
+                case PROTECT_CUSTOM_DATA_TYPE_DISABLED:
+                    return (this.protectCustomDataTypeDisabledValue == other.protectCustomDataTypeDisabledValue) || (this.protectCustomDataTypeDisabledValue.equals(other.protectCustomDataTypeDisabledValue));
+                case PROTECT_CUSTOM_DATA_TYPE_ENABLED:
+                    return (this.protectCustomDataTypeEnabledValue == other.protectCustomDataTypeEnabledValue) || (this.protectCustomDataTypeEnabledValue.equals(other.protectCustomDataTypeEnabledValue));
+                case PROTECT_CUSTOM_DATA_TYPE_MODIFIED:
+                    return (this.protectCustomDataTypeModifiedValue == other.protectCustomDataTypeModifiedValue) || (this.protectCustomDataTypeModifiedValue.equals(other.protectCustomDataTypeModifiedValue));
                 case PROTECT_INTERNAL_DOMAINS_CHANGED:
                     return (this.protectInternalDomainsChangedValue == other.protectInternalDomainsChangedValue) || (this.protectInternalDomainsChangedValue.equals(other.protectInternalDomainsChangedValue));
+                case PROTECT_POLICY_ACTIVATED:
+                    return (this.protectPolicyActivatedValue == other.protectPolicyActivatedValue) || (this.protectPolicyActivatedValue.equals(other.protectPolicyActivatedValue));
+                case PROTECT_POLICY_DEACTIVATED:
+                    return (this.protectPolicyDeactivatedValue == other.protectPolicyDeactivatedValue) || (this.protectPolicyDeactivatedValue.equals(other.protectPolicyDeactivatedValue));
+                case PROTECT_POLICY_SCHEDULED:
+                    return (this.protectPolicyScheduledValue == other.protectPolicyScheduledValue) || (this.protectPolicyScheduledValue.equals(other.protectPolicyScheduledValue));
+                case PROTECT_POLICY_UPDATED:
+                    return (this.protectPolicyUpdatedValue == other.protectPolicyUpdatedValue) || (this.protectPolicyUpdatedValue.equals(other.protectPolicyUpdatedValue));
+                case PROTECT_REPORT_VIEW:
+                    return (this.protectReportViewValue == other.protectReportViewValue) || (this.protectReportViewValue.equals(other.protectReportViewValue));
                 case CLASSIFICATION_CREATE_REPORT:
                     return (this.classificationCreateReportValue == other.classificationCreateReportValue) || (this.classificationCreateReportValue.equals(other.classificationCreateReportValue));
                 case CLASSIFICATION_CREATE_REPORT_FAIL:
@@ -45643,6 +48434,20 @@ public final class EventType {
                     return (this.fileTransfersTransferSendValue == other.fileTransfersTransferSendValue) || (this.fileTransfersTransferSendValue.equals(other.fileTransfersTransferSendValue));
                 case FILE_TRANSFERS_TRANSFER_VIEW:
                     return (this.fileTransfersTransferViewValue == other.fileTransfersTransferViewValue) || (this.fileTransfersTransferViewValue.equals(other.fileTransfersTransferViewValue));
+                case MEDIA_HUB_PROJECT_TEAM_ADD:
+                    return (this.mediaHubProjectTeamAddValue == other.mediaHubProjectTeamAddValue) || (this.mediaHubProjectTeamAddValue.equals(other.mediaHubProjectTeamAddValue));
+                case MEDIA_HUB_PROJECT_TEAM_DELETE:
+                    return (this.mediaHubProjectTeamDeleteValue == other.mediaHubProjectTeamDeleteValue) || (this.mediaHubProjectTeamDeleteValue.equals(other.mediaHubProjectTeamDeleteValue));
+                case MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED:
+                    return (this.mediaHubProjectTeamRoleChangedValue == other.mediaHubProjectTeamRoleChangedValue) || (this.mediaHubProjectTeamRoleChangedValue.equals(other.mediaHubProjectTeamRoleChangedValue));
+                case MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED:
+                    return (this.mediaHubSharedLinkAudienceChangedValue == other.mediaHubSharedLinkAudienceChangedValue) || (this.mediaHubSharedLinkAudienceChangedValue.equals(other.mediaHubSharedLinkAudienceChangedValue));
+                case MEDIA_HUB_SHARED_LINK_CREATED:
+                    return (this.mediaHubSharedLinkCreatedValue == other.mediaHubSharedLinkCreatedValue) || (this.mediaHubSharedLinkCreatedValue.equals(other.mediaHubSharedLinkCreatedValue));
+                case MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED:
+                    return (this.mediaHubSharedLinkDownloadSettingChangedValue == other.mediaHubSharedLinkDownloadSettingChangedValue) || (this.mediaHubSharedLinkDownloadSettingChangedValue.equals(other.mediaHubSharedLinkDownloadSettingChangedValue));
+                case MEDIA_HUB_SHARED_LINK_REVOKED:
+                    return (this.mediaHubSharedLinkRevokedValue == other.mediaHubSharedLinkRevokedValue) || (this.mediaHubSharedLinkRevokedValue.equals(other.mediaHubSharedLinkRevokedValue));
                 case NOTE_ACL_INVITE_ONLY:
                     return (this.noteAclInviteOnlyValue == other.noteAclInviteOnlyValue) || (this.noteAclInviteOnlyValue.equals(other.noteAclInviteOnlyValue));
                 case NOTE_ACL_LINK:
@@ -45769,6 +48574,8 @@ public final class EventType {
                     return (this.sharedFolderMountValue == other.sharedFolderMountValue) || (this.sharedFolderMountValue.equals(other.sharedFolderMountValue));
                 case SHARED_FOLDER_NEST:
                     return (this.sharedFolderNestValue == other.sharedFolderNestValue) || (this.sharedFolderNestValue.equals(other.sharedFolderNestValue));
+                case SHARED_FOLDER_TRANSFER_MEMBERSHIP:
+                    return (this.sharedFolderTransferMembershipValue == other.sharedFolderTransferMembershipValue) || (this.sharedFolderTransferMembershipValue.equals(other.sharedFolderTransferMembershipValue));
                 case SHARED_FOLDER_TRANSFER_OWNERSHIP:
                     return (this.sharedFolderTransferOwnershipValue == other.sharedFolderTransferOwnershipValue) || (this.sharedFolderTransferOwnershipValue.equals(other.sharedFolderTransferOwnershipValue));
                 case SHARED_FOLDER_UNMOUNT:
@@ -45959,6 +48766,8 @@ public final class EventType {
                     return (this.dataPlacementRestrictionChangePolicyValue == other.dataPlacementRestrictionChangePolicyValue) || (this.dataPlacementRestrictionChangePolicyValue.equals(other.dataPlacementRestrictionChangePolicyValue));
                 case DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY:
                     return (this.dataPlacementRestrictionSatisfyPolicyValue == other.dataPlacementRestrictionSatisfyPolicyValue) || (this.dataPlacementRestrictionSatisfyPolicyValue.equals(other.dataPlacementRestrictionSatisfyPolicyValue));
+                case DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED:
+                    return (this.defaultTeamFolderSyncPolicyChangedValue == other.defaultTeamFolderSyncPolicyChangedValue) || (this.defaultTeamFolderSyncPolicyChangedValue.equals(other.defaultTeamFolderSyncPolicyChangedValue));
                 case DEVICE_APPROVALS_ADD_EXCEPTION:
                     return (this.deviceApprovalsAddExceptionValue == other.deviceApprovalsAddExceptionValue) || (this.deviceApprovalsAddExceptionValue.equals(other.deviceApprovalsAddExceptionValue));
                 case DEVICE_APPROVALS_CHANGE_DESKTOP_POLICY:
@@ -45985,6 +48794,8 @@ public final class EventType {
                     return (this.emmChangePolicyValue == other.emmChangePolicyValue) || (this.emmChangePolicyValue.equals(other.emmChangePolicyValue));
                 case EMM_REMOVE_EXCEPTION:
                     return (this.emmRemoveExceptionValue == other.emmRemoveExceptionValue) || (this.emmRemoveExceptionValue.equals(other.emmRemoveExceptionValue));
+                case ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED:
+                    return (this.enterpriseManagedAuthPolicyChangedValue == other.enterpriseManagedAuthPolicyChangedValue) || (this.enterpriseManagedAuthPolicyChangedValue.equals(other.enterpriseManagedAuthPolicyChangedValue));
                 case EXTENDED_VERSION_HISTORY_CHANGE_POLICY:
                     return (this.extendedVersionHistoryChangePolicyValue == other.extendedVersionHistoryChangePolicyValue) || (this.extendedVersionHistoryChangePolicyValue.equals(other.extendedVersionHistoryChangePolicyValue));
                 case EXTERNAL_DRIVE_BACKUP_POLICY_CHANGED:
@@ -46015,6 +48826,12 @@ public final class EventType {
                     return (this.integrationPolicyChangedValue == other.integrationPolicyChangedValue) || (this.integrationPolicyChangedValue.equals(other.integrationPolicyChangedValue));
                 case INVITE_ACCEPTANCE_EMAIL_POLICY_CHANGED:
                     return (this.inviteAcceptanceEmailPolicyChangedValue == other.inviteAcceptanceEmailPolicyChangedValue) || (this.inviteAcceptanceEmailPolicyChangedValue.equals(other.inviteAcceptanceEmailPolicyChangedValue));
+                case MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED:
+                    return (this.mediaHubAddingPeoplePolicyChangedValue == other.mediaHubAddingPeoplePolicyChangedValue) || (this.mediaHubAddingPeoplePolicyChangedValue.equals(other.mediaHubAddingPeoplePolicyChangedValue));
+                case MEDIA_HUB_DOWNLOAD_POLICY_CHANGED:
+                    return (this.mediaHubDownloadPolicyChangedValue == other.mediaHubDownloadPolicyChangedValue) || (this.mediaHubDownloadPolicyChangedValue.equals(other.mediaHubDownloadPolicyChangedValue));
+                case MEDIA_HUB_LINK_SHARING_POLICY_CHANGED:
+                    return (this.mediaHubLinkSharingPolicyChangedValue == other.mediaHubLinkSharingPolicyChangedValue) || (this.mediaHubLinkSharingPolicyChangedValue.equals(other.mediaHubLinkSharingPolicyChangedValue));
                 case MEMBER_REQUESTS_CHANGE_POLICY:
                     return (this.memberRequestsChangePolicyValue == other.memberRequestsChangePolicyValue) || (this.memberRequestsChangePolicyValue.equals(other.memberRequestsChangePolicyValue));
                 case MEMBER_SEND_INVITE_POLICY_CHANGED:
@@ -46033,6 +48850,8 @@ public final class EventType {
                     return (this.microsoftLoginChangePolicyValue == other.microsoftLoginChangePolicyValue) || (this.microsoftLoginChangePolicyValue.equals(other.microsoftLoginChangePolicyValue));
                 case MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY:
                     return (this.microsoftOfficeAddinChangePolicyValue == other.microsoftOfficeAddinChangePolicyValue) || (this.microsoftOfficeAddinChangePolicyValue.equals(other.microsoftOfficeAddinChangePolicyValue));
+                case MULTI_TEAM_IDENTITY_POLICY_CHANGED:
+                    return (this.multiTeamIdentityPolicyChangedValue == other.multiTeamIdentityPolicyChangedValue) || (this.multiTeamIdentityPolicyChangedValue.equals(other.multiTeamIdentityPolicyChangedValue));
                 case NETWORK_CONTROL_CHANGE_POLICY:
                     return (this.networkControlChangePolicyValue == other.networkControlChangePolicyValue) || (this.networkControlChangePolicyValue.equals(other.networkControlChangePolicyValue));
                 case PAPER_CHANGE_DEPLOYMENT_POLICY:
@@ -46051,6 +48870,8 @@ public final class EventType {
                     return (this.paperEnabledUsersGroupAdditionValue == other.paperEnabledUsersGroupAdditionValue) || (this.paperEnabledUsersGroupAdditionValue.equals(other.paperEnabledUsersGroupAdditionValue));
                 case PAPER_ENABLED_USERS_GROUP_REMOVAL:
                     return (this.paperEnabledUsersGroupRemovalValue == other.paperEnabledUsersGroupRemovalValue) || (this.paperEnabledUsersGroupRemovalValue.equals(other.paperEnabledUsersGroupRemovalValue));
+                case PAPER_OFFLINE_MODE_POLICY_CHANGED:
+                    return (this.paperOfflineModePolicyChangedValue == other.paperOfflineModePolicyChangedValue) || (this.paperOfflineModePolicyChangedValue.equals(other.paperOfflineModePolicyChangedValue));
                 case PASSKEY_LOGIN_POLICY_CHANGED:
                     return (this.passkeyLoginPolicyChangedValue == other.passkeyLoginPolicyChangedValue) || (this.passkeyLoginPolicyChangedValue.equals(other.passkeyLoginPolicyChangedValue));
                 case PASSWORD_STRENGTH_REQUIREMENTS_CHANGE_POLICY:
@@ -46113,6 +48934,10 @@ public final class EventType {
                     return (this.teamBrandingPolicyChangedValue == other.teamBrandingPolicyChangedValue) || (this.teamBrandingPolicyChangedValue.equals(other.teamBrandingPolicyChangedValue));
                 case TEAM_EXTENSIONS_POLICY_CHANGED:
                     return (this.teamExtensionsPolicyChangedValue == other.teamExtensionsPolicyChangedValue) || (this.teamExtensionsPolicyChangedValue.equals(other.teamExtensionsPolicyChangedValue));
+                case TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED:
+                    return (this.teamExternalSharingControlsActivationStateChangedValue == other.teamExternalSharingControlsActivationStateChangedValue) || (this.teamExternalSharingControlsActivationStateChangedValue.equals(other.teamExternalSharingControlsActivationStateChangedValue));
+                case TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED:
+                    return (this.teamExternalSharingControlsRecipientListsChangedValue == other.teamExternalSharingControlsRecipientListsChangedValue) || (this.teamExternalSharingControlsRecipientListsChangedValue.equals(other.teamExternalSharingControlsRecipientListsChangedValue));
                 case TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED:
                     return (this.teamMemberStorageRequestPolicyChangedValue == other.teamMemberStorageRequestPolicyChangedValue) || (this.teamMemberStorageRequestPolicyChangedValue.equals(other.teamMemberStorageRequestPolicyChangedValue));
                 case TEAM_SELECTIVE_SYNC_POLICY_CHANGED:
@@ -47290,6 +50115,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case MEDIA_HUB_FILE_DOWNLOADED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_file_downloaded", g);
+                    MediaHubFileDownloadedType.Serializer.INSTANCE.serialize(value.mediaHubFileDownloadedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case OBJECT_LABEL_ADDED: {
                     g.writeStartObject();
                     writeTag("object_label_added", g);
@@ -47721,6 +50553,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("member_delete_profile_photo", g);
                     MemberDeleteProfilePhotoType.Serializer.INSTANCE.serialize(value.memberDeleteProfilePhotoValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEMBER_FOLDER_CONTENTS_ACCESSED: {
+                    g.writeStartObject();
+                    writeTag("member_folder_contents_accessed", g);
+                    MemberFolderContentsAccessedType.Serializer.INSTANCE.serialize(value.memberFolderContentsAccessedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -48193,10 +51032,136 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case PROTECT_ACTION_ADD_COLLABORATOR: {
+                    g.writeStartObject();
+                    writeTag("protect_action_add_collaborator", g);
+                    ProtectActionAddCollaboratorType.Serializer.INSTANCE.serialize(value.protectActionAddCollaboratorValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_ACTION_ADD_LINK: {
+                    g.writeStartObject();
+                    writeTag("protect_action_add_link", g);
+                    ProtectActionAddLinkType.Serializer.INSTANCE.serialize(value.protectActionAddLinkValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_ACTION_DELETE: {
+                    g.writeStartObject();
+                    writeTag("protect_action_delete", g);
+                    ProtectActionDeleteType.Serializer.INSTANCE.serialize(value.protectActionDeleteValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_ACTION_EXPORT: {
+                    g.writeStartObject();
+                    writeTag("protect_action_export", g);
+                    ProtectActionExportType.Serializer.INSTANCE.serialize(value.protectActionExportValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_ACTION_REMOVE_COLLABORATOR: {
+                    g.writeStartObject();
+                    writeTag("protect_action_remove_collaborator", g);
+                    ProtectActionRemoveCollaboratorType.Serializer.INSTANCE.serialize(value.protectActionRemoveCollaboratorValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_ACTION_REMOVE_DOMAINS: {
+                    g.writeStartObject();
+                    writeTag("protect_action_remove_domains", g);
+                    ProtectActionRemoveDomainsType.Serializer.INSTANCE.serialize(value.protectActionRemoveDomainsValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_ACTION_REMOVE_LINK: {
+                    g.writeStartObject();
+                    writeTag("protect_action_remove_link", g);
+                    ProtectActionRemoveLinkType.Serializer.INSTANCE.serialize(value.protectActionRemoveLinkValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_ACTION_STOP_SHARING: {
+                    g.writeStartObject();
+                    writeTag("protect_action_stop_sharing", g);
+                    ProtectActionStopSharingType.Serializer.INSTANCE.serialize(value.protectActionStopSharingValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_CREATED: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_created", g);
+                    ProtectCustomDataTypeCreatedType.Serializer.INSTANCE.serialize(value.protectCustomDataTypeCreatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_DELETED: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_deleted", g);
+                    ProtectCustomDataTypeDeletedType.Serializer.INSTANCE.serialize(value.protectCustomDataTypeDeletedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_DISABLED: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_disabled", g);
+                    ProtectCustomDataTypeDisabledType.Serializer.INSTANCE.serialize(value.protectCustomDataTypeDisabledValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_ENABLED: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_enabled", g);
+                    ProtectCustomDataTypeEnabledType.Serializer.INSTANCE.serialize(value.protectCustomDataTypeEnabledValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_MODIFIED: {
+                    g.writeStartObject();
+                    writeTag("protect_custom_data_type_modified", g);
+                    ProtectCustomDataTypeModifiedType.Serializer.INSTANCE.serialize(value.protectCustomDataTypeModifiedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case PROTECT_INTERNAL_DOMAINS_CHANGED: {
                     g.writeStartObject();
                     writeTag("protect_internal_domains_changed", g);
                     ProtectInternalDomainsChangedType.Serializer.INSTANCE.serialize(value.protectInternalDomainsChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_POLICY_ACTIVATED: {
+                    g.writeStartObject();
+                    writeTag("protect_policy_activated", g);
+                    ProtectPolicyActivatedType.Serializer.INSTANCE.serialize(value.protectPolicyActivatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_POLICY_DEACTIVATED: {
+                    g.writeStartObject();
+                    writeTag("protect_policy_deactivated", g);
+                    ProtectPolicyDeactivatedType.Serializer.INSTANCE.serialize(value.protectPolicyDeactivatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_POLICY_SCHEDULED: {
+                    g.writeStartObject();
+                    writeTag("protect_policy_scheduled", g);
+                    ProtectPolicyScheduledType.Serializer.INSTANCE.serialize(value.protectPolicyScheduledValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_POLICY_UPDATED: {
+                    g.writeStartObject();
+                    writeTag("protect_policy_updated", g);
+                    ProtectPolicyUpdatedType.Serializer.INSTANCE.serialize(value.protectPolicyUpdatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PROTECT_REPORT_VIEW: {
+                    g.writeStartObject();
+                    writeTag("protect_report_view", g);
+                    ProtectReportViewType.Serializer.INSTANCE.serialize(value.protectReportViewValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -48449,6 +51414,55 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("file_transfers_transfer_view", g);
                     FileTransfersTransferViewType.Serializer.INSTANCE.serialize(value.fileTransfersTransferViewValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_PROJECT_TEAM_ADD: {
+                    g.writeStartObject();
+                    writeTag("media_hub_project_team_add", g);
+                    MediaHubProjectTeamAddType.Serializer.INSTANCE.serialize(value.mediaHubProjectTeamAddValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_PROJECT_TEAM_DELETE: {
+                    g.writeStartObject();
+                    writeTag("media_hub_project_team_delete", g);
+                    MediaHubProjectTeamDeleteType.Serializer.INSTANCE.serialize(value.mediaHubProjectTeamDeleteValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_project_team_role_changed", g);
+                    MediaHubProjectTeamRoleChangedType.Serializer.INSTANCE.serialize(value.mediaHubProjectTeamRoleChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_shared_link_audience_changed", g);
+                    MediaHubSharedLinkAudienceChangedType.Serializer.INSTANCE.serialize(value.mediaHubSharedLinkAudienceChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_CREATED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_shared_link_created", g);
+                    MediaHubSharedLinkCreatedType.Serializer.INSTANCE.serialize(value.mediaHubSharedLinkCreatedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_shared_link_download_setting_changed", g);
+                    MediaHubSharedLinkDownloadSettingChangedType.Serializer.INSTANCE.serialize(value.mediaHubSharedLinkDownloadSettingChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_REVOKED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_shared_link_revoked", g);
+                    MediaHubSharedLinkRevokedType.Serializer.INSTANCE.serialize(value.mediaHubSharedLinkRevokedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -48890,6 +51904,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("shared_folder_nest", g);
                     SharedFolderNestType.Serializer.INSTANCE.serialize(value.sharedFolderNestValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case SHARED_FOLDER_TRANSFER_MEMBERSHIP: {
+                    g.writeStartObject();
+                    writeTag("shared_folder_transfer_membership", g);
+                    SharedFolderTransferMembershipType.Serializer.INSTANCE.serialize(value.sharedFolderTransferMembershipValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -49558,6 +52579,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("default_team_folder_sync_policy_changed", g);
+                    DefaultTeamFolderSyncPolicyChangedType.Serializer.INSTANCE.serialize(value.defaultTeamFolderSyncPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case DEVICE_APPROVALS_ADD_EXCEPTION: {
                     g.writeStartObject();
                     writeTag("device_approvals_add_exception", g);
@@ -49646,6 +52674,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("emm_remove_exception", g);
                     EmmRemoveExceptionType.Serializer.INSTANCE.serialize(value.emmRemoveExceptionValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("enterprise_managed_auth_policy_changed", g);
+                    EnterpriseManagedAuthPolicyChangedType.Serializer.INSTANCE.serialize(value.enterpriseManagedAuthPolicyChangedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -49754,6 +52789,27 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_adding_people_policy_changed", g);
+                    MediaHubAddingPeoplePolicyChangedType.Serializer.INSTANCE.serialize(value.mediaHubAddingPeoplePolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_DOWNLOAD_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_download_policy_changed", g);
+                    MediaHubDownloadPolicyChangedType.Serializer.INSTANCE.serialize(value.mediaHubDownloadPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case MEDIA_HUB_LINK_SHARING_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("media_hub_link_sharing_policy_changed", g);
+                    MediaHubLinkSharingPolicyChangedType.Serializer.INSTANCE.serialize(value.mediaHubLinkSharingPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case MEMBER_REQUESTS_CHANGE_POLICY: {
                     g.writeStartObject();
                     writeTag("member_requests_change_policy", g);
@@ -49817,6 +52873,13 @@ public final class EventType {
                     g.writeEndObject();
                     break;
                 }
+                case MULTI_TEAM_IDENTITY_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("multi_team_identity_policy_changed", g);
+                    MultiTeamIdentityPolicyChangedType.Serializer.INSTANCE.serialize(value.multiTeamIdentityPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
                 case NETWORK_CONTROL_CHANGE_POLICY: {
                     g.writeStartObject();
                     writeTag("network_control_change_policy", g);
@@ -49877,6 +52940,13 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("paper_enabled_users_group_removal", g);
                     PaperEnabledUsersGroupRemovalType.Serializer.INSTANCE.serialize(value.paperEnabledUsersGroupRemovalValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case PAPER_OFFLINE_MODE_POLICY_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("paper_offline_mode_policy_changed", g);
+                    PaperOfflineModePolicyChangedType.Serializer.INSTANCE.serialize(value.paperOfflineModePolicyChangedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -50094,6 +53164,20 @@ public final class EventType {
                     g.writeStartObject();
                     writeTag("team_extensions_policy_changed", g);
                     TeamExtensionsPolicyChangedType.Serializer.INSTANCE.serialize(value.teamExtensionsPolicyChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("team_external_sharing_controls_activation_state_changed", g);
+                    TeamExternalSharingControlsActivationStateChangedType.Serializer.INSTANCE.serialize(value.teamExternalSharingControlsActivationStateChangedValue, g, true);
+                    g.writeEndObject();
+                    break;
+                }
+                case TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED: {
+                    g.writeStartObject();
+                    writeTag("team_external_sharing_controls_recipient_lists_changed", g);
+                    TeamExternalSharingControlsRecipientListsChangedType.Serializer.INSTANCE.serialize(value.teamExternalSharingControlsRecipientListsChangedValue, g, true);
                     g.writeEndObject();
                     break;
                 }
@@ -51264,6 +54348,11 @@ public final class EventType {
                 fieldValue = FolderOverviewItemUnpinnedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.folderOverviewItemUnpinned(fieldValue);
             }
+            else if ("media_hub_file_downloaded".equals(tag)) {
+                MediaHubFileDownloadedType fieldValue = null;
+                fieldValue = MediaHubFileDownloadedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubFileDownloaded(fieldValue);
+            }
             else if ("object_label_added".equals(tag)) {
                 ObjectLabelAddedType fieldValue = null;
                 fieldValue = ObjectLabelAddedType.Serializer.INSTANCE.deserialize(p, true);
@@ -51573,6 +54662,11 @@ public final class EventType {
                 MemberDeleteProfilePhotoType fieldValue = null;
                 fieldValue = MemberDeleteProfilePhotoType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.memberDeleteProfilePhoto(fieldValue);
+            }
+            else if ("member_folder_contents_accessed".equals(tag)) {
+                MemberFolderContentsAccessedType fieldValue = null;
+                fieldValue = MemberFolderContentsAccessedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.memberFolderContentsAccessed(fieldValue);
             }
             else if ("member_permanently_delete_account_contents".equals(tag)) {
                 MemberPermanentlyDeleteAccountContentsType fieldValue = null;
@@ -51909,10 +55003,100 @@ public final class EventType {
                 fieldValue = PasswordResetAllType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.passwordResetAll(fieldValue);
             }
+            else if ("protect_action_add_collaborator".equals(tag)) {
+                ProtectActionAddCollaboratorType fieldValue = null;
+                fieldValue = ProtectActionAddCollaboratorType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectActionAddCollaborator(fieldValue);
+            }
+            else if ("protect_action_add_link".equals(tag)) {
+                ProtectActionAddLinkType fieldValue = null;
+                fieldValue = ProtectActionAddLinkType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectActionAddLink(fieldValue);
+            }
+            else if ("protect_action_delete".equals(tag)) {
+                ProtectActionDeleteType fieldValue = null;
+                fieldValue = ProtectActionDeleteType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectActionDelete(fieldValue);
+            }
+            else if ("protect_action_export".equals(tag)) {
+                ProtectActionExportType fieldValue = null;
+                fieldValue = ProtectActionExportType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectActionExport(fieldValue);
+            }
+            else if ("protect_action_remove_collaborator".equals(tag)) {
+                ProtectActionRemoveCollaboratorType fieldValue = null;
+                fieldValue = ProtectActionRemoveCollaboratorType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectActionRemoveCollaborator(fieldValue);
+            }
+            else if ("protect_action_remove_domains".equals(tag)) {
+                ProtectActionRemoveDomainsType fieldValue = null;
+                fieldValue = ProtectActionRemoveDomainsType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectActionRemoveDomains(fieldValue);
+            }
+            else if ("protect_action_remove_link".equals(tag)) {
+                ProtectActionRemoveLinkType fieldValue = null;
+                fieldValue = ProtectActionRemoveLinkType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectActionRemoveLink(fieldValue);
+            }
+            else if ("protect_action_stop_sharing".equals(tag)) {
+                ProtectActionStopSharingType fieldValue = null;
+                fieldValue = ProtectActionStopSharingType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectActionStopSharing(fieldValue);
+            }
+            else if ("protect_custom_data_type_created".equals(tag)) {
+                ProtectCustomDataTypeCreatedType fieldValue = null;
+                fieldValue = ProtectCustomDataTypeCreatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectCustomDataTypeCreated(fieldValue);
+            }
+            else if ("protect_custom_data_type_deleted".equals(tag)) {
+                ProtectCustomDataTypeDeletedType fieldValue = null;
+                fieldValue = ProtectCustomDataTypeDeletedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectCustomDataTypeDeleted(fieldValue);
+            }
+            else if ("protect_custom_data_type_disabled".equals(tag)) {
+                ProtectCustomDataTypeDisabledType fieldValue = null;
+                fieldValue = ProtectCustomDataTypeDisabledType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectCustomDataTypeDisabled(fieldValue);
+            }
+            else if ("protect_custom_data_type_enabled".equals(tag)) {
+                ProtectCustomDataTypeEnabledType fieldValue = null;
+                fieldValue = ProtectCustomDataTypeEnabledType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectCustomDataTypeEnabled(fieldValue);
+            }
+            else if ("protect_custom_data_type_modified".equals(tag)) {
+                ProtectCustomDataTypeModifiedType fieldValue = null;
+                fieldValue = ProtectCustomDataTypeModifiedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectCustomDataTypeModified(fieldValue);
+            }
             else if ("protect_internal_domains_changed".equals(tag)) {
                 ProtectInternalDomainsChangedType fieldValue = null;
                 fieldValue = ProtectInternalDomainsChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.protectInternalDomainsChanged(fieldValue);
+            }
+            else if ("protect_policy_activated".equals(tag)) {
+                ProtectPolicyActivatedType fieldValue = null;
+                fieldValue = ProtectPolicyActivatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectPolicyActivated(fieldValue);
+            }
+            else if ("protect_policy_deactivated".equals(tag)) {
+                ProtectPolicyDeactivatedType fieldValue = null;
+                fieldValue = ProtectPolicyDeactivatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectPolicyDeactivated(fieldValue);
+            }
+            else if ("protect_policy_scheduled".equals(tag)) {
+                ProtectPolicyScheduledType fieldValue = null;
+                fieldValue = ProtectPolicyScheduledType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectPolicyScheduled(fieldValue);
+            }
+            else if ("protect_policy_updated".equals(tag)) {
+                ProtectPolicyUpdatedType fieldValue = null;
+                fieldValue = ProtectPolicyUpdatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectPolicyUpdated(fieldValue);
+            }
+            else if ("protect_report_view".equals(tag)) {
+                ProtectReportViewType fieldValue = null;
+                fieldValue = ProtectReportViewType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.protectReportView(fieldValue);
             }
             else if ("classification_create_report".equals(tag)) {
                 ClassificationCreateReportType fieldValue = null;
@@ -52093,6 +55277,41 @@ public final class EventType {
                 FileTransfersTransferViewType fieldValue = null;
                 fieldValue = FileTransfersTransferViewType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.fileTransfersTransferView(fieldValue);
+            }
+            else if ("media_hub_project_team_add".equals(tag)) {
+                MediaHubProjectTeamAddType fieldValue = null;
+                fieldValue = MediaHubProjectTeamAddType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubProjectTeamAdd(fieldValue);
+            }
+            else if ("media_hub_project_team_delete".equals(tag)) {
+                MediaHubProjectTeamDeleteType fieldValue = null;
+                fieldValue = MediaHubProjectTeamDeleteType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubProjectTeamDelete(fieldValue);
+            }
+            else if ("media_hub_project_team_role_changed".equals(tag)) {
+                MediaHubProjectTeamRoleChangedType fieldValue = null;
+                fieldValue = MediaHubProjectTeamRoleChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubProjectTeamRoleChanged(fieldValue);
+            }
+            else if ("media_hub_shared_link_audience_changed".equals(tag)) {
+                MediaHubSharedLinkAudienceChangedType fieldValue = null;
+                fieldValue = MediaHubSharedLinkAudienceChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubSharedLinkAudienceChanged(fieldValue);
+            }
+            else if ("media_hub_shared_link_created".equals(tag)) {
+                MediaHubSharedLinkCreatedType fieldValue = null;
+                fieldValue = MediaHubSharedLinkCreatedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubSharedLinkCreated(fieldValue);
+            }
+            else if ("media_hub_shared_link_download_setting_changed".equals(tag)) {
+                MediaHubSharedLinkDownloadSettingChangedType fieldValue = null;
+                fieldValue = MediaHubSharedLinkDownloadSettingChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubSharedLinkDownloadSettingChanged(fieldValue);
+            }
+            else if ("media_hub_shared_link_revoked".equals(tag)) {
+                MediaHubSharedLinkRevokedType fieldValue = null;
+                fieldValue = MediaHubSharedLinkRevokedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubSharedLinkRevoked(fieldValue);
             }
             else if ("note_acl_invite_only".equals(tag)) {
                 NoteAclInviteOnlyType fieldValue = null;
@@ -52408,6 +55627,11 @@ public final class EventType {
                 SharedFolderNestType fieldValue = null;
                 fieldValue = SharedFolderNestType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.sharedFolderNest(fieldValue);
+            }
+            else if ("shared_folder_transfer_membership".equals(tag)) {
+                SharedFolderTransferMembershipType fieldValue = null;
+                fieldValue = SharedFolderTransferMembershipType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.sharedFolderTransferMembership(fieldValue);
             }
             else if ("shared_folder_transfer_ownership".equals(tag)) {
                 SharedFolderTransferOwnershipType fieldValue = null;
@@ -52884,6 +56108,11 @@ public final class EventType {
                 fieldValue = DataPlacementRestrictionSatisfyPolicyType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.dataPlacementRestrictionSatisfyPolicy(fieldValue);
             }
+            else if ("default_team_folder_sync_policy_changed".equals(tag)) {
+                DefaultTeamFolderSyncPolicyChangedType fieldValue = null;
+                fieldValue = DefaultTeamFolderSyncPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.defaultTeamFolderSyncPolicyChanged(fieldValue);
+            }
             else if ("device_approvals_add_exception".equals(tag)) {
                 DeviceApprovalsAddExceptionType fieldValue = null;
                 fieldValue = DeviceApprovalsAddExceptionType.Serializer.INSTANCE.deserialize(p, true);
@@ -52948,6 +56177,11 @@ public final class EventType {
                 EmmRemoveExceptionType fieldValue = null;
                 fieldValue = EmmRemoveExceptionType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.emmRemoveException(fieldValue);
+            }
+            else if ("enterprise_managed_auth_policy_changed".equals(tag)) {
+                EnterpriseManagedAuthPolicyChangedType fieldValue = null;
+                fieldValue = EnterpriseManagedAuthPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.enterpriseManagedAuthPolicyChanged(fieldValue);
             }
             else if ("extended_version_history_change_policy".equals(tag)) {
                 ExtendedVersionHistoryChangePolicyType fieldValue = null;
@@ -53024,6 +56258,21 @@ public final class EventType {
                 fieldValue = InviteAcceptanceEmailPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.inviteAcceptanceEmailPolicyChanged(fieldValue);
             }
+            else if ("media_hub_adding_people_policy_changed".equals(tag)) {
+                MediaHubAddingPeoplePolicyChangedType fieldValue = null;
+                fieldValue = MediaHubAddingPeoplePolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubAddingPeoplePolicyChanged(fieldValue);
+            }
+            else if ("media_hub_download_policy_changed".equals(tag)) {
+                MediaHubDownloadPolicyChangedType fieldValue = null;
+                fieldValue = MediaHubDownloadPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubDownloadPolicyChanged(fieldValue);
+            }
+            else if ("media_hub_link_sharing_policy_changed".equals(tag)) {
+                MediaHubLinkSharingPolicyChangedType fieldValue = null;
+                fieldValue = MediaHubLinkSharingPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.mediaHubLinkSharingPolicyChanged(fieldValue);
+            }
             else if ("member_requests_change_policy".equals(tag)) {
                 MemberRequestsChangePolicyType fieldValue = null;
                 fieldValue = MemberRequestsChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
@@ -53069,6 +56318,11 @@ public final class EventType {
                 fieldValue = MicrosoftOfficeAddinChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.microsoftOfficeAddinChangePolicy(fieldValue);
             }
+            else if ("multi_team_identity_policy_changed".equals(tag)) {
+                MultiTeamIdentityPolicyChangedType fieldValue = null;
+                fieldValue = MultiTeamIdentityPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.multiTeamIdentityPolicyChanged(fieldValue);
+            }
             else if ("network_control_change_policy".equals(tag)) {
                 NetworkControlChangePolicyType fieldValue = null;
                 fieldValue = NetworkControlChangePolicyType.Serializer.INSTANCE.deserialize(p, true);
@@ -53113,6 +56367,11 @@ public final class EventType {
                 PaperEnabledUsersGroupRemovalType fieldValue = null;
                 fieldValue = PaperEnabledUsersGroupRemovalType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.paperEnabledUsersGroupRemoval(fieldValue);
+            }
+            else if ("paper_offline_mode_policy_changed".equals(tag)) {
+                PaperOfflineModePolicyChangedType fieldValue = null;
+                fieldValue = PaperOfflineModePolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.paperOfflineModePolicyChanged(fieldValue);
             }
             else if ("passkey_login_policy_changed".equals(tag)) {
                 PasskeyLoginPolicyChangedType fieldValue = null;
@@ -53268,6 +56527,16 @@ public final class EventType {
                 TeamExtensionsPolicyChangedType fieldValue = null;
                 fieldValue = TeamExtensionsPolicyChangedType.Serializer.INSTANCE.deserialize(p, true);
                 value = EventType.teamExtensionsPolicyChanged(fieldValue);
+            }
+            else if ("team_external_sharing_controls_activation_state_changed".equals(tag)) {
+                TeamExternalSharingControlsActivationStateChangedType fieldValue = null;
+                fieldValue = TeamExternalSharingControlsActivationStateChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamExternalSharingControlsActivationStateChanged(fieldValue);
+            }
+            else if ("team_external_sharing_controls_recipient_lists_changed".equals(tag)) {
+                TeamExternalSharingControlsRecipientListsChangedType fieldValue = null;
+                fieldValue = TeamExternalSharingControlsRecipientListsChangedType.Serializer.INSTANCE.deserialize(p, true);
+                value = EventType.teamExternalSharingControlsRecipientListsChanged(fieldValue);
             }
             else if ("team_member_storage_request_policy_changed".equals(tag)) {
                 TeamMemberStorageRequestPolicyChangedType fieldValue = null;

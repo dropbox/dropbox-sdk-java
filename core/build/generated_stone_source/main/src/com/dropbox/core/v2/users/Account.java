@@ -41,13 +41,18 @@ public class Account {
      * The amount of detail revealed about an account depends on the user being
      * queried and the user making the query.
      *
-     * @param accountId  The user's unique Dropbox ID. Must have length of at
-     *     least 40, have length of at most 40, and not be {@code null}.
+     * @param accountId  The user's unique and stable Dropbox ID. Must have
+     *     length of at least 40, have length of at most 40, and not be {@code
+     *     null}.
      * @param name  Details of a user's name. Must not be {@code null}.
      * @param email  The user's email address. Do not rely on this without
      *     checking the {@link Account#getEmailVerified} field. Even then, it's
-     *     possible that the user has since lost access to their email. Must not
-     *     be {@code null}.
+     *     possible that the user has since lost access to their email. Note:
+     *     email is not a unique or stable identifier for a Dropbox account.
+     *     Users can change their email, and emails can be reused by different
+     *     accounts. Apps should not use email as a key for account
+     *     identification; use {@link Account#getAccountId} instead. Must not be
+     *     {@code null}.
      * @param emailVerified  Whether the user has verified their email address.
      * @param disabled  Whether the user has been disabled.
      * @param profilePhotoUrl  URL for the photo representing the user, if one
@@ -86,13 +91,18 @@ public class Account {
      *
      * <p> The default values for unset fields will be used. </p>
      *
-     * @param accountId  The user's unique Dropbox ID. Must have length of at
-     *     least 40, have length of at most 40, and not be {@code null}.
+     * @param accountId  The user's unique and stable Dropbox ID. Must have
+     *     length of at least 40, have length of at most 40, and not be {@code
+     *     null}.
      * @param name  Details of a user's name. Must not be {@code null}.
      * @param email  The user's email address. Do not rely on this without
      *     checking the {@link Account#getEmailVerified} field. Even then, it's
-     *     possible that the user has since lost access to their email. Must not
-     *     be {@code null}.
+     *     possible that the user has since lost access to their email. Note:
+     *     email is not a unique or stable identifier for a Dropbox account.
+     *     Users can change their email, and emails can be reused by different
+     *     accounts. Apps should not use email as a key for account
+     *     identification; use {@link Account#getAccountId} instead. Must not be
+     *     {@code null}.
      * @param emailVerified  Whether the user has verified their email address.
      * @param disabled  Whether the user has been disabled.
      *
@@ -104,7 +114,7 @@ public class Account {
     }
 
     /**
-     * The user's unique Dropbox ID.
+     * The user's unique and stable Dropbox ID.
      *
      * @return value for this field, never {@code null}.
      */
@@ -126,7 +136,11 @@ public class Account {
     /**
      * The user's email address. Do not rely on this without checking the {@link
      * Account#getEmailVerified} field. Even then, it's possible that the user
-     * has since lost access to their email.
+     * has since lost access to their email. Note: email is not a unique or
+     * stable identifier for a Dropbox account. Users can change their email,
+     * and emails can be reused by different accounts. Apps should not use email
+     * as a key for account identification; use {@link Account#getAccountId}
+     * instead.
      *
      * @return value for this field, never {@code null}.
      */

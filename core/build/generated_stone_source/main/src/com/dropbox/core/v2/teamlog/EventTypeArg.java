@@ -611,6 +611,10 @@ public enum EventTypeArg {
      */
     FOLDER_OVERVIEW_ITEM_UNPINNED,
     /**
+     * (file_operations) Downloaded files in Replay
+     */
+    MEDIA_HUB_FILE_DOWNLOADED,
+    /**
      * (file_operations) Added a label
      */
     OBJECT_LABEL_ADDED,
@@ -861,6 +865,10 @@ public enum EventTypeArg {
      * (members) Deleted team member profile photo
      */
     MEMBER_DELETE_PROFILE_PHOTO,
+    /**
+     * (members) Admin browsed a team member's folder contents
+     */
+    MEMBER_FOLDER_CONTENTS_ACCESSED,
     /**
      * (members) Permanently deleted contents of deleted team member account
      */
@@ -1138,9 +1146,81 @@ public enum EventTypeArg {
      */
     PASSWORD_RESET_ALL,
     /**
+     * (protect) Added collaborators via Dropbox Protect
+     */
+    PROTECT_ACTION_ADD_COLLABORATOR,
+    /**
+     * (protect) Added a link via Dropbox Protect
+     */
+    PROTECT_ACTION_ADD_LINK,
+    /**
+     * (protect) Deleted content via Dropbox Protect
+     */
+    PROTECT_ACTION_DELETE,
+    /**
+     * (protect) Exported content via Dropbox Protect
+     */
+    PROTECT_ACTION_EXPORT,
+    /**
+     * (protect) Removed collaborators via Dropbox Protect
+     */
+    PROTECT_ACTION_REMOVE_COLLABORATOR,
+    /**
+     * (protect) Removed domains via Dropbox Protect
+     */
+    PROTECT_ACTION_REMOVE_DOMAINS,
+    /**
+     * (protect) Removed a link via Dropbox Protect
+     */
+    PROTECT_ACTION_REMOVE_LINK,
+    /**
+     * (protect) Stopped sharing content via Dropbox Protect
+     */
+    PROTECT_ACTION_STOP_SHARING,
+    /**
+     * (protect) Created a Dropbox Protect custom data type
+     */
+    PROTECT_CUSTOM_DATA_TYPE_CREATED,
+    /**
+     * (protect) Deleted a Dropbox Protect custom data type
+     */
+    PROTECT_CUSTOM_DATA_TYPE_DELETED,
+    /**
+     * (protect) Disabled a Dropbox Protect custom data type
+     */
+    PROTECT_CUSTOM_DATA_TYPE_DISABLED,
+    /**
+     * (protect) Enabled a Dropbox Protect custom data type
+     */
+    PROTECT_CUSTOM_DATA_TYPE_ENABLED,
+    /**
+     * (protect) Modified a Dropbox Protect custom data type
+     */
+    PROTECT_CUSTOM_DATA_TYPE_MODIFIED,
+    /**
      * (protect) Modified Protect internal domains list
      */
     PROTECT_INTERNAL_DOMAINS_CHANGED,
+    /**
+     * (protect) Activated a Dropbox Protect policy
+     */
+    PROTECT_POLICY_ACTIVATED,
+    /**
+     * (protect) Deactivated a Dropbox Protect policy
+     */
+    PROTECT_POLICY_DEACTIVATED,
+    /**
+     * (protect) Scheduled a Dropbox Protect policy
+     */
+    PROTECT_POLICY_SCHEDULED,
+    /**
+     * (protect) Updated a Dropbox Protect policy
+     */
+    PROTECT_POLICY_UPDATED,
+    /**
+     * (protect) Viewed a Dropbox Protect report
+     */
+    PROTECT_REPORT_VIEW,
     /**
      * (reports) Created Classification report
      */
@@ -1285,6 +1365,34 @@ public enum EventTypeArg {
      * (sharing) Viewed transfer
      */
     FILE_TRANSFERS_TRANSFER_VIEW,
+    /**
+     * (sharing) Added member to Replay project
+     */
+    MEDIA_HUB_PROJECT_TEAM_ADD,
+    /**
+     * (sharing) Removed member from Replay project
+     */
+    MEDIA_HUB_PROJECT_TEAM_DELETE,
+    /**
+     * (sharing) Changed member role in Replay project
+     */
+    MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED,
+    /**
+     * (sharing) Changed Replay shared link audience
+     */
+    MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED,
+    /**
+     * (sharing) Created Replay shared link
+     */
+    MEDIA_HUB_SHARED_LINK_CREATED,
+    /**
+     * (sharing) Changed Replay shared link download setting
+     */
+    MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED,
+    /**
+     * (sharing) Revoked Replay shared link
+     */
+    MEDIA_HUB_SHARED_LINK_REVOKED,
     /**
      * (sharing) Changed Paper doc to invite-only (deprecated, no longer logged)
      */
@@ -1561,6 +1669,10 @@ public enum EventTypeArg {
      * (sharing) Changed parent of shared folder
      */
     SHARED_FOLDER_NEST,
+    /**
+     * (sharing) Transferred shared folder membership to another member
+     */
+    SHARED_FOLDER_TRANSFER_MEMBERSHIP,
     /**
      * (sharing) Transferred ownership of shared folder to another member
      */
@@ -1947,6 +2059,10 @@ public enum EventTypeArg {
      */
     DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY,
     /**
+     * (team_policies) Changed the default sync setting for new team folders
+     */
+    DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED,
+    /**
      * (team_policies) Added members to device approvals exception list
      */
     DEVICE_APPROVALS_ADD_EXCEPTION,
@@ -2003,6 +2119,10 @@ public enum EventTypeArg {
      * (team_policies) Removed members from EMM exception list
      */
     EMM_REMOVE_EXCEPTION,
+    /**
+     * (team_policies) Changed enterprise managed authorization policy for team
+     */
+    ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED,
     /**
      * (team_policies) Accepted/opted out of extended version history
      */
@@ -2066,6 +2186,18 @@ public enum EventTypeArg {
      */
     INVITE_ACCEPTANCE_EMAIL_POLICY_CHANGED,
     /**
+     * (team_policies) Changed the policy for adding people to Replay content
+     */
+    MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED,
+    /**
+     * (team_policies) Changed the policy for downloading Replay content
+     */
+    MEDIA_HUB_DOWNLOAD_POLICY_CHANGED,
+    /**
+     * (team_policies) Changed the policy for sharing Replay content
+     */
+    MEDIA_HUB_LINK_SHARING_POLICY_CHANGED,
+    /**
      * (team_policies) Changed whether users can find team when not invited
      */
     MEMBER_REQUESTS_CHANGE_POLICY,
@@ -2102,6 +2234,10 @@ public enum EventTypeArg {
      * (team_policies) Enabled/disabled Microsoft Office add-in
      */
     MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY,
+    /**
+     * (team_policies) Changed multi-team identity policy for team
+     */
+    MULTI_TEAM_IDENTITY_POLICY_CHANGED,
     /**
      * (team_policies) Enabled/disabled network control
      */
@@ -2142,6 +2278,10 @@ public enum EventTypeArg {
      * (team_policies) Removed users from Paper-enabled users list
      */
     PAPER_ENABLED_USERS_GROUP_REMOVAL,
+    /**
+     * (team_policies) Enabled/disabled Paper offline mode for team
+     */
+    PAPER_OFFLINE_MODE_POLICY_CHANGED,
     /**
      * (team_policies) Changed passkey login policy for team
      */
@@ -2275,6 +2415,15 @@ public enum EventTypeArg {
      * (team_policies) Changed App Integrations setting for team
      */
     TEAM_EXTENSIONS_POLICY_CHANGED,
+    /**
+     * (team_policies) Changed external sharing controls activation state
+     */
+    TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED,
+    /**
+     * (team_policies) Changed approved or blocked entries for external sharing
+     * controls
+     */
+    TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED,
     /**
      * (team_policies) Changed team member storage request policy for team
      */
@@ -3129,6 +3278,10 @@ public enum EventTypeArg {
                     g.writeString("folder_overview_item_unpinned");
                     break;
                 }
+                case MEDIA_HUB_FILE_DOWNLOADED: {
+                    g.writeString("media_hub_file_downloaded");
+                    break;
+                }
                 case OBJECT_LABEL_ADDED: {
                     g.writeString("object_label_added");
                     break;
@@ -3375,6 +3528,10 @@ public enum EventTypeArg {
                 }
                 case MEMBER_DELETE_PROFILE_PHOTO: {
                     g.writeString("member_delete_profile_photo");
+                    break;
+                }
+                case MEMBER_FOLDER_CONTENTS_ACCESSED: {
+                    g.writeString("member_folder_contents_accessed");
                     break;
                 }
                 case MEMBER_PERMANENTLY_DELETE_ACCOUNT_CONTENTS: {
@@ -3645,8 +3802,80 @@ public enum EventTypeArg {
                     g.writeString("password_reset_all");
                     break;
                 }
+                case PROTECT_ACTION_ADD_COLLABORATOR: {
+                    g.writeString("protect_action_add_collaborator");
+                    break;
+                }
+                case PROTECT_ACTION_ADD_LINK: {
+                    g.writeString("protect_action_add_link");
+                    break;
+                }
+                case PROTECT_ACTION_DELETE: {
+                    g.writeString("protect_action_delete");
+                    break;
+                }
+                case PROTECT_ACTION_EXPORT: {
+                    g.writeString("protect_action_export");
+                    break;
+                }
+                case PROTECT_ACTION_REMOVE_COLLABORATOR: {
+                    g.writeString("protect_action_remove_collaborator");
+                    break;
+                }
+                case PROTECT_ACTION_REMOVE_DOMAINS: {
+                    g.writeString("protect_action_remove_domains");
+                    break;
+                }
+                case PROTECT_ACTION_REMOVE_LINK: {
+                    g.writeString("protect_action_remove_link");
+                    break;
+                }
+                case PROTECT_ACTION_STOP_SHARING: {
+                    g.writeString("protect_action_stop_sharing");
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_CREATED: {
+                    g.writeString("protect_custom_data_type_created");
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_DELETED: {
+                    g.writeString("protect_custom_data_type_deleted");
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_DISABLED: {
+                    g.writeString("protect_custom_data_type_disabled");
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_ENABLED: {
+                    g.writeString("protect_custom_data_type_enabled");
+                    break;
+                }
+                case PROTECT_CUSTOM_DATA_TYPE_MODIFIED: {
+                    g.writeString("protect_custom_data_type_modified");
+                    break;
+                }
                 case PROTECT_INTERNAL_DOMAINS_CHANGED: {
                     g.writeString("protect_internal_domains_changed");
+                    break;
+                }
+                case PROTECT_POLICY_ACTIVATED: {
+                    g.writeString("protect_policy_activated");
+                    break;
+                }
+                case PROTECT_POLICY_DEACTIVATED: {
+                    g.writeString("protect_policy_deactivated");
+                    break;
+                }
+                case PROTECT_POLICY_SCHEDULED: {
+                    g.writeString("protect_policy_scheduled");
+                    break;
+                }
+                case PROTECT_POLICY_UPDATED: {
+                    g.writeString("protect_policy_updated");
+                    break;
+                }
+                case PROTECT_REPORT_VIEW: {
+                    g.writeString("protect_report_view");
                     break;
                 }
                 case CLASSIFICATION_CREATE_REPORT: {
@@ -3791,6 +4020,34 @@ public enum EventTypeArg {
                 }
                 case FILE_TRANSFERS_TRANSFER_VIEW: {
                     g.writeString("file_transfers_transfer_view");
+                    break;
+                }
+                case MEDIA_HUB_PROJECT_TEAM_ADD: {
+                    g.writeString("media_hub_project_team_add");
+                    break;
+                }
+                case MEDIA_HUB_PROJECT_TEAM_DELETE: {
+                    g.writeString("media_hub_project_team_delete");
+                    break;
+                }
+                case MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED: {
+                    g.writeString("media_hub_project_team_role_changed");
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED: {
+                    g.writeString("media_hub_shared_link_audience_changed");
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_CREATED: {
+                    g.writeString("media_hub_shared_link_created");
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED: {
+                    g.writeString("media_hub_shared_link_download_setting_changed");
+                    break;
+                }
+                case MEDIA_HUB_SHARED_LINK_REVOKED: {
+                    g.writeString("media_hub_shared_link_revoked");
                     break;
                 }
                 case NOTE_ACL_INVITE_ONLY: {
@@ -4043,6 +4300,10 @@ public enum EventTypeArg {
                 }
                 case SHARED_FOLDER_NEST: {
                     g.writeString("shared_folder_nest");
+                    break;
+                }
+                case SHARED_FOLDER_TRANSFER_MEMBERSHIP: {
+                    g.writeString("shared_folder_transfer_membership");
                     break;
                 }
                 case SHARED_FOLDER_TRANSFER_OWNERSHIP: {
@@ -4425,6 +4686,10 @@ public enum EventTypeArg {
                     g.writeString("data_placement_restriction_satisfy_policy");
                     break;
                 }
+                case DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED: {
+                    g.writeString("default_team_folder_sync_policy_changed");
+                    break;
+                }
                 case DEVICE_APPROVALS_ADD_EXCEPTION: {
                     g.writeString("device_approvals_add_exception");
                     break;
@@ -4475,6 +4740,10 @@ public enum EventTypeArg {
                 }
                 case EMM_REMOVE_EXCEPTION: {
                     g.writeString("emm_remove_exception");
+                    break;
+                }
+                case ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED: {
+                    g.writeString("enterprise_managed_auth_policy_changed");
                     break;
                 }
                 case EXTENDED_VERSION_HISTORY_CHANGE_POLICY: {
@@ -4537,6 +4806,18 @@ public enum EventTypeArg {
                     g.writeString("invite_acceptance_email_policy_changed");
                     break;
                 }
+                case MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED: {
+                    g.writeString("media_hub_adding_people_policy_changed");
+                    break;
+                }
+                case MEDIA_HUB_DOWNLOAD_POLICY_CHANGED: {
+                    g.writeString("media_hub_download_policy_changed");
+                    break;
+                }
+                case MEDIA_HUB_LINK_SHARING_POLICY_CHANGED: {
+                    g.writeString("media_hub_link_sharing_policy_changed");
+                    break;
+                }
                 case MEMBER_REQUESTS_CHANGE_POLICY: {
                     g.writeString("member_requests_change_policy");
                     break;
@@ -4573,6 +4854,10 @@ public enum EventTypeArg {
                     g.writeString("microsoft_office_addin_change_policy");
                     break;
                 }
+                case MULTI_TEAM_IDENTITY_POLICY_CHANGED: {
+                    g.writeString("multi_team_identity_policy_changed");
+                    break;
+                }
                 case NETWORK_CONTROL_CHANGE_POLICY: {
                     g.writeString("network_control_change_policy");
                     break;
@@ -4607,6 +4892,10 @@ public enum EventTypeArg {
                 }
                 case PAPER_ENABLED_USERS_GROUP_REMOVAL: {
                     g.writeString("paper_enabled_users_group_removal");
+                    break;
+                }
+                case PAPER_OFFLINE_MODE_POLICY_CHANGED: {
+                    g.writeString("paper_offline_mode_policy_changed");
                     break;
                 }
                 case PASSKEY_LOGIN_POLICY_CHANGED: {
@@ -4731,6 +5020,14 @@ public enum EventTypeArg {
                 }
                 case TEAM_EXTENSIONS_POLICY_CHANGED: {
                     g.writeString("team_extensions_policy_changed");
+                    break;
+                }
+                case TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED: {
+                    g.writeString("team_external_sharing_controls_activation_state_changed");
+                    break;
+                }
+                case TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED: {
+                    g.writeString("team_external_sharing_controls_recipient_lists_changed");
                     break;
                 }
                 case TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED: {
@@ -5431,6 +5728,9 @@ public enum EventTypeArg {
             else if ("folder_overview_item_unpinned".equals(tag)) {
                 value = EventTypeArg.FOLDER_OVERVIEW_ITEM_UNPINNED;
             }
+            else if ("media_hub_file_downloaded".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_FILE_DOWNLOADED;
+            }
             else if ("object_label_added".equals(tag)) {
                 value = EventTypeArg.OBJECT_LABEL_ADDED;
             }
@@ -5616,6 +5916,9 @@ public enum EventTypeArg {
             }
             else if ("member_delete_profile_photo".equals(tag)) {
                 value = EventTypeArg.MEMBER_DELETE_PROFILE_PHOTO;
+            }
+            else if ("member_folder_contents_accessed".equals(tag)) {
+                value = EventTypeArg.MEMBER_FOLDER_CONTENTS_ACCESSED;
             }
             else if ("member_permanently_delete_account_contents".equals(tag)) {
                 value = EventTypeArg.MEMBER_PERMANENTLY_DELETE_ACCOUNT_CONTENTS;
@@ -5818,8 +6121,62 @@ public enum EventTypeArg {
             else if ("password_reset_all".equals(tag)) {
                 value = EventTypeArg.PASSWORD_RESET_ALL;
             }
+            else if ("protect_action_add_collaborator".equals(tag)) {
+                value = EventTypeArg.PROTECT_ACTION_ADD_COLLABORATOR;
+            }
+            else if ("protect_action_add_link".equals(tag)) {
+                value = EventTypeArg.PROTECT_ACTION_ADD_LINK;
+            }
+            else if ("protect_action_delete".equals(tag)) {
+                value = EventTypeArg.PROTECT_ACTION_DELETE;
+            }
+            else if ("protect_action_export".equals(tag)) {
+                value = EventTypeArg.PROTECT_ACTION_EXPORT;
+            }
+            else if ("protect_action_remove_collaborator".equals(tag)) {
+                value = EventTypeArg.PROTECT_ACTION_REMOVE_COLLABORATOR;
+            }
+            else if ("protect_action_remove_domains".equals(tag)) {
+                value = EventTypeArg.PROTECT_ACTION_REMOVE_DOMAINS;
+            }
+            else if ("protect_action_remove_link".equals(tag)) {
+                value = EventTypeArg.PROTECT_ACTION_REMOVE_LINK;
+            }
+            else if ("protect_action_stop_sharing".equals(tag)) {
+                value = EventTypeArg.PROTECT_ACTION_STOP_SHARING;
+            }
+            else if ("protect_custom_data_type_created".equals(tag)) {
+                value = EventTypeArg.PROTECT_CUSTOM_DATA_TYPE_CREATED;
+            }
+            else if ("protect_custom_data_type_deleted".equals(tag)) {
+                value = EventTypeArg.PROTECT_CUSTOM_DATA_TYPE_DELETED;
+            }
+            else if ("protect_custom_data_type_disabled".equals(tag)) {
+                value = EventTypeArg.PROTECT_CUSTOM_DATA_TYPE_DISABLED;
+            }
+            else if ("protect_custom_data_type_enabled".equals(tag)) {
+                value = EventTypeArg.PROTECT_CUSTOM_DATA_TYPE_ENABLED;
+            }
+            else if ("protect_custom_data_type_modified".equals(tag)) {
+                value = EventTypeArg.PROTECT_CUSTOM_DATA_TYPE_MODIFIED;
+            }
             else if ("protect_internal_domains_changed".equals(tag)) {
                 value = EventTypeArg.PROTECT_INTERNAL_DOMAINS_CHANGED;
+            }
+            else if ("protect_policy_activated".equals(tag)) {
+                value = EventTypeArg.PROTECT_POLICY_ACTIVATED;
+            }
+            else if ("protect_policy_deactivated".equals(tag)) {
+                value = EventTypeArg.PROTECT_POLICY_DEACTIVATED;
+            }
+            else if ("protect_policy_scheduled".equals(tag)) {
+                value = EventTypeArg.PROTECT_POLICY_SCHEDULED;
+            }
+            else if ("protect_policy_updated".equals(tag)) {
+                value = EventTypeArg.PROTECT_POLICY_UPDATED;
+            }
+            else if ("protect_report_view".equals(tag)) {
+                value = EventTypeArg.PROTECT_REPORT_VIEW;
             }
             else if ("classification_create_report".equals(tag)) {
                 value = EventTypeArg.CLASSIFICATION_CREATE_REPORT;
@@ -5928,6 +6285,27 @@ public enum EventTypeArg {
             }
             else if ("file_transfers_transfer_view".equals(tag)) {
                 value = EventTypeArg.FILE_TRANSFERS_TRANSFER_VIEW;
+            }
+            else if ("media_hub_project_team_add".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_PROJECT_TEAM_ADD;
+            }
+            else if ("media_hub_project_team_delete".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_PROJECT_TEAM_DELETE;
+            }
+            else if ("media_hub_project_team_role_changed".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_PROJECT_TEAM_ROLE_CHANGED;
+            }
+            else if ("media_hub_shared_link_audience_changed".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_SHARED_LINK_AUDIENCE_CHANGED;
+            }
+            else if ("media_hub_shared_link_created".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_SHARED_LINK_CREATED;
+            }
+            else if ("media_hub_shared_link_download_setting_changed".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_SHARED_LINK_DOWNLOAD_SETTING_CHANGED;
+            }
+            else if ("media_hub_shared_link_revoked".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_SHARED_LINK_REVOKED;
             }
             else if ("note_acl_invite_only".equals(tag)) {
                 value = EventTypeArg.NOTE_ACL_INVITE_ONLY;
@@ -6117,6 +6495,9 @@ public enum EventTypeArg {
             }
             else if ("shared_folder_nest".equals(tag)) {
                 value = EventTypeArg.SHARED_FOLDER_NEST;
+            }
+            else if ("shared_folder_transfer_membership".equals(tag)) {
+                value = EventTypeArg.SHARED_FOLDER_TRANSFER_MEMBERSHIP;
             }
             else if ("shared_folder_transfer_ownership".equals(tag)) {
                 value = EventTypeArg.SHARED_FOLDER_TRANSFER_OWNERSHIP;
@@ -6403,6 +6784,9 @@ public enum EventTypeArg {
             else if ("data_placement_restriction_satisfy_policy".equals(tag)) {
                 value = EventTypeArg.DATA_PLACEMENT_RESTRICTION_SATISFY_POLICY;
             }
+            else if ("default_team_folder_sync_policy_changed".equals(tag)) {
+                value = EventTypeArg.DEFAULT_TEAM_FOLDER_SYNC_POLICY_CHANGED;
+            }
             else if ("device_approvals_add_exception".equals(tag)) {
                 value = EventTypeArg.DEVICE_APPROVALS_ADD_EXCEPTION;
             }
@@ -6441,6 +6825,9 @@ public enum EventTypeArg {
             }
             else if ("emm_remove_exception".equals(tag)) {
                 value = EventTypeArg.EMM_REMOVE_EXCEPTION;
+            }
+            else if ("enterprise_managed_auth_policy_changed".equals(tag)) {
+                value = EventTypeArg.ENTERPRISE_MANAGED_AUTH_POLICY_CHANGED;
             }
             else if ("extended_version_history_change_policy".equals(tag)) {
                 value = EventTypeArg.EXTENDED_VERSION_HISTORY_CHANGE_POLICY;
@@ -6487,6 +6874,15 @@ public enum EventTypeArg {
             else if ("invite_acceptance_email_policy_changed".equals(tag)) {
                 value = EventTypeArg.INVITE_ACCEPTANCE_EMAIL_POLICY_CHANGED;
             }
+            else if ("media_hub_adding_people_policy_changed".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_ADDING_PEOPLE_POLICY_CHANGED;
+            }
+            else if ("media_hub_download_policy_changed".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_DOWNLOAD_POLICY_CHANGED;
+            }
+            else if ("media_hub_link_sharing_policy_changed".equals(tag)) {
+                value = EventTypeArg.MEDIA_HUB_LINK_SHARING_POLICY_CHANGED;
+            }
             else if ("member_requests_change_policy".equals(tag)) {
                 value = EventTypeArg.MEMBER_REQUESTS_CHANGE_POLICY;
             }
@@ -6514,6 +6910,9 @@ public enum EventTypeArg {
             else if ("microsoft_office_addin_change_policy".equals(tag)) {
                 value = EventTypeArg.MICROSOFT_OFFICE_ADDIN_CHANGE_POLICY;
             }
+            else if ("multi_team_identity_policy_changed".equals(tag)) {
+                value = EventTypeArg.MULTI_TEAM_IDENTITY_POLICY_CHANGED;
+            }
             else if ("network_control_change_policy".equals(tag)) {
                 value = EventTypeArg.NETWORK_CONTROL_CHANGE_POLICY;
             }
@@ -6540,6 +6939,9 @@ public enum EventTypeArg {
             }
             else if ("paper_enabled_users_group_removal".equals(tag)) {
                 value = EventTypeArg.PAPER_ENABLED_USERS_GROUP_REMOVAL;
+            }
+            else if ("paper_offline_mode_policy_changed".equals(tag)) {
+                value = EventTypeArg.PAPER_OFFLINE_MODE_POLICY_CHANGED;
             }
             else if ("passkey_login_policy_changed".equals(tag)) {
                 value = EventTypeArg.PASSKEY_LOGIN_POLICY_CHANGED;
@@ -6633,6 +7035,12 @@ public enum EventTypeArg {
             }
             else if ("team_extensions_policy_changed".equals(tag)) {
                 value = EventTypeArg.TEAM_EXTENSIONS_POLICY_CHANGED;
+            }
+            else if ("team_external_sharing_controls_activation_state_changed".equals(tag)) {
+                value = EventTypeArg.TEAM_EXTERNAL_SHARING_CONTROLS_ACTIVATION_STATE_CHANGED;
+            }
+            else if ("team_external_sharing_controls_recipient_lists_changed".equals(tag)) {
+                value = EventTypeArg.TEAM_EXTERNAL_SHARING_CONTROLS_RECIPIENT_LISTS_CHANGED;
             }
             else if ("team_member_storage_request_policy_changed".equals(tag)) {
                 value = EventTypeArg.TEAM_MEMBER_STORAGE_REQUEST_POLICY_CHANGED;

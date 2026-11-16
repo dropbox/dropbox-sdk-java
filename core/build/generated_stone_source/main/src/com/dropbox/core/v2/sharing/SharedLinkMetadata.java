@@ -44,6 +44,10 @@ public class SharedLinkMetadata {
     protected final TeamMemberInfo teamMemberInfo;
     @Nullable
     protected final Team contentOwnerTeamInfo;
+    @Nullable
+    protected final String previewType;
+    @Nullable
+    protected final Date createdTimestamp;
 
     /**
      * The metadata of a shared link.
@@ -71,11 +75,15 @@ public class SharedLinkMetadata {
      *     This field will only be present if the content's owner is a team
      *     member and the content's owner team is different from the link's
      *     owner team.
+     * @param previewType  The preview type is determined by the file extension
+     *     of the shared link. It will be null if the file cannot be previewed
+     *     by the file viewer.
+     * @param createdTimestamp  The time the shared link was created.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public SharedLinkMetadata(@Nonnull String url, @Nonnull String name, @Nonnull LinkPermissions linkPermissions, @Nullable String id, @Nullable Date expires, @Nullable String pathLower, @Nullable TeamMemberInfo teamMemberInfo, @Nullable Team contentOwnerTeamInfo) {
+    public SharedLinkMetadata(@Nonnull String url, @Nonnull String name, @Nonnull LinkPermissions linkPermissions, @Nullable String id, @Nullable Date expires, @Nullable String pathLower, @Nullable TeamMemberInfo teamMemberInfo, @Nullable Team contentOwnerTeamInfo, @Nullable String previewType, @Nullable Date createdTimestamp) {
         if (url == null) {
             throw new IllegalArgumentException("Required value for 'url' is null");
         }
@@ -98,6 +106,8 @@ public class SharedLinkMetadata {
         this.linkPermissions = linkPermissions;
         this.teamMemberInfo = teamMemberInfo;
         this.contentOwnerTeamInfo = contentOwnerTeamInfo;
+        this.previewType = previewType;
+        this.createdTimestamp = LangUtil.truncateMillis(createdTimestamp);
     }
 
     /**
@@ -115,7 +125,7 @@ public class SharedLinkMetadata {
      *     preconditions.
      */
     public SharedLinkMetadata(@Nonnull String url, @Nonnull String name, @Nonnull LinkPermissions linkPermissions) {
-        this(url, name, linkPermissions, null, null, null, null, null);
+        this(url, name, linkPermissions, null, null, null, null, null, null, null);
     }
 
     /**
@@ -204,6 +214,27 @@ public class SharedLinkMetadata {
     }
 
     /**
+     * The preview type is determined by the file extension of the shared link.
+     * It will be null if the file cannot be previewed by the file viewer.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public String getPreviewType() {
+        return previewType;
+    }
+
+    /**
+     * The time the shared link was created.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public Date getCreatedTimestamp() {
+        return createdTimestamp;
+    }
+
+    /**
      * Returns a new builder for creating an instance of this class.
      *
      * @param url  URL of the shared link. Must not be {@code null}.
@@ -234,6 +265,8 @@ public class SharedLinkMetadata {
         protected String pathLower;
         protected TeamMemberInfo teamMemberInfo;
         protected Team contentOwnerTeamInfo;
+        protected String previewType;
+        protected Date createdTimestamp;
 
         protected Builder(String url, String name, LinkPermissions linkPermissions) {
             if (url == null) {
@@ -253,6 +286,8 @@ public class SharedLinkMetadata {
             this.pathLower = null;
             this.teamMemberInfo = null;
             this.contentOwnerTeamInfo = null;
+            this.previewType = null;
+            this.createdTimestamp = null;
         }
 
         /**
@@ -334,13 +369,39 @@ public class SharedLinkMetadata {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param previewType  The preview type is determined by the file
+         *     extension of the shared link. It will be null if the file cannot
+         *     be previewed by the file viewer.
+         *
+         * @return this builder
+         */
+        public Builder withPreviewType(String previewType) {
+            this.previewType = previewType;
+            return this;
+        }
+
+        /**
+         * Set value for optional field.
+         *
+         * @param createdTimestamp  The time the shared link was created.
+         *
+         * @return this builder
+         */
+        public Builder withCreatedTimestamp(Date createdTimestamp) {
+            this.createdTimestamp = LangUtil.truncateMillis(createdTimestamp);
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link SharedLinkMetadata} configured with this
          * builder's values
          *
          * @return new instance of {@link SharedLinkMetadata}
          */
         public SharedLinkMetadata build() {
-            return new SharedLinkMetadata(url, name, linkPermissions, id, expires, pathLower, teamMemberInfo, contentOwnerTeamInfo);
+            return new SharedLinkMetadata(url, name, linkPermissions, id, expires, pathLower, teamMemberInfo, contentOwnerTeamInfo, previewType, createdTimestamp);
         }
     }
 
@@ -354,7 +415,9 @@ public class SharedLinkMetadata {
             this.pathLower,
             this.linkPermissions,
             this.teamMemberInfo,
-            this.contentOwnerTeamInfo
+            this.contentOwnerTeamInfo,
+            this.previewType,
+            this.createdTimestamp
         });
         return hash;
     }
@@ -378,6 +441,8 @@ public class SharedLinkMetadata {
                 && ((this.pathLower == other.pathLower) || (this.pathLower != null && this.pathLower.equals(other.pathLower)))
                 && ((this.teamMemberInfo == other.teamMemberInfo) || (this.teamMemberInfo != null && this.teamMemberInfo.equals(other.teamMemberInfo)))
                 && ((this.contentOwnerTeamInfo == other.contentOwnerTeamInfo) || (this.contentOwnerTeamInfo != null && this.contentOwnerTeamInfo.equals(other.contentOwnerTeamInfo)))
+                && ((this.previewType == other.previewType) || (this.previewType != null && this.previewType.equals(other.previewType)))
+                && ((this.createdTimestamp == other.createdTimestamp) || (this.createdTimestamp != null && this.createdTimestamp.equals(other.createdTimestamp)))
                 ;
         }
         else {
@@ -447,6 +512,14 @@ public class SharedLinkMetadata {
                 g.writeFieldName("content_owner_team_info");
                 StoneSerializers.nullableStruct(Team.Serializer.INSTANCE).serialize(value.contentOwnerTeamInfo, g);
             }
+            if (value.previewType != null) {
+                g.writeFieldName("preview_type");
+                StoneSerializers.nullable(StoneSerializers.string()).serialize(value.previewType, g);
+            }
+            if (value.createdTimestamp != null) {
+                g.writeFieldName("created_timestamp");
+                StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.createdTimestamp, g);
+            }
             if (!collapse) {
                 g.writeEndObject();
             }
@@ -472,6 +545,8 @@ public class SharedLinkMetadata {
                 String f_pathLower = null;
                 TeamMemberInfo f_teamMemberInfo = null;
                 Team f_contentOwnerTeamInfo = null;
+                String f_previewType = null;
+                Date f_createdTimestamp = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
                     String field = p.getCurrentName();
                     p.nextToken();
@@ -499,6 +574,12 @@ public class SharedLinkMetadata {
                     else if ("content_owner_team_info".equals(field)) {
                         f_contentOwnerTeamInfo = StoneSerializers.nullableStruct(Team.Serializer.INSTANCE).deserialize(p);
                     }
+                    else if ("preview_type".equals(field)) {
+                        f_previewType = StoneSerializers.nullable(StoneSerializers.string()).deserialize(p);
+                    }
+                    else if ("created_timestamp".equals(field)) {
+                        f_createdTimestamp = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
+                    }
                     else {
                         skipValue(p);
                     }
@@ -512,7 +593,7 @@ public class SharedLinkMetadata {
                 if (f_linkPermissions == null) {
                     throw new JsonParseException(p, "Required field \"link_permissions\" missing.");
                 }
-                value = new SharedLinkMetadata(f_url, f_name, f_linkPermissions, f_id, f_expires, f_pathLower, f_teamMemberInfo, f_contentOwnerTeamInfo);
+                value = new SharedLinkMetadata(f_url, f_name, f_linkPermissions, f_id, f_expires, f_pathLower, f_teamMemberInfo, f_contentOwnerTeamInfo, f_previewType, f_createdTimestamp);
             }
             else if ("".equals(tag)) {
                 value = Serializer.INSTANCE.deserialize(p, true);

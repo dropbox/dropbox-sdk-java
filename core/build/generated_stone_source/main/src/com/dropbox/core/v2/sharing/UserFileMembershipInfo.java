@@ -52,6 +52,8 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      *     the request. Must not contain a {@code null} item.
      * @param initials  Field is deprecated. Never set.
      * @param isInherited  True if the member has access on a parent folder.
+     * @param inheritedAccessType  The access type from parent folder for this
+     *     member.
      * @param timeLastSeen  The UTC timestamp of when the user has last seen the
      *     content. Only populated if the user has seen the content and the
      *     caller has a plan that includes viewer history.
@@ -61,8 +63,8 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.
      */
-    public UserFileMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull UserInfo user, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited, @Nullable Date timeLastSeen, @Nullable PlatformType platformType) {
-        super(accessType, user, permissions, initials, isInherited);
+    public UserFileMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull UserInfo user, @Nullable List<MemberPermission> permissions, @Nullable String initials, boolean isInherited, @Nullable AccessLevel inheritedAccessType, @Nullable Date timeLastSeen, @Nullable PlatformType platformType) {
+        super(accessType, user, permissions, initials, isInherited, inheritedAccessType);
         this.timeLastSeen = LangUtil.truncateMillis(timeLastSeen);
         this.platformType = platformType;
     }
@@ -83,7 +85,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      *     preconditions.
      */
     public UserFileMembershipInfo(@Nonnull AccessLevel accessType, @Nonnull UserInfo user) {
-        this(accessType, user, null, null, false, null, null);
+        this(accessType, user, null, null, false, null, null, null);
     }
 
     /**
@@ -139,6 +141,16 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
      */
     public boolean getIsInherited() {
         return isInherited;
+    }
+
+    /**
+     * The access type from parent folder for this member.
+     *
+     * @return value for this field, or {@code null} if not present.
+     */
+    @Nullable
+    public AccessLevel getInheritedAccessType() {
+        return inheritedAccessType;
     }
 
     /**
@@ -271,13 +283,26 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
         }
 
         /**
+         * Set value for optional field.
+         *
+         * @param inheritedAccessType  The access type from parent folder for
+         *     this member.
+         *
+         * @return this builder
+         */
+        public Builder withInheritedAccessType(AccessLevel inheritedAccessType) {
+            super.withInheritedAccessType(inheritedAccessType);
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link UserFileMembershipInfo} configured with
          * this builder's values
          *
          * @return new instance of {@link UserFileMembershipInfo}
          */
         public UserFileMembershipInfo build() {
-            return new UserFileMembershipInfo(accessType, user, permissions, initials, isInherited, timeLastSeen, platformType);
+            return new UserFileMembershipInfo(accessType, user, permissions, initials, isInherited, inheritedAccessType, timeLastSeen, platformType);
         }
     }
 
@@ -307,6 +332,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
                 && ((this.permissions == other.permissions) || (this.permissions != null && this.permissions.equals(other.permissions)))
                 && ((this.initials == other.initials) || (this.initials != null && this.initials.equals(other.initials)))
                 && (this.isInherited == other.isInherited)
+                && ((this.inheritedAccessType == other.inheritedAccessType) || (this.inheritedAccessType != null && this.inheritedAccessType.equals(other.inheritedAccessType)))
                 && ((this.timeLastSeen == other.timeLastSeen) || (this.timeLastSeen != null && this.timeLastSeen.equals(other.timeLastSeen)))
                 && ((this.platformType == other.platformType) || (this.platformType != null && this.platformType.equals(other.platformType)))
                 ;
@@ -358,6 +384,10 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
             }
             g.writeFieldName("is_inherited");
             StoneSerializers.boolean_().serialize(value.isInherited, g);
+            if (value.inheritedAccessType != null) {
+                g.writeFieldName("inherited_access_type");
+                StoneSerializers.nullable(AccessLevel.Serializer.INSTANCE).serialize(value.inheritedAccessType, g);
+            }
             if (value.timeLastSeen != null) {
                 g.writeFieldName("time_last_seen");
                 StoneSerializers.nullable(StoneSerializers.timestamp()).serialize(value.timeLastSeen, g);
@@ -385,6 +415,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
                 List<MemberPermission> f_permissions = null;
                 String f_initials = null;
                 Boolean f_isInherited = false;
+                AccessLevel f_inheritedAccessType = null;
                 Date f_timeLastSeen = null;
                 PlatformType f_platformType = null;
                 while (p.getCurrentToken() == JsonToken.FIELD_NAME) {
@@ -405,6 +436,9 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
                     else if ("is_inherited".equals(field)) {
                         f_isInherited = StoneSerializers.boolean_().deserialize(p);
                     }
+                    else if ("inherited_access_type".equals(field)) {
+                        f_inheritedAccessType = StoneSerializers.nullable(AccessLevel.Serializer.INSTANCE).deserialize(p);
+                    }
                     else if ("time_last_seen".equals(field)) {
                         f_timeLastSeen = StoneSerializers.nullable(StoneSerializers.timestamp()).deserialize(p);
                     }
@@ -421,7 +455,7 @@ public class UserFileMembershipInfo extends UserMembershipInfo {
                 if (f_user == null) {
                     throw new JsonParseException(p, "Required field \"user\" missing.");
                 }
-                value = new UserFileMembershipInfo(f_accessType, f_user, f_permissions, f_initials, f_isInherited, f_timeLastSeen, f_platformType);
+                value = new UserFileMembershipInfo(f_accessType, f_user, f_permissions, f_initials, f_isInherited, f_inheritedAccessType, f_timeLastSeen, f_platformType);
             }
             else {
                 throw new JsonParseException(p, "No subtype found that matches tag: \"" + tag + "\"");

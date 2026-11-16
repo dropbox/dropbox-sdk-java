@@ -49,8 +49,11 @@ public class SearchOptions {
      *     be greater than or equal to 1 and be less than or equal to 1000.
      * @param orderBy  Specified property of the order of search results. By
      *     default, results are sorted by relevance.
-     * @param fileStatus  Restricts search to the given file status. Must not be
-     *     {@code null}.
+     * @param fileStatus  Restricts search to the given file status. The {@link
+     *     FileStatus#DELETED} value is deprecated and should not be used. This
+     *     also applies to searches continued with {@link
+     *     DbxUserFilesRequests#searchContinueV2(String)}. Must not be {@code
+     *     null}.
      * @param filenameOnly  Restricts search to only match on filenames.
      * @param fileExtensions  Restricts search to only the extensions specified.
      *     Only supported for active file search. Must not contain a {@code
@@ -153,7 +156,9 @@ public class SearchOptions {
     }
 
     /**
-     * Restricts search to the given file status.
+     * Restricts search to the given file status. The {@link FileStatus#DELETED}
+     * value is deprecated and should not be used. This also applies to searches
+     * continued with {@link DbxUserFilesRequests#searchContinueV2(String)}.
      *
      * @return value for this field, or {@code null} if not present. Defaults to
      *     FileStatus.ACTIVE.
@@ -311,9 +316,12 @@ public class SearchOptions {
          * <p> If left unset or set to {@code null}, defaults to {@code
          * FileStatus.ACTIVE}. </p>
          *
-         * @param fileStatus  Restricts search to the given file status. Must
-         *     not be {@code null}. Defaults to {@code FileStatus.ACTIVE} when
-         *     set to {@code null}.
+         * @param fileStatus  Restricts search to the given file status. The
+         *     {@link FileStatus#DELETED} value is deprecated and should not be
+         *     used. This also applies to searches continued with {@link
+         *     DbxUserFilesRequests#searchContinueV2(String)}. Must not be
+         *     {@code null}. Defaults to {@code FileStatus.ACTIVE} when set to
+         *     {@code null}.
          *
          * @return this builder
          *

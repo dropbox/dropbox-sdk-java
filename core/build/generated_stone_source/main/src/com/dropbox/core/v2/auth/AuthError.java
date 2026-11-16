@@ -36,7 +36,11 @@ public final class AuthError {
      */
     public enum Tag {
         /**
-         * The access token is invalid.
+         * The access token is invalid. This can happen if the access token has
+         * been revoked by Dropbox or the user. To fix this, you should
+         * re-authenticate the user. Note: Access tokens that are not returned
+         * exactly as provisioned will return this error. Be sure not to
+         * truncate or otherwise malform access tokens provided by Dropbox.
          */
         INVALID_ACCESS_TOKEN,
         /**
@@ -78,7 +82,11 @@ public final class AuthError {
     }
 
     /**
-     * The access token is invalid.
+     * The access token is invalid. This can happen if the access token has been
+     * revoked by Dropbox or the user. To fix this, you should re-authenticate
+     * the user. Note: Access tokens that are not returned exactly as
+     * provisioned will return this error. Be sure not to truncate or otherwise
+     * malform access tokens provided by Dropbox.
      */
     public static final AuthError INVALID_ACCESS_TOKEN = new AuthError().withTag(Tag.INVALID_ACCESS_TOKEN);
     /**
