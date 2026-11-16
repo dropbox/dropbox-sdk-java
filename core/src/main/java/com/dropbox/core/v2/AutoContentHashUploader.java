@@ -153,10 +153,12 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
     @Override
     public void upload(File file) throws IOException {
         try (FileInputStream input = new FileInputStream(file)) {
-            upload(input);
-        } catch (IOUtil.ReadException | IOUtil.WriteException ex) {
-            // Match HttpRequestor.Uploader.upload(File)'s exception contract.
-            throw ex.getCause();
+            try {
+                upload(input);
+            } catch (IOUtil.ReadException | IOUtil.WriteException ex) {
+                // Unwrap before closing so any close failure is suppressed on the exposed cause.
+                throw ex.getCause();
+            }
         }
     }
 

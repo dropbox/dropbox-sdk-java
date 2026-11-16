@@ -107,13 +107,17 @@ public class DropboxContentHasherTest {
             {b - 1, "e1d05b9adf4293b7fec11b099ce74116fc06dfa733a9833be9166ab4c769da43"},
             {b, "b9654428408015906b44a00935b70af33830aa344b780b0eabd535a133150d04"},
             {b + 1, "4a6cc0a344febaa07772e7c974834b2fb1d24594d4ba15f27c97a54699709f44"},
+            {b * 2 - 1, "dc2a3b163e6f9b7ad135c5876c7dce26ba594580614c2ca929bd4b3e9aef36e7"},
+            {b * 2, "b76a633d9733b991a976dba723df6940bfaf789390a929fe8f68fd1b4705c8c1"},
+            {b * 2 + 1, "c84ee1d6377d71687c1cfe37be0897c4e351df175ea677ca2c918736a9cfb476"},
             {b * 3 + 123, "b4c5d97fec5b78c2c45907bc6fed003057fc99977501eeac971e84f836af442c"},
         };
     }
 
     @Test(dataProvider = "vectors")
     public void testIndependentVectors(int size, String expected) throws Exception {
-        // Values generated independently with Python hashlib, using byte[i] = i % 251.
+        // Python hashlib vectors, cross-checked against Dropbox's official Java hasher
+        // (source blob a3e0471f10512be6a984030597a94f0df86e9ec2), using byte[i] = i % 251.
         byte[] data = new byte[size];
         for (int i = 0; i < size; i++) data[i] = (byte) (i % 251);
         assertEquals(DropboxContentHasher.hashHex(data), expected);

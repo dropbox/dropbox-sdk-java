@@ -12,6 +12,9 @@ import com.dropbox.core.v2.files.UploadSessionAppendBatchArgEntry;
 import com.dropbox.core.v2.files.UploadSessionAppendV2Uploader;
 import org.testng.annotations.Test;
 import org.testng.annotations.DataProvider;
+import org.mockito.MockedConstruction;
+import java.nio.channels.FileChannel;
+import static org.mockito.Mockito.*;
 import com.dropbox.core.DbxUploader;
 import com.dropbox.core.v2.files.DbxUserFilesRequests;
 
@@ -785,6 +788,81 @@ public class AutoContentHashUploaderTest {
             }
         } finally {
             Files.delete(path);
+        }
+    }
+
+    @Test
+    public void testFileUploadPreservesReadAndWriteCausesWhenInputCloseFails() throws Exception {
+        for (boolean read : new boolean[]{true, false}) {
+            IOException failure = new IOException(read ? "read failed" : "write failed");
+            IOException closeFailure = new IOException("input close failed");
+            HttpRequestor requestor = mock(HttpRequestor.class);
+            HttpRequestor.Uploader delegate = mock(HttpRequestor.Uploader.class);
+            when(requestor.startPostInStreamingMode(anyString(), any())).thenReturn(delegate);
+            IOUtil.WrappedException wrapped = read ? new IOUtil.ReadException(failure) : new IOUtil.WriteException(failure);
+            doThrow(wrapped).when(delegate).upload(any(InputStream.class));
+            AutoContentHashUploader uploader = new AutoContentHashUploader(requestor, "https://example.test",
+                    Collections.singletonList(new HttpRequestor.Header("Dropbox-API-Arg", "{}")));
+            uploader.getBody(); // Exercise file ownership without a hash pre-read.
+            java.io.File file = new java.io.File("mock-upload-file");
+            try (MockedConstruction<FileInputStream> streams = mockConstruction(FileInputStream.class,
+                    (input, context) -> doThrow(closeFailure).when(input).close())) {
+                IOException thrown = expectThrows(IOException.class, () -> uploader.upload(file));
+                assertSame(thrown, failure);
+                assertEquals(thrown.getSuppressed().length, 1);
+                assertSame(thrown.getSuppressed()[0], closeFailure);
+                assertEquals(streams.constructed().size(), 1);
+                verify(streams.constructed().get(0)).close();
+            } finally {
+                uploader.close();
+            }
+        }
+    }
+
+    @Test
+    public void testFileUploadPropagatesInputCloseFailureAfterSuccess() throws Exception {
+        IOException closeFailure = new IOException("input close failed");
+        HttpRequestor requestor = mock(HttpRequestor.class);
+        HttpRequestor.Uploader delegate = mock(HttpRequestor.Uploader.class);
+        when(requestor.startPostInStreamingMode(anyString(), any())).thenReturn(delegate);
+        AutoContentHashUploader uploader = new AutoContentHashUploader(requestor, "https://example.test",
+                Collections.singletonList(new HttpRequestor.Header("Dropbox-API-Arg", "{}")));
+        uploader.getBody();
+        java.io.File file = new java.io.File("mock-upload-file");
+        try (MockedConstruction<FileInputStream> streams = mockConstruction(FileInputStream.class,
+                (input, context) -> doThrow(closeFailure).when(input).close())) {
+            assertSame(expectThrows(IOException.class, () -> uploader.upload(file)), closeFailure);
+            verify(delegate).upload(streams.constructed().get(0));
+            verify(streams.constructed().get(0)).close();
+        } finally {
+            uploader.close();
+        }
+    }
+
+    @Test
+    public void testFileUploadHashReadFailurePreservesCloseFailureAndSendsNothing() throws Exception {
+        IOException readFailure = new IOException("hash read failed");
+        IOException closeFailure = new IOException("input close failed");
+        FileChannel channel = mock(FileChannel.class);
+        RecordingRequestor requestor = new RecordingRequestor();
+        AutoContentHashUploader uploader = lazyUploader(requestor, "{}");
+        java.io.File file = new java.io.File("mock-upload-file");
+        // Constructor mocking also intercepts class-loader reads; load the hashing path first.
+        DropboxContentHasher.hashHex(IOUtil.limit(new ByteArrayInputStream(new byte[0]), 0));
+        try (MockedConstruction<FileInputStream> streams = mockConstruction(FileInputStream.class, (input, context) -> {
+            when(input.getChannel()).thenReturn(channel);
+            when(input.read(any(byte[].class), anyInt(), anyInt())).thenThrow(readFailure);
+            doThrow(closeFailure).when(input).close();
+        })) {
+            IOException thrown = expectThrows(IOException.class, () -> uploader.upload(file));
+            assertSame(thrown, readFailure);
+            assertEquals(thrown.getSuppressed().length, 1);
+            assertSame(thrown.getSuppressed()[0], closeFailure);
+            verify(channel).position(0);
+            verify(streams.constructed().get(0)).close();
+            assertEquals(requestor.starts, 0);
+        } finally {
+            uploader.close();
         }
     }
 
