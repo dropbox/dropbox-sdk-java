@@ -147,12 +147,14 @@ public class com/dropbox/core/DbxRequestConfig {
 	public fun getHttpRequestor ()Lcom/dropbox/core/http/HttpRequestor;
 	public fun getMaxRetries ()I
 	public fun getUserLocale ()Ljava/lang/String;
+	public fun isAutoContentHashEnabled ()Z
 	public fun isAutoRetryEnabled ()Z
 	public static fun newBuilder (Ljava/lang/String;)Lcom/dropbox/core/DbxRequestConfig$Builder;
 }
 
 public final class com/dropbox/core/DbxRequestConfig$Builder {
 	public fun build ()Lcom/dropbox/core/DbxRequestConfig;
+	public fun withAutoContentHash (Z)Lcom/dropbox/core/DbxRequestConfig$Builder;
 	public fun withAutoRetryDisabled ()Lcom/dropbox/core/DbxRequestConfig$Builder;
 	public fun withAutoRetryEnabled ()Lcom/dropbox/core/DbxRequestConfig$Builder;
 	public fun withAutoRetryEnabled (I)Lcom/dropbox/core/DbxRequestConfig$Builder;
@@ -827,8 +829,11 @@ public class com/dropbox/core/util/CountingOutputStream : java/io/OutputStream {
 	public fun write ([BII)V
 }
 
-public final class com/dropbox/core/util/DropboxContentHasher {
+public final class com/dropbox/core/util/DropboxContentHasher : java/security/MessageDigest, java/lang/Cloneable {
 	public static final field BLOCK_SIZE I
+	public fun <init> ()V
+	public fun clone ()Lcom/dropbox/core/util/DropboxContentHasher;
+	public synthetic fun clone ()Ljava/lang/Object;
 	public static fun hash (Ljava/io/InputStream;)[B
 	public static fun hash ([B)[B
 	public static fun hashHex (Ljava/io/InputStream;)Ljava/lang/String;

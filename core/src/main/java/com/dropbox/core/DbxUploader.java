@@ -112,10 +112,16 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
     public R uploadAndFinish(InputStream in, IOUtil.ProgressListener progressListener) throws X, DbxException, IOException {
+        return uploadAndFinish(in, Long.MAX_VALUE, progressListener);
+    }
+
+    private R uploadAndFinishWithLimit(InputStream in, long limit, IOUtil.ProgressListener progressListener)
+            throws X, DbxException, IOException {
+        assertOpenAndUnfinished();
         try {
             try {
                 httpUploader.setProgressListener(progressListener);
-                httpUploader.upload(in);
+                httpUploader.upload(in, limit);
             } catch (IOUtil.ReadException ex) {
                 throw ex.getCause();
             } catch (IOException ex) {
@@ -164,7 +170,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
     public R uploadAndFinish(InputStream in, long limit) throws X, DbxException, IOException {
-        return uploadAndFinish(IOUtil.limit(in, limit));
+        return uploadAndFinishWithLimit(in, limit, null);
     }
 
     /**
@@ -184,7 +190,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
     public R uploadAndFinish(InputStream in, long limit, IOUtil.ProgressListener progressListener) throws X, DbxException, IOException {
-        return uploadAndFinish(IOUtil.limit(in, limit), progressListener);
+        return uploadAndFinishWithLimit(in, limit, progressListener);
     }
 
     /**
