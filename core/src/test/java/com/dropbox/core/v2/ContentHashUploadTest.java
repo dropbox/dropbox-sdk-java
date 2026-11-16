@@ -256,10 +256,14 @@ public class ContentHashUploadTest {
             DbxUploadStyleBuilder<?, ?, ?> builder = builder(client(requestor, true).files(), route,
                     null, DATA.length - 7);
             ByteArrayInputStream input = new ByteArrayInputStream(DATA);
-            input.skip(7);
+            input.skip(3);
+            input.mark(0);
+            input.skip(4);
             NetworkIOException thrown = expectThrows(NetworkIOException.class, () -> builder.uploadAndFinish(input));
             assertSame(thrown.getCause(), failure);
             assertEquals(input.available(), DATA.length - 7);
+            input.reset();
+            assertEquals(input.read(), DATA[3]);
             requestor.startFailure = null;
             byte[] second = Arrays.copyOfRange(DATA, 7, DATA.length);
             second[0] ^= 1;
@@ -482,6 +486,128 @@ public class ContentHashUploadTest {
         } finally {
             Files.delete(path);
         }
+    }
+
+    @Test
+    public void copiedArgumentsMatchTheOrdinaryBuilderForDefaultsNullsAndOptions() throws Exception {
+        String hash = DropboxContentHasher.hashHex(DATA);
+        for (String route : new String[]{"upload", "start", "append", "batch", "finish", "alpha"}) {
+            for (boolean options : new boolean[]{false, true}) {
+                Date modified = options ? new Date(1577836800000L) : null;
+                List<PropertyGroup> groups = options ? Collections.singletonList(new PropertyGroup("ptid:copy",
+                        Collections.singletonList(new PropertyField("tag", "value")))) : null;
+                WriteMode mode = options ? WriteMode.OVERWRITE : null;
+                CommitInfo fromBuilder = CommitInfo.newBuilder("/file").withMode(mode)
+                        .withAutorename(options ? true : null).withMute(options ? true : null)
+                        .withStrictConflict(options ? true : null).withClientModified(modified)
+                        .withPropertyGroups(groups).build();
+                CommitInfo fromConstructor = new CommitInfo("/file", options ? WriteMode.OVERWRITE : WriteMode.ADD,
+                        options, modified, options, groups, options);
+                assertEquals(fromBuilder, fromConstructor);
+                RecordingRequestor automatic = new RecordingRequestor(), explicit = new RecordingRequestor();
+                DbxUserFilesRequests autoFiles = client(automatic, true).files(), manualFiles = client(explicit, true).files();
+                DbxUploadStyleBuilder<?, ?, ?> auto = route.equals("finish")
+                        ? autoFiles.uploadSessionFinishBuilder(CURSOR, fromBuilder) : builder(autoFiles, route);
+                DbxUploadStyleBuilder<?, ?, ?> manual = route.equals("finish")
+                        ? manualFiles.uploadSessionFinishBuilder(CURSOR, fromConstructor).withContentHash(hash)
+                        : builder(manualFiles, route, hash);
+                for (DbxUploadStyleBuilder<?, ?, ?> target : new DbxUploadStyleBuilder<?, ?, ?>[]{auto, manual}) {
+                    Class<?> type = target.getClass();
+                    if (route.equals("upload") || route.equals("alpha")) {
+                        type.getMethod("withMode", WriteMode.class).invoke(target, mode);
+                        type.getMethod("withAutorename", Boolean.class).invoke(target, options ? Boolean.TRUE : null);
+                        type.getMethod("withMute", Boolean.class).invoke(target, options ? Boolean.TRUE : null);
+                        type.getMethod("withStrictConflict", Boolean.class).invoke(target, options ? Boolean.TRUE : null);
+                        type.getMethod("withClientModified", Date.class).invoke(target, modified);
+                        type.getMethod("withPropertyGroups", List.class).invoke(target, groups);
+                    } else if (route.equals("start")) {
+                        ((UploadSessionStartBuilder) target).withClose(options ? true : null)
+                                .withSessionType(options ? UploadSessionType.SEQUENTIAL : null);
+                    } else if (route.equals("append")) {
+                        ((UploadSessionAppendV2Builder) target).withClose(options ? true : null);
+                    }
+                }
+                auto.uploadAndFinish(new ByteArrayInputStream(DATA));
+                manual.start().uploadAndFinish(new ByteArrayInputStream(DATA));
+                assertEquals(automatic.arg, explicit.arg, route + ": options=" + options);
+                assertEquals(automatic.body.toByteArray(), explicit.body.toByteArray());
+            }
+        }
+    }
+
+    @DataProvider(name = "byteArrayViews")
+    public Object[][] byteArrayViews() {
+        List<Object[]> cases = new ArrayList<>();
+        for (int[] view : new int[][]{{0, DATA.length, 0, 0}, {3, 13, 5, 7}, {3, 13, 3, 16}, {3, 13, 6, 6}})
+            for (long limit : new long[]{0, 7, Long.MAX_VALUE}) cases.add(new Object[]{view, limit});
+        return cases.toArray(new Object[0][]);
+    }
+
+    @Test(dataProvider = "byteArrayViews")
+    public void byteArrayViewsKeepTheirPositionMarkAndLogicalEnd(int[] view, long limit) throws Exception {
+        int offset = view[0], length = view[1], mark = view[2], position = view[3];
+        ByteArrayInputStream input = new ByteArrayInputStream(DATA, offset, length);
+        input.skip(mark - offset);
+        input.mark(0);
+        input.skip(position - mark);
+        RecordingRequestor requestor = new RecordingRequestor();
+        client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR).uploadAndFinish(input, limit);
+        int end = position + (int) Math.min(limit, offset + length - position);
+        byte[] expected = Arrays.copyOfRange(DATA, position, end);
+        assertHash(requestor, expected);
+        assertEquals(requestor.body.toByteArray(), expected);
+        assertEquals(input.available(), offset + length - end);
+        input.reset();
+        assertEquals(input.available(), offset + length - mark);
+        assertEquals(input.read(), DATA[mark] & 0xff);
+    }
+
+    @Test
+    public void readAndRewindFailuresPreserveTheOriginalReadError() throws Exception {
+        Path path = Files.createTempFile("dropbox-read-rewind", ".bin");
+        IOException failure = new IOException("read failed");
+        try {
+            Files.write(path, DATA);
+            RecordingRequestor requestor = new RecordingRequestor();
+            try (FileInputStream input = new FileInputStream(path.toFile()) {
+                @Override public int read(byte[] bytes, int offset, int length) throws IOException {
+                    super.read(bytes, offset, Math.min(1, length));
+                    close();
+                    throw failure;
+                }
+            }) {
+                input.getChannel().position(7);
+                IOException thrown = expectThrows(IOException.class, () -> client(requestor, true).files()
+                        .uploadSessionAppendV2Builder(CURSOR).uploadAndFinish(input, 7));
+                assertSame(thrown, failure);
+                assertEquals(thrown.getSuppressed().length, 1);
+                assertTrue(thrown.getSuppressed()[0] instanceof java.nio.channels.ClosedChannelException);
+                assertEquals(requestor.starts, 0);
+            }
+        } finally {
+            Files.delete(path);
+        }
+    }
+
+    @Test
+    public void nonSeekableFileChannelFallsBackWithoutPreReading() throws Exception {
+        FileInputStream input = org.mockito.Mockito.mock(FileInputStream.class);
+        java.nio.channels.FileChannel channel = org.mockito.Mockito.mock(java.nio.channels.FileChannel.class);
+        org.mockito.Mockito.when(input.getChannel()).thenReturn(channel);
+        org.mockito.Mockito.when(channel.position()).thenThrow(new IOException("Illegal seek"));
+        ByteArrayInputStream payload = new ByteArrayInputStream(DATA);
+        RecordingRequestor requestor = new RecordingRequestor();
+        org.mockito.Mockito.when(input.read(org.mockito.ArgumentMatchers.any(byte[].class))).thenAnswer(call -> {
+            assertEquals(requestor.starts, 1, "non-seekable file input must not be pre-read");
+            return payload.read(call.getArgument(0));
+        });
+        client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR).uploadAndFinish(input);
+        assertEquals(requestor.body.toByteArray(), DATA);
+        assertFalse(requestor.arg.contains("content_hash"));
+        assertEquals(requestor.closes, 1);
+        org.mockito.Mockito.verify(channel).position();
+        org.mockito.Mockito.verify(channel, org.mockito.Mockito.never()).position(org.mockito.ArgumentMatchers.anyLong());
+        org.mockito.Mockito.verify(input, org.mockito.Mockito.never()).close();
     }
 
     private static DbxClientV2 client(RecordingRequestor requestor, boolean enabled) {
