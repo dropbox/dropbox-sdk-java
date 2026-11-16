@@ -194,22 +194,11 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
                 return null; // For example a non-seekable file descriptor such as a pipe.
             }
             rewind = () -> channel.position(position);
-        } else if (input instanceof ByteArrayInputStream) {
-            // Subclasses may customize reads or skip(), but this rewind needs the original
-            // exact available() count and reset() behavior to preserve the caller's mark.
-            try {
-                if (input.getClass().getMethod("available").getDeclaringClass() != ByteArrayInputStream.class
-                        || input.getClass().getMethod("reset").getDeclaringClass() != ByteArrayInputStream.class) return null;
-            } catch (NoSuchMethodException | SecurityException ex) {
-                return null;
-            }
+        } else if (input != null && input.getClass() == ByteArrayInputStream.class) {
             int remaining = input.available();
             rewind = () -> {
                 input.reset();
-                long skipped = input.available() - remaining;
-                if (skipped < 0) throw new IOException("Input changed while calculating content hash");
-                input.skipNBytes(skipped);
-                if (input.available() != remaining) throw new IOException("Could not restore input position");
+                input.skip(input.available() - remaining);
             };
         } else {
             return null; // Unknown subclasses and mark/reset streams cannot preserve caller state safely.

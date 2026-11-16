@@ -136,15 +136,13 @@ DbxRequestConfig config = DbxRequestConfig.newBuilder("my-app")
     .build();
 ```
 
-`FileInputStream` is rewound with its file channel. `ByteArrayInputStream`, including subclasses
-that inherit its `available()` and `reset()` implementations, retains its position and existing
-mark. Custom reads and short or zero `skip()` results are supported; a failed rewind aborts
-before HTTP creation. These inputs support arbitrary upload sizes without loading the payload
-into memory. Subclasses that redefine the position-related methods and other input streams
-are uploaded without automatic hashing when safe rewinding cannot be established.
-In particular, `markSupported()` does not expose rewind capacity: `BufferedInputStream` may
-buffer the entire payload to retain a mark, and a new mark replaces the caller's old mark.
-Use a `FileInputStream` directly for large files, or supply a known content hash explicitly.
+`FileInputStream` is rewound with its file channel. A plain `ByteArrayInputStream` retains its
+position and existing mark. These inputs support arbitrary upload sizes without loading the
+payload into memory. Custom byte-array subclasses and other input streams are uploaded without
+automatic hashing when safe rewinding cannot be established. In particular, `markSupported()`
+is insufficient: setting a new mark on a `BufferedInputStream` or another mark/reset stream
+would destroy the caller's existing mark. Use a `FileInputStream` directly for large files,
+or supply a known content hash explicitly.
 
 This follows the other SDKs' pre-request design: [Python hashes bytes and copies its argument](https://github.com/dropbox/dropbox-sdk-python/blob/main/dropbox/dropbox_client.py),
 while [Go hashes seekable readers, restores their offset, and copies its argument](https://github.com/dropbox/dropbox-sdk-go-unofficial/blob/master/v6/dropbox/files/content_hash.go).
