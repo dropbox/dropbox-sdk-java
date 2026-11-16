@@ -50,6 +50,9 @@ public final class DropboxContentHasher extends MessageDigest implements Cloneab
 
     @Override
     protected void engineUpdate(byte[] input, int offset, int length) {
+        if (offset < 0 || length < 0 || offset > input.length - length) {
+            throw new IndexOutOfBoundsException("Invalid input range");
+        }
         while (length > 0) {
             int count = Math.min(length, BLOCK_SIZE - blockPosition);
             blockDigest.update(input, offset, count);

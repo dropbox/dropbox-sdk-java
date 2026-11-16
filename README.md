@@ -116,19 +116,26 @@ try (InputStream in = new FileInputStream("test.txt")) {
 
 ### Upload content hashes
 
-The SDK automatically sends a Dropbox `content_hash` for file uploads and upload-session
+Automatic content hashing is disabled by default. When enabled, the SDK sends a Dropbox
+`content_hash` for file uploads and upload-session
 start, append v2, append batch, and finish requests when `uploadAndFinish` receives a
 `FileInputStream` or `ByteArrayInputStream`. The server rejects the request if the uploaded
 bytes do not match the hash. Hashing reads the payload once before the upload, restores the
 current input position, then uploads it. A byte limit applies to both reads.
 
-To avoid the extra read (for example, for a network-backed file), disable automatic hashing:
+To enable automatic hashing:
 
 ```java
 DbxRequestConfig config = DbxRequestConfig.newBuilder("my-app")
-    .withAutoContentHash(false)
+    .withAutoContentHash(true)
     .build();
 ```
+
+For upload-session start, append v2, and finish, the hash covers only the bytes sent in
+that request, not the entire session. Append batch hashes the concatenation of all entries
+as one payload, without restarting the hash at entry boundaries. These semantics are
+specified in the [Dropbox API schema](https://github.com/dropbox/dropbox-api-spec/blob/main/files.stone).
+The deprecated append endpoint does not support a content hash.
 
 A manually supplied `.withContentHash(...)` is always preserved, including when automatic
 hashing is disabled. Other input streams and uploads through `getOutputStream()` are sent

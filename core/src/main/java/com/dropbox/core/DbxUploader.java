@@ -112,16 +112,20 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
      * @throws IllegalStateException if this uploader has already been closed (see {@link #close}) or finished (see {@link #finish})
      */
     public R uploadAndFinish(InputStream in, IOUtil.ProgressListener progressListener) throws X, DbxException, IOException {
-        return uploadAndFinish(in, Long.MAX_VALUE, progressListener);
+        return uploadAndFinishWithLimit(in, null, progressListener);
     }
 
-    private R uploadAndFinishWithLimit(InputStream in, long limit, IOUtil.ProgressListener progressListener)
+    private R uploadAndFinishWithLimit(InputStream in, Long limit, IOUtil.ProgressListener progressListener)
             throws X, DbxException, IOException {
         assertOpenAndUnfinished();
         try {
             try {
                 httpUploader.setProgressListener(progressListener);
-                httpUploader.upload(in, limit);
+                if (limit == null) {
+                    httpUploader.upload(in);
+                } else {
+                    httpUploader.upload(in, limit);
+                }
             } catch (IOUtil.ReadException ex) {
                 throw ex.getCause();
             } catch (IOException ex) {

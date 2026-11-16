@@ -4,6 +4,7 @@ import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.DropboxContentHasher;
 import com.dropbox.core.util.IOUtil;
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
@@ -12,6 +13,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.Closeable;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +26,8 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
     private final List<HttpRequestor.Header> headers;
     private HttpRequestor.Uploader delegate;
     private boolean closed;
-    private boolean bodyRequested;
+    private OutputStream body;
+    private boolean finished;
 
     AutoContentHashUploader(HttpRequestor requestor, String uri, List<HttpRequestor.Header> headers) {
         this.requestor = requestor;
@@ -32,6 +36,9 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
     }
 
     static boolean needsContentHash(String path, String json) throws IOException {
+        // files.stone defines these hashes over the bytes uploaded in this call. Append batch
+        // uses one hash over the concatenated payload, not one hash per entry. Legacy append
+        // has no content_hash argument. See https://github.com/dropbox/dropbox-api-spec/blob/main/files.stone.
         switch (path) {
             case "2/files/upload":
             case "2/files/upload_session/start":
@@ -61,33 +68,58 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
     }
 
     private HttpRequestor.Uploader start() throws IOException {
-        if (closed) {
-            throw new IOException("This uploader is already closed.");
+        if (closed || finished) {
+            throw new IOException("This uploader is already closed or finished.");
         }
         if (delegate == null) {
-            delegate = requestor.startPostInStreamingMode(uri, headers);
-            delegate.setProgressListener(progressListener);
+            try {
+                delegate = requestor.startPostInStreamingMode(uri, headers);
+                delegate.setProgressListener(progressListener);
+            } catch (IOException | RuntimeException ex) {
+                // Never retry initialization implicitly on a later write, flush, or close.
+                closed = true;
+                if (delegate != null) {
+                    try {
+                        delegate.close();
+                    } catch (RuntimeException cleanup) {
+                        ex.addSuppressed(cleanup);
+                    }
+                }
+                throw ex;
+            }
         }
         return delegate;
     }
 
-    private void addContentHash(String hash) {
+    private void addContentHash(String hash) throws IOException {
         for (int i = 0; i < headers.size(); i++) {
             HttpRequestor.Header header = headers.get(i);
             if ("Dropbox-API-Arg".equals(header.getKey())) {
-                // Stone omits the null content_hash field. Preserve the rest of the serialized
-                // argument, including header-safe escaping, without changing the caller's object.
-                String json = header.getValue();
-                String rest = json.substring(1);
-                headers.set(i, new HttpRequestor.Header(header.getKey(),
-                        "{\"content_hash\":\"" + hash + "\"" + ("}".equals(rest) ? "" : ",") + rest));
+                StringWriter json = new StringWriter();
+                JsonFactory factory = new JsonFactory();
+                try (JsonParser parser = factory.createParser(header.getValue());
+                     JsonGenerator generator = factory.createGenerator(json)) {
+                    // Keep non-ASCII and DEL escaped, just like DbxRawClientV2.headerSafeJson.
+                    generator.setHighestNonEscapedChar(0x7e);
+                    parser.nextToken(); // Object already validated by needsContentHash.
+                    generator.writeStartObject();
+                    while (parser.nextToken() == JsonToken.FIELD_NAME) {
+                        generator.copyCurrentStructure(parser);
+                    }
+                    generator.writeStringField("content_hash", hash);
+                    generator.writeEndObject();
+                }
+                headers.set(i, new HttpRequestor.Header(header.getKey(), json.toString()));
                 return;
             }
         }
     }
 
     private void prepare(InputStream in, long limit) throws IOException {
-        if (delegate != null || bodyRequested) {
+        if (closed || finished) {
+            throw new IOException("This uploader is already closed or finished.");
+        }
+        if (delegate != null || body != null) {
             return;
         }
         // markSupported alone is insufficient: buffered streams can invalidate a mark, or
@@ -101,10 +133,9 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
                 return; // Not every file descriptor is seekable (e.g. a pipe).
             }
             String hash;
-            try {
+            // try-with-resources preserves the read failure if rewinding also fails.
+            try (Closeable rewind = () -> channel.position(position)) {
                 hash = DropboxContentHasher.hashHex(IOUtil.limit(in, limit));
-            } finally {
-                channel.position(position);
             }
             addContentHash(hash);
         } else if (in instanceof ByteArrayInputStream) {
@@ -121,17 +152,22 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
 
     @Override
     public void upload(InputStream in) throws IOException {
-        upload(in, Long.MAX_VALUE);
+        prepareForUpload(in, Long.MAX_VALUE);
+        start().upload(in);
     }
 
-    @Override
-    public void upload(InputStream in, long limit) throws IOException {
+    private void prepareForUpload(InputStream in, long limit) throws IOException {
         try {
             prepare(in, limit);
         } catch (IOException ex) {
             throw new IOUtil.ReadException("auto content_hash", ex);
         }
-        start().upload(IOUtil.limit(in, limit));
+    }
+
+    @Override
+    public void upload(InputStream in, long limit) throws IOException {
+        prepareForUpload(in, limit);
+        start().upload(in, limit);
     }
 
     @Override
@@ -141,50 +177,99 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
 
     @Override
     public OutputStream getBody() {
-        bodyRequested = true;
-        // getBody cannot throw IOException. Defer connection creation until a stream operation
-        // (or finish), where connection failures can be reported through the normal I/O path.
-        return new OutputStream() {
+        if (body != null) {
+            return body;
+        }
+        // getBody cannot throw IOException. Open the connection on the first stream operation.
+        body = new OutputStream() {
+            private OutputStream output;
+            private boolean streamClosed;
+
+            private OutputStream output() throws IOException {
+                if (streamClosed) {
+                    throw new IOException("Upload body is already closed.");
+                }
+                HttpRequestor.Uploader uploader = start();
+                if (output == null) {
+                    try {
+                        output = java.util.Objects.requireNonNull(uploader.getBody(), "upload body");
+                    } catch (RuntimeException ex) {
+                        try {
+                            AutoContentHashUploader.this.close();
+                        } catch (RuntimeException cleanup) {
+                            ex.addSuppressed(cleanup);
+                        }
+                        throw ex;
+                    }
+                }
+                return output;
+            }
+
             @Override
             public void write(int value) throws IOException {
-                start().getBody().write(value);
+                output().write(value);
             }
 
             @Override
             public void write(byte[] bytes, int offset, int length) throws IOException {
-                start().getBody().write(bytes, offset, length);
+                output().write(bytes, offset, length);
             }
 
             @Override
             public void flush() throws IOException {
-                start().getBody().flush();
+                output().flush();
             }
 
             @Override
             public void close() throws IOException {
-                start().getBody().close();
+                if (streamClosed) {
+                    return;
+                }
+                try {
+                    // Do not open or retry a connection after abort/close/initialization failure.
+                    if (output != null) {
+                        output.close();
+                    } else if (!closed && !finished) {
+                        output().close();
+                    }
+                } finally {
+                    streamClosed = true;
+                }
             }
         };
+        return body;
     }
 
     @Override
     public HttpRequestor.Response finish() throws IOException {
-        return start().finish();
+        try {
+            return start().finish();
+        } finally {
+            finished = true;
+        }
     }
 
     @Override
     public void close() {
-        closed = true;
-        if (delegate != null) {
-            delegate.close();
+        if (!closed) {
+            closed = true;
+            if (delegate != null) {
+                delegate.close();
+            }
         }
     }
 
     @Override
     public void abort() {
-        closed = true;
-        if (delegate != null) {
-            delegate.abort();
+        if (!closed) {
+            closed = true;
+            if (delegate != null) {
+                try {
+                    delegate.abort();
+                } finally {
+                    delegate.close();
+                }
+            }
         }
     }
 

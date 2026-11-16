@@ -199,6 +199,34 @@ public class DropboxContentHasherTest {
         assertEquals(DropboxContentHasher.hash(input), DropboxContentHasher.hash(data));
     }
 
+    @Test
+    public void testInvalidUpdateRangePreservesState() {
+        DropboxContentHasher hasher = new DropboxContentHasher();
+        byte[] data = randomBytes(100);
+        hasher.update(data);
+        org.testng.Assert.expectThrows(IndexOutOfBoundsException.class, () -> hasher.update(data, 0, -1));
+        org.testng.Assert.expectThrows(IndexOutOfBoundsException.class, () -> hasher.update(data, -1, 0));
+        assertEquals(hasher.digest(), DropboxContentHasher.hash(data));
+    }
+
+    @Test
+    public void testExactBlockBoundaryCloneAndReset() throws Exception {
+        byte[] block = randomBytes(DropboxContentHasher.BLOCK_SIZE);
+        DropboxContentHasher hasher = new DropboxContentHasher();
+        for (byte value : block) hasher.update(value);
+        DropboxContentHasher clone = hasher.clone();
+        assertEquals(hasher.digest(), DropboxContentHasher.hash(block));
+        assertEquals(hasher.digest(), DropboxContentHasher.hash(new byte[0]));
+        clone.update(block);
+        MessageDigest reference = MessageDigest.getInstance("SHA-256");
+        reference.update(MessageDigest.getInstance("SHA-256").digest(block));
+        reference.update(MessageDigest.getInstance("SHA-256").digest(block));
+        assertEquals(clone.digest(), reference.digest());
+        clone.update(block);
+        clone.reset();
+        assertEquals(clone.digest(), DropboxContentHasher.hash(new byte[0]));
+    }
+
     private static byte[] randomBytes(int size) {
         byte[] data = new byte[size];
         new Random(12345).nextBytes(data);
