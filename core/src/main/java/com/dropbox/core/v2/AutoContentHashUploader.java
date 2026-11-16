@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -146,6 +147,16 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
                 in.skip(in.available() - remaining);
             }
             addContentHash(hash);
+        }
+    }
+
+    @Override
+    public void upload(File file) throws IOException {
+        try (FileInputStream input = new FileInputStream(file)) {
+            upload(input);
+        } catch (IOUtil.ReadException | IOUtil.WriteException ex) {
+            // Match HttpRequestor.Uploader.upload(File)'s exception contract.
+            throw ex.getCause();
         }
     }
 

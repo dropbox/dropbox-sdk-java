@@ -737,6 +737,57 @@ public class AutoContentHashUploaderTest {
         assertEquals(input.available(), DATA.length - 3, "preserve the caller mark after hashing fails");
     }
 
+    @Test
+    public void testFileUploadClosesOwnedInputOnSuccessAndWriteFailure() throws Exception {
+        Path path = Files.createTempFile("dropbox-owned-upload", ".bin");
+        try {
+            Files.write(path, DATA);
+            for (boolean failWrite : new boolean[]{false, true}) {
+                RecordingRequestor requestor = new RecordingRequestor();
+                if (failWrite) requestor.writeFailure = new IOException("write failed");
+                AutoContentHashUploader uploader = lazyUploader(requestor, "{}");
+                try {
+                    if (failWrite) {
+                        assertSame(expectThrows(IOException.class, () -> uploader.upload(path.toFile())),
+                                requestor.writeFailure);
+                    } else {
+                        uploader.upload(path.toFile());
+                        assertEquals(requestor.body.toByteArray(), DATA);
+                    }
+                    assertHash(requestor, DATA);
+                    assertFalse(((FileInputStream) requestor.input).getChannel().isOpen(),
+                            "upload(File) must close its own input before uploader cleanup");
+                } finally {
+                    uploader.close();
+                    if (requestor.input != null) requestor.input.close();
+                }
+            }
+        } finally {
+            Files.delete(path);
+        }
+    }
+
+    @Test
+    public void testFileUploadClosesOwnedInputOnRuntimeFailure() throws Exception {
+        Path path = Files.createTempFile("dropbox-owned-upload-failure", ".bin");
+        try {
+            Files.write(path, DATA);
+            RecordingRequestor requestor = new RecordingRequestor();
+            requestor.bodyFailure = new IllegalStateException("body failed");
+            AutoContentHashUploader uploader = lazyUploader(requestor, "{}");
+            try {
+                assertSame(expectThrows(IllegalStateException.class, () -> uploader.upload(path.toFile())),
+                        requestor.bodyFailure);
+                assertFalse(((FileInputStream) requestor.input).getChannel().isOpen());
+            } finally {
+                uploader.close();
+                if (requestor.input != null) requestor.input.close();
+            }
+        } finally {
+            Files.delete(path);
+        }
+    }
+
     private static AutoContentHashUploader lazyUploader(RecordingRequestor requestor, String json) {
         return new AutoContentHashUploader(requestor, "https://example.test/upload",
                 Collections.singletonList(new HttpRequestor.Header("Dropbox-API-Arg", json)));
