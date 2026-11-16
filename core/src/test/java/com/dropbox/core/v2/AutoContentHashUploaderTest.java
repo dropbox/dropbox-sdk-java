@@ -11,6 +11,9 @@ import com.dropbox.core.v2.files.UploadBuilder;
 import com.dropbox.core.v2.files.UploadSessionAppendBatchArgEntry;
 import com.dropbox.core.v2.files.UploadSessionAppendV2Uploader;
 import org.testng.annotations.Test;
+import org.testng.annotations.DataProvider;
+import com.dropbox.core.DbxUploader;
+import com.dropbox.core.v2.files.DbxUserFilesRequests;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,9 +34,14 @@ public class AutoContentHashUploaderTest {
     private static final UploadSessionCursor CURSOR = new UploadSessionCursor("session", 0);
 
     @Test
-    public void testDefaultAndCopiedOptIn() {
-        assertFalse(new DbxRequestConfig("test").isAutoContentHashEnabled());
-        assertFalse(DbxRequestConfig.newBuilder("test").build().isAutoContentHashEnabled());
+    @SuppressWarnings("deprecation")
+    public void testDefaultAndCopiedOptOut() {
+        assertTrue(new DbxRequestConfig("test").isAutoContentHashEnabled());
+        assertTrue(new DbxRequestConfig("test", "en-US").isAutoContentHashEnabled());
+        assertTrue(new DbxRequestConfig("test", "en-US", new RecordingRequestor()).isAutoContentHashEnabled());
+        DbxRequestConfig defaults = DbxRequestConfig.newBuilder("test").build();
+        assertTrue(defaults.isAutoContentHashEnabled());
+        assertTrue(defaults.copy().build().isAutoContentHashEnabled());
         DbxRequestConfig enabled = DbxRequestConfig.newBuilder("test").withAutoContentHash(true).build();
         assertTrue(enabled.copy().build().isAutoContentHashEnabled());
         DbxRequestConfig disabled = DbxRequestConfig.newBuilder("test").withAutoContentHash(false).build();
@@ -226,10 +234,10 @@ public class AutoContentHashUploaderTest {
     }
 
     @Test
-    public void testDefaultPreservesEagerInitializationAndOriginalInput() throws Exception {
+    public void testOptOutPreservesEagerInitializationAndOriginalInput() throws Exception {
         RecordingRequestor requestor = new RecordingRequestor();
         DbxClientV2 client = new DbxClientV2(DbxRequestConfig.newBuilder("test")
-                .withHttpRequestor(requestor).build(), "fake-token");
+                .withHttpRequestor(requestor).withAutoContentHash(false).build(), "fake-token");
         UploadSessionAppendV2Uploader uploader = client.files().uploadSessionAppendV2(CURSOR);
         assertEquals(requestor.starts, 1);
         ByteArrayInputStream input = new ByteArrayInputStream(DATA);
@@ -590,6 +598,95 @@ public class AutoContentHashUploaderTest {
         }
     }
 
+    @Test
+    public void testBodyCloseAfterUploaderCleanupDoesNotCloseTransportTwice() throws Exception {
+        for (boolean abort : new boolean[]{false, true}) {
+            RecordingRequestor requestor = new RecordingRequestor();
+            requestor.closesBodyOnCleanup = true;
+            AutoContentHashUploader uploader = lazyUploader(requestor, "{}");
+            OutputStream output = uploader.getBody();
+            output.write(1);
+            if (abort) uploader.abort();
+            else uploader.close();
+            output.close();
+            output.close();
+            uploader.close();
+            uploader.abort();
+            assertEquals(requestor.bodyCloses, 1);
+            assertEquals(requestor.closes, 1);
+            assertEquals(requestor.starts, 1);
+        }
+    }
+
+    @DataProvider(name = "limitedEndpoints")
+    public Object[][] limitedEndpoints() {
+        java.util.List<Object[]> cases = new java.util.ArrayList<>();
+        for (String endpoint : new String[]{"upload", "start", "append", "append_batch", "finish"}) {
+            for (boolean file : new boolean[]{false, true}) {
+                for (long limit : new long[]{0, 7, 100}) cases.add(new Object[]{endpoint, file, limit});
+            }
+        }
+        return cases.toArray(new Object[0][]);
+    }
+
+    @Test(dataProvider = "limitedEndpoints")
+    public void testDefaultHashCoversExactlyLimitedPayload(String endpoint, boolean file, long limit) throws Exception {
+        RecordingRequestor requestor = new RecordingRequestor();
+        DbxUserFilesRequests files = new DbxClientV2(DbxRequestConfig.newBuilder("test")
+                .withHttpRequestor(requestor).build(), "fake-token").files();
+        int count = (int) Math.min(limit, DATA.length - 7);
+        byte[] expected = java.util.Arrays.copyOfRange(DATA, 7, 7 + count);
+        DbxUploader<?, ?, ?> uploader;
+        switch (endpoint) {
+            case "upload":
+                uploader = files.uploadBuilder("/file").start();
+                break;
+            case "start":
+                requestor.response = "{\"session_id\":\"session\"}";
+                uploader = files.uploadSessionStartBuilder().start();
+                break;
+            case "append":
+                uploader = files.uploadSessionAppendV2(new UploadSessionCursor("session", 1234));
+                break;
+            case "append_batch":
+                requestor.response = "{\"entries\":[]}";
+                uploader = files.uploadSessionAppendBatch(Collections.singletonList(
+                        new UploadSessionAppendBatchArgEntry(CURSOR, count, true)));
+                break;
+            case "finish":
+                uploader = files.uploadSessionFinish(new UploadSessionCursor("session", 1234), new CommitInfo("/file"));
+                break;
+            default:
+                throw new AssertionError(endpoint);
+        }
+        if (endpoint.equals("upload") || endpoint.equals("finish")) {
+            requestor.response = "{\"name\":\"file\",\"id\":\"id:123\","
+                    + "\"client_modified\":\"2020-01-01T00:00:00Z\","
+                    + "\"server_modified\":\"2020-01-01T00:00:00Z\",\"rev\":\"123456789\",\"size\":" + count + "}";
+        }
+        assertEquals(requestor.starts, 0, "default hashing defers connection initialization");
+        Path path = file ? Files.createTempFile("dropbox-limited-payload", ".bin") : null;
+        try {
+            if (file) Files.write(path, DATA);
+            try (InputStream input = file ? new FileInputStream(path.toFile()) : new ByteArrayInputStream(DATA)) {
+                assertEquals(input.skip(7), 7);
+                uploader.uploadAndFinish(input, limit);
+                assertEquals(requestor.body.toByteArray(), expected);
+                // Independent reference: these test payloads fit in a single Dropbox block.
+                java.security.MessageDigest sha256 = java.security.MessageDigest.getInstance("SHA-256");
+                byte[] hash = expected.length == 0 ? sha256.digest() : sha256.digest(sha256.digest(expected));
+                assertTrue(requestor.arg.contains("\"content_hash\":\""
+                        + java.util.HexFormat.of().formatHex(hash) + "\""));
+                assertEquals(input.read(), count < DATA.length - 7 ? DATA[7 + count] & 0xff : -1);
+                assertEquals(requestor.closes, 1);
+                assertEquals(requestor.starts, 1);
+            }
+        } finally {
+            uploader.close();
+            if (path != null) Files.delete(path);
+        }
+    }
+
     private static AutoContentHashUploader lazyUploader(RecordingRequestor requestor, String json) {
         return new AutoContentHashUploader(requestor, "https://example.test/upload",
                 Collections.singletonList(new HttpRequestor.Header("Dropbox-API-Arg", json)));
@@ -627,6 +724,7 @@ public class AutoContentHashUploaderTest {
         int aborts;
         int finishCalls;
         boolean responseClosed;
+        boolean closesBodyOnCleanup;
 
         @Override public Uploader startPost(String url, Iterable<Header> headers) throws IOException {
             starts++;
@@ -664,6 +762,7 @@ public class AutoContentHashUploaderTest {
                         throw closeFailure;
                     }
                     responseClosed = true;
+                    if (closesBodyOnCleanup) bodyCloses++;
                 }
                 @Override public void abort() {
                     aborts++;

@@ -63,7 +63,7 @@ public class DbxRequestConfig {
      */
     @Deprecated
     public DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale, HttpRequestor httpRequestor) {
-        this(clientIdentifier, userLocale, httpRequestor, 0, false);
+        this(clientIdentifier, userLocale, httpRequestor, 0, true);
     }
 
     /**
@@ -159,7 +159,7 @@ public class DbxRequestConfig {
     }
 
     /**
-     * Returns whether upload requests automatically include a content hash. Defaults to false.
+     * Returns whether upload requests automatically include a content hash. Defaults to true.
      *
      * <p>Only file and byte-array input streams are automatically hashed. The SDK reads the
      * payload before sending it and restores the input position. Limited uploads hash only the
@@ -248,7 +248,7 @@ public class DbxRequestConfig {
         private /*@Nullable*/ String userLocale;
         private HttpRequestor httpRequestor;
         private int maxRetries;
-        private boolean autoContentHash;
+        private boolean autoContentHash = true;
 
         private Builder(String clientIdentifier,
                         /*@Nullable*/ String userLocale,
@@ -392,9 +392,8 @@ public class DbxRequestConfig {
         /**
          * Enables or disables automatic content hashes for supported file uploads.
          *
-         * <p>Disabled by default to preserve upload behavior and avoid an extra read, especially
-         * for network-backed files. This does not suppress a content hash explicitly supplied
-         * by the caller.</p>
+         * <p>Enabled by default. Disable to avoid the extra read, for example for network-backed
+         * files. This does not suppress a content hash explicitly supplied by the caller.</p>
          *
          * @param enabled whether to compute content hashes automatically
          * @return this builder

@@ -224,7 +224,7 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
                 }
                 try {
                     // Do not open or retry a connection after abort/close/initialization failure.
-                    if (output != null) {
+                    if (!closed && output != null) {
                         output.close();
                     } else if (!closed && !finished) {
                         output().close();
