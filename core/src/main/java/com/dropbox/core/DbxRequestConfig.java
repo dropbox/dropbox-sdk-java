@@ -161,9 +161,10 @@ public class DbxRequestConfig {
     /**
      * Returns whether upload-builder convenience calls calculate content hashes. Defaults to true.
      *
-     * <p>File and plain byte-array inputs can be rewound without buffering the payload. Other
-     * streams, including custom byte-array subclasses and buffered/mark-reset streams, skip
-     * automatic hashing when position and existing mark cannot both be preserved. Hashing
+     * <p>File and byte-array inputs can be rewound without buffering the payload. Byte-array
+     * subclasses are supported when they inherit available() and reset(). Other streams,
+     * including buffered/mark-reset streams, skip automatic hashing when position and existing
+     * mark cannot both be preserved without buffering the payload. Hashing
      * respects the upload limit and restores position before HTTP creation. It adds the hash
      * to a request-local argument copy without modifying the builder. Explicit hashes are
      * preserved. Direct uploaders, builder start(), and output-stream uploads retain their

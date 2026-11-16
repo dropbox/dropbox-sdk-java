@@ -562,6 +562,98 @@ public class ContentHashUploadTest {
         assertEquals(input.read(), DATA[mark] & 0xff);
     }
 
+    @Test(dataProvider = "byteArrayViews")
+    public void byteArraySubclassesWithInheritedPositionStateAreHashed(int[] view, long limit) throws Exception {
+        for (String kind : new String[]{"read", "shortSkip", "zeroSkip"}) {
+            int offset = view[0], length = view[1], mark = view[2], position = view[3];
+            ByteArrayInputStream input = new ByteArrayInputStream(DATA, offset, length) {
+                @Override public synchronized int read(byte[] bytes, int start, int count) {
+                    return super.read(bytes, start, count);
+                }
+                @Override public synchronized long skip(long count) {
+                    return super.skip(kind.equals("shortSkip") ? Math.min(1, count)
+                            : kind.equals("zeroSkip") ? 0 : count);
+                }
+            };
+            input.skipNBytes(mark - offset);
+            input.mark(0);
+            input.skipNBytes(position - mark);
+            RecordingRequestor requestor = new RecordingRequestor();
+            client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR).uploadAndFinish(input, limit);
+            int end = position + (int) Math.min(limit, offset + length - position);
+            byte[] expected = Arrays.copyOfRange(DATA, position, end);
+            assertHash(requestor, expected);
+            assertEquals(requestor.body.toByteArray(), expected);
+            assertEquals(input.available(), offset + length - end);
+            input.reset();
+            assertEquals(input.available(), offset + length - mark);
+            assertEquals(input.read(), DATA[mark] & 0xff);
+        }
+    }
+
+    @Test
+    public void byteArraySubclassReadFailureRestoresPositionAndMarkBeforeRetry() throws Exception {
+        IllegalStateException failure = new IllegalStateException("read failed");
+        boolean[] fail = {true};
+        ByteArrayInputStream input = new ByteArrayInputStream(DATA) {
+            @Override public synchronized int read(byte[] bytes, int offset, int length) {
+                if (fail[0]) {
+                    super.read(bytes, offset, Math.min(1, length));
+                    throw failure;
+                }
+                return super.read(bytes, offset, length);
+            }
+        };
+        input.skipNBytes(3);
+        input.mark(0);
+        input.skipNBytes(4);
+        RecordingRequestor requestor = new RecordingRequestor();
+        UploadSessionAppendV2Builder builder = client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR);
+        assertSame(expectThrows(IllegalStateException.class, () -> builder.uploadAndFinish(input, 7)), failure);
+        assertEquals(input.available(), DATA.length - 7);
+        assertEquals(requestor.starts, 0);
+        input.reset();
+        assertEquals(input.read(), DATA[3]);
+        input.skipNBytes(3);
+        fail[0] = false;
+        builder.uploadAndFinish(input, 7);
+        assertHash(requestor, Arrays.copyOfRange(DATA, 7, 14));
+        assertEquals(requestor.body.toByteArray(), Arrays.copyOfRange(DATA, 7, 14));
+    }
+
+    @Test
+    public void byteArraySubclassThatLiesAboutSkippingCannotUploadFromAWrongPosition() throws Exception {
+        ByteArrayInputStream input = new ByteArrayInputStream(DATA) {
+            @Override public synchronized long skip(long count) { return count; }
+        };
+        input.read();
+        RecordingRequestor requestor = new RecordingRequestor();
+        expectThrows(IOException.class, () -> client(requestor, true).files()
+                .uploadSessionAppendV2Builder(CURSOR).uploadAndFinish(input, 7));
+        assertEquals(requestor.starts, 0);
+    }
+
+    @Test
+    public void largeByteArraySubclassHashesBeyondABlockWithoutPayloadCopies() throws Exception {
+        byte[] payload = new byte[DropboxContentHasher.BLOCK_SIZE + 17];
+        for (int i = 0; i < payload.length; i++) payload[i] = (byte) (i % 251);
+        ByteArrayInputStream input = new ByteArrayInputStream(payload) {
+            @Override public synchronized int read(byte[] bytes, int offset, int length) {
+                assertTrue(length <= IOUtil.DEFAULT_COPY_BUFFER_SIZE);
+                return super.read(bytes, offset, length);
+            }
+        };
+        input.skipNBytes(3);
+        input.mark(0);
+        input.skipNBytes(4);
+        RecordingRequestor requestor = new RecordingRequestor();
+        client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR).uploadAndFinish(input);
+        assertHash(requestor, Arrays.copyOfRange(payload, 7, payload.length));
+        assertEquals(requestor.body.toByteArray(), Arrays.copyOfRange(payload, 7, payload.length));
+        input.reset();
+        assertEquals(input.read(), payload[3]);
+    }
+
     @Test
     public void readAndRewindFailuresPreserveTheOriginalReadError() throws Exception {
         Path path = Files.createTempFile("dropbox-read-rewind", ".bin");
