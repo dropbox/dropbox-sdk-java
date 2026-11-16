@@ -8,6 +8,8 @@ import com.dropbox.core.util.LangUtil;
 import com.dropbox.core.v2.DbxUploadStyleBuilder;
 import com.dropbox.core.v2.fileproperties.PropertyGroup;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -177,7 +179,9 @@ public class UploadBuilder extends DbxUploadStyleBuilder<FileMetadata, UploadErr
     }
 
     @Override
-    protected boolean needsAutoContentHash() {
-        return _client.isAutoContentHashEnabled() && this._builder.build().getContentHash() == null;
+    protected UploadUploader start(InputStream input, long limit) throws DbxException, IOException {
+        UploadArg arg_ = this._builder.build();
+        String hash = calculateContentHash(input, limit, arg_.getContentHash(), _client.isAutoContentHashEnabled());
+        return _client.upload(hash == null ? arg_ : new UploadArg(arg_.getPath(), arg_.getMode(), arg_.getAutorename(), arg_.getClientModified(), arg_.getMute(), arg_.getPropertyGroups(), arg_.getStrictConflict(), hash));
     }
 }

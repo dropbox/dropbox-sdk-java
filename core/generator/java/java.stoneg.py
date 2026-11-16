@@ -798,6 +798,8 @@ class JavaImporter:
             )
         elif j.request_style(route) == 'upload':
             self.add_imports('com.dropbox.core.v2.DbxUploadStyleBuilder')
+            if j.has_content_hash(route):
+                self.add_imports('java.io.InputStream', 'java.io.IOException')
 
         if self._j._args.generate_request:
             self.add_imports('com.dropbox.core.DbxRequest')
@@ -1984,8 +1986,7 @@ class JavaApi:
         return route.attrs.get('host', 'api')
 
     def has_content_hash(self, route):
-        return (self.request_style(route) == 'upload' and route.deprecated is None
-                and is_struct_type(route.arg_data_type)
+        return (self.request_style(route) == 'upload' and is_struct_type(route.arg_data_type)
                 and any(f.name == 'content_hash' for f in route.arg_data_type.all_fields))
 
     def has_builder(self, stone_elem):
@@ -3648,7 +3649,7 @@ class JavaCodeGenerationInstance:
                 build_args = ', '.join(j.param_name(f) for f in data_type.all_fields)
                 w.out('return new %s(%s);', j.java_class(data_type), build_args)
 
-    def generate_builder_methods(self, builder_class, fields, wrapped_builder_name=None, inherit_doc=False):
+    def generate_builder_methods(self, builder_class, fields, wrapped_builder_name=None, compact_doc=False):
         assert isinstance(builder_class, JavaClass), repr(builder_class)
         assert isinstance(fields, Sequence), repr(fields)
         assert all(isinstance(f, StructField) for f in fields), repr(fields)
@@ -3676,8 +3677,8 @@ class JavaCodeGenerationInstance:
             # withFieldName(FieldType fieldValue);
             #
             w.out('')
-            if inherit_doc:
-                w.out('/** {@inheritDoc} */')
+            if compact_doc:
+                w.out('/** Sets an explicit content hash, or null to allow automatic hashing. */')
             else:
                 w.javadoc(doc, stone_elem=field, fields=(field,), returns='this builder')
             with w.block('public %s %s(%s %s)',
@@ -3892,7 +3893,7 @@ class JavaCodeGenerationInstance:
                 wrapped_builder_name = '_builder' if j.has_builder(arg) else None
                 self.generate_builder_methods(j.builder_class(route), arg.all_fields,
                                               wrapped_builder_name=wrapped_builder_name,
-                                              inherit_doc=j.has_content_hash(route) and not j.has_builder(arg))
+                                              compact_doc=j.has_content_hash(route) and not j.has_builder(arg))
 
                 #
                 # BUILD method to start request
@@ -3926,10 +3927,21 @@ class JavaCodeGenerationInstance:
                 if j.has_content_hash(route):
                     w.out('')
                     w.out('@Override')
-                    with w.block('protected boolean needsAutoContentHash()'):
-                        existing = ('this._builder.build().getContentHash()' if j.has_builder(arg)
-                                    else 'this.contentHash')
-                        w.out('return _client.isAutoContentHashEnabled() && %s == null;', existing)
+                    if route.deprecated is not None:
+                        w.out('@SuppressWarnings("deprecation")')
+                    with w.block('protected %s start(InputStream input, long limit) throws DbxException, IOException',
+                                 return_class):
+                        if j.has_builder(arg):
+                            w.out('%s arg_ = this._builder.build();', j.java_class(arg))
+                        else:
+                            w.out('%s arg_ = new %s(%s);', j.java_class(arg), j.java_class(arg),
+                                  ', '.join(j.param_name(f) for f in arg.all_fields))
+                        w.out('String hash = calculateContentHash(input, limit, arg_.getContentHash(), _client.isAutoContentHashEnabled());')
+                        copied_args = ', '.join('hash' if f.name == 'content_hash'
+                                               else 'arg_.%s()' % j.field_getter_method(f)
+                                               for f in arg.all_fields)
+                        w.out('return _client.%s(hash == null ? arg_ : new %s(%s));',
+                              j.route_method(route), j.java_class(arg), copied_args)
 
                 if self.g.args.generate_request:
                     self._emit_request_method_body(route, '', '', return_class,

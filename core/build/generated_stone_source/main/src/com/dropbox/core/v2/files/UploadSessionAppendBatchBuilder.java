@@ -6,6 +6,9 @@ package com.dropbox.core.v2.files;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxUploadStyleBuilder;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * The request builder returned by {@link
  * DbxUserFilesRequests#uploadSessionAppendBatchBuilder}.
@@ -27,7 +30,7 @@ public class UploadSessionAppendBatchBuilder extends DbxUploadStyleBuilder<Uploa
         this.contentHash = null;
     }
 
-    /** {@inheritDoc} */
+    /** Sets an explicit content hash, or null to allow automatic hashing. */
     public UploadSessionAppendBatchBuilder withContentHash(String contentHash) {
         if (contentHash != null) {
             if (contentHash.length() < 64) {
@@ -48,7 +51,9 @@ public class UploadSessionAppendBatchBuilder extends DbxUploadStyleBuilder<Uploa
     }
 
     @Override
-    protected boolean needsAutoContentHash() {
-        return _client.isAutoContentHashEnabled() && this.contentHash == null;
+    protected UploadSessionAppendBatchUploader start(InputStream input, long limit) throws DbxException, IOException {
+        UploadSessionAppendBatchArg arg_ = new UploadSessionAppendBatchArg(entries, contentHash);
+        String hash = calculateContentHash(input, limit, arg_.getContentHash(), _client.isAutoContentHashEnabled());
+        return _client.uploadSessionAppendBatch(hash == null ? arg_ : new UploadSessionAppendBatchArg(arg_.getEntries(), hash));
     }
 }

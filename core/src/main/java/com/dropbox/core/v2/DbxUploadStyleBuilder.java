@@ -98,7 +98,7 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
      */
     public R uploadAndFinish(InputStream in) throws X, DbxException, IOException
     {
-        return startWithContentHash(in, Long.MAX_VALUE).uploadAndFinish(in);
+        return start(in, Long.MAX_VALUE).uploadAndFinish(in);
     }
 
     /**
@@ -119,7 +119,7 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
      */
     public R uploadAndFinish(InputStream in, long limit) throws X, DbxException, IOException
     {
-        return startWithContentHash(in, limit).uploadAndFinish(in, limit);
+        return start(in, limit).uploadAndFinish(in, limit);
     }
 
     /**
@@ -143,7 +143,7 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
     public R uploadAndFinish(InputStream in, long limit, IOUtil.ProgressListener progressListener)
             throws X, DbxException, IOException
     {
-        return startWithContentHash(in, limit).uploadAndFinish(in, limit, progressListener);
+        return start(in, limit).uploadAndFinish(in, limit, progressListener);
     }
 
     /**
@@ -166,45 +166,25 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
     public R uploadAndFinish(InputStream in, IOUtil.ProgressListener progressListener)
             throws X, DbxException, IOException
     {
-        return startWithContentHash(in, Long.MAX_VALUE).uploadAndFinish(in, progressListener);
-    }
-    private DbxUploader<R, E, X> startWithContentHash(InputStream input, long limit) throws DbxException, IOException {
-        if (!needsAutoContentHash()) return start();
-        String hash = calculateContentHash(input, limit);
-        if (hash == null) return start();
-        withContentHash(hash);
-        try {
-            return start();
-        } finally {
-            withContentHash(null); // Do not retain an automatic hash when the builder is reused.
-        }
+        return start(in, Long.MAX_VALUE).uploadAndFinish(in, progressListener);
     }
 
-    /** Returns true when this generated builder supports hashing and no explicit hash was set. */
-    protected boolean needsAutoContentHash() {
-        return false;
+    /** Generated builders override this to pass a request-local content hash before HTTP creation. */
+    protected DbxUploader<R, E, X> start(InputStream input, long limit) throws DbxException, IOException {
+        return start();
     }
 
     /**
-     * Sets a lowercase hexadecimal Dropbox content hash; an explicit value takes precedence over
-     * automatic hashing. Supported generated builders override this with their existing setter.
-     *
-     * @param contentHash the 64-character hash, or null to clear it
-     * @return this builder
+     * Returns a hash after rewinding, or null when hashing is unnecessary or safe rewinding is unavailable.
+     * Like Go's seekable-reader path, supported inputs need no payload buffering. Generic mark/reset
+     * streams are skipped because setting a mark would overwrite caller state. A failed rewind
+     * aborts before HTTP creation rather than uploading a consumed input.
      */
-    protected DbxUploadStyleBuilder<R, E, X> withContentHash(String contentHash) {
-        throw new UnsupportedOperationException("This upload does not accept content hashes");
-    }
-
-    /**
-     * Returns a hash after rewinding the input, or null when safe, bounded rewinding is unavailable.
-     * File and plain byte-array inputs need no payload buffering. Other mark/reset streams are supported
-     * only for explicit limits up to 16 KiB, bounding any mark buffer growth. Their mark is replaced.
-     * A failed read/reset aborts the request; a consumed input is never silently uploaded.
-     */
-    private static String calculateContentHash(InputStream input, long limit) throws IOException {
+    protected static String calculateContentHash(InputStream input, long limit, String existing, boolean enabled)
+            throws IOException {
+        if (!enabled || existing != null) return null;
         if (limit < 0) throw new IllegalArgumentException("limit must be non-negative");
-        if (limit == 0) return DropboxContentHasher.hashHex(new byte[0]);
+        Closeable rewind;
         if (input instanceof FileInputStream) {
             FileChannel channel = ((FileInputStream) input).getChannel();
             long position;
@@ -213,28 +193,19 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
             } catch (IOException ex) {
                 return null; // For example a non-seekable file descriptor such as a pipe.
             }
-            try (Closeable rewind = () -> channel.position(position)) {
-                return DropboxContentHasher.hashHex(IOUtil.limit(input, limit));
-            }
-        }
-        if (input instanceof ByteArrayInputStream) {
-            // A subclass can override available/reset/skip; then the position cannot be inferred safely.
-            if (input.getClass() != ByteArrayInputStream.class) return null;
+            rewind = () -> channel.position(position);
+        } else if (input != null && input.getClass() == ByteArrayInputStream.class) {
             int remaining = input.available();
-            try (Closeable rewind = () -> {
+            rewind = () -> {
                 input.reset();
                 input.skip(input.available() - remaining);
-            }) {
-                return DropboxContentHasher.hashHex(IOUtil.limit(input, limit));
-            }
+            };
+        } else {
+            return null; // Unknown subclasses and mark/reset streams cannot preserve caller state safely.
         }
-        if (limit <= IOUtil.DEFAULT_COPY_BUFFER_SIZE && input.markSupported()) {
-            input.mark((int) limit + 1);
-            try (Closeable rewind = input::reset) {
-                return DropboxContentHasher.hashHex(IOUtil.limit(input, limit));
-            }
+        try (rewind) {
+            return DropboxContentHasher.hashHex(IOUtil.limit(input, limit));
         }
-        return null;
     }
 
 }

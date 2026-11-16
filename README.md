@@ -124,9 +124,11 @@ client.files().uploadSessionAppendV2Builder(cursor).uploadAndFinish(input, chunk
 client.files().uploadSessionFinishBuilder(cursor, commit).uploadAndFinish(input);
 ```
 
-Session start and append batch also have builders. The hash is supplied through the normal
-`content_hash` argument before HTTP creation, using the existing Stone serializer. A manually
-supplied `.withContentHash(...)` always takes precedence. To disable the extra read:
+Session start and append batch also have builders. As in Go, the legacy alpha-upload builder
+also supports hashing because its API argument includes `content_hash`. The hash is supplied through the normal
+`content_hash` argument before HTTP creation, using the existing Stone serializer. Each upload
+uses a request-local argument copy, preserving the builder's state just like the Python and Go
+SDKs preserve their caller's argument. A manually supplied `.withContentHash(...)` always takes precedence. To disable the extra read:
 
 ```java
 DbxRequestConfig config = DbxRequestConfig.newBuilder("my-app")
@@ -136,13 +138,18 @@ DbxRequestConfig config = DbxRequestConfig.newBuilder("my-app")
 
 `FileInputStream` is rewound with its file channel. A plain `ByteArrayInputStream` retains its
 position and existing mark. These inputs support arbitrary upload sizes without loading the
-payload into memory. Custom `ByteArrayInputStream` subclasses are not pre-read because their
-overridden `available`, `skip`, or `reset` methods cannot guarantee position restoration.
-`BufferedInputStream` and other streams honoring `mark/reset` are hashed only when the upload has an explicit limit of at most 16 KiB; this bounds mark-buffer growth and
-replaces their existing mark. Larger or unbounded mark/reset streams, and non-rewindable
-streams, are uploaded without an automatic hash. A zero-byte upload has a known empty hash
-and requires no pre-read. The same byte limit applies to hashing and uploading. Read/reset
-failures stop the request before HTTP creation rather than uploading from a changed position.
+payload into memory. Custom byte-array subclasses and other input streams are uploaded without
+automatic hashing when safe rewinding cannot be established. In particular, `markSupported()`
+is insufficient: setting a new mark on a `BufferedInputStream` or another mark/reset stream
+would destroy the caller's existing mark. Use a `FileInputStream` directly for large files,
+or supply a known content hash explicitly.
+
+This follows the other SDKs' pre-request design: [Python hashes bytes and copies its argument](https://github.com/dropbox/dropbox-sdk-python/blob/main/dropbox/dropbox_client.py),
+while [Go hashes seekable readers, restores their offset, and copies its argument](https://github.com/dropbox/dropbox-sdk-go-unofficial/blob/master/v6/dropbox/files/content_hash.go).
+Java's immutable Stone arguments are reconstructed only when a hash is added. Hashing respects
+the upload limit, uses a fixed-size read buffer, never closes the caller's stream, and restores
+its position before opening HTTP. Read or rewind failures abort the request rather than
+uploading a consumed input.
 
 For session start, append v2, and finish, the hash covers only this request's payload. Append
 batch hashes all entries as one concatenated payload, without restarting at entry boundaries.

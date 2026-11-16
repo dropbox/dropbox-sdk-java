@@ -5,6 +5,8 @@ import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.util.DropboxContentHasher;
 import com.dropbox.core.util.IOUtil;
 import com.dropbox.core.v2.files.*;
+import com.dropbox.core.v2.fileproperties.PropertyGroup;
+import com.dropbox.core.v2.fileproperties.PropertyField;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -38,7 +40,7 @@ public class ContentHashUploadTest {
     @DataProvider(name = "payloads")
     public Object[][] payloads() {
         List<Object[]> cases = new ArrayList<>();
-        for (String route : new String[]{"upload", "start", "append", "batch", "finish"})
+        for (String route : new String[]{"upload", "start", "append", "batch", "finish", "alpha"})
             for (String stream : new String[]{"file", "bytes", "buffered", "mark", "nonmark"})
                 for (long limit : new long[]{0, 7, 100, Long.MAX_VALUE})
                     cases.add(new Object[]{route, stream, limit});
@@ -66,8 +68,7 @@ public class ContentHashUploadTest {
                 else builder.uploadAndFinish(input, limit, progress);
                 byte[] expected = Arrays.copyOfRange(DATA, 7, 7 + count);
                 assertEquals(requestor.body.toByteArray(), expected);
-                boolean hashed = limit == 0 || kind.equals("file") || kind.equals("bytes")
-                        || (!kind.equals("nonmark") && limit <= IOUtil.DEFAULT_COPY_BUFFER_SIZE);
+                boolean hashed = kind.equals("file") || kind.equals("bytes");
                 if (hashed) assertHash(requestor, expected);
                 else assertFalse(requestor.arg.contains("content_hash"));
                 assertEquals(input.read(), count < DATA.length - 7 ? DATA[7 + count] & 0xff : -1);
@@ -91,7 +92,7 @@ public class ContentHashUploadTest {
         Path file = Files.createTempFile("dropbox-hash-precedence", ".bin");
         try {
             Files.write(file, DATA);
-            for (String route : new String[]{"upload", "start", "append", "batch", "finish"}) {
+            for (String route : new String[]{"upload", "start", "append", "batch", "finish", "alpha"}) {
                 for (boolean enabled : new boolean[]{false, true}) {
                     for (boolean explicit : new boolean[]{false, true}) {
                         RecordingRequestor requestor = new RecordingRequestor();
@@ -145,19 +146,21 @@ public class ContentHashUploadTest {
     }
 
     @Test
-    public void readAndResetFailuresAbortBeforeHttpAndPreserveBuilder() throws Exception {
+    public void markStreamReadFailureUsesOriginalUploadLifecycleWithoutReset() throws Exception {
         RecordingRequestor requestor = new RecordingRequestor();
         UploadSessionAppendV2Builder builder = client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR);
-        IOException read = new IOException("read failed"), reset = new IOException("reset failed");
+        IOException read = new IOException("read failed");
+        int[] resets = {0};
         InputStream input = new InputStream() {
             @Override public boolean markSupported() { return true; }
             @Override public int read() throws IOException { throw read; }
-            @Override public void reset() throws IOException { throw reset; }
+            @Override public void reset() throws IOException { resets[0]++; throw new IOException("reset failed"); }
         };
-        IOException thrown = expectThrows(IOException.class, () -> builder.uploadAndFinish(input, 7));
-        assertSame(thrown, read);
-        assertSame(thrown.getSuppressed()[0], reset);
-        assertEquals(requestor.starts, 0);
+        assertSame(expectThrows(IOException.class, () -> builder.uploadAndFinish(input, 7)), read);
+        assertEquals(resets[0], 0);
+        assertEquals(requestor.starts, 1);
+        assertEquals(requestor.closes, 1);
+        assertFalse(requestor.arg.contains("content_hash"));
         builder.uploadAndFinish(new ByteArrayInputStream(DATA));
         assertHash(requestor, DATA);
     }
@@ -246,7 +249,7 @@ public class ContentHashUploadTest {
 
     @Test
     public void startFailureDoesNotLeaveAStaleHash() throws Exception {
-        for (String route : new String[]{"upload", "start", "append", "batch", "finish"}) {
+        for (String route : new String[]{"upload", "start", "append", "batch", "finish", "alpha"}) {
             RecordingRequestor requestor = new RecordingRequestor();
             IOException failure = new IOException("connect failed");
             requestor.startFailure = failure;
@@ -277,18 +280,22 @@ public class ContentHashUploadTest {
     }
 
     @Test
-    public void bufferedMarkWindowBoundaryAndCallerPosition() throws Exception {
-        byte[] bytes = new byte[IOUtil.DEFAULT_COPY_BUFFER_SIZE + 7];
-        for (int i = 0; i < bytes.length; i++) bytes[i] = (byte) i;
-        RecordingRequestor requestor = new RecordingRequestor();
-        try (BufferedInputStream input = new BufferedInputStream(new ByteArrayInputStream(bytes), 1)) {
-            input.skip(7);
-            client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR)
-                    .uploadAndFinish(input, IOUtil.DEFAULT_COPY_BUFFER_SIZE);
-            byte[] expected = Arrays.copyOfRange(bytes, 7, bytes.length);
-            assertEquals(requestor.body.toByteArray(), expected);
-            assertHash(requestor, expected);
-            assertEquals(input.read(), -1);
+    public void bufferedAndOtherMarkStreamsPreserveTheCallersMark() throws Exception {
+        for (boolean buffered : new boolean[]{true, false}) {
+            InputStream source = new ByteArrayInputStream(DATA);
+            InputStream input = buffered ? new BufferedInputStream(source, DATA.length) : new FilterInputStream(source) { };
+            RecordingRequestor requestor = new RecordingRequestor();
+            try (InputStream owned = input) {
+                owned.skip(3);
+                owned.mark(DATA.length);
+                owned.skip(4);
+                client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR).uploadAndFinish(owned, 7);
+                assertEquals(requestor.body.toByteArray(), Arrays.copyOfRange(DATA, 7, 14));
+                assertFalse(requestor.arg.contains("content_hash"));
+                assertEquals(owned.read(), DATA[14]);
+                owned.reset();
+                assertEquals(owned.read(), DATA[3], "automatic hashing must not replace the caller's mark");
+            }
         }
     }
 
@@ -341,8 +348,7 @@ public class ContentHashUploadTest {
         client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR).uploadAndFinish(input, limit);
         int end = 7 + (int) Math.min(limit, DATA.length - 7);
         assertEquals(requestor.body.toByteArray(), Arrays.copyOfRange(DATA, 7, end));
-        if (limit == 0) assertHash(requestor, new byte[0]);
-        else assertFalse(requestor.arg.contains("content_hash"), "unknown subclass rewind behavior must be skipped");
+        assertFalse(requestor.arg.contains("content_hash"), "unknown subclass rewind behavior must be skipped");
         assertEquals(resets[0], 0, "automatic hashing must not alter the subclass's state");
         assertEquals(input.read(), end < DATA.length ? DATA[end] & 0xff : -1);
         if (!kind.equals("reset")) {
@@ -352,16 +358,15 @@ public class ContentHashUploadTest {
     }
 
     @Test
-    public void generatedOverridesAndReuseAcrossAllFiveRoutes() throws Exception {
-        for (String route : new String[]{"upload", "start", "append", "batch", "finish"}) {
+    public void generatedArgumentCopiesAndReuseAcrossSupportedRoutes() throws Exception {
+        for (String route : new String[]{"upload", "start", "append", "batch", "finish", "alpha"}) {
             RecordingRequestor requestor = new RecordingRequestor();
             DbxUploadStyleBuilder<?, ?, ?> builder = builder(client(requestor, true).files(), route);
             Class<?> type = builder.getClass();
             java.lang.reflect.Method setter = type.getDeclaredMethod("withContentHash", String.class);
             assertTrue(java.lang.reflect.Modifier.isPublic(setter.getModifiers()));
-            java.lang.reflect.Method needsHash = type.getDeclaredMethod("needsAutoContentHash");
-            needsHash.setAccessible(true);
-            assertEquals(needsHash.invoke(builder), true);
+            java.lang.reflect.Method start = type.getDeclaredMethod("start", InputStream.class, long.class);
+            assertTrue(java.lang.reflect.Modifier.isProtected(start.getModifiers()));
             byte[] second = DATA.clone();
             second[0] ^= 1; // Keep batch entry lengths valid while changing its content.
             builder.uploadAndFinish(new ByteArrayInputStream(DATA));
@@ -369,14 +374,12 @@ public class ContentHashUploadTest {
             builder.uploadAndFinish(new ByteArrayInputStream(second));
             assertHash(requestor, second);
             String manual = "0".repeat(64);
-            builder.withContentHash(manual);
-            assertEquals(needsHash.invoke(builder), false);
+            setter.invoke(builder, manual);
             builder.uploadAndFinish(new ByteArrayInputStream(DATA));
             assertTrue(requestor.arg.contains(manual));
             builder.uploadAndFinish(new ByteArrayInputStream(second));
             assertTrue(requestor.arg.contains(manual), "reuse must retain an explicit hash");
-            builder.withContentHash(null);
-            assertEquals(needsHash.invoke(builder), true);
+            setter.invoke(builder, (Object) null);
             builder.uploadAndFinish(new ByteArrayInputStream(second));
             assertHash(requestor, second);
             InputStream nonmark = new FilterInputStream(new ByteArrayInputStream(DATA)) {
@@ -390,17 +393,27 @@ public class ContentHashUploadTest {
     }
 
     @Test
-    public void resetFailureAfterSuccessfulReadNeverStartsHttp() throws Exception {
-        RecordingRequestor requestor = new RecordingRequestor();
-        IOException reset = new IOException("reset failed");
-        InputStream input = new FilterInputStream(new ByteArrayInputStream(DATA)) {
-            @Override public synchronized void reset() throws IOException { throw reset; }
-        };
-        UploadSessionAppendV2Builder builder = client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR);
-        assertSame(expectThrows(IOException.class, () -> builder.uploadAndFinish(input, 7)), reset);
-        assertEquals(requestor.starts, 0);
-        builder.uploadAndFinish(new ByteArrayInputStream(DATA));
-        assertHash(requestor, DATA);
+    public void failedFileRewindNeverStartsHttp() throws Exception {
+        Path path = Files.createTempFile("dropbox-failed-rewind", ".bin");
+        try {
+            Files.write(path, DATA);
+            RecordingRequestor requestor = new RecordingRequestor();
+            UploadSessionAppendV2Builder builder = client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR);
+            try (FileInputStream input = new FileInputStream(path.toFile()) {
+                @Override public int read(byte[] bytes, int offset, int length) throws IOException {
+                    int count = super.read(bytes, offset, length);
+                    close(); // Hashing the limited payload succeeds; restoring its position cannot.
+                    return count;
+                }
+            }) {
+                expectThrows(java.nio.channels.ClosedChannelException.class, () -> builder.uploadAndFinish(input, 7));
+                assertEquals(requestor.starts, 0);
+            }
+            builder.uploadAndFinish(new ByteArrayInputStream(DATA));
+            assertHash(requestor, DATA);
+        } finally {
+            Files.delete(path);
+        }
     }
 
     @Test
@@ -410,6 +423,65 @@ public class ContentHashUploadTest {
         client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR).uploadAndFinish(input);
         assertSame(requestor.input, input);
         assertEquals(requestor.closes, 1);
+    }
+
+    @Test
+    public void automaticHashesAreRequestLocalDuringHttpCreation() throws Exception {
+        RecordingRequestor requestor = new RecordingRequestor();
+        UploadBuilder builder = client(requestor, true).files().uploadBuilder("/file");
+        requestor.onStart = () -> {
+            requestor.onStart = null;
+            try {
+                builder.start().close();
+            } catch (DbxException ex) {
+                throw new AssertionError(ex);
+            }
+        };
+        builder.uploadAndFinish(new ByteArrayInputStream(DATA));
+        assertEquals(requestor.arguments.size(), 2);
+        assertTrue(requestor.arguments.get(0).contains("content_hash"));
+        assertFalse(requestor.arguments.get(1).contains("content_hash"), "a second request must not see the first request's hash");
+        assertEquals(requestor.closes, 2);
+    }
+
+    @Test
+    public void snapshotDoesNotOverwriteBuilderChangesDuringHashing() throws Exception {
+        Path path = Files.createTempFile("dropbox-hash-snapshot", ".bin");
+        try {
+            Files.write(path, DATA);
+            RecordingRequestor requestor = new RecordingRequestor();
+            UploadBuilder builder = client(requestor, true).files().uploadBuilder("/file")
+                    .withAutorename(true).withMute(true).withStrictConflict(true).withMode(WriteMode.OVERWRITE)
+                    .withClientModified(new Date(1577836800000L))
+                    .withPropertyGroups(Collections.singletonList(new PropertyGroup("ptid:copy-test",
+                            Collections.singletonList(new PropertyField("tag", "kept")))));
+            String manual = "0".repeat(64);
+            try (FileInputStream input = new FileInputStream(path.toFile()) {
+                boolean changed;
+                @Override public int read(byte[] bytes, int offset, int length) throws IOException {
+                    if (!changed) {
+                        changed = true;
+                        builder.withContentHash(manual).withMute(false);
+                    }
+                    return super.read(bytes, offset, length);
+                }
+            }) {
+                builder.uploadAndFinish(input);
+            }
+            assertHash(requestor, DATA);
+            assertTrue(requestor.arg.contains("\"mute\":true"));
+            assertTrue(requestor.arg.contains("\"autorename\":true"));
+            assertTrue(requestor.arg.contains("\"strict_conflict\":true"));
+            assertTrue(requestor.arg.contains("overwrite"));
+            assertTrue(requestor.arg.contains("\"client_modified\":\"2020-01-01T00:00:00Z\""));
+            assertTrue(requestor.arg.contains("\"template_id\":\"ptid:copy-test\""));
+            assertTrue(requestor.arg.contains("\"value\":\"kept\""));
+            builder.uploadAndFinish(new ByteArrayInputStream(DATA));
+            assertTrue(requestor.arg.contains(manual), "preparing one request must not overwrite subsequent builder state");
+            assertTrue(requestor.arg.contains("\"mute\":false"));
+        } finally {
+            Files.delete(path);
+        }
     }
 
     private static DbxClientV2 client(RecordingRequestor requestor, boolean enabled) {
@@ -425,9 +497,11 @@ public class ContentHashUploadTest {
         return builder(files, route, hash, DATA.length);
     }
 
+    @SuppressWarnings("deprecation")
     private static DbxUploadStyleBuilder<?, ?, ?> builder(DbxUserFilesRequests files, String route, String hash, long length) {
         switch (route) {
             case "upload": return files.uploadBuilder("/file").withContentHash(hash);
+            case "alpha": return files.alphaUploadBuilder("/file").withContentHash(hash);
             case "start": return files.uploadSessionStartBuilder().withContentHash(hash);
             case "append": return files.uploadSessionAppendV2Builder(CURSOR).withContentHash(hash);
             case "batch": return files.uploadSessionAppendBatchBuilder(Collections.singletonList(new UploadSessionAppendBatchArgEntry(CURSOR, length, true))).withContentHash(hash);
@@ -446,6 +520,8 @@ public class ContentHashUploadTest {
 
     private static class RecordingRequestor extends HttpRequestor {
         final ByteArrayOutputStream body = new ByteArrayOutputStream();
+        final List<String> arguments = new ArrayList<>();
+        Runnable onStart;
         String arg;
         int starts, closes;
         IOException startFailure, writeFailure;
@@ -456,6 +532,10 @@ public class ContentHashUploadTest {
             if (startFailure != null) throw startFailure;
             body.reset();
             for (Header header : headers) if (header.getKey().equals("Dropbox-API-Arg")) arg = header.getValue();
+            String currentArg = arg;
+            arguments.add(currentArg);
+            if (onStart != null) onStart.run();
+            arg = currentArg;
             return new Uploader() {
                 @Override public OutputStream getBody() {
                     return new FilterOutputStream(body) {
