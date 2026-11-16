@@ -31,6 +31,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -200,7 +201,7 @@ public abstract class DbxRawClientV2 {
                 if (!noAuth) {
                     addAuthHeaders(headers);
                 }
-                HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
+                final HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
                 String requestId = DbxRequestUtil.getRequestId(response);
                 boolean downloading = false;
 
@@ -222,8 +223,19 @@ public abstract class DbxRawClientV2 {
                             }
 
                             ResT result = responseSerializer.deserialize(resultHeader);
+                            DbxDownloader<ResT> downloader = new DbxDownloader<ResT>(
+                                result, response.getBody(), DbxRequestUtil.getContentType(response)) {
+                                @Override
+                                public ResT download(OutputStream out) throws DbxException, IOException {
+                                    try {
+                                        return super.download(out);
+                                    } catch (NetworkIOException ex) {
+                                        throw DbxRequestUtil.withResponseMetadata(ex, response);
+                                    }
+                                }
+                            };
                             downloading = true;
-                            return DbxDownloader.fromResponse(result, response);
+                            return downloader;
                         case 409:
                             throw DbxWrappedException.fromResponse(errorSerializer, response, userIdAnon);
                         default:

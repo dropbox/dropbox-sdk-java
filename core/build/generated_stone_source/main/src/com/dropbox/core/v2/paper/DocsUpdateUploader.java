@@ -34,6 +34,6 @@ public class DocsUpdateUploader extends DbxUploader<PaperDocCreateUpdateResult, 
     }
 
     protected PaperDocUpdateErrorException newException(DbxWrappedException error) {
-        return error.withResponseMetadata(new PaperDocUpdateErrorException("2/paper/docs/update", error.getRequestId(), error.getUserMessage(), (PaperDocUpdateError) error.getErrorValue()));
+        return new PaperDocUpdateErrorException("2/paper/docs/update", error.getRequestId(), error.getUserMessage(), (PaperDocUpdateError) error.getErrorValue());
     }
 }

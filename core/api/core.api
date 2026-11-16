@@ -79,7 +79,6 @@ public class com/dropbox/core/DbxDownloader : java/io/Closeable {
 	public fun close ()V
 	public fun download (Ljava/io/OutputStream;)Ljava/lang/Object;
 	public fun download (Ljava/io/OutputStream;Lcom/dropbox/core/util/IOUtil$ProgressListener;)Ljava/lang/Object;
-	public static fun fromResponse (Ljava/lang/Object;Lcom/dropbox/core/http/HttpRequestor$Response;)Lcom/dropbox/core/DbxDownloader;
 	public fun getContentType ()Ljava/lang/String;
 	public fun getInputStream ()Ljava/io/InputStream;
 	public fun getResult ()Ljava/lang/Object;

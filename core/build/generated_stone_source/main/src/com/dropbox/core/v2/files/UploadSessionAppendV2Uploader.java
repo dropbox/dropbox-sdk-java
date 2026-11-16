@@ -34,6 +34,6 @@ public class UploadSessionAppendV2Uploader extends DbxUploader<Void, UploadSessi
     }
 
     protected UploadSessionAppendErrorException newException(DbxWrappedException error) {
-        return error.withResponseMetadata(new UploadSessionAppendErrorException("2/files/upload_session/append_v2", error.getRequestId(), error.getUserMessage(), (UploadSessionAppendError) error.getErrorValue()));
+        return new UploadSessionAppendErrorException("2/files/upload_session/append_v2", error.getRequestId(), error.getUserMessage(), (UploadSessionAppendError) error.getErrorValue());
     }
 }

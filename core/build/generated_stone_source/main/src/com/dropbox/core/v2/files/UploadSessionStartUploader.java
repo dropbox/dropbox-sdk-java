@@ -34,6 +34,6 @@ public class UploadSessionStartUploader extends DbxUploader<UploadSessionStartRe
     }
 
     protected UploadSessionStartErrorException newException(DbxWrappedException error) {
-        return error.withResponseMetadata(new UploadSessionStartErrorException("2/files/upload_session/start", error.getRequestId(), error.getUserMessage(), (UploadSessionStartError) error.getErrorValue()));
+        return new UploadSessionStartErrorException("2/files/upload_session/start", error.getRequestId(), error.getUserMessage(), (UploadSessionStartError) error.getErrorValue());
     }
 }

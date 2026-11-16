@@ -34,6 +34,6 @@ public class PaperCreateUploader extends DbxUploader<PaperCreateResult, PaperCre
     }
 
     protected PaperCreateErrorException newException(DbxWrappedException error) {
-        return error.withResponseMetadata(new PaperCreateErrorException("2/files/paper/create", error.getRequestId(), error.getUserMessage(), (PaperCreateError) error.getErrorValue()));
+        return new PaperCreateErrorException("2/files/paper/create", error.getRequestId(), error.getUserMessage(), (PaperCreateError) error.getErrorValue());
     }
 }

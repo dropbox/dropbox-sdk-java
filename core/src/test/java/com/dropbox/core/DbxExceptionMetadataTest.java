@@ -323,6 +323,37 @@ public class DbxExceptionMetadataTest {
         verify(requestor, times(1)).startPost(anyString(), any());
     }
 
+    @Test(dataProvider = "downloads")
+    public void successfulDownloadKeepsBodyOpenUntilConsumed(int status, boolean progress) throws Exception {
+        Response source = new Response(status, "content", "download-success");
+        HttpRequestor requestor = requestor(downloadResponse(status, source, source));
+        DbxDownloader<?> downloader = client(requestor, 0).files().download("/x.txt");
+        assertThat(source.closed).isFalse();
+        assertThat(downloader.getInputStream()).isSameInstanceAs(source);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        if (progress) {
+            downloader.download(out, bytes -> { });
+        } else {
+            downloader.download(out);
+        }
+        assertThat(out.toString("UTF-8")).isEqualTo("content");
+        assertThat(source.closed).isTrue();
+        verify(requestor, times(1)).startPost(anyString(), any());
+    }
+
+    @Test
+    public void malformedDownloadResultClosesBody() throws Exception {
+        Response source = new Response(200, "content", "malformed-result");
+        Map<String, List<String>> headers = new TreeMap<String, List<String>>(String.CASE_INSENSITIVE_ORDER);
+        headers.putAll(source.response.getHeaders());
+        headers.put("Dropbox-API-Result", Collections.singletonList("not-json"));
+        HttpRequestor.Response response = new HttpRequestor.Response(200, source, headers);
+        DbxException ex = invoke(client(requestor(response), 0), "download");
+        assertThat(ex.getClass()).isEqualTo(BadResponseException.class);
+        assertMetadata(ex, 200, "malformed-result");
+        assertThat(source.closed).isTrue();
+    }
+
     @Test
     public void downloadWriteFailuresRemainLocalIoExceptions() throws Exception {
         IOException cause = new IOException("disk full");
