@@ -136,12 +136,14 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
             }
             addContentHash(hash);
         } else if (in instanceof ByteArrayInputStream) {
-            in.mark(0);
+            int remaining = in.available();
             String hash;
             try {
                 hash = DropboxContentHasher.hashHex(IOUtil.limit(in, limit));
             } finally {
+                // Rewind relative to the caller's existing mark without overwriting it.
                 in.reset();
+                in.skip(in.available() - remaining);
             }
             addContentHash(hash);
         }
@@ -174,6 +176,9 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
 
     @Override
     public OutputStream getBody() {
+        if (closed || finished) {
+            throw new IllegalStateException("This uploader is already closed or finished.");
+        }
         if (body != null) {
             return body;
         }
@@ -266,13 +271,12 @@ final class AutoContentHashUploader extends HttpRequestor.Uploader {
     @Override
     public void close() {
         if (!closed) {
-            // Even when cleanup fails, prevent further I/O while allowing close() to be retried,
-            // matching DbxUploader.close(), which marks itself closed only after cleanup succeeds.
+            // Cleanup is terminal even when the custom requestor throws: never retry it.
+            closed = true;
             finished = true;
             if (delegate != null) {
                 delegate.close();
             }
-            closed = true;
         }
     }
 

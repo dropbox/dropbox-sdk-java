@@ -472,7 +472,7 @@ public class AutoContentHashUploaderTest {
     }
 
     @Test
-    public void testCleanupFailureIsSuppressedAndCloseCanBeRetried() throws Exception {
+    public void testCleanupFailureIsSuppressedWithoutRetryingClose() throws Exception {
         for (boolean failFinish : new boolean[]{true, false}) {
             RecordingRequestor requestor = new RecordingRequestor();
             IOException failure = new IOException("operation failed");
@@ -491,14 +491,14 @@ public class AutoContentHashUploaderTest {
             uploader.close();
             uploader.close();
             uploader.abort();
-            assertEquals(requestor.closes, 2);
+            assertEquals(requestor.closes, 1);
             assertEquals(requestor.aborts, 0);
             assertEquals(requestor.starts, 1);
         }
     }
 
     @Test
-    public void testExplicitCloseFailureIsTerminalButCleanupCanBeRetried() throws Exception {
+    public void testExplicitCloseFailureIsTerminalAndNotRetried() throws Exception {
         RecordingRequestor requestor = new RecordingRequestor();
         requestor.closeFailuresRemaining = 1;
         AutoContentHashUploader uploader = lazyUploader(requestor, "{}");
@@ -507,16 +507,23 @@ public class AutoContentHashUploaderTest {
         assertSame(expectThrows(IllegalStateException.class, uploader::close), requestor.closeFailure);
         expectThrows(IOException.class, () -> output.write(2));
         expectThrows(IOException.class, uploader::finish);
+        expectThrows(IllegalStateException.class, uploader::getBody);
+        expectThrows(IOException.class, output::flush);
+        ByteArrayInputStream input = new ByteArrayInputStream(DATA);
+        expectThrows(IOException.class, () -> uploader.upload(input));
+        expectThrows(IOException.class, () -> uploader.upload(input, 7));
+        assertEquals(input.available(), DATA.length, "closed uploads must not consume input");
+        output.close();
         uploader.close();
         uploader.close();
         uploader.abort();
-        assertEquals(requestor.closes, 2);
+        assertEquals(requestor.closes, 1);
         assertEquals(requestor.aborts, 0);
         assertEquals(requestor.starts, 1);
     }
 
     @Test
-    public void testAbortPreservesFailureAndRetriesOnlyCleanup() throws Exception {
+    public void testAbortPreservesFailureWithoutRetryingCleanup() throws Exception {
         RecordingRequestor requestor = new RecordingRequestor();
         requestor.abortFailure = new IllegalStateException("abort failed");
         requestor.closeFailuresRemaining = 1;
@@ -531,7 +538,7 @@ public class AutoContentHashUploaderTest {
         uploader.close();
         expectThrows(IOException.class, uploader::finish);
         assertEquals(requestor.aborts, 1);
-        assertEquals(requestor.closes, 2);
+        assertEquals(requestor.closes, 1);
         assertEquals(requestor.starts, 1);
     }
 
@@ -550,7 +557,7 @@ public class AutoContentHashUploaderTest {
     }
 
     @Test
-    public void testInitializationCleanupFailureCanBeRetried() throws Exception {
+    public void testInitializationCleanupFailureIsNotRetried() throws Exception {
         RecordingRequestor requestor = new RecordingRequestor();
         requestor.listenerFailure = new IllegalStateException("listener failed");
         requestor.closeFailuresRemaining = 1;
@@ -561,7 +568,7 @@ public class AutoContentHashUploaderTest {
         uploader.close();
         uploader.abort();
         expectThrows(IOException.class, uploader::finish);
-        assertEquals(requestor.closes, 2);
+        assertEquals(requestor.closes, 1);
         assertEquals(requestor.aborts, 0);
         assertEquals(requestor.starts, 1);
     }
@@ -685,6 +692,49 @@ public class AutoContentHashUploaderTest {
             uploader.close();
             if (path != null) Files.delete(path);
         }
+    }
+
+    @Test
+    public void testByteArrayUploadPreservesCallerMark() throws Exception {
+        for (int mark : new int[]{0, 3}) {
+            for (long limit : new long[]{0, 7, 100}) {
+                RecordingRequestor requestor = new RecordingRequestor();
+                ByteArrayInputStream input = new ByteArrayInputStream(DATA);
+                input.skip(mark);
+                input.mark(0);
+                input.skip(7 - mark);
+                client(requestor, true).files().uploadSessionAppendV2(CURSOR).uploadAndFinish(input, limit);
+                int count = (int) Math.min(limit, DATA.length - 7);
+                byte[] expected = java.util.Arrays.copyOfRange(DATA, 7, 7 + count);
+                assertEquals(requestor.body.toByteArray(), expected);
+                assertHash(requestor, expected);
+                assertEquals(input.available(), DATA.length - 7 - count);
+                input.reset();
+                assertEquals(input.available(), DATA.length - mark, "caller mark must survive hashing");
+                assertEquals(input.read(), DATA[mark] & 0xff);
+            }
+        }
+    }
+
+    @Test
+    public void testByteArrayHashFailurePreservesCallerMarkAndPosition() throws Exception {
+        RecordingRequestor requestor = new RecordingRequestor();
+        IllegalStateException failure = new IllegalStateException("read failed");
+        ByteArrayInputStream input = new ByteArrayInputStream(DATA) {
+            @Override public synchronized int read(byte[] bytes, int offset, int length) {
+                super.read(bytes, offset, Math.min(length, 1));
+                throw failure;
+            }
+        };
+        input.skip(3);
+        input.mark(0);
+        input.skip(4);
+        assertSame(expectThrows(IllegalStateException.class, () -> client(requestor, true).files()
+                .uploadSessionAppendV2(CURSOR).uploadAndFinish(input)), failure);
+        assertEquals(input.available(), DATA.length - 7, "restore the input position after hashing fails");
+        assertEquals(requestor.starts, 0);
+        input.reset();
+        assertEquals(input.available(), DATA.length - 3, "preserve the caller mark after hashing fails");
     }
 
     private static AutoContentHashUploader lazyUploader(RecordingRequestor requestor, String json) {
