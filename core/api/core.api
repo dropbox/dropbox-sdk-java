@@ -7420,6 +7420,7 @@ public class com/dropbox/core/v2/paper/DbxUserPaperRequests {
 
 public final class com/dropbox/core/v2/paper/DocLookupError : java/lang/Enum {
 	public static final field DOC_NOT_FOUND Lcom/dropbox/core/v2/paper/DocLookupError;
+	public static final field FOLDER_NOT_FOUND Lcom/dropbox/core/v2/paper/DocLookupError;
 	public static final field INSUFFICIENT_PERMISSIONS Lcom/dropbox/core/v2/paper/DocLookupError;
 	public static final field OTHER Lcom/dropbox/core/v2/paper/DocLookupError;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/paper/DocLookupError;
@@ -7784,6 +7785,7 @@ public final class com/dropbox/core/v2/paper/PaperDocUpdateError : java/lang/Enu
 	public static final field DOC_DELETED Lcom/dropbox/core/v2/paper/PaperDocUpdateError;
 	public static final field DOC_LENGTH_EXCEEDED Lcom/dropbox/core/v2/paper/PaperDocUpdateError;
 	public static final field DOC_NOT_FOUND Lcom/dropbox/core/v2/paper/PaperDocUpdateError;
+	public static final field FOLDER_NOT_FOUND Lcom/dropbox/core/v2/paper/PaperDocUpdateError;
 	public static final field IMAGE_SIZE_EXCEEDED Lcom/dropbox/core/v2/paper/PaperDocUpdateError;
 	public static final field INSUFFICIENT_PERMISSIONS Lcom/dropbox/core/v2/paper/PaperDocUpdateError;
 	public static final field OTHER Lcom/dropbox/core/v2/paper/PaperDocUpdateError;
@@ -8357,6 +8359,9 @@ public class com/dropbox/core/v2/riviera/DbxAppRivieraRequests {
 	public fun <init> (Lcom/dropbox/core/v2/DbxRawClientV2;)V
 	public fun downloadTransformOutput (Ljava/lang/String;)Lcom/dropbox/core/DbxDownloader;
 	public fun downloadTransformOutputBuilder (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/DbxAppDownloadTransformOutputBuilder;
+	public fun extractAsync (Lcom/dropbox/core/v2/riviera/ExtractType;)Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun extractAsync (Lcom/dropbox/core/v2/riviera/ExtractType;Lcom/dropbox/core/v2/riviera/FileIdOrUrl;)Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun extractAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/ExtractAsyncCheckResult;
 	public fun getKeyframesAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getKeyframesAsyncBuilder ()Lcom/dropbox/core/v2/riviera/DbxAppGetKeyframesAsyncBuilder;
 	public fun getKeyframesAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult;
@@ -8418,6 +8423,9 @@ public class com/dropbox/core/v2/riviera/DbxUserRivieraRequests {
 	public fun <init> (Lcom/dropbox/core/v2/DbxRawClientV2;)V
 	public fun downloadTransformOutput (Ljava/lang/String;)Lcom/dropbox/core/DbxDownloader;
 	public fun downloadTransformOutputBuilder (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/DbxUserDownloadTransformOutputBuilder;
+	public fun extractAsync (Lcom/dropbox/core/v2/riviera/ExtractType;)Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun extractAsync (Lcom/dropbox/core/v2/riviera/ExtractType;Lcom/dropbox/core/v2/riviera/FileIdOrUrl;)Lcom/dropbox/core/v2/async/LaunchResultBase;
+	public fun extractAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/ExtractAsyncCheckResult;
 	public fun getKeyframesAsync ()Lcom/dropbox/core/v2/async/LaunchResultBase;
 	public fun getKeyframesAsyncBuilder ()Lcom/dropbox/core/v2/riviera/DbxUserGetKeyframesAsyncBuilder;
 	public fun getKeyframesAsyncCheck (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/GetKeyframesAsyncCheckResult;
@@ -8466,6 +8474,153 @@ public class com/dropbox/core/v2/riviera/DownloadTransformOutputResult$Builder {
 	public fun withFormat (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/DownloadTransformOutputResult$Builder;
 	public fun withMimeType (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/DownloadTransformOutputResult$Builder;
 	public fun withSize (Ljava/lang/Long;)Lcom/dropbox/core/v2/riviera/DownloadTransformOutputResult$Builder;
+}
+
+public final class com/dropbox/core/v2/riviera/ExtractApiV2Error {
+	public static final field CONVERSION_FAILURE_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error;
+	public static final field IS_A_FOLDER_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error;
+	public static final field LIMIT_EXCEEDED_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error;
+	public static final field LINK_DOWNLOAD_DISABLED_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error;
+	public static final field NOT_FOUND_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error;
+	public static final field NO_AUDIO_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/ExtractApiV2Error;
+	public static final field SHARED_LINK_PASSWORD_PROTECTED Lcom/dropbox/core/v2/riviera/ExtractApiV2Error;
+	public static final field UNSUPPORTED_FORMAT_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getServerErrorValue ()Ljava/lang/String;
+	public fun getUserErrorValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun isConversionFailureError ()Z
+	public fun isIsAFolderError ()Z
+	public fun isLimitExceededError ()Z
+	public fun isLinkDownloadDisabledError ()Z
+	public fun isNoAudioError ()Z
+	public fun isNotFoundError ()Z
+	public fun isOther ()Z
+	public fun isServerError ()Z
+	public fun isSharedLinkPasswordProtected ()Z
+	public fun isUnsupportedFormatError ()Z
+	public fun isUserError ()Z
+	public static fun serverError (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/ExtractApiV2Error;
+	public fun tag ()Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+	public static fun userError (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/ExtractApiV2Error;
+}
+
+public final class com/dropbox/core/v2/riviera/ExtractApiV2Error$Tag : java/lang/Enum {
+	public static final field CONVERSION_FAILURE_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+	public static final field IS_A_FOLDER_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+	public static final field LIMIT_EXCEEDED_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+	public static final field LINK_DOWNLOAD_DISABLED_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+	public static final field NOT_FOUND_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+	public static final field NO_AUDIO_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+	public static final field SERVER_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+	public static final field SHARED_LINK_PASSWORD_PROTECTED Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+	public static final field UNSUPPORTED_FORMAT_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+	public static final field USER_ERROR Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/ExtractApiV2Error$Tag;
+}
+
+public final class com/dropbox/core/v2/riviera/ExtractAsyncCheckResult {
+	public static final field IN_PROGRESS Lcom/dropbox/core/v2/riviera/ExtractAsyncCheckResult;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/ExtractAsyncCheckResult;
+	public static fun complete (Lcom/dropbox/core/v2/riviera/ExtractResult;)Lcom/dropbox/core/v2/riviera/ExtractAsyncCheckResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun failed (Lcom/dropbox/core/v2/riviera/ExtractApiV2Error;)Lcom/dropbox/core/v2/riviera/ExtractAsyncCheckResult;
+	public fun getCompleteValue ()Lcom/dropbox/core/v2/riviera/ExtractResult;
+	public fun getFailedValue ()Lcom/dropbox/core/v2/riviera/ExtractApiV2Error;
+	public fun hashCode ()I
+	public fun isComplete ()Z
+	public fun isFailed ()Z
+	public fun isInProgress ()Z
+	public fun isOther ()Z
+	public fun tag ()Lcom/dropbox/core/v2/riviera/ExtractAsyncCheckResult$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/riviera/ExtractAsyncCheckResult$Tag : java/lang/Enum {
+	public static final field COMPLETE Lcom/dropbox/core/v2/riviera/ExtractAsyncCheckResult$Tag;
+	public static final field FAILED Lcom/dropbox/core/v2/riviera/ExtractAsyncCheckResult$Tag;
+	public static final field IN_PROGRESS Lcom/dropbox/core/v2/riviera/ExtractAsyncCheckResult$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/ExtractAsyncCheckResult$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/ExtractAsyncCheckResult$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/ExtractAsyncCheckResult$Tag;
+}
+
+public final class com/dropbox/core/v2/riviera/ExtractResult {
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/ExtractResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKeyframesValue ()Lcom/dropbox/core/v2/riviera/GetKeyframesResult;
+	public fun getMarkdownValue ()Lcom/dropbox/core/v2/riviera/GetMarkdownResult;
+	public fun getOcrValue ()Lcom/dropbox/core/v2/riviera/GetOcrResult;
+	public fun getTextValue ()Lcom/dropbox/core/v2/riviera/GetTextResult;
+	public fun getTranscriptValue ()Lcom/dropbox/core/v2/riviera/GetTranscriptResult;
+	public fun hashCode ()I
+	public fun isKeyframes ()Z
+	public fun isMarkdown ()Z
+	public fun isOcr ()Z
+	public fun isOther ()Z
+	public fun isText ()Z
+	public fun isTranscript ()Z
+	public static fun keyframes (Lcom/dropbox/core/v2/riviera/GetKeyframesResult;)Lcom/dropbox/core/v2/riviera/ExtractResult;
+	public static fun markdown (Lcom/dropbox/core/v2/riviera/GetMarkdownResult;)Lcom/dropbox/core/v2/riviera/ExtractResult;
+	public static fun ocr (Lcom/dropbox/core/v2/riviera/GetOcrResult;)Lcom/dropbox/core/v2/riviera/ExtractResult;
+	public fun tag ()Lcom/dropbox/core/v2/riviera/ExtractResult$Tag;
+	public static fun text (Lcom/dropbox/core/v2/riviera/GetTextResult;)Lcom/dropbox/core/v2/riviera/ExtractResult;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+	public static fun transcript (Lcom/dropbox/core/v2/riviera/GetTranscriptResult;)Lcom/dropbox/core/v2/riviera/ExtractResult;
+}
+
+public final class com/dropbox/core/v2/riviera/ExtractResult$Tag : java/lang/Enum {
+	public static final field KEYFRAMES Lcom/dropbox/core/v2/riviera/ExtractResult$Tag;
+	public static final field MARKDOWN Lcom/dropbox/core/v2/riviera/ExtractResult$Tag;
+	public static final field OCR Lcom/dropbox/core/v2/riviera/ExtractResult$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/ExtractResult$Tag;
+	public static final field TEXT Lcom/dropbox/core/v2/riviera/ExtractResult$Tag;
+	public static final field TRANSCRIPT Lcom/dropbox/core/v2/riviera/ExtractResult$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/ExtractResult$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/ExtractResult$Tag;
+}
+
+public final class com/dropbox/core/v2/riviera/ExtractType {
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/ExtractType;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKeyframesValue ()Lcom/dropbox/core/v2/riviera/KeyframesExtractOptions;
+	public fun getMarkdownValue ()Lcom/dropbox/core/v2/riviera/MarkdownExtractOptions;
+	public fun getOcrValue ()Lcom/dropbox/core/v2/riviera/OcrExtractOptions;
+	public fun getTextValue ()Lcom/dropbox/core/v2/riviera/TextExtractOptions;
+	public fun getTranscriptValue ()Lcom/dropbox/core/v2/riviera/TranscriptExtractOptions;
+	public fun hashCode ()I
+	public fun isKeyframes ()Z
+	public fun isMarkdown ()Z
+	public fun isOcr ()Z
+	public fun isOther ()Z
+	public fun isText ()Z
+	public fun isTranscript ()Z
+	public static fun keyframes (Lcom/dropbox/core/v2/riviera/KeyframesExtractOptions;)Lcom/dropbox/core/v2/riviera/ExtractType;
+	public static fun markdown (Lcom/dropbox/core/v2/riviera/MarkdownExtractOptions;)Lcom/dropbox/core/v2/riviera/ExtractType;
+	public static fun ocr (Lcom/dropbox/core/v2/riviera/OcrExtractOptions;)Lcom/dropbox/core/v2/riviera/ExtractType;
+	public fun tag ()Lcom/dropbox/core/v2/riviera/ExtractType$Tag;
+	public static fun text (Lcom/dropbox/core/v2/riviera/TextExtractOptions;)Lcom/dropbox/core/v2/riviera/ExtractType;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+	public static fun transcript (Lcom/dropbox/core/v2/riviera/TranscriptExtractOptions;)Lcom/dropbox/core/v2/riviera/ExtractType;
+}
+
+public final class com/dropbox/core/v2/riviera/ExtractType$Tag : java/lang/Enum {
+	public static final field KEYFRAMES Lcom/dropbox/core/v2/riviera/ExtractType$Tag;
+	public static final field MARKDOWN Lcom/dropbox/core/v2/riviera/ExtractType$Tag;
+	public static final field OCR Lcom/dropbox/core/v2/riviera/ExtractType$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/riviera/ExtractType$Tag;
+	public static final field TEXT Lcom/dropbox/core/v2/riviera/ExtractType$Tag;
+	public static final field TRANSCRIPT Lcom/dropbox/core/v2/riviera/ExtractType$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/ExtractType$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/riviera/ExtractType$Tag;
 }
 
 public final class com/dropbox/core/v2/riviera/FileIdOrUrl {
@@ -8798,6 +8953,29 @@ public class com/dropbox/core/v2/riviera/ImageOptions$Builder {
 	public fun withScalePercent (Ljava/lang/Long;)Lcom/dropbox/core/v2/riviera/ImageOptions$Builder;
 }
 
+public class com/dropbox/core/v2/riviera/KeyframesExtractOptions {
+	protected final field includeImages Z
+	protected final field sceneChangeThreshold D
+	public fun <init> ()V
+	public fun <init> (DZ)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getIncludeImages ()Z
+	public fun getSceneChangeThreshold ()D
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/riviera/KeyframesExtractOptions$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/riviera/KeyframesExtractOptions$Builder {
+	protected field includeImages Z
+	protected field sceneChangeThreshold D
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/riviera/KeyframesExtractOptions;
+	public fun withIncludeImages (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/riviera/KeyframesExtractOptions$Builder;
+	public fun withSceneChangeThreshold (Ljava/lang/Double;)Lcom/dropbox/core/v2/riviera/KeyframesExtractOptions$Builder;
+}
+
 public final class com/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error {
 	public static final field CONVERSION_FAILURE_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;
 	public static final field IS_A_FOLDER_ERROR Lcom/dropbox/core/v2/riviera/KeyframesExtractionApiV2Error;
@@ -8886,6 +9064,29 @@ public final class com/dropbox/core/v2/riviera/MarkdownConversionApiV2Error$Tag 
 	public static final field USER_ERROR Lcom/dropbox/core/v2/riviera/MarkdownConversionApiV2Error$Tag;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/MarkdownConversionApiV2Error$Tag;
 	public static fun values ()[Lcom/dropbox/core/v2/riviera/MarkdownConversionApiV2Error$Tag;
+}
+
+public class com/dropbox/core/v2/riviera/MarkdownExtractOptions {
+	protected final field embedImages Z
+	protected final field enableOcr Z
+	public fun <init> ()V
+	public fun <init> (ZZ)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getEmbedImages ()Z
+	public fun getEnableOcr ()Z
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/riviera/MarkdownExtractOptions$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/riviera/MarkdownExtractOptions$Builder {
+	protected field embedImages Z
+	protected field enableOcr Z
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/riviera/MarkdownExtractOptions;
+	public fun withEmbedImages (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/riviera/MarkdownExtractOptions$Builder;
+	public fun withEnableOcr (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/riviera/MarkdownExtractOptions$Builder;
 }
 
 public class com/dropbox/core/v2/riviera/MediaDurationError {
@@ -8987,6 +9188,14 @@ public final class com/dropbox/core/v2/riviera/MetadataUnion$Tag : java/lang/Enu
 	public static fun values ()[Lcom/dropbox/core/v2/riviera/MetadataUnion$Tag;
 }
 
+public class com/dropbox/core/v2/riviera/OcrExtractOptions {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
 public final class com/dropbox/core/v2/riviera/OcrExtractionApiV2Error {
 	public static final field CONVERSION_FAILURE_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;
 	public static final field IS_A_FOLDER_ERROR Lcom/dropbox/core/v2/riviera/OcrExtractionApiV2Error;
@@ -9040,6 +9249,14 @@ public final class com/dropbox/core/v2/riviera/OfficeFileType : java/lang/Enum {
 	public static final field OTHER Lcom/dropbox/core/v2/riviera/OfficeFileType;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/OfficeFileType;
 	public static fun values ()[Lcom/dropbox/core/v2/riviera/OfficeFileType;
+}
+
+public class com/dropbox/core/v2/riviera/TextExtractOptions {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
 }
 
 public final class com/dropbox/core/v2/riviera/TextExtractionApiV2Error {
@@ -9154,6 +9371,33 @@ public final class com/dropbox/core/v2/riviera/TimestampLevel : java/lang/Enum {
 	public static final field WORD Lcom/dropbox/core/v2/riviera/TimestampLevel;
 	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/TimestampLevel;
 	public static fun values ()[Lcom/dropbox/core/v2/riviera/TimestampLevel;
+}
+
+public class com/dropbox/core/v2/riviera/TranscriptExtractOptions {
+	protected final field audioLanguage Ljava/lang/String;
+	protected final field includedSpecialWords Ljava/lang/String;
+	protected final field timestampLevel Lcom/dropbox/core/v2/riviera/TimestampLevel;
+	public fun <init> ()V
+	public fun <init> (Lcom/dropbox/core/v2/riviera/TimestampLevel;Ljava/lang/String;Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAudioLanguage ()Ljava/lang/String;
+	public fun getIncludedSpecialWords ()Ljava/lang/String;
+	public fun getTimestampLevel ()Lcom/dropbox/core/v2/riviera/TimestampLevel;
+	public fun hashCode ()I
+	public static fun newBuilder ()Lcom/dropbox/core/v2/riviera/TranscriptExtractOptions$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/riviera/TranscriptExtractOptions$Builder {
+	protected field audioLanguage Ljava/lang/String;
+	protected field includedSpecialWords Ljava/lang/String;
+	protected field timestampLevel Lcom/dropbox/core/v2/riviera/TimestampLevel;
+	protected fun <init> ()V
+	public fun build ()Lcom/dropbox/core/v2/riviera/TranscriptExtractOptions;
+	public fun withAudioLanguage (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/TranscriptExtractOptions$Builder;
+	public fun withIncludedSpecialWords (Ljava/lang/String;)Lcom/dropbox/core/v2/riviera/TranscriptExtractOptions$Builder;
+	public fun withTimestampLevel (Lcom/dropbox/core/v2/riviera/TimestampLevel;)Lcom/dropbox/core/v2/riviera/TranscriptExtractOptions$Builder;
 }
 
 public final class com/dropbox/core/v2/riviera/TransformApiV2Error {
@@ -13116,6 +13360,13 @@ public class com/dropbox/core/v2/team/DbxTeamTeamRequests {
 	public fun reportsGetMembershipBuilder ()Lcom/dropbox/core/v2/team/ReportsGetMembershipBuilder;
 	public fun reportsGetStorage ()Lcom/dropbox/core/v2/team/GetStorageReport;
 	public fun reportsGetStorageBuilder ()Lcom/dropbox/core/v2/team/ReportsGetStorageBuilder;
+	public fun sharingAllowlistAdd ()Lcom/dropbox/core/v2/team/SharingAllowlistAddResponse;
+	public fun sharingAllowlistAddBuilder ()Lcom/dropbox/core/v2/team/SharingAllowlistAddBuilder;
+	public fun sharingAllowlistList ()Lcom/dropbox/core/v2/team/SharingAllowlistListResponse;
+	public fun sharingAllowlistList (J)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse;
+	public fun sharingAllowlistListContinue (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse;
+	public fun sharingAllowlistRemove ()Lcom/dropbox/core/v2/team/SharingAllowlistRemoveResponse;
+	public fun sharingAllowlistRemoveBuilder ()Lcom/dropbox/core/v2/team/SharingAllowlistRemoveBuilder;
 	public fun teamFolderActivate (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderMetadata;
 	public fun teamFolderArchive (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderArchiveLaunch;
 	public fun teamFolderArchive (Ljava/lang/String;Z)Lcom/dropbox/core/v2/team/TeamFolderArchiveLaunch;
@@ -13129,6 +13380,8 @@ public class com/dropbox/core/v2/team/DbxTeamTeamRequests {
 	public fun teamFolderPermanentlyDelete (Ljava/lang/String;)V
 	public fun teamFolderRename (Ljava/lang/String;Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderMetadata;
 	public fun teamFolderRestore (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderMetadata;
+	public fun teamFolderSpaceLimitGet (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitResponse;
+	public fun teamFolderSpaceLimitSet (Ljava/lang/String;JLcom/dropbox/core/v2/team/TeamFolderSpaceLimitCapsType;Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitNotificationTarget;)V
 	public fun teamFolderUpdateSyncSettings (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderMetadata;
 	public fun teamFolderUpdateSyncSettingsBuilder (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderUpdateSyncSettingsBuilder;
 	public fun tokenGetAuthenticatedAdmin ()Lcom/dropbox/core/v2/team/TokenGetAuthenticatedAdminResult;
@@ -15794,6 +16047,167 @@ public class com/dropbox/core/v2/team/SetCustomQuotaErrorException : com/dropbox
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SetCustomQuotaError;)V
 }
 
+public class com/dropbox/core/v2/team/SharingAllowlistAddBuilder {
+	public fun start ()Lcom/dropbox/core/v2/team/SharingAllowlistAddResponse;
+	public fun withDomains (Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistAddBuilder;
+	public fun withEmails (Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistAddBuilder;
+}
+
+public final class com/dropbox/core/v2/team/SharingAllowlistAddError {
+	public static final field NO_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public static final field TEAM_LIMIT_REACHED Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public static final field TOO_MANY_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public static final field UNKNOWN_ERROR Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public static fun entriesAlreadyExist (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getEntriesAlreadyExistValue ()Ljava/lang/String;
+	public fun getMalformedEntryValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun isEntriesAlreadyExist ()Z
+	public fun isMalformedEntry ()Z
+	public fun isNoEntriesProvided ()Z
+	public fun isOther ()Z
+	public fun isTeamLimitReached ()Z
+	public fun isTooManyEntriesProvided ()Z
+	public fun isUnknownError ()Z
+	public static fun malformedEntry (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public fun tag ()Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/team/SharingAllowlistAddError$Tag : java/lang/Enum {
+	public static final field ENTRIES_ALREADY_EXIST Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static final field MALFORMED_ENTRY Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static final field NO_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static final field TEAM_LIMIT_REACHED Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static final field TOO_MANY_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static final field UNKNOWN_ERROR Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/team/SharingAllowlistAddError$Tag;
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistAddErrorException : com/dropbox/core/DbxApiException {
+	public final field errorValue Lcom/dropbox/core/v2/team/SharingAllowlistAddError;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SharingAllowlistAddError;)V
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistAddResponse {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/team/SharingAllowlistListContinueError : java/lang/Enum {
+	public static final field INVALID_CURSOR Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
+	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
+	public static fun values ()[Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistListContinueErrorException : com/dropbox/core/DbxApiException {
+	public final field errorValue Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SharingAllowlistListContinueError;)V
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistListError {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistListErrorException : com/dropbox/core/DbxApiException {
+	public final field errorValue Lcom/dropbox/core/v2/team/SharingAllowlistListError;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SharingAllowlistListError;)V
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistListResponse {
+	protected final field cursor Ljava/lang/String;
+	protected final field domains Ljava/util/List;
+	protected final field emails Ljava/util/List;
+	protected final field hasMore Z
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public fun <init> (Ljava/util/List;Ljava/util/List;Ljava/lang/String;Z)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCursor ()Ljava/lang/String;
+	public fun getDomains ()Ljava/util/List;
+	public fun getEmails ()Ljava/util/List;
+	public fun getHasMore ()Z
+	public fun hashCode ()I
+	public static fun newBuilder (Ljava/util/List;Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse$Builder;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistListResponse$Builder {
+	protected field cursor Ljava/lang/String;
+	protected final field domains Ljava/util/List;
+	protected final field emails Ljava/util/List;
+	protected field hasMore Z
+	protected fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public fun build ()Lcom/dropbox/core/v2/team/SharingAllowlistListResponse;
+	public fun withCursor (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse$Builder;
+	public fun withHasMore (Ljava/lang/Boolean;)Lcom/dropbox/core/v2/team/SharingAllowlistListResponse$Builder;
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistRemoveBuilder {
+	public fun start ()Lcom/dropbox/core/v2/team/SharingAllowlistRemoveResponse;
+	public fun withDomains (Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveBuilder;
+	public fun withEmails (Ljava/util/List;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveBuilder;
+}
+
+public final class com/dropbox/core/v2/team/SharingAllowlistRemoveError {
+	public static final field NO_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public static final field TOO_MANY_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public static final field UNKNOWN_ERROR Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public static fun entriesDoNotExist (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getEntriesDoNotExistValue ()Ljava/lang/String;
+	public fun getMalformedEntryValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun isEntriesDoNotExist ()Z
+	public fun isMalformedEntry ()Z
+	public fun isNoEntriesProvided ()Z
+	public fun isOther ()Z
+	public fun isTooManyEntriesProvided ()Z
+	public fun isUnknownError ()Z
+	public static fun malformedEntry (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public fun tag ()Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag : java/lang/Enum {
+	public static final field ENTRIES_DO_NOT_EXIST Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static final field MALFORMED_ENTRY Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static final field NO_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static final field TOO_MANY_ENTRIES_PROVIDED Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static final field UNKNOWN_ERROR Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError$Tag;
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistRemoveErrorException : com/dropbox/core/DbxApiException {
+	public final field errorValue Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/SharingAllowlistRemoveError;)V
+}
+
+public class com/dropbox/core/v2/team/SharingAllowlistRemoveResponse {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
 public class com/dropbox/core/v2/team/StorageBucket {
 	protected final field bucket Ljava/lang/String;
 	protected final field users J
@@ -15986,6 +16400,54 @@ public final class com/dropbox/core/v2/team/TeamFolderGetInfoItem$Tag : java/lan
 	public static fun values ()[Lcom/dropbox/core/v2/team/TeamFolderGetInfoItem$Tag;
 }
 
+public final class com/dropbox/core/v2/team/TeamFolderGetSpaceLimitError {
+	public static final field OTHER Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitError;
+	public static fun accessError (Lcom/dropbox/core/v2/team/TeamFolderAccessError;)Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitError;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAccessErrorValue ()Lcom/dropbox/core/v2/team/TeamFolderAccessError;
+	public fun getStatusErrorValue ()Lcom/dropbox/core/v2/team/TeamFolderInvalidStatusError;
+	public fun getTeamSharedDropboxErrorValue ()Lcom/dropbox/core/v2/team/TeamFolderTeamSharedDropboxError;
+	public fun hashCode ()I
+	public fun isAccessError ()Z
+	public fun isOther ()Z
+	public fun isStatusError ()Z
+	public fun isTeamSharedDropboxError ()Z
+	public static fun statusError (Lcom/dropbox/core/v2/team/TeamFolderInvalidStatusError;)Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitError;
+	public fun tag ()Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitError$Tag;
+	public static fun teamSharedDropboxError (Lcom/dropbox/core/v2/team/TeamFolderTeamSharedDropboxError;)Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitError;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/team/TeamFolderGetSpaceLimitError$Tag : java/lang/Enum {
+	public static final field ACCESS_ERROR Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitError$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitError$Tag;
+	public static final field STATUS_ERROR Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitError$Tag;
+	public static final field TEAM_SHARED_DROPBOX_ERROR Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitError$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitError$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitError$Tag;
+}
+
+public class com/dropbox/core/v2/team/TeamFolderGetSpaceLimitErrorException : com/dropbox/core/DbxApiException {
+	public final field errorValue Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitError;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/TeamFolderGetSpaceLimitError;)V
+}
+
+public class com/dropbox/core/v2/team/TeamFolderGetSpaceLimitResponse {
+	protected final field capsType Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitCapsType;
+	protected final field notificationTarget Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitNotificationTarget;
+	protected final field spaceLimitBytes J
+	public fun <init> (Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitCapsType;Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitNotificationTarget;)V
+	public fun <init> (Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitCapsType;Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitNotificationTarget;J)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapsType ()Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitCapsType;
+	public fun getNotificationTarget ()Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitNotificationTarget;
+	public fun getSpaceLimitBytes ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
 public final class com/dropbox/core/v2/team/TeamFolderInvalidStatusError : java/lang/Enum {
 	public static final field ACTIVE Lcom/dropbox/core/v2/team/TeamFolderInvalidStatusError;
 	public static final field ARCHIVED Lcom/dropbox/core/v2/team/TeamFolderInvalidStatusError;
@@ -16168,6 +16630,64 @@ public final class com/dropbox/core/v2/team/TeamFolderRestoreError$Tag : java/la
 public class com/dropbox/core/v2/team/TeamFolderRestoreErrorException : com/dropbox/core/DbxApiException {
 	public final field errorValue Lcom/dropbox/core/v2/team/TeamFolderRestoreError;
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/TeamFolderRestoreError;)V
+}
+
+public final class com/dropbox/core/v2/team/TeamFolderSetSpaceLimitError {
+	public static final field LIMIT_BELOW_MINIMUM Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError;
+	public static final field LIMIT_EXCEEDS_TEAM_QUOTA Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError;
+	public static final field OTHER Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError;
+	public static fun accessError (Lcom/dropbox/core/v2/team/TeamFolderAccessError;)Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAccessErrorValue ()Lcom/dropbox/core/v2/team/TeamFolderAccessError;
+	public fun getStatusErrorValue ()Lcom/dropbox/core/v2/team/TeamFolderInvalidStatusError;
+	public fun getTeamSharedDropboxErrorValue ()Lcom/dropbox/core/v2/team/TeamFolderTeamSharedDropboxError;
+	public fun hashCode ()I
+	public fun isAccessError ()Z
+	public fun isLimitBelowMinimum ()Z
+	public fun isLimitExceedsTeamQuota ()Z
+	public fun isOther ()Z
+	public fun isStatusError ()Z
+	public fun isTeamSharedDropboxError ()Z
+	public static fun statusError (Lcom/dropbox/core/v2/team/TeamFolderInvalidStatusError;)Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError;
+	public fun tag ()Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError$Tag;
+	public static fun teamSharedDropboxError (Lcom/dropbox/core/v2/team/TeamFolderTeamSharedDropboxError;)Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError;
+	public fun toString ()Ljava/lang/String;
+	public fun toStringMultiline ()Ljava/lang/String;
+}
+
+public final class com/dropbox/core/v2/team/TeamFolderSetSpaceLimitError$Tag : java/lang/Enum {
+	public static final field ACCESS_ERROR Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError$Tag;
+	public static final field LIMIT_BELOW_MINIMUM Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError$Tag;
+	public static final field LIMIT_EXCEEDS_TEAM_QUOTA Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError$Tag;
+	public static final field OTHER Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError$Tag;
+	public static final field STATUS_ERROR Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError$Tag;
+	public static final field TEAM_SHARED_DROPBOX_ERROR Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError$Tag;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError$Tag;
+	public static fun values ()[Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError$Tag;
+}
+
+public class com/dropbox/core/v2/team/TeamFolderSetSpaceLimitErrorException : com/dropbox/core/DbxApiException {
+	public final field errorValue Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/dropbox/core/LocalizedText;Lcom/dropbox/core/v2/team/TeamFolderSetSpaceLimitError;)V
+}
+
+public final class com/dropbox/core/v2/team/TeamFolderSpaceLimitCapsType : java/lang/Enum {
+	public static final field HARD Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitCapsType;
+	public static final field OFF Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitCapsType;
+	public static final field OTHER Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitCapsType;
+	public static final field SOFT Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitCapsType;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitCapsType;
+	public static fun values ()[Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitCapsType;
+}
+
+public final class com/dropbox/core/v2/team/TeamFolderSpaceLimitNotificationTarget : java/lang/Enum {
+	public static final field ADMINS Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitNotificationTarget;
+	public static final field BOTH Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitNotificationTarget;
+	public static final field EDITORS Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitNotificationTarget;
+	public static final field OTHER Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitNotificationTarget;
+	public static final field SILENT Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitNotificationTarget;
+	public static fun valueOf (Ljava/lang/String;)Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitNotificationTarget;
+	public static fun values ()[Lcom/dropbox/core/v2/team/TeamFolderSpaceLimitNotificationTarget;
 }
 
 public final class com/dropbox/core/v2/team/TeamFolderStatus : java/lang/Enum {
