@@ -10,6 +10,8 @@ import com.dropbox.core.LocalizedText;
  * Exception thrown when the server responds with a {@link PollError} error.
  *
  * <p> This exception is raised by {@link
+ * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#extractAsyncCheck(String)},
+ * {@link
  * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getKeyframesAsyncCheck(String)},
  * {@link
  * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getMarkdownAsyncCheck(String)},
@@ -63,6 +65,7 @@ import com.dropbox.core.LocalizedText;
  */
 public class PollErrorException extends DbxApiException {
     // exception for routes:
+    //     2/riviera/extract_async/check
     //     2/riviera/get_keyframes_async/check
     //     2/riviera/get_markdown_async/check
     //     2/riviera/get_metadata_async/check
@@ -93,6 +96,8 @@ public class PollErrorException extends DbxApiException {
 
     /**
      * The error reported by {@link
+     * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#extractAsyncCheck(String)},
+     * {@link
      * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getKeyframesAsyncCheck(String)},
      * {@link
      * com.dropbox.core.v2.riviera.DbxAppRivieraRequests#getMarkdownAsyncCheck(String)},

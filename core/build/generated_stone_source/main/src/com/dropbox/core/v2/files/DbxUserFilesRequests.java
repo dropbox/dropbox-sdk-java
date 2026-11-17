@@ -1325,7 +1325,7 @@ public class DbxUserFilesRequests {
      * be less than 20 GB in size and any single file within must be less than 4
      * GB in size. The resulting zip must have fewer than 10,000 total file and
      * folder entries, including the top level folder. The input cannot be a
-     * single file. Note: this endpoint does not support HTTP range requests.
+     * single file.
      *
      * @param _headers  Extra headers to send with request.
      *
@@ -1353,7 +1353,7 @@ public class DbxUserFilesRequests {
      * be less than 20 GB in size and any single file within must be less than 4
      * GB in size. The resulting zip must have fewer than 10,000 total file and
      * folder entries, including the top level folder. The input cannot be a
-     * single file. Note: this endpoint does not support HTTP range requests.
+     * single file.
      *
      * @param path  The path of the folder to download. Must match pattern
      *     "{@code
@@ -1376,7 +1376,7 @@ public class DbxUserFilesRequests {
      * be less than 20 GB in size and any single file within must be less than 4
      * GB in size. The resulting zip must have fewer than 10,000 total file and
      * folder entries, including the top level folder. The input cannot be a
-     * single file. Note: this endpoint does not support HTTP range requests.
+     * single file.
      *
      * @param path  The path of the folder to download. Must match pattern
      *     "{@code

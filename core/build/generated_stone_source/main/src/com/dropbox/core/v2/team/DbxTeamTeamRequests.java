@@ -4103,6 +4103,236 @@ public class DbxTeamTeamRequests {
     }
 
     //
+    // route 2/team/sharing_allowlist/add
+    //
+
+    /**
+     * Endpoint adds Approve List entries. Changes are effective immediately.
+     * Changes are committed in transaction. In case of single validation error
+     * - all entries are rejected. Valid domains (RFC-1034/5) and emails
+     * (RFC-5322/822) are accepted. Added entries cannot overflow limit of 10000
+     * entries per team. Maximum 100 entries per call is allowed.
+     *
+     * @param arg  Structure representing Approve List entries. Domain and
+     *     emails are supported. At least one entry of any supported type is
+     *     required.
+     *
+     * @return This struct is empty. The comment here is intentionally emitted
+     *     to avoid indentation issues with Stone.
+     */
+    SharingAllowlistAddResponse sharingAllowlistAdd(SharingAllowlistAddArgs arg) throws SharingAllowlistAddErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/team/sharing_allowlist/add",
+                                        arg,
+                                        false,
+                                        SharingAllowlistAddArgs.Serializer.INSTANCE,
+                                        SharingAllowlistAddResponse.Serializer.INSTANCE,
+                                        SharingAllowlistAddError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw ex.withResponseMetadata(new SharingAllowlistAddErrorException("2/team/sharing_allowlist/add", ex.getRequestId(), ex.getUserMessage(), (SharingAllowlistAddError) ex.getErrorValue()));
+        }
+    }
+
+    /**
+     * Endpoint adds Approve List entries. Changes are effective immediately.
+     * Changes are committed in transaction. In case of single validation error
+     * - all entries are rejected. Valid domains (RFC-1034/5) and emails
+     * (RFC-5322/822) are accepted. Added entries cannot overflow limit of 10000
+     * entries per team. Maximum 100 entries per call is allowed.
+     *
+     * @return This struct is empty. The comment here is intentionally emitted
+     *     to avoid indentation issues with Stone.
+     */
+    public SharingAllowlistAddResponse sharingAllowlistAdd() throws SharingAllowlistAddErrorException, DbxException {
+        SharingAllowlistAddArgs _arg = new SharingAllowlistAddArgs();
+        return sharingAllowlistAdd(_arg);
+    }
+
+    /**
+     * Endpoint adds Approve List entries. Changes are effective immediately.
+     * Changes are committed in transaction. In case of single validation error
+     * - all entries are rejected. Valid domains (RFC-1034/5) and emails
+     * (RFC-5322/822) are accepted. Added entries cannot overflow limit of 10000
+     * entries per team. Maximum 100 entries per call is allowed.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     */
+    public SharingAllowlistAddBuilder sharingAllowlistAddBuilder() {
+        SharingAllowlistAddArgs.Builder argBuilder_ = SharingAllowlistAddArgs.newBuilder();
+        return new SharingAllowlistAddBuilder(this, argBuilder_);
+    }
+
+    //
+    // route 2/team/sharing_allowlist/list
+    //
+
+    /**
+     * Lists Approve List entries for given team, from newest to oldest,
+     * returning up to `limit` entries at a time. If there are more than `limit`
+     * entries associated with the current team, more can be fetched by passing
+     * the returned `cursor` to {@link
+     * DbxTeamTeamRequests#sharingAllowlistListContinue(String)}.
+     *
+     */
+    SharingAllowlistListResponse sharingAllowlistList(SharingAllowlistListArg arg) throws SharingAllowlistListErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/team/sharing_allowlist/list",
+                                        arg,
+                                        false,
+                                        SharingAllowlistListArg.Serializer.INSTANCE,
+                                        SharingAllowlistListResponse.Serializer.INSTANCE,
+                                        SharingAllowlistListError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw ex.withResponseMetadata(new SharingAllowlistListErrorException("2/team/sharing_allowlist/list", ex.getRequestId(), ex.getUserMessage(), (SharingAllowlistListError) ex.getErrorValue()));
+        }
+    }
+
+    /**
+     * Lists Approve List entries for given team, from newest to oldest,
+     * returning up to `limit` entries at a time. If there are more than `limit`
+     * entries associated with the current team, more can be fetched by passing
+     * the returned `cursor` to {@link
+     * DbxTeamTeamRequests#sharingAllowlistListContinue(String)}.
+     *
+     * <p> The {@code limit} request parameter will default to {@code 1000L}
+     * (see {@link #sharingAllowlistList(long)}). </p>
+     */
+    public SharingAllowlistListResponse sharingAllowlistList() throws SharingAllowlistListErrorException, DbxException {
+        SharingAllowlistListArg _arg = new SharingAllowlistListArg();
+        return sharingAllowlistList(_arg);
+    }
+
+    /**
+     * Lists Approve List entries for given team, from newest to oldest,
+     * returning up to `limit` entries at a time. If there are more than `limit`
+     * entries associated with the current team, more can be fetched by passing
+     * the returned `cursor` to {@link
+     * DbxTeamTeamRequests#sharingAllowlistListContinue(String)}.
+     *
+     * @param limit  The number of entries to fetch at one time. Must be greater
+     *     than or equal to 1 and be less than or equal to 1000.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SharingAllowlistListResponse sharingAllowlistList(long limit) throws SharingAllowlistListErrorException, DbxException {
+        if (limit < 1L) {
+            throw new IllegalArgumentException("Number 'limit' is smaller than 1L");
+        }
+        if (limit > 1000L) {
+            throw new IllegalArgumentException("Number 'limit' is larger than 1000L");
+        }
+        SharingAllowlistListArg _arg = new SharingAllowlistListArg(limit);
+        return sharingAllowlistList(_arg);
+    }
+
+    //
+    // route 2/team/sharing_allowlist/list/continue
+    //
+
+    /**
+     * Lists entries associated with given team, starting from a the cursor. See
+     * {@link DbxTeamTeamRequests#sharingAllowlistList(long)}.
+     *
+     */
+    SharingAllowlistListResponse sharingAllowlistListContinue(SharingAllowlistListContinueArg arg) throws SharingAllowlistListContinueErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/team/sharing_allowlist/list/continue",
+                                        arg,
+                                        false,
+                                        SharingAllowlistListContinueArg.Serializer.INSTANCE,
+                                        SharingAllowlistListResponse.Serializer.INSTANCE,
+                                        SharingAllowlistListContinueError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw ex.withResponseMetadata(new SharingAllowlistListContinueErrorException("2/team/sharing_allowlist/list/continue", ex.getRequestId(), ex.getUserMessage(), (SharingAllowlistListContinueError) ex.getErrorValue()));
+        }
+    }
+
+    /**
+     * Lists entries associated with given team, starting from a the cursor. See
+     * {@link DbxTeamTeamRequests#sharingAllowlistList(long)}.
+     *
+     * @param cursor  The cursor returned from a previous call to {@link
+     *     DbxTeamTeamRequests#sharingAllowlistList(long)} or {@link
+     *     DbxTeamTeamRequests#sharingAllowlistListContinue(String)}. Must not
+     *     be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public SharingAllowlistListResponse sharingAllowlistListContinue(String cursor) throws SharingAllowlistListContinueErrorException, DbxException {
+        SharingAllowlistListContinueArg _arg = new SharingAllowlistListContinueArg(cursor);
+        return sharingAllowlistListContinue(_arg);
+    }
+
+    //
+    // route 2/team/sharing_allowlist/remove
+    //
+
+    /**
+     * Endpoint removes Approve List entries. Changes are effective immediately.
+     * Changes are committed in transaction. In case of single validation error
+     * - all entries are rejected. Valid domains (RFC-1034/5) and emails
+     * (RFC-5322/822) are accepted. Entries being removed have to be present on
+     * the list. Maximum 1000 entries per call is allowed.
+     *
+     *
+     * @return This struct is empty. The comment here is intentionally emitted
+     *     to avoid indentation issues with Stone.
+     */
+    SharingAllowlistRemoveResponse sharingAllowlistRemove(SharingAllowlistRemoveArgs arg) throws SharingAllowlistRemoveErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/team/sharing_allowlist/remove",
+                                        arg,
+                                        false,
+                                        SharingAllowlistRemoveArgs.Serializer.INSTANCE,
+                                        SharingAllowlistRemoveResponse.Serializer.INSTANCE,
+                                        SharingAllowlistRemoveError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw ex.withResponseMetadata(new SharingAllowlistRemoveErrorException("2/team/sharing_allowlist/remove", ex.getRequestId(), ex.getUserMessage(), (SharingAllowlistRemoveError) ex.getErrorValue()));
+        }
+    }
+
+    /**
+     * Endpoint removes Approve List entries. Changes are effective immediately.
+     * Changes are committed in transaction. In case of single validation error
+     * - all entries are rejected. Valid domains (RFC-1034/5) and emails
+     * (RFC-5322/822) are accepted. Entries being removed have to be present on
+     * the list. Maximum 1000 entries per call is allowed.
+     *
+     * @return This struct is empty. The comment here is intentionally emitted
+     *     to avoid indentation issues with Stone.
+     */
+    public SharingAllowlistRemoveResponse sharingAllowlistRemove() throws SharingAllowlistRemoveErrorException, DbxException {
+        SharingAllowlistRemoveArgs _arg = new SharingAllowlistRemoveArgs();
+        return sharingAllowlistRemove(_arg);
+    }
+
+    /**
+     * Endpoint removes Approve List entries. Changes are effective immediately.
+     * Changes are committed in transaction. In case of single validation error
+     * - all entries are rejected. Valid domains (RFC-1034/5) and emails
+     * (RFC-5322/822) are accepted. Entries being removed have to be present on
+     * the list. Maximum 1000 entries per call is allowed.
+     *
+     * @return Request builder for configuring request parameters and completing
+     *     the request.
+     */
+    public SharingAllowlistRemoveBuilder sharingAllowlistRemoveBuilder() {
+        SharingAllowlistRemoveArgs.Builder argBuilder_ = SharingAllowlistRemoveArgs.newBuilder();
+        return new SharingAllowlistRemoveBuilder(this, argBuilder_);
+    }
+
+    //
     // route 2/team/team_folder/activate
     //
 
@@ -4606,6 +4836,117 @@ public class DbxTeamTeamRequests {
     public TeamFolderMetadata teamFolderRestore(String teamFolderId) throws TeamFolderRestoreErrorException, DbxException {
         TeamFolderIdArg _arg = new TeamFolderIdArg(teamFolderId);
         return teamFolderRestore(_arg);
+    }
+
+    //
+    // route 2/team/team_folder/space_limit/get
+    //
+
+    /**
+     * Returns the space limit configuration of a team folder. See {@link
+     * TeamFolderSpaceLimitCapsType} for how space limits are enforced.
+     *
+     *
+     * @return The space limit configuration of a team folder. If no space limit
+     *     has ever been set for the team folder, {@link
+     *     TeamFolderGetSpaceLimitResponse#getSpaceLimitBytes} is 0, {@link
+     *     TeamFolderGetSpaceLimitResponse#getCapsType} is {@link
+     *     TeamFolderSpaceLimitCapsType#OFF}, and {@link
+     *     TeamFolderGetSpaceLimitResponse#getNotificationTarget} is {@link
+     *     TeamFolderSpaceLimitNotificationTarget#ADMINS}.
+     */
+    TeamFolderGetSpaceLimitResponse teamFolderSpaceLimitGet(TeamFolderIdArg arg) throws TeamFolderGetSpaceLimitErrorException, DbxException {
+        try {
+            return this.client.rpcStyle(this.client.getHost().getApi(),
+                                        "2/team/team_folder/space_limit/get",
+                                        arg,
+                                        false,
+                                        TeamFolderIdArg.Serializer.INSTANCE,
+                                        TeamFolderGetSpaceLimitResponse.Serializer.INSTANCE,
+                                        TeamFolderGetSpaceLimitError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw ex.withResponseMetadata(new TeamFolderGetSpaceLimitErrorException("2/team/team_folder/space_limit/get", ex.getRequestId(), ex.getUserMessage(), (TeamFolderGetSpaceLimitError) ex.getErrorValue()));
+        }
+    }
+
+    /**
+     * Returns the space limit configuration of a team folder. See {@link
+     * TeamFolderSpaceLimitCapsType} for how space limits are enforced.
+     *
+     * @param teamFolderId  The ID of the team folder. Must match pattern
+     *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     *
+     * @return The space limit configuration of a team folder. If no space limit
+     *     has ever been set for the team folder, {@link
+     *     TeamFolderGetSpaceLimitResponse#getSpaceLimitBytes} is 0, {@link
+     *     TeamFolderGetSpaceLimitResponse#getCapsType} is {@link
+     *     TeamFolderSpaceLimitCapsType#OFF}, and {@link
+     *     TeamFolderGetSpaceLimitResponse#getNotificationTarget} is {@link
+     *     TeamFolderSpaceLimitNotificationTarget#ADMINS}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public TeamFolderGetSpaceLimitResponse teamFolderSpaceLimitGet(String teamFolderId) throws TeamFolderGetSpaceLimitErrorException, DbxException {
+        TeamFolderIdArg _arg = new TeamFolderIdArg(teamFolderId);
+        return teamFolderSpaceLimitGet(_arg);
+    }
+
+    //
+    // route 2/team/team_folder/space_limit/set
+    //
+
+    /**
+     * Sets the space limit configuration of a team folder, replacing any
+     * existing configuration. See {@link TeamFolderSpaceLimitCapsType} for how
+     * space limits are enforced.
+     *
+     * @param arg  Arguments for {@link
+     *     DbxTeamTeamRequests#teamFolderSpaceLimitSet(String,long,TeamFolderSpaceLimitCapsType,TeamFolderSpaceLimitNotificationTarget)}.
+     */
+    void teamFolderSpaceLimitSet(TeamFolderSetSpaceLimitArg arg) throws TeamFolderSetSpaceLimitErrorException, DbxException {
+        try {
+            this.client.rpcStyle(this.client.getHost().getApi(),
+                                 "2/team/team_folder/space_limit/set",
+                                 arg,
+                                 false,
+                                 TeamFolderSetSpaceLimitArg.Serializer.INSTANCE,
+                                 com.dropbox.core.stone.StoneSerializers.void_(),
+                                 TeamFolderSetSpaceLimitError.Serializer.INSTANCE);
+        }
+        catch (DbxWrappedException ex) {
+            throw ex.withResponseMetadata(new TeamFolderSetSpaceLimitErrorException("2/team/team_folder/space_limit/set", ex.getRequestId(), ex.getUserMessage(), (TeamFolderSetSpaceLimitError) ex.getErrorValue()));
+        }
+    }
+
+    /**
+     * Sets the space limit configuration of a team folder, replacing any
+     * existing configuration. See {@link TeamFolderSpaceLimitCapsType} for how
+     * space limits are enforced.
+     *
+     * @param teamFolderId  The ID of the team folder. Must match pattern
+     *     "{@code [-_0-9a-zA-Z:]+}" and not be {@code null}.
+     * @param spaceLimitBytes  The maximum total size, in bytes, of all content
+     *     in the team folder and its subfolders. When {@link
+     *     TeamFolderSetSpaceLimitArg#getCapsType} is {@link
+     *     TeamFolderSpaceLimitCapsType#SOFT} or {@link
+     *     TeamFolderSpaceLimitCapsType#HARD}, this must be at least 2 GB
+     *     (2147483648 bytes). It must never exceed the team's total storage
+     *     capacity. When {@link TeamFolderSetSpaceLimitArg#getCapsType} is
+     *     {@link TeamFolderSpaceLimitCapsType#OFF}, the value is stored but has
+     *     no effect, and it may be 0.
+     * @param capsType  The caps type to apply to the specified team folder.
+     *     Must not be {@code null}.
+     * @param notificationTarget  Who receives usage notifications for the
+     *     specified team folder. Must not be {@code null}.
+     *
+     * @throws IllegalArgumentException  If any argument does not meet its
+     *     preconditions.
+     */
+    public void teamFolderSpaceLimitSet(String teamFolderId, long spaceLimitBytes, TeamFolderSpaceLimitCapsType capsType, TeamFolderSpaceLimitNotificationTarget notificationTarget) throws TeamFolderSetSpaceLimitErrorException, DbxException {
+        TeamFolderSetSpaceLimitArg _arg = new TeamFolderSetSpaceLimitArg(teamFolderId, spaceLimitBytes, capsType, notificationTarget);
+        teamFolderSpaceLimitSet(_arg);
     }
 
     //

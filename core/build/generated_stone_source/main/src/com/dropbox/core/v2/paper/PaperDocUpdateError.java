@@ -39,6 +39,11 @@ public enum PaperDocUpdateError {
      */
     DOC_NOT_FOUND,
     /**
+     * Cloud Docs do not have legacy Paper folders. Use the Dropbox filesystem
+     * APIs to look up their containing folders.
+     */
+    FOLDER_NOT_FOUND,
+    /**
      * The provided content was malformed and cannot be imported to Paper.
      */
     CONTENT_MALFORMED,
@@ -84,6 +89,10 @@ public enum PaperDocUpdateError {
                 }
                 case DOC_NOT_FOUND: {
                     g.writeString("doc_not_found");
+                    break;
+                }
+                case FOLDER_NOT_FOUND: {
+                    g.writeString("folder_not_found");
                     break;
                 }
                 case CONTENT_MALFORMED: {
@@ -142,6 +151,9 @@ public enum PaperDocUpdateError {
             }
             else if ("doc_not_found".equals(tag)) {
                 value = PaperDocUpdateError.DOC_NOT_FOUND;
+            }
+            else if ("folder_not_found".equals(tag)) {
+                value = PaperDocUpdateError.FOLDER_NOT_FOUND;
             }
             else if ("content_malformed".equals(tag)) {
                 value = PaperDocUpdateError.CONTENT_MALFORMED;
