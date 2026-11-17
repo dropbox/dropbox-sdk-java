@@ -46,7 +46,7 @@ public class DbxTeamFilePropertiesRequests {
                                         ModifyTemplateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ModifyTemplateErrorException("2/file_properties/templates/add_for_team", ex.getRequestId(), ex.getUserMessage(), (ModifyTemplateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ModifyTemplateErrorException("2/file_properties/templates/add_for_team", ex.getRequestId(), ex.getUserMessage(), (ModifyTemplateError) ex.getErrorValue()));
         }
     }
 
@@ -91,7 +91,7 @@ public class DbxTeamFilePropertiesRequests {
                                         TemplateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TemplateErrorException("2/file_properties/templates/get_for_team", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TemplateErrorException("2/file_properties/templates/get_for_team", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue()));
         }
     }
 
@@ -133,7 +133,7 @@ public class DbxTeamFilePropertiesRequests {
                                         TemplateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TemplateErrorException("2/file_properties/templates/list_for_team", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TemplateErrorException("2/file_properties/templates/list_for_team", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue()));
         }
     }
 
@@ -159,7 +159,7 @@ public class DbxTeamFilePropertiesRequests {
                                  TemplateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TemplateErrorException("2/file_properties/templates/remove_for_team", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TemplateErrorException("2/file_properties/templates/remove_for_team", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue()));
         }
     }
 
@@ -205,7 +205,7 @@ public class DbxTeamFilePropertiesRequests {
                                         ModifyTemplateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ModifyTemplateErrorException("2/file_properties/templates/update_for_team", ex.getRequestId(), ex.getUserMessage(), (ModifyTemplateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ModifyTemplateErrorException("2/file_properties/templates/update_for_team", ex.getRequestId(), ex.getUserMessage(), (ModifyTemplateError) ex.getErrorValue()));
         }
     }
 

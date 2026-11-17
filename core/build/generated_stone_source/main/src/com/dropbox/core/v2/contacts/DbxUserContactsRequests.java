@@ -45,7 +45,7 @@ public class DbxUserContactsRequests {
                                  com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"delete_manual_contacts\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"delete_manual_contacts\":" + ex.getErrorValue()));
         }
     }
 
@@ -68,7 +68,7 @@ public class DbxUserContactsRequests {
                                  DeleteManualContactsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DeleteManualContactsErrorException("2/contacts/delete_manual_contacts_batch", ex.getRequestId(), ex.getUserMessage(), (DeleteManualContactsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DeleteManualContactsErrorException("2/contacts/delete_manual_contacts_batch", ex.getRequestId(), ex.getUserMessage(), (DeleteManualContactsError) ex.getErrorValue()));
         }
     }
 

@@ -45,7 +45,7 @@ public class DbxUserOpenidRequests {
                                         UserInfoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new UserInfoErrorException("2/openid/userinfo", ex.getRequestId(), ex.getUserMessage(), (UserInfoError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new UserInfoErrorException("2/openid/userinfo", ex.getRequestId(), ex.getUserMessage(), (UserInfoError) ex.getErrorValue()));
         }
     }
 

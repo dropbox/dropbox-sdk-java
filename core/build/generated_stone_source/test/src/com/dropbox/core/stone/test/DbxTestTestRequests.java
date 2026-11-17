@@ -56,7 +56,7 @@ public class DbxTestTestRequests {
                                              com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"test_download\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"test_download\":" + ex.getErrorValue()));
         }
     }
 
@@ -134,7 +134,7 @@ public class DbxTestTestRequests {
                                              ParentUnion.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ParentUnionException("2/test/test_download_v2", ex.getRequestId(), ex.getUserMessage(), (ParentUnion) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ParentUnionException("2/test/test_download_v2", ex.getRequestId(), ex.getUserMessage(), (ParentUnion) ex.getErrorValue()));
         }
     }
 
@@ -201,7 +201,7 @@ public class DbxTestTestRequests {
                                  com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"test_route\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"test_route\":" + ex.getErrorValue()));
         }
     }
 
@@ -232,7 +232,7 @@ public class DbxTestTestRequests {
                                  ParentUnion.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ParentUnionException("2/test/test_route_v2", ex.getRequestId(), ex.getUserMessage(), (ParentUnion) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ParentUnionException("2/test/test_route_v2", ex.getRequestId(), ex.getUserMessage(), (ParentUnion) ex.getErrorValue()));
         }
     }
 

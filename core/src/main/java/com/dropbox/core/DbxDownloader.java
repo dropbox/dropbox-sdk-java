@@ -121,16 +121,17 @@ public class DbxDownloader<R> implements Closeable {
      * @throws IllegalStateException if this downloader has already been closed (see {@link #close})
      */
     public R download(OutputStream out) throws DbxException,  IOException {
-        try {
-            IOUtil.copyStreamToStream(getInputStream(), out);
-        } catch (IOUtil.WriteException ex) {
-            // write exceptions should be IOException
-            throw ex.getCause();
-        } catch (IOException ex) {
-            // everything else is a Network I/O problem
-            throw new NetworkIOException(ex);
-        } finally {
-            close();
+        Closeable closer = this::close;
+        try (closer) {
+            try {
+                IOUtil.copyStreamToStream(getInputStream(), out);
+            } catch (IOUtil.WriteException ex) {
+                // write exceptions should be IOException
+                throw ex.getCause();
+            } catch (IOException ex) {
+                // everything else is a Network I/O problem
+                throw new NetworkIOException(ex);
+            }
         }
 
         return result;
@@ -159,8 +160,8 @@ public class DbxDownloader<R> implements Closeable {
     @Override
     public void close() {
         if (!closed) {
-            IOUtil.closeQuietly(body);
             closed = true;
+            IOUtil.closeQuietly(body);
         }
     }
 

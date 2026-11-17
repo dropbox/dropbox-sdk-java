@@ -57,7 +57,7 @@ public class DbxUserPaperRequests {
                                  DocLookupError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DocLookupErrorException("2/paper/docs/archive", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DocLookupErrorException("2/paper/docs/archive", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue()));
         }
     }
 
@@ -196,7 +196,7 @@ public class DbxUserPaperRequests {
                                              DocLookupError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DocLookupErrorException("2/paper/docs/download", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DocLookupErrorException("2/paper/docs/download", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue()));
         }
     }
 
@@ -313,7 +313,7 @@ public class DbxUserPaperRequests {
                                         DocLookupError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DocLookupErrorException("2/paper/docs/folder_users/list", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DocLookupErrorException("2/paper/docs/folder_users/list", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue()));
         }
     }
 
@@ -407,7 +407,7 @@ public class DbxUserPaperRequests {
                                         ListUsersCursorError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListUsersCursorErrorException("2/paper/docs/folder_users/list/continue", ex.getRequestId(), ex.getUserMessage(), (ListUsersCursorError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListUsersCursorErrorException("2/paper/docs/folder_users/list/continue", ex.getRequestId(), ex.getUserMessage(), (ListUsersCursorError) ex.getErrorValue()));
         }
     }
 
@@ -471,7 +471,7 @@ public class DbxUserPaperRequests {
                                         DocLookupError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DocLookupErrorException("2/paper/docs/get_folder_info", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DocLookupErrorException("2/paper/docs/get_folder_info", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue()));
         }
     }
 
@@ -527,7 +527,7 @@ public class DbxUserPaperRequests {
                                         DocLookupError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DocLookupErrorException("2/paper/docs/get_metadata", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DocLookupErrorException("2/paper/docs/get_metadata", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue()));
         }
     }
 
@@ -579,7 +579,7 @@ public class DbxUserPaperRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"docs/list\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"docs/list\":" + ex.getErrorValue()));
         }
     }
 
@@ -654,7 +654,7 @@ public class DbxUserPaperRequests {
                                         ListDocsCursorError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListDocsCursorErrorException("2/paper/docs/list/continue", ex.getRequestId(), ex.getUserMessage(), (ListDocsCursorError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListDocsCursorErrorException("2/paper/docs/list/continue", ex.getRequestId(), ex.getUserMessage(), (ListDocsCursorError) ex.getErrorValue()));
         }
     }
 
@@ -712,7 +712,7 @@ public class DbxUserPaperRequests {
                                  DocLookupError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DocLookupErrorException("2/paper/docs/permanently_delete", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DocLookupErrorException("2/paper/docs/permanently_delete", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue()));
         }
     }
 
@@ -767,7 +767,7 @@ public class DbxUserPaperRequests {
                                         DocLookupError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DocLookupErrorException("2/paper/docs/sharing_policy/get", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DocLookupErrorException("2/paper/docs/sharing_policy/get", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue()));
         }
     }
 
@@ -824,7 +824,7 @@ public class DbxUserPaperRequests {
                                  DocLookupError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DocLookupErrorException("2/paper/docs/sharing_policy/set", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DocLookupErrorException("2/paper/docs/sharing_policy/set", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue()));
         }
     }
 
@@ -941,7 +941,7 @@ public class DbxUserPaperRequests {
                                         DocLookupError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DocLookupErrorException("2/paper/docs/users/add", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DocLookupErrorException("2/paper/docs/users/add", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue()));
         }
     }
 
@@ -1034,7 +1034,7 @@ public class DbxUserPaperRequests {
                                         DocLookupError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DocLookupErrorException("2/paper/docs/users/list", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DocLookupErrorException("2/paper/docs/users/list", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue()));
         }
     }
 
@@ -1123,7 +1123,7 @@ public class DbxUserPaperRequests {
                                         ListUsersCursorError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListUsersCursorErrorException("2/paper/docs/users/list/continue", ex.getRequestId(), ex.getUserMessage(), (ListUsersCursorError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListUsersCursorErrorException("2/paper/docs/users/list/continue", ex.getRequestId(), ex.getUserMessage(), (ListUsersCursorError) ex.getErrorValue()));
         }
     }
 
@@ -1182,7 +1182,7 @@ public class DbxUserPaperRequests {
                                  DocLookupError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DocLookupErrorException("2/paper/docs/users/remove", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DocLookupErrorException("2/paper/docs/users/remove", ex.getRequestId(), ex.getUserMessage(), (DocLookupError) ex.getErrorValue()));
         }
     }
 
@@ -1237,7 +1237,7 @@ public class DbxUserPaperRequests {
                                         PaperFolderCreateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PaperFolderCreateErrorException("2/paper/folders/create", ex.getRequestId(), ex.getUserMessage(), (PaperFolderCreateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PaperFolderCreateErrorException("2/paper/folders/create", ex.getRequestId(), ex.getUserMessage(), (PaperFolderCreateError) ex.getErrorValue()));
         }
     }
 

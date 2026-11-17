@@ -215,6 +215,57 @@ public class Main {
 }
 ```
 
+## HTTP error metadata
+
+Catch `DbxException` to inspect the request ID, nullable HTTP status, and a deeply immutable
+snapshot of response headers. Lookup is case-insensitive and preserves multiple values,
+even after the response is closed. A network failure before receiving a response has a
+`null` status and empty headers. Directly constructed exceptions also have no HTTP metadata.
+
+```java
+import com.dropbox.core.DbxException;
+import com.dropbox.core.RateLimitException;
+import com.dropbox.core.v2.DbxClientV2;
+import java.util.List;
+
+public final class HttpErrorMetadataExample {
+    public static void inspectMetadata(DbxClientV2 client) {
+        try {
+            client.files().getMetadata("/file.txt");
+        } catch (RateLimitException ex) {
+            System.err.printf("Rate limited (HTTP %s); wait %d ms before retrying.%n",
+                ex.getResponseStatusCode(), ex.getBackoffMillis());
+        } catch (DbxException ex) {
+            System.err.printf("Dropbox request %s failed (HTTP %s).%n",
+                ex.getRequestId(), ex.getResponseStatusCode());
+            List<String> timing = ex.getResponseHeaders().get("X-Server-Response-Time");
+            if (timing != null) {
+                // Inspect all values of this optional header as needed.
+            }
+        }
+    }
+}
+```
+
+Existing exception types, request IDs, and retry policy remain unchanged, apart from
+preserving the primary failure when response cleanup also fails. HTTP JSON parsing uses
+an internal non-closing stream view; malformed JSON diagnostics may name that view as
+Jackson's input source. The JSON error description and line/column are preserved. Metadata
+describes only the final response after automatic retries are exhausted. Use specialized exceptions
+such as `RateLimitException` for existing backoff information; the metadata getters do not
+perform retries. Header collections are captured at response construction, so custom
+transports should finish assembling them first.
+
+Standalone `StoneSerializer.deserialize(InputStream)` and
+`JsonReader.readFully(InputStream)` retain their historical behavior: Jackson may close
+the source at EOF, but closure is not guaranteed on an early failure. Callers should
+still clean up their own streams. SDK HTTP decoding alone defers closing to the request
+handler, which closes the transport stream once.
+
+Errors from `DbxDownloader.download(...)` retain HTTP metadata, including status 200/206
+when reading an otherwise successful response fails. Reading directly through
+`getInputStream()` continues to throw ordinary `IOException`s without exception metadata.
+
 ## Full examples
 
 Some more complete examples can be found here:
@@ -243,7 +294,7 @@ App key and secret can be found in you app page in [App Console](https://www.dro
 git clone https://github.com/dropbox/dropbox-sdk-java.git
 cd dropbox-sdk-java
 ./update-submodules    # also do this after every "git checkout"
-./gradlew build # requires `python` command to use Python 3.9, pip dropbox
+./gradlew build # requires `python` command to use Python 3.12 and Stone's Python dependencies
 ```
 
 The output will be in "build/".

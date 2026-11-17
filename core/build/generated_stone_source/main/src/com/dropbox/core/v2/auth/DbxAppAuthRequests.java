@@ -43,7 +43,7 @@ public class DbxAppAuthRequests {
                                         TokenFromOAuth1Error.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TokenFromOAuth1ErrorException("2/auth/token/from_oauth1", ex.getRequestId(), ex.getUserMessage(), (TokenFromOAuth1Error) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TokenFromOAuth1ErrorException("2/auth/token/from_oauth1", ex.getRequestId(), ex.getUserMessage(), (TokenFromOAuth1Error) ex.getErrorValue()));
         }
     }
 

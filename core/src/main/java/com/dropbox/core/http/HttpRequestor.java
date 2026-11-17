@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -152,7 +153,10 @@ public abstract class HttpRequestor
         }
 
         /**
-         * Returns a case-insensitive, unmodifiable mapping of header fields to their values.
+         * Returns a case-insensitive, deeply immutable snapshot of header fields and values.
+         * Changes to the collections passed to the constructor are not reflected in this map.
+         * Differently cased names are combined with later groups first; an empty later group
+         * clears earlier values to preserve existing request ID and Retry-After selection.
          *
          * @return case-insensitive, unmodifiable headers
          */
@@ -170,7 +174,14 @@ public abstract class HttpRequestor
                 if (entry.getKey() == null || entry.getKey().trim().length() == 0) {
                     continue;
                 }
-                insensitive.put(entry.getKey(), Collections.unmodifiableList(entry.getValue()));
+                List<String> values = new ArrayList<String>(entry.getValue());
+                List<String> previous = insensitive.get(entry.getKey());
+                // An empty later group clears the header, as in the original normalization.
+                // Otherwise retain earlier values after the legacy selected value.
+                if (previous != null && !values.isEmpty()) {
+                    values.addAll(previous);
+                }
+                insensitive.put(entry.getKey(), Collections.unmodifiableList(values));
             }
             return Collections.unmodifiableMap(insensitive);
         }

@@ -1,6 +1,9 @@
 package com.dropbox.core;
 
 import java.io.IOException;
+import java.io.Closeable;
+import java.io.FilterInputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -294,6 +297,15 @@ public final class DbxRequestUtil {
         }
     }
 
+    // Only HTTP decoding defers close to the response owner. Standalone readers keep their
+    // original EOF-closing behavior. This view is never returned as a download stream.
+    static InputStream nonClosingResponseBody(InputStream body) {
+        return new FilterInputStream(body) {
+            @Override
+            public void close() { }
+        };
+    }
+
     public static byte[] loadErrorBody(HttpRequestor.Response response)
         throws NetworkIOException {
         if (response.getBody() == null) {
@@ -328,6 +340,28 @@ public final class DbxRequestUtil {
     public static DbxException unexpectedStatus(HttpRequestor.Response response, String userId)
         throws NetworkIOException, BadResponseException {
 
+        try {
+            return unexpectedStatusImpl(response, userId);
+        } catch (NetworkIOException ex) {
+            throw withResponseMetadata(ex, response);
+        } catch (BadResponseException ex) {
+            throw withResponseMetadata(ex, response);
+        }
+    }
+
+    /**
+     * For internal use only. Attaches a snapshot without changing the exception type.
+     * Public to support SDK code in subpackages; applications should use the exception getters.
+     */
+    public static <T extends DbxException> T withResponseMetadata(T exception, HttpRequestor.Response response) {
+        if (response != null) {
+            exception.setResponseMetadata(response);
+        }
+        return exception;
+    }
+
+    private static DbxException unexpectedStatusImpl(HttpRequestor.Response response, String userId)
+        throws NetworkIOException, BadResponseException {
         String requestId = getRequestId(response);
         String message = null;
         DbxException networkError;
@@ -355,7 +389,7 @@ public final class DbxRequestUtil {
             case 403:
                 try {
                     ApiErrorResponse<AccessError> accessErrorResponse = new ApiErrorResponse.Serializer<AccessError>(AccessError.Serializer.INSTANCE)
-                            .deserialize(response.getBody());
+                            .deserialize(nonClosingResponseBody(response.getBody()));
                     if (accessErrorResponse.getUserMessage() != null) {
                         message = accessErrorResponse.getUserMessage().toString();
                     }
@@ -370,7 +404,7 @@ public final class DbxRequestUtil {
             case 422:
                 try {
                     ApiErrorResponse<PathRootError> pathRootErrorResponse = new ApiErrorResponse.Serializer<PathRootError>(Serializer.INSTANCE)
-                            .deserialize(response.getBody());
+                            .deserialize(nonClosingResponseBody(response.getBody()));
                     if (pathRootErrorResponse.getUserMessage() != null) {
                         message = pathRootErrorResponse.getUserMessage().toString();
                     }
@@ -418,6 +452,7 @@ public final class DbxRequestUtil {
                 );
         }
 
+        withResponseMetadata(networkError, response);
         DbxGlobalCallbackFactory factory = DbxRequestUtil.sharedCallbackFactory;
         if (factory != null) {
             DbxNetworkErrorCallback callback = factory.createNetworkErrorCallback(userId);
@@ -436,12 +471,12 @@ public final class DbxRequestUtil {
     public static <T> T readJsonFromResponse(JsonReader<T> reader, HttpRequestor.Response response)
         throws BadResponseException, NetworkIOException {
         try {
-            return reader.readFully(response.getBody());
+            return reader.readFully(nonClosingResponseBody(response.getBody()));
         } catch (JsonReadException ex) {
             String requestId = getRequestId(response);
-            throw new BadResponseException(requestId, "error in response JSON: " + ex.getMessage(), ex);
+            throw withResponseMetadata(new BadResponseException(requestId, "error in response JSON: " + ex.getMessage(), ex), response);
         } catch (IOException ex) {
-            throw new NetworkIOException(ex);
+            throw withResponseMetadata(new NetworkIOException(ex), response);
         }
     }
 
@@ -468,15 +503,13 @@ public final class DbxRequestUtil {
             @Override
             public T run() throws DbxException {
                 HttpRequestor.Response response = startGet(requestConfig, accessToken, sdkUserAgentIdentifier, host, path, params, headers);
-                try {
+                InputStream body = response.getBody();
+                try (body) {
                     return handler.handle(response);
-                } finally {
-                    try {
-                        response.getBody().close();
-                    } catch (IOException ex) {
-                        //noinspection ThrowFromFinallyBlock
-                        throw new NetworkIOException(ex);
-                    }
+                } catch (DbxException ex) {
+                    throw withResponseMetadata(ex, response);
+                } catch (IOException ex) {
+                    throw withResponseMetadata(new NetworkIOException(ex), response);
                 }
             }
         });
@@ -514,19 +547,22 @@ public final class DbxRequestUtil {
     }
 
     public static <T> T finishResponse(HttpRequestor.Response response, ResponseHandler<T> handler) throws DbxException {
-        try {
+        Closeable closer = () -> {
+            if (response != null) IOUtil.closeInput(response.getBody());
+        };
+        try (closer) {
             return handler.handle(response);
-        } finally {
-            if (response != null) {
-                IOUtil.closeInput(response.getBody());
-            }
+        } catch (DbxException ex) {
+            throw withResponseMetadata(ex, response);
+        } catch (IOException ex) {
+            throw withResponseMetadata(new NetworkIOException(ex), response);
         }
     }
 
     public static String getFirstHeader(HttpRequestor.Response response, String name) throws BadResponseException {
         List<String> values = response.getHeaders().get(name);
         if (values == null || values.isEmpty()) {
-            throw new BadResponseException(getRequestId(response), "missing HTTP header \"" + name + "\"");
+            throw withResponseMetadata(new BadResponseException(getRequestId(response), "missing HTTP header \"" + name + "\""), response);
         }
         return values.get(0);
     }

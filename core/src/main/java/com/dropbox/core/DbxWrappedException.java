@@ -3,6 +3,8 @@ package com.dropbox.core;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
@@ -20,11 +22,24 @@ public final class DbxWrappedException extends Exception {
     private final Object errValue;  // Really an ErrT instance, but Throwable does not allow generic subclasses.
     private final String requestId;
     private final LocalizedText userMessage;
+    private Integer responseStatusCode;
+    private Map<String, List<String>> responseHeaders;
 
     public DbxWrappedException(Object errValue, String requestId, LocalizedText userMessage) {
         this.errValue = errValue;
         this.requestId = requestId;
         this.userMessage = userMessage;
+    }
+
+    /**
+     * For internal use only. Copies metadata to the translated route exception.
+     * Public to support generated request classes in subpackages.
+     */
+    public <T extends DbxException> T withResponseMetadata(T exception) {
+        if (responseStatusCode != null) {
+            exception.setResponseMetadata(responseStatusCode, responseHeaders);
+        }
+        return exception;
     }
 
     public Object getErrorValue() {
@@ -44,7 +59,7 @@ public final class DbxWrappedException extends Exception {
         String requestId = DbxRequestUtil.getRequestId(response);
 
         ApiErrorResponse<T> apiResponse = new ApiErrorResponse.Serializer<T>(errSerializer)
-            .deserialize(response.getBody());
+            .deserialize(DbxRequestUtil.nonClosingResponseBody(response.getBody()));
 
         T routeError = apiResponse.getError();
 
@@ -52,7 +67,10 @@ public final class DbxWrappedException extends Exception {
         DbxWrappedException.executeBlockForObject(factory, userId, routeError);
         DbxWrappedException.executeOtherBlocks(factory, userId, routeError);
 
-        return new DbxWrappedException(routeError, requestId, apiResponse.getUserMessage());
+        DbxWrappedException exception = new DbxWrappedException(routeError, requestId, apiResponse.getUserMessage());
+        exception.responseStatusCode = response.getStatusCode();
+        exception.responseHeaders = response.getHeaders();
+        return exception;
     }
 
     public static void executeOtherBlocks(DbxGlobalCallbackFactory factory, String userId, Object routeError) {
