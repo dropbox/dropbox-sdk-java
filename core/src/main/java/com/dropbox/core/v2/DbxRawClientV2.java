@@ -32,6 +32,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Closeable;
+import java.io.FilterInputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -151,7 +152,11 @@ public abstract class DbxRawClientV2 {
                 try (closer) {
                     switch (response.getStatusCode()) {
                         case 200:
-                            return responseSerializer.deserialize(response.getBody());
+                            // Shield only HTTP decoding; do not change standalone serializer ownership.
+                            return responseSerializer.deserialize(new FilterInputStream(response.getBody()) {
+                                @Override
+                                public void close() { }
+                            });
                         case 409:
                             throw DbxWrappedException.fromResponse(errorSerializer, response, userIdAnon);
                         default:

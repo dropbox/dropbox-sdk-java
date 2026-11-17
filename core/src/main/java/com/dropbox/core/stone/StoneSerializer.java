@@ -60,13 +60,8 @@ public abstract class StoneSerializer<T> {
         }
     }
 
-    /**
-     * Deserializes from a caller-owned stream without closing it. The caller must close the
-     * stream on both success and failure, including when the parser reaches EOF.
-     */
     public T deserialize(InputStream json) throws IOException, JsonParseException {
         JsonParser p = Util.JSON.createParser(json);
-        p.disable(JsonParser.Feature.AUTO_CLOSE_SOURCE);
         p.nextToken();
         return deserialize(p);
     }

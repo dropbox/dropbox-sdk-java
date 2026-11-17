@@ -196,14 +196,20 @@ public final class HttpErrorMetadataExample {
 }
 ```
 
-Existing exception types, messages, request IDs, and retry policy remain unchanged, apart
-from preserving the primary failure when response cleanup also fails. Metadata describes
-only the final response after automatic retries are exhausted. Use specialized exceptions
+Existing exception types, request IDs, and retry policy remain unchanged, apart from
+preserving the primary failure when response cleanup also fails. HTTP JSON parsing uses
+an internal non-closing stream view; malformed JSON diagnostics may name that view as
+Jackson's input source. The JSON error description and line/column are preserved. Metadata
+describes only the final response after automatic retries are exhausted. Use specialized exceptions
 such as `RateLimitException` for existing backoff information; the metadata getters do not
 perform retries. Header collections are captured at response construction, so custom
-transports should finish assembling them first. Stream-based `StoneSerializer.deserialize`
-and `JsonReader.readFully` leave their input open; callers must close it on success and failure.
-SDK request handlers perform this cleanup for HTTP response streams.
+transports should finish assembling them first.
+
+Standalone `StoneSerializer.deserialize(InputStream)` and
+`JsonReader.readFully(InputStream)` retain their historical behavior: Jackson may close
+the source at EOF, but closure is not guaranteed on an early failure. Callers should
+still clean up their own streams. SDK HTTP decoding alone defers closing to the request
+handler, which closes the transport stream once.
 
 Errors from `DbxDownloader.download(...)` retain HTTP metadata, including status 200/206
 when reading an otherwise successful response fails. Reading directly through

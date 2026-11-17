@@ -282,7 +282,7 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
             Closeable closer = () -> IOUtil.closeQuietly(received.getBody());
             try (closer) {
                 if (response.getStatusCode() == 200) {
-                    return responseSerializer.deserialize(response.getBody());
+                    return responseSerializer.deserialize(DbxRequestUtil.nonClosingResponseBody(response.getBody()));
                 }
                 else if (response.getStatusCode() == 409) {
                     DbxWrappedException wrapped =  DbxWrappedException.fromResponse(errorSerializer, response, this.userId);

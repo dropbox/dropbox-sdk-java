@@ -59,7 +59,7 @@ public final class DbxWrappedException extends Exception {
         String requestId = DbxRequestUtil.getRequestId(response);
 
         ApiErrorResponse<T> apiResponse = new ApiErrorResponse.Serializer<T>(errSerializer)
-            .deserialize(response.getBody());
+            .deserialize(DbxRequestUtil.nonClosingResponseBody(response.getBody()));
 
         T routeError = apiResponse.getError();
 
