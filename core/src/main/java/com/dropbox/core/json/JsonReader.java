@@ -450,11 +450,13 @@ public abstract class JsonReader<T>
 
     static final JsonFactory jsonFactory = new JsonFactory();
 
+    /** Reads from a caller-owned stream; the caller remains responsible for closing it. */
     public T readFully(InputStream utf8Body)
         throws IOException, JsonReadException
     {
         try {
             JsonParser parser = jsonFactory.createParser(utf8Body);
+            parser.disable(JsonParser.Feature.AUTO_CLOSE_SOURCE);
             return readFully(parser);
         }
         catch (JsonParseException ex) {

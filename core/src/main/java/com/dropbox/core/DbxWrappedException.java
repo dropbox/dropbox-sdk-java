@@ -31,7 +31,10 @@ public final class DbxWrappedException extends Exception {
         this.userMessage = userMessage;
     }
 
-    /** For internal use only. Copies response metadata to the translated route exception. */
+    /**
+     * For internal use only. Copies metadata to the translated route exception.
+     * Public to support generated request classes in subpackages.
+     */
     public <T extends DbxException> T withResponseMetadata(T exception) {
         if (responseStatusCode != null) {
             exception.setResponseMetadata(responseStatusCode, responseHeaders);

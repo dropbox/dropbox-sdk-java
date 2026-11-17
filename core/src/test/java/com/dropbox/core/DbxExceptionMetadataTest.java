@@ -2,6 +2,9 @@ package com.dropbox.core;
 
 import com.dropbox.core.http.HttpRequestor;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.callbacks.DbxGlobalCallbackFactory;
+import com.dropbox.core.v2.callbacks.DbxNetworkErrorCallback;
+import com.dropbox.core.v2.callbacks.DbxRouteErrorCallback;
 import com.dropbox.core.v2.files.DownloadErrorException;
 import com.dropbox.core.v2.files.GetMetadataErrorException;
 import com.dropbox.core.v2.files.UploadErrorException;
@@ -36,6 +39,7 @@ public class DbxExceptionMetadataTest {
 
     private static class Response extends ByteArrayInputStream {
         boolean closed;
+        int closeCount;
         final List<String> values = new ArrayList<String>(Arrays.asList("private-first", "second"));
         final HttpRequestor.Response response;
 
@@ -51,6 +55,7 @@ public class DbxExceptionMetadataTest {
         @Override
         public void close() {
             closed = true;
+            ++closeCount;
             values.clear(); // A transport may release header storage when it closes the response.
         }
     }
@@ -139,6 +144,7 @@ public class DbxExceptionMetadataTest {
         DbxException ex = invoke(client(requestor, 0), style);
         assertThat(ex.getClass()).isEqualTo(type);
         assertThat(response.closed).isTrue();
+        assertThat(response.closeCount).isEqualTo(1);
         assertMetadata(ex, status, "request-id");
         if (ex instanceof RetryException) {
             assertThat(((RetryException) ex).getBackoffMillis()).isEqualTo(0);
@@ -155,6 +161,8 @@ public class DbxExceptionMetadataTest {
         assertMetadata(ex, 503, "last");
         assertThat(first.closed).isTrue();
         assertThat(last.closed).isTrue();
+        assertThat(first.closeCount).isEqualTo(1);
+        assertThat(last.closeCount).isEqualTo(1);
         verify(requestor, times(2)).startPost(anyString(), any());
     }
 
@@ -169,12 +177,15 @@ public class DbxExceptionMetadataTest {
         }
         HttpRequestor requestor = mock(HttpRequestor.class);
         when(requestor.startPost(anyString(), any())).thenThrow(cause);
-        DbxException ex = invoke(client(requestor, 0), "rpc");
-        assertThat(ex.getClass()).isEqualTo(NetworkIOException.class);
-        assertThat(ex.getCause()).isSameInstanceAs(cause);
-        assertThat(ex.getRequestId()).isNull();
-        assertThat(ex.getResponseStatusCode()).isNull();
-        assertThat(ex.getResponseHeaders()).isEmpty();
+        when(requestor.startPostInStreamingMode(anyString(), any())).thenThrow(cause);
+        for (String style : Arrays.asList("rpc", "upload", "download")) {
+            DbxException ex = invoke(client(requestor, 0), style);
+            assertThat(ex.getClass()).isEqualTo(NetworkIOException.class);
+            assertThat(ex.getCause()).isSameInstanceAs(cause);
+            assertThat(ex.getRequestId()).isNull();
+            assertThat(ex.getResponseStatusCode()).isNull();
+            assertThat(ex.getResponseHeaders()).isEmpty();
+        }
     }
 
     @Test
@@ -196,6 +207,7 @@ public class DbxExceptionMetadataTest {
                 assertThat(ex.getCause()).isInstanceOf(com.fasterxml.jackson.core.JsonProcessingException.class);
                 assertMetadata(ex, status, "malformed");
                 assertThat(response.closed).isTrue();
+                assertThat(response.closeCount).isEqualTo(1);
             }
         }
     }
@@ -294,6 +306,16 @@ public class DbxExceptionMetadataTest {
         IOException cause = new IOException("connection reset");
         Response source = new Response(status, "", "download-read");
         InputStream body = new InputStream() {
+            private boolean first = true;
+
+            @Override
+            public int read(byte[] buffer, int offset, int length) throws IOException {
+                if (!first) throw cause;
+                first = false;
+                buffer[offset] = 'x';
+                return 1;
+            }
+
             @Override
             public int read() throws IOException {
                 throw cause;
@@ -308,18 +330,24 @@ public class DbxExceptionMetadataTest {
         DbxDownloader<?> downloader = client(requestor, 1).files().download("/x.txt");
         assertThat(source.closed).isFalse();
         assertThat(downloader.getContentType()).isEqualTo("application/octet-stream");
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        long[] reported = {0};
         NetworkIOException ex = expectThrows(NetworkIOException.class, () -> {
             if (progress) {
-                downloader.download(new ByteArrayOutputStream(), bytes -> { });
+                downloader.download(out, bytes -> reported[0] = bytes);
             } else {
-                downloader.download(new ByteArrayOutputStream());
+                downloader.download(out);
             }
         });
+        assertThat(out.toByteArray()).isEqualTo(new byte[]{'x'});
+        assertThat(reported[0]).isEqualTo(progress ? 1L : 0L);
         assertMetadata(ex, status, null);
         assertThat(ex.getResponseHeaders().get("X-Dropbox-Request-Id")).containsExactly("download-read");
         assertThat(ex.getCause()).isInstanceOf(com.dropbox.core.util.IOUtil.ReadException.class);
         assertThat(ex.getCause().getCause()).isSameInstanceAs(cause);
         assertThat(source.closed).isTrue();
+        downloader.close();
+        assertThat(source.closeCount).isEqualTo(1);
         verify(requestor, times(1)).startPost(anyString(), any());
     }
 
@@ -338,6 +366,8 @@ public class DbxExceptionMetadataTest {
         }
         assertThat(out.toString("UTF-8")).isEqualTo("content");
         assertThat(source.closed).isTrue();
+        downloader.close();
+        assertThat(source.closeCount).isEqualTo(1);
         verify(requestor, times(1)).startPost(anyString(), any());
     }
 
@@ -405,5 +435,268 @@ public class DbxExceptionMetadataTest {
         assertThat(ex.getResponseHeaders().get("X-Dropbox-Request-Id"))
             .containsExactly("last-id", "first-id").inOrder();
         assertThat(ex.getResponseHeaders().get("Retry-After")).containsExactly("2", "1").inOrder();
+    }
+
+
+    @Test
+    public void structuredErrorSurvivesCleanupIOException() throws Exception {
+        for (String style : Arrays.asList("rpc", "upload", "download")) {
+            String body = style.equals("upload") ? "{\"error\":{\".tag\":\"payload_too_large\"}}"
+                : "{\"error\":{\".tag\":\"path\",\"path\":{\".tag\":\"not_found\"}}}";
+            Response source = new Response(409, body, "cleanup");
+            InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)) {
+                @Override
+                public void close() throws IOException {
+                    source.close();
+                    throw new IOException("cleanup failed");
+                }
+            };
+            HttpRequestor.Response response = new HttpRequestor.Response(409, stream, source.response.getHeaders());
+            DbxException ex = invoke(client(requestor(response), 0), style);
+            assertThat(ex).isInstanceOf(DbxApiException.class);
+            assertThat(source.closeCount).isEqualTo(1);
+            assertMetadata(ex, 409, "cleanup");
+        }
+    }
+
+
+    @Test
+    public void callbackFailureIsNotReplacedByCleanup() throws Exception {
+        Thread caller = Thread.currentThread();
+        DbxGlobalCallbackFactory previous = DbxRequestUtil.sharedCallbackFactory;
+        try {
+            for (String style : Arrays.asList("rpc", "upload", "download")) {
+                for (int status : new int[]{400, 409}) {
+                    String body = style.equals("upload") ? "{\"error\":{\".tag\":\"payload_too_large\"}}"
+                        : "{\"error\":{\".tag\":\"path\",\"path\":{\".tag\":\"not_found\"}}}";
+                    Response source = new Response(status, body, "callback");
+                    RuntimeException callbackFailure = new IllegalStateException("callback failed");
+                    RuntimeException cleanupFailure = new IllegalArgumentException("cleanup failed");
+                    DbxRequestUtil.sharedCallbackFactory = new DbxGlobalCallbackFactory() {
+                        @Override
+                        public <T> DbxRouteErrorCallback<T> createRouteErrorCallback(String userId, T value) {
+                            if (Thread.currentThread() != caller) return null;
+                            return new DbxRouteErrorCallback<T>() {
+                                @Override
+                                public void run() {
+                                    assertThat(getRouteError()).isSameInstanceAs(value);
+                                    throw callbackFailure;
+                                }
+                            };
+                        }
+
+                        @Override
+                        public DbxNetworkErrorCallback createNetworkErrorCallback(String userId) {
+                            return new DbxNetworkErrorCallback() {
+                                @Override
+                                public void onNetworkError(DbxException ex) {
+                                    if (Thread.currentThread() != caller) return;
+                                    assertMetadata(ex, status, "callback");
+                                    throw callbackFailure;
+                                }
+                            };
+                        }
+                    };
+                    InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)) {
+                        @Override
+                        public void close() {
+                            source.close();
+                            throw cleanupFailure;
+                        }
+                    };
+                    HttpRequestor.Response response = new HttpRequestor.Response(status, stream, source.response.getHeaders());
+                    RuntimeException actual = expectThrows(RuntimeException.class,
+                        () -> invoke(client(requestor(response), 0), style));
+                    assertThat(actual).isSameInstanceAs(callbackFailure);
+                    assertThat(actual.getSuppressed()).asList().containsExactly(cleanupFailure);
+                    assertThat(source.closeCount).isEqualTo(1);
+                }
+            }
+        } finally {
+            DbxRequestUtil.sharedCallbackFactory = previous;
+        }
+    }
+
+
+    @Test
+    public void progressFailureSurvivesCleanupAndClosesOnlyOnce() throws Exception {
+        RuntimeException listenerFailure = new IllegalStateException("progress failed");
+        RuntimeException cleanupFailure = new IllegalArgumentException("close failed");
+        Response source = new Response(200, "content", "progress");
+        InputStream stream = new ByteArrayInputStream("content".getBytes(StandardCharsets.UTF_8)) {
+            @Override
+            public void close() {
+                source.close();
+                throw cleanupFailure;
+            }
+        };
+        DbxDownloader<?> downloader = client(requestor(downloadResponse(200, stream, source)), 0)
+            .files().download("/x.txt");
+        RuntimeException actual = expectThrows(RuntimeException.class,
+            () -> downloader.download(new ByteArrayOutputStream(), bytes -> { throw listenerFailure; }));
+        assertThat(actual).isSameInstanceAs(listenerFailure);
+        assertThat(actual.getSuppressed()).asList().containsExactly(cleanupFailure);
+        downloader.close();
+        assertThat(source.closeCount).isEqualTo(1);
+    }
+
+    @Test
+    public void getHandlerFailureSurvivesCleanupIOException() throws Exception {
+        IOException cleanupFailure = new IOException("close failed");
+        Response source = new Response(400, "", "get");
+        InputStream stream = new ByteArrayInputStream(new byte[0]) {
+            @Override
+            public void close() throws IOException {
+                source.close();
+                throw cleanupFailure;
+            }
+        };
+        HttpRequestor.Response response = new HttpRequestor.Response(400, stream, source.response.getHeaders());
+        HttpRequestor requestor = mock(HttpRequestor.class);
+        when(requestor.doGet(anyString(), any())).thenReturn(response);
+        DbxRequestConfig config = DbxRequestConfig.newBuilder("get-test").withHttpRequestor(requestor).build();
+        DbxException original = new BadRequestException("original-id", "original-message");
+        DbxException actual = expectThrows(DbxException.class, () -> DbxRequestUtil.doGet(config, "token", "sdk",
+            "example.com", "test", null, null, new DbxRequestUtil.ResponseHandler<Object>() {
+                @Override
+                public Object handle(HttpRequestor.Response ignored) throws DbxException {
+                    throw original;
+                }
+            }));
+        assertThat(actual).isSameInstanceAs(original);
+        assertThat(actual.getSuppressed()).asList().containsExactly(cleanupFailure);
+        assertThat(actual.getMessage()).isEqualTo("original-message");
+        assertMetadata(actual, 400, "original-id");
+        assertThat(source.closeCount).isEqualTo(1);
+    }
+
+    @Test
+    public void emptyLaterHeaderGroupPreservesLegacySelection() throws Exception {
+        Map<String, List<String>> headers = new LinkedHashMap<String, List<String>>();
+        headers.put("X-Dropbox-Request-Id", Collections.singletonList("earlier-id"));
+        headers.put("x-dropbox-request-id", Collections.emptyList());
+        headers.put("Retry-After", Collections.singletonList("5"));
+        headers.put("retry-after", Collections.emptyList());
+        HttpRequestor.Response response = new HttpRequestor.Response(429,
+            new ByteArrayInputStream(new byte[0]), headers);
+        DbxException ex = invoke(client(requestor(response), 0), "rpc");
+        assertThat(ex.getClass()).isEqualTo(BadResponseException.class);
+        assertThat(ex.getMessage()).isEqualTo("missing HTTP header \"Retry-After\"");
+        assertThat(ex.getRequestId()).isNull();
+        assertThat(ex.getResponseStatusCode()).isEqualTo(429);
+    }
+
+    @Test
+    public void successfulRpcAndUploadCloseOnlyOnce() throws Exception {
+        for (String style : Arrays.asList("rpc", "upload")) {
+            String body = style.equals("rpc") ? "{\".tag\":\"file\"," + FILE_METADATA.substring(1) : FILE_METADATA;
+            Response source = new Response(200, body, "success");
+            DbxClientV2 client = client(requestor(source.response), 0);
+            if (style.equals("rpc")) {
+                client.files().getMetadata("/x.txt");
+            } else {
+                client.files().upload("/x.txt").finish();
+            }
+            assertThat(source.closeCount).isEqualTo(1);
+        }
+    }
+
+
+    @Test
+    public void rpcPreservesInputStreamSerializerOverride() throws Exception {
+        Response source = new Response(200, "custom format", "serializer");
+        DbxRequestConfig config = DbxRequestConfig.newBuilder("serializer-test")
+            .withHttpRequestor(requestor(source.response)).build();
+        com.dropbox.core.v2.DbxRawClientV2 raw = mock(com.dropbox.core.v2.DbxRawClientV2.class,
+            withSettings().useConstructor(config, DbxHost.DEFAULT, null, null).defaultAnswer(CALLS_REAL_METHODS));
+        com.dropbox.core.stone.StoneSerializer<String> serializer = new com.dropbox.core.stone.StoneSerializer<String>() {
+            @Override
+            public String deserialize(InputStream body) throws IOException {
+                assertThat(source.closed).isFalse();
+                return "custom result";
+            }
+
+            @Override
+            public String deserialize(com.fasterxml.jackson.core.JsonParser parser) {
+                throw new AssertionError("InputStream override was bypassed");
+            }
+
+            @Override
+            public void serialize(String value, com.fasterxml.jackson.core.JsonGenerator generator) {
+                throw new UnsupportedOperationException();
+            }
+        };
+        String result = raw.rpcStyle("example.com", "test", null, true,
+            com.dropbox.core.stone.StoneSerializers.void_(), serializer,
+            com.dropbox.core.stone.StoneSerializers.void_());
+        assertThat(result).isEqualTo("custom result");
+        assertThat(source.closeCount).isEqualTo(1);
+    }
+
+
+    @Test
+    public void oauthErrorClosesOnceAndRetainsMetadata() throws Exception {
+        Response source = new Response(400, "{\"error\":\"invalid_grant\",\"error_description\":\"revoked\"}", "oauth");
+        DbxRequestConfig config = DbxRequestConfig.newBuilder("oauth-test")
+            .withHttpRequestor(requestor(source.response)).build();
+        com.dropbox.core.oauth.DbxCredential credential = new com.dropbox.core.oauth.DbxCredential(
+            "token", 0L, "refresh-token", "app-key", "app-secret");
+        com.dropbox.core.oauth.DbxOAuthException ex = expectThrows(com.dropbox.core.oauth.DbxOAuthException.class,
+            () -> credential.refresh(config));
+        assertThat(ex.getDbxOAuthError().getError()).isEqualTo("invalid_grant");
+        assertThat(ex.getCause()).isNull();
+        assertMetadata(ex, 400, "oauth");
+        assertThat(source.closeCount).isEqualTo(1);
+    }
+
+    @Test
+    public void directDownloadStreamPreservesOrdinaryIOException() throws Exception {
+        IOException original = new IOException("read failed");
+        Response source = new Response(200, "", "direct");
+        InputStream stream = new InputStream() {
+            @Override
+            public int read() throws IOException {
+                throw original;
+            }
+
+            @Override
+            public void close() {
+                source.close();
+            }
+        };
+        DbxDownloader<?> downloader = client(requestor(downloadResponse(200, stream, source)), 0)
+            .files().download("/x.txt");
+        IOException actual = expectThrows(IOException.class, () -> downloader.getInputStream().read());
+        assertThat(actual).isSameInstanceAs(original);
+        assertThat(source.closeCount).isEqualTo(0);
+        downloader.close();
+        assertThat(source.closeCount).isEqualTo(1);
+    }
+
+    @Test
+    public void cleanupFailureDoesNotChangeRetryPolicy() throws Exception {
+        RuntimeException cleanupFailure = new IllegalStateException("close failed");
+        Response first = new Response(503, "", "retry-first") {
+            @Override
+            public void close() {
+                super.close();
+                throw cleanupFailure;
+            }
+        };
+        Response last = new Response(503, "", "retry-last") {
+            @Override
+            public void close() {
+                super.close();
+                throw cleanupFailure;
+            }
+        };
+        HttpRequestor requestor = requestor(first.response, last.response);
+        DbxException ex = invoke(client(requestor, 1), "rpc");
+        assertThat(ex.getClass()).isEqualTo(RetryException.class);
+        assertMetadata(ex, 503, "retry-last");
+        assertThat(ex.getSuppressed()).asList().containsExactly(cleanupFailure);
+        assertThat(first.closeCount).isEqualTo(1);
+        assertThat(last.closeCount).isEqualTo(1);
+        verify(requestor, times(2)).startPost(anyString(), any());
     }
 }

@@ -37,7 +37,10 @@ public class DbxException extends Exception {
     }
 
     /**
-     * Returns the HTTP response status, or {@code null} when no response is available.
+     * Returns the HTTP response status, or {@code null} when no response metadata is available
+     * (for example, a network failure before receiving a response or a directly constructed exception).
+     * A download body read failure may retain a successful HTTP status such as 200 or 206.
+     * This metadata does not change the exception type or retry policy.
      *
      * @return HTTP status code, or {@code null}
      */

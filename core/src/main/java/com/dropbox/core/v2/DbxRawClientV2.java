@@ -31,6 +31,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Closeable;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -146,7 +147,8 @@ public abstract class DbxRawClientV2 {
                 }
 
                 HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
-                try {
+                Closeable closer = () -> IOUtil.closeQuietly(response.getBody());
+                try (closer) {
                     switch (response.getStatusCode()) {
                         case 200:
                             return responseSerializer.deserialize(response.getBody());
@@ -160,8 +162,6 @@ public abstract class DbxRawClientV2 {
                     throw DbxRequestUtil.withResponseMetadata(new BadResponseException(requestId, "Bad JSON: " + ex.getMessage(), ex), response);
                 } catch (IOException ex) {
                     throw DbxRequestUtil.withResponseMetadata(new NetworkIOException(ex), response);
-                } finally {
-                    IOUtil.closeQuietly(response.getBody());
                 }
             }
 
@@ -203,54 +203,57 @@ public abstract class DbxRawClientV2 {
                 }
                 final HttpRequestor.Response response = DbxRequestUtil.startPostRaw(requestConfig, USER_AGENT_ID, host, path, body, headers);
                 String requestId = DbxRequestUtil.getRequestId(response);
-                boolean downloading = false;
 
                 try {
-                    switch (response.getStatusCode()) {
-                        case 200:
-                            // fall-through
-                        case 206:
-                            List<String> resultHeaders = response.getHeaders().get("dropbox-api-result");
-                            if (resultHeaders == null) {
-                                throw new BadResponseException(requestId, "Missing Dropbox-API-Result header");
-                            }
-                            if (resultHeaders.size() == 0) {
-                                throw new BadResponseException(requestId, "No Dropbox-API-Result header");
-                            }
-                            String resultHeader = resultHeaders.get(0);
-                            if (resultHeader == null) {
-                                throw new BadResponseException(requestId, "Null Dropbox-API-Result header");
-                            }
-
-                            ResT result = responseSerializer.deserialize(resultHeader);
-                            DbxDownloader<ResT> downloader = new DbxDownloader<ResT>(
-                                result, response.getBody(), DbxRequestUtil.getContentType(response)) {
-                                @Override
-                                public ResT download(OutputStream out) throws DbxException, IOException {
-                                    try {
-                                        return super.download(out);
-                                    } catch (NetworkIOException ex) {
-                                        throw DbxRequestUtil.withResponseMetadata(ex, response);
-                                    }
+                    try {
+                        switch (response.getStatusCode()) {
+                            case 200:
+                                // fall-through
+                            case 206:
+                                List<String> resultHeaders = response.getHeaders().get("dropbox-api-result");
+                                if (resultHeaders == null) {
+                                    throw new BadResponseException(requestId, "Missing Dropbox-API-Result header");
                                 }
-                            };
-                            downloading = true;
-                            return downloader;
-                        case 409:
-                            throw DbxWrappedException.fromResponse(errorSerializer, response, userIdAnon);
-                        default:
-                            throw DbxRequestUtil.unexpectedStatus(response, userIdAnon);
+                                if (resultHeaders.size() == 0) {
+                                    throw new BadResponseException(requestId, "No Dropbox-API-Result header");
+                                }
+                                String resultHeader = resultHeaders.get(0);
+                                if (resultHeader == null) {
+                                    throw new BadResponseException(requestId, "Null Dropbox-API-Result header");
+                                }
+
+                                ResT result = responseSerializer.deserialize(resultHeader);
+                                DbxDownloader<ResT> downloader = new DbxDownloader<ResT>(
+                                    result, response.getBody(), DbxRequestUtil.getContentType(response)) {
+                                    @Override
+                                    public ResT download(OutputStream out) throws DbxException, IOException {
+                                        try {
+                                            return super.download(out);
+                                        } catch (NetworkIOException ex) {
+                                            throw DbxRequestUtil.withResponseMetadata(ex, response);
+                                        }
+                                    }
+                                };
+                                return downloader;
+                            case 409:
+                                throw DbxWrappedException.fromResponse(errorSerializer, response, userIdAnon);
+                            default:
+                                throw DbxRequestUtil.unexpectedStatus(response, userIdAnon);
+                        }
+                    } catch (DbxException ex) {
+                        throw DbxRequestUtil.withResponseMetadata(ex, response);
+                    } catch(JsonProcessingException ex) {
+                        throw DbxRequestUtil.withResponseMetadata(new BadResponseException(requestId, "Bad JSON: " + ex.getMessage(), ex), response);
+                    } catch (IOException ex) {
+                        throw DbxRequestUtil.withResponseMetadata(new NetworkIOException(ex), response);
                     }
-                } catch (DbxException ex) {
-                    throw DbxRequestUtil.withResponseMetadata(ex, response);
-                } catch(JsonProcessingException ex) {
-                    throw DbxRequestUtil.withResponseMetadata(new BadResponseException(requestId, "Bad JSON: " + ex.getMessage(), ex), response);
-                } catch (IOException ex) {
-                    throw DbxRequestUtil.withResponseMetadata(new NetworkIOException(ex), response);
-                } finally {
-                    if (!downloading) {
+                } catch (Throwable failure) {
+                    try {
                         IOUtil.closeQuietly(response.getBody());
+                    } catch (RuntimeException | Error cleanup) {
+                        if (cleanup != failure) failure.addSuppressed(cleanup);
                     }
+                    throw failure;
                 }
             }
 

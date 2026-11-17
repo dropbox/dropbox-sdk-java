@@ -278,7 +278,9 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
         try {
             response = httpUploader.finish();
 
-            try {
+            final HttpRequestor.Response received = response;
+            Closeable closer = () -> IOUtil.closeQuietly(received.getBody());
+            try (closer) {
                 if (response.getStatusCode() == 200) {
                     return responseSerializer.deserialize(response.getBody());
                 }
@@ -298,10 +300,6 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
         } catch (IOException ex) {
             throw DbxRequestUtil.withResponseMetadata(new NetworkIOException(ex), response);
         } finally {
-            // Make sure input stream is closed
-            if (response != null) {
-                IOUtil.closeQuietly(response.getBody());
-            }
             finished = true;
         }
     }

@@ -1,6 +1,8 @@
 package com.dropbox.core;
 
 import java.io.IOException;
+import java.io.Closeable;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -337,7 +339,10 @@ public final class DbxRequestUtil {
         }
     }
 
-    /** For internal use only. Attaches a snapshot without changing the exception type. */
+    /**
+     * For internal use only. Attaches a snapshot without changing the exception type.
+     * Public to support SDK code in subpackages; applications should use the exception getters.
+     */
     public static <T extends DbxException> T withResponseMetadata(T exception, HttpRequestor.Response response) {
         if (response != null) {
             exception.setResponseMetadata(response);
@@ -488,17 +493,13 @@ public final class DbxRequestUtil {
             @Override
             public T run() throws DbxException {
                 HttpRequestor.Response response = startGet(requestConfig, accessToken, sdkUserAgentIdentifier, host, path, params, headers);
-                try {
+                InputStream body = response.getBody();
+                try (body) {
                     return handler.handle(response);
                 } catch (DbxException ex) {
                     throw withResponseMetadata(ex, response);
-                } finally {
-                    try {
-                        response.getBody().close();
-                    } catch (IOException ex) {
-                        //noinspection ThrowFromFinallyBlock
-                        throw withResponseMetadata(new NetworkIOException(ex), response);
-                    }
+                } catch (IOException ex) {
+                    throw withResponseMetadata(new NetworkIOException(ex), response);
                 }
             }
         });
@@ -536,14 +537,15 @@ public final class DbxRequestUtil {
     }
 
     public static <T> T finishResponse(HttpRequestor.Response response, ResponseHandler<T> handler) throws DbxException {
-        try {
+        Closeable closer = () -> {
+            if (response != null) IOUtil.closeInput(response.getBody());
+        };
+        try (closer) {
             return handler.handle(response);
         } catch (DbxException ex) {
             throw withResponseMetadata(ex, response);
-        } finally {
-            if (response != null) {
-                IOUtil.closeInput(response.getBody());
-            }
+        } catch (IOException ex) {
+            throw withResponseMetadata(new NetworkIOException(ex), response);
         }
     }
 
