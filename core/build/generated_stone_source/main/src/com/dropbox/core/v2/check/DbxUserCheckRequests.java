@@ -50,7 +50,7 @@ public class DbxUserCheckRequests {
                                         EchoError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new EchoErrorException("2/check/user", ex.getRequestId(), ex.getUserMessage(), (EchoError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new EchoErrorException("2/check/user", ex.getRequestId(), ex.getUserMessage(), (EchoError) ex.getErrorValue()));
         }
     }
 

@@ -54,7 +54,7 @@ public class DbxAppFilesRequests {
                                              ThumbnailV2Error.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ThumbnailV2ErrorException("2/files/get_thumbnail_v2", ex.getRequestId(), ex.getUserMessage(), (ThumbnailV2Error) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ThumbnailV2ErrorException("2/files/get_thumbnail_v2", ex.getRequestId(), ex.getUserMessage(), (ThumbnailV2Error) ex.getErrorValue()));
         }
     }
 
@@ -146,7 +146,7 @@ public class DbxAppFilesRequests {
                                         ListFolderError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFolderErrorException("2/files/list_folder", ex.getRequestId(), ex.getUserMessage(), (ListFolderError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFolderErrorException("2/files/list_folder", ex.getRequestId(), ex.getUserMessage(), (ListFolderError) ex.getErrorValue()));
         }
     }
 
@@ -252,7 +252,7 @@ public class DbxAppFilesRequests {
                                         ListFolderContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFolderContinueErrorException("2/files/list_folder/continue", ex.getRequestId(), ex.getUserMessage(), (ListFolderContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFolderContinueErrorException("2/files/list_folder/continue", ex.getRequestId(), ex.getUserMessage(), (ListFolderContinueError) ex.getErrorValue()));
         }
     }
 

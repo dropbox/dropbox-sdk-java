@@ -54,7 +54,7 @@ public class DbxUserSharingRequests {
                                         AddFileMemberError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new AddFileMemberErrorException("2/sharing/add_file_member", ex.getRequestId(), ex.getUserMessage(), (AddFileMemberError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new AddFileMemberErrorException("2/sharing/add_file_member", ex.getRequestId(), ex.getUserMessage(), (AddFileMemberError) ex.getErrorValue()));
         }
     }
 
@@ -126,7 +126,7 @@ public class DbxUserSharingRequests {
                                  AddFolderMemberError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new AddFolderMemberErrorException("2/sharing/add_folder_member", ex.getRequestId(), ex.getUserMessage(), (AddFolderMemberError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new AddFolderMemberErrorException("2/sharing/add_folder_member", ex.getRequestId(), ex.getUserMessage(), (AddFolderMemberError) ex.getErrorValue()));
         }
     }
 
@@ -197,7 +197,7 @@ public class DbxUserSharingRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/sharing/check_job_status", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/sharing/check_job_status", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -237,7 +237,7 @@ public class DbxUserSharingRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/sharing/check_remove_member_job_status", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/sharing/check_remove_member_job_status", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -277,7 +277,7 @@ public class DbxUserSharingRequests {
                                         PollError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PollErrorException("2/sharing/check_share_job_status", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PollErrorException("2/sharing/check_share_job_status", ex.getRequestId(), ex.getUserMessage(), (PollError) ex.getErrorValue()));
         }
     }
 
@@ -323,7 +323,7 @@ public class DbxUserSharingRequests {
                                         CreateSharedLinkError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new CreateSharedLinkErrorException("2/sharing/create_shared_link", ex.getRequestId(), ex.getUserMessage(), (CreateSharedLinkError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new CreateSharedLinkErrorException("2/sharing/create_shared_link", ex.getRequestId(), ex.getUserMessage(), (CreateSharedLinkError) ex.getErrorValue()));
         }
     }
 
@@ -403,7 +403,7 @@ public class DbxUserSharingRequests {
                                         CreateSharedLinkWithSettingsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new CreateSharedLinkWithSettingsErrorException("2/sharing/create_shared_link_with_settings", ex.getRequestId(), ex.getUserMessage(), (CreateSharedLinkWithSettingsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new CreateSharedLinkWithSettingsErrorException("2/sharing/create_shared_link_with_settings", ex.getRequestId(), ex.getUserMessage(), (CreateSharedLinkWithSettingsError) ex.getErrorValue()));
         }
     }
 
@@ -474,7 +474,7 @@ public class DbxUserSharingRequests {
                                         GetFileMetadataError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GetFileMetadataErrorException("2/sharing/get_file_metadata", ex.getRequestId(), ex.getUserMessage(), (GetFileMetadataError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GetFileMetadataErrorException("2/sharing/get_file_metadata", ex.getRequestId(), ex.getUserMessage(), (GetFileMetadataError) ex.getErrorValue()));
         }
     }
 
@@ -545,7 +545,7 @@ public class DbxUserSharingRequests {
                                         SharingUserError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SharingUserErrorException("2/sharing/get_file_metadata/batch", ex.getRequestId(), ex.getUserMessage(), (SharingUserError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SharingUserErrorException("2/sharing/get_file_metadata/batch", ex.getRequestId(), ex.getUserMessage(), (SharingUserError) ex.getErrorValue()));
         }
     }
 
@@ -611,7 +611,7 @@ public class DbxUserSharingRequests {
                                         SharedFolderAccessError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SharedFolderAccessErrorException("2/sharing/get_folder_metadata", ex.getRequestId(), ex.getUserMessage(), (SharedFolderAccessError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SharedFolderAccessErrorException("2/sharing/get_folder_metadata", ex.getRequestId(), ex.getUserMessage(), (SharedFolderAccessError) ex.getErrorValue()));
         }
     }
 
@@ -686,7 +686,7 @@ public class DbxUserSharingRequests {
                                              GetSharedLinkFileError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GetSharedLinkFileErrorException("2/sharing/get_shared_link_file", ex.getRequestId(), ex.getUserMessage(), (GetSharedLinkFileError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GetSharedLinkFileErrorException("2/sharing/get_shared_link_file", ex.getRequestId(), ex.getUserMessage(), (GetSharedLinkFileError) ex.getErrorValue()));
         }
     }
 
@@ -745,7 +745,7 @@ public class DbxUserSharingRequests {
                                         SharedLinkMetadataError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SharedLinkMetadataErrorException("2/sharing/get_shared_link_metadata", ex.getRequestId(), ex.getUserMessage(), (SharedLinkMetadataError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SharedLinkMetadataErrorException("2/sharing/get_shared_link_metadata", ex.getRequestId(), ex.getUserMessage(), (SharedLinkMetadataError) ex.getErrorValue()));
         }
     }
 
@@ -805,7 +805,7 @@ public class DbxUserSharingRequests {
                                         GetSharedLinksError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GetSharedLinksErrorException("2/sharing/get_shared_links", ex.getRequestId(), ex.getUserMessage(), (GetSharedLinksError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GetSharedLinksErrorException("2/sharing/get_shared_links", ex.getRequestId(), ex.getUserMessage(), (GetSharedLinksError) ex.getErrorValue()));
         }
     }
 
@@ -874,7 +874,7 @@ public class DbxUserSharingRequests {
                                         ListFileMembersError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFileMembersErrorException("2/sharing/list_file_members", ex.getRequestId(), ex.getUserMessage(), (ListFileMembersError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFileMembersErrorException("2/sharing/list_file_members", ex.getRequestId(), ex.getUserMessage(), (ListFileMembersError) ex.getErrorValue()));
         }
     }
 
@@ -949,7 +949,7 @@ public class DbxUserSharingRequests {
                                         SharingUserError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SharingUserErrorException("2/sharing/list_file_members/batch", ex.getRequestId(), ex.getUserMessage(), (SharingUserError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SharingUserErrorException("2/sharing/list_file_members/batch", ex.getRequestId(), ex.getUserMessage(), (SharingUserError) ex.getErrorValue()));
         }
     }
 
@@ -1027,7 +1027,7 @@ public class DbxUserSharingRequests {
                                         ListFileMembersContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFileMembersContinueErrorException("2/sharing/list_file_members/continue", ex.getRequestId(), ex.getUserMessage(), (ListFileMembersContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFileMembersContinueErrorException("2/sharing/list_file_members/continue", ex.getRequestId(), ex.getUserMessage(), (ListFileMembersContinueError) ex.getErrorValue()));
         }
     }
 
@@ -1078,7 +1078,7 @@ public class DbxUserSharingRequests {
                                         SharedFolderAccessError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SharedFolderAccessErrorException("2/sharing/list_folder_members", ex.getRequestId(), ex.getUserMessage(), (SharedFolderAccessError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SharedFolderAccessErrorException("2/sharing/list_folder_members", ex.getRequestId(), ex.getUserMessage(), (SharedFolderAccessError) ex.getErrorValue()));
         }
     }
 
@@ -1143,7 +1143,7 @@ public class DbxUserSharingRequests {
                                         ListFolderMembersContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFolderMembersContinueErrorException("2/sharing/list_folder_members/continue", ex.getRequestId(), ex.getUserMessage(), (ListFolderMembersContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFolderMembersContinueErrorException("2/sharing/list_folder_members/continue", ex.getRequestId(), ex.getUserMessage(), (ListFolderMembersContinueError) ex.getErrorValue()));
         }
     }
 
@@ -1191,7 +1191,7 @@ public class DbxUserSharingRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"list_folders\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"list_folders\":" + ex.getErrorValue()));
         }
     }
 
@@ -1250,7 +1250,7 @@ public class DbxUserSharingRequests {
                                         ListFoldersContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFoldersContinueErrorException("2/sharing/list_folders/continue", ex.getRequestId(), ex.getUserMessage(), (ListFoldersContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFoldersContinueErrorException("2/sharing/list_folders/continue", ex.getRequestId(), ex.getUserMessage(), (ListFoldersContinueError) ex.getErrorValue()));
         }
     }
 
@@ -1302,7 +1302,7 @@ public class DbxUserSharingRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"list_mountable_folders\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"list_mountable_folders\":" + ex.getErrorValue()));
         }
     }
 
@@ -1363,7 +1363,7 @@ public class DbxUserSharingRequests {
                                         ListFoldersContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFoldersContinueErrorException("2/sharing/list_mountable_folders/continue", ex.getRequestId(), ex.getUserMessage(), (ListFoldersContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFoldersContinueErrorException("2/sharing/list_mountable_folders/continue", ex.getRequestId(), ex.getUserMessage(), (ListFoldersContinueError) ex.getErrorValue()));
         }
     }
 
@@ -1414,7 +1414,7 @@ public class DbxUserSharingRequests {
                                         SharingUserError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SharingUserErrorException("2/sharing/list_received_files", ex.getRequestId(), ex.getUserMessage(), (SharingUserError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SharingUserErrorException("2/sharing/list_received_files", ex.getRequestId(), ex.getUserMessage(), (SharingUserError) ex.getErrorValue()));
         }
     }
 
@@ -1468,7 +1468,7 @@ public class DbxUserSharingRequests {
                                         ListFilesContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFilesContinueErrorException("2/sharing/list_received_files/continue", ex.getRequestId(), ex.getUserMessage(), (ListFilesContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFilesContinueErrorException("2/sharing/list_received_files/continue", ex.getRequestId(), ex.getUserMessage(), (ListFilesContinueError) ex.getErrorValue()));
         }
     }
 
@@ -1516,7 +1516,7 @@ public class DbxUserSharingRequests {
                                         ListSharedLinksError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListSharedLinksErrorException("2/sharing/list_shared_links", ex.getRequestId(), ex.getUserMessage(), (ListSharedLinksError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListSharedLinksErrorException("2/sharing/list_shared_links", ex.getRequestId(), ex.getUserMessage(), (ListSharedLinksError) ex.getErrorValue()));
         }
     }
 
@@ -1580,7 +1580,7 @@ public class DbxUserSharingRequests {
                                         ModifySharedLinkSettingsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ModifySharedLinkSettingsErrorException("2/sharing/modify_shared_link_settings", ex.getRequestId(), ex.getUserMessage(), (ModifySharedLinkSettingsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ModifySharedLinkSettingsErrorException("2/sharing/modify_shared_link_settings", ex.getRequestId(), ex.getUserMessage(), (ModifySharedLinkSettingsError) ex.getErrorValue()));
         }
     }
 
@@ -1662,7 +1662,7 @@ public class DbxUserSharingRequests {
                                         MountFolderError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new MountFolderErrorException("2/sharing/mount_folder", ex.getRequestId(), ex.getUserMessage(), (MountFolderError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new MountFolderErrorException("2/sharing/mount_folder", ex.getRequestId(), ex.getUserMessage(), (MountFolderError) ex.getErrorValue()));
         }
     }
 
@@ -1713,7 +1713,7 @@ public class DbxUserSharingRequests {
                                         RelinquishAccessError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RelinquishAccessErrorException("2/sharing/relinquish_access", ex.getRequestId(), ex.getUserMessage(), (RelinquishAccessError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RelinquishAccessErrorException("2/sharing/relinquish_access", ex.getRequestId(), ex.getUserMessage(), (RelinquishAccessError) ex.getErrorValue()));
         }
     }
 
@@ -1753,7 +1753,7 @@ public class DbxUserSharingRequests {
                                  RelinquishFileMembershipError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RelinquishFileMembershipErrorException("2/sharing/relinquish_file_membership", ex.getRequestId(), ex.getUserMessage(), (RelinquishFileMembershipError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RelinquishFileMembershipErrorException("2/sharing/relinquish_file_membership", ex.getRequestId(), ex.getUserMessage(), (RelinquishFileMembershipError) ex.getErrorValue()));
         }
     }
 
@@ -1799,7 +1799,7 @@ public class DbxUserSharingRequests {
                                         RelinquishFolderMembershipError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RelinquishFolderMembershipErrorException("2/sharing/relinquish_folder_membership", ex.getRequestId(), ex.getUserMessage(), (RelinquishFolderMembershipError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RelinquishFolderMembershipErrorException("2/sharing/relinquish_folder_membership", ex.getRequestId(), ex.getUserMessage(), (RelinquishFolderMembershipError) ex.getErrorValue()));
         }
     }
 
@@ -1874,7 +1874,7 @@ public class DbxUserSharingRequests {
                                         RemoveFileMemberError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RemoveFileMemberErrorException("2/sharing/remove_file_member_2", ex.getRequestId(), ex.getUserMessage(), (RemoveFileMemberError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RemoveFileMemberErrorException("2/sharing/remove_file_member_2", ex.getRequestId(), ex.getUserMessage(), (RemoveFileMemberError) ex.getErrorValue()));
         }
     }
 
@@ -1924,7 +1924,7 @@ public class DbxUserSharingRequests {
                                         RemoveFolderMemberError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RemoveFolderMemberErrorException("2/sharing/remove_folder_member", ex.getRequestId(), ex.getUserMessage(), (RemoveFolderMemberError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RemoveFolderMemberErrorException("2/sharing/remove_folder_member", ex.getRequestId(), ex.getUserMessage(), (RemoveFolderMemberError) ex.getErrorValue()));
         }
     }
 
@@ -1979,7 +1979,7 @@ public class DbxUserSharingRequests {
                                  RevokeSharedLinkError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RevokeSharedLinkErrorException("2/sharing/revoke_shared_link", ex.getRequestId(), ex.getUserMessage(), (RevokeSharedLinkError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RevokeSharedLinkErrorException("2/sharing/revoke_shared_link", ex.getRequestId(), ex.getUserMessage(), (RevokeSharedLinkError) ex.getErrorValue()));
         }
     }
 
@@ -2023,7 +2023,7 @@ public class DbxUserSharingRequests {
                                         SetAccessInheritanceError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new SetAccessInheritanceErrorException("2/sharing/set_access_inheritance", ex.getRequestId(), ex.getUserMessage(), (SetAccessInheritanceError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new SetAccessInheritanceErrorException("2/sharing/set_access_inheritance", ex.getRequestId(), ex.getUserMessage(), (SetAccessInheritanceError) ex.getErrorValue()));
         }
     }
 
@@ -2096,7 +2096,7 @@ public class DbxUserSharingRequests {
                                         ShareFolderError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ShareFolderErrorException("2/sharing/share_folder", ex.getRequestId(), ex.getUserMessage(), (ShareFolderError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ShareFolderErrorException("2/sharing/share_folder", ex.getRequestId(), ex.getUserMessage(), (ShareFolderError) ex.getErrorValue()));
         }
     }
 
@@ -2169,7 +2169,7 @@ public class DbxUserSharingRequests {
                                  TransferFolderError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TransferFolderErrorException("2/sharing/transfer_folder", ex.getRequestId(), ex.getUserMessage(), (TransferFolderError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TransferFolderErrorException("2/sharing/transfer_folder", ex.getRequestId(), ex.getUserMessage(), (TransferFolderError) ex.getErrorValue()));
         }
     }
 
@@ -2212,7 +2212,7 @@ public class DbxUserSharingRequests {
                                  UnmountFolderError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new UnmountFolderErrorException("2/sharing/unmount_folder", ex.getRequestId(), ex.getUserMessage(), (UnmountFolderError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new UnmountFolderErrorException("2/sharing/unmount_folder", ex.getRequestId(), ex.getUserMessage(), (UnmountFolderError) ex.getErrorValue()));
         }
     }
 
@@ -2253,7 +2253,7 @@ public class DbxUserSharingRequests {
                                  UnshareFileError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new UnshareFileErrorException("2/sharing/unshare_file", ex.getRequestId(), ex.getUserMessage(), (UnshareFileError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new UnshareFileErrorException("2/sharing/unshare_file", ex.getRequestId(), ex.getUserMessage(), (UnshareFileError) ex.getErrorValue()));
         }
     }
 
@@ -2299,7 +2299,7 @@ public class DbxUserSharingRequests {
                                         UnshareFolderError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new UnshareFolderErrorException("2/sharing/unshare_folder", ex.getRequestId(), ex.getUserMessage(), (UnshareFolderError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new UnshareFolderErrorException("2/sharing/unshare_folder", ex.getRequestId(), ex.getUserMessage(), (UnshareFolderError) ex.getErrorValue()));
         }
     }
 
@@ -2378,7 +2378,7 @@ public class DbxUserSharingRequests {
                                         FileMemberActionError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new FileMemberActionErrorException("2/sharing/update_file_member", ex.getRequestId(), ex.getUserMessage(), (FileMemberActionError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new FileMemberActionErrorException("2/sharing/update_file_member", ex.getRequestId(), ex.getUserMessage(), (FileMemberActionError) ex.getErrorValue()));
         }
     }
 
@@ -2428,7 +2428,7 @@ public class DbxUserSharingRequests {
                                         UpdateFilePolicyError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new UpdateFilePolicyErrorException("2/sharing/update_file_policy", ex.getRequestId(), ex.getUserMessage(), (UpdateFilePolicyError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new UpdateFilePolicyErrorException("2/sharing/update_file_policy", ex.getRequestId(), ex.getUserMessage(), (UpdateFilePolicyError) ex.getErrorValue()));
         }
     }
 
@@ -2492,7 +2492,7 @@ public class DbxUserSharingRequests {
                                         UpdateFolderMemberError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new UpdateFolderMemberErrorException("2/sharing/update_folder_member", ex.getRequestId(), ex.getUserMessage(), (UpdateFolderMemberError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new UpdateFolderMemberErrorException("2/sharing/update_folder_member", ex.getRequestId(), ex.getUserMessage(), (UpdateFolderMemberError) ex.getErrorValue()));
         }
     }
 
@@ -2545,7 +2545,7 @@ public class DbxUserSharingRequests {
                                         UpdateFolderPolicyError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new UpdateFolderPolicyErrorException("2/sharing/update_folder_policy", ex.getRequestId(), ex.getUserMessage(), (UpdateFolderPolicyError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new UpdateFolderPolicyErrorException("2/sharing/update_folder_policy", ex.getRequestId(), ex.getUserMessage(), (UpdateFolderPolicyError) ex.getErrorValue()));
         }
     }
 

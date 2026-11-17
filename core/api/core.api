@@ -90,6 +90,8 @@ public class com/dropbox/core/DbxException : java/lang/Exception {
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
 	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
 	public fun getRequestId ()Ljava/lang/String;
+	public fun getResponseHeaders ()Ljava/util/Map;
+	public fun getResponseStatusCode ()Ljava/lang/Integer;
 }
 
 public final class com/dropbox/core/DbxHost {
@@ -197,6 +199,7 @@ public final class com/dropbox/core/DbxRequestUtil {
 	public static fun toParamsArray (Ljava/util/Map;)[Ljava/lang/String;
 	public static fun unexpectedStatus (Lcom/dropbox/core/http/HttpRequestor$Response;)Lcom/dropbox/core/DbxException;
 	public static fun unexpectedStatus (Lcom/dropbox/core/http/HttpRequestor$Response;Ljava/lang/String;)Lcom/dropbox/core/DbxException;
+	public static fun withResponseMetadata (Lcom/dropbox/core/DbxException;Lcom/dropbox/core/http/HttpRequestor$Response;)Lcom/dropbox/core/DbxException;
 }
 
 public abstract class com/dropbox/core/DbxRequestUtil$RequestMaker {
@@ -345,6 +348,7 @@ public final class com/dropbox/core/DbxWrappedException : java/lang/Exception {
 	public fun getErrorValue ()Ljava/lang/Object;
 	public fun getRequestId ()Ljava/lang/String;
 	public fun getUserMessage ()Lcom/dropbox/core/LocalizedText;
+	public fun withResponseMetadata (Lcom/dropbox/core/DbxException;)Lcom/dropbox/core/DbxException;
 }
 
 public final class com/dropbox/core/IncludeGrantedScopes : java/lang/Enum {

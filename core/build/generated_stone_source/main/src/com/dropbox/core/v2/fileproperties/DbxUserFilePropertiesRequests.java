@@ -47,7 +47,7 @@ public class DbxUserFilePropertiesRequests {
                                  AddPropertiesError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new AddPropertiesErrorException("2/file_properties/properties/add", ex.getRequestId(), ex.getUserMessage(), (AddPropertiesError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new AddPropertiesErrorException("2/file_properties/properties/add", ex.getRequestId(), ex.getUserMessage(), (AddPropertiesError) ex.getErrorValue()));
         }
     }
 
@@ -100,7 +100,7 @@ public class DbxUserFilePropertiesRequests {
                                  InvalidPropertyGroupError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new InvalidPropertyGroupErrorException("2/file_properties/properties/overwrite", ex.getRequestId(), ex.getUserMessage(), (InvalidPropertyGroupError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new InvalidPropertyGroupErrorException("2/file_properties/properties/overwrite", ex.getRequestId(), ex.getUserMessage(), (InvalidPropertyGroupError) ex.getErrorValue()));
         }
     }
 
@@ -157,7 +157,7 @@ public class DbxUserFilePropertiesRequests {
                                  RemovePropertiesError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new RemovePropertiesErrorException("2/file_properties/properties/remove", ex.getRequestId(), ex.getUserMessage(), (RemovePropertiesError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new RemovePropertiesErrorException("2/file_properties/properties/remove", ex.getRequestId(), ex.getUserMessage(), (RemovePropertiesError) ex.getErrorValue()));
         }
     }
 
@@ -209,7 +209,7 @@ public class DbxUserFilePropertiesRequests {
                                         PropertiesSearchError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PropertiesSearchErrorException("2/file_properties/properties/search", ex.getRequestId(), ex.getUserMessage(), (PropertiesSearchError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PropertiesSearchErrorException("2/file_properties/properties/search", ex.getRequestId(), ex.getUserMessage(), (PropertiesSearchError) ex.getErrorValue()));
         }
     }
 
@@ -271,7 +271,7 @@ public class DbxUserFilePropertiesRequests {
                                         PropertiesSearchContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new PropertiesSearchContinueErrorException("2/file_properties/properties/search/continue", ex.getRequestId(), ex.getUserMessage(), (PropertiesSearchContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new PropertiesSearchContinueErrorException("2/file_properties/properties/search/continue", ex.getRequestId(), ex.getUserMessage(), (PropertiesSearchContinueError) ex.getErrorValue()));
         }
     }
 
@@ -320,7 +320,7 @@ public class DbxUserFilePropertiesRequests {
                                  UpdatePropertiesError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new UpdatePropertiesErrorException("2/file_properties/properties/update", ex.getRequestId(), ex.getUserMessage(), (UpdatePropertiesError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new UpdatePropertiesErrorException("2/file_properties/properties/update", ex.getRequestId(), ex.getUserMessage(), (UpdatePropertiesError) ex.getErrorValue()));
         }
     }
 
@@ -370,7 +370,7 @@ public class DbxUserFilePropertiesRequests {
                                         ModifyTemplateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ModifyTemplateErrorException("2/file_properties/templates/add_for_user", ex.getRequestId(), ex.getUserMessage(), (ModifyTemplateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ModifyTemplateErrorException("2/file_properties/templates/add_for_user", ex.getRequestId(), ex.getUserMessage(), (ModifyTemplateError) ex.getErrorValue()));
         }
     }
 
@@ -416,7 +416,7 @@ public class DbxUserFilePropertiesRequests {
                                         TemplateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TemplateErrorException("2/file_properties/templates/get_for_user", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TemplateErrorException("2/file_properties/templates/get_for_user", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue()));
         }
     }
 
@@ -460,7 +460,7 @@ public class DbxUserFilePropertiesRequests {
                                         TemplateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TemplateErrorException("2/file_properties/templates/list_for_user", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TemplateErrorException("2/file_properties/templates/list_for_user", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue()));
         }
     }
 
@@ -486,7 +486,7 @@ public class DbxUserFilePropertiesRequests {
                                  TemplateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new TemplateErrorException("2/file_properties/templates/remove_for_user", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new TemplateErrorException("2/file_properties/templates/remove_for_user", ex.getRequestId(), ex.getUserMessage(), (TemplateError) ex.getErrorValue()));
         }
     }
 
@@ -533,7 +533,7 @@ public class DbxUserFilePropertiesRequests {
                                         ModifyTemplateError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ModifyTemplateErrorException("2/file_properties/templates/update_for_user", ex.getRequestId(), ex.getUserMessage(), (ModifyTemplateError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ModifyTemplateErrorException("2/file_properties/templates/update_for_user", ex.getRequestId(), ex.getUserMessage(), (ModifyTemplateError) ex.getErrorValue()));
         }
     }
 

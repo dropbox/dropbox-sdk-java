@@ -45,7 +45,7 @@ public class DbxUserUsersRequests {
                                         UserFeaturesGetValuesBatchError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new UserFeaturesGetValuesBatchErrorException("2/users/features/get_values", ex.getRequestId(), ex.getUserMessage(), (UserFeaturesGetValuesBatchError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new UserFeaturesGetValuesBatchErrorException("2/users/features/get_values", ex.getRequestId(), ex.getUserMessage(), (UserFeaturesGetValuesBatchError) ex.getErrorValue()));
         }
     }
 
@@ -87,7 +87,7 @@ public class DbxUserUsersRequests {
                                         GetAccountError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GetAccountErrorException("2/users/get_account", ex.getRequestId(), ex.getUserMessage(), (GetAccountError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GetAccountErrorException("2/users/get_account", ex.getRequestId(), ex.getUserMessage(), (GetAccountError) ex.getErrorValue()));
         }
     }
 
@@ -127,7 +127,7 @@ public class DbxUserUsersRequests {
                                         GetAccountBatchError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GetAccountBatchErrorException("2/users/get_account_batch", ex.getRequestId(), ex.getUserMessage(), (GetAccountBatchError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GetAccountBatchErrorException("2/users/get_account_batch", ex.getRequestId(), ex.getUserMessage(), (GetAccountBatchError) ex.getErrorValue()));
         }
     }
 
@@ -167,7 +167,7 @@ public class DbxUserUsersRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"get_current_account\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"get_current_account\":" + ex.getErrorValue()));
         }
     }
 
@@ -191,7 +191,7 @@ public class DbxUserUsersRequests {
                                         com.dropbox.core.stone.StoneSerializers.void_());
         }
         catch (DbxWrappedException ex) {
-            throw new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"get_space_usage\":" + ex.getErrorValue());
+            throw ex.withResponseMetadata(new DbxApiException(ex.getRequestId(), ex.getUserMessage(), "Unexpected error response for \"get_space_usage\":" + ex.getErrorValue()));
         }
     }
 }

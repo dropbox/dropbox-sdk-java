@@ -1,6 +1,10 @@
 package com.dropbox.core;
 
-import java.io.IOException;
+import com.dropbox.core.http.HttpRequestor;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Nullable;
 
 /**
  * The base exception thrown by Dropbox API calls.  Normally, you'll need to do something specific
@@ -11,6 +15,8 @@ public class DbxException extends Exception {
     private static final long serialVersionUID = 0L;
 
     private final String requestId;
+    private Integer responseStatusCode;
+    private Map<String, List<String>> responseHeaders = Collections.emptyMap();
 
     public DbxException(String message) {
         this(null, message);
@@ -28,6 +34,40 @@ public class DbxException extends Exception {
     public DbxException(String requestId, String message, Throwable cause) {
         super(message, cause);
         this.requestId = requestId;
+    }
+
+    /**
+     * Returns the HTTP response status, or {@code null} when no response metadata is available
+     * (for example, a network failure before receiving a response or a directly constructed exception).
+     * A download body read failure may retain a successful HTTP status such as 200 or 206.
+     * This metadata does not change the exception type or retry policy.
+     *
+     * @return HTTP status code, or {@code null}
+     */
+    @Nullable
+    public Integer getResponseStatusCode() {
+        return responseStatusCode;
+    }
+
+    /**
+     * Returns a deeply immutable snapshot of the response headers. Lookup is case-insensitive
+     * and all values are preserved. The snapshot remains available after the response is closed.
+     *
+     * @return response headers, or an empty map when no response is available
+     */
+    public Map<String, List<String>> getResponseHeaders() {
+        // Also handles exceptions deserialized from older SDK versions.
+        return responseHeaders == null ? Collections.<String, List<String>>emptyMap() : responseHeaders;
+    }
+
+    void setResponseMetadata(HttpRequestor.Response response) {
+        responseStatusCode = response.getStatusCode();
+        responseHeaders = response.getHeaders();
+    }
+
+    void setResponseMetadata(Integer statusCode, Map<String, List<String>> headers) {
+        responseStatusCode = statusCode;
+        responseHeaders = headers;
     }
 
     /**

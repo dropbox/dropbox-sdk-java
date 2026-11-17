@@ -45,7 +45,7 @@ public class DbxUserFileRequestsRequests {
                                         CountFileRequestsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new CountFileRequestsErrorException("2/file_requests/count", ex.getRequestId(), ex.getUserMessage(), (CountFileRequestsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new CountFileRequestsErrorException("2/file_requests/count", ex.getRequestId(), ex.getUserMessage(), (CountFileRequestsError) ex.getErrorValue()));
         }
     }
 
@@ -73,7 +73,7 @@ public class DbxUserFileRequestsRequests {
                                         CreateFileRequestError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new CreateFileRequestErrorException("2/file_requests/create", ex.getRequestId(), ex.getUserMessage(), (CreateFileRequestError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new CreateFileRequestErrorException("2/file_requests/create", ex.getRequestId(), ex.getUserMessage(), (CreateFileRequestError) ex.getErrorValue()));
         }
     }
 
@@ -145,7 +145,7 @@ public class DbxUserFileRequestsRequests {
                                         DeleteFileRequestError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DeleteFileRequestErrorException("2/file_requests/delete", ex.getRequestId(), ex.getUserMessage(), (DeleteFileRequestError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DeleteFileRequestErrorException("2/file_requests/delete", ex.getRequestId(), ex.getUserMessage(), (DeleteFileRequestError) ex.getErrorValue()));
         }
     }
 
@@ -185,7 +185,7 @@ public class DbxUserFileRequestsRequests {
                                         DeleteAllClosedFileRequestsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new DeleteAllClosedFileRequestsErrorException("2/file_requests/delete_all_closed", ex.getRequestId(), ex.getUserMessage(), (DeleteAllClosedFileRequestsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new DeleteAllClosedFileRequestsErrorException("2/file_requests/delete_all_closed", ex.getRequestId(), ex.getUserMessage(), (DeleteAllClosedFileRequestsError) ex.getErrorValue()));
         }
     }
 
@@ -213,7 +213,7 @@ public class DbxUserFileRequestsRequests {
                                         GetFileRequestError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new GetFileRequestErrorException("2/file_requests/get", ex.getRequestId(), ex.getUserMessage(), (GetFileRequestError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new GetFileRequestErrorException("2/file_requests/get", ex.getRequestId(), ex.getUserMessage(), (GetFileRequestError) ex.getErrorValue()));
         }
     }
 
@@ -257,7 +257,7 @@ public class DbxUserFileRequestsRequests {
                                         ListFileRequestsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFileRequestsErrorException("2/file_requests/list", ex.getRequestId(), ex.getUserMessage(), (ListFileRequestsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFileRequestsErrorException("2/file_requests/list", ex.getRequestId(), ex.getUserMessage(), (ListFileRequestsError) ex.getErrorValue()));
         }
     }
 
@@ -287,7 +287,7 @@ public class DbxUserFileRequestsRequests {
                                         ListFileRequestsError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFileRequestsErrorException("2/file_requests/list_v2", ex.getRequestId(), ex.getUserMessage(), (ListFileRequestsError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFileRequestsErrorException("2/file_requests/list_v2", ex.getRequestId(), ex.getUserMessage(), (ListFileRequestsError) ex.getErrorValue()));
         }
     }
 
@@ -349,7 +349,7 @@ public class DbxUserFileRequestsRequests {
                                         ListFileRequestsContinueError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new ListFileRequestsContinueErrorException("2/file_requests/list/continue", ex.getRequestId(), ex.getUserMessage(), (ListFileRequestsContinueError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new ListFileRequestsContinueErrorException("2/file_requests/list/continue", ex.getRequestId(), ex.getUserMessage(), (ListFileRequestsContinueError) ex.getErrorValue()));
         }
     }
 
@@ -398,7 +398,7 @@ public class DbxUserFileRequestsRequests {
                                         UpdateFileRequestError.Serializer.INSTANCE);
         }
         catch (DbxWrappedException ex) {
-            throw new UpdateFileRequestErrorException("2/file_requests/update", ex.getRequestId(), ex.getUserMessage(), (UpdateFileRequestError) ex.getErrorValue());
+            throw ex.withResponseMetadata(new UpdateFileRequestErrorException("2/file_requests/update", ex.getRequestId(), ex.getUserMessage(), (UpdateFileRequestError) ex.getErrorValue()));
         }
     }
 

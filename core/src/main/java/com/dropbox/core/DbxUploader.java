@@ -278,9 +278,11 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
         try {
             response = httpUploader.finish();
 
-            try {
+            final HttpRequestor.Response received = response;
+            Closeable closer = () -> IOUtil.closeQuietly(received.getBody());
+            try (closer) {
                 if (response.getStatusCode() == 200) {
-                    return responseSerializer.deserialize(response.getBody());
+                    return responseSerializer.deserialize(DbxRequestUtil.nonClosingResponseBody(response.getBody()));
                 }
                 else if (response.getStatusCode() == 409) {
                     DbxWrappedException wrapped =  DbxWrappedException.fromResponse(errorSerializer, response, this.userId);
@@ -293,13 +295,11 @@ public abstract class DbxUploader<R, E, X extends DbxApiException> implements Cl
                 String requestId = DbxRequestUtil.getRequestId(response);
                 throw new BadResponseException(requestId, "Bad JSON in response: " + ex, ex);
             }
+        } catch (DbxException ex) {
+            throw DbxRequestUtil.withResponseMetadata(ex, response);
         } catch (IOException ex) {
-            throw new NetworkIOException(ex);
+            throw DbxRequestUtil.withResponseMetadata(new NetworkIOException(ex), response);
         } finally {
-            // Make sure input stream is closed
-            if (response != null) {
-                IOUtil.closeQuietly(response.getBody());
-            }
             finished = true;
         }
     }

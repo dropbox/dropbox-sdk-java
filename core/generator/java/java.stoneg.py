@@ -3010,6 +3010,7 @@ class JavaCodeGenerationInstance:
                 w.out('return () -> %s;', delegate)
 
     def translate_error_wrapper(self, route, error_wrapper_var):
+        """Return an exception construction expression, without a statement terminator."""
         assert isinstance(route, ApiRoute), repr(route)
         assert isinstance(error_wrapper_var, str), repr(error_wrapper_var)
 
@@ -3017,7 +3018,7 @@ class JavaCodeGenerationInstance:
         j = self.j
 
         if j.has_error(route):
-            return w.fmt('new %s("%s", %s.getRequestId(), %s.getUserMessage(), (%s) %s.getErrorValue());',
+            return w.fmt('new %s("%s", %s.getRequestId(), %s.getUserMessage(), (%s) %s.getErrorValue())',
                          j.route_exception_class(route),
                          j.url_path(route),
                          error_wrapper_var,
@@ -3029,7 +3030,7 @@ class JavaCodeGenerationInstance:
                 format_func_name(route),
                 error_wrapper_var,
             )
-            return 'new DbxApiException({}.getRequestId(), {}.getUserMessage(), {});'.format(
+            return 'new DbxApiException({}.getRequestId(), {}.getUserMessage(), {})'.format(
                 error_wrapper_var,
                 error_wrapper_var,
                 message)
@@ -3060,7 +3061,7 @@ class JavaCodeGenerationInstance:
                 after=';',
             )
         with self.g.block('catch (DbxWrappedException ex)'):
-            w.out('throw %s' % self.translate_error_wrapper(route, 'ex'))
+            w.out('throw ex.withResponseMetadata(%s);', self.translate_error_wrapper(route, 'ex'))
 
     def generate_route_rpc_call(self, route, arg_var):
         assert isinstance(route, ApiRoute), repr(route)
@@ -3769,7 +3770,7 @@ class JavaCodeGenerationInstance:
 
                 w.out('')
                 with w.block('protected %s newException(DbxWrappedException error)', exception_class):
-                    w.out('return %s', self.translate_error_wrapper(route, 'error'))
+                    w.out('return %s;', self.translate_error_wrapper(route, 'error'))
 
     def generate_route_builder(self, route):
         assert isinstance(route, ApiRoute), repr(route)
