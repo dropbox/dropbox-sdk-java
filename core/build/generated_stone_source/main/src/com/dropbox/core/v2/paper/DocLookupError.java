@@ -37,7 +37,12 @@ public enum DocLookupError {
     /**
      * The required doc was not found.
      */
-    DOC_NOT_FOUND;
+    DOC_NOT_FOUND,
+    /**
+     * Cloud Docs do not have legacy Paper folders. Use the Dropbox filesystem
+     * APIs to look up their containing folders.
+     */
+    FOLDER_NOT_FOUND;
 
     /**
      * For internal use only.
@@ -58,6 +63,10 @@ public enum DocLookupError {
                 }
                 case DOC_NOT_FOUND: {
                     g.writeString("doc_not_found");
+                    break;
+                }
+                case FOLDER_NOT_FOUND: {
+                    g.writeString("folder_not_found");
                     break;
                 }
                 default: {
@@ -92,6 +101,9 @@ public enum DocLookupError {
             }
             else if ("doc_not_found".equals(tag)) {
                 value = DocLookupError.DOC_NOT_FOUND;
+            }
+            else if ("folder_not_found".equals(tag)) {
+                value = DocLookupError.FOLDER_NOT_FOUND;
             }
             else {
                 throw new JsonParseException(p, "Unknown tag: " + tag);
