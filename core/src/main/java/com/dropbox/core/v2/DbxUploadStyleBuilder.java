@@ -185,7 +185,7 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
         if (!enabled || existing != null) return null;
         if (limit < 0) throw new IllegalArgumentException("limit must be non-negative");
         Closeable rewind;
-        if (input instanceof FileInputStream) {
+        if (input != null && input.getClass() == FileInputStream.class) {
             FileChannel channel = ((FileInputStream) input).getChannel();
             long position;
             try {
