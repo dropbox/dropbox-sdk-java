@@ -6,6 +6,9 @@ package com.dropbox.core.v2.files;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxUploadStyleBuilder;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * The request builder returned by {@link
  * DbxUserFilesRequests#uploadSessionStartBuilder}.
@@ -93,5 +96,12 @@ public class UploadSessionStartBuilder extends DbxUploadStyleBuilder<UploadSessi
     public UploadSessionStartUploader start() throws UploadSessionStartErrorException, DbxException {
         UploadSessionStartArg arg_ = this._builder.build();
         return _client.uploadSessionStart(arg_);
+    }
+
+    @Override
+    protected UploadSessionStartUploader start(InputStream input, long limit) throws DbxException, IOException {
+        UploadSessionStartArg arg_ = this._builder.build();
+        String hash = calculateContentHash(input, limit, arg_.getContentHash(), _client.isAutoContentHashEnabled());
+        return _client.uploadSessionStart(hash == null ? arg_ : new UploadSessionStartArg(arg_.getClose(), arg_.getSessionType(), hash));
     }
 }

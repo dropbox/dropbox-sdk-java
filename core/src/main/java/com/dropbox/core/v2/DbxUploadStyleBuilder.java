@@ -2,14 +2,23 @@ package com.dropbox.core.v2;
 
 import com.dropbox.core.*;
 import com.dropbox.core.util.IOUtil;
+import com.dropbox.core.util.DropboxContentHasher;
 
+import java.io.Closeable;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.io.InputStream;
 
 /**
  * The common interface for all builders associated with upload style methods. After setting any
  * optional request parameters, use {@link #start} or {@link #uploadAndFinish} to initiate the
  * request.
+ *
+ * <p>Supported generated builders compute an automatic content hash in their
+ * {@code uploadAndFinish} convenience methods before opening HTTP. Calling {@link #start()}
+ * uses the original streaming lifecycle; provide a content hash explicitly if needed.</p>
  *
  * Example usage:
  *
@@ -89,7 +98,7 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
      */
     public R uploadAndFinish(InputStream in) throws X, DbxException, IOException
     {
-        return start().uploadAndFinish(in);
+        return start(in, Long.MAX_VALUE).uploadAndFinish(in);
     }
 
     /**
@@ -110,7 +119,7 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
      */
     public R uploadAndFinish(InputStream in, long limit) throws X, DbxException, IOException
     {
-        return start().uploadAndFinish(in, limit);
+        return start(in, limit).uploadAndFinish(in, limit);
     }
 
     /**
@@ -134,7 +143,7 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
     public R uploadAndFinish(InputStream in, long limit, IOUtil.ProgressListener progressListener)
             throws X, DbxException, IOException
     {
-        return start().uploadAndFinish(in, limit, progressListener);
+        return start(in, limit).uploadAndFinish(in, limit, progressListener);
     }
 
     /**
@@ -157,6 +166,46 @@ public abstract class DbxUploadStyleBuilder<R,E, X extends DbxApiException> {
     public R uploadAndFinish(InputStream in, IOUtil.ProgressListener progressListener)
             throws X, DbxException, IOException
     {
-        return start().uploadAndFinish(in, progressListener);
+        return start(in, Long.MAX_VALUE).uploadAndFinish(in, progressListener);
     }
+
+    /** Generated builders override this to pass a request-local content hash before HTTP creation. */
+    protected DbxUploader<R, E, X> start(InputStream input, long limit) throws DbxException, IOException {
+        return start();
+    }
+
+    /**
+     * Returns a hash after rewinding, or null when hashing is unnecessary or safe rewinding is unavailable.
+     * Like Go's seekable-reader path, supported inputs need no payload buffering. Generic mark/reset
+     * streams are skipped because setting a mark would overwrite caller state. A failed rewind
+     * aborts before HTTP creation rather than uploading a consumed input.
+     */
+    protected static String calculateContentHash(InputStream input, long limit, String existing, boolean enabled)
+            throws IOException {
+        if (!enabled || existing != null) return null;
+        if (limit < 0) throw new IllegalArgumentException("limit must be non-negative");
+        Closeable rewind;
+        if (input instanceof FileInputStream) {
+            FileChannel channel = ((FileInputStream) input).getChannel();
+            long position;
+            try {
+                position = channel.position();
+            } catch (IOException ex) {
+                return null; // For example a non-seekable file descriptor such as a pipe.
+            }
+            rewind = () -> channel.position(position);
+        } else if (input != null && input.getClass() == ByteArrayInputStream.class) {
+            int remaining = input.available();
+            rewind = () -> {
+                input.reset();
+                input.skip(input.available() - remaining);
+            };
+        } else {
+            return null; // Unknown subclasses and mark/reset streams cannot preserve caller state safely.
+        }
+        try (rewind) {
+            return DropboxContentHasher.hashHex(IOUtil.limit(input, limit));
+        }
+    }
+
 }

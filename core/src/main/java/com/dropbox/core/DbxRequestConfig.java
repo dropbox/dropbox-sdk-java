@@ -16,8 +16,9 @@ public class DbxRequestConfig {
     private final /*@Nullable*/String userLocale;
     private final HttpRequestor httpRequestor;
     private final int maxRetries;
+    private final boolean autoContentHash;
 
-    private DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale, HttpRequestor httpRequestor, int maxRetries) {
+    private DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale, HttpRequestor httpRequestor, int maxRetries, boolean autoContentHash) {
         if (clientIdentifier == null) throw new NullPointerException("clientIdentifier");
         if (httpRequestor == null) throw new NullPointerException("httpRequestor");
         if (maxRetries < 0) throw new IllegalArgumentException("maxRetries");
@@ -26,6 +27,7 @@ public class DbxRequestConfig {
         this.userLocale = toLanguageTag(userLocale);
         this.httpRequestor = httpRequestor;
         this.maxRetries = maxRetries;
+        this.autoContentHash = autoContentHash;
     }
 
     /**
@@ -61,7 +63,7 @@ public class DbxRequestConfig {
      */
     @Deprecated
     public DbxRequestConfig(String clientIdentifier, /*@Nullable*/ String userLocale, HttpRequestor httpRequestor) {
-        this(clientIdentifier, userLocale, httpRequestor, 0);
+        this(clientIdentifier, userLocale, httpRequestor, 0, true);
     }
 
     /**
@@ -157,13 +159,31 @@ public class DbxRequestConfig {
     }
 
     /**
+     * Returns whether upload-builder convenience calls calculate content hashes. Defaults to true.
+     *
+     * <p>File and plain byte-array inputs can be rewound without buffering the payload. Other
+     * streams, including custom byte-array subclasses and buffered/mark-reset streams, skip
+     * automatic hashing when position and existing mark cannot both be preserved. Hashing
+     * respects the upload limit and restores position before HTTP creation. It adds the hash
+     * to a request-local argument copy without modifying the builder. Explicit hashes are
+     * preserved. Direct uploaders, builder start(), and output-stream uploads retain their
+     * original lifecycle without automatic hashing.</p>
+     *
+     * @return whether automatic content hashing is enabled
+     */
+    public boolean isAutoContentHashEnabled() {
+        return autoContentHash;
+    }
+
+    /**
      * Returns a builder for building a copy of this configuration. Useful for modifying an existing
      * configuration.
      *
      * @return builder configured to build a copy of this instance
      */
     public Builder copy() {
-        return new Builder(clientIdentifier, userLocale, httpRequestor, maxRetries);
+        return new Builder(clientIdentifier, userLocale, httpRequestor, maxRetries)
+                .withAutoContentHash(autoContentHash);
     }
 
 
@@ -231,6 +251,7 @@ public class DbxRequestConfig {
         private /*@Nullable*/ String userLocale;
         private HttpRequestor httpRequestor;
         private int maxRetries;
+        private boolean autoContentHash = true;
 
         private Builder(String clientIdentifier,
                         /*@Nullable*/ String userLocale,
@@ -372,13 +393,28 @@ public class DbxRequestConfig {
         }
 
         /**
+         * Enables or disables automatic content hashes for supported file uploads.
+         *
+         * <p>Enabled by default. Disable to avoid the extra read, for example for network-backed
+         * files. This does not suppress a content hash explicitly supplied by the caller.</p>
+         *
+         * @param enabled whether to compute content hashes automatically
+         * @return this builder
+         * @see DbxRequestConfig#isAutoContentHashEnabled()
+         */
+        public Builder withAutoContentHash(boolean enabled) {
+            this.autoContentHash = enabled;
+            return this;
+        }
+
+        /**
          * Builds an instance of {@link DbxRequestConfig} with this builder's configured parameters
          * or defaults.
          *
          * @return new {@code DbxRequestConfig} instance.
          */
         public DbxRequestConfig build() {
-            return new DbxRequestConfig(clientIdentifier, userLocale, httpRequestor, maxRetries);
+            return new DbxRequestConfig(clientIdentifier, userLocale, httpRequestor, maxRetries, autoContentHash);
         }
     }
 }
