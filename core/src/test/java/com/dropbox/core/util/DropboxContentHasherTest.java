@@ -165,12 +165,24 @@ public class DropboxContentHasherTest {
         assertEquals(hasher.getDigestLength(), 32);
     }
 
-    @Test
-    public void testDigestOutputBufferFailurePreservesState() throws Exception {
+    @DataProvider(name = "digestOutputBuffers")
+    public Object[][] digestOutputBuffers() {
+        return new Object[][] {
+            {31, 0, 31, DigestException.class},
+            {64, 4, 31, DigestException.class},
+            {35, 4, 32, IllegalArgumentException.class},
+        };
+    }
+
+    @Test(dataProvider = "digestOutputBuffers")
+    public void testDigestOutputBufferFailurePreservesState(int size, int offset, int length,
+                                                           Class<? extends Throwable> exception) throws Exception {
         DropboxContentHasher hasher = new DropboxContentHasher();
-        byte[] data = randomBytes(100);
+        byte[] data = randomBytes(DropboxContentHasher.BLOCK_SIZE + 17);
         hasher.update(data);
-        org.testng.Assert.expectThrows(DigestException.class, () -> hasher.digest(new byte[31], 0, 31));
+        byte[] rejected = new byte[size];
+        org.testng.Assert.expectThrows(exception, () -> hasher.digest(rejected, offset, length));
+        assertEquals(rejected, new byte[size]);
         byte[] output = new byte[40];
         assertEquals(hasher.digest(output, 4, 32), 32);
         assertEquals(java.util.Arrays.copyOfRange(output, 4, 36), DropboxContentHasher.hash(data));
