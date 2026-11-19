@@ -3693,7 +3693,7 @@ public class DbxUserFilesRequests {
      *     /(.|[\\r\\n])*}" and not be {@code null}.
      * @param tagText  The value of the tag to add. Will be automatically
      *     converted to lowercase letters. Must have length of at least 1, have
-     *     length of at most 32, match pattern "{@code [\\w]+}", and not be
+     *     length of at most 32, match pattern "{@code [\\w ]+}", and not be
      *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -3771,7 +3771,7 @@ public class DbxUserFilesRequests {
      *     /(.|[\\r\\n])*}" and not be {@code null}.
      * @param tagText  The tag to remove. Will be automatically converted to
      *     lowercase letters. Must have length of at least 1, have length of at
-     *     most 32, match pattern "{@code [\\w]+}", and not be {@code null}.
+     *     most 32, match pattern "{@code [\\w ]+}", and not be {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
      *     preconditions.

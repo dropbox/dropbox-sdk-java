@@ -33,7 +33,7 @@ class AddTagArg {
      *     /(.|[\\r\\n])*}" and not be {@code null}.
      * @param tagText  The value of the tag to add. Will be automatically
      *     converted to lowercase letters. Must have length of at least 1, have
-     *     length of at most 32, match pattern "{@code [\\w]+}", and not be
+     *     length of at most 32, match pattern "{@code [\\w ]+}", and not be
      *     {@code null}.
      *
      * @throws IllegalArgumentException  If any argument does not meet its
@@ -56,7 +56,7 @@ class AddTagArg {
         if (tagText.length() > 32) {
             throw new IllegalArgumentException("String 'tagText' is longer than 32");
         }
-        if (!Pattern.matches("[\\w]+", tagText)) {
+        if (!Pattern.matches("[\\w ]+", tagText)) {
             throw new IllegalArgumentException("String 'tagText' does not match pattern");
         }
         this.tagText = tagText;
