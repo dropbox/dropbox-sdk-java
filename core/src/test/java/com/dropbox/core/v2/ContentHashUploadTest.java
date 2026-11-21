@@ -99,15 +99,17 @@ public class ContentHashUploadTest {
                         DbxUploadStyleBuilder<?, ?, ?> builder = builder(client(requestor, enabled).files(), route,
                                 explicit ? manual : null);
                         try (FileInputStream input = new FileInputStream(file.toFile()) {
+                            @Override public int read(byte[] bytes) throws IOException {
+                                return read(bytes, 0, bytes.length);
+                            }
                             @Override public int read(byte[] b, int off, int len) throws IOException {
-                                if (!enabled || explicit) assertEquals(requestor.starts, 1);
+                                assertEquals(requestor.starts, 1);
                                 return super.read(b, off, len);
                             }
                         }) {
                             builder.uploadAndFinish(input);
                         }
                         if (explicit) assertTrue(requestor.arg.contains(manual));
-                        else if (enabled) assertHash(requestor, DATA);
                         else assertFalse(requestor.arg.contains("content_hash"));
                     }
                 }
@@ -166,13 +168,16 @@ public class ContentHashUploadTest {
     }
 
     @Test
-    public void fileReadFailureRestoresPositionAndSendsNothing() throws Exception {
+    public void fileSubclassReadFailureClosesRequestWithoutRewinding() throws Exception {
         Path path = Files.createTempFile("dropbox-hash-error", ".bin");
         IOException failure = new IOException("read failed");
         try {
             Files.write(path, DATA);
             RecordingRequestor requestor = new RecordingRequestor();
             try (FileInputStream input = new FileInputStream(path.toFile()) {
+                @Override public int read(byte[] bytes) throws IOException {
+                    return read(bytes, 0, bytes.length);
+                }
                 @Override public int read(byte[] b, int off, int len) throws IOException {
                     super.read(b, off, Math.min(len, 1));
                     throw failure;
@@ -181,8 +186,10 @@ public class ContentHashUploadTest {
                 input.getChannel().position(7);
                 assertSame(expectThrows(IOException.class, () -> client(requestor, true).files()
                         .uploadSessionAppendV2Builder(CURSOR).uploadAndFinish(input)), failure);
-                assertEquals(input.getChannel().position(), 7);
-                assertEquals(requestor.starts, 0);
+                assertEquals(input.getChannel().position(), 8);
+                assertEquals(requestor.starts, 1);
+                assertEquals(requestor.closes, 1);
+                assertFalse(requestor.arg.contains("content_hash"));
             }
         } finally {
             Files.delete(path);
@@ -190,23 +197,14 @@ public class ContentHashUploadTest {
     }
 
     @Test
-    public void sparseLargeFileUsesBoundedReads() throws Exception {
+    public void sparseLargeFileHashesOnlyTheLimitedPayload() throws Exception {
         Path path = Files.createTempFile("dropbox-large-hash", ".bin");
         try {
             try (RandomAccessFile file = new RandomAccessFile(path.toFile(), "rw")) { file.setLength(256L * 1024 * 1024); }
-            long[] read = {0};
-            try (FileInputStream input = new FileInputStream(path.toFile()) {
-                @Override public int read(byte[] b, int off, int len) throws IOException {
-                    assertTrue(len <= IOUtil.DEFAULT_COPY_BUFFER_SIZE);
-                    int count = super.read(b, off, len);
-                    if (count > 0) read[0] += count;
-                    return count;
-                }
-            }) {
+            try (FileInputStream input = new FileInputStream(path.toFile())) {
                 input.getChannel().position(128L * 1024 * 1024);
                 RecordingRequestor requestor = new RecordingRequestor();
                 client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR).uploadAndFinish(input, 65536);
-                assertEquals(read[0], 2L * 65536);
                 assertEquals(input.getChannel().position(), 128L * 1024 * 1024 + 65536);
                 assertHash(requestor, new byte[65536]);
             }
@@ -397,24 +395,36 @@ public class ContentHashUploadTest {
     }
 
     @Test
-    public void failedFileRewindNeverStartsHttp() throws Exception {
-        Path path = Files.createTempFile("dropbox-failed-rewind", ".bin");
+    public void statefulFileSubclassesSkipAutomaticHashing() throws Exception {
+        Path path = Files.createTempFile("dropbox-stateful-file", ".bin");
         try {
             Files.write(path, DATA);
-            RecordingRequestor requestor = new RecordingRequestor();
-            UploadSessionAppendV2Builder builder = client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR);
-            try (FileInputStream input = new FileInputStream(path.toFile()) {
-                @Override public int read(byte[] bytes, int offset, int length) throws IOException {
-                    int count = super.read(bytes, offset, length);
-                    close(); // Hashing the limited payload succeeds; restoring its position cannot.
-                    return count;
+            for (long limit : new long[]{0, 7, Long.MAX_VALUE}) {
+                RecordingRequestor requestor = new RecordingRequestor();
+                try (FileInputStream input = new FileInputStream(path.toFile()) {
+                    @Override public int read(byte[] bytes) throws IOException {
+                        return read(bytes, 0, bytes.length);
+                    }
+                    int bytesRead;
+                    @Override public int read(byte[] bytes, int offset, int length) throws IOException {
+                        assertEquals(requestor.starts, 1, "subclasses must not be pre-read for hashing");
+                        int count = super.read(bytes, offset, length);
+                        for (int i = 0; i < count; i++) bytes[offset + i] ^= (byte) bytesRead++;
+                        return count;
+                    }
+                }) {
+                    input.getChannel().position(7);
+                    client(requestor, true).files().uploadSessionAppendV2Builder(CURSOR).uploadAndFinish(input, limit);
+                    int count = (int) Math.min(limit, DATA.length - 7);
+                    byte[] expected = Arrays.copyOfRange(DATA, 7, 7 + count);
+                    for (int i = 0; i < count; i++) expected[i] ^= (byte) i;
+                    assertEquals(requestor.body.toByteArray(), expected);
+                    assertFalse(requestor.arg.contains("content_hash"));
+                    assertEquals(input.getChannel().position(), 7L + count);
+                    assertTrue(input.getChannel().isOpen());
+                    assertEquals(requestor.closes, 1);
                 }
-            }) {
-                expectThrows(java.nio.channels.ClosedChannelException.class, () -> builder.uploadAndFinish(input, 7));
-                assertEquals(requestor.starts, 0);
             }
-            builder.uploadAndFinish(new ByteArrayInputStream(DATA));
-            assertHash(requestor, DATA);
         } finally {
             Files.delete(path);
         }
@@ -449,7 +459,7 @@ public class ContentHashUploadTest {
     }
 
     @Test
-    public void snapshotDoesNotOverwriteBuilderChangesDuringHashing() throws Exception {
+    public void snapshotDoesNotOverwriteBuilderChangesDuringHttpCreation() throws Exception {
         Path path = Files.createTempFile("dropbox-hash-snapshot", ".bin");
         try {
             Files.write(path, DATA);
@@ -460,18 +470,11 @@ public class ContentHashUploadTest {
                     .withPropertyGroups(Collections.singletonList(new PropertyGroup("ptid:copy-test",
                             Collections.singletonList(new PropertyField("tag", "kept")))));
             String manual = "0".repeat(64);
-            try (FileInputStream input = new FileInputStream(path.toFile()) {
-                boolean changed;
-                @Override public int read(byte[] bytes, int offset, int length) throws IOException {
-                    if (!changed) {
-                        changed = true;
-                        builder.withContentHash(manual).withMute(false);
-                    }
-                    return super.read(bytes, offset, length);
-                }
-            }) {
+            requestor.onStart = () -> builder.withContentHash(manual).withMute(false);
+            try (FileInputStream input = new FileInputStream(path.toFile())) {
                 builder.uploadAndFinish(input);
             }
+            requestor.onStart = null;
             assertHash(requestor, DATA);
             assertTrue(requestor.arg.contains("\"mute\":true"));
             assertTrue(requestor.arg.contains("\"autorename\":true"));
@@ -594,13 +597,16 @@ public class ContentHashUploadTest {
     }
 
     @Test
-    public void readAndRewindFailuresPreserveTheOriginalReadError() throws Exception {
+    public void fileSubclassReadFailurePreservesTheOriginalError() throws Exception {
         Path path = Files.createTempFile("dropbox-read-rewind", ".bin");
         IOException failure = new IOException("read failed");
         try {
             Files.write(path, DATA);
             RecordingRequestor requestor = new RecordingRequestor();
             try (FileInputStream input = new FileInputStream(path.toFile()) {
+                @Override public int read(byte[] bytes) throws IOException {
+                    return read(bytes, 0, bytes.length);
+                }
                 @Override public int read(byte[] bytes, int offset, int length) throws IOException {
                     super.read(bytes, offset, Math.min(1, length));
                     close();
@@ -611,9 +617,10 @@ public class ContentHashUploadTest {
                 IOException thrown = expectThrows(IOException.class, () -> client(requestor, true).files()
                         .uploadSessionAppendV2Builder(CURSOR).uploadAndFinish(input, 7));
                 assertSame(thrown, failure);
-                assertEquals(thrown.getSuppressed().length, 1);
-                assertTrue(thrown.getSuppressed()[0] instanceof java.nio.channels.ClosedChannelException);
-                assertEquals(requestor.starts, 0);
+                assertEquals(thrown.getSuppressed().length, 0);
+                assertEquals(requestor.starts, 1);
+                assertEquals(requestor.closes, 1);
+                assertFalse(requestor.arg.contains("content_hash"));
             }
         } finally {
             Files.delete(path);
