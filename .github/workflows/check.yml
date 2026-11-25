@@ -104,7 +104,7 @@ jobs:
     # auth_output file consumed by the file-based tests (examples, proguard, and the legacy IT
     # tests), so all of CI runs against this single shared credential.
     - name: Get shared SDK integration test secrets from AWS Secrets Manager
-      uses: aws-actions/aws-secretsmanager-get-secrets@v3
+      uses: aws-actions/aws-secretsmanager-get-secrets@v4
       with:
         secret-ids: |
           CREDS,api-sdk-integration-test-creds
@@ -195,7 +195,7 @@ jobs:
           aws-region: us-west-2
 
       - name: Get Maven Central secrets from AWS Secrets Manager
-        uses: aws-actions/aws-secretsmanager-get-secrets@v3
+        uses: aws-actions/aws-secretsmanager-get-secrets@v4
         with:
           secret-ids: |
             OSSRH_USERNAME,sdk-release-maven-central-token-username
